@@ -1,0 +1,19 @@
+<project name="Sport"  basedir=".">
+<target name="schemaexport">
+<taskdef name="schemaexport"
+classname="org.hibernate.tool.hbm2ddl.SchemaExportTask"
+classpathref=""/>
+
+<schemaexport
+properties="etc/hibernate.properties"
+quiet="no"
+text="no"
+drop="no"
+delimiter=";"
+output="schema-export.sql">
+<fileset dir="eg">
+<include name="**/*.hbm.xml"/>
+</fileset>
+</schemaexport>
+</target> 
+</project>
