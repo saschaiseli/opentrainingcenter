@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: importer
+Bundle-SymbolicName: ch.iseli.sportanalyzer.importer;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ ch.iseli.sportanalyzer.tcx,
+ org.eclipse.ui.ide,
+ org.eclipse.core.resources,
+ ch.iseli.sportanalyzer.client;bundle-version="1.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
