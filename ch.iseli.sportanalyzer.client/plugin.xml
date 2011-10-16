@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="ch.iseli.sportanalyzer.myimporter" name="myimporter" schema="schema/ch.iseli.sportanalyzer.myimporter.exsd"/>
+   <extension-point id="splashExtension" name="Splash Extensions" schema="schema/splashExtension.exsd"/>
+
+   <extension
+         id="application"
+         point="org.eclipse.core.runtime.applications">
+      <application>
+         <run
+               class="ch.iseli.sportanalyzer.client.Application">
+         </run>
+      </application>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            name="OTC Perspektive"
+            class="ch.iseli.sportanalyzer.client.Perspective"
+            id="ch.iseli.sportanalyzer.client.perspective">
+      </perspective>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            name="Message"
+            allowMultiple="true"
+            icon="icons/sample2.gif"
+            class="ch.iseli.sportanalyzer.client.View"
+            id="ch.iseli.sportanalyzer.client.view">
+      </view>
+      <view
+            name="Mailboxes"
+            allowMultiple="true"
+            icon="icons/sample3.gif"
+            class="ch.iseli.sportanalyzer.client.NavigationView"
+            id="ch.iseli.sportanalyzer.client.navigationView">
+      </view>
+      <view
+            allowMultiple="true"
+            class="ch.iseli.sportanalyzer.client.views.SingleActivityViewPart"
+            id="ch.iseli.sportanalyzer.client.view.singlerun"
+            name="Uebersicht eines Trainings">
+         <description>
+            Übersicht einer einzelnen Aktivität.
+         </description>
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            name="Mail"
+            id="ch.iseli.sportanalyzer.client.category">
+      </category>
+      <command
+            name="Open Mailbox"
+            description="Opens a mailbox"
+            categoryId="ch.iseli.sportanalyzer.client.category"
+            id="ch.iseli.sportanalyzer.client.open">
+      </command>
+      <command
+            name="Open Message Dialog"
+            description="Open a message dialog"
+            categoryId="ch.iseli.sportanalyzer.client.category"
+            id="ch.iseli.sportanalyzer.client.openMessage">
+      </command>
+      <command
+            categoryId="ch.iseli.sportanalyzer.client.category"
+            description="Öffnet einen einzelnen Lauf"
+            id="ch.iseli.sportanalyzer.client.command.openSingleRun"
+            name="openSingleRun">
+      </command>
+   </extension>
+   <extension
+         id="opentrainingcenter"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="ch.iseli.sportanalyzer.client.application"
+            name="RCP Product">
+         <property
+               name="aboutText"
+               value="RCP Mail template created by PDE">
+         </property>
+         <property
+               name="windowImages"
+               value="icons/sample2.gif">
+         </property>
+         <property
+               name="aboutImage"
+               value="product_lg.gif">
+         </property>
+      </product>
+   </extension>
+   <extension
+         id="prefPage"
+         name="kein prefPage Name"
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="ch.iseli.sportanalyzer.client.preferences.SamplePreferencePage"
+            id="ch.iseli.sportanalyzer.client.preferences.SamplePreferencePage"
+            name="Sample Preferences">
+      </page>
+   </extension>
+   <extension
+         id="prefs"
+         name="kein name"
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="ch.iseli.sportanalyzer.client.preferences.PreferenceInitializer">
+      </initializer>
+   </extension>
+
+</plugin>
