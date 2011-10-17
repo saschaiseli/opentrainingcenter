@@ -7,16 +7,16 @@ import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
  */
 public class PreferenceInitializer extends AbstractPreferenceInitializer {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer#
-	 * initializeDefaultPreferences()
-	 */
-	@Override
-	public void initializeDefaultPreferences() {
-		// IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer#
+     * initializeDefaultPreferences()
+     */
+    @Override
+    public void initializeDefaultPreferences() {
+	// IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 
-	}
+    }
 
 }

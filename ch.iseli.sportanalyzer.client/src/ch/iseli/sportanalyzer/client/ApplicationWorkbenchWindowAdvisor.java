@@ -7,24 +7,22 @@ import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 
 public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 
-	public ApplicationWorkbenchWindowAdvisor(
-			IWorkbenchWindowConfigurer configurer) {
-		super(configurer);
-	}
+    public ApplicationWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
+	super(configurer);
+    }
 
-	@Override
-	public ActionBarAdvisor createActionBarAdvisor(
-			IActionBarConfigurer configurer) {
-		return new ApplicationActionBarAdvisor(configurer);
-	}
+    @Override
+    public ActionBarAdvisor createActionBarAdvisor(IActionBarConfigurer configurer) {
+	return new ApplicationActionBarAdvisor(configurer);
+    }
 
-	@Override
-	public void preWindowOpen() {
-		IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
-		// configurer.setInitialSize(new Point(102, 400));
-		configurer.setShowCoolBar(true);
-		configurer.setShowStatusLine(true);
-		configurer.setShowProgressIndicator(true);
-		configurer.setShowStatusLine(true);
-	}
+    @Override
+    public void preWindowOpen() {
+	IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
+	// configurer.setInitialSize(new Point(102, 400));
+	configurer.setShowCoolBar(true);
+	configurer.setShowStatusLine(true);
+	configurer.setShowProgressIndicator(true);
+	configurer.setShowStatusLine(true);
+    }
 }

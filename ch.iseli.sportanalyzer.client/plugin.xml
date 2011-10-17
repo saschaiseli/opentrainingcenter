@@ -40,11 +40,29 @@
       <view
             allowMultiple="true"
             class="ch.iseli.sportanalyzer.client.views.SingleActivityViewPart"
-            id="ch.iseli.sportanalyzer.client.view.singlerun"
+            id="ch.iseli.sportanalyzer.client.views.singlerun"
             name="Uebersicht eines Trainings">
-         <description>
-            Übersicht einer einzelnen Aktivität.
-         </description>
+      </view>
+      <view
+            allowMultiple="true"
+            class="ch.iseli.sportanalyzer.client.views.CardioView"
+            id="ch.iseli.sportanalyzer.client.views.cardio"
+            name="Herzfrequenz des Laufs"
+            restorable="true">
+      </view>
+      <view
+            allowMultiple="true"
+            class="ch.iseli.sportanalyzer.client.views.SpeedView"
+            id="ch.iseli.sportanalyzer.client.views.speed"
+            name="Geschwindigkeit des Laufs"
+            restorable="true">
+      </view>
+      <view
+            allowMultiple="true"
+            class="ch.iseli.sportanalyzer.client.views.SealevelView"
+            id="ch.iseli.sportanalyzer.client.views.sealevel"
+            name="Hoehenverlauf des Runs"
+            restorable="true">
       </view>
    </extension>
    <extension

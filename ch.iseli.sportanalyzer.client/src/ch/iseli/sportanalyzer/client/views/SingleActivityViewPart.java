@@ -10,26 +10,25 @@ import ch.iseli.sportanalyzer.tcx.TrainingCenterDatabaseT;
 
 public class SingleActivityViewPart extends ViewPart {
 
-	public static final String ID = "ch.iseli.sportanalyzer.client.view.singlerun";
+    public static final String ID = "ch.iseli.sportanalyzer.client.views.singlerun";
 
-	public SingleActivityViewPart() {
-	}
+    public SingleActivityViewPart() {
+    }
 
-	@Override
-	public void createPartControl(Composite parent) {
-		TrainingCenterDatabaseT t = TrainingCenterDataCache.getSelected();
-		setPartName("kuckuck: "
-				+ t.getActivities().getActivity().get(0).getId().toString());
+    @Override
+    public void createPartControl(Composite parent) {
+	TrainingCenterDatabaseT t = TrainingCenterDataCache.getSelected();
+	setPartName("kuckuck: " + t.getActivities().getActivity().get(0).getId().toString());
 
-		Text text = new Text(parent, SWT.BORDER);
-		text.setText(t.getActivities().getActivity().get(0).getId().toString());
+	Text text = new Text(parent, SWT.BORDER);
+	text.setText(t.getActivities().getActivity().get(0).getId().toString());
 
-		// Composite top = new Composite(parent, SWT.NONE);
-		// GridLayout layout = new GridLayout();
-	}
+	// Composite top = new Composite(parent, SWT.NONE);
+	// GridLayout layout = new GridLayout();
+    }
 
-	@Override
-	public void setFocus() {
-	}
+    @Override
+    public void setFocus() {
+    }
 
 }

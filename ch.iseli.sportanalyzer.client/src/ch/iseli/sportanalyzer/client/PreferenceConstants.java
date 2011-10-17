@@ -5,6 +5,6 @@ package ch.iseli.sportanalyzer.client;
  */
 public class PreferenceConstants {
 
-	public final static String GPS_FILE_LOCATION = "gps_path";
+    public final static String GPS_FILE_LOCATION = "gps_path";
 
 }

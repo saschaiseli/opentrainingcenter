@@ -19,36 +19,33 @@ import ch.iseli.sportanalyzer.client.PreferenceConstants;
  * preferences can be accessed directly via the preference store.
  */
 
-public class SamplePreferencePage extends FieldEditorPreferencePage implements
-		IWorkbenchPreferencePage {
+public class SamplePreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
-	public SamplePreferencePage() {
-		super(GRID);
-		setPreferenceStore(Activator.getDefault().getPreferenceStore());
-		setDescription("A demonstration of a preference page implementation");
-	}
+    public SamplePreferencePage() {
+	super(GRID);
+	setPreferenceStore(Activator.getDefault().getPreferenceStore());
+	setDescription("A demonstration of a preference page implementation");
+    }
 
-	/**
-	 * Creates the field editors. Field editors are abstractions of the common
-	 * GUI blocks needed to manipulate various types of preferences. Each field
-	 * editor knows how to save and restore itself.
-	 */
-	@Override
-	public void createFieldEditors() {
-		addField(new DirectoryFieldEditor(
-				PreferenceConstants.GPS_FILE_LOCATION, "Ort der GPS Daten:",
-				getFieldEditorParent()));
+    /**
+     * Creates the field editors. Field editors are abstractions of the common
+     * GUI blocks needed to manipulate various types of preferences. Each field
+     * editor knows how to save and restore itself.
+     */
+    @Override
+    public void createFieldEditors() {
+	addField(new DirectoryFieldEditor(PreferenceConstants.GPS_FILE_LOCATION, "Ort der GPS Daten:", getFieldEditorParent()));
 
-	}
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
-	 */
-	@Override
-	public void init(IWorkbench workbench) {
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
+     */
+    @Override
+    public void init(IWorkbench workbench) {
+    }
 
 }
