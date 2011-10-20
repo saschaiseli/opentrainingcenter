@@ -6,8 +6,8 @@ import java.util.List;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import ch.iseli.sportanalyzer.client.athlete.Athlete;
 import ch.iseli.sportanalyzer.tcx.TrainingCenterDatabaseT;
+import ch.opentrainingcenter.transfer.Athlete;
 
 public class TrainingCenterDatabaseTParent {
 

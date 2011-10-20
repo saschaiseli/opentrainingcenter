@@ -3,8 +3,8 @@ package ch.iseli.sportanalyzer.client.cache;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.iseli.sportanalyzer.client.athlete.Athlete;
 import ch.iseli.sportanalyzer.tcx.TrainingCenterDatabaseT;
+import ch.opentrainingcenter.transfer.Athlete;
 
 public class TrainingCenterDataCache {
 
