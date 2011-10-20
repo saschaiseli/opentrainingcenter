@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.xml.datatype.XMLGregorianCalendar;
+
 import ch.iseli.sportanalyzer.client.athlete.Athlete;
 import ch.iseli.sportanalyzer.tcx.TrainingCenterDatabaseT;
 
@@ -25,7 +27,8 @@ public class TrainingCenterDatabaseTParent {
 
     @Override
     public String toString() {
-	return athlete + " " + this.getTrainingCenterDatabase().getActivities().getActivity().get(0).getId().toString();
+	XMLGregorianCalendar date = databaseT.getActivities().getActivity().get(0).getId();
+	return date.getYear() + "-" + date.getMonth() + "-" + date.getDay();
     }
 
     public TrainingCenterDatabaseT getTrainingCenterDatabase() {

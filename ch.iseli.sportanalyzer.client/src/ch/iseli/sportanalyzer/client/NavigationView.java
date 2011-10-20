@@ -78,6 +78,13 @@ public class NavigationView extends ViewPart {
 
     class ViewLabelProvider extends LabelProvider {
 
+	private final Composite parent;
+
+	ViewLabelProvider(Composite parent) {
+	    this.parent = parent;
+
+	}
+
 	@Override
 	public String getText(Object obj) {
 	    return obj.toString();
@@ -91,6 +98,7 @@ public class NavigationView extends ViewPart {
 	    }
 	    return PlatformUI.getWorkbench().getSharedImages().getImage(imageKey);
 	}
+
     }
 
     /**
@@ -101,7 +109,7 @@ public class NavigationView extends ViewPart {
     public void createPartControl(Composite parent) {
 	viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
 	viewer.setContentProvider(new ViewContentProvider());
-	viewer.setLabelProvider(new ViewLabelProvider());
+	viewer.setLabelProvider(new ViewLabelProvider(parent));
 
 	viewer.addDoubleClickListener(new IDoubleClickListener() {
 
