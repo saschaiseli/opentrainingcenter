@@ -1,0 +1,1528 @@
+<class-diagram version="1.0.4" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
+  realizations="true" associations="true" dependencies="false" nesting-relationships="true">  
+  <class id="1" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.WeekT" 
+    project="ch.iseli.sportanalyzer.tcx" file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/WeekT.java" 
+    binary="false">    
+    <position height="161" width="223" x="4160" y="3437"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="2" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.HeartRateInBeatsPerMinuteT" 
+    project="ch.iseli.sportanalyzer.tcx" 
+    file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/HeartRateInBeatsPerMinuteT.java" binary="false">    
+    <position height="113" width="191" x="2477" y="3999"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="3" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.WorkoutListT" 
+    project="ch.iseli.sportanalyzer.tcx" 
+    file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/WorkoutListT.java" binary="false">    
+    <position height="81" width="164" x="2645" y="1022"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="4" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.MultiSportSessionT" 
+    project="ch.iseli.sportanalyzer.tcx" 
+    file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/MultiSportSessionT.java" binary="false">    
+    <position height="209" width="190" x="1335" y="1159"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="5" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.QuickWorkoutT" 
+    project="ch.iseli.sportanalyzer.tcx" 
+    file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/QuickWorkoutT.java" binary="false">    
+    <position height="161" width="187" x="1265" y="2635"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="6" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.DistanceT" 
+    project="ch.iseli.sportanalyzer.tcx" 
+    file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/DistanceT.java" binary="false">    
+    <position height="113" width="111" x="794" y="3437"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="7" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.ActivityListT" 
+    project="ch.iseli.sportanalyzer.tcx" 
+    file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/ActivityListT.java" binary="false">    
+    <position height="97" width="254" x="1546" y="1022"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="8" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.HeartRateAboveT" 
+    project="ch.iseli.sportanalyzer.tcx" 
+    file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/HeartRateAboveT.java" binary="false">    
+    <position height="97" width="201" x="312" y="3437"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="9" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.ObjectFactory" 
+    project="ch.iseli.sportanalyzer.tcx" 
+    file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/ObjectFactory.java" binary="false">    
+    <position height="945" width="509" x="787" y="37"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="10" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.NoneT" 
+    project="ch.iseli.sportanalyzer.tcx" file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/NoneT.java" 
+    binary="false">    
+    <position height="65" width="111" x="2426" y="2635"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <enumeration id="11" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.SensorStateT" 
+    project="ch.iseli.sportanalyzer.tcx" 
+    file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/SensorStateT.java" binary="false">    
+    <position height="145" width="177" x="2786" y="3437"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </enumeration>  
+  <enumeration id="12" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.BuildTypeT" 
+    project="ch.iseli.sportanalyzer.tcx" 
+    file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/BuildTypeT.java" binary="false">    
+    <position height="177" width="165" x="3130" y="3702"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </enumeration>  
+  <class id="13" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.TrainingT" 
+    project="ch.iseli.sportanalyzer.tcx" 
+    file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/TrainingT.java" binary="false">    
+    <position height="177" width="241" x="1265" y="2018"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="14" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.NextSportT" 
+    project="ch.iseli.sportanalyzer.tcx" 
+    file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/NextSportT.java" binary="false">    
+    <position height="129" width="171" x="1176" y="1504"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <enumeration id="15" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.TriggerMethodT" 
+    project="ch.iseli.sportanalyzer.tcx" 
+    file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/TriggerMethodT.java" binary="false">    
+    <position height="193" width="189" x="41" y="2635"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </enumeration>  
+  <class id="16" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.HeartRateValueT" 
+    project="ch.iseli.sportanalyzer.tcx" 
+    file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/HeartRateValueT.java" binary="false">    
+    <position height="65" width="121" x="1612" y="3702"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="17" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.ActivityT" 
+    project="ch.iseli.sportanalyzer.tcx" 
+    file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/ActivityT.java" binary="false">    
+    <position height="305" width="190" x="1546" y="1673"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="18" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.FirstSportT" 
+    project="ch.iseli.sportanalyzer.tcx" 
+    file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/FirstSportT.java" binary="false">    
+    <position height="97" width="138" x="1387" y="1504"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="19" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.DurationT" 
+    project="ch.iseli.sportanalyzer.tcx" 
+    file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/DurationT.java" binary="false">    
+    <position height="65" width="111" x="995" y="2900"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="20" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.MultiSportFolderT" 
+    project="ch.iseli.sportanalyzer.tcx" 
+    file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/MultiSportFolderT.java" binary="false">    
+    <position height="241" width="261" x="4136" y="2900"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="21" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.ActivityReferenceT" 
+    project="ch.iseli.sportanalyzer.tcx" 
+    file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/ActivityReferenceT.java" binary="false">    
+    <position height="113" width="190" x="4423" y="3437"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="22" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.VersionT" 
+    project="ch.iseli.sportanalyzer.tcx" file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/VersionT.java" 
+    binary="false">    
+    <position height="257" width="151" x="3335" y="3702"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="23" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.WorkoutT" 
+    project="ch.iseli.sportanalyzer.tcx" file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/WorkoutT.java" 
+    binary="false">    
+    <position height="305" width="255" x="2645" y="1159"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="24" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.TrackpointT" 
+    project="ch.iseli.sportanalyzer.tcx" 
+    file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/TrackpointT.java" binary="false">    
+    <position height="385" width="281" x="2372" y="2900"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="25" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.TimeT" 
+    project="ch.iseli.sportanalyzer.tcx" file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/TimeT.java" 
+    binary="false">    
+    <position height="113" width="119" x="945" y="3437"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="26" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.PlanT" 
+    project="ch.iseli.sportanalyzer.tcx" file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/PlanT.java" 
+    binary="false">    
+    <position height="225" width="180" x="1531" y="2635"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <enumeration id="27" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.SportT" 
+    project="ch.iseli.sportanalyzer.tcx" file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/SportT.java" 
+    binary="false">    
+    <position height="161" width="144" x="1546" y="2018"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </enumeration>  
+  <class id="28" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.ActivityLapT" 
+    project="ch.iseli.sportanalyzer.tcx" 
+    file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/ActivityLapT.java" binary="false">    
+    <position height="577" width="327" x="898" y="2018"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="29" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.CaloriesBurnedT" 
+    project="ch.iseli.sportanalyzer.tcx" 
+    file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/CaloriesBurnedT.java" binary="false">    
+    <position height="113" width="120" x="1104" y="3437"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="30" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.HistoryFolderT" 
+    project="ch.iseli.sportanalyzer.tcx" 
+    file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/HistoryFolderT.java" binary="false">    
+    <position height="241" width="215" x="4447" y="2900"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="31" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.PredefinedSpeedZoneT" 
+    project="ch.iseli.sportanalyzer.tcx" 
+    file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/PredefinedSpeedZoneT.java" binary="false">    
+    <position height="113" width="156" x="2081" y="3437"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="32" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.WorkoutsT" 
+    project="ch.iseli.sportanalyzer.tcx" 
+    file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/WorkoutsT.java" binary="false">    
+    <position height="193" width="185" x="3671" y="2635"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="33" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.CadenceT" 
+    project="ch.iseli.sportanalyzer.tcx" file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/CadenceT.java" 
+    binary="false">    
+    <position height="161" width="121" x="2577" y="2635"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <enumeration id="34" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.GenderT" 
+    project="ch.iseli.sportanalyzer.tcx" file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/GenderT.java" 
+    binary="false">    
+    <position height="145" width="154" x="2083" y="37"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </enumeration>  
+  <class id="35" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.HistoryT" 
+    project="ch.iseli.sportanalyzer.tcx" file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/HistoryT.java" 
+    binary="false">    
+    <position height="225" width="201" x="4136" y="2635"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="36" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.PredefinedHeartRateZoneT" 
+    project="ch.iseli.sportanalyzer.tcx" 
+    file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/PredefinedHeartRateZoneT.java" binary="false">    
+    <position height="113" width="179" x="2277" y="3437"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <enumeration id="37" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.TrainingTypeT" 
+    project="ch.iseli.sportanalyzer.tcx" 
+    file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/TrainingTypeT.java" binary="false">    
+    <position height="145" width="181" x="1530" y="2900"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </enumeration>  
+  <class id="38" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.ApplicationT" 
+    project="ch.iseli.sportanalyzer.tcx" 
+    file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/ApplicationT.java" binary="false">    
+    <position height="193" width="154" x="3064" y="2900"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="39" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.RepeatT" 
+    project="ch.iseli.sportanalyzer.tcx" file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/RepeatT.java" 
+    binary="false">    
+    <position height="129" width="169" x="1797" y="1673"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="40" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.BuildT" 
+    project="ch.iseli.sportanalyzer.tcx" file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/BuildT.java" 
+    binary="false">    
+    <position height="225" width="146" x="3168" y="3437"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="41" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.TrainingCenterDatabaseT" 
+    project="ch.iseli.sportanalyzer.tcx" 
+    file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/TrainingCenterDatabaseT.java" binary="false">    
+    <position height="257" width="179" x="3024" y="37"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="42" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.StepT" 
+    project="ch.iseli.sportanalyzer.tcx" file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/StepT.java" 
+    binary="false">    
+    <position height="209" width="156" x="2006" y="1673"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="43" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.ZoneT" 
+    project="ch.iseli.sportanalyzer.tcx" file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/ZoneT.java" 
+    binary="false">    
+    <position height="65" width="111" x="1854" y="2900"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="44" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.HeartRateAsPercentOfMaxT" 
+    project="ch.iseli.sportanalyzer.tcx" 
+    file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/HeartRateAsPercentOfMaxT.java" binary="false">    
+    <position height="113" width="187" x="1612" y="3999"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="45" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.NameKeyReferenceT" 
+    project="ch.iseli.sportanalyzer.tcx" 
+    file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/NameKeyReferenceT.java" binary="false">    
+    <position height="113" width="147" x="3642" y="3437"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="46" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.CoursePointT" 
+    project="ch.iseli.sportanalyzer.tcx" 
+    file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/CoursePointT.java" binary="false">    
+    <position height="369" width="205" x="2756" y="2900"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="47" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.CourseLapT" 
+    project="ch.iseli.sportanalyzer.tcx" 
+    file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/CourseLapT.java" binary="false">    
+    <position height="497" width="327" x="2005" y="2900"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="48" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.HeartRateBelowT" 
+    project="ch.iseli.sportanalyzer.tcx" 
+    file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/HeartRateBelowT.java" binary="false">    
+    <position height="97" width="201" x="553" y="3437"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="49" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.UserInitiatedT" 
+    project="ch.iseli.sportanalyzer.tcx" 
+    file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/UserInitiatedT.java" binary="false">    
+    <position height="65" width="111" x="1264" y="3437"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="50" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.CourseListT" 
+    project="ch.iseli.sportanalyzer.tcx" 
+    file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/CourseListT.java" binary="false">    
+    <position height="81" width="154" x="2849" y="1022"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="51" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.ExtensionsT" 
+    project="ch.iseli.sportanalyzer.tcx" 
+    file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/ExtensionsT.java" binary="false">    
+    <position height="97" width="125" x="3003" y="3437"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="52" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.CustomHeartRateZoneT" 
+    project="ch.iseli.sportanalyzer.tcx" 
+    file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/CustomHeartRateZoneT.java" binary="false">    
+    <position height="129" width="173" x="1612" y="3437"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="53" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.CourseFolderT" 
+    project="ch.iseli.sportanalyzer.tcx" 
+    file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/CourseFolderT.java" binary="false">    
+    <position height="225" width="262" x="3486" y="2900"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="54" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.HeartRateT" 
+    project="ch.iseli.sportanalyzer.tcx" 
+    file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/HeartRateT.java" binary="false">    
+    <position height="97" width="174" x="1793" y="2635"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="55" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.WorkoutFolderT" 
+    project="ch.iseli.sportanalyzer.tcx" 
+    file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/WorkoutFolderT.java" binary="false">    
+    <position height="177" width="267" x="3798" y="2900"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="56" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.TargetT" 
+    project="ch.iseli.sportanalyzer.tcx" file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/TargetT.java" 
+    binary="false">    
+    <position height="65" width="111" x="2007" y="2018"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="57" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.CustomSpeedZoneT" 
+    project="ch.iseli.sportanalyzer.tcx" 
+    file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/CustomSpeedZoneT.java" binary="false">    
+    <position height="193" width="216" x="1825" y="3437"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="58" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.CourseT" 
+    project="ch.iseli.sportanalyzer.tcx" file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/CourseT.java" 
+    binary="false">    
+    <position height="273" width="202" x="2801" y="2018"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="59" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.CoursesT" 
+    project="ch.iseli.sportanalyzer.tcx" file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/CoursesT.java" 
+    binary="false">    
+    <position height="129" width="206" x="3425" y="2635"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="60" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.PositionT" 
+    project="ch.iseli.sportanalyzer.tcx" 
+    file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/PositionT.java" binary="false">    
+    <position height="161" width="187" x="2559" y="3437"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="61" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.TrackT" 
+    project="ch.iseli.sportanalyzer.tcx" file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/TrackT.java" 
+    binary="false">    
+    <position height="81" width="184" x="2202" y="2635"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <enumeration id="62" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.IntensityT" 
+    project="ch.iseli.sportanalyzer.tcx" 
+    file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/IntensityT.java" binary="false">    
+    <position height="145" width="157" x="1415" y="3437"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </enumeration>  
+  <class id="63" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.DeviceT" 
+    project="ch.iseli.sportanalyzer.tcx" file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/DeviceT.java" 
+    binary="false">    
+    <position height="193" width="146" x="3258" y="2900"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="64" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.AbstractStepT" 
+    project="ch.iseli.sportanalyzer.tcx" 
+    file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/AbstractStepT.java" binary="false">    
+    <position height="113" width="111" x="2006" y="1504"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="65" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.FoldersT" 
+    project="ch.iseli.sportanalyzer.tcx" file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/FoldersT.java" 
+    binary="false">    
+    <position height="161" width="164" x="3425" y="2018"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <enumeration id="66" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.SpeedTypeT" 
+    project="ch.iseli.sportanalyzer.tcx" 
+    file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/SpeedTypeT.java" binary="false">    
+    <position height="145" width="173" x="1825" y="3702"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </enumeration>  
+  <class id="67" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.AbstractSourceT" 
+    project="ch.iseli.sportanalyzer.tcx" 
+    file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/AbstractSourceT.java" binary="false">    
+    <position height="113" width="124" x="3064" y="2635"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="68" corner="BOTTOM_RIGHT" language="java" name="ch.iseli.sportanalyzer.tcx.SpeedT" 
+    project="ch.iseli.sportanalyzer.tcx" file="/ch.iseli.sportanalyzer.tcx/src/ch/iseli/sportanalyzer/tcx/SpeedT.java" 
+    binary="false">    
+    <position height="97" width="155" x="2007" y="2635"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <association>    
+    <bendpoint x="1046" y="1673"/>    
+    <end type="SOURCE" nodeId="14" navigable="false">      
+      <attribute name="transition"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="28" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="65" navigable="false">      
+      <attribute name="courses"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="59" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="35" navigable="false">      
+      <attribute name="biking"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="30" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="57" navigable="false">      
+      <attribute name="viewAs"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="66" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="48" navigable="false">      
+      <attribute name="heartRate"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="16" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="30" navigable="false">      
+      <attribute name="folder"/>      
+      <multiplicity minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" nodeId="30" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="58" navigable="false">      
+      <attribute name="track"/>      
+      <multiplicity minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" nodeId="61" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="3" navigable="false">      
+      <attribute name="workout"/>      
+      <multiplicity minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" nodeId="23" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization>    
+    <end type="SOURCE" nodeId="2"/>    
+    <end type="TARGET" nodeId="16"/>  
+  </generalization>  
+  <association>    
+    <bendpoint x="3344" y="3437"/>    
+    <end type="SOURCE" nodeId="63" navigable="false">      
+      <attribute name="version"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="22" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization>    
+    <end type="SOURCE" nodeId="31"/>    
+    <end type="TARGET" nodeId="43"/>  
+  </generalization>  
+  <association>    
+    <end type="SOURCE" nodeId="61" navigable="false">      
+      <attribute name="trackpoint"/>      
+      <multiplicity minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" nodeId="24" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="55" navigable="false">      
+      <attribute name="workoutNameRef"/>      
+      <multiplicity minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" nodeId="45" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="23" navigable="false">      
+      <attribute name="step"/>      
+      <multiplicity minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" nodeId="64" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="53" navigable="false">      
+      <attribute name="courseNameRef"/>      
+      <multiplicity minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" nodeId="45" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization>    
+    <end type="SOURCE" nodeId="33"/>    
+    <end type="TARGET" nodeId="56"/>  
+  </generalization>  
+  <association>    
+    <end type="SOURCE" nodeId="47" navigable="false">      
+      <attribute name="beginPosition"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="60" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <bendpoint x="2749" y="2635"/>    
+    <end type="SOURCE" nodeId="58" navigable="false">      
+      <attribute name="lap"/>      
+      <multiplicity minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" nodeId="47" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="13" navigable="false">      
+      <attribute name="plan"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="26" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <bendpoint x="4105" y="2900"/>    
+    <end type="SOURCE" nodeId="35" navigable="false">      
+      <attribute name="extensions"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="51" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="28" navigable="false">      
+      <attribute name="triggerMethod"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="15" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <bendpoint x="2507" y="3437"/>    
+    <bendpoint x="2507" y="3702"/>    
+    <end type="SOURCE" nodeId="47" navigable="false">      
+      <attribute name="averageHeartRateBpm"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="53" navigable="false">      
+      <attribute name="folder"/>      
+      <multiplicity minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" nodeId="53" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="47" navigable="false">      
+      <attribute name="endPosition"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="60" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization>    
+    <end type="SOURCE" nodeId="48"/>    
+    <end type="TARGET" nodeId="19"/>  
+  </generalization>  
+  <association>    
+    <end type="SOURCE" nodeId="65" navigable="false">      
+      <attribute name="history"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="35" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization>    
+    <end type="SOURCE" nodeId="38"/>    
+    <end type="TARGET" nodeId="67"/>  
+  </generalization>  
+  <association>    
+    <bendpoint x="3434" y="2900"/>    
+    <end type="SOURCE" nodeId="59" navigable="false">      
+      <attribute name="extensions"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="51" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <bendpoint x="3234" y="1022"/>    
+    <bendpoint x="3234" y="1159"/>    
+    <bendpoint x="3234" y="1504"/>    
+    <bendpoint x="3234" y="1673"/>    
+    <end type="SOURCE" nodeId="41" navigable="false">      
+      <attribute name="folders"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="65" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization>    
+    <end type="SOURCE" nodeId="29"/>    
+    <end type="TARGET" nodeId="19"/>  
+  </generalization>  
+  <association>    
+    <end type="SOURCE" nodeId="35" navigable="false">      
+      <attribute name="running"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="30" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="13" navigable="false">      
+      <attribute name="quickWorkoutResults"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="28" navigable="false">      
+      <attribute name="track"/>      
+      <multiplicity minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" nodeId="61" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="30" navigable="false">      
+      <attribute name="extensions"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="51" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="53" navigable="false">      
+      <attribute name="extensions"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="51" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="20" navigable="false">      
+      <attribute name="folder"/>      
+      <multiplicity minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" nodeId="20" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="54" navigable="false">      
+      <attribute name="heartRateZone"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="43" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="47" navigable="false">      
+      <attribute name="extensions"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="51" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="26" navigable="false">      
+      <attribute name="type"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="37" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <bendpoint x="1720" y="2018"/>    
+    <bendpoint x="1500" y="2635"/>    
+    <end type="SOURCE" nodeId="42" navigable="false">      
+      <attribute name="duration"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="19" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <bendpoint x="2810" y="2635"/>    
+    <end type="SOURCE" nodeId="58" navigable="false">      
+      <attribute name="coursePoint"/>      
+      <multiplicity minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" nodeId="46" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="42" navigable="false">      
+      <attribute name="target"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="56" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="24" navigable="false">      
+      <attribute name="extensions"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="51" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <bendpoint x="1555" y="1159"/>    
+    <bendpoint x="1555" y="1504"/>    
+    <end type="SOURCE" nodeId="7" navigable="false">      
+      <attribute name="activity"/>      
+      <multiplicity minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" nodeId="17" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <bendpoint x="1762" y="2635"/>    
+    <bendpoint x="2704" y="2900"/>    
+    <end type="SOURCE" nodeId="28" navigable="false">      
+      <attribute name="extensions"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="51" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="46" navigable="false">      
+      <attribute name="position"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="60" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <bendpoint x="3455" y="2900"/>    
+    <end type="SOURCE" nodeId="32" navigable="false">      
+      <attribute name="extensions"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="51" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="55" navigable="false">      
+      <attribute name="folder"/>      
+      <multiplicity minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" nodeId="55" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="35" navigable="false">      
+      <attribute name="multiSport"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="20" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="20" navigable="false">      
+      <attribute name="multisportActivityRef"/>      
+      <multiplicity minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" nodeId="21" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization>    
+    <end type="SOURCE" nodeId="36"/>    
+    <end type="TARGET" nodeId="43"/>  
+  </generalization>  
+  <association>    
+    <end type="SOURCE" nodeId="17" navigable="false">      
+      <attribute name="sport"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="27" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="68" navigable="false">      
+      <attribute name="speedZone"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="43" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="59" navigable="false">      
+      <attribute name="courseFolder"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="53" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <bendpoint x="2486" y="3437"/>    
+    <bendpoint x="2486" y="3702"/>    
+    <end type="SOURCE" nodeId="24" navigable="false">      
+      <attribute name="heartRateBpm"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <bendpoint x="2991" y="1159"/>    
+    <bendpoint x="2991" y="1504"/>    
+    <bendpoint x="2991" y="1673"/>    
+    <end type="SOURCE" nodeId="50" navigable="false">      
+      <attribute name="course"/>      
+      <multiplicity minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" nodeId="58" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="7" navigable="false">      
+      <attribute name="multiSportSession"/>      
+      <multiplicity minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" nodeId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization>    
+    <end type="SOURCE" nodeId="54"/>    
+    <end type="TARGET" nodeId="56"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="39"/>    
+    <end type="TARGET" nodeId="64"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="52"/>    
+    <end type="TARGET" nodeId="43"/>  
+  </generalization>  
+  <association>    
+    <end type="SOURCE" nodeId="65" navigable="false">      
+      <attribute name="workouts"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="32" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization>    
+    <end type="SOURCE" nodeId="57"/>    
+    <end type="TARGET" nodeId="43"/>  
+  </generalization>  
+  <association>    
+    <end type="SOURCE" nodeId="14" navigable="false">      
+      <attribute name="activity"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="17" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="58" navigable="false">      
+      <attribute name="creator"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="67" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="41" navigable="false">      
+      <attribute name="activities"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <bendpoint x="2770" y="1504"/>    
+    <bendpoint x="2770" y="1673"/>    
+    <bendpoint x="2770" y="2018"/>    
+    <bendpoint x="2789" y="2635"/>    
+    <bendpoint x="2991" y="2900"/>    
+    <end type="SOURCE" nodeId="23" navigable="false">      
+      <attribute name="extensions"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="51" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <bendpoint x="3033" y="1022"/>    
+    <bendpoint x="3033" y="1159"/>    
+    <bendpoint x="3033" y="1504"/>    
+    <bendpoint x="3033" y="1673"/>    
+    <bendpoint x="3033" y="2018"/>    
+    <bendpoint x="3033" y="2635"/>    
+    <bendpoint x="3033" y="2900"/>    
+    <end type="SOURCE" nodeId="41" navigable="false">      
+      <attribute name="extensions"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="51" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="30" navigable="false">      
+      <attribute name="activityRef"/>      
+      <multiplicity minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" nodeId="21" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="4" navigable="false">      
+      <attribute name="nextSport"/>      
+      <multiplicity minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" nodeId="14" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization>    
+    <end type="SOURCE" nodeId="49"/>    
+    <end type="TARGET" nodeId="19"/>  
+  </generalization>  
+  <association>    
+    <end type="SOURCE" nodeId="18" navigable="false">      
+      <attribute name="activity"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="17" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="52" navigable="false">      
+      <attribute name="high"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="16" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="4" navigable="false">      
+      <attribute name="firstSport"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="18" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="20" navigable="false">      
+      <attribute name="week"/>      
+      <multiplicity minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" nodeId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="30" navigable="false">      
+      <attribute name="week"/>      
+      <multiplicity minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" nodeId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization>    
+    <end type="SOURCE" nodeId="6"/>    
+    <end type="TARGET" nodeId="19"/>  
+  </generalization>  
+  <association>    
+    <bendpoint x="1165" y="2635"/>    
+    <bendpoint x="1165" y="2900"/>    
+    <end type="SOURCE" nodeId="28" navigable="false">      
+      <attribute name="intensity"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="62" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="32" navigable="false">      
+      <attribute name="running"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="55" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="17" navigable="false">      
+      <attribute name="training"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="13" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="35" navigable="false">      
+      <attribute name="other"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="30" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="38" navigable="false">      
+      <attribute name="build"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="40" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization>    
+    <end type="SOURCE" nodeId="8"/>    
+    <end type="TARGET" nodeId="19"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="63"/>    
+    <end type="TARGET" nodeId="67"/>  
+  </generalization>  
+  <association>    
+    <end type="SOURCE" nodeId="46" navigable="false">      
+      <attribute name="extensions"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="51" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <bendpoint x="2528" y="3437"/>    
+    <bendpoint x="2528" y="3702"/>    
+    <end type="SOURCE" nodeId="47" navigable="false">      
+      <attribute name="maximumHeartRateBpm"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="32" navigable="false">      
+      <attribute name="other"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="55" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="41" navigable="false">      
+      <attribute name="workouts"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="20" navigable="false">      
+      <attribute name="extensions"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="51" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="17" navigable="false">      
+      <attribute name="lap"/>      
+      <multiplicity minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" nodeId="28" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <bendpoint x="3075" y="1022"/>    
+    <bendpoint x="3075" y="1159"/>    
+    <bendpoint x="3075" y="1504"/>    
+    <bendpoint x="3075" y="1673"/>    
+    <bendpoint x="3075" y="2018"/>    
+    <end type="SOURCE" nodeId="41" navigable="false">      
+      <attribute name="author"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="67" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization>    
+    <end type="SOURCE" nodeId="25"/>    
+    <end type="TARGET" nodeId="19"/>  
+  </generalization>  
+  <association>    
+    <end type="SOURCE" nodeId="52" navigable="false">      
+      <attribute name="low"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="16" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization>    
+    <end type="SOURCE" nodeId="68"/>    
+    <end type="TARGET" nodeId="56"/>  
+  </generalization>  
+  <association>    
+    <end type="SOURCE" nodeId="55" navigable="false">      
+      <attribute name="extensions"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="51" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="32" navigable="false">      
+      <attribute name="biking"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="55" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="39" navigable="false">      
+      <attribute name="child"/>      
+      <multiplicity minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" nodeId="64" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization>    
+    <end type="SOURCE" nodeId="44"/>    
+    <end type="TARGET" nodeId="16"/>  
+  </generalization>  
+  <association>    
+    <bendpoint x="2683" y="2900"/>    
+    <end type="SOURCE" nodeId="26" navigable="false">      
+      <attribute name="extensions"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="51" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <bendpoint x="1741" y="2018"/>    
+    <bendpoint x="1741" y="2635"/>    
+    <bendpoint x="1741" y="2900"/>    
+    <end type="SOURCE" nodeId="42" navigable="false">      
+      <attribute name="intensity"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="62" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <bendpoint x="260" y="2635"/>    
+    <bendpoint x="260" y="2900"/>    
+    <bendpoint x="260" y="3437"/>    
+    <bendpoint x="260" y="3702"/>    
+    <end type="SOURCE" nodeId="28" navigable="false">      
+      <attribute name="averageHeartRateBpm"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="40" navigable="false">      
+      <attribute name="type"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="12" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="41" navigable="false">      
+      <attribute name="courses"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="50" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <bendpoint x="2749" y="2018"/>    
+    <end type="SOURCE" nodeId="17" navigable="false">      
+      <attribute name="creator"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="67" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="8" navigable="false">      
+      <attribute name="heartRate"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="16" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="40" navigable="false">      
+      <attribute name="version"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="22" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization>    
+    <end type="SOURCE" nodeId="10"/>    
+    <end type="TARGET" nodeId="56"/>  
+  </generalization>  
+  <association>    
+    <end type="SOURCE" nodeId="24" navigable="false">      
+      <attribute name="sensorState"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="11" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <bendpoint x="3012" y="2635"/>    
+    <bendpoint x="3012" y="2900"/>    
+    <end type="SOURCE" nodeId="58" navigable="false">      
+      <attribute name="extensions"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="51" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <bendpoint x="1766" y="1504"/>    
+    <bendpoint x="1766" y="1673"/>    
+    <end type="SOURCE" nodeId="23" navigable="false">      
+      <attribute name="sport"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="27" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="47" navigable="false">      
+      <attribute name="intensity"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="62" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization>    
+    <end type="SOURCE" nodeId="42"/>    
+    <end type="TARGET" nodeId="64"/>  
+  </generalization>  
+  <association>    
+    <bendpoint x="281" y="2635"/>    
+    <bendpoint x="281" y="2900"/>    
+    <bendpoint x="281" y="3437"/>    
+    <bendpoint x="281" y="3702"/>    
+    <end type="SOURCE" nodeId="28" navigable="false">      
+      <attribute name="maximumHeartRateBpm"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <bendpoint x="2970" y="1504"/>    
+    <bendpoint x="3012" y="1673"/>    
+    <bendpoint x="3054" y="2018"/>    
+    <end type="SOURCE" nodeId="23" navigable="false">      
+      <attribute name="creator"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="67" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <bendpoint x="2728" y="2018"/>    
+    <bendpoint x="2728" y="2635"/>    
+    <bendpoint x="2725" y="2900"/>    
+    <end type="SOURCE" nodeId="17" navigable="false">      
+      <attribute name="extensions"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="51" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="24" navigable="false">      
+      <attribute name="position"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="60" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <classifier-display autosize="true" package="true" initial-value="false" signature="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true"/>    
+    <operations public="true" package="true" protected="true" private="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>
