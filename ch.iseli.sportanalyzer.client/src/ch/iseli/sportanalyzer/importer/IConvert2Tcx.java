@@ -21,14 +21,11 @@ public interface IConvert2Tcx {
     InputStream convert2Tcx(File file) throws IOException;
 
     /**
-     * Liest ein File mit den GPS Daten irgendeines Gerätes aus und konvertiert
-     * diese in das Garmin spezifische Format, welches aus dem tcx.xsd generiert
-     * wurde.
+     * Liest ein File mit den GPS Daten irgendeines Gerätes aus und konvertiert diese in das Garmin spezifische Format, welches aus dem tcx.xsd generiert wurde.
      * 
      * @param file
      *            Ursprungsfile
-     * @return in Garmin konvertiertes Object, welches einem sportlichen Lauf
-     *         entspricht.
+     * @return in Garmin konvertiertes Object, welches einem sportlichen Lauf entspricht.
      * @throws Exception
      *             wenn etwas schiefgeht beim parsen lesen des files,...
      * 

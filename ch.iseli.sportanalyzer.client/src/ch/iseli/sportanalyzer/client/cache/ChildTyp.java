@@ -10,11 +10,11 @@ public enum ChildTyp {
     private final String viewId;
 
     private ChildTyp(String viewId) {
-	this.viewId = viewId;
+        this.viewId = viewId;
 
     }
 
     public String getViewId() {
-	return viewId;
+        return viewId;
     }
 }

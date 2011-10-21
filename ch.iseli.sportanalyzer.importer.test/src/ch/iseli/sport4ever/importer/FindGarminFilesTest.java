@@ -12,11 +12,9 @@ import ch.iseli.sport4ever.importer.internal.FindGarminFiles;
 
 public class FindGarminFilesTest {
 
-	@Test
-	public void testFileFinder() throws IOException, URISyntaxException {
-		assertNotNull("Ein File muss vorhanden sein",
-				FindGarminFiles.getGarminFiles());
-		assertEquals("Ein File muss vorhanden sein", 1, FindGarminFiles
-				.getGarminFiles().size());
-	}
+    @Test
+    public void testFileFinder() throws IOException, URISyntaxException {
+        assertNotNull("Ein File muss vorhanden sein", FindGarminFiles.getGarminFiles());
+        assertEquals("Ein File muss vorhanden sein", 1, FindGarminFiles.getGarminFiles().size());
+    }
 }

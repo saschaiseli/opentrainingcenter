@@ -8,34 +8,34 @@ import ch.opentrainingcenter.transfer.Athlete;
 
 public class TrainingCenterDataCache {
 
-    private static TrainingCenterDataCache INSTANCE = null;
+    private static TrainingCenterDataCache            INSTANCE = null;
 
-    private final List<TrainingCenterDatabaseTParent> list = new ArrayList<TrainingCenterDatabaseTParent>();
+    private final List<TrainingCenterDatabaseTParent> list     = new ArrayList<TrainingCenterDatabaseTParent>();
 
-    private static TrainingCenterDatabaseT selected;
+    private static TrainingCenterDatabaseT            selected;
 
     private TrainingCenterDataCache(List<TrainingCenterDatabaseT> all) {
-	for (TrainingCenterDatabaseT db : all) {
-	    getAllRuns().add(new TrainingCenterDatabaseTParent(db, new Athlete("sascha", "iseli")));
-	}
+        for (TrainingCenterDatabaseT db : all) {
+            getAllRuns().add(new TrainingCenterDatabaseTParent(db, new Athlete("sascha", "iseli")));
+        }
     }
 
     public static TrainingCenterDataCache initCache(List<TrainingCenterDatabaseT> all) {
-	if (INSTANCE == null) {
-	    INSTANCE = new TrainingCenterDataCache(all);
-	}
-	return INSTANCE;
+        if (INSTANCE == null) {
+            INSTANCE = new TrainingCenterDataCache(all);
+        }
+        return INSTANCE;
     }
 
     public static void setSelectedRun(TrainingCenterDatabaseT selected) {
-	TrainingCenterDataCache.selected = selected;
+        TrainingCenterDataCache.selected = selected;
     }
 
     public static TrainingCenterDatabaseT getSelected() {
-	return selected;
+        return selected;
     }
 
     public List<TrainingCenterDatabaseTParent> getAllRuns() {
-	return list;
+        return list;
     }
 }

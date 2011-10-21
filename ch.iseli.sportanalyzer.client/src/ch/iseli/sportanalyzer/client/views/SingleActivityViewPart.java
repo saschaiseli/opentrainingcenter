@@ -17,14 +17,14 @@ public class SingleActivityViewPart extends ViewPart {
 
     @Override
     public void createPartControl(Composite parent) {
-	TrainingCenterDatabaseT t = TrainingCenterDataCache.getSelected();
-	setPartName("kuckuck: " + t.getActivities().getActivity().get(0).getId().toString());
+        TrainingCenterDatabaseT t = TrainingCenterDataCache.getSelected();
+        setPartName("kuckuck: " + t.getActivities().getActivity().get(0).getId().toString());
 
-	Text text = new Text(parent, SWT.BORDER);
-	text.setText(t.getActivities().getActivity().get(0).getId().toString());
+        Text text = new Text(parent, SWT.BORDER);
+        text.setText(t.getActivities().getActivity().get(0).getId().toString());
 
-	// Composite top = new Composite(parent, SWT.NONE);
-	// GridLayout layout = new GridLayout();
+        // Composite top = new Composite(parent, SWT.NONE);
+        // GridLayout layout = new GridLayout();
     }
 
     @Override

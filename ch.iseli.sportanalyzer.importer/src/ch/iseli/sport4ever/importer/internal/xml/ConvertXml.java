@@ -17,43 +17,36 @@ import ch.iseli.sportanalyzer.tcx.TrainingCenterDatabaseT;
 
 public class ConvertXml {
 
-	private final String locationOfScript;
+    private final String locationOfScript;
 
-	public ConvertXml(String locationOfScript) {
-		this.locationOfScript = locationOfScript;
-	}
+    public ConvertXml(String locationOfScript) {
+        this.locationOfScript = locationOfScript;
+    }
 
-	@SuppressWarnings("unchecked")
-	public TrainingCenterDatabaseT unmarshall(InputStream stream)
-			throws JAXBException, SAXException {
-		Unmarshaller unmarshaller = createUnmarshaller();
+    @SuppressWarnings("unchecked")
+    public TrainingCenterDatabaseT unmarshall(InputStream stream) throws JAXBException, SAXException {
+        Unmarshaller unmarshaller = createUnmarshaller();
 
-		JAXBElement<TrainingCenterDatabaseT> jaxb = (JAXBElement<TrainingCenterDatabaseT>) unmarshaller
-				.unmarshal(stream);
-		return jaxb.getValue();
-	}
+        JAXBElement<TrainingCenterDatabaseT> jaxb = (JAXBElement<TrainingCenterDatabaseT>) unmarshaller.unmarshal(stream);
+        return jaxb.getValue();
+    }
 
-	@SuppressWarnings("unchecked")
-	public TrainingCenterDatabaseT unmarshall(File file) throws JAXBException,
-			SAXException {
-		Unmarshaller unmarshaller = createUnmarshaller();
+    @SuppressWarnings("unchecked")
+    public TrainingCenterDatabaseT unmarshall(File file) throws JAXBException, SAXException {
+        Unmarshaller unmarshaller = createUnmarshaller();
 
-		JAXBElement<TrainingCenterDatabaseT> jaxb = (JAXBElement<TrainingCenterDatabaseT>) unmarshaller
-				.unmarshal(file);
-		return jaxb.getValue();
-	}
+        JAXBElement<TrainingCenterDatabaseT> jaxb = (JAXBElement<TrainingCenterDatabaseT>) unmarshaller.unmarshal(file);
+        return jaxb.getValue();
+    }
 
-	private Unmarshaller createUnmarshaller() throws JAXBException,
-			SAXException {
-		JAXBContext jc = JAXBContext.newInstance(TrainingCenterDatabaseT.class);
-		Unmarshaller unmarshaller = jc.createUnmarshaller();
+    private Unmarshaller createUnmarshaller() throws JAXBException, SAXException {
+        JAXBContext jc = JAXBContext.newInstance(TrainingCenterDatabaseT.class);
+        Unmarshaller unmarshaller = jc.createUnmarshaller();
 
-		SchemaFactory schemaFactory = SchemaFactory
-				.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+        SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 
-		Schema schema = schemaFactory.newSchema(new File(locationOfScript
-				+ "/tcx.xsd"));
-		unmarshaller.setSchema(schema);
-		return unmarshaller;
-	}
+        Schema schema = schemaFactory.newSchema(new File(locationOfScript + "/tcx.xsd"));
+        unmarshaller.setSchema(schema);
+        return unmarshaller;
+    }
 }

@@ -10,18 +10,18 @@ public class SpeedView extends ViewPart {
     public static final String ID = "ch.iseli.sportanalyzer.client.views.speed";
 
     public SpeedView() {
-	// TODO Auto-generated constructor stub
+        // TODO Auto-generated constructor stub
     }
 
     @Override
     public void createPartControl(Composite parent) {
-	Text text = new Text(parent, SWT.BORDER);
-	text.setText(ID);
+        Text text = new Text(parent, SWT.BORDER);
+        text.setText(ID);
     }
 
     @Override
     public void setFocus() {
-	// TODO Auto-generated method stub
+        // TODO Auto-generated method stub
 
     }
 

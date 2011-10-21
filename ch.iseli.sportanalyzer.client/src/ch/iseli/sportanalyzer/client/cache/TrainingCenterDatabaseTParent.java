@@ -11,32 +11,32 @@ import ch.opentrainingcenter.transfer.Athlete;
 
 public class TrainingCenterDatabaseTParent {
 
-    private final TrainingCenterDatabaseT databaseT;
+    private final TrainingCenterDatabaseT            databaseT;
 
     private final List<TrainingCenterDatabaseTChild> childs = new ArrayList<TrainingCenterDatabaseTChild>();
 
-    private final Athlete athlete;
+    private final Athlete                            athlete;
 
     public TrainingCenterDatabaseTParent(TrainingCenterDatabaseT databaseT, Athlete athlete) {
-	this.databaseT = databaseT;
-	this.athlete = athlete;
-	childs.add(new TrainingCenterDatabaseTChild(this, "Geschwindigkeit", ChildTyp.SPEED));
-	childs.add(new TrainingCenterDatabaseTChild(this, "Herz", ChildTyp.CARDIO));
-	childs.add(new TrainingCenterDatabaseTChild(this, "Höhe", ChildTyp.LEVEL_ABOUT_SEA));
+        this.databaseT = databaseT;
+        this.athlete = athlete;
+        childs.add(new TrainingCenterDatabaseTChild(this, "Geschwindigkeit", ChildTyp.SPEED));
+        childs.add(new TrainingCenterDatabaseTChild(this, "Herz", ChildTyp.CARDIO));
+        childs.add(new TrainingCenterDatabaseTChild(this, "Höhe", ChildTyp.LEVEL_ABOUT_SEA));
     }
 
     @Override
     public String toString() {
-	XMLGregorianCalendar date = databaseT.getActivities().getActivity().get(0).getId();
-	return date.getYear() + "-" + date.getMonth() + "-" + date.getDay();
+        XMLGregorianCalendar date = databaseT.getActivities().getActivity().get(0).getId();
+        return date.getYear() + "-" + date.getMonth() + "-" + date.getDay();
     }
 
     public TrainingCenterDatabaseT getTrainingCenterDatabase() {
-	return databaseT;
+        return databaseT;
     }
 
     public List<TrainingCenterDatabaseTChild> getChilds() {
-	return Collections.unmodifiableList(childs);
+        return Collections.unmodifiableList(childs);
     }
 
 }

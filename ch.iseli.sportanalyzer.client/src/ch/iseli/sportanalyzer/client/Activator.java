@@ -13,7 +13,7 @@ public class Activator extends AbstractUIPlugin {
     public static final String PLUGIN_ID = "ch.iseli.sportanalyzer.client"; //$NON-NLS-1$
 
     // The shared instance
-    private static Activator plugin;
+    private static Activator   plugin;
 
     /**
      * The constructor
@@ -24,25 +24,21 @@ public class Activator extends AbstractUIPlugin {
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext
-     * )
+     * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext )
      */
     public void start(BundleContext context) throws Exception {
-	super.start(context);
-	plugin = this;
+        super.start(context);
+        plugin = this;
     }
 
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext
-     * )
+     * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext )
      */
     public void stop(BundleContext context) throws Exception {
-	plugin = null;
-	super.stop(context);
+        plugin = null;
+        super.stop(context);
     }
 
     /**
@@ -51,18 +47,17 @@ public class Activator extends AbstractUIPlugin {
      * @return the shared instance
      */
     public static Activator getDefault() {
-	return plugin;
+        return plugin;
     }
 
     /**
-     * Returns an image descriptor for the image file at the given plug-in
-     * relative path
+     * Returns an image descriptor for the image file at the given plug-in relative path
      * 
      * @param path
      *            the path
      * @return the image descriptor
      */
     public static ImageDescriptor getImageDescriptor(String path) {
-	return imageDescriptorFromPlugin(PLUGIN_ID, path);
+        return imageDescriptorFromPlugin(PLUGIN_ID, path);
     }
 }

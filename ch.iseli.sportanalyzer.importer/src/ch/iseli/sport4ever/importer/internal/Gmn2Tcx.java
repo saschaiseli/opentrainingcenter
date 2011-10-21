@@ -16,11 +16,11 @@ public class Gmn2Tcx implements IConvert2Tcx {
 
     private final ConvertXml delegate;
 
-    private final String locationOfScript;
+    private final String     locationOfScript;
 
     public Gmn2Tcx() {
-	locationOfScript = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.GPS_FILE_LOCATION).replace("garmin", "resources");
-	delegate = new ConvertXml(locationOfScript);
+        locationOfScript = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.GPS_FILE_LOCATION).replace("garmin", "resources");
+        delegate = new ConvertXml(locationOfScript);
     }
 
     /**
@@ -29,41 +29,41 @@ public class Gmn2Tcx implements IConvert2Tcx {
      * @param locationOfScript
      */
     public Gmn2Tcx(String locationOfScript) {
-	this.locationOfScript = locationOfScript;
-	delegate = new ConvertXml(locationOfScript);
+        this.locationOfScript = locationOfScript;
+        delegate = new ConvertXml(locationOfScript);
     }
 
     @Override
     public InputStream convert2Tcx(java.io.File file) throws IOException {
 
-	String cmd = createCommandFromPlugin();
-	System.out.println("file " + file.getAbsolutePath() + " existiert: " + file.exists());
-	ProcessBuilder processBuilder = new ProcessBuilder(cmd, file.getAbsolutePath());
+        String cmd = createCommandFromPlugin();
+        System.out.println("file " + file.getAbsolutePath() + " existiert: " + file.exists());
+        ProcessBuilder processBuilder = new ProcessBuilder(cmd, file.getAbsolutePath());
 
-	Process process = processBuilder.start();
+        Process process = processBuilder.start();
 
-	return process.getInputStream();
+        return process.getInputStream();
     }
 
     @Override
     public TrainingCenterDatabaseT convert(java.io.File file) throws Exception {
-	InputStream convert2Tcx = convert2Tcx(file);
-	return delegate.unmarshall(convert2Tcx);
+        InputStream convert2Tcx = convert2Tcx(file);
+        return delegate.unmarshall(convert2Tcx);
     }
 
     @SuppressWarnings("unused")
     private String createCommand() {
-	URL resource = Gmn2Tcx.class.getClassLoader().getResource("gmn2tcx.sh");
-	String cmd = resource.getFile().replace("/bin", "/resources");
-	return cmd;
+        URL resource = Gmn2Tcx.class.getClassLoader().getResource("gmn2tcx.sh");
+        String cmd = resource.getFile().replace("/bin", "/resources");
+        return cmd;
     }
 
     private String createCommandFromPlugin() {
-	return locationOfScript + "/gmn2tcx.sh";
+        return locationOfScript + "/gmn2tcx.sh";
     }
 
     @Override
     public List<File> loadAllGPSFiles() {
-	return FindGarminFiles.getGarminFiles();
+        return FindGarminFiles.getGarminFiles();
     }
 }

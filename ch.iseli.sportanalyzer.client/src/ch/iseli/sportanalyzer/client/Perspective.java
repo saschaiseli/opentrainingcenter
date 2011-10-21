@@ -15,14 +15,14 @@ public class Perspective implements IPerspectiveFactory {
 
     @Override
     public void createInitialLayout(IPageLayout layout) {
-	String editorArea = layout.getEditorArea();
-	layout.setEditorAreaVisible(false);
+        String editorArea = layout.getEditorArea();
+        layout.setEditorAreaVisible(false);
 
-	layout.addStandaloneView(NavigationView.ID, false, IPageLayout.LEFT, 0.25f, editorArea);
-	layout.getViewLayout(NavigationView.ID).setCloseable(false);
+        layout.addStandaloneView(NavigationView.ID, false, IPageLayout.LEFT, 0.25f, editorArea);
+        layout.getViewLayout(NavigationView.ID).setCloseable(false);
 
-	IFolderLayout folder = layout.createFolder("rightPart", IPageLayout.TOP, 0.75f, editorArea);
-	folder.addPlaceholder(SingleActivityViewPart.ID + ":*");
+        IFolderLayout folder = layout.createFolder("rightPart", IPageLayout.TOP, 0.75f, editorArea);
+        folder.addPlaceholder(SingleActivityViewPart.ID + ":*");
 
     }
 }

@@ -5,21 +5,21 @@ public class Athlete {
     private final String nachname;
 
     public Athlete(String vorname, String nachname) {
-	super();
-	this.vorname = vorname;
-	this.nachname = nachname;
+        super();
+        this.vorname = vorname;
+        this.nachname = nachname;
     }
 
     public String getVorname() {
-	return vorname;
+        return vorname;
     }
 
     public String getNachname() {
-	return nachname;
+        return nachname;
     }
 
     @Override
     public String toString() {
-	return vorname;
+        return vorname;
     }
 }

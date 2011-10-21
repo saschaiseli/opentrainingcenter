@@ -10,13 +10,13 @@ public class SealevelView extends ViewPart {
     public static final String ID = "ch.iseli.sportanalyzer.client.views.sealevel";
 
     public SealevelView() {
-	// TODO Auto-generated constructor stub
+        // TODO Auto-generated constructor stub
     }
 
     @Override
     public void createPartControl(Composite parent) {
-	Text text = new Text(parent, SWT.BORDER);
-	text.setText(ID);
+        Text text = new Text(parent, SWT.BORDER);
+        text.setText(ID);
     }
 
     @Override

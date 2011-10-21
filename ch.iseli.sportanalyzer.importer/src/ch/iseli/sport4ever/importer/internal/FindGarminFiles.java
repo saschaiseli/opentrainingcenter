@@ -11,22 +11,21 @@ import ch.iseli.sportanalyzer.client.PreferenceConstants;
 
 public class FindGarminFiles {
 
-	public static List<File> getGarminFiles() {
+    public static List<File> getGarminFiles() {
 
-		String defaultLocation = Activator.getDefault().getPreferenceStore()
-				.getString(PreferenceConstants.GPS_FILE_LOCATION);
+        String defaultLocation = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.GPS_FILE_LOCATION);
 
-		File f = new File(defaultLocation);
-		File[] listFiles = f.listFiles(new FilenameFilter() {
+        File f = new File(defaultLocation);
+        File[] listFiles = f.listFiles(new FilenameFilter() {
 
-			@Override
-			public boolean accept(File dir, String name) {
-				return name.contains(".gmn");
-			}
-		});
-		if (listFiles != null && listFiles.length > 0) {
-			return Arrays.asList(listFiles);
-		}
-		return Collections.emptyList();
-	}
+            @Override
+            public boolean accept(File dir, String name) {
+                return name.contains(".gmn");
+            }
+        });
+        if (listFiles != null && listFiles.length > 0) {
+            return Arrays.asList(listFiles);
+        }
+        return Collections.emptyList();
+    }
 }
