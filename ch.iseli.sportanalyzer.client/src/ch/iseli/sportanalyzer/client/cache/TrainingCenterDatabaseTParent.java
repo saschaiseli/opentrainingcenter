@@ -7,17 +7,17 @@ import java.util.List;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import ch.iseli.sportanalyzer.tcx.TrainingCenterDatabaseT;
-import ch.opentrainingcenter.transfer.Athlete;
+import ch.opentrainingcenter.transfer.IAthlete;
 
 public class TrainingCenterDatabaseTParent {
 
-    private final TrainingCenterDatabaseT            databaseT;
+    private final TrainingCenterDatabaseT databaseT;
 
     private final List<TrainingCenterDatabaseTChild> childs = new ArrayList<TrainingCenterDatabaseTChild>();
 
-    private final Athlete                            athlete;
+    private final IAthlete athlete;
 
-    public TrainingCenterDatabaseTParent(TrainingCenterDatabaseT databaseT, Athlete athlete) {
+    public TrainingCenterDatabaseTParent(TrainingCenterDatabaseT databaseT, IAthlete athlete) {
         this.databaseT = databaseT;
         this.athlete = athlete;
         childs.add(new TrainingCenterDatabaseTChild(this, "Geschwindigkeit", ChildTyp.SPEED));

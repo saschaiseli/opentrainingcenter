@@ -15,5 +15,6 @@ Require-Bundle: org.eclipse.ui,
  ch.opentrainingcenter.transfer;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: ch.iseli.sportanalyzer.client,
+ ch.iseli.sportanalyzer.db,
  ch.iseli.sportanalyzer.importer
 Bundle-ActivationPolicy: lazy

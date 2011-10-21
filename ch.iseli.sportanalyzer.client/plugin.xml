@@ -3,6 +3,7 @@
 <plugin>
    <extension-point id="ch.iseli.sportanalyzer.myimporter" name="myimporter" schema="schema/ch.iseli.sportanalyzer.myimporter.exsd"/>
    <extension-point id="splashExtension" name="Splash Extensions" schema="schema/splashExtension.exsd"/>
+   <extension-point id="ch.opentrainingdatabase.db" name="Database Extension Point" schema="schema/ch.opentrainingdatabase.db.exsd"/>
 
    <extension
          id="application"
