@@ -7,4 +7,5 @@ Bundle-Activator: ch.opentrainingcenter.activator.Activator
 Require-Bundle: org.eclipse.core.runtime
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: ch.opentrainingcenter.transfer
+Export-Package: ch.opentrainingcenter.transfer,
+ ch.opentrainingcenter.transfer.internal
