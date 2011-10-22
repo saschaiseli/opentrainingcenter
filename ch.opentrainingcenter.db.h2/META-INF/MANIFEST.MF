@@ -8,6 +8,7 @@ Require-Bundle: org.eclipse.core.runtime,
  h2;bundle-version="1.0.0",
  ch.iseli.sportanalyzer.client;bundle-version="1.0.0",
  ch.opentrainingcenter.transfer;bundle-version="1.0.0",
- hibernate3.7;bundle-version="1.0.0"
+ hibernate3.7;bundle-version="1.0.0",
+ slf4j;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

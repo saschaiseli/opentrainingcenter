@@ -15,13 +15,13 @@
             <key>
                 <column name="ID_FK_ATHLETE" />
             </key>
-            <one-to-many class="Health" />
+            <one-to-many class="ch.opentrainingcenter.transfer.internal.Health" />
         </set>
         <set name="importeds" table="IMPORTED" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="ID_FK_ATHLETE" />
             </key>
-            <one-to-many class="Imported" />
+            <one-to-many class="ch.opentrainingcenter.transfer.internal.Imported" />
         </set>
     </class>
 </hibernate-mapping>

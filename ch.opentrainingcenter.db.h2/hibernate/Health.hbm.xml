@@ -8,7 +8,7 @@
             <column name="ID" />
             <generator class="assigned" />
         </id>
-        <many-to-one name="athlete" class="Athlete" fetch="select">
+        <many-to-one name="athlete" class="ch.opentrainingcenter.transfer.internal.Athlete" fetch="select">
             <column name="ID_FK_ATHLETE" />
         </many-to-one>
         <property name="weight" type="java.lang.Integer">

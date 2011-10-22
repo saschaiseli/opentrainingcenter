@@ -15,7 +15,7 @@
             <key>
                 <column name="ID_FK_WEATHER" />
             </key>
-            <one-to-many class="Imported" />
+            <one-to-many class="ch.opentrainingcenter.transfer.internal.Imported" />
         </set>
     </class>
 </hibernate-mapping>
