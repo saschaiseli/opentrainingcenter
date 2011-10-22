@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 21.10.2011 12:19:41 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="ch.opentrainingcenter.transfer.internal.Imported" table="IMPORTED" schema="PUBLIC" catalog="OTC">
+        <id name="id" type="int">
+            <column name="ID" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="weather" class="Weather" fetch="select">
+            <column name="ID_FK_WEATHER" />
+        </many-to-one>
+        <many-to-one name="athlete" class="Athlete" fetch="select">
+            <column name="ID_FK_ATHLETE" />
+        </many-to-one>
+        <property name="importedDate" type="timestamp">
+            <column name="IMPORTED_DATE" length="23" />
+        </property>
+        <property name="comments" type="string">
+            <column name="COMMENTS" />
+        </property>
+    </class>
+</hibernate-mapping>
