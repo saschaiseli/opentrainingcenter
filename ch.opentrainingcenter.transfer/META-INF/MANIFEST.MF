@@ -4,8 +4,12 @@ Bundle-Name: Sharedmodel
 Bundle-SymbolicName: ch.opentrainingcenter.transfer
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: ch.opentrainingcenter.activator.Activator
-Require-Bundle: org.eclipse.core.runtime
+Require-Bundle: org.eclipse.core.runtime,
+ org.hibernate;bundle-version="1.0.0",
+ logging;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: ch.opentrainingcenter.transfer,
  ch.opentrainingcenter.transfer.impl
+Eclipse-RegisterBuddy: org.hibernate, logging
+ 

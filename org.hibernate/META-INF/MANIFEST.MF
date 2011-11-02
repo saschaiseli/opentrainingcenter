@@ -9,7 +9,6 @@ Bundle-ClassPath: hibernate3.jar,
  dom4j-1.6.1.jar,
  commons-collections-3.1.jar,
  antlr-2.7.6.jar,
- slf4j-api-1.6.1.jar,
  javax.persistence.jar
 Export-Package: antlr,
  antlr.ASdebug,
@@ -243,10 +242,7 @@ Export-Package: antlr,
  org.hibernate.type.descriptor.sql,
  org.hibernate.usertype,
  org.hibernate.util,
- org.hibernate.util.xml,
- org.slf4j,
- org.slf4j.helpers,
- org.slf4j.spi
+ org.hibernate.util.xml
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Eclipse-BuddyPolicy: registered 
 

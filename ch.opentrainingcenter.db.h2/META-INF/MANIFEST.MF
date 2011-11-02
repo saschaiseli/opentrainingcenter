@@ -8,9 +8,9 @@ Require-Bundle: ch.opentrainingcenter.transfer,
  ch.iseli.sportanalyzer.client,
  h2,
  org.eclipse.core.runtime,
- org.hibernate;bundle-version="1.0.0"
+ org.hibernate;bundle-version="1.0.0",
+ logging;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: ch.opentrainingcenter.db.h2
 Bundle-ClassPath: hibernate/
-Eclipse-RegisterBuddy: org.hibernate
-
+Eclipse-RegisterBuddy: org.hibernate, logging
