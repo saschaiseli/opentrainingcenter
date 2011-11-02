@@ -102,6 +102,12 @@
             name="Create Athlete"
             restorable="true">
       </view>
+      <view
+            class="ch.iseli.sportanalyzer.client.athlete.SelectAthleteViewPart"
+            id="ch.iseli.sportanalyzer.client.athlete.selectAthlete"
+            name="Athlete selektieren"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.commands">

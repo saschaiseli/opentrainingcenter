@@ -17,7 +17,7 @@
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
    </launcherArgs>
 
-   <windowImages i16="icons/sample2.gif"/>
+   <windowImages i16="/ch.iseli.sportanalyzer.client/icons/cardiology.png" i32="/ch.iseli.sportanalyzer.client/icons/cardiology.png" i48="/ch.iseli.sportanalyzer.client/icons/cardiology.png" i64="/ch.iseli.sportanalyzer.client/icons/cardiology.png" i128="/ch.iseli.sportanalyzer.client/icons/cardiology.png"/>
 
    <splash
       location="ch.iseli.sportanalyzer.client"
@@ -35,7 +35,6 @@
    <vm>
    </vm>
 
-
    <plugins>
       <plugin id="ch.iseli.sportanalyzer.client"/>
       <plugin id="ch.iseli.sportanalyzer.tcx"/>
@@ -43,9 +42,8 @@
       <plugin id="ch.opentrainingcenter.transfer"/>
       <plugin id="com.ibm.icu"/>
       <plugin id="h2"/>
-      <plugin id="hibernate-dependencies-h3.6"/>
-      <plugin id="hibernate3.6"/>
       <plugin id="junit"/>
+      <plugin id="logging"/>
       <plugin id="org.eclipse.core.commands"/>
       <plugin id="org.eclipse.core.contenttype"/>
       <plugin id="org.eclipse.core.databinding"/>
@@ -79,7 +77,7 @@
       <plugin id="org.eclipse.ui"/>
       <plugin id="org.eclipse.ui.ide"/>
       <plugin id="org.eclipse.ui.workbench"/>
-      <plugin id="slf4j"/>
+      <plugin id="slf4j" fragment=""/>
    </plugins>
 
 

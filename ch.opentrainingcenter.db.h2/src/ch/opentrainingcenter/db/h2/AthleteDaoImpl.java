@@ -25,4 +25,11 @@ public class AthleteDaoImpl extends Dao implements IAthleteDao {
         query.list();
         return null;
     }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<IAthlete> getAllAthletes() {
+        query = getSession().createQuery("from Athlete");
+        return query.list();
+    }
 }

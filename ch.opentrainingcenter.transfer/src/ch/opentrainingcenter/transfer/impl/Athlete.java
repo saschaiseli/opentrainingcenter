@@ -114,4 +114,9 @@ public class Athlete implements java.io.Serializable, IAthlete {
         this.importeds = importeds;
     }
 
+    @Override
+    public String toString() {
+        return "Athlete [id=" + id + ", name=" + name + ", importeds=" + importeds.size() + "]";
+    }
+
 }
