@@ -3,8 +3,8 @@ package ch.iseli.sportanalyzer.client.cache;
 public class TrainingCenterDatabaseTChild {
 
     private final TrainingCenterDatabaseTParent parent;
-    private final String                        label;
-    private final ChildTyp                      typ;
+    private final String label;
+    private final ChildTyp typ;
 
     public TrainingCenterDatabaseTChild(TrainingCenterDatabaseTParent databaseT, String label, ChildTyp typ) {
         parent = databaseT;

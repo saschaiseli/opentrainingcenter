@@ -14,6 +14,6 @@ public class AthleteDaoImplTest {
     public void testDao() {
         athleteDaoImpl = new AthleteDaoImpl();
         IAthlete athleteByName = athleteDaoImpl.getAthleteByName("sascha");
-        assertNotNull(athleteByName);
+        assertNotNull("Mindestens ein User muss in der DB sein:", athleteByName);
     }
 }

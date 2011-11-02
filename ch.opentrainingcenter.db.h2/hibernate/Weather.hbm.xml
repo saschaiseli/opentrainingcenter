@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 21.10.2011 12:19:41 by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="ch.opentrainingcenter.transfer.internal.Weather" table="WEATHER" schema="PUBLIC" catalog="OTC">
+    <class name="ch.opentrainingcenter.transfer.impl.Weather" table="WEATHER" schema="PUBLIC" catalog="OTC">
         <id name="id" type="int">
             <column name="ID" />
             <generator class="assigned" />
@@ -15,7 +15,7 @@
             <key>
                 <column name="ID_FK_WEATHER" />
             </key>
-            <one-to-many class="ch.opentrainingcenter.transfer.internal.Imported" />
+            <one-to-many class="ch.opentrainingcenter.transfer.impl.Imported" />
         </set>
     </class>
 </hibernate-mapping>

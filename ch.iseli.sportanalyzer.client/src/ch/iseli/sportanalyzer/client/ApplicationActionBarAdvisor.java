@@ -30,9 +30,10 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
     private IWorkbenchAction exitAction;
     private IWorkbenchAction aboutAction;
     private IWorkbenchAction newWindowAction;
-    private OpenViewAction   openViewAction;
-    private Action           messagePopupAction;
-    private IAction          windowsAction;
+    private OpenViewAction openViewAction;
+    private Action messagePopupAction;
+    private IAction windowsAction;
+    private IWorkbenchAction openPerspective;
 
     public ApplicationActionBarAdvisor(IActionBarConfigurer configurer) {
         super(configurer);
@@ -54,6 +55,8 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
         register(aboutAction);
 
         windowsAction = ActionFactory.PREFERENCES.create(window);
+
+        openPerspective = ActionFactory.OPEN_PERSPECTIVE_DIALOG.create(window);
 
         newWindowAction = ActionFactory.OPEN_NEW_WINDOW.create(window);
         register(newWindowAction);
@@ -91,6 +94,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 
         // Window
         windowsMenu.add(windowsAction);
+        windowsMenu.add(openPerspective);
     }
 
     @Override

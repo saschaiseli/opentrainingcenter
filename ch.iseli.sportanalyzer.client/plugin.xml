@@ -2,8 +2,7 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension-point id="ch.iseli.sportanalyzer.myimporter" name="myimporter" schema="schema/ch.iseli.sportanalyzer.myimporter.exsd"/>
-   <extension-point id="splashExtension" name="Splash Extensions" schema="schema/splashExtension.exsd"/>
-   <extension-point id="ch.opentrainingdatabase.db" name="Database Extension Point" schema="schema/ch.opentrainingdatabase.db.exsd"/>
+   <extension-point id="ch.opentrainingdatabase.db" name="dbaccess" schema="schema/ch.opentrainingdatabase.dbaccess.exsd"/>
 
    <extension
          id="application"
@@ -17,9 +16,16 @@
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            name="OTC Perspektive"
             class="ch.iseli.sportanalyzer.client.Perspective"
-            id="ch.iseli.sportanalyzer.client.perspective">
+            icon="icons/otc_perspective.png"
+            id="ch.iseli.sportanalyzer.client.perspective"
+            name="OTC Perspektive">
+      </perspective>
+      <perspective
+            class="ch.iseli.sportanalyzer.client.athlete.AthletePerspective"
+            icon="icons/athlete_perspective.png"
+            id="ch.iseli.sportanalyzer.client.athletePerspective"
+            name="Athlete Perspektive">
       </perspective>
    </extension>
    <extension
@@ -40,29 +46,60 @@
       </view>
       <view
             allowMultiple="true"
+            category="ch.iseli.sportanalyzer.client.otccategory"
             class="ch.iseli.sportanalyzer.client.views.SingleActivityViewPart"
+            icon="icons/overview_chart.png"
             id="ch.iseli.sportanalyzer.client.views.singlerun"
             name="Uebersicht eines Trainings">
       </view>
       <view
             allowMultiple="true"
+            category="ch.iseli.sportanalyzer.client.otccategory"
             class="ch.iseli.sportanalyzer.client.views.CardioView"
+            icon="icons/cardiology.png"
             id="ch.iseli.sportanalyzer.client.views.cardio"
             name="Herzfrequenz des Laufs"
             restorable="true">
       </view>
       <view
             allowMultiple="true"
+            category="ch.iseli.sportanalyzer.client.otccategory"
             class="ch.iseli.sportanalyzer.client.views.SpeedView"
+            icon="icons/speed_kmh.png"
             id="ch.iseli.sportanalyzer.client.views.speed"
             name="Geschwindigkeit des Laufs"
             restorable="true">
       </view>
       <view
             allowMultiple="true"
+            category="ch.iseli.sportanalyzer.client.otccategory"
             class="ch.iseli.sportanalyzer.client.views.SealevelView"
             id="ch.iseli.sportanalyzer.client.views.sealevel"
             name="Hoehenverlauf des Runs"
+            restorable="true">
+      </view>
+      <category
+            id="ch.iseli.sportanalyzer.client.otccategory"
+            name="OTC">
+      </category>
+      <category
+            id="ch.iseli.sportanalyzer.client.athletecategory"
+            name="Athlete">
+      </category>
+      <view
+            category="ch.iseli.sportanalyzer.client.athletecategory"
+            class="ch.iseli.sportanalyzer.client.athlete.AthleteView"
+            icon="icons/package_games_sports.png"
+            id="ch.iseli.sportanalyzer.client.athlete.athleteview"
+            name="Athlete"
+            restorable="true">
+      </view>
+      <view
+            category="ch.iseli.sportanalyzer.client.athletecategory"
+            class="ch.iseli.sportanalyzer.client.athlete.CreateAthleteView"
+            icon="icons/create.gif"
+            id="ch.iseli.sportanalyzer.client.athlete.createathlete"
+            name="Create Athlete"
             restorable="true">
       </view>
    </extension>
@@ -108,6 +145,26 @@
          <property
                name="aboutImage"
                value="product_lg.gif">
+         </property>
+         <property
+               name="appName"
+               value="RCP Product">
+         </property>
+         <property
+               name="startupForegroundColor"
+               value="000000">
+         </property>
+         <property
+               name="startupMessageRect"
+               value="7,252,445,20">
+         </property>
+         <property
+               name="startupProgressRect"
+               value="5,275,445,15">
+         </property>
+         <property
+               name="preferenceCustomization"
+               value="plugin_customization.ini">
          </property>
       </product>
    </extension>

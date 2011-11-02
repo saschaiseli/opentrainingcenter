@@ -2,8 +2,8 @@ package ch.opentrainingcenter.transfer;
 
 import java.util.Set;
 
-import ch.opentrainingcenter.transfer.internal.Health;
-import ch.opentrainingcenter.transfer.internal.Imported;
+import ch.opentrainingcenter.transfer.impl.Health;
+import ch.opentrainingcenter.transfer.impl.Imported;
 
 public interface IAthlete {
 

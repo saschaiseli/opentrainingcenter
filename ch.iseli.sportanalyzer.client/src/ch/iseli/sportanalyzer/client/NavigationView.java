@@ -30,6 +30,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
+import ch.iseli.sportanalyzer.client.cache.ChildTyp;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDataCache;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDatabaseTChild;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDatabaseTParent;
@@ -39,7 +40,7 @@ import ch.iseli.sportanalyzer.tcx.TrainingCenterDatabaseT;
 
 public class NavigationView extends ViewPart {
     public static final String ID = "ch.iseli.sportanalyzer.client.navigationView";
-    private TreeViewer         viewer;
+    private TreeViewer viewer;
 
     class ViewContentProvider implements IStructuredContentProvider, ITreeContentProvider {
 
@@ -95,6 +96,16 @@ public class NavigationView extends ViewPart {
             String imageKey = ISharedImages.IMG_OBJ_ELEMENT;
             if (obj instanceof TrainingCenterDatabaseTParent) {
                 imageKey = ISharedImages.IMG_OBJ_FOLDER;
+            } else if (obj instanceof TrainingCenterDatabaseTChild) {
+                TrainingCenterDatabaseTChild child = (TrainingCenterDatabaseTChild) obj;
+                switch (child.getTyp()) {
+                case SPEED:
+                    return ChildTyp.SPEED.getImage();
+                case CARDIO:
+                    return ChildTyp.CARDIO.getImage();
+                default:
+                    // no icon defined
+                }
             }
             return PlatformUI.getWorkbench().getSharedImages().getImage(imageKey);
         }
@@ -180,7 +191,11 @@ public class NavigationView extends ViewPart {
         if (tcx != null) {
 
             // Start the Job
-            allFiles.addAll(tcx.loadAllGPSFiles());
+            List<File> loadAllGPSFiles = tcx.loadAllGPSFiles();
+            if (loadAllGPSFiles == null || loadAllGPSFiles.isEmpty()) {
+                getViewSite().getActionBars().getStatusLineManager().setMessage("Keine GPS Files gefunden, vielleicht ist auch kein Pfad definiert...");
+            }
+            allFiles.addAll(loadAllGPSFiles);
             final Job job = new Job("Lade GPS Daten") {
                 @Override
                 protected IStatus run(IProgressMonitor monitor) {

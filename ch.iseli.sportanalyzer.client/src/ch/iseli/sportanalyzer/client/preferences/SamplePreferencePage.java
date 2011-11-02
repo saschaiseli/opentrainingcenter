@@ -2,6 +2,7 @@ package ch.iseli.sportanalyzer.client.preferences;
 
 import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
@@ -21,7 +22,7 @@ public class SamplePreferencePage extends FieldEditorPreferencePage implements I
     public SamplePreferencePage() {
         super(GRID);
         setPreferenceStore(Activator.getDefault().getPreferenceStore());
-        setDescription("A demonstration of a preference page implementation");
+        setDescription("Einige Einstellungen");
     }
 
     /**
@@ -30,7 +31,10 @@ public class SamplePreferencePage extends FieldEditorPreferencePage implements I
      */
     @Override
     public void createFieldEditors() {
-        addField(new DirectoryFieldEditor(PreferenceConstants.GPS_FILE_LOCATION, "Ort der GPS Daten:", getFieldEditorParent()));
+        Composite fieldEditorParent = getFieldEditorParent();
+        addField(new DirectoryFieldEditor(PreferenceConstants.GPS_FILE_LOCATION, "Ort der GPS Daten:", fieldEditorParent));
+        DirectoryFieldEditor editor = new DirectoryFieldEditor(PreferenceConstants.ATHLETE_NAME, "Name:", fieldEditorParent);
+        addField(editor);
 
     }
 

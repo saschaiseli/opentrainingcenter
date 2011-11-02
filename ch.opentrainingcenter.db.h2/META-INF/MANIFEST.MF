@@ -4,11 +4,13 @@ Bundle-Name: H2
 Bundle-SymbolicName: ch.opentrainingcenter.db.h2;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: ch.opentrainingcenter.db.h2.Activator
-Require-Bundle: org.eclipse.core.runtime,
- h2;bundle-version="1.0.0",
- ch.iseli.sportanalyzer.client;bundle-version="1.0.0",
- ch.opentrainingcenter.transfer;bundle-version="1.0.0",
- hibernate3.7;bundle-version="1.0.0",
- slf4j;bundle-version="1.0.0"
-Bundle-ActivationPolicy: lazy
+Require-Bundle: ch.opentrainingcenter.transfer,
+ ch.iseli.sportanalyzer.client,
+ h2,
+ org.eclipse.core.runtime,
+ org.hibernate;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: ch.opentrainingcenter.db.h2
+Bundle-ClassPath: hibernate/
+Eclipse-RegisterBuddy: org.hibernate
+

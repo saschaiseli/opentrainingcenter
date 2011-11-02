@@ -5,26 +5,34 @@ import org.osgi.framework.BundleContext;
 
 public class Activator implements BundleActivator {
 
-	private static BundleContext context;
+    // The shared instance
+    private static Activator plugin;
+    private BundleContext context;
 
-	static BundleContext getContext() {
-		return context;
-	}
+    public BundleContext getContext() {
+        return context;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
-	 */
-	public void start(BundleContext bundleContext) throws Exception {
-		Activator.context = bundleContext;
-	}
+    /**
+     * The constructor
+     */
+    public Activator() {
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
-	 */
-	public void stop(BundleContext bundleContext) throws Exception {
-		Activator.context = null;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext )
+     */
+    @Override
+    public void start(BundleContext context) throws Exception {
+        this.context = context;
+        plugin = this;
+    }
+
+    @Override
+    public void stop(BundleContext context) throws Exception {
+
+    }
 
 }

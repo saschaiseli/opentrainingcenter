@@ -1,23 +1,20 @@
 package ch.opentrainingcenter.db.h2;
 
-import java.util.logging.Logger;
-
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 public class Dao {
-    @SuppressWarnings("unused")
-    private static final Logger log = Logger.getAnonymousLogger();
-    @SuppressWarnings("unchecked")
     private static final ThreadLocal session = new ThreadLocal();
-    private static final SessionFactory sessionFactory = new org.hibernate.cfg.Configuration().configure().buildSessionFactory();
+    private final SessionFactory sessionFactory;
 
-    protected Dao() {
+    public Dao() {
+        org.hibernate.cfg.Configuration c = new org.hibernate.cfg.Configuration();
+        sessionFactory = c.configure().buildSessionFactory();
     }
 
     @SuppressWarnings("unchecked")
-    public static Session getSession() {
+    public Session getSession() {
         Session session = (Session) Dao.session.get();
         if (session == null) {
             session = sessionFactory.openSession();
@@ -50,7 +47,7 @@ public class Dao {
     }
 
     @SuppressWarnings("unchecked")
-    public static void close() {
+    public void close() {
         getSession().close();
         Dao.session.set(null);
     }

@@ -12,7 +12,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.swt,
  org.eclipse.jface,
  org.eclipse.ui.workbench,
- ch.opentrainingcenter.transfer;bundle-version="1.0.0"
+ ch.opentrainingcenter.transfer
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: ch.iseli.sportanalyzer.client,
  ch.iseli.sportanalyzer.db,

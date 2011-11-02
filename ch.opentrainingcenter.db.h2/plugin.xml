@@ -3,9 +3,8 @@
 <plugin>
    <extension
          point="ch.opentrainingdatabase.db">
-      <atheleteDao
-            class="ch.opentrainingcenter.db.h2.AthleteDaoImpl">
-      </atheleteDao>
+      <athleteDao
+            class="ch.opentrainingcenter.db.h2.DbSessionFactory">
+      </athleteDao>
    </extension>
-
 </plugin>

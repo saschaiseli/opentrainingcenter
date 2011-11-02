@@ -1,6 +1,6 @@
 package ch.opentrainingcenter.transfer;
 
-import ch.opentrainingcenter.transfer.internal.Athlete;
+import ch.opentrainingcenter.transfer.impl.Athlete;
 
 public class Factory {
     public static IAthlete createAthlete(String name) {

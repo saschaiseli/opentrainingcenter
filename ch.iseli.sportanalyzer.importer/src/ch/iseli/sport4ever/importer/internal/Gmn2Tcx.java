@@ -16,7 +16,7 @@ public class Gmn2Tcx implements IConvert2Tcx {
 
     private final ConvertXml delegate;
 
-    private final String     locationOfScript;
+    private final String locationOfScript;
 
     public Gmn2Tcx() {
         locationOfScript = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.GPS_FILE_LOCATION).replace("garmin", "resources");
