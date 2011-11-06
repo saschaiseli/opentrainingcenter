@@ -181,7 +181,7 @@
       <page
             class="ch.iseli.sportanalyzer.client.preferences.SamplePreferencePage"
             id="ch.iseli.sportanalyzer.client.preferences.SamplePreferencePage"
-            name="Sample Preferences">
+            name="Einstellungen">
       </page>
    </extension>
    <extension

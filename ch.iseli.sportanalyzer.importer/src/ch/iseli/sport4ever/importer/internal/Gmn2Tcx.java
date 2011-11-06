@@ -6,6 +6,8 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import ch.iseli.sport4ever.importer.internal.xml.ConvertXml;
 import ch.iseli.sportanalyzer.client.Activator;
 import ch.iseli.sportanalyzer.client.PreferenceConstants;
@@ -13,6 +15,8 @@ import ch.iseli.sportanalyzer.importer.IConvert2Tcx;
 import ch.iseli.sportanalyzer.tcx.TrainingCenterDatabaseT;
 
 public class Gmn2Tcx implements IConvert2Tcx {
+
+    private static final Logger log = Logger.getLogger(Gmn2Tcx.class);
 
     private final ConvertXml delegate;
 
@@ -37,7 +41,7 @@ public class Gmn2Tcx implements IConvert2Tcx {
     public InputStream convert2Tcx(java.io.File file) throws IOException {
 
         String cmd = createCommandFromPlugin();
-        System.out.println("file " + file.getAbsolutePath() + " existiert: " + file.exists());
+        log.debug("file " + file.getAbsolutePath() + " existiert: " + file.exists());
         ProcessBuilder processBuilder = new ProcessBuilder(cmd, file.getAbsolutePath());
 
         Process process = processBuilder.start();

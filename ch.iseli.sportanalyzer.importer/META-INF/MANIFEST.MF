@@ -8,6 +8,8 @@ Require-Bundle: org.eclipse.ui,
  ch.iseli.sportanalyzer.tcx,
  org.eclipse.ui.ide,
  org.eclipse.core.resources,
- ch.iseli.sportanalyzer.client;bundle-version="1.0.0"
+ ch.iseli.sportanalyzer.client;bundle-version="1.0.0",
+ logging;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: ch.iseli.sport4ever.importer.internal
+Eclipse-RegisterBuddy: logging

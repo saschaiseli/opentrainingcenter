@@ -1,7 +1,10 @@
 package ch.iseli.sportanalyzer.client.preferences;
 
+import org.eclipse.jface.preference.ComboFieldEditor;
 import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
@@ -32,9 +35,18 @@ public class SamplePreferencePage extends FieldEditorPreferencePage implements I
     @Override
     public void createFieldEditors() {
         Composite fieldEditorParent = getFieldEditorParent();
+        fieldEditorParent.setSize(50, 60);
         addField(new DirectoryFieldEditor(PreferenceConstants.GPS_FILE_LOCATION, "Ort der GPS Daten:", fieldEditorParent));
-        DirectoryFieldEditor editor = new DirectoryFieldEditor(PreferenceConstants.ATHLETE_NAME, "Name:", fieldEditorParent);
-        addField(editor);
+        String[][] entryNamesAndValues = new String[][] { { "Sascha", "Sascha" }, { "Anna", "Anna" } };
+        ComboFieldEditor comboField = new ComboFieldEditor(PreferenceConstants.ATHLETE_NAME, "Sportler:", entryNamesAndValues, fieldEditorParent);
+        addField(comboField);
+        comboField.setPropertyChangeListener(new IPropertyChangeListener() {
+
+            @Override
+            public void propertyChange(PropertyChangeEvent event) {
+                System.out.println(event.getNewValue());
+            }
+        });
 
     }
 

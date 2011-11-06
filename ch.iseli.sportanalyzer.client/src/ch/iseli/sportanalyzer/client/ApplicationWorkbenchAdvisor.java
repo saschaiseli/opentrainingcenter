@@ -1,5 +1,6 @@
 package ch.iseli.sportanalyzer.client;
 
+import org.eclipse.ui.application.IWorkbenchConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchAdvisor;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
@@ -24,5 +25,10 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
         } else {
             return Perspective.ID;
         }
+    }
+
+    @Override
+    public void initialize(IWorkbenchConfigurer configurer) {
+        configurer.setSaveAndRestore(true);
     }
 }
