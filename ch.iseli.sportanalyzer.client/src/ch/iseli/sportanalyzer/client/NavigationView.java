@@ -29,18 +29,25 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ch.iseli.sportanalyzer.client.cache.ChildTyp;
+import ch.iseli.sportanalyzer.client.cache.IRecordListener;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDataCache;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDatabaseTChild;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDatabaseTParent;
 import ch.iseli.sportanalyzer.client.views.SingleActivityViewPart;
+import ch.iseli.sportanalyzer.db.IImportedDao;
 import ch.iseli.sportanalyzer.importer.IConvert2Tcx;
 import ch.iseli.sportanalyzer.tcx.TrainingCenterDatabaseT;
 
 public class NavigationView extends ViewPart {
     public static final String ID = "ch.iseli.sportanalyzer.client.navigationView";
     private TreeViewer viewer;
+    private static final Logger log = LoggerFactory.getLogger(NavigationView.class.getName());
+
+    private final TrainingCenterDataCache cache = TrainingCenterDataCache.getInstance();
 
     class ViewContentProvider implements IStructuredContentProvider, ITreeContentProvider {
 
@@ -128,7 +135,7 @@ public class NavigationView extends ViewPart {
                 IStructuredSelection selection = (IStructuredSelection) event.getSelection();
                 Object first = selection.getFirstElement();
                 if (first instanceof TrainingCenterDatabaseTParent) {
-                    openSingleRunView((TrainingCenterDatabaseTParent) first);
+                    // openSingleRunView((TrainingCenterDatabaseTParent) first);
                 } else {
                     // child
                     TrainingCenterDatabaseTChild child = (TrainingCenterDatabaseTChild) first;
@@ -146,16 +153,6 @@ public class NavigationView extends ViewPart {
                 }
 
             }
-
-            private void openSingleRunView(TrainingCenterDatabaseTParent first) {
-                TrainingCenterDataCache.setSelectedRun(first.getTrainingCenterDatabase());
-
-                try {
-                    PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(SingleActivityViewPart.ID, TrainingCenterDataCache.getSelected().toString(), 1);
-                } catch (PartInitException e) {
-                    e.printStackTrace();
-                }
-            }
         });
 
         viewer.addSelectionChangedListener(new ISelectionChangedListener() {
@@ -165,12 +162,23 @@ public class NavigationView extends ViewPart {
                 IStructuredSelection selection = (IStructuredSelection) event.getSelection();
                 Object first = selection.getFirstElement();
                 if (first instanceof TrainingCenterDatabaseTParent) {
+                    openSingleRunView((TrainingCenterDatabaseTParent) first);
                     writeToStatusLine(((TrainingCenterDatabaseTParent) first).getTrainingCenterDatabase());
                 } else if (first instanceof TrainingCenterDatabaseTChild) {
                     // ist ein child
                     writeToStatusLine(((TrainingCenterDatabaseTChild) first).getParent().getTrainingCenterDatabase());
                 } else {
                     writeToStatusLine("");
+                }
+            }
+
+            private void openSingleRunView(TrainingCenterDatabaseTParent first) {
+                TrainingCenterDataCache.setSelectedRun(first.getTrainingCenterDatabase());
+
+                try {
+                    PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(SingleActivityViewPart.ID, TrainingCenterDataCache.getSelected().toString(), 1);
+                } catch (PartInitException e) {
+                    e.printStackTrace();
                 }
             }
 
@@ -190,8 +198,13 @@ public class NavigationView extends ViewPart {
         final List<File> allFiles = new ArrayList<File>();
         if (tcx != null) {
 
+            String athleteId = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.ATHLETE_NAME);
+
+            IConfigurationElement[] daos = Platform.getExtensionRegistry().getConfigurationElementsFor("ch.opentrainingdatabase.db");
+            IImportedDao dao = getDao(daos);
+            List<String> importedRecords = dao.getImportedRecords(Integer.parseInt(athleteId));
             // Start the Job
-            List<File> loadAllGPSFiles = tcx.loadAllGPSFiles();
+            List<File> loadAllGPSFiles = tcx.loadAllGPSFilesFromAthlete(importedRecords);
             if (loadAllGPSFiles == null || loadAllGPSFiles.isEmpty()) {
                 getViewSite().getActionBars().getStatusLineManager().setMessage("Keine GPS Files gefunden, vielleicht ist auch kein Pfad definiert...");
             }
@@ -207,10 +220,11 @@ public class NavigationView extends ViewPart {
                             monitor.worked(1);
                         }
                         Display.getDefault().asyncExec(new Runnable() {
+
                             @Override
                             public void run() {
                                 try {
-                                    TrainingCenterDataCache cache = TrainingCenterDataCache.initCache(allRuns);
+                                    TrainingCenterDataCache.getInstance().addAll(allRuns);
                                     viewer.setInput(cache.getAllRuns());
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -225,7 +239,26 @@ public class NavigationView extends ViewPart {
             };
             job.schedule();
         }
+        TrainingCenterDataCache cache = TrainingCenterDataCache.getInstance();
+        cache.addListener(new IRecordListener() {
 
+            @Override
+            public void recordChanged(List<TrainingCenterDatabaseT> newRecords) {
+                viewer.refresh();
+            }
+        });
+
+    }
+
+    private IImportedDao getDao(IConfigurationElement[] configurationElementsFor) {
+        for (final IConfigurationElement element : configurationElementsFor) {
+            try {
+                return (IImportedDao) element.createExecutableExtension("classImportedDao");
+            } catch (CoreException e) {
+                log.info(e.getMessage());
+            }
+        }
+        return null;
     }
 
     private IConvert2Tcx getConverterImplementation(IConfigurationElement[] configurationElementsFor) {

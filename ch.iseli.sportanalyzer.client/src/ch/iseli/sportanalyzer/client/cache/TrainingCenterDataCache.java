@@ -3,10 +3,14 @@ package ch.iseli.sportanalyzer.client.cache;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.runtime.ListenerList;
+
 import ch.iseli.sportanalyzer.tcx.TrainingCenterDatabaseT;
 import ch.opentrainingcenter.transfer.Factory;
 
 public class TrainingCenterDataCache {
+
+    private ListenerList listeners;
 
     private static TrainingCenterDataCache INSTANCE = null;
 
@@ -20,9 +24,9 @@ public class TrainingCenterDataCache {
         }
     }
 
-    public static TrainingCenterDataCache initCache(List<TrainingCenterDatabaseT> all) {
+    public static TrainingCenterDataCache getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new TrainingCenterDataCache(all);
+            INSTANCE = new TrainingCenterDataCache(new ArrayList<TrainingCenterDatabaseT>());
         }
         return INSTANCE;
     }
@@ -37,5 +41,40 @@ public class TrainingCenterDataCache {
 
     public List<TrainingCenterDatabaseTParent> getAllRuns() {
         return list;
+    }
+
+    public void addAll(List<TrainingCenterDatabaseT> records) {
+        for (TrainingCenterDatabaseT record : records) {
+            list.add(new TrainingCenterDatabaseTParent(record, null));
+        }
+        fireRecordAdded(records);
+    }
+
+    protected void fireRecordAdded(List<TrainingCenterDatabaseT> entry) {
+        if (listeners == null)
+            return;
+        Object[] rls = listeners.getListeners();
+        for (int i = 0; i < rls.length; i++) {
+            IRecordListener listener = (IRecordListener) rls[i];
+            listener.recordChanged(entry);
+        }
+
+    }
+
+    public void addListener(IRecordListener listener) {
+        if (listeners == null) {
+            listeners = new ListenerList();
+        }
+        listeners.add(listener);
+    }
+
+    public void removeListener(IRecordListener listener) {
+        if (listeners != null) {
+            listeners.remove(listener);
+            if (listeners.isEmpty()) {
+                listeners = null;
+            }
+        }
+
     }
 }

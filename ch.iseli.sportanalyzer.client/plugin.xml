@@ -108,6 +108,14 @@
             name="Athlete selektieren"
             restorable="true">
       </view>
+      <view
+            category="ch.iseli.sportanalyzer.client.otccategory"
+            class="ch.iseli.sportanalyzer.client.athlete.AthleteOverview"
+            icon="icons/package_games_sports.png"
+            id="ch.iseli.sportanalyzer.client.athlete.athleteOverview"
+            name="Kurzübersicht Athlete"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -132,6 +140,11 @@
             description="Öffnet einen einzelnen Lauf"
             id="ch.iseli.sportanalyzer.client.command.openSingleRun"
             name="openSingleRun">
+      </command>
+      <command
+            description="GPS Files einlesen"
+            id="ch.iseli.sportanalyzer.client.importFiles"
+            name="importFiles">
       </command>
    </extension>
    <extension

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -11,6 +12,7 @@ import org.apache.log4j.Logger;
 import ch.iseli.sport4ever.importer.internal.xml.ConvertXml;
 import ch.iseli.sportanalyzer.client.Activator;
 import ch.iseli.sportanalyzer.client.PreferenceConstants;
+import ch.iseli.sportanalyzer.importer.FindGarminFiles;
 import ch.iseli.sportanalyzer.importer.IConvert2Tcx;
 import ch.iseli.sportanalyzer.tcx.TrainingCenterDatabaseT;
 
@@ -69,5 +71,35 @@ public class Gmn2Tcx implements IConvert2Tcx {
     @Override
     public List<File> loadAllGPSFiles() {
         return FindGarminFiles.getGarminFiles();
+    }
+
+    @Override
+    public List<File> loadAllGPSFilesFromAthlete(List<String> garminFiles) {
+        if (garminFiles == null) {
+            throw new IllegalArgumentException();
+        }
+        List<File> all = loadAllGPSFiles();
+        List<File> result = new ArrayList<File>();
+        for (File file : all) {
+            if (garminFiles.contains(file.getName())) {
+                result.add(file);
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public List<File> loadAllGPSFiles(List<String> garminFilesBlackList) {
+        if (garminFilesBlackList == null) {
+            throw new IllegalArgumentException();
+        }
+        List<File> all = loadAllGPSFiles();
+        List<File> result = new ArrayList<File>();
+        for (File file : all) {
+            if (!garminFilesBlackList.contains(file.getName())) {
+                result.add(file);
+            }
+        }
+        return result;
     }
 }

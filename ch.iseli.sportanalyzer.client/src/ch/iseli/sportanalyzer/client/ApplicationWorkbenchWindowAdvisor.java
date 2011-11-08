@@ -24,5 +24,6 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
         configurer.setShowStatusLine(true);
         configurer.setShowProgressIndicator(true);
         configurer.setShowStatusLine(true);
+        configurer.setTitle("Open Training Center");
     }
 }

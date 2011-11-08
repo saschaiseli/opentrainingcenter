@@ -31,7 +31,7 @@ public class AthletePerspective implements IPerspectiveFactory {
         if (athleteName == null || athleteName.length() <= 0) {
             IConfigurationElement[] daos = Platform.getExtensionRegistry().getConfigurationElementsFor("ch.opentrainingdatabase.db");
             IAthleteDao dao = getDao(daos);
-            List<IAthlete> allAthletes = dao.getAllAthletes();
+            List<IAthlete> allAthletes = null;// dao.getAllAthletes();
 
             if (allAthletes == null || allAthletes.isEmpty()) {
                 // create

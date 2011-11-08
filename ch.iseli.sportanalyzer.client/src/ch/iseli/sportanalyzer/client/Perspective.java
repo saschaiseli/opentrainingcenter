@@ -23,6 +23,5 @@ public class Perspective implements IPerspectiveFactory {
 
         IFolderLayout folder = layout.createFolder("rightPart", IPageLayout.TOP, 0.75f, editorArea);
         folder.addPlaceholder(SingleActivityViewPart.ID + ":*");
-
     }
 }

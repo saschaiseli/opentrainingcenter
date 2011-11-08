@@ -28,7 +28,15 @@ public class TrainingCenterDatabaseTParent {
     @Override
     public String toString() {
         XMLGregorianCalendar date = databaseT.getActivities().getActivity().get(0).getId();
-        return date.getYear() + "-" + date.getMonth() + "-" + date.getDay();
+        return date.getYear() + "." + addZero(date.getMonth()) + "." + addZero(date.getDay()) + " " + addZero(date.getHour()) + ":" + addZero(date.getMinute());
+    }
+
+    private String addZero(int number) {
+        if (number < 10) {
+            return "0" + number;
+        } else {
+            return String.valueOf(number);
+        }
     }
 
     public TrainingCenterDatabaseT getTrainingCenterDatabase() {
@@ -38,5 +46,4 @@ public class TrainingCenterDatabaseTParent {
     public List<TrainingCenterDatabaseTChild> getChilds() {
         return Collections.unmodifiableList(childs);
     }
-
 }

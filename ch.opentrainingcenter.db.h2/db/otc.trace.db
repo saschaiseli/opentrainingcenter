@@ -381,3 +381,33 @@ Database is already closed (to disable automatic closing at VM shutdown, add ";D
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:577)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1410)
 	at org.eclipse.equinox.launcher.Main.main(Main.java:1386)
+11-06 16:17:44 database: close
+org.h2.message.DbException: Eingabe/Ausgabe: "java.io.EOFException"; "/home/sascha/workspace/ch.opentrainingcenter.db.h2/db/otc.h2.db"
+IO Exception: "java.io.EOFException"; "/home/sascha/workspace/ch.opentrainingcenter.db.h2/db/otc.h2.db" [90031-160]
+	at org.h2.message.DbException.get(DbException.java:158)
+	at org.h2.message.DbException.convertIOException(DbException.java:315)
+	at org.h2.store.FileStore.readFully(FileStore.java:287)
+	at org.h2.store.PageStore.readPage(PageStore.java:1253)
+	at org.h2.store.PageStore.getPage(PageStore.java:707)
+	at org.h2.store.PageStreamTrunk$Iterator.next(PageStreamTrunk.java:247)
+	at org.h2.store.PageLog.free(PageLog.java:210)
+	at org.h2.store.PageStore.compact(PageStore.java:463)
+	at org.h2.engine.Database.closeOpenFilesAndUnlock(Database.java:1171)
+	at org.h2.engine.Database.close(Database.java:1121)
+	at org.h2.engine.Database.removeSession(Database.java:1000)
+	at org.h2.engine.Session.close(Session.java:563)
+	at org.h2.jdbc.JdbcConnection.close(JdbcConnection.java:363)
+	at org.h2.server.web.WebApp.logout(WebApp.java:925)
+	at org.h2.server.web.WebApp.process(WebApp.java:209)
+	at org.h2.server.web.WebApp.processRequest(WebApp.java:164)
+	at org.h2.server.web.WebThread.process(WebThread.java:137)
+	at org.h2.server.web.WebThread.run(WebThread.java:93)
+	at java.lang.Thread.run(Thread.java:679)
+Caused by: org.h2.jdbc.JdbcSQLException: Eingabe/Ausgabe: "java.io.EOFException"; "/home/sascha/workspace/ch.opentrainingcenter.db.h2/db/otc.h2.db"
+IO Exception: "java.io.EOFException"; "/home/sascha/workspace/ch.opentrainingcenter.db.h2/db/otc.h2.db" [90031-160]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:329)
+	... 19 more
+Caused by: java.io.EOFException
+	at java.io.RandomAccessFile.readFully(RandomAccessFile.java:416)
+	at org.h2.store.FileStore.readFully(FileStore.java:285)
+	... 16 more

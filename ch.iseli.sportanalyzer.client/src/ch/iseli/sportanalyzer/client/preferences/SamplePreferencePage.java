@@ -37,7 +37,7 @@ public class SamplePreferencePage extends FieldEditorPreferencePage implements I
         Composite fieldEditorParent = getFieldEditorParent();
         fieldEditorParent.setSize(50, 60);
         addField(new DirectoryFieldEditor(PreferenceConstants.GPS_FILE_LOCATION, "Ort der GPS Daten:", fieldEditorParent));
-        String[][] entryNamesAndValues = new String[][] { { "Sascha", "Sascha" }, { "Anna", "Anna" } };
+        String[][] entryNamesAndValues = new String[][] { { "Sascha", "1" }, { "Anna", "2" } };
         ComboFieldEditor comboField = new ComboFieldEditor(PreferenceConstants.ATHLETE_NAME, "Sportler:", entryNamesAndValues, fieldEditorParent);
         addField(comboField);
         comboField.setPropertyChangeListener(new IPropertyChangeListener() {

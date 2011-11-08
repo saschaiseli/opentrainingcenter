@@ -38,4 +38,8 @@ public interface IConvert2Tcx {
      */
     List<File> loadAllGPSFiles();
 
+    List<File> loadAllGPSFilesFromAthlete(List<String> garminFiles);
+
+    List<File> loadAllGPSFiles(List<String> garminFilesBlackList);
+
 }

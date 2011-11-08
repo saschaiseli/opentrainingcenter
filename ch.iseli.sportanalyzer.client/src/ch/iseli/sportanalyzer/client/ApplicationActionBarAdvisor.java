@@ -18,6 +18,8 @@ import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
 
+import ch.iseli.sportanalyzer.client.action.ImportGpsFilesAction;
+
 /**
  * An action bar advisor is responsible for creating, adding, and disposing of the actions added to a workbench window. Each window will be populated with new actions.
  */
@@ -32,6 +34,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
     private IWorkbenchAction newWindowAction;
     private OpenViewAction openViewAction;
     private Action messagePopupAction;
+    private Action importGpsFiles;
     private IAction windowsAction;
     private IWorkbenchAction openPerspective;
 
@@ -66,6 +69,9 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 
         messagePopupAction = new MessagePopupAction("Open Message", window);
         register(messagePopupAction);
+
+        importGpsFiles = new ImportGpsFilesAction(window, "Import GPS Files");
+        register(importGpsFiles);
     }
 
     @Override
@@ -101,7 +107,6 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
     protected void fillCoolBar(ICoolBarManager coolBar) {
         IToolBarManager toolbar = new ToolBarManager(SWT.FLAT | SWT.RIGHT);
         coolBar.add(new ToolBarContributionItem(toolbar, "main"));
-        toolbar.add(openViewAction);
-        toolbar.add(messagePopupAction);
+        toolbar.add(importGpsFiles);
     }
 }

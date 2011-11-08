@@ -4,7 +4,10 @@
    <extension
          point="ch.opentrainingdatabase.db">
       <athleteDao
-            class="ch.opentrainingcenter.db.h2.DbSessionFactory">
+            classAthleteDao="ch.opentrainingcenter.db.h2.DbSessionFactory">
       </athleteDao>
+      <importDao
+            classImportedDao="ch.opentrainingcenter.db.h2.ImportedDao">
+      </importDao>
    </extension>
 </plugin>

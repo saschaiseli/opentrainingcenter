@@ -8,7 +8,7 @@ import java.net.URISyntaxException;
 
 import org.junit.Test;
 
-import ch.iseli.sport4ever.importer.internal.FindGarminFiles;
+import ch.iseli.sportanalyzer.importer.FindGarminFiles;
 
 public class FindGarminFilesTest {
 
