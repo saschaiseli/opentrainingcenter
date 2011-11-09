@@ -1,8 +1,14 @@
-package ch.iseli.sportanalyzer.client;
+package ch.iseli.sportanalyzer.client.views.navigation;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+
+import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -14,33 +20,34 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.ITreeContentProvider;
-import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ch.iseli.sportanalyzer.client.cache.ChildTyp;
+import ch.iseli.sportanalyzer.client.Activator;
+import ch.iseli.sportanalyzer.client.PreferenceConstants;
 import ch.iseli.sportanalyzer.client.cache.IRecordListener;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDataCache;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDatabaseTChild;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDatabaseTParent;
-import ch.iseli.sportanalyzer.client.views.SingleActivityViewPart;
+import ch.iseli.sportanalyzer.client.helper.TimeHelper;
+import ch.iseli.sportanalyzer.client.views.overview.SingleActivityViewPart;
 import ch.iseli.sportanalyzer.db.IImportedDao;
 import ch.iseli.sportanalyzer.importer.IConvert2Tcx;
+import ch.iseli.sportanalyzer.tcx.ActivityLapT;
+import ch.iseli.sportanalyzer.tcx.ActivityT;
+import ch.iseli.sportanalyzer.tcx.IntensityT;
 import ch.iseli.sportanalyzer.tcx.TrainingCenterDatabaseT;
+import ch.opentrainingcenter.transfer.impl.Athlete;
 
 public class NavigationView extends ViewPart {
     public static final String ID = "ch.iseli.sportanalyzer.client.navigationView";
@@ -49,85 +56,22 @@ public class NavigationView extends ViewPart {
 
     private final TrainingCenterDataCache cache = TrainingCenterDataCache.getInstance();
 
-    class ViewContentProvider implements IStructuredContentProvider, ITreeContentProvider {
-
-        @Override
-        public void inputChanged(Viewer v, Object oldInput, Object newInput) {
-        }
-
-        @Override
-        public void dispose() {
-        }
-
-        @Override
-        public Object[] getElements(Object parent) {
-            List l = (List) parent;
-            return l.toArray();
-        }
-
-        @Override
-        public Object[] getChildren(Object parentElement) {
-            TrainingCenterDatabaseTParent parent = (TrainingCenterDatabaseTParent) parentElement;
-            return parent.getChilds().toArray();
-        }
-
-        @Override
-        public Object getParent(Object element) {
-            TrainingCenterDatabaseTChild child = (TrainingCenterDatabaseTChild) element;
-            return child.getParent();
-        }
-
-        @Override
-        public boolean hasChildren(Object element) {
-            return element instanceof TrainingCenterDatabaseTParent;
-        }
-
-    }
-
-    class ViewLabelProvider extends LabelProvider {
-
-        private final Composite parent;
-
-        ViewLabelProvider(Composite parent) {
-            this.parent = parent;
-
-        }
-
-        @Override
-        public String getText(Object obj) {
-            return obj.toString();
-        }
-
-        @Override
-        public Image getImage(Object obj) {
-            String imageKey = ISharedImages.IMG_OBJ_ELEMENT;
-            if (obj instanceof TrainingCenterDatabaseTParent) {
-                imageKey = ISharedImages.IMG_OBJ_FOLDER;
-            } else if (obj instanceof TrainingCenterDatabaseTChild) {
-                TrainingCenterDatabaseTChild child = (TrainingCenterDatabaseTChild) obj;
-                switch (child.getTyp()) {
-                case SPEED:
-                    return ChildTyp.SPEED.getImage();
-                case CARDIO:
-                    return ChildTyp.CARDIO.getImage();
-                default:
-                    // no icon defined
-                }
-            }
-            return PlatformUI.getWorkbench().getSharedImages().getImage(imageKey);
-        }
-
-    }
-
     /**
      * This is a callback that will allow us to create the viewer and initialize it.
      */
     @Override
     public void createPartControl(Composite parent) {
+
+        String athleteId = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.ATHLETE_NAME);
+
+        IConfigurationElement[] daos = Platform.getExtensionRegistry().getConfigurationElementsFor("ch.opentrainingdatabase.db");
+        IImportedDao dao = getDao(daos);
+        int id = Integer.parseInt(athleteId);
+        Athlete athlete = dao.getAthlete(id);
+
         viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
         viewer.setContentProvider(new ViewContentProvider());
         viewer.setLabelProvider(new ViewLabelProvider(parent));
-
         viewer.addDoubleClickListener(new IDoubleClickListener() {
 
             @Override
@@ -135,7 +79,7 @@ public class NavigationView extends ViewPart {
                 IStructuredSelection selection = (IStructuredSelection) event.getSelection();
                 Object first = selection.getFirstElement();
                 if (first instanceof TrainingCenterDatabaseTParent) {
-                    // openSingleRunView((TrainingCenterDatabaseTParent) first);
+                    openSingleRunView((TrainingCenterDatabaseTParent) first);
                 } else {
                     // child
                     TrainingCenterDatabaseTChild child = (TrainingCenterDatabaseTChild) first;
@@ -144,10 +88,22 @@ public class NavigationView extends ViewPart {
 
             }
 
+            private void openSingleRunView(TrainingCenterDatabaseTParent first) {
+                TrainingCenterDataCache.setSelectedRun(first.getTrainingCenterDatabase());
+
+                try {
+                    PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+                            .showView(SingleActivityViewPart.ID, TrainingCenterDataCache.getSelected().toString(), IWorkbenchPage.VIEW_ACTIVATE);
+                } catch (PartInitException e) {
+                    e.printStackTrace();
+                }
+            }
+
             private void openChildView(TrainingCenterDatabaseTChild child) {
                 TrainingCenterDataCache.setSelectedRun(child.getParent().getTrainingCenterDatabase());
                 try {
-                    PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(child.getTyp().getViewId(), String.valueOf(child.hashCode()), 1);
+                    PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+                            .showView(child.getTyp().getViewId(), String.valueOf(child.hashCode()), IWorkbenchPage.VIEW_ACTIVATE);
                 } catch (PartInitException e) {
                     e.printStackTrace();
                 }
@@ -162,7 +118,6 @@ public class NavigationView extends ViewPart {
                 IStructuredSelection selection = (IStructuredSelection) event.getSelection();
                 Object first = selection.getFirstElement();
                 if (first instanceof TrainingCenterDatabaseTParent) {
-                    openSingleRunView((TrainingCenterDatabaseTParent) first);
                     writeToStatusLine(((TrainingCenterDatabaseTParent) first).getTrainingCenterDatabase());
                 } else if (first instanceof TrainingCenterDatabaseTChild) {
                     // ist ein child
@@ -172,22 +127,13 @@ public class NavigationView extends ViewPart {
                 }
             }
 
-            private void openSingleRunView(TrainingCenterDatabaseTParent first) {
-                TrainingCenterDataCache.setSelectedRun(first.getTrainingCenterDatabase());
-
-                try {
-                    PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(SingleActivityViewPart.ID, TrainingCenterDataCache.getSelected().toString(), 1);
-                } catch (PartInitException e) {
-                    e.printStackTrace();
-                }
-            }
-
             private void writeToStatusLine(String message) {
                 getViewSite().getActionBars().getStatusLineManager().setMessage(message);
             }
 
             private void writeToStatusLine(TrainingCenterDatabaseT selectedRun) {
-                writeToStatusLine("Run vom " + selectedRun.getActivities().getActivity().get(0).getId().toString());
+                writeToStatusLine("Lauf vom " + convertGregorianDateToString(selectedRun.getActivities().getActivity().get(0).getId()) + " "
+                        + getOverview(selectedRun));
             }
         });
 
@@ -198,11 +144,7 @@ public class NavigationView extends ViewPart {
         final List<File> allFiles = new ArrayList<File>();
         if (tcx != null) {
 
-            String athleteId = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.ATHLETE_NAME);
-
-            IConfigurationElement[] daos = Platform.getExtensionRegistry().getConfigurationElementsFor("ch.opentrainingdatabase.db");
-            IImportedDao dao = getDao(daos);
-            List<String> importedRecords = dao.getImportedRecords(Integer.parseInt(athleteId));
+            List<String> importedRecords = dao.getImportedRecords(athlete);
             // Start the Job
             List<File> loadAllGPSFiles = tcx.loadAllGPSFilesFromAthlete(importedRecords);
             if (loadAllGPSFiles == null || loadAllGPSFiles.isEmpty()) {
@@ -270,6 +212,36 @@ public class NavigationView extends ViewPart {
             }
         }
         return null;
+    }
+
+    private final String convertGregorianDateToString(XMLGregorianCalendar datum) {
+        Date time = datum.toGregorianCalendar().getTime();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(time);
+        calendar.get(Calendar.DAY_OF_WEEK);
+        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+        return calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()) + " " + format.format(time);
+    }
+
+    private final String getOverview(TrainingCenterDatabaseT run) {
+        ActivityT activityT = run.getActivities().getActivity().get(0);
+        StringBuffer str = new StringBuffer();
+        if (activityT.getLap() != null && activityT.getLap().size() > 1) {
+            // intervall
+            str.append("Training mit ");
+            int activeIntervall = 0;
+            for (ActivityLapT lap : activityT.getLap()) {
+                if (IntensityT.ACTIVE.equals(lap.getIntensity())) {
+                    activeIntervall++;
+                }
+            }
+            str.append(activeIntervall).append(" aktiven Intervallen");
+        } else if (activityT.getLap() != null && activityT.getLap().size() == 1) {
+            ActivityLapT lap = activityT.getLap().get(0);
+            str.append("Joggen mit ").append(lap.getDistanceMeters() / 1000);
+            str.append("km in ").append(TimeHelper.convertSecondsToHumanReadableZeit(lap.getTotalTimeSeconds()));
+        }
+        return str.toString();
     }
 
     /**

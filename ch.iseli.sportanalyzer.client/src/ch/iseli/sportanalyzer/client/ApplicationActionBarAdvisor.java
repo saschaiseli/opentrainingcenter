@@ -44,12 +44,6 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 
     @Override
     protected void makeActions(final IWorkbenchWindow window) {
-        // Creates the actions and registers them.
-        // Registering is needed to ensure that key bindings work.
-        // The corresponding commands keybindings are defined in the plugin.xml
-        // file.
-        // Registering also provides automatic disposal of the actions when
-        // the window is closed.
 
         exitAction = ActionFactory.QUIT.create(window);
         register(exitAction);

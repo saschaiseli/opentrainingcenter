@@ -1,4 +1,4 @@
-package ch.iseli.sportanalyzer.client.views;
+package ch.iseli.sportanalyzer.client.views.speed;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;

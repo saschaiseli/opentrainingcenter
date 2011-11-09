@@ -41,6 +41,7 @@ import ch.iseli.sportanalyzer.db.IImportedDao;
 import ch.iseli.sportanalyzer.importer.FindGarminFiles;
 import ch.iseli.sportanalyzer.importer.IConvert2Tcx;
 import ch.iseli.sportanalyzer.tcx.TrainingCenterDatabaseT;
+import ch.opentrainingcenter.transfer.impl.Athlete;
 
 public class ImportGpsFilesAction extends Action implements ISelectionListener, IWorkbenchAction {
 
@@ -72,9 +73,11 @@ public class ImportGpsFilesAction extends Action implements ISelectionListener, 
     public void run() {
 
         IConfigurationElement[] daos = Platform.getExtensionRegistry().getConfigurationElementsFor("ch.opentrainingdatabase.db");
-        IImportedDao dao = (IImportedDao) DaoHelper.getDao(daos, "classImportedDao");
+        final IImportedDao dao = (IImportedDao) DaoHelper.getDao(daos, "classImportedDao");
         String athleteId = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.ATHLETE_NAME);
-        List<String> importedRecordFileNames = dao.getImportedRecords(Integer.parseInt(athleteId));
+        final int id = Integer.parseInt(athleteId);
+        final Athlete athlete = dao.getAthlete(id);
+        List<String> importedRecordFileNames = dao.getImportedRecords(athlete);
         List<File> garminFiles = FindGarminFiles.getGarminFiles(importedRecordFileNames);
         Map<String, File> keyToFile = new TreeMap<String, File>();
         for (File f : garminFiles) {
@@ -118,8 +121,10 @@ public class ImportGpsFilesAction extends Action implements ISelectionListener, 
                 monitor.beginTask("Lade GPS Daten...", selectedFilesToImport.size());
                 try {
                     for (File file : selectedFilesToImport) {
+                        monitor.setTaskName("importiere File: " + file.getName());
                         allRecords.add(tcx.convert(file));
-                        monitor.setTaskName("File: " + file.getName());
+                        dao.importRecord(athlete, file.getName());
+                        monitor.setTaskName("update Datenbank für Record: " + file.getName());
                         monitor.worked(1);
                     }
                 } catch (Exception e1) {
@@ -131,6 +136,7 @@ public class ImportGpsFilesAction extends Action implements ISelectionListener, 
                     public void run() {
                         try {
                             TrainingCenterDataCache.getInstance().addAll(allRecords);
+
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -147,7 +153,7 @@ public class ImportGpsFilesAction extends Action implements ISelectionListener, 
             try {
                 return (IConvert2Tcx) element.createExecutableExtension("class");
             } catch (CoreException e) {
-                System.err.println(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         return null;

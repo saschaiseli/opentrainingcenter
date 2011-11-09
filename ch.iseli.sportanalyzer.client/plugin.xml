@@ -41,13 +41,13 @@
             name="Mailboxes"
             allowMultiple="true"
             icon="icons/sample3.gif"
-            class="ch.iseli.sportanalyzer.client.NavigationView"
+            class="ch.iseli.sportanalyzer.client.views.navigation.NavigationView"
             id="ch.iseli.sportanalyzer.client.navigationView">
       </view>
       <view
             allowMultiple="true"
             category="ch.iseli.sportanalyzer.client.otccategory"
-            class="ch.iseli.sportanalyzer.client.views.SingleActivityViewPart"
+            class="ch.iseli.sportanalyzer.client.views.overview.SingleActivityViewPart"
             icon="icons/overview_chart.png"
             id="ch.iseli.sportanalyzer.client.views.singlerun"
             name="Uebersicht eines Trainings">
@@ -55,7 +55,7 @@
       <view
             allowMultiple="true"
             category="ch.iseli.sportanalyzer.client.otccategory"
-            class="ch.iseli.sportanalyzer.client.views.CardioView"
+            class="ch.iseli.sportanalyzer.client.views.cardio.CardioView"
             icon="icons/cardiology.png"
             id="ch.iseli.sportanalyzer.client.views.cardio"
             name="Herzfrequenz des Laufs"
@@ -64,7 +64,7 @@
       <view
             allowMultiple="true"
             category="ch.iseli.sportanalyzer.client.otccategory"
-            class="ch.iseli.sportanalyzer.client.views.SpeedView"
+            class="ch.iseli.sportanalyzer.client.views.speed.SpeedView"
             icon="icons/speed_kmh.png"
             id="ch.iseli.sportanalyzer.client.views.speed"
             name="Geschwindigkeit des Laufs"
@@ -73,7 +73,7 @@
       <view
             allowMultiple="true"
             category="ch.iseli.sportanalyzer.client.otccategory"
-            class="ch.iseli.sportanalyzer.client.views.SealevelView"
+            class="ch.iseli.sportanalyzer.client.views.sealevel.SealevelView"
             id="ch.iseli.sportanalyzer.client.views.sealevel"
             name="Hoehenverlauf des Runs"
             restorable="true">
