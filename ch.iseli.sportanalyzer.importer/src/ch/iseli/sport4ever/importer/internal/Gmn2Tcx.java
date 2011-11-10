@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
@@ -74,21 +76,6 @@ public class Gmn2Tcx implements IConvert2Tcx {
     }
 
     @Override
-    public List<File> loadAllGPSFilesFromAthlete(List<String> garminFiles) {
-        if (garminFiles == null) {
-            throw new IllegalArgumentException();
-        }
-        List<File> all = loadAllGPSFiles();
-        List<File> result = new ArrayList<File>();
-        for (File file : all) {
-            if (garminFiles.contains(file.getName())) {
-                result.add(file);
-            }
-        }
-        return result;
-    }
-
-    @Override
     public List<File> loadAllGPSFiles(List<String> garminFilesBlackList) {
         if (garminFilesBlackList == null) {
             throw new IllegalArgumentException();
@@ -96,10 +83,33 @@ public class Gmn2Tcx implements IConvert2Tcx {
         List<File> all = loadAllGPSFiles();
         List<File> result = new ArrayList<File>();
         for (File file : all) {
-            if (!garminFilesBlackList.contains(file.getName())) {
+            if (garminFilesBlackList.contains(file.getName())) {
                 result.add(file);
             }
         }
         return result;
+    }
+
+    @Override
+    public Map<Integer, File> loadAllGPSFilesFromAthlete(Map<Integer, String> garminFiles) {
+        if (garminFiles == null) {
+            throw new IllegalArgumentException();
+        }
+        List<File> all = loadAllGPSFiles();
+        Map<String, File> fileNameToFile = new HashMap<String, File>();
+        for (File file : all) {
+            fileNameToFile.put(file.getName(), file);
+        }
+        Map<Integer, File> result = new HashMap<Integer, File>();
+        for (Map.Entry<Integer, String> entry : garminFiles.entrySet()) {
+            if (istFileNameVonKeyIn(fileNameToFile, entry)) {
+                result.put(entry.getKey(), fileNameToFile.get(entry.getValue()));
+            }
+        }
+        return result;
+    }
+
+    private boolean istFileNameVonKeyIn(Map<String, File> fileNameToFile, Map.Entry<Integer, String> entry) {
+        return fileNameToFile.keySet().contains(entry.getValue());
     }
 }
