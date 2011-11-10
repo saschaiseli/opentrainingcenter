@@ -1,9 +1,9 @@
 package ch.iseli.sportanalyzer.client.cache;
 
-import java.util.List;
+import java.util.Collection;
 
 import ch.iseli.sportanalyzer.tcx.TrainingCenterDatabaseT;
 
 public interface IRecordListener {
-    public void recordChanged(List<TrainingCenterDatabaseT> entry);
+    public void recordChanged(Collection<TrainingCenterDatabaseT> entry);
 }

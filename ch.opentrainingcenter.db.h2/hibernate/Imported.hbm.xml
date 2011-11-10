@@ -7,7 +7,9 @@
   name="ch.opentrainingcenter.transfer.impl.Imported" schema="PUBLIC" table="IMPORTED">
   <id name="id" type="int">
    <column name="ID"/>
-   <generator class="assigned"/>
+   <generator class="sequence">
+   <param name="sequence">import_id_sequence</param>
+   </generator>
   </id>
   <many-to-one class="ch.opentrainingcenter.transfer.impl.Weather"
    fetch="select" name="weather">

@@ -205,5 +205,29 @@
             class="ch.iseli.sportanalyzer.client.preferences.PreferenceInitializer">
       </initializer>
    </extension>
+   <extension
+         point="org.eclipse.ui.viewActions">
+      <viewContribution
+            id="ch.iseli.sportanalyzer.client.viewContribution1"
+            targetID="ch.iseli.sportanalyzer.client.viewContribution1">
+         <action
+               class="ch.iseli.sportanalyzer.client.action.DeleteImportedRecord"
+               id="ch.iseli.sportanalyzer.client.action1"
+               label="ch.iseli.sportanalyzer.client.action.DeleteImportedRecord"
+               style="push"
+               tooltip="blabla">
+         </action>
+      </viewContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="ch.iseli.sportanalyzer.client.menuContribution2">
+         <menu
+               label="label">
+         </menu>
+      </menuContribution>
+   </extension>
 
 </plugin>

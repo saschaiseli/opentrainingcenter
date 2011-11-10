@@ -3,6 +3,7 @@ package ch.iseli.sportanalyzer.importer;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class FindGarminFiles {
         return Collections.emptyList();
     }
 
-    public static List<File> getGarminFiles(final List<String> blacklist) {
+    public static List<File> getGarminFiles(final Collection<String> blacklist) {
         String defaultLocation = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.GPS_FILE_LOCATION);
         File f = new File(defaultLocation);
         File[] listFiles = f.listFiles(new FilenameFilter() {

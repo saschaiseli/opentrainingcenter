@@ -1,6 +1,11 @@
 package ch.iseli.sportanalyzer.client.helper;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
+import javax.xml.datatype.XMLGregorianCalendar;
 
 public class TimeHelper {
 
@@ -11,7 +16,7 @@ public class TimeHelper {
      *            sekunden
      * @return Zeit im Format HH:MM:ss
      */
-    public static String convertSecondsToHumanReadableZeit(double sec) {
+    public static final String convertSecondsToHumanReadableZeit(final double sec) {
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis((long) sec * 1000);
         StringBuffer calStr = new StringBuffer();
@@ -20,6 +25,26 @@ public class TimeHelper {
         int s = cal.get(Calendar.SECOND);
         calStr.append(addZero(hour)).append(":").append(addZero(m)).append(":").append(addZero(s));
         return calStr.toString();
+    }
+
+    /**
+     * 
+     */
+    public static final String convertGregorianDateToString(final XMLGregorianCalendar datum) {
+        return convertGregorianDateToString(datum, false);
+    }
+
+    public static final String convertGregorianDateToString(final XMLGregorianCalendar datum, boolean withDay) {
+        Date time = datum.toGregorianCalendar().getTime();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(time);
+        calendar.get(Calendar.DAY_OF_WEEK);
+        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+        if (withDay) {
+            return calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()) + " " + format.format(time);
+        } else {
+            return format.format(time);
+        }
     }
 
     private static String addZero(int i) {

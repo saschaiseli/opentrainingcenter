@@ -1,12 +1,13 @@
 package ch.iseli.sportanalyzer.client.cache;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.runtime.ListenerList;
 
 import ch.iseli.sportanalyzer.tcx.TrainingCenterDatabaseT;
-import ch.opentrainingcenter.transfer.Factory;
 
 public class TrainingCenterDataCache {
 
@@ -16,26 +17,23 @@ public class TrainingCenterDataCache {
 
     private final List<TrainingCenterDatabaseTParent> list = new ArrayList<TrainingCenterDatabaseTParent>();
 
-    private static TrainingCenterDatabaseT selected;
+    private static TrainingCenterDatabaseTParent selected;
 
-    private TrainingCenterDataCache(List<TrainingCenterDatabaseT> all) {
-        for (TrainingCenterDatabaseT db : all) {
-            getAllRuns().add(new TrainingCenterDatabaseTParent(db, Factory.createAthlete("sascha")));
-        }
+    private TrainingCenterDataCache() {
     }
 
     public static TrainingCenterDataCache getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new TrainingCenterDataCache(new ArrayList<TrainingCenterDatabaseT>());
+            INSTANCE = new TrainingCenterDataCache();
         }
         return INSTANCE;
     }
 
-    public static void setSelectedRun(TrainingCenterDatabaseT selected) {
+    public void setSelectedRun(TrainingCenterDatabaseTParent selected) {
         TrainingCenterDataCache.selected = selected;
     }
 
-    public static TrainingCenterDatabaseT getSelected() {
+    public TrainingCenterDatabaseTParent getSelected() {
         return selected;
     }
 
@@ -43,20 +41,20 @@ public class TrainingCenterDataCache {
         return list;
     }
 
-    public void addAll(List<TrainingCenterDatabaseT> records) {
-        for (TrainingCenterDatabaseT record : records) {
-            list.add(new TrainingCenterDatabaseTParent(record, null));
+    public void addAll(Map<Integer, TrainingCenterDatabaseT> records) {
+        for (Map.Entry<Integer, TrainingCenterDatabaseT> record : records.entrySet()) {
+            list.add(new TrainingCenterDatabaseTParent(record.getKey(), record.getValue(), null));
         }
-        fireRecordAdded(records);
+        fireRecordAdded(records.values());
     }
 
-    protected void fireRecordAdded(List<TrainingCenterDatabaseT> entry) {
+    protected void fireRecordAdded(Collection<TrainingCenterDatabaseT> collection) {
         if (listeners == null)
             return;
         Object[] rls = listeners.getListeners();
         for (int i = 0; i < rls.length; i++) {
             IRecordListener listener = (IRecordListener) rls[i];
-            listener.recordChanged(entry);
+            listener.recordChanged(collection);
         }
 
     }

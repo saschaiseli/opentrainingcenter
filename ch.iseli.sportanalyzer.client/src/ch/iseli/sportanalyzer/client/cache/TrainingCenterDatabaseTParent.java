@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import ch.iseli.sportanalyzer.client.helper.TimeHelper;
 import ch.iseli.sportanalyzer.tcx.TrainingCenterDatabaseT;
 import ch.opentrainingcenter.transfer.IAthlete;
 
@@ -17,7 +18,10 @@ public class TrainingCenterDatabaseTParent {
 
     private final IAthlete athlete;
 
-    public TrainingCenterDatabaseTParent(TrainingCenterDatabaseT databaseT, IAthlete athlete) {
+    private final Integer id;
+
+    public TrainingCenterDatabaseTParent(Integer id, TrainingCenterDatabaseT databaseT, IAthlete athlete) {
+        this.id = id;
         this.databaseT = databaseT;
         this.athlete = athlete;
         childs.add(new TrainingCenterDatabaseTChild(this, "Geschwindigkeit", ChildTyp.SPEED));
@@ -28,15 +32,7 @@ public class TrainingCenterDatabaseTParent {
     @Override
     public String toString() {
         XMLGregorianCalendar date = databaseT.getActivities().getActivity().get(0).getId();
-        return date.getYear() + "." + addZero(date.getMonth()) + "." + addZero(date.getDay()) + " " + addZero(date.getHour()) + ":" + addZero(date.getMinute());
-    }
-
-    private String addZero(int number) {
-        if (number < 10) {
-            return "0" + number;
-        } else {
-            return String.valueOf(number);
-        }
+        return TimeHelper.convertGregorianDateToString(date);
     }
 
     public TrainingCenterDatabaseT getTrainingCenterDatabase() {
@@ -46,4 +42,9 @@ public class TrainingCenterDatabaseTParent {
     public List<TrainingCenterDatabaseTChild> getChilds() {
         return Collections.unmodifiableList(childs);
     }
+
+    public Integer getId() {
+        return id;
+    }
+
 }

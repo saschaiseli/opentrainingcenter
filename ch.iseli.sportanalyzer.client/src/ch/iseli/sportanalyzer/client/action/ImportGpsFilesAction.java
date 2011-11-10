@@ -2,6 +2,7 @@ package ch.iseli.sportanalyzer.client.action;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -51,7 +52,18 @@ public class ImportGpsFilesAction extends Action implements ISelectionListener, 
 
     private final IWorkbenchWindow window;
 
+    private final Athlete athlete;
+
+    private final IImportedDao dao;
+
     public ImportGpsFilesAction(IWorkbenchWindow window, String tooltip) {
+
+        IConfigurationElement[] daos = Platform.getExtensionRegistry().getConfigurationElementsFor("ch.opentrainingdatabase.db");
+        dao = (IImportedDao) DaoHelper.getDao(daos, "classImportedDao");
+        String athleteId = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.ATHLETE_NAME);
+        final int id = Integer.parseInt(athleteId);
+        athlete = dao.getAthlete(id);
+
         this.window = window;
         setId(ID);
         setToolTipText(tooltip);
@@ -72,13 +84,8 @@ public class ImportGpsFilesAction extends Action implements ISelectionListener, 
     @Override
     public void run() {
 
-        IConfigurationElement[] daos = Platform.getExtensionRegistry().getConfigurationElementsFor("ch.opentrainingdatabase.db");
-        final IImportedDao dao = (IImportedDao) DaoHelper.getDao(daos, "classImportedDao");
-        String athleteId = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.ATHLETE_NAME);
-        final int id = Integer.parseInt(athleteId);
-        final Athlete athlete = dao.getAthlete(id);
-        List<String> importedRecordFileNames = dao.getImportedRecords(athlete);
-        List<File> garminFiles = FindGarminFiles.getGarminFiles(importedRecordFileNames);
+        Map<Integer, String> importedRecordFileNames = dao.getImportedRecords(athlete);
+        List<File> garminFiles = FindGarminFiles.getGarminFiles(importedRecordFileNames.values());
         Map<String, File> keyToFile = new TreeMap<String, File>();
         for (File f : garminFiles) {
             keyToFile.put(FileNameToDateConverter.getHumanReadableDate(f.getName()), f);
@@ -105,6 +112,9 @@ public class ImportGpsFilesAction extends Action implements ISelectionListener, 
         dialog.setTitle("GPS Files auswählen");
         dialog.open();
         Object[] result = dialog.getResult();
+        if (result == null || result.length == 0) {
+            return;
+        }
         final List<File> selectedFilesToImport = new ArrayList<File>();
         for (Object key : result) {
             selectedFilesToImport.add(keyToFile.get(key));
@@ -112,7 +122,7 @@ public class ImportGpsFilesAction extends Action implements ISelectionListener, 
 
         IConfigurationElement[] configurationElementsFor = Platform.getExtensionRegistry().getConfigurationElementsFor("ch.iseli.sportanalyzer.myimporter");
         final IConvert2Tcx tcx = getConverterImplementation(configurationElementsFor);
-        final List<TrainingCenterDatabaseT> allRecords = new ArrayList<TrainingCenterDatabaseT>();
+        final Map<Integer, TrainingCenterDatabaseT> allRecords = new HashMap<Integer, TrainingCenterDatabaseT>();
 
         final Job job = new Job("Lade GPS Daten") {
             @Override
@@ -122,9 +132,10 @@ public class ImportGpsFilesAction extends Action implements ISelectionListener, 
                 try {
                     for (File file : selectedFilesToImport) {
                         monitor.setTaskName("importiere File: " + file.getName());
-                        allRecords.add(tcx.convert(file));
-                        dao.importRecord(athlete, file.getName());
-                        monitor.setTaskName("update Datenbank für Record: " + file.getName());
+                        TrainingCenterDatabaseT record = tcx.convert(file);
+                        Integer importRecordId = dao.importRecord(athlete, file.getName());
+                        allRecords.put(importRecordId, record);
+
                         monitor.worked(1);
                     }
                 } catch (Exception e1) {

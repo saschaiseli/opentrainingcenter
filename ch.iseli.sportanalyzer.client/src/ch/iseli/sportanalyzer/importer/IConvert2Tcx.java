@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
 
 import ch.iseli.sportanalyzer.tcx.TrainingCenterDatabaseT;
 
@@ -38,7 +39,7 @@ public interface IConvert2Tcx {
      */
     List<File> loadAllGPSFiles();
 
-    List<File> loadAllGPSFilesFromAthlete(List<String> garminFiles);
+    Map<Integer, File> loadAllGPSFilesFromAthlete(Map<Integer, String> garminFiles);
 
     List<File> loadAllGPSFiles(List<String> garminFilesBlackList);
 

@@ -1,6 +1,6 @@
 package ch.iseli.sportanalyzer.db;
 
-import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.runtime.IExecutableExtensionFactory;
 
@@ -18,7 +18,7 @@ public interface IImportedDao extends IExecutableExtensionFactory {
      *            id des sportlers.
      * @return eine liste mit den records von diesem sportler.
      */
-    List<String> getImportedRecords(Athlete athlete);
+    Map<Integer, String> getImportedRecords(Athlete athlete);
 
     /**
      * Setzt in der Datenbank den Record auf importiert.
@@ -29,7 +29,7 @@ public interface IImportedDao extends IExecutableExtensionFactory {
      *            der Filename des GPS Files.
      * @return die ID von der Datenbank.
      */
-    void importRecord(Athlete athlete, String name);
+    int importRecord(Athlete athlete, String name);
 
     /**
      * Gibt den sportler mit
