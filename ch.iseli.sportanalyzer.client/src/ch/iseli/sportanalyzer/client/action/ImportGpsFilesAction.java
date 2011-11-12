@@ -59,7 +59,7 @@ public class ImportGpsFilesAction extends Action implements ISelectionListener, 
     public ImportGpsFilesAction(IWorkbenchWindow window, String tooltip) {
 
         IConfigurationElement[] daos = Platform.getExtensionRegistry().getConfigurationElementsFor("ch.opentrainingdatabase.db");
-        dao = (IImportedDao) DaoHelper.getDao(daos, "classImportedDao");
+        dao = (IImportedDao) DaoHelper.getDao(daos, IImportedDao.EXTENSION_POINT_NAME);
         String athleteId = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.ATHLETE_NAME);
         final int id = Integer.parseInt(athleteId);
         athlete = dao.getAthlete(id);

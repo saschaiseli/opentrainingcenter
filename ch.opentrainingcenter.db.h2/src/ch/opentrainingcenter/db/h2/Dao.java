@@ -3,35 +3,34 @@ package ch.opentrainingcenter.db.h2;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
 public class Dao {
-    private static final ThreadLocal session = new ThreadLocal();
+    // private static final ThreadLocal session = new ThreadLocal();
+    private Session session;
     private final SessionFactory sessionFactory;
 
     public Dao() {
         org.hibernate.cfg.Configuration c = new org.hibernate.cfg.Configuration();
         sessionFactory = c.configure().buildSessionFactory();
+        session = sessionFactory.openSession();
     }
 
-    @SuppressWarnings("unchecked")
     public Session getSession() {
-        Session session = (Session) Dao.session.get();
         if (session == null) {
             session = sessionFactory.openSession();
-            Dao.session.set(session);
         }
         return session;
     }
 
-    protected void begin() {
-        getSession().beginTransaction();
+    protected Transaction begin() {
+        return getSession().beginTransaction();
     }
 
     protected void commit() {
         getSession().getTransaction().commit();
     }
 
-    @SuppressWarnings("unchecked")
     protected void rollback() {
         try {
             getSession().getTransaction().rollback();
@@ -43,12 +42,9 @@ public class Dao {
         } catch (HibernateException e) {
             System.out.println(e.getMessage());
         }
-        Dao.session.set(null);
     }
 
-    @SuppressWarnings("unchecked")
     public void close() {
         getSession().close();
-        Dao.session.set(null);
     }
 }

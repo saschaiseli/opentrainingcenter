@@ -1,6 +1,5 @@
 package ch.iseli.sportanalyzer.client.athlete;
 
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
 
@@ -13,7 +12,7 @@ public class SelectAthleteViewPart extends ViewPart {
 
     @Override
     public void createPartControl(Composite parent) {
-        Composite composite = new Composite(parent, SWT.NONE);
+        // Composite composite = new Composite(parent, SWT.NONE);
 
     }
 

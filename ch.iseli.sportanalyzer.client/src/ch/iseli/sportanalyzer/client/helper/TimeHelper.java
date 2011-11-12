@@ -34,6 +34,17 @@ public class TimeHelper {
         return convertGregorianDateToString(datum, false);
     }
 
+    /**
+     * konvertiere ein {@link XMLGregorianCalendar} in ein lesbareres format.
+     * 
+     * wenn der parameter withDay true ist wird der wochentag noch mit ausgegeben
+     * 
+     * @param datum
+     *            {@link XMLGregorianCalendar}
+     * @param withDay
+     *            flag ob der wochenag auch mitgegeben werden soll.
+     * @return das datum '2010.11.23 14:23' und wenn das flag with Day ist wird noch der ausgeschreibene wochentag vorangestellt.
+     */
     public static final String convertGregorianDateToString(final XMLGregorianCalendar datum, boolean withDay) {
         Date time = datum.toGregorianCalendar().getTime();
         Calendar calendar = Calendar.getInstance();

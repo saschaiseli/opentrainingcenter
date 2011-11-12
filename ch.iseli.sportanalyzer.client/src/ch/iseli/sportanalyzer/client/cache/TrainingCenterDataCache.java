@@ -1,8 +1,7 @@
 package ch.iseli.sportanalyzer.client.cache;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.core.runtime.ListenerList;
@@ -15,7 +14,7 @@ public class TrainingCenterDataCache {
 
     private static TrainingCenterDataCache INSTANCE = null;
 
-    private final List<TrainingCenterDatabaseTParent> list = new ArrayList<TrainingCenterDatabaseTParent>();
+    private final Map<Integer, TrainingCenterDatabaseTParent> list = new HashMap<Integer, TrainingCenterDatabaseTParent>();
 
     private static TrainingCenterDatabaseTParent selected;
 
@@ -37,18 +36,18 @@ public class TrainingCenterDataCache {
         return selected;
     }
 
-    public List<TrainingCenterDatabaseTParent> getAllRuns() {
-        return list;
+    public Collection<TrainingCenterDatabaseTParent> getAllRuns() {
+        return list.values();
     }
 
     public void addAll(Map<Integer, TrainingCenterDatabaseT> records) {
         for (Map.Entry<Integer, TrainingCenterDatabaseT> record : records.entrySet()) {
-            list.add(new TrainingCenterDatabaseTParent(record.getKey(), record.getValue(), null));
+            list.put(record.getKey(), new TrainingCenterDatabaseTParent(record.getKey(), record.getValue(), null));
         }
         fireRecordAdded(records.values());
     }
 
-    protected void fireRecordAdded(Collection<TrainingCenterDatabaseT> collection) {
+    private void fireRecordAdded(Collection<TrainingCenterDatabaseT> collection) {
         if (listeners == null)
             return;
         Object[] rls = listeners.getListeners();
@@ -74,5 +73,10 @@ public class TrainingCenterDataCache {
             }
         }
 
+    }
+
+    public void remove(Integer id) {
+        list.remove(id);
+        fireRecordAdded(null);
     }
 }

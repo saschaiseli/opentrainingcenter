@@ -1,8 +1,6 @@
 package ch.iseli.sportanalyzer.client.views.overview;
 
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.part.ViewPart;
 
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDataCache;
@@ -20,9 +18,8 @@ public class SingleActivityViewPart extends ViewPart {
     @Override
     public void createPartControl(Composite parent) {
         selected = cache.getSelected();
-        setPartName("kuckuck: " + selected.getTrainingCenterDatabase().getActivities().getActivity().get(0).getId().toString());
+        setPartName(selected.getTrainingCenterDatabase().getActivities().getActivity().get(0).getId().toString());
 
-        Text text = new Text(parent, SWT.BORDER);
     }
 
     @Override

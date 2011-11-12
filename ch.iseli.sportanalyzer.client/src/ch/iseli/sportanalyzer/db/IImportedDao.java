@@ -7,6 +7,9 @@ import org.eclipse.core.runtime.IExecutableExtensionFactory;
 import ch.opentrainingcenter.transfer.impl.Athlete;
 
 public interface IImportedDao extends IExecutableExtensionFactory {
+
+    public static final String EXTENSION_POINT_NAME = "classImportedDao";
+
     /**
      * Gibt eine Liste von Filenamen zurück die diesem Athleten gehören. Das Resultat ist nicht ein absoluter File Pfad sondern einfach der Filename.
      * 
@@ -38,4 +41,6 @@ public interface IImportedDao extends IExecutableExtensionFactory {
      * @return Gibt den sportler mit der angegeben id zurück oder null.
      */
     Athlete getAthlete(int id);
+
+    void removeImportedRecord(Integer id);
 }

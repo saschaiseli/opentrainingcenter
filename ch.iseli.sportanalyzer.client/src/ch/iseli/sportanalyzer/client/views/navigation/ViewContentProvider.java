@@ -1,6 +1,6 @@
 package ch.iseli.sportanalyzer.client.views.navigation;
 
-import java.util.List;
+import java.util.Collection;
 
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
@@ -21,7 +21,7 @@ public class ViewContentProvider implements IStructuredContentProvider, ITreeCon
 
     @Override
     public Object[] getElements(Object parent) {
-        List<?> l = (List<?>) parent;
+        Collection<?> l = (Collection<?>) parent;
         return l.toArray();
     }
 
@@ -33,6 +33,9 @@ public class ViewContentProvider implements IStructuredContentProvider, ITreeCon
 
     @Override
     public Object getParent(Object element) {
+        if (element instanceof TrainingCenterDatabaseTParent) {
+            return null;
+        }
         TrainingCenterDatabaseTChild child = (TrainingCenterDatabaseTChild) element;
         return child.getParent();
     }

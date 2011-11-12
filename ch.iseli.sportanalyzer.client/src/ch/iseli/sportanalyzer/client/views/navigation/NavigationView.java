@@ -29,8 +29,6 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import ch.iseli.sportanalyzer.client.Activator;
 import ch.iseli.sportanalyzer.client.PreferenceConstants;
@@ -39,6 +37,8 @@ import ch.iseli.sportanalyzer.client.cache.IRecordListener;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDataCache;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDatabaseTChild;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDatabaseTParent;
+import ch.iseli.sportanalyzer.client.helper.DaoHelper;
+import ch.iseli.sportanalyzer.client.helper.DistanceHelper;
 import ch.iseli.sportanalyzer.client.helper.TimeHelper;
 import ch.iseli.sportanalyzer.client.views.overview.SingleActivityViewPart;
 import ch.iseli.sportanalyzer.db.IImportedDao;
@@ -52,7 +52,6 @@ import ch.opentrainingcenter.transfer.impl.Athlete;
 public class NavigationView extends ViewPart {
     public static final String ID = "ch.iseli.sportanalyzer.client.navigationView";
     private TreeViewer viewer;
-    private static final Logger log = LoggerFactory.getLogger(NavigationView.class.getName());
 
     private final TrainingCenterDataCache cache = TrainingCenterDataCache.getInstance();
 
@@ -65,7 +64,7 @@ public class NavigationView extends ViewPart {
         String athleteId = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.ATHLETE_NAME);
 
         IConfigurationElement[] daos = Platform.getExtensionRegistry().getConfigurationElementsFor("ch.opentrainingdatabase.db");
-        IImportedDao dao = getDao(daos);
+        IImportedDao dao = (IImportedDao) DaoHelper.getDao(daos, IImportedDao.EXTENSION_POINT_NAME);
         int id = Integer.parseInt(athleteId);
         Athlete athlete = dao.getAthlete(id);
 
@@ -106,8 +105,9 @@ public class NavigationView extends ViewPart {
                 cache.setSelectedRun(first);
 
                 try {
+                    String hash = String.valueOf(cache.getSelected().toString().hashCode());
                     PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-                            .showView(SingleActivityViewPart.ID, cache.getSelected().toString(), IWorkbenchPage.VIEW_ACTIVATE);
+                            .showView(SingleActivityViewPart.ID, hash, IWorkbenchPage.VIEW_ACTIVATE);
                 } catch (PartInitException e) {
                     e.printStackTrace();
                 }
@@ -211,17 +211,6 @@ public class NavigationView extends ViewPart {
 
     }
 
-    private IImportedDao getDao(IConfigurationElement[] configurationElementsFor) {
-        for (final IConfigurationElement element : configurationElementsFor) {
-            try {
-                return (IImportedDao) element.createExecutableExtension("classImportedDao");
-            } catch (CoreException e) {
-                log.info(e.getMessage());
-            }
-        }
-        return null;
-    }
-
     private IConvert2Tcx getConverterImplementation(IConfigurationElement[] configurationElementsFor) {
         for (final IConfigurationElement element : configurationElementsFor) {
             try {
@@ -248,8 +237,8 @@ public class NavigationView extends ViewPart {
             str.append(activeIntervall).append(" aktiven Intervallen");
         } else if (activityT.getLap() != null && activityT.getLap().size() == 1) {
             ActivityLapT lap = activityT.getLap().get(0);
-            str.append("Joggen mit ").append(lap.getDistanceMeters() / 1000);
-            str.append("km in ").append(TimeHelper.convertSecondsToHumanReadableZeit(lap.getTotalTimeSeconds()));
+            str.append("Joggen mit ").append(DistanceHelper.roundDistanceFromMeterToKm(lap.getDistanceMeters()));
+            str.append(" in ").append(TimeHelper.convertSecondsToHumanReadableZeit(lap.getTotalTimeSeconds()));
         }
         return str.toString();
     }

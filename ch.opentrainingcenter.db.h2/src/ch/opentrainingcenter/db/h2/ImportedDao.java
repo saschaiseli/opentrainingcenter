@@ -54,12 +54,28 @@ public class ImportedDao extends Dao implements IImportedDao {
 
     @Override
     public Athlete getAthlete(int id) {
-        Query query = getSession().createQuery("from Athlete where id=:idAthlete");
+        Session session = getSession();
+        begin();
+        Query query = session.createQuery("from Athlete where id=:idAthlete");
         query.setParameter("idAthlete", id);
+        Athlete athlete = null;
         if (query.list() != null && query.list().size() == 1) {
-            return (Athlete) query.list().get(0);
+            athlete = (Athlete) query.list().get(0);
         }
-        return null;
+        commit();
+        session.flush();
+        return athlete;
     }
 
+    @Override
+    public void removeImportedRecord(Integer id) {
+        Session session = getSession();
+        begin();
+        Query query = session.createQuery("delete Imported where id=:id");
+        query.setParameter("id", id);
+        query.executeUpdate();
+        commit();
+        session.flush();
+        getSession().flush();
+    }
 }

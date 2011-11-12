@@ -7,7 +7,7 @@
   <property name="hibernate.connection.url">jdbc:h2:file:/home/sascha/workspace/ch.opentrainingcenter.db.h2/db/otc</property>
   <property name="hibernate.connection.username">sa</property>
   <property name="hibernate.dialect">org.hibernate.dialect.H2Dialect</property>
-  <property name="connection.pool_size">1</property>
+  <property name="connection.pool_size">10</property>
   <!-- SQL dialect 
 
 Enable Hibernate's automatic session context management
