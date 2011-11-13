@@ -67,3 +67,4 @@ Export-Package: com.keypoint,
  org.jfree.ui.tabbedui,
  org.jfree.util
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Eclipse-BuddyPolicy: registered

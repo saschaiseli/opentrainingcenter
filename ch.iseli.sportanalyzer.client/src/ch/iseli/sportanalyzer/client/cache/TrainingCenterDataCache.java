@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.ListenerList;
 
+import ch.iseli.sportanalyzer.client.model.TrainingOverview;
 import ch.iseli.sportanalyzer.tcx.TrainingCenterDatabaseT;
 
 public class TrainingCenterDataCache {
@@ -34,6 +35,13 @@ public class TrainingCenterDataCache {
 
     public TrainingCenterDatabaseTParent getSelected() {
         return selected;
+    }
+
+    /**
+     * @return eine Übersicht auf das selektierte Training.
+     */
+    public TrainingOverview getSelectedOverview() {
+        return new TrainingOverview(selected.getTrainingCenterDatabase());
     }
 
     public Collection<TrainingCenterDatabaseTParent> getAllRuns() {

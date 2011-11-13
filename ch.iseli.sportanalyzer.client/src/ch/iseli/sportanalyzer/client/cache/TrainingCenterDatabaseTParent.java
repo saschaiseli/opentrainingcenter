@@ -16,14 +16,11 @@ public class TrainingCenterDatabaseTParent {
 
     private final List<TrainingCenterDatabaseTChild> childs = new ArrayList<TrainingCenterDatabaseTChild>();
 
-    private final IAthlete athlete;
-
     private final Integer id;
 
     public TrainingCenterDatabaseTParent(Integer id, TrainingCenterDatabaseT databaseT, IAthlete athlete) {
         this.id = id;
         this.databaseT = databaseT;
-        this.athlete = athlete;
         childs.add(new TrainingCenterDatabaseTChild(this, "Geschwindigkeit", ChildTyp.SPEED));
         childs.add(new TrainingCenterDatabaseTChild(this, "Herz", ChildTyp.CARDIO));
         childs.add(new TrainingCenterDatabaseTChild(this, "Höhe", ChildTyp.LEVEL_ABOUT_SEA));

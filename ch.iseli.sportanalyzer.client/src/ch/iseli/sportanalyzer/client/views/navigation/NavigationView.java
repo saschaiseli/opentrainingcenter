@@ -237,7 +237,7 @@ public class NavigationView extends ViewPart {
             str.append(activeIntervall).append(" aktiven Intervallen");
         } else if (activityT.getLap() != null && activityT.getLap().size() == 1) {
             ActivityLapT lap = activityT.getLap().get(0);
-            str.append("Joggen mit ").append(DistanceHelper.roundDistanceFromMeterToKm(lap.getDistanceMeters()));
+            str.append("Joggen mit ").append(DistanceHelper.roundDistanceFromMeterToKmMitEinheit(lap.getDistanceMeters()));
             str.append(" in ").append(TimeHelper.convertSecondsToHumanReadableZeit(lap.getTotalTimeSeconds()));
         }
         return str.toString();

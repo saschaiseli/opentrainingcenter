@@ -13,7 +13,9 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jface,
  org.eclipse.ui.workbench,
  ch.opentrainingcenter.transfer,
- logging;bundle-version="1.0.0"
+ logging;bundle-version="1.0.0",
+ org.eclipse.ui.forms;bundle-version="3.5.100",
+ jfreechart;bundle-version="1.0.13"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: ch.iseli.sportanalyzer.client,
  ch.iseli.sportanalyzer.db,
@@ -22,5 +24,5 @@ Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: lib/log4j-1.2.16.jar,
  lib/slf4j-api-1.6.4.jar,
  .
-Eclipse-RegisterBuddy: logging
+Eclipse-RegisterBuddy: logging, jfreechart
 

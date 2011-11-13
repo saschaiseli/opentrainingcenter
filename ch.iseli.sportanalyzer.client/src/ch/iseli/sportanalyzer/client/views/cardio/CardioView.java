@@ -7,7 +7,6 @@ import org.eclipse.ui.part.ViewPart;
 
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDataCache;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDatabaseTParent;
-import ch.iseli.sportanalyzer.tcx.ActivityT;
 
 public class CardioView extends ViewPart {
 
@@ -16,13 +15,12 @@ public class CardioView extends ViewPart {
     public static final String IMAGE = "icons/cardiology.png";
     TrainingCenterDataCache cache = TrainingCenterDataCache.getInstance();
     private final TrainingCenterDatabaseTParent selected;
-    private final ActivityT activityT;
 
     // private final WorkoutT workoutT;
 
     public CardioView() {
         selected = cache.getSelected();
-        activityT = selected.getTrainingCenterDatabase().getActivities().getActivity().get(0);
+        selected.getTrainingCenterDatabase().getActivities().getActivity().get(0);
     }
 
     @Override

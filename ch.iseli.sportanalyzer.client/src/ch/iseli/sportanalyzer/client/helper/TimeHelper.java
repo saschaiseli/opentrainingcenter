@@ -20,10 +20,10 @@ public class TimeHelper {
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis((long) sec * 1000);
         StringBuffer calStr = new StringBuffer();
-        int hour = cal.get(Calendar.HOUR);
+        int hour = cal.get(Calendar.HOUR) - 1;
         int m = cal.get(Calendar.MINUTE);
         int s = cal.get(Calendar.SECOND);
-        calStr.append(addZero(hour)).append(":").append(addZero(m)).append(":").append(addZero(s));
+        calStr.append(hour).append(":").append(addZero(m)).append(":").append(addZero(s));
         return calStr.toString();
     }
 
