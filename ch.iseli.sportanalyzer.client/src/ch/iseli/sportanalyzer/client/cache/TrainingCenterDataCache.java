@@ -1,7 +1,11 @@
 package ch.iseli.sportanalyzer.client.cache;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.runtime.ListenerList;
@@ -86,5 +90,21 @@ public class TrainingCenterDataCache {
     public void remove(Integer id) {
         list.remove(id);
         fireRecordAdded(null);
+    }
+
+    public List<TrainingOverview> getAllOverviews() {
+        Collection<TrainingCenterDatabaseTParent> values = list.values();
+        List<TrainingOverview> result = new ArrayList<TrainingOverview>();
+        for (TrainingCenterDatabaseTParent t : values) {
+            result.add(new TrainingOverview(t.getTrainingCenterDatabase()));
+        }
+        Collections.sort(result, new Comparator<TrainingOverview>() {
+
+            @Override
+            public int compare(TrainingOverview o1, TrainingOverview o2) {
+                return o1.getDatum().compareTo(o2.getDatum());
+            }
+        });
+        return result;
     }
 }

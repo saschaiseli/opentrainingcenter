@@ -1,5 +1,6 @@
 package ch.iseli.sportanalyzer.client.model;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -38,6 +39,8 @@ public class TrainingOverview implements ITrainingOverview {
 
     private String maxPace;
 
+    private Date dateOfStart;
+
     public TrainingOverview(TrainingCenterDatabaseT t) {
         this.t = t;
         if (t == null) {
@@ -51,6 +54,7 @@ public class TrainingOverview implements ITrainingOverview {
         // datum
         XMLGregorianCalendar date = t.getActivities().getActivity().get(0).getId();
         datum = TimeHelper.convertGregorianDateToString(date, false);
+        dateOfStart = date.toGregorianCalendar().getTime();
         // lauflänge
         ActivityT activityT = t.getActivities().getActivity().get(0);
         List<ActivityLapT> laps = activityT.getLap();
@@ -123,6 +127,10 @@ public class TrainingOverview implements ITrainingOverview {
     @Override
     public String getDauer() {
         return dauer;
+    }
+
+    public Date getDate() {
+        return dateOfStart;
     }
 
 }

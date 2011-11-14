@@ -27,20 +27,19 @@
             id="ch.iseli.sportanalyzer.client.athletePerspective"
             name="Athlete Perspektive">
       </perspective>
+      <perspective
+            class="ch.iseli.sportanalyzer.client.StatisticPerspectiveFactory"
+            icon="icons/chart_bar.png"
+            id="ch.iseli.sportanalyzer.client.StatisticPerspective"
+            name="Statistik">
+      </perspective>
    </extension>
    <extension
          point="org.eclipse.ui.views">
       <view
-            name="Message"
-            allowMultiple="true"
-            icon="icons/sample2.gif"
-            class="ch.iseli.sportanalyzer.client.View"
-            id="ch.iseli.sportanalyzer.client.view">
-      </view>
-      <view
             name="Mailboxes"
             allowMultiple="true"
-            icon="icons/sample3.gif"
+            icon="icons/1321200870_Compass.png"
             class="ch.iseli.sportanalyzer.client.views.navigation.NavigationView"
             id="ch.iseli.sportanalyzer.client.navigationView">
       </view>
@@ -114,6 +113,13 @@
             icon="icons/package_games_sports.png"
             id="ch.iseli.sportanalyzer.client.athlete.athleteOverview"
             name="Kurzübersicht Athlete"
+            restorable="true">
+      </view>
+      <view
+            class="ch.iseli.sportanalyzer.client.views.statistics.StatisticView"
+            icon="icons/chart_bar.png"
+            id="ch.iseli.sportanalyzer.client.views.statistics.StatisticView"
+            name="StatisticView"
             restorable="true">
       </view>
    </extension>
