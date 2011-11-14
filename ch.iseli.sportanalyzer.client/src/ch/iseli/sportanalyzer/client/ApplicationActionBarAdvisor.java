@@ -73,7 +73,6 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
         MenuManager fileMenu = new MenuManager("&File", IWorkbenchActionConstants.M_FILE);
         MenuManager helpMenu = new MenuManager("&Help", IWorkbenchActionConstants.M_HELP);
         MenuManager windowsMenu = new MenuManager("&Windows", IWorkbenchActionConstants.M_WINDOW);
-
         menuBar.add(fileMenu);
         // Add a group marker indicating where action set menus will appear.
         menuBar.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
@@ -102,5 +101,6 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
         IToolBarManager toolbar = new ToolBarManager(SWT.FLAT | SWT.RIGHT);
         coolBar.add(new ToolBarContributionItem(toolbar, "main"));
         toolbar.add(importGpsFiles);
+        toolbar.add(openPerspective);
     }
 }

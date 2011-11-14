@@ -133,4 +133,11 @@ public class TrainingOverview implements ITrainingOverview {
         return dateOfStart;
     }
 
+    public double getDauerInSekunden() {
+        return timeInSeconds;
+    }
+
+    public SimpleTraining getSimpleTraining() {
+        return new SimpleTraining(distance, timeInSeconds, dateOfStart);
+    }
 }

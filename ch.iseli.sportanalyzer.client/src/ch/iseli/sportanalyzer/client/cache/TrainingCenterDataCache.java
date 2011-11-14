@@ -2,14 +2,13 @@ package ch.iseli.sportanalyzer.client.cache;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.runtime.ListenerList;
 
+import ch.iseli.sportanalyzer.client.model.SimpleTraining;
 import ch.iseli.sportanalyzer.client.model.TrainingOverview;
 import ch.iseli.sportanalyzer.tcx.TrainingCenterDatabaseT;
 
@@ -92,19 +91,13 @@ public class TrainingCenterDataCache {
         fireRecordAdded(null);
     }
 
-    public List<TrainingOverview> getAllOverviews() {
+    public List<SimpleTraining> getAllSimpleTrainings() {
         Collection<TrainingCenterDatabaseTParent> values = list.values();
-        List<TrainingOverview> result = new ArrayList<TrainingOverview>();
+        List<SimpleTraining> result = new ArrayList<SimpleTraining>();
         for (TrainingCenterDatabaseTParent t : values) {
-            result.add(new TrainingOverview(t.getTrainingCenterDatabase()));
+            TrainingOverview over = new TrainingOverview(t.getTrainingCenterDatabase());
+            result.add(over.getSimpleTraining());
         }
-        Collections.sort(result, new Comparator<TrainingOverview>() {
-
-            @Override
-            public int compare(TrainingOverview o1, TrainingOverview o2) {
-                return o1.getDatum().compareTo(o2.getDatum());
-            }
-        });
         return result;
     }
 }
