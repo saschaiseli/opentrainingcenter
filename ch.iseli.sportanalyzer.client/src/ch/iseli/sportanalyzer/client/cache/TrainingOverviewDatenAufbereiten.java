@@ -81,13 +81,16 @@ public class TrainingOverviewDatenAufbereiten {
             for (Map.Entry<Integer, List<SimpleTraining>> perInner : perYear.getValue().entrySet()) {
                 double distance = 0;
                 double seconds = 0;
+                int heartRate = 0;
                 Date date = null;
                 for (SimpleTraining training : perInner.getValue()) {
                     distance += training.getDistanzInMeter();
                     seconds += training.getDauerInSekunden();
+                    heartRate += Integer.valueOf(training.getAvgHeartRate());
                     date = training.getDatum();
                 }
-                result.add(new SimpleTraining(distance, seconds, date));
+
+                result.add(new SimpleTraining(distance, seconds, date, heartRate / perInner.getValue().size()));
             }
         }
         return result;

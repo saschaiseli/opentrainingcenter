@@ -138,6 +138,6 @@ public class TrainingOverview implements ITrainingOverview {
     }
 
     public SimpleTraining getSimpleTraining() {
-        return new SimpleTraining(distance, timeInSeconds, dateOfStart);
+        return new SimpleTraining(distance, timeInSeconds, dateOfStart, Integer.valueOf(avgHeartRate).intValue());
     }
 }

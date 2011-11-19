@@ -1,13 +1,14 @@
 package ch.iseli.sportanalyzer.client.views.statistics;
 
 import java.awt.Color;
-import java.awt.Paint;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -25,12 +26,7 @@ import org.jfree.chart.axis.DateTickMarkPosition;
 import org.jfree.chart.labels.StandardXYToolTipGenerator;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.category.LayeredBarRenderer;
-import org.jfree.chart.renderer.xy.ClusteredXYBarRenderer;
-import org.jfree.chart.renderer.xy.XYItemRenderer;
-import org.jfree.data.general.DatasetChangeEvent;
-import org.jfree.data.general.DatasetChangeListener;
-import org.jfree.data.time.Day;
+import org.jfree.chart.renderer.xy.XYBarRenderer;
 import org.jfree.data.time.RegularTimePeriod;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
@@ -41,6 +37,7 @@ import org.jfree.experimental.chart.swt.ChartComposite;
 import ch.iseli.sportanalyzer.client.cache.IRecordListener;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDataCache;
 import ch.iseli.sportanalyzer.client.cache.TrainingOverviewDatenAufbereiten;
+import ch.iseli.sportanalyzer.client.charts.ChartSerieType;
 import ch.iseli.sportanalyzer.client.model.SimpleTraining;
 import ch.iseli.sportanalyzer.tcx.TrainingCenterDatabaseT;
 
@@ -66,36 +63,60 @@ public class StatisticView extends ViewPart {
         TabFolder tabs = new TabFolder(container, SWT.BORDER);
         TabItem itemA = new TabItem(tabs, SWT.PUSH);
         itemA.setText("Tag");
-        final Composite compositeDay = new Composite(tabs, SWT.NONE);
-        itemA.setControl(compositeDay);
 
-        GridLayout layout = new GridLayout(2, false);
-        compositeDay.setLayout(layout);
-        compositeDay.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_CYAN));
-
-        Button b = new Button(compositeDay, SWT.PUSH);
-        b.setText("draw");
-        GridData gd = new GridData();
-        b.setLayoutData(gd);
-
-        datasetTag = createDataset(Day.class, cache.getAllSimpleTrainings());
-        datasetTag.addChangeListener(new DatasetChangeListener() {
+        final OTCBarChartViewer d1 = new OTCBarChartViewer(tabs, ChartSerieType.WEEK);
+        d1.addSelectionChangedListener(new ISelectionChangedListener() {
 
             @Override
-            public void datasetChanged(DatasetChangeEvent arg0) {
-                System.out.println("redraw chart");
-                chartDay.fireChartChanged();
-                chartComposite.forceRedraw();
+            public void selectionChanged(SelectionChangedEvent event) {
+                // TODO Auto-generated method stub
+                System.out.println("refresh");
             }
         });
-        chartDay = createChart(datasetTag);
-        chartComposite = new ChartComposite(compositeDay, SWT.NONE, chartDay, true);
-        gd = new GridData(SWT.FILL);
-        gd.grabExcessHorizontalSpace = true;
-        gd.grabExcessVerticalSpace = true;
-        gd.horizontalAlignment = SWT.FILL;
-        gd.verticalAlignment = SWT.FILL;
-        chartComposite.setLayoutData(gd);
+        // final Composite compositeDay = new Composite(tabs, SWT.NONE);
+        itemA.setControl(d1.getControl());
+
+        // GridLayout layout = new GridLayout(2, false);
+        // compositeDay.setLayout(layout);
+        //
+        // Button b = new Button(compositeDay, SWT.PUSH);
+        // b.setText("draw");
+        // GridData gd = new GridData();
+        // b.setLayoutData(gd);
+        //
+        // b.addSelectionListener(new SelectionListener() {
+        //
+        // @Override
+        // public void widgetSelected(SelectionEvent e) {
+        // System.out.println("click and redraw....");
+        // datasetTag = createDataset(Day.class, cache.getAllSimpleTrainings());
+        // chartDay = createChart(datasetTag);
+        // chartComposite.forceRedraw();
+        // }
+        //
+        // @Override
+        // public void widgetDefaultSelected(SelectionEvent e) {
+        //
+        // }
+        // });
+        // datasetTag = createDataset(Day.class, new ArrayList<SimpleTraining>());
+        // datasetTag.addChangeListener(new DatasetChangeListener() {
+        //
+        // @Override
+        // public void datasetChanged(DatasetChangeEvent arg0) {
+        // System.out.println("redraw chart");
+        // chartDay.fireChartChanged();
+        // chartComposite.forceRedraw();
+        // }
+        // });
+        // chartDay = createChart(datasetTag);
+        // chartComposite = new ChartComposite(compositeDay, SWT.NONE, chartDay, true);
+        // gd = new GridData(SWT.FILL);
+        // gd.grabExcessHorizontalSpace = true;
+        // gd.grabExcessVerticalSpace = true;
+        // gd.horizontalAlignment = SWT.FILL;
+        // gd.verticalAlignment = SWT.FILL;
+        // chartComposite.setLayoutData(gd);
         //
         // wochen tab
         //
@@ -107,11 +128,10 @@ public class StatisticView extends ViewPart {
 
         GridLayout layoutWoche = new GridLayout(2, false);
         compositeWoche.setLayout(layoutWoche);
-        compositeWoche.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_CYAN));
 
         Button bw = new Button(compositeWoche, SWT.PUSH);
         bw.setText("draw");
-        gd = new GridData();
+        GridData gd = new GridData();
         bw.setLayoutData(gd);
 
         datasetWoche = createDataset(Week.class, daten.getTrainingsPerWeek());
@@ -156,17 +176,26 @@ public class StatisticView extends ViewPart {
 
     private JFreeChart createChart(IntervalXYDataset dataset) {
 
-        JFreeChart chart = ChartFactory.createXYBarChart("Lauflängen", "datum", true, "distanz", dataset, PlotOrientation.VERTICAL, false, true, false);
+        JFreeChart chart = ChartFactory.createXYBarChart("Lauflängen", "Datum", true, "Distanz[m]", dataset, PlotOrientation.VERTICAL, false, true, false);
+        chart.setAntiAlias(true);
+        chart.setBorderVisible(false);
+        org.eclipse.swt.graphics.Color b = Display.getDefault().getActiveShell().getBackground();
+        Color paint = new Color(b.getRed(), b.getGreen(), b.getBlue());
+        chart.setBackgroundPaint(paint);
 
         XYPlot plot = chart.getXYPlot();
-        plot.setRenderer(new ClusteredXYBarRenderer());
-        XYItemRenderer renderer = plot.getRenderer();
+        plot.setRenderer(new XYBarRenderer());
 
-        StandardXYToolTipGenerator generator = new StandardXYToolTipGenerator("{1} = {2}", new SimpleDateFormat("dd.MM.yyyy"), new DecimalFormat("0.000"));
+        plot.setBackgroundPaint(paint);
+        plot.setDomainGridlinePaint(Color.lightGray);
+        plot.setRangeGridlinePaint(Color.lightGray);
+
+        XYBarRenderer renderer = (XYBarRenderer) plot.getRenderer();
+        OTCBarPainter painter = new OTCBarPainter();
+        renderer.setBarPainter(painter);
+
+        StandardXYToolTipGenerator generator = new StandardXYToolTipGenerator("{1} = {2}km", new SimpleDateFormat("dd.MM.yyyy"), new DecimalFormat("0.000"));
         renderer.setBaseToolTipGenerator(generator);
-
-        plot.setBackgroundPaint(Color.lightGray);
-        plot.setRangeGridlinePaint(Color.white);
 
         DateAxis axis = (DateAxis) plot.getDomainAxis();
         axis.setTickMarkPosition(DateTickMarkPosition.MIDDLE);
@@ -179,33 +208,5 @@ public class StatisticView extends ViewPart {
     @Override
     public void setFocus() {
         // TODO Auto-generated method stub
-    }
-
-    class OTCBarRenderer extends LayeredBarRenderer {
-
-        /**
-         * Creates a new renderer.
-         * 
-         * @param colors
-         *            the colors.
-         */
-        public OTCBarRenderer() {
-        }
-
-        /**
-         * Returns the paint for an item. Overrides the default behaviour inherited from AbstractSeriesRenderer.
-         * 
-         * @param row
-         *            the series.
-         * @param column
-         *            the category.
-         * 
-         * @return The item color.
-         */
-        @Override
-        public Paint getItemPaint(final int row, final int column) {
-            return Color.lightGray;
-        }
-
     }
 }
