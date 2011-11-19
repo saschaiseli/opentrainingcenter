@@ -1,4 +1,4 @@
-package ch.iseli.sportanalyzer.client.views.statistics;
+package ch.iseli.sportanalyzer.client.charts;
 
 import java.awt.Graphics2D;
 import java.awt.geom.RectangularShape;
@@ -7,7 +7,9 @@ import org.jfree.chart.renderer.xy.StandardXYBarPainter;
 import org.jfree.chart.renderer.xy.XYBarRenderer;
 import org.jfree.ui.RectangleEdge;
 
-public class OTCBarPainter extends StandardXYBarPainter {
+class OTCBarPainter extends StandardXYBarPainter {
+
+    private static final long serialVersionUID = 1L;
 
     @Override
     public void paintBar(Graphics2D g2, XYBarRenderer renderer, int row, int column, RectangularShape bar, RectangleEdge base) {

@@ -1,4 +1,4 @@
-package ch.iseli.sportanalyzer.client.views.statistics;
+package ch.iseli.sportanalyzer.client.charts;
 
 import java.awt.Color;
 import java.text.DecimalFormat;
@@ -39,6 +39,7 @@ import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.time.Day;
 import org.jfree.data.time.Month;
 import org.jfree.data.time.RegularTimePeriod;
+import org.jfree.data.time.TimePeriodAnchor;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.time.Week;
@@ -49,12 +50,13 @@ import org.jfree.experimental.chart.swt.ChartComposite;
 import ch.iseli.sportanalyzer.client.cache.IRecordListener;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDataCache;
 import ch.iseli.sportanalyzer.client.cache.TrainingOverviewDatenAufbereiten;
-import ch.iseli.sportanalyzer.client.charts.ChartSerieType;
 import ch.iseli.sportanalyzer.client.model.SimpleTraining;
 import ch.iseli.sportanalyzer.tcx.TrainingCenterDatabaseT;
 
 public class OTCBarChartViewer implements ISelectionProvider {
 
+    private static final Color COLOR_DISTANCE = new Color(128, 175, 83);
+    private static final Color COLOR_HEART = new Color(186, 6, 6);
     private static final String DISTANZ = "Distanz";
     private static final String HEART = "Herzfrequenz";
     private final Composite composite;
@@ -125,9 +127,12 @@ public class OTCBarChartViewer implements ISelectionProvider {
                 final ValueAxis axis2 = new NumberAxis("Herzfrequenz");
                 plot.setRangeAxis(1, axis2);
 
-                final XYLineAndShapeRenderer renderer2 = new XYLineAndShapeRenderer();
-                plot.setRenderer(1, renderer2);
-                plot.setDatasetRenderingOrder(DatasetRenderingOrder.REVERSE);
+                final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer(true, true);
+                renderer.setSeriesPaint(0, COLOR_HEART);
+                renderer.setShape(Cross.createCross(), true);
+                plot.setRenderer(1, renderer);
+
+                plot.setDatasetRenderingOrder(DatasetRenderingOrder.FORWARD);
                 chartComposite.forceRedraw();
             }
 
@@ -181,10 +186,12 @@ public class OTCBarChartViewer implements ISelectionProvider {
         if (DISTANZ.equals(serieTyp)) {
             timeSeriesDistanzCollection.removeAllSeries();
             timeSeriesDistanzCollection.addSeries(series.get(DISTANZ));
+            timeSeriesDistanzCollection.setXPosition(TimePeriodAnchor.MIDDLE);
             return timeSeriesDistanzCollection;
         } else if (HEART.equals(serieTyp)) {
             timeSeriesHeartCollection.removeAllSeries();
             timeSeriesHeartCollection.addSeries(series.get(HEART));
+            timeSeriesHeartCollection.setXPosition(TimePeriodAnchor.MIDDLE);
             return timeSeriesHeartCollection;
         }
         throw new IllegalArgumentException("Chart für " + serieTyp + " existiert noch nicht");
@@ -226,16 +233,19 @@ public class OTCBarChartViewer implements ISelectionProvider {
         plot.setRangeGridlinePaint(Color.lightGray);
 
         XYBarRenderer renderer = (XYBarRenderer) plot.getRenderer();
+        renderer.setSeriesPaint(0, COLOR_DISTANCE);
+
         OTCBarPainter painter = new OTCBarPainter();
         renderer.setBarPainter(painter);
+
+        renderer.setMargin(0.1);
 
         StandardXYToolTipGenerator generator = new StandardXYToolTipGenerator("{1} = {2}km", new SimpleDateFormat("dd.MM.yyyy"), new DecimalFormat("0.000"));
         renderer.setBaseToolTipGenerator(generator);
 
         DateAxis axis = (DateAxis) plot.getDomainAxis();
         axis.setTickMarkPosition(DateTickMarkPosition.MIDDLE);
-        axis.setLowerMargin(0.01);
-        axis.setUpperMargin(0.01);
+        // axis.setDateFormatOverride(new SimpleDateFormat("w"));
         return chart;
 
     }
