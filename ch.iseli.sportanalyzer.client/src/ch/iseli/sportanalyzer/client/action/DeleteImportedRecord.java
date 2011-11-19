@@ -1,5 +1,7 @@
 package ch.iseli.sportanalyzer.client.action;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
@@ -10,6 +12,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDataCache;
+import ch.iseli.sportanalyzer.client.cache.TrainingCenterDatabaseTParent;
 import ch.iseli.sportanalyzer.client.helper.DaoHelper;
 import ch.iseli.sportanalyzer.db.IImportedDao;
 
@@ -35,22 +38,20 @@ public class DeleteImportedRecord extends Action implements ISelectionListener, 
 
     @Override
     public void dispose() {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     public void run() {
-        Integer id = cache.getSelected().getId();
-        log.debug("Lösche den Lauf mit der ID " + id);
-        dao.removeImportedRecord(id);
-        cache.remove(id);
+        List<?> selection = cache.getSelection();
+        for (Object obj : selection) {
+            TrainingCenterDatabaseTParent t = (TrainingCenterDatabaseTParent) obj;
+            log.debug("Lösche den Lauf mit der ID " + t.getId());
+            dao.removeImportedRecord(t.getId());
+            cache.remove(t.getId());
+        }
     }
-
 }

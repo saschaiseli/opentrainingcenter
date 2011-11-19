@@ -134,7 +134,7 @@ public class NavigationView extends ViewPart {
                 if (first instanceof TrainingCenterDatabaseTParent) {
                     TrainingCenterDatabaseTParent parent = (TrainingCenterDatabaseTParent) first;
                     TrainingCenterDatabaseT trainingCenterDatabase = parent.getTrainingCenterDatabase();
-                    cache.setSelectedRun(parent);
+                    cache.setSelection(selection.toArray());
                     writeToStatusLine(trainingCenterDatabase);
                 } else if (first instanceof TrainingCenterDatabaseTChild) {
                     // ist ein child

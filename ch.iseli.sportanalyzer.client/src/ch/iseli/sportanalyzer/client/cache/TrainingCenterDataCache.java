@@ -1,7 +1,9 @@
 package ch.iseli.sportanalyzer.client.cache;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +23,8 @@ public class TrainingCenterDataCache {
     private final Map<Integer, TrainingCenterDatabaseTParent> list = new HashMap<Integer, TrainingCenterDatabaseTParent>();
 
     private static TrainingCenterDatabaseTParent selected;
+
+    private Object[] selectedItems;
 
     private TrainingCenterDataCache() {
     }
@@ -99,5 +103,13 @@ public class TrainingCenterDataCache {
             result.add(over.getSimpleTraining());
         }
         return result;
+    }
+
+    public void setSelection(Object[] selectedItems) {
+        this.selectedItems = selectedItems;
+    }
+
+    public List<?> getSelection() {
+        return Collections.unmodifiableList(Arrays.asList(selectedItems));
     }
 }
