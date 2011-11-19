@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -55,6 +56,8 @@ import ch.iseli.sportanalyzer.tcx.TrainingCenterDatabaseT;
 
 public class OTCBarChartViewer implements ISelectionProvider {
 
+    private static final Logger log = Logger.getLogger(OTCBarChartViewer.class);
+
     private static final Color COLOR_DISTANCE = new Color(128, 175, 83);
     private static final Color COLOR_HEART = new Color(186, 6, 6);
     private static final String DISTANZ = "Distanz";
@@ -84,6 +87,7 @@ public class OTCBarChartViewer implements ISelectionProvider {
 
             @Override
             public void recordChanged(Collection<TrainingCenterDatabaseT> entry) {
+                log.info("neue Daten importiert, Charts aktualisieren");
                 createOrUpdateDataSet(new TrainingOverviewDatenAufbereiten());
             }
         });
@@ -200,8 +204,17 @@ public class OTCBarChartViewer implements ISelectionProvider {
     private Map<String, TimeSeries> updateSeries(TrainingOverviewDatenAufbereiten daten) {
         Map<String, TimeSeries> map = new HashMap<String, TimeSeries>();
         List<SimpleTraining> trainings = new ArrayList<SimpleTraining>();
+        if (ChartSerieType.DAY.equals(type)) {
+            trainings.addAll(daten.getTrainingsPerDay());
+        }
         if (ChartSerieType.WEEK.equals(type)) {
             trainings.addAll(daten.getTrainingsPerWeek());
+        }
+        if (ChartSerieType.MONTH.equals(type)) {
+            trainings.addAll(daten.getTrainingsPerMonth());
+        }
+        if (ChartSerieType.YEAR.equals(type)) {
+            // trainings.addAll(daten.getTrainingsPerYear());
         }
         //
         for (SimpleTraining t : trainings) {

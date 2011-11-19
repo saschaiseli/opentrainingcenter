@@ -21,17 +21,18 @@ public class StatisticView extends ViewPart {
 
         TabFolder tabs = new TabFolder(container, SWT.BORDER);
 
-        TabItem itemA = new TabItem(tabs, SWT.PUSH);
-        itemA.setText(ChartSerieType.DAY.getName());
+        addItem(tabs, ChartSerieType.DAY);
+        addItem(tabs, ChartSerieType.WEEK);
+        addItem(tabs, ChartSerieType.MONTH);
+        addItem(tabs, ChartSerieType.YEAR);
+    }
 
-        final OTCBarChartViewer d1 = new OTCBarChartViewer(tabs, ChartSerieType.DAY);
-        itemA.setControl(d1.getControl());
+    private void addItem(TabFolder tabs, ChartSerieType type) {
+        final TabItem item = new TabItem(tabs, SWT.PUSH);
+        item.setText(type.getName());
 
-        TabItem itemWoche = new TabItem(tabs, SWT.PUSH);
-        itemWoche.setText(ChartSerieType.WEEK.getName());
-
-        final OTCBarChartViewer woche = new OTCBarChartViewer(tabs, ChartSerieType.WEEK);
-        itemWoche.setControl(woche.getControl());
+        final OTCBarChartViewer viewer = new OTCBarChartViewer(tabs, type);
+        item.setControl(viewer.getControl());
     }
 
     @Override

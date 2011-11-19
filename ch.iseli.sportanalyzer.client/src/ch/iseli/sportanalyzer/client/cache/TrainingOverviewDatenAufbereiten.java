@@ -20,7 +20,6 @@ public class TrainingOverviewDatenAufbereiten {
     private static final Logger logger = Logger.getLogger(TrainingOverviewDatenAufbereiten.class);
 
     private final List<SimpleTraining> all;
-
     private final List<SimpleTraining> trainingsPerWeek;
     private final List<SimpleTraining> trainingsPerMonth;
 
@@ -95,11 +94,21 @@ public class TrainingOverviewDatenAufbereiten {
         return result;
     }
 
-    public List<SimpleTraining> getTrainingsPerWeek() {
-        return Collections.unmodifiableList(trainingsPerWeek);
+    public List<SimpleTraining> getTrainingsPerDay() {
+        return Collections.unmodifiableList(all);
     }
 
     public List<SimpleTraining> getTrainingsPerMonth() {
         return Collections.unmodifiableList(trainingsPerMonth);
     }
+
+    public List<SimpleTraining> getTrainingsPerWeek() {
+        return Collections.unmodifiableList(trainingsPerWeek);
+    }
+
+    public List<SimpleTraining> getTrainingsPerYear() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }
