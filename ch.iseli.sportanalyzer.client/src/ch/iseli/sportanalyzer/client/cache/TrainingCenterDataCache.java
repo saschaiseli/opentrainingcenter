@@ -12,7 +12,6 @@ import org.eclipse.core.runtime.ListenerList;
 
 import ch.iseli.sportanalyzer.client.model.SimpleTraining;
 import ch.iseli.sportanalyzer.client.model.TrainingOverview;
-import ch.iseli.sportanalyzer.tcx.TrainingCenterDatabaseT;
 
 public class TrainingCenterDataCache {
 
@@ -20,9 +19,9 @@ public class TrainingCenterDataCache {
 
     private static TrainingCenterDataCache INSTANCE = null;
 
-    private final Map<Integer, TrainingCenterDatabaseTParent> list = new HashMap<Integer, TrainingCenterDatabaseTParent>();
+    private final Map<Integer, TrainingCenterRecord> list = new HashMap<Integer, TrainingCenterRecord>();
 
-    private static TrainingCenterDatabaseTParent selected;
+    private static TrainingCenterRecord selected;
 
     private Object[] selectedItems;
 
@@ -36,11 +35,11 @@ public class TrainingCenterDataCache {
         return INSTANCE;
     }
 
-    public void setSelectedRun(TrainingCenterDatabaseTParent selected) {
+    public void setSelectedRun(TrainingCenterRecord selected) {
         TrainingCenterDataCache.selected = selected;
     }
 
-    public TrainingCenterDatabaseTParent getSelected() {
+    public TrainingCenterRecord getSelected() {
         return selected;
     }
 
@@ -48,21 +47,21 @@ public class TrainingCenterDataCache {
      * @return eine Übersicht auf das selektierte Training.
      */
     public TrainingOverview getSelectedOverview() {
-        return new TrainingOverview(selected.getTrainingCenterDatabase());
+        return new TrainingOverview(selected);
     }
 
-    public Collection<TrainingCenterDatabaseTParent> getAllRuns() {
+    public Collection<TrainingCenterRecord> getAllRuns() {
         return list.values();
     }
 
-    public void addAll(Map<Integer, TrainingCenterDatabaseT> records) {
-        for (Map.Entry<Integer, TrainingCenterDatabaseT> record : records.entrySet()) {
-            list.put(record.getKey(), new TrainingCenterDatabaseTParent(record.getKey(), record.getValue(), null));
+    public void addAll(Map<Integer, TrainingCenterRecord> records) {
+        for (Map.Entry<Integer, TrainingCenterRecord> record : records.entrySet()) {
+            list.put(record.getKey(), record.getValue());
         }
         fireRecordAdded(records.values());
     }
 
-    private void fireRecordAdded(Collection<TrainingCenterDatabaseT> collection) {
+    private void fireRecordAdded(Collection<TrainingCenterRecord> collection) {
         if (listeners == null)
             return;
         Object[] rls = listeners.getListeners();
@@ -96,10 +95,10 @@ public class TrainingCenterDataCache {
     }
 
     public List<SimpleTraining> getAllSimpleTrainings() {
-        Collection<TrainingCenterDatabaseTParent> values = list.values();
+        Collection<TrainingCenterRecord> values = list.values();
         List<SimpleTraining> result = new ArrayList<SimpleTraining>();
-        for (TrainingCenterDatabaseTParent t : values) {
-            TrainingOverview over = new TrainingOverview(t.getTrainingCenterDatabase());
+        for (TrainingCenterRecord t : values) {
+            TrainingOverview over = new TrainingOverview(t);
             result.add(over.getSimpleTraining());
         }
         return result;

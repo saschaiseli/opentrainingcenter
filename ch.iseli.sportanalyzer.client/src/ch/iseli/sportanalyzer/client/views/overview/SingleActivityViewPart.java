@@ -29,6 +29,7 @@ import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.experimental.chart.swt.ChartComposite;
 
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDataCache;
+import ch.iseli.sportanalyzer.client.cache.TrainingCenterRecord;
 import ch.iseli.sportanalyzer.client.model.TrainingOverview;
 import ch.iseli.sportanalyzer.client.model.Units;
 import ch.iseli.sportanalyzer.tcx.ActivityLapT;
@@ -36,7 +37,6 @@ import ch.iseli.sportanalyzer.tcx.ActivityT;
 import ch.iseli.sportanalyzer.tcx.HeartRateInBeatsPerMinuteT;
 import ch.iseli.sportanalyzer.tcx.TrackT;
 import ch.iseli.sportanalyzer.tcx.TrackpointT;
-import ch.iseli.sportanalyzer.tcx.TrainingCenterDatabaseT;
 
 public class SingleActivityViewPart extends ViewPart {
 
@@ -242,8 +242,8 @@ public class SingleActivityViewPart extends ViewPart {
 
     private XYDataset createDataset(ChartType type) {
 
-        TrainingCenterDatabaseT selected = cache.getSelected().getTrainingCenterDatabase();
-        ActivityT activityT = selected.getActivities().getActivity().get(0);
+        TrainingCenterRecord selected = cache.getSelected();
+        ActivityT activityT = selected.getTrainingCenterDatabase().getActivities().getActivity().get(0);
         List<ActivityLapT> laps = activityT.getLap();
         final XYSeries series1 = new XYSeries("");
         for (ActivityLapT activityLapT : laps) {

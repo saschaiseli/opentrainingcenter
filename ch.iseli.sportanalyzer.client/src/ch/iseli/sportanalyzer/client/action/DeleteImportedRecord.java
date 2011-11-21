@@ -12,7 +12,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDataCache;
-import ch.iseli.sportanalyzer.client.cache.TrainingCenterDatabaseTParent;
+import ch.iseli.sportanalyzer.client.cache.TrainingCenterRecord;
 import ch.iseli.sportanalyzer.client.helper.DaoHelper;
 import ch.iseli.sportanalyzer.db.IImportedDao;
 
@@ -48,7 +48,7 @@ public class DeleteImportedRecord extends Action implements ISelectionListener, 
     public void run() {
         List<?> selection = cache.getSelection();
         for (Object obj : selection) {
-            TrainingCenterDatabaseTParent t = (TrainingCenterDatabaseTParent) obj;
+            TrainingCenterRecord t = (TrainingCenterRecord) obj;
             log.debug("Lösche den Lauf mit der ID " + t.getId());
             dao.removeImportedRecord(t.getId());
             cache.remove(t.getId());

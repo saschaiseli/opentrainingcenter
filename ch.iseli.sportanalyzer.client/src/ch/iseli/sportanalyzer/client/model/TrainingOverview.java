@@ -7,18 +7,18 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.apache.log4j.Logger;
 
+import ch.iseli.sportanalyzer.client.cache.TrainingCenterRecord;
 import ch.iseli.sportanalyzer.client.helper.DistanceHelper;
 import ch.iseli.sportanalyzer.client.helper.TimeHelper;
 import ch.iseli.sportanalyzer.tcx.ActivityLapT;
 import ch.iseli.sportanalyzer.tcx.ActivityT;
 import ch.iseli.sportanalyzer.tcx.IntensityT;
-import ch.iseli.sportanalyzer.tcx.TrainingCenterDatabaseT;
 
 public class TrainingOverview implements ITrainingOverview {
 
     private static final Logger logger = Logger.getLogger(TrainingOverview.class);
 
-    private final TrainingCenterDatabaseT t;
+    private final TrainingCenterRecord t;
     private String datum;
 
     private double distance;
@@ -41,7 +41,7 @@ public class TrainingOverview implements ITrainingOverview {
 
     private Date dateOfStart;
 
-    public TrainingOverview(TrainingCenterDatabaseT t) {
+    public TrainingOverview(TrainingCenterRecord t) {
         this.t = t;
         if (t == null) {
             throw new IllegalArgumentException("Trainingdatabase darf nicht null sein!");
@@ -52,11 +52,11 @@ public class TrainingOverview implements ITrainingOverview {
 
     private void init() {
         // datum
-        XMLGregorianCalendar date = t.getActivities().getActivity().get(0).getId();
+        XMLGregorianCalendar date = t.getTrainingCenterDatabase().getActivities().getActivity().get(0).getId();
         datum = TimeHelper.convertGregorianDateToString(date, false);
         dateOfStart = date.toGregorianCalendar().getTime();
         // lauflänge
-        ActivityT activityT = t.getActivities().getActivity().get(0);
+        ActivityT activityT = t.getTrainingCenterDatabase().getActivities().getActivity().get(0);
         List<ActivityLapT> laps = activityT.getLap();
         distance = 0.0;
         timeInSeconds = 0.0;

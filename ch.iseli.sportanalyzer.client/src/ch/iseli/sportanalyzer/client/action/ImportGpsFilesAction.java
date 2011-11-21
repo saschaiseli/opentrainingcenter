@@ -35,6 +35,7 @@ import ch.iseli.sportanalyzer.client.Activator;
 import ch.iseli.sportanalyzer.client.Application;
 import ch.iseli.sportanalyzer.client.PreferenceConstants;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDataCache;
+import ch.iseli.sportanalyzer.client.cache.TrainingCenterRecord;
 import ch.iseli.sportanalyzer.client.helper.DaoHelper;
 import ch.iseli.sportanalyzer.client.helper.FileNameToDateConverter;
 import ch.iseli.sportanalyzer.client.images.IImageKeys;
@@ -122,7 +123,7 @@ public class ImportGpsFilesAction extends Action implements ISelectionListener, 
 
         IConfigurationElement[] configurationElementsFor = Platform.getExtensionRegistry().getConfigurationElementsFor("ch.iseli.sportanalyzer.myimporter");
         final IConvert2Tcx tcx = getConverterImplementation(configurationElementsFor);
-        final Map<Integer, TrainingCenterDatabaseT> allRecords = new HashMap<Integer, TrainingCenterDatabaseT>();
+        final Map<Integer, TrainingCenterRecord> allRecords = new HashMap<Integer, TrainingCenterRecord>();
 
         final Job job = new Job("Lade GPS Daten") {
             @Override
@@ -134,7 +135,7 @@ public class ImportGpsFilesAction extends Action implements ISelectionListener, 
                         monitor.setTaskName("importiere File: " + file.getName());
                         TrainingCenterDatabaseT record = tcx.convert(file);
                         Integer importRecordId = dao.importRecord(athlete, file.getName());
-                        allRecords.put(importRecordId, record);
+                        allRecords.put(importRecordId, new TrainingCenterRecord(importRecordId, record));
 
                         monitor.worked(1);
                     }

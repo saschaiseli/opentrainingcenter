@@ -6,9 +6,6 @@ import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
-import ch.iseli.sportanalyzer.client.cache.TrainingCenterDatabaseTChild;
-import ch.iseli.sportanalyzer.client.cache.TrainingCenterDatabaseTParent;
-
 public class ViewContentProvider implements IStructuredContentProvider, ITreeContentProvider {
 
     @Override
@@ -27,22 +24,25 @@ public class ViewContentProvider implements IStructuredContentProvider, ITreeCon
 
     @Override
     public Object[] getChildren(Object parentElement) {
-        TrainingCenterDatabaseTParent parent = (TrainingCenterDatabaseTParent) parentElement;
-        return parent.getChilds().toArray();
+        // TrainingCenterDatabaseTParent parent = (TrainingCenterDatabaseTParent) parentElement;
+        // return parent.getChilds().toArray();
+        return null;
     }
 
     @Override
     public Object getParent(Object element) {
-        if (element instanceof TrainingCenterDatabaseTParent) {
-            return null;
-        }
-        TrainingCenterDatabaseTChild child = (TrainingCenterDatabaseTChild) element;
-        return child.getParent();
+        // if (element instanceof TrainingCenterDatabaseTParent) {
+        // return null;
+        // }
+        // TrainingCenterDatabaseTChild child = (TrainingCenterDatabaseTChild) element;
+        // return child.getParent();
+        return null;
     }
 
     @Override
     public boolean hasChildren(Object element) {
-        return element instanceof TrainingCenterDatabaseTParent;
+        // return element instanceof TrainingCenterDatabaseTParent;
+        return false;
     }
 
 }

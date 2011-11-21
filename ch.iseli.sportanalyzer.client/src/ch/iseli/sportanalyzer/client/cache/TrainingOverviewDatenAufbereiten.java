@@ -13,7 +13,6 @@ import java.util.TreeMap;
 import org.apache.log4j.Logger;
 
 import ch.iseli.sportanalyzer.client.model.SimpleTraining;
-import ch.iseli.sportanalyzer.tcx.TrainingCenterDatabaseT;
 
 public class TrainingOverviewDatenAufbereiten {
 
@@ -30,7 +29,7 @@ public class TrainingOverviewDatenAufbereiten {
         cache.addListener(new IRecordListener() {
 
             @Override
-            public void recordChanged(Collection<TrainingCenterDatabaseT> entry) {
+            public void recordChanged(Collection<TrainingCenterRecord> entry) {
                 // Datenstruktur updaten
                 logger.debug("update Struktur...");
                 trainingsPerWeek.clear();
