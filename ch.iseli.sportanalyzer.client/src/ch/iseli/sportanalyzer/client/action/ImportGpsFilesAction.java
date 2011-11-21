@@ -49,7 +49,7 @@ public class ImportGpsFilesAction extends Action implements ISelectionListener, 
 
     public static final String ID = "ch.iseli.sportanalyzer.client.importFiles";
 
-    private static final Logger log = LoggerFactory.getLogger(ImportGpsFilesAction.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(ImportGpsFilesAction.class.getName());
 
     private final IWorkbenchWindow window;
 
@@ -58,7 +58,7 @@ public class ImportGpsFilesAction extends Action implements ISelectionListener, 
     private final IImportedDao dao;
 
     public ImportGpsFilesAction(IWorkbenchWindow window, String tooltip) {
-
+        logger.debug("Import files....");
         IConfigurationElement[] daos = Platform.getExtensionRegistry().getConfigurationElementsFor("ch.opentrainingdatabase.db");
         dao = (IImportedDao) DaoHelper.getDao(daos, IImportedDao.EXTENSION_POINT_NAME);
         String athleteId = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.ATHLETE_NAME);
@@ -67,8 +67,8 @@ public class ImportGpsFilesAction extends Action implements ISelectionListener, 
             athlete = dao.getAthlete(id);
         } else {
             athlete = null;
+            logger.error("Athlete ist nicht gesetzt....");
         }
-
         this.window = window;
         setId(ID);
         setToolTipText(tooltip);
@@ -82,7 +82,7 @@ public class ImportGpsFilesAction extends Action implements ISelectionListener, 
 
     @Override
     public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-        System.out.println("");
+
     }
 
     @Override
@@ -173,7 +173,7 @@ public class ImportGpsFilesAction extends Action implements ISelectionListener, 
             try {
                 return (IConvert2Tcx) element.createExecutableExtension("class");
             } catch (CoreException e) {
-                log.error(e.getMessage());
+                logger.error(e.getMessage());
             }
         }
         return null;

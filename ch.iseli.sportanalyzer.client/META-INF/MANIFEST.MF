@@ -13,9 +13,9 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jface,
  org.eclipse.ui.workbench,
  ch.opentrainingcenter.transfer,
- logging;bundle-version="1.0.0",
- org.eclipse.ui.forms;bundle-version="3.5.100",
- jfreechart;bundle-version="1.0.13"
+ logging,
+ org.eclipse.ui.forms,
+ jfreechart
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: ch.iseli.sportanalyzer.client,
  ch.iseli.sportanalyzer.db,

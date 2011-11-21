@@ -148,9 +148,9 @@
             name="openSingleRun">
       </command>
       <command
-            description="GPS Files einlesen"
-            id="ch.iseli.sportanalyzer.client.importFiles"
-            name="importFiles">
+            description="GPS Files importieren"
+            id="ch.iseli.sportanalyzer.client.importManualFiles"
+            name="importFilesManual">
       </command>
    </extension>
    <extension
@@ -158,7 +158,7 @@
          point="org.eclipse.core.runtime.products">
       <product
             application="ch.iseli.sportanalyzer.client.application"
-            name="RCP Product">
+            name="Open Training Center">
          <property
                name="windowImages"
                value="icons/athlete_perspective.png,icons/athlete_perspective.png,icons/athlete_perspective.png,icons/athlete_perspective.png,icons/athlete_perspective.png">
@@ -169,7 +169,7 @@
          </property>
          <property
                name="appName"
-               value="RCP Product">
+               value="Open Training Center">
          </property>
          <property
                name="startupProgressRect"

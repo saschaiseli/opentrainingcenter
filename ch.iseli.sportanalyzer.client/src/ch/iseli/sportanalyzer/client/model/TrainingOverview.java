@@ -66,7 +66,7 @@ public class TrainingOverview implements ITrainingOverview {
         for (ActivityLapT lap : laps) {
             if (IntensityT.ACTIVE.equals(lap.getIntensity())) {
                 distance += lap.getDistanceMeters();
-                averageHeartRateBpm += lap.getAverageHeartRateBpm().getValue();
+                averageHeartRateBpm += lap.getAverageHeartRateBpm() != null ? lap.getAverageHeartRateBpm().getValue() : 0;
                 if (maxHeartBeat < lap.getMaximumHeartRateBpm().getValue()) {
                     maxHeartBeat = lap.getMaximumHeartRateBpm().getValue();
                 }
