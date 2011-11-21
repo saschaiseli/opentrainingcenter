@@ -62,14 +62,22 @@ public class ImportGpsFilesAction extends Action implements ISelectionListener, 
         IConfigurationElement[] daos = Platform.getExtensionRegistry().getConfigurationElementsFor("ch.opentrainingdatabase.db");
         dao = (IImportedDao) DaoHelper.getDao(daos, IImportedDao.EXTENSION_POINT_NAME);
         String athleteId = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.ATHLETE_NAME);
-        final int id = Integer.parseInt(athleteId);
-        athlete = dao.getAthlete(id);
+        if (validId(athleteId)) {
+            final int id = Integer.parseInt(athleteId);
+            athlete = dao.getAthlete(id);
+        } else {
+            athlete = null;
+        }
 
         this.window = window;
         setId(ID);
         setToolTipText(tooltip);
         setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(Application.ID, IImageKeys.IMPORT_GPS));
         window.getSelectionService().addSelectionListener(this);
+    }
+
+    private boolean validId(String athleteId) {
+        return athleteId != null && athleteId.length() > 0;
     }
 
     @Override

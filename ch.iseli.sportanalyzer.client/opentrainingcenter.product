@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="RCP Product" uid="OpenTrainingCenter" id="ch.iseli.sportanalyzer.client.opentrainingcenter" application="ch.iseli.sportanalyzer.client.application" version="1.0.0.qualifier" useFeatures="false" includeLaunchers="true">
+<product name="RCP Product" id="ch.iseli.sportanalyzer.client.opentrainingcenter" application="ch.iseli.sportanalyzer.client.application" version="1.0.0.qualifier" useFeatures="false" includeLaunchers="true">
 
    <aboutInfo>
-      <image path="product_lg.gif"/>
-      <text>
-         RCP Mail template created by PDE
-      </text>
+      <image path="/ch.iseli.sportanalyzer.client/icons/overview_chart.png"/>
    </aboutInfo>
 
    <configIni use="default">
@@ -17,13 +14,11 @@
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
    </launcherArgs>
 
-   <windowImages i16="/ch.iseli.sportanalyzer.client/icons/cardiology.png" i32="/ch.iseli.sportanalyzer.client/icons/cardiology.png" i48="/ch.iseli.sportanalyzer.client/icons/cardiology.png" i64="/ch.iseli.sportanalyzer.client/icons/cardiology.png" i128="/ch.iseli.sportanalyzer.client/icons/cardiology.png"/>
+   <windowImages i16="/ch.iseli.sportanalyzer.client/icons/athlete_perspective.png" i32="/ch.iseli.sportanalyzer.client/icons/athlete_perspective.png" i48="/ch.iseli.sportanalyzer.client/icons/athlete_perspective.png" i64="/ch.iseli.sportanalyzer.client/icons/athlete_perspective.png" i128="/ch.iseli.sportanalyzer.client/icons/athlete_perspective.png"/>
 
    <splash
       location="ch.iseli.sportanalyzer.client"
-      startupProgressRect="5,275,445,15"
-      startupMessageRect="7,252,445,20"
-      startupForegroundColor="000000" />
+      startupProgressRect="5,275,445,15" />
    <launcher>
       <solaris/>
       <win useIco="false">
@@ -35,13 +30,17 @@
    <vm>
    </vm>
 
+
    <plugins>
       <plugin id="ch.iseli.sportanalyzer.client"/>
+      <plugin id="ch.iseli.sportanalyzer.client.test" fragment="true"/>
+      <plugin id="ch.iseli.sportanalyzer.importer"/>
       <plugin id="ch.iseli.sportanalyzer.tcx"/>
       <plugin id="ch.opentrainingcenter.db.h2"/>
+      <plugin id="ch.opentrainingcenter.tcx.data"/>
       <plugin id="ch.opentrainingcenter.transfer"/>
       <plugin id="com.ibm.icu"/>
-      <plugin id="h2"/>
+      <plugin id="jfreechart"/>
       <plugin id="junit"/>
       <plugin id="logging"/>
       <plugin id="org.eclipse.core.commands"/>
@@ -75,9 +74,10 @@
       <plugin id="org.eclipse.swt.gtk.linux.x86" fragment="true"/>
       <plugin id="org.eclipse.text"/>
       <plugin id="org.eclipse.ui"/>
+      <plugin id="org.eclipse.ui.forms"/>
       <plugin id="org.eclipse.ui.ide"/>
       <plugin id="org.eclipse.ui.workbench"/>
-      <plugin id="slf4j" fragment=""/>
+      <plugin id="org.hibernate"/>
    </plugins>
 
 

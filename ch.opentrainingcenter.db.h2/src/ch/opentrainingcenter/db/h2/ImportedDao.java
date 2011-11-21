@@ -25,6 +25,9 @@ public class ImportedDao extends Dao implements IImportedDao {
     @SuppressWarnings("unchecked")
     @Override
     public Map<Integer, String> getImportedRecords(Athlete athlete) {
+        if (athlete == null) {
+            return null;
+        }
         Query query = getSession().createQuery("from Imported where id_fk_athlete=:idAthlete");
         query.setParameter("idAthlete", athlete.getId());
         List<Imported> all = query.list();

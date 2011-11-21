@@ -57,7 +57,7 @@ public class SingleActivityViewPart extends ViewPart {
 
     @Override
     public void createPartControl(Composite parent) {
-
+        logger.debug("create single activity view");
         toolkit = new FormToolkit(parent.getDisplay());
         form = toolkit.createScrolledForm(parent);
         // form.setSize(1000, 2000);
@@ -75,7 +75,6 @@ public class SingleActivityViewPart extends ViewPart {
         form.setText("Lauf vom " + datumZeit);
 
         addOverviewSection(body);
-
         addHeartSection(body);
         addAltitudeSection(body);
 

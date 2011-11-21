@@ -160,16 +160,12 @@
             application="ch.iseli.sportanalyzer.client.application"
             name="RCP Product">
          <property
-               name="aboutText"
-               value="RCP Mail template created by PDE">
-         </property>
-         <property
                name="windowImages"
-               value="icons/sample2.gif">
+               value="icons/athlete_perspective.png,icons/athlete_perspective.png,icons/athlete_perspective.png,icons/athlete_perspective.png,icons/athlete_perspective.png">
          </property>
          <property
                name="aboutImage"
-               value="product_lg.gif">
+               value="icons/overview_chart.png">
          </property>
          <property
                name="appName"
