@@ -165,19 +165,11 @@
          </property>
          <property
                name="aboutImage"
-               value="icons/overview_chart.png">
+               value="icons/mutthorn.gif">
          </property>
          <property
                name="appName"
                value="RCP Product">
-         </property>
-         <property
-               name="startupForegroundColor"
-               value="000000">
-         </property>
-         <property
-               name="startupMessageRect"
-               value="7,252,445,20">
          </property>
          <property
                name="startupProgressRect"
