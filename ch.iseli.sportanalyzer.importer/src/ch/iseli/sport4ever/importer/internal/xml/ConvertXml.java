@@ -19,8 +19,8 @@ public class ConvertXml {
 
     private final String locationOfScript;
 
-    public ConvertXml(String locationOfScript) {
-        this.locationOfScript = locationOfScript;
+    public ConvertXml(String urlOfXsd) {
+        this.locationOfScript = urlOfXsd;
     }
 
     @SuppressWarnings("unchecked")
@@ -45,7 +45,7 @@ public class ConvertXml {
 
         SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 
-        Schema schema = schemaFactory.newSchema(new File(locationOfScript + "/tcx.xsd"));
+        Schema schema = schemaFactory.newSchema(new File(locationOfScript));
         unmarshaller.setSchema(schema);
         return unmarshaller;
     }

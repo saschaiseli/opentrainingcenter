@@ -4,16 +4,18 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
+import org.osgi.framework.Bundle;
 
 import ch.iseli.sport4ever.importer.internal.xml.ConvertXml;
-import ch.iseli.sportanalyzer.client.Activator;
-import ch.iseli.sportanalyzer.client.PreferenceConstants;
 import ch.iseli.sportanalyzer.importer.FindGarminFiles;
 import ch.iseli.sportanalyzer.importer.IConvert2Tcx;
 import ch.iseli.sportanalyzer.tcx.TrainingCenterDatabaseT;
@@ -24,11 +26,23 @@ public class Gmn2Tcx implements IConvert2Tcx {
 
     private final ConvertXml delegate;
 
-    private final String locationOfScript;
+    private Bundle bundle;
 
     public Gmn2Tcx() {
-        locationOfScript = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.IMPORT_PROGRAMM).replace("garmin", "resources");
-        delegate = new ConvertXml(locationOfScript);
+
+        bundle = Platform.getBundle("ch.iseli.sportanalyzer.importer");
+        Path path = new Path("resources/tcx.xsd");
+        URL url = FileLocator.find(bundle, path, Collections.EMPTY_MAP);
+        URL fileUrl = null;
+        try {
+            fileUrl = FileLocator.toFileURL(url);
+        } catch (IOException e) {
+            log.error("Fehler beim Instanzieren von Gmn2Tcx: " + e.getMessage());
+            throw new RuntimeException(e);
+        }
+        File f = new File(fileUrl.getPath());
+
+        delegate = new ConvertXml(f.getAbsolutePath());
     }
 
     /**
@@ -37,16 +51,22 @@ public class Gmn2Tcx implements IConvert2Tcx {
      * @param locationOfScript
      */
     public Gmn2Tcx(String locationOfScript) {
-        this.locationOfScript = locationOfScript;
-        delegate = new ConvertXml(locationOfScript);
+        delegate = null;// new ConvertXml(new URL(locationOfScript));
     }
 
     @Override
     public InputStream convert2Tcx(java.io.File file) throws IOException {
-
-        String cmd = createCommandFromPlugin();
         log.debug("file " + file.getAbsolutePath() + " existiert: " + file.exists());
-        ProcessBuilder processBuilder = new ProcessBuilder(cmd, file.getAbsolutePath());
+        Path path = new Path("resources/gmn2tcx.sh");
+        URL url = FileLocator.find(bundle, path, Collections.EMPTY_MAP);
+        URL fileUrl = null;
+        try {
+            fileUrl = FileLocator.toFileURL(url);
+        } catch (IOException e) {
+            log.error("Konvertieren der GPS Daten fehlgeschlagen: " + e.getMessage());
+        }
+        File f = new File(fileUrl.getPath());
+        ProcessBuilder processBuilder = new ProcessBuilder(f.getAbsolutePath(), file.getAbsolutePath());
 
         Process process = processBuilder.start();
 
@@ -66,28 +86,9 @@ public class Gmn2Tcx implements IConvert2Tcx {
         return cmd;
     }
 
-    private String createCommandFromPlugin() {
-        return locationOfScript + "/gmn2tcx.sh";
-    }
-
     @Override
     public List<File> loadAllGPSFiles() {
         return FindGarminFiles.getGarminFiles();
-    }
-
-    @Override
-    public List<File> loadAllGPSFiles(List<String> garminFilesBlackList) {
-        if (garminFilesBlackList == null) {
-            throw new IllegalArgumentException();
-        }
-        List<File> all = loadAllGPSFiles();
-        List<File> result = new ArrayList<File>();
-        for (File file : all) {
-            if (garminFilesBlackList.contains(file.getName())) {
-                result.add(file);
-            }
-        }
-        return result;
     }
 
     @Override
@@ -107,6 +108,11 @@ public class Gmn2Tcx implements IConvert2Tcx {
             }
         }
         return result;
+    }
+
+    @Override
+    public String getFilePrefix() {
+        return "gmn";
     }
 
     private boolean istFileNameVonKeyIn(Map<String, File> fileNameToFile, Map.Entry<Integer, String> entry) {

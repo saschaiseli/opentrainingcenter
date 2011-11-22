@@ -88,10 +88,12 @@ public class ImportManualGpsFiles extends Action implements ISelectionListener, 
 
     @Override
     public void run() {
+        IConfigurationElement[] configurationElementsFor = Platform.getExtensionRegistry().getConfigurationElementsFor("ch.iseli.sportanalyzer.myimporter");
+        final IConvert2Tcx tcx = getConverterImplementation(configurationElementsFor);
         final FileDialog fileDialog = new FileDialog(window.getShell(), SWT.MULTI);
         fileDialog.setFilterPath(defaultLocation);
-        fileDialog.setFilterExtensions(new String[] { "*.gmn" });
-        fileDialog.setFilterNames(new String[] { "Configuration files (*.gmn)" });
+        fileDialog.setFilterExtensions(new String[] { "*." + tcx.getFilePrefix() });
+        fileDialog.setFilterNames(new String[] { "Configuration files (*." + tcx.getFilePrefix() + ")" });
         fileDialog.setText("FileDialog");
         final String s = fileDialog.open();
         if (s != null) {
@@ -100,8 +102,6 @@ public class ImportManualGpsFiles extends Action implements ISelectionListener, 
             for (String string : fileNames) {
                 logger.debug("File " + string + " selektiert");
             }
-            IConfigurationElement[] configurationElementsFor = Platform.getExtensionRegistry().getConfigurationElementsFor("ch.iseli.sportanalyzer.myimporter");
-            final IConvert2Tcx tcx = getConverterImplementation(configurationElementsFor);
             final Map<Integer, TrainingCenterRecord> allRecords = new HashMap<Integer, TrainingCenterRecord>();
             final Job job = new Job("Lade GPS Daten") {
                 @Override

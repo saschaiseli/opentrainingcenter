@@ -15,8 +15,9 @@ public interface IConvert2Tcx {
     /**
      * Konvertiert ein *.gmn File in eine Garmin spezifisches XML.
      * 
-     * @param file
-     * @return das XML als String
+     * @param das
+     *            herstellerspezifische gps file. Für Garmin zum Beispiel ein 20110402T141929.gmn
+     * @return das Garmin spezifische XML als Stream
      * @throws IOException
      */
     InputStream convert2Tcx(File file) throws IOException;
@@ -41,6 +42,9 @@ public interface IConvert2Tcx {
 
     Map<Integer, File> loadAllGPSFilesFromAthlete(Map<Integer, String> garminFiles);
 
-    List<File> loadAllGPSFiles(List<String> garminFilesBlackList);
+    /**
+     * @return den prefix für ein GPS file. Bei Garmin wird demnach 'gmn' zurückgegeben.
+     */
+    public String getFilePrefix();
 
 }
