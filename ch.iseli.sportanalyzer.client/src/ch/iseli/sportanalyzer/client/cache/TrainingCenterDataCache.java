@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.eclipse.core.runtime.ListenerList;
 
@@ -19,7 +19,7 @@ public class TrainingCenterDataCache {
 
     private static TrainingCenterDataCache INSTANCE = null;
 
-    private final Map<Integer, TrainingCenterRecord> list = new HashMap<Integer, TrainingCenterRecord>();
+    private final Map<Integer, TrainingCenterRecord> list = new TreeMap<Integer, TrainingCenterRecord>();
 
     private static TrainingCenterRecord selected;
 
@@ -111,4 +111,5 @@ public class TrainingCenterDataCache {
     public List<?> getSelection() {
         return Collections.unmodifiableList(Arrays.asList(selectedItems));
     }
+
 }
