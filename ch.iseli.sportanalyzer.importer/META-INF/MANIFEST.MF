@@ -6,8 +6,6 @@ Bundle-Version: 1.0.0.qualifier
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  ch.iseli.sportanalyzer.tcx,
- org.eclipse.ui.ide,
- org.eclipse.core.resources,
  ch.iseli.sportanalyzer.client,
  logging,
  ch.opentrainingcenter.transfer

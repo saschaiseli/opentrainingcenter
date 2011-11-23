@@ -6,8 +6,6 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: ch.iseli.sportanalyzer.client.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.eclipse.ui.ide,
- org.eclipse.core.resources,
  ch.iseli.sportanalyzer.tcx,
  org.eclipse.swt,
  org.eclipse.jface,
