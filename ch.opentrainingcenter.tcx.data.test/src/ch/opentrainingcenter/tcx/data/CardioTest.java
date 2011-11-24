@@ -8,17 +8,17 @@ import java.io.File;
 import org.junit.Before;
 import org.junit.Test;
 
-import ch.iseli.sport4ever.importer.internal.Gmn2Tcx;
+import ch.iseli.sport4ever.importer.Gmn2Tcx;
 import ch.iseli.sportanalyzer.tcx.TrainingCenterDatabaseT;
 import ch.opentrainingcenter.tcx.data.internal.CardioImpl;
 
 public class CardioTest {
-    private static final String     GARMIN_FILE_NO_INTERVALL = "garmin/20110123T113055.gmn";
-    private static final String     GARMIN_FILE_INTERVALL    = "garmin/20110814T142321.gmn";
-    private Gmn2Tcx                 importer;
-    private File                    file;
-    private String                  path;
-    private Cardio                  cardio;
+    private static final String GARMIN_FILE_NO_INTERVALL = "garmin/20110123T113055.gmn";
+    private static final String GARMIN_FILE_INTERVALL = "garmin/20110814T142321.gmn";
+    private Gmn2Tcx importer;
+    private File file;
+    private String path;
+    private Cardio cardio;
     private TrainingCenterDatabaseT t_no_intervall;
     private TrainingCenterDatabaseT t_intervall;
 

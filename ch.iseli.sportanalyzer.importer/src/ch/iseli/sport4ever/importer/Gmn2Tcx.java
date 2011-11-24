@@ -1,4 +1,4 @@
-package ch.iseli.sport4ever.importer.internal;
+package ch.iseli.sport4ever.importer;
 
 import java.io.File;
 import java.io.IOException;

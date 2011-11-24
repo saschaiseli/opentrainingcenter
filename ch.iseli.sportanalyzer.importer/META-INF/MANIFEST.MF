@@ -3,12 +3,13 @@ Bundle-ManifestVersion: 2
 Bundle-Name: importer
 Bundle-SymbolicName: ch.iseli.sportanalyzer.importer;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime,
- ch.iseli.sportanalyzer.tcx,
+Require-Bundle: org.eclipse.core.runtime,
+ ch.opentrainingcenter.transfer,
  ch.iseli.sportanalyzer.client,
- logging,
- ch.opentrainingcenter.transfer
+ ch.iseli.sportanalyzer.tcx,
+ logging
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: ch.iseli.sport4ever.importer.internal
+Export-Package: ch.iseli.sport4ever.importer;uses:="ch.iseli.sportanalyzer.tcx,ch.iseli.sportanalyzer.importer"
+Bundle-ClassPath: bin/,
+ resources/
 Eclipse-RegisterBuddy: logging

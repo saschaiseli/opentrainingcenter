@@ -4,8 +4,7 @@
    <extension
          point="ch.iseli.sportanalyzer.myimporter">
       <convert
-            class="ch.iseli.sport4ever.importer.internal.Gmn2Tcx">
+            class="ch.iseli.sport4ever.importer.Gmn2Tcx">
       </convert>
    </extension>
-
 </plugin>

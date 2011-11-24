@@ -10,14 +10,12 @@ import java.io.InputStream;
 import org.junit.Before;
 import org.junit.Test;
 
-import ch.iseli.sport4ever.importer.internal.Gmn2Tcx;
-
 public class Gmn2TcxTest {
 
     private static final String GARMIN_FILE = "garmin/20110814T142321.gmn";
-    private Gmn2Tcx             importer;
-    private File                file;
-    private String              path;
+    private Gmn2Tcx importer;
+    private File file;
+    private String path;
 
     @Before
     public void setUp() {
