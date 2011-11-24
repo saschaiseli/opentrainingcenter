@@ -7,10 +7,10 @@ Bundle-Activator: ch.iseli.sportanalyzer.client.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  ch.iseli.sportanalyzer.tcx,
+ ch.opentrainingcenter.transfer,
  org.eclipse.swt,
  org.eclipse.jface,
  org.eclipse.ui.workbench,
- ch.opentrainingcenter.transfer,
  logging,
  org.eclipse.ui.forms,
  jfreechart

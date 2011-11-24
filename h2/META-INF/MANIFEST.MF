@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: H2
-Bundle-SymbolicName: h2
+Bundle-Name: H2_LIB
+Bundle-SymbolicName: h2_lib
 Bundle-Version: 1.0.0
 Bundle-ClassPath: h2-1.3.160.jar
 Export-Package: org.h2,

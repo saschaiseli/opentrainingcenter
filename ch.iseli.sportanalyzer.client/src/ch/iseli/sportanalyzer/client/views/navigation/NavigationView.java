@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -50,6 +51,9 @@ import ch.opentrainingcenter.transfer.impl.Athlete;
 
 public class NavigationView extends ViewPart {
     public static final String ID = "ch.iseli.sportanalyzer.client.navigationView";
+
+    private static final Logger logger = Logger.getLogger(NavigationView.class);
+
     private TreeViewer viewer;
 
     private final TrainingCenterDataCache cache = TrainingCenterDataCache.getInstance();
@@ -63,6 +67,7 @@ public class NavigationView extends ViewPart {
         String athleteId = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.ATHLETE_NAME);
 
         IConfigurationElement[] daos = Platform.getExtensionRegistry().getConfigurationElementsFor("ch.opentrainingdatabase.db");
+        logger.info("daos suchen: " + daos.length);
         IImportedDao dao = (IImportedDao) DaoHelper.getDao(daos, IImportedDao.EXTENSION_POINT_NAME);
         int id = Integer.parseInt(athleteId);
         Athlete athlete = dao.getAthlete(id);

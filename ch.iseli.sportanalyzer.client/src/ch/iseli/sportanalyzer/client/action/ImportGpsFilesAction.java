@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -28,8 +29,6 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 import org.eclipse.ui.dialogs.ListSelectionDialog;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import ch.iseli.sportanalyzer.client.Activator;
 import ch.iseli.sportanalyzer.client.Application;
@@ -49,7 +48,7 @@ public class ImportGpsFilesAction extends Action implements ISelectionListener, 
 
     public static final String ID = "ch.iseli.sportanalyzer.client.importFiles";
 
-    private static final Logger logger = LoggerFactory.getLogger(ImportGpsFilesAction.class.getName());
+    private static final Logger logger = Logger.getLogger(ImportGpsFilesAction.class.getName());
 
     private final IWorkbenchWindow window;
 
@@ -66,7 +65,7 @@ public class ImportGpsFilesAction extends Action implements ISelectionListener, 
             final int id = Integer.parseInt(athleteId);
             athlete = dao.getAthlete(id);
         } else {
-            athlete = null;
+            athlete = new Athlete(1);
             logger.error("Athlete ist nicht gesetzt....");
         }
         this.window = window;

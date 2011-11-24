@@ -105,7 +105,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
     protected void fillCoolBar(ICoolBarManager coolBar) {
         IToolBarManager toolbar = new ToolBarManager(SWT.FLAT | SWT.RIGHT);
         coolBar.add(new ToolBarContributionItem(toolbar, "main"));
-        toolbar.add(importGpsFiles);
+        // toolbar.add(importGpsFiles);
         toolbar.add(importGpsFilesManual);
         toolbar.add(openPerspective);
     }

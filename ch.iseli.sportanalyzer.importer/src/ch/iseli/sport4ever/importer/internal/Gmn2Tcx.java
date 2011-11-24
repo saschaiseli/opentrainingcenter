@@ -29,6 +29,7 @@ public class Gmn2Tcx implements IConvert2Tcx {
     private Bundle bundle;
 
     public Gmn2Tcx() {
+        log.info("Gmn2Tcx erfolgreich instanziert....");
         bundle = Platform.getBundle("ch.iseli.sportanalyzer.importer");
         Path path = new Path("resources/tcx.xsd");
         URL url = FileLocator.find(bundle, path, Collections.EMPTY_MAP);

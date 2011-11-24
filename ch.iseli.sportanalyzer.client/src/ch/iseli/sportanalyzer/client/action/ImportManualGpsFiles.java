@@ -168,6 +168,11 @@ public class ImportManualGpsFiles extends Action implements ISelectionListener, 
     private IConvert2Tcx getConverterImplementation(IConfigurationElement[] configurationElementsFor) {
         for (final IConfigurationElement element : configurationElementsFor) {
             try {
+                logger.info("plugin extension suchen: " + "class");
+                String[] attributeNames = element.getAttributeNames();
+                for (String str : attributeNames) {
+                    logger.info("Attr name: '" + str + "'");
+                }
                 return (IConvert2Tcx) element.createExecutableExtension("class");
             } catch (CoreException e) {
                 logger.error(e.getMessage());
