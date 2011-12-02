@@ -43,4 +43,9 @@ public interface IImportedDao extends IExecutableExtensionFactory {
     Athlete getAthlete(int id);
 
     void removeImportedRecord(Integer id);
+
+    /**
+     * Wenn die db nicht vorhanden ist, wird die ganze datenbank mit sql queries erstellt.
+     */
+    void createDatabase();
 }

@@ -94,7 +94,7 @@ public class Gmn2Tcx implements IConvert2Tcx {
     @Override
     public Map<Integer, File> loadAllGPSFilesFromAthlete(Map<Integer, String> garminFiles) {
         if (garminFiles == null) {
-            throw new IllegalArgumentException();
+            return Collections.emptyMap();
         }
         List<File> all = loadAllGPSFiles();
         Map<String, File> fileNameToFile = new HashMap<String, File>();

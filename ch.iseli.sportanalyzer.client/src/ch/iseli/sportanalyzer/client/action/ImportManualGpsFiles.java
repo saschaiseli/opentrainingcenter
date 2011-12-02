@@ -1,10 +1,6 @@
 package ch.iseli.sportanalyzer.client.action;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.channels.FileChannel;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,6 +32,7 @@ import ch.iseli.sportanalyzer.client.helper.DaoHelper;
 import ch.iseli.sportanalyzer.client.images.IImageKeys;
 import ch.iseli.sportanalyzer.db.IImportedDao;
 import ch.iseli.sportanalyzer.importer.IConvert2Tcx;
+import ch.iseli.sportanalyzer.importer.util.FileCopy;
 import ch.iseli.sportanalyzer.tcx.TrainingCenterDatabaseT;
 import ch.opentrainingcenter.transfer.impl.Athlete;
 
@@ -115,7 +112,7 @@ public class ImportManualGpsFiles extends Action implements ISelectionListener, 
                             TrainingCenterDatabaseT record = tcx.convert(file);
                             Integer importRecordId = dao.importRecord(athlete, file.getName());
                             allRecords.put(importRecordId, new TrainingCenterRecord(importRecordId, record));
-                            copyFile(file, new File(defaultLocation, file.getName()));
+                            FileCopy.copyFile(file, new File(defaultLocation, file.getName()));
                             monitor.worked(1);
                         }
                     } catch (Exception e1) {
@@ -137,31 +134,6 @@ public class ImportManualGpsFiles extends Action implements ISelectionListener, 
                 }
             };
             job.schedule();
-        }
-    }
-
-    private void copyFile(File sourceFile, File destFile) throws IOException {
-        if (!destFile.exists()) {
-            destFile.createNewFile();
-        }
-
-        FileChannel source = null;
-        FileChannel destination = null;
-        try {
-            source = new FileInputStream(sourceFile).getChannel();
-            destination = new FileOutputStream(destFile).getChannel();
-
-            long count = 0;
-            long size = source.size();
-            while ((count += destination.transferFrom(source, 0, size - count)) < size)
-                ;
-        } finally {
-            if (source != null) {
-                source.close();
-            }
-            if (destination != null) {
-                destination.close();
-            }
         }
     }
 
