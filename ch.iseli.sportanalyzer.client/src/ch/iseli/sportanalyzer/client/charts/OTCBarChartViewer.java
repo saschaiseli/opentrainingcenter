@@ -133,7 +133,7 @@ public class OTCBarChartViewer implements ISelectionProvider {
 
                 final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer(true, true);
                 renderer.setSeriesPaint(0, COLOR_HEART);
-                renderer.setShape(Cross.createCross(), true);
+                renderer.setBaseShape(Cross.createCross(), true);
                 plot.setRenderer(1, renderer);
 
                 plot.setDatasetRenderingOrder(DatasetRenderingOrder.FORWARD);

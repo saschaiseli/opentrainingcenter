@@ -30,6 +30,7 @@ import org.jfree.experimental.chart.swt.ChartComposite;
 
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDataCache;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterRecord;
+import ch.iseli.sportanalyzer.client.helper.SpeedCalculator;
 import ch.iseli.sportanalyzer.client.model.TrainingOverview;
 import ch.iseli.sportanalyzer.client.model.Units;
 import ch.iseli.sportanalyzer.tcx.ActivityLapT;
@@ -76,6 +77,7 @@ public class SingleActivityViewPart extends ViewPart {
 
         addOverviewSection(body);
         addHeartSection(body);
+        addSpeedSection(body);
         addAltitudeSection(body);
 
     }
@@ -107,44 +109,9 @@ public class SingleActivityViewPart extends ViewPart {
         overviewSection.setClient(overViewComposite);
     }
 
-    private void addAltitudeSection(Composite body) {
-        Section altitude = toolkit.createSection(body, Section.DESCRIPTION | Section.TITLE_BAR | Section.TWISTIE | Section.EXPANDED);
-        altitude.setExpanded(false);
-        altitude.addExpansionListener(new ExpansionAdapter() {
-            @Override
-            public void expansionStateChanged(ExpansionEvent e) {
-                form.reflow(true);
-            }
-        });
-        td = new TableWrapData(TableWrapData.FILL_GRAB);
-        td.colspan = 1;
-        td.grabHorizontal = true;
-        td.grabVertical = true;
-        altitude.setLayoutData(td);
-        altitude.setText("Höhe");
-        altitude.setDescription("Verlauf der Höhe");
-
-        Composite client = toolkit.createComposite(altitude);
-
-        TableWrapLayout layout = new TableWrapLayout();
-        layout.numColumns = 2;
-        layout.makeColumnsEqualWidth = false;
-
-        client.setLayout(layout);
-
-        Label dauerLabel = toolkit.createLabel(client, "blabla 1");
-        td = new TableWrapData();
-        dauerLabel.setLayoutData(td);
-
-        JFreeChart chart = createChart(createDataset(ChartType.ALTITUDE_DISTANCE), ChartType.ALTITUDE_DISTANCE);
-        ChartComposite chartComposite = new ChartComposite(client, SWT.NONE, chart, true);
-        td = new TableWrapData(TableWrapData.FILL_GRAB);
-        td.heightHint = 400;
-        chartComposite.setLayoutData(td);
-
-        altitude.setClient(client);
-    }
-
+    /**
+     * Herz frequenz
+     */
     private void addHeartSection(Composite body) {
         Section heartSection = toolkit.createSection(body, Section.DESCRIPTION | Section.TITLE_BAR | Section.TWISTIE | Section.EXPANDED);
         heartSection.addExpansionListener(new ExpansionAdapter() {
@@ -181,6 +148,85 @@ public class SingleActivityViewPart extends ViewPart {
         chartComposite.setLayoutData(td);
 
         heartSection.setClient(client);
+    }
+
+    private void addSpeedSection(Composite body) {
+        Section speedSection = toolkit.createSection(body, Section.DESCRIPTION | Section.TITLE_BAR | Section.TWISTIE | Section.EXPANDED);
+        speedSection.addExpansionListener(new ExpansionAdapter() {
+            @Override
+            public void expansionStateChanged(ExpansionEvent e) {
+                form.reflow(true);
+            }
+        });
+        speedSection.setExpanded(false);
+        td = new TableWrapData(TableWrapData.FILL_GRAB);
+        td.colspan = 1;
+        td.grabHorizontal = true;
+        td.grabVertical = true;
+        speedSection.setLayoutData(td);
+        speedSection.setText("Geschwindigkeit");
+        speedSection.setDescription("Pace [min/km]");
+        //
+        Composite client = toolkit.createComposite(speedSection);
+
+        TableWrapLayout layout = new TableWrapLayout();
+        layout.numColumns = 2;
+        layout.makeColumnsEqualWidth = false;
+
+        client.setLayout(layout);
+
+        Label dauerLabel = toolkit.createLabel(client, "");
+        td = new TableWrapData();
+        dauerLabel.setLayoutData(td);
+
+        JFreeChart chart = createChart(createDataset(ChartType.SPEED_DISTANCE), ChartType.SPEED_DISTANCE);
+        ChartComposite chartComposite = new ChartComposite(client, SWT.NONE, chart, true);
+        td = new TableWrapData(TableWrapData.FILL_GRAB);
+        td.heightHint = 400;
+        chartComposite.setLayoutData(td);
+
+        speedSection.setClient(client);
+    }
+
+    /**
+     * Verlauf der höhe
+     */
+    private void addAltitudeSection(Composite body) {
+        Section altitude = toolkit.createSection(body, Section.DESCRIPTION | Section.TITLE_BAR | Section.TWISTIE | Section.EXPANDED);
+        altitude.setExpanded(false);
+        altitude.addExpansionListener(new ExpansionAdapter() {
+            @Override
+            public void expansionStateChanged(ExpansionEvent e) {
+                form.reflow(true);
+            }
+        });
+        td = new TableWrapData(TableWrapData.FILL_GRAB);
+        td.colspan = 1;
+        td.grabHorizontal = true;
+        td.grabVertical = true;
+        altitude.setLayoutData(td);
+        altitude.setText("Höhe");
+        altitude.setDescription("Verlauf der Höhe");
+
+        Composite client = toolkit.createComposite(altitude);
+
+        TableWrapLayout layout = new TableWrapLayout();
+        layout.numColumns = 2;
+        layout.makeColumnsEqualWidth = false;
+
+        client.setLayout(layout);
+
+        Label dauerLabel = toolkit.createLabel(client, "blabla 1");
+        td = new TableWrapData();
+        dauerLabel.setLayoutData(td);
+
+        JFreeChart chart = createChart(createDataset(ChartType.ALTITUDE_DISTANCE), ChartType.ALTITUDE_DISTANCE);
+        ChartComposite chartComposite = new ChartComposite(client, SWT.NONE, chart, true);
+        td = new TableWrapData(TableWrapData.FILL_GRAB);
+        td.heightHint = 400;
+        chartComposite.setLayoutData(td);
+
+        altitude.setClient(client);
     }
 
     private void addLabelAndValue(Composite parent, String label, String value, Units unit) {
@@ -249,8 +295,10 @@ public class SingleActivityViewPart extends ViewPart {
             List<TrackT> tracks = activityLapT.getTrack();
             for (TrackT track : tracks) {
                 List<TrackpointT> trackpoints = track.getTrackpoint();
+                TrackpointT previousTrackPoint = null;
                 for (TrackpointT trackpoint : trackpoints) {
-                    addPoint(type, series1, trackpoint);
+                    addPoint(type, series1, trackpoint, previousTrackPoint);
+                    previousTrackPoint = trackpoint;
                 }
             }
         }
@@ -261,26 +309,39 @@ public class SingleActivityViewPart extends ViewPart {
         return dataset;
     }
 
-    private void addPoint(final ChartType type, final XYSeries series1, TrackpointT trackpoint) {
+    private void addPoint(final ChartType type, final XYSeries serie, TrackpointT point, TrackpointT previousPoint) {
         switch (type) {
         case HEART_DISTANCE: {
-            Double m = trackpoint.getDistanceMeters();
-            HeartRateInBeatsPerMinuteT bpm = trackpoint.getHeartRateBpm();
+            Double m = point.getDistanceMeters();
+            HeartRateInBeatsPerMinuteT bpm = point.getHeartRateBpm();
             if (m != null && bpm != null) {
-                series1.add(trackpoint.getDistanceMeters().doubleValue(), trackpoint.getHeartRateBpm().getValue());
+                serie.add(point.getDistanceMeters().doubleValue(), point.getHeartRateBpm().getValue());
             }
             break;
         }
         case ALTITUDE_DISTANCE: {
-            Double m = trackpoint.getDistanceMeters();
-            Double alti = trackpoint.getAltitudeMeters();
+            Double m = point.getDistanceMeters();
+            Double alti = point.getAltitudeMeters();
             if (m != null && alti != null) {
-                series1.add(trackpoint.getDistanceMeters().doubleValue(), alti.doubleValue());
+                serie.add(point.getDistanceMeters().doubleValue(), alti.doubleValue());
             }
             break;
         }
+        case SPEED_DISTANCE: {
+            if (previousPoint != null && validateTrackPointVorSpeed(point) && validateTrackPointVorSpeed(previousPoint)) {
+                double d2 = point.getDistanceMeters();
+                double d1 = previousPoint.getDistanceMeters();
+                double t2 = point.getTime().toGregorianCalendar().getTimeInMillis() / 1000;
+                double t1 = previousPoint.getTime().toGregorianCalendar().getTimeInMillis() / 1000;
+                double vMeterProSekunde = SpeedCalculator.calculatePace(d1, d2, t1, t2);
+                serie.add(point.getDistanceMeters().doubleValue(), vMeterProSekunde);
+            }
         }
+        }
+    }
 
+    private boolean validateTrackPointVorSpeed(TrackpointT point) {
+        return point.getDistanceMeters() != null && point.getTime() != null;
     }
 
     @Override
@@ -288,9 +349,6 @@ public class SingleActivityViewPart extends ViewPart {
         form.setFocus();
     }
 
-    /**
-     * Disposes the toolkit
-     */
     @Override
     public void dispose() {
         toolkit.dispose();
