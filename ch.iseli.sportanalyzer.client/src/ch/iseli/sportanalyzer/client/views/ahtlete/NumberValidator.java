@@ -8,10 +8,12 @@ public class NumberValidator implements IValidator {
 
     private final int max;
     private final int min;
+    private final String messageWennLeer;
 
-    public NumberValidator(final int min, final int max) {
+    public NumberValidator(final int min, final int max, final String messageWennLeer) {
         this.min = min;
         this.max = max;
+        this.messageWennLeer = messageWennLeer;
 
     }
 
@@ -30,6 +32,6 @@ public class NumberValidator implements IValidator {
                 }
             }
         }
-        return ValidationStatus.error("Keine Zahl");
+        return ValidationStatus.error(messageWennLeer);
     }
 }

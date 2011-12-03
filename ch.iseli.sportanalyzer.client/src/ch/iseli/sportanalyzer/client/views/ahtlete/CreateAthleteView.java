@@ -14,6 +14,7 @@ import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -74,83 +75,98 @@ public class CreateAthleteView extends ViewPart {
 
         td = new TableWrapData(TableWrapData.FILL_GRAB);
         body.setLayoutData(td);
-        form.setText(titleOfComposite);
+        form.setText("Verwalten der Benutzer / Profile");
 
         createSelectSportler(body);
         createAddSportlerMask(body);
-        //
-        // if (athleteId != null && athleteId.length() > 0) {
-        // final Athlete athlete = dao.getAthlete(Integer.parseInt(athleteId));
-        // if (athlete == null) {
-        // // Athlete nicht gefunden. Einen auswählen
-        // final Label label = new Label(parent, SWT.NONE);
-        // label.setText("Den Benutzer auswählen");
-        // final List<Athlete> allAthletes = dao.getAllAthletes();
-        // final ComboViewer combo = new ComboViewer(parent, SWT.READ_ONLY);
-        // combo.setContentProvider(new ArrayContentProvider());
-        // combo.setLabelProvider(new LabelProvider() {
-        //
-        // @Override
-        // public String getText(final Object element) {
-        // final Athlete athlete = (Athlete) element;
-        // return athlete.getName();
-        // }
-        //
-        // });
-        //
-        // combo.setInput(allAthletes);
-        // combo.addSelectionChangedListener(new ISelectionChangedListener() {
-        //
-        // @Override
-        // public void selectionChanged(final SelectionChangedEvent event) {
-        // final IStructuredSelection selection = (IStructuredSelection) event.getSelection();
-        // final Athlete a = (Athlete) selection.getFirstElement();
-        // Activator.getDefault().getPreferenceStore().setValue(PreferenceConstants.ATHLETE_NAME, a.getName());
-        // }
-        // });
-        // }
-        // } else {
-        // createAddSportlerMask(parent);
-        // }
     }
 
     private void createSelectSportler(final Composite body) {
-        final Section overviewSection = toolkit.createSection(body, Section.DESCRIPTION | Section.TITLE_BAR | Section.TWISTIE | Section.EXPANDED);
-        overviewSection.addExpansionListener(new ExpansionAdapter() {
+        final Section selectSportler = toolkit.createSection(body, Section.DESCRIPTION | Section.TITLE_BAR | Section.TWISTIE | Section.EXPANDED);
+        selectSportler.addExpansionListener(new ExpansionAdapter() {
             @Override
             public void expansionStateChanged(final ExpansionEvent e) {
                 form.reflow(true);
             }
         });
+        selectSportler.setExpanded(false);
         td = new TableWrapData();
         td.colspan = 1;
-        overviewSection.setLayoutData(td);
-        overviewSection.setText("Einen neuen Benutzer auswählen");
-        // overviewSection.setDescription("Einen neuen Benutzer erstellen");
+        selectSportler.setLayoutData(td);
+        selectSportler.setText("Benutzer aus der Datenbank auswählen");
+        selectSportler
+                .setDescription("Der ausgewählte Benutzer wird dannach im Opentraining Center verwendet. Alle Daten die mit diesem User importiert werden, werden ihm auch zugewiesen.");
 
-        final Composite overViewComposite = toolkit.createComposite(overviewSection);
+        final Composite sportlerComposite = toolkit.createComposite(selectSportler);
         final GridLayout layoutClient = new GridLayout(2, false);
-        overViewComposite.setLayout(layoutClient);
+        sportlerComposite.setLayout(layoutClient);
 
         final List<Athlete> allAthletes = DatabaseAccessFactory.getDatabaseAccess().getAllAthletes();
 
         // gender
-        final Label genderLabel = new Label(overViewComposite, SWT.NONE);
-        genderLabel.setText("Sportler/in: ");
-        user = new Combo(overViewComposite, SWT.NONE);
+        final Label sportlerLabel = new Label(sportlerComposite, SWT.NONE);
+        sportlerLabel.setText("Sportler/in: ");
+
+        GridData gridData = new GridData();
+        gridData.horizontalAlignment = SWT.FILL;
+        gridData.grabExcessHorizontalSpace = false;
+        sportlerLabel.setLayoutData(gridData);
+        //
+        user = new Combo(sportlerComposite, SWT.NONE);
         for (final Athlete athlete : allAthletes) {
-            user.add(athlete.getName());
+            user.add(athlete.getName(), athlete.getId());
         }
 
-        final Button selectUser = new Button(overViewComposite, SWT.PUSH);
+        gridData = new GridData();
+        gridData.horizontalAlignment = SWT.FILL;
+        gridData.grabExcessHorizontalSpace = false;
+        gridData.horizontalAlignment = SWT.LEFT;
+        gridData.horizontalIndent = 5;
+        user.setLayoutData(gridData);
+
+        final Button selectUser = new Button(sportlerComposite, SWT.PUSH);
         selectUser.setText("Select");
+        selectUser.setEnabled(false);
         selectUser.addSelectionListener(new SelectionAdapter() {
 
             @Override
             public void widgetSelected(final SelectionEvent e) {
                 logger.info("Neuen Benutzer auswählen: ");
+                user.getSelectionIndex();
             }
         });
+
+        user.addSelectionListener(new SelectionListener() {
+
+            @Override
+            public void widgetSelected(final SelectionEvent e) {
+                selectUser.setEnabled(user.getSelectionIndex() >= 0);
+            }
+
+            @Override
+            public void widgetDefaultSelected(final SelectionEvent e) {
+
+            }
+        });
+
+        gridData = new GridData();
+        gridData.horizontalAlignment = SWT.FILL;
+        gridData.horizontalSpan = 2;
+        gridData.grabExcessHorizontalSpace = false;
+        gridData.horizontalAlignment = SWT.LEFT;
+        selectUser.setLayoutData(gridData);
+
+        final Label spacer = new Label(sportlerComposite, SWT.NONE);
+        spacer.setText("");
+
+        gridData = new GridData();
+        gridData.horizontalAlignment = SWT.FILL;
+        gridData.grabExcessHorizontalSpace = false;
+        gridData.horizontalSpan = 2;
+        gridData.widthHint = 100;
+        spacer.setLayoutData(gridData);
+
+        selectSportler.setClient(sportlerComposite);
     }
 
     private void createAddSportlerMask(final Composite body) {
@@ -166,7 +182,7 @@ public class CreateAthleteView extends ViewPart {
         td.colspan = 1;
         overviewSection.setLayoutData(td);
         overviewSection.setText("Einen neuen Benutzer erstellen");
-        // overviewSection.setDescription("Einen neuen Benutzer erstellen");
+        overviewSection.setDescription("Ein neuer Benutzer/Profile wird in der Datenbank abgespeichert.");
 
         final Composite overViewComposite = toolkit.createComposite(overviewSection);
         final GridLayout layoutClient = new GridLayout(2, false);
@@ -215,10 +231,15 @@ public class CreateAthleteView extends ViewPart {
 
             @Override
             public void widgetSelected(final SelectionEvent e) {
-                System.out.println("save " + sportler);
+                logger.info("save " + sportler);
                 DatabaseAccessFactory.getDatabaseAccess().save(new Athlete(sportler.getName(), sportler.getAge(), sportler.getMaxHeartBeat(), null, null));
             }
         });
+        gridData = new GridData();
+        gridData.horizontalAlignment = SWT.LEFT;
+        gridData.grabExcessHorizontalSpace = false;
+        gridData.horizontalIndent = 5;
+        button1.setLayoutData(gridData);
 
         bindValues();
 
@@ -238,7 +259,7 @@ public class CreateAthleteView extends ViewPart {
         modelValue = BeanProperties.value(Sportler.class, "age").observe(sportler);
 
         final UpdateValueStrategy strategyAge = new UpdateValueStrategy();
-        strategyAge.setBeforeSetValidator(new NumberValidator(18, 120));
+        strategyAge.setBeforeSetValidator(new NumberValidator(18, 120, "Bitte das Alter eingeben"));
 
         final Binding bindValue = ctx.bindValue(widgetValue, modelValue, strategyAge, null);
         // Add some decorations
@@ -249,7 +270,7 @@ public class CreateAthleteView extends ViewPart {
         // Add an validator so that age can only be a number
 
         final UpdateValueStrategy strategyPulse = new UpdateValueStrategy();
-        strategyPulse.setBeforeSetValidator(new NumberValidator(160, 220));
+        strategyPulse.setBeforeSetValidator(new NumberValidator(160, 220, "Bin den maximal Puls angeben"));
 
         final Binding bindMaxPulse = ctx.bindValue(widgetValue, modelValue, strategyPulse, null);
         // Add some decorations
