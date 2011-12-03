@@ -12,6 +12,8 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -35,7 +37,8 @@ import ch.iseli.sportanalyzer.client.Activator;
 import ch.iseli.sportanalyzer.client.PreferenceConstants;
 import ch.iseli.sportanalyzer.client.model.sportler.Sportler;
 import ch.iseli.sportanalyzer.db.DatabaseAccessFactory;
-import ch.opentrainingcenter.transfer.impl.Athlete;
+import ch.opentrainingcenter.transfer.CommonTransferFactory;
+import ch.opentrainingcenter.transfer.IAthlete;
 
 public class CreateAthleteView extends ViewPart {
     public static final String ID = "ch.iseli.sportanalyzer.client.athlete.createathlete";
@@ -50,7 +53,6 @@ public class CreateAthleteView extends ViewPart {
     private ScrolledForm form;
     private TableWrapData td;
     private final String athleteId;
-    private String titleOfComposite;
     private Combo user;
 
     public CreateAthleteView() {
@@ -101,7 +103,7 @@ public class CreateAthleteView extends ViewPart {
         final GridLayout layoutClient = new GridLayout(2, false);
         sportlerComposite.setLayout(layoutClient);
 
-        final List<Athlete> allAthletes = DatabaseAccessFactory.getDatabaseAccess().getAllAthletes();
+        final List<IAthlete> allAthletes = DatabaseAccessFactory.getDatabaseAccess().getAllAthletes();
 
         // gender
         final Label sportlerLabel = new Label(sportlerComposite, SWT.NONE);
@@ -113,7 +115,7 @@ public class CreateAthleteView extends ViewPart {
         sportlerLabel.setLayoutData(gridData);
         //
         user = new Combo(sportlerComposite, SWT.NONE);
-        for (final Athlete athlete : allAthletes) {
+        for (final IAthlete athlete : allAthletes) {
             user.add(athlete.getName(), athlete.getId());
         }
 
@@ -140,11 +142,24 @@ public class CreateAthleteView extends ViewPart {
 
             @Override
             public void widgetSelected(final SelectionEvent e) {
-                selectUser.setEnabled(user.getSelectionIndex() >= 0);
+                enableOrDisableButtonIfNoUserIsSelected(selectUser);
             }
 
             @Override
             public void widgetDefaultSelected(final SelectionEvent e) {
+
+            }
+        });
+
+        user.addFocusListener(new FocusListener() {
+
+            @Override
+            public void focusLost(final FocusEvent e) {
+                enableOrDisableButtonIfNoUserIsSelected(selectUser);
+            }
+
+            @Override
+            public void focusGained(final FocusEvent e) {
 
             }
         });
@@ -196,6 +211,7 @@ public class CreateAthleteView extends ViewPart {
         GridData gridData = new GridData();
         gridData.horizontalAlignment = SWT.FILL;
         gridData.grabExcessHorizontalSpace = true;
+        gridData.horizontalIndent = 5;
         nameTf.setLayoutData(gridData);
 
         // alter
@@ -206,6 +222,7 @@ public class CreateAthleteView extends ViewPart {
         gridData = new GridData();
         gridData.horizontalAlignment = SWT.FILL;
         gridData.grabExcessHorizontalSpace = true;
+        gridData.horizontalIndent = 5;
         ageText.setLayoutData(gridData);
 
         // pulse
@@ -216,6 +233,7 @@ public class CreateAthleteView extends ViewPart {
         gridData = new GridData();
         gridData.horizontalAlignment = SWT.FILL;
         gridData.grabExcessHorizontalSpace = true;
+        gridData.horizontalIndent = 5;
         pulseText.setLayoutData(gridData);
 
         // gender
@@ -225,6 +243,12 @@ public class CreateAthleteView extends ViewPart {
         genderCombo.add("Männlich");
         genderCombo.add("Weiblich");
 
+        gridData = new GridData();
+        gridData.horizontalAlignment = SWT.RIGHT;
+        gridData.grabExcessHorizontalSpace = false;
+        gridData.horizontalIndent = 5;
+        genderCombo.setLayoutData(gridData);
+
         final Button button1 = new Button(overViewComposite, SWT.PUSH);
         button1.setText("Speichern");
         button1.addSelectionListener(new SelectionAdapter() {
@@ -232,7 +256,8 @@ public class CreateAthleteView extends ViewPart {
             @Override
             public void widgetSelected(final SelectionEvent e) {
                 logger.info("save " + sportler);
-                DatabaseAccessFactory.getDatabaseAccess().save(new Athlete(sportler.getName(), sportler.getAge(), sportler.getMaxHeartBeat(), null, null));
+                final IAthlete athlete = CommonTransferFactory.createAthlete(sportler.getName(), sportler.getAge(), sportler.getMaxHeartBeat());
+                DatabaseAccessFactory.getDatabaseAccess().save(athlete);
             }
         });
         gridData = new GridData();
@@ -244,6 +269,14 @@ public class CreateAthleteView extends ViewPart {
         bindValues();
 
         overviewSection.setClient(overViewComposite);
+    }
+
+    private void enableOrDisableButtonIfNoUserIsSelected(final Button selectUser) {
+        if (user.getSelectionIndex() >= 0) {
+            selectUser.setEnabled(true);
+        } else {
+            selectUser.setToolTipText("Zuerst einen User auswählen");
+        }
     }
 
     private void bindValues() {
@@ -285,6 +318,5 @@ public class CreateAthleteView extends ViewPart {
     @Override
     public void setFocus() {
         // TODO Auto-generated method stub
-
     }
 }

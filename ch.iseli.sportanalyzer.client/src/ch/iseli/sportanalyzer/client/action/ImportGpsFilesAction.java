@@ -41,7 +41,7 @@ import ch.iseli.sportanalyzer.db.DatabaseAccessFactory;
 import ch.iseli.sportanalyzer.importer.FindGarminFiles;
 import ch.iseli.sportanalyzer.importer.IConvert2Tcx;
 import ch.iseli.sportanalyzer.tcx.TrainingCenterDatabaseT;
-import ch.opentrainingcenter.transfer.impl.Athlete;
+import ch.opentrainingcenter.transfer.IAthlete;
 
 public class ImportGpsFilesAction extends Action implements ISelectionListener, IWorkbenchAction {
 
@@ -51,7 +51,7 @@ public class ImportGpsFilesAction extends Action implements ISelectionListener, 
 
     private final IWorkbenchWindow window;
 
-    private final Athlete athlete;
+    private final IAthlete athlete;
 
     public ImportGpsFilesAction(final IWorkbenchWindow window, final String tooltip) {
         logger.debug("Import files....");
@@ -60,7 +60,7 @@ public class ImportGpsFilesAction extends Action implements ISelectionListener, 
             final int id = Integer.parseInt(athleteId);
             athlete = DatabaseAccessFactory.getDatabaseAccess().getAthlete(id);
         } else {
-            athlete = new Athlete(1);
+            athlete = null;
             logger.error("Athlete ist nicht gesetzt....");
         }
         this.window = window;

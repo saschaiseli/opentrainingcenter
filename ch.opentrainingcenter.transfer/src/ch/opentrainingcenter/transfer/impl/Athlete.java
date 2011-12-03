@@ -19,15 +19,19 @@ public class Athlete implements java.io.Serializable, IAthlete {
     private Set<Health> healths = new HashSet<Health>(0);
     private Set<Imported> importeds = new HashSet<Imported>(0);
 
+    /**
+     * nur für hibernate
+     */
     public Athlete() {
+        this(null, null, null, null, null);
     }
 
     public Athlete(final String name) {
-        this.name = name;
+        this(name, null, null, null, null);
     }
 
-    public Athlete(final int id) {
-        this.id = id;
+    public Athlete(final String name, final Integer age, final Integer maxHeartRate) {
+        this(name, age, maxHeartRate, null, null);
     }
 
     public Athlete(final String name, final Integer age, final Integer maxHeartRate, final Set<Health> healths, final Set<Imported> importeds) {

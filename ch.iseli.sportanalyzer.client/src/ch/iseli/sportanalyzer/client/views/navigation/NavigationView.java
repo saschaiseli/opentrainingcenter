@@ -46,7 +46,7 @@ import ch.iseli.sportanalyzer.tcx.ActivityLapT;
 import ch.iseli.sportanalyzer.tcx.ActivityT;
 import ch.iseli.sportanalyzer.tcx.IntensityT;
 import ch.iseli.sportanalyzer.tcx.TrainingCenterDatabaseT;
-import ch.opentrainingcenter.transfer.impl.Athlete;
+import ch.opentrainingcenter.transfer.IAthlete;
 
 public class NavigationView extends ViewPart {
 
@@ -67,7 +67,7 @@ public class NavigationView extends ViewPart {
         final String athleteId = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.ATHLETE_NAME);
 
         final int id = Integer.parseInt(athleteId);
-        final Athlete athlete = DatabaseAccessFactory.getDatabaseAccess().getAthlete(id);
+        final IAthlete athlete = DatabaseAccessFactory.getDatabaseAccess().getAthlete(id);
 
         viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
         // viewer = new ListViewer(parent);

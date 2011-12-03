@@ -6,7 +6,6 @@ import java.util.Map;
 import org.eclipse.core.runtime.IExecutableExtensionFactory;
 
 import ch.opentrainingcenter.transfer.IAthlete;
-import ch.opentrainingcenter.transfer.impl.Athlete;
 
 public interface IDatabaseAccess extends IExecutableExtensionFactory {
 
@@ -23,7 +22,7 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
      *            id des sportlers.
      * @return eine liste mit den records von diesem sportler.
      */
-    Map<Integer, String> getImportedRecords(Athlete athlete);
+    Map<Integer, String> getImportedRecords(IAthlete athlete);
 
     /**
      * Setzt in der Datenbank den Record auf importiert.
@@ -34,7 +33,7 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
      *            der Filename des GPS Files.
      * @return die ID von der Datenbank.
      */
-    int importRecord(Athlete athlete, String name);
+    int importRecord(IAthlete athlete, String name);
 
     /**
      * Gibt den sportler mit
@@ -42,9 +41,9 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
      * @param id
      * @return Gibt den sportler mit der angegeben id zurück oder null.
      */
-    Athlete getAthlete(int id);
+    IAthlete getAthlete(int id);
 
-    List<Athlete> getAllAthletes();
+    List<IAthlete> getAllAthletes();
 
     void removeImportedRecord(Integer id);
 

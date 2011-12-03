@@ -9,7 +9,7 @@ import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 import ch.iseli.sportanalyzer.client.views.ahtlete.AthletePerspective;
 import ch.iseli.sportanalyzer.client.views.navigation.NavigationView;
 import ch.iseli.sportanalyzer.db.DatabaseAccessFactory;
-import ch.opentrainingcenter.transfer.impl.Athlete;
+import ch.opentrainingcenter.transfer.IAthlete;
 
 /**
  * This workbench advisor creates the window advisor, and specifies the perspective id for the initial window.
@@ -28,7 +28,7 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
         final String athleteId = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.ATHLETE_NAME);
         // return Perspective.ID;
         if (athleteId != null && athleteId.length() > 0) {
-            final Athlete athlete = DatabaseAccessFactory.getDatabaseAccess().getAthlete(Integer.parseInt(athleteId));
+            final IAthlete athlete = DatabaseAccessFactory.getDatabaseAccess().getAthlete(Integer.parseInt(athleteId));
             if (athlete == null) {
                 // Athlete nicht gefunden.
                 return AthletePerspective.ID;

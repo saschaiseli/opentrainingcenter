@@ -14,7 +14,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 import ch.iseli.sportanalyzer.client.Activator;
 import ch.iseli.sportanalyzer.client.PreferenceConstants;
 import ch.iseli.sportanalyzer.db.DatabaseAccessFactory;
-import ch.opentrainingcenter.transfer.impl.Athlete;
+import ch.opentrainingcenter.transfer.IAthlete;
 
 /**
  * This class represents a preference page that is contributed to the Preferences dialog. By subclassing <samp>FieldEditorPreferencePage</samp>, we can use the field support built
@@ -26,7 +26,7 @@ import ch.opentrainingcenter.transfer.impl.Athlete;
 
 public class SamplePreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
-    private final List<Athlete> allAthletes;
+    private final List<IAthlete> allAthletes;
 
     public SamplePreferencePage() {
         super(GRID);
@@ -47,7 +47,7 @@ public class SamplePreferencePage extends FieldEditorPreferencePage implements I
 
         final String[][] entryNamesAndValues = new String[][] { {} };
         int i = 0;
-        for (final Athlete ath : allAthletes) {
+        for (final IAthlete ath : allAthletes) {
             entryNamesAndValues[i] = new String[] { ath.getName(), String.valueOf(ath.getId()) };
             i++;
         }

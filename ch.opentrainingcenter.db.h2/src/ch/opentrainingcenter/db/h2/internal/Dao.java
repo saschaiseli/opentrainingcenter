@@ -1,4 +1,4 @@
-package ch.opentrainingcenter.db.h2;
+package ch.opentrainingcenter.db.h2.internal;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -11,7 +11,7 @@ public class Dao {
     private final SessionFactory sessionFactory;
 
     public Dao() {
-        org.hibernate.cfg.Configuration c = new org.hibernate.cfg.Configuration();
+        final org.hibernate.cfg.Configuration c = new org.hibernate.cfg.Configuration();
         sessionFactory = c.configure().buildSessionFactory();
         session = sessionFactory.openSession();
     }
@@ -34,12 +34,12 @@ public class Dao {
     protected void rollback() {
         try {
             getSession().getTransaction().rollback();
-        } catch (HibernateException e) {
+        } catch (final HibernateException e) {
             System.out.println(e.getMessage());
         }
         try {
             getSession().close();
-        } catch (HibernateException e) {
+        } catch (final HibernateException e) {
             System.out.println(e.getMessage());
         }
     }

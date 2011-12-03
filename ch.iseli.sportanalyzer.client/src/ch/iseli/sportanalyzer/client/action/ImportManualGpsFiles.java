@@ -33,7 +33,7 @@ import ch.iseli.sportanalyzer.db.DatabaseAccessFactory;
 import ch.iseli.sportanalyzer.importer.IConvert2Tcx;
 import ch.iseli.sportanalyzer.importer.util.FileCopy;
 import ch.iseli.sportanalyzer.tcx.TrainingCenterDatabaseT;
-import ch.opentrainingcenter.transfer.impl.Athlete;
+import ch.opentrainingcenter.transfer.IAthlete;
 
 public class ImportManualGpsFiles extends Action implements ISelectionListener, IWorkbenchAction {
 
@@ -43,7 +43,7 @@ public class ImportManualGpsFiles extends Action implements ISelectionListener, 
 
     private final IWorkbenchWindow window;
 
-    private Athlete athlete;
+    private IAthlete athlete;
 
     private final String defaultLocation;
 
