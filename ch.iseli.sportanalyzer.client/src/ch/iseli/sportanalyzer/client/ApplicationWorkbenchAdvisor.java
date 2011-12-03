@@ -1,17 +1,14 @@
 package ch.iseli.sportanalyzer.client;
 
 import org.apache.log4j.Logger;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.ui.application.IWorkbenchConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchAdvisor;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 
-import ch.iseli.sportanalyzer.client.athlete.AthletePerspective;
-import ch.iseli.sportanalyzer.client.helper.DaoHelper;
+import ch.iseli.sportanalyzer.client.views.ahtlete.AthletePerspective;
 import ch.iseli.sportanalyzer.client.views.navigation.NavigationView;
-import ch.iseli.sportanalyzer.db.IImportedDao;
+import ch.iseli.sportanalyzer.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.transfer.impl.Athlete;
 
 /**
@@ -22,20 +19,16 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
     private static final Logger logger = Logger.getLogger(NavigationView.class);
 
     @Override
-    public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
+    public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(final IWorkbenchWindowConfigurer configurer) {
         return new ApplicationWorkbenchWindowAdvisor(configurer);
     }
 
     @Override
     public String getInitialWindowPerspectiveId() {
-
-        IConfigurationElement[] daos = Platform.getExtensionRegistry().getConfigurationElementsFor(Application.CH_OPENTRAININGDATABASE_DB);
-        logger.info("daos suchen: " + daos.length);
-        IImportedDao dao = (IImportedDao) DaoHelper.getDao(daos, IImportedDao.EXTENSION_POINT_NAME);
-        String athleteId = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.ATHLETE_NAME);
+        final String athleteId = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.ATHLETE_NAME);
         // return Perspective.ID;
         if (athleteId != null && athleteId.length() > 0) {
-            Athlete athlete = dao.getAthlete(Integer.parseInt(athleteId));
+            final Athlete athlete = DatabaseAccessFactory.getDatabaseAccess().getAthlete(Integer.parseInt(athleteId));
             if (athlete == null) {
                 // Athlete nicht gefunden.
                 return AthletePerspective.ID;
@@ -50,7 +43,7 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
     }
 
     @Override
-    public void initialize(IWorkbenchConfigurer configurer) {
+    public void initialize(final IWorkbenchConfigurer configurer) {
         // configurer.setSaveAndRestore(true);
     }
 }

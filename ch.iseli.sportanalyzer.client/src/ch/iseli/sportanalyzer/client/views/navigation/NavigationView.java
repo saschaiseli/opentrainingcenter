@@ -32,17 +32,15 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 import ch.iseli.sportanalyzer.client.Activator;
-import ch.iseli.sportanalyzer.client.Application;
 import ch.iseli.sportanalyzer.client.PreferenceConstants;
 import ch.iseli.sportanalyzer.client.action.DeleteImportedRecord;
 import ch.iseli.sportanalyzer.client.cache.IRecordListener;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDataCache;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterRecord;
-import ch.iseli.sportanalyzer.client.helper.DaoHelper;
 import ch.iseli.sportanalyzer.client.helper.DistanceHelper;
 import ch.iseli.sportanalyzer.client.helper.TimeHelper;
 import ch.iseli.sportanalyzer.client.views.overview.SingleActivityViewPart;
-import ch.iseli.sportanalyzer.db.IImportedDao;
+import ch.iseli.sportanalyzer.db.DatabaseAccessFactory;
 import ch.iseli.sportanalyzer.importer.IConvert2Tcx;
 import ch.iseli.sportanalyzer.tcx.ActivityLapT;
 import ch.iseli.sportanalyzer.tcx.ActivityT;
@@ -64,53 +62,50 @@ public class NavigationView extends ViewPart {
      * This is a callback that will allow us to create the viewer and initialize it.
      */
     @Override
-    public void createPartControl(Composite parent) {
+    public void createPartControl(final Composite parent) {
 
-        String athleteId = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.ATHLETE_NAME);
+        final String athleteId = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.ATHLETE_NAME);
 
-        IConfigurationElement[] daos = Platform.getExtensionRegistry().getConfigurationElementsFor(Application.CH_OPENTRAININGDATABASE_DB);
-        logger.info("daos suchen: " + daos.length);
-        IImportedDao dao = (IImportedDao) DaoHelper.getDao(daos, IImportedDao.EXTENSION_POINT_NAME);
-        int id = Integer.parseInt(athleteId);
-        Athlete athlete = dao.getAthlete(id);
+        final int id = Integer.parseInt(athleteId);
+        final Athlete athlete = DatabaseAccessFactory.getDatabaseAccess().getAthlete(id);
 
         viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
         // viewer = new ListViewer(parent);
         viewer.setContentProvider(new ViewContentProvider());
         viewer.setLabelProvider(new ViewLabelProvider(parent));
 
-        MenuManager menuMgr = new MenuManager("#PopupMenu"); //$NON-NLS-1$
+        final MenuManager menuMgr = new MenuManager("#PopupMenu"); //$NON-NLS-1$
         menuMgr.setRemoveAllWhenShown(true);
         menuMgr.addMenuListener(new IMenuListener() {
             @Override
-            public void menuAboutToShow(IMenuManager manager) {
+            public void menuAboutToShow(final IMenuManager manager) {
                 manager.add(new DeleteImportedRecord());
             }
         });
 
-        Menu menu = menuMgr.createContextMenu(viewer.getTree());
+        final Menu menu = menuMgr.createContextMenu(viewer.getTree());
         viewer.getTree().setMenu(menu);
         getSite().registerContextMenu(menuMgr, viewer);
 
         viewer.addDoubleClickListener(new IDoubleClickListener() {
 
             @Override
-            public void doubleClick(DoubleClickEvent event) {
-                IStructuredSelection selection = (IStructuredSelection) event.getSelection();
-                Object first = selection.getFirstElement();
+            public void doubleClick(final DoubleClickEvent event) {
+                final IStructuredSelection selection = (IStructuredSelection) event.getSelection();
+                final Object first = selection.getFirstElement();
                 if (first instanceof TrainingCenterRecord) {
                     openSingleRunView((TrainingCenterRecord) first);
                 }
             }
 
-            private void openSingleRunView(TrainingCenterRecord first) {
+            private void openSingleRunView(final TrainingCenterRecord first) {
                 cache.setSelectedRun(first);
 
                 try {
-                    String hash = String.valueOf(cache.getSelected().toString().hashCode());
+                    final String hash = String.valueOf(cache.getSelected().toString().hashCode());
                     PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
                             .showView(SingleActivityViewPart.ID, hash, IWorkbenchPage.VIEW_ACTIVATE);
-                } catch (PartInitException e) {
+                } catch (final PartInitException e) {
                     e.printStackTrace();
                 }
             }
@@ -119,11 +114,11 @@ public class NavigationView extends ViewPart {
         viewer.addSelectionChangedListener(new ISelectionChangedListener() {
 
             @Override
-            public void selectionChanged(SelectionChangedEvent event) {
-                IStructuredSelection selection = (IStructuredSelection) event.getSelection();
-                Object first = selection.getFirstElement();
+            public void selectionChanged(final SelectionChangedEvent event) {
+                final IStructuredSelection selection = (IStructuredSelection) event.getSelection();
+                final Object first = selection.getFirstElement();
                 if (first instanceof TrainingCenterRecord) {
-                    TrainingCenterRecord trainingCenterDatabase = (TrainingCenterRecord) first;
+                    final TrainingCenterRecord trainingCenterDatabase = (TrainingCenterRecord) first;
                     cache.setSelection(selection.toArray());
                     writeToStatusLine(trainingCenterDatabase);
                 } else {
@@ -132,11 +127,11 @@ public class NavigationView extends ViewPart {
                 }
             }
 
-            private void writeToStatusLine(String message) {
+            private void writeToStatusLine(final String message) {
                 getViewSite().getActionBars().getStatusLineManager().setMessage(message);
             }
 
-            private void writeToStatusLine(TrainingCenterRecord selectedRun) {
+            private void writeToStatusLine(final TrainingCenterRecord selectedRun) {
                 writeToStatusLine("Lauf vom "
                         + TimeHelper.convertGregorianDateToString(selectedRun.getTrainingCenterDatabase().getActivities().getActivity().get(0).getId(), false)
                         + " " + getOverview(selectedRun));
@@ -144,27 +139,28 @@ public class NavigationView extends ViewPart {
         });
 
         // load garmin data
-        IConfigurationElement[] configurationElementsFor = Platform.getExtensionRegistry().getConfigurationElementsFor("ch.iseli.sportanalyzer.myimporter");
+        final IConfigurationElement[] configurationElementsFor = Platform.getExtensionRegistry().getConfigurationElementsFor(
+                "ch.iseli.sportanalyzer.myimporter");
         final IConvert2Tcx tcx = getConverterImplementation(configurationElementsFor);
         final Map<Integer, TrainingCenterRecord> allRuns = new HashMap<Integer, TrainingCenterRecord>();
         final Map<Integer, File> allFiles = new HashMap<Integer, File>();
         if (tcx != null) {
 
-            Map<Integer, String> importedRecords = dao.getImportedRecords(athlete);
+            final Map<Integer, String> importedRecords = DatabaseAccessFactory.getDatabaseAccess().getImportedRecords(athlete);
             // Start the Job
-            Map<Integer, File> loadAllGPSFiles = tcx.loadAllGPSFilesFromAthlete(importedRecords);
+            final Map<Integer, File> loadAllGPSFiles = tcx.loadAllGPSFilesFromAthlete(importedRecords);
             if (loadAllGPSFiles == null || loadAllGPSFiles.isEmpty()) {
                 getViewSite().getActionBars().getStatusLineManager().setMessage("Keine GPS Files gefunden. Files müssen noch importiert werden.");
             }
             allFiles.putAll(loadAllGPSFiles);
             final Job job = new Job("Lade GPS Daten") {
                 @Override
-                protected IStatus run(IProgressMonitor monitor) {
+                protected IStatus run(final IProgressMonitor monitor) {
                     // Set total number of work units
                     monitor.beginTask("Lade GPS Daten", allFiles.size());
                     try {
-                        for (Map.Entry<Integer, File> entry : allFiles.entrySet()) {
-                            TrainingCenterDatabaseT record = tcx.convert(entry.getValue());
+                        for (final Map.Entry<Integer, File> entry : allFiles.entrySet()) {
+                            final TrainingCenterDatabaseT record = tcx.convert(entry.getValue());
                             allRuns.put(entry.getKey(), new TrainingCenterRecord(entry.getKey(), record));
                             monitor.worked(1);
                         }
@@ -175,12 +171,12 @@ public class NavigationView extends ViewPart {
                                 try {
                                     TrainingCenterDataCache.getInstance().addAll(allRuns);
                                     viewer.setInput(cache.getAllRuns());
-                                } catch (Exception e) {
+                                } catch (final Exception e) {
                                     e.printStackTrace();
                                 }
                             }
                         });
-                    } catch (Exception e1) {
+                    } catch (final Exception e1) {
                         e1.printStackTrace();
                     }
                     return Status.OK_STATUS;
@@ -188,43 +184,43 @@ public class NavigationView extends ViewPart {
             };
             job.schedule();
         }
-        TrainingCenterDataCache cache = TrainingCenterDataCache.getInstance();
+        final TrainingCenterDataCache cache = TrainingCenterDataCache.getInstance();
         cache.addListener(new IRecordListener() {
 
             @Override
-            public void recordChanged(Collection<TrainingCenterRecord> entry) {
+            public void recordChanged(final Collection<TrainingCenterRecord> entry) {
                 viewer.refresh();
             }
         });
 
     }
 
-    private IConvert2Tcx getConverterImplementation(IConfigurationElement[] configurationElementsFor) {
+    private IConvert2Tcx getConverterImplementation(final IConfigurationElement[] configurationElementsFor) {
         for (final IConfigurationElement element : configurationElementsFor) {
             try {
                 return (IConvert2Tcx) element.createExecutableExtension("class");
-            } catch (CoreException e) {
+            } catch (final CoreException e) {
                 System.err.println(e.getMessage());
             }
         }
         return null;
     }
 
-    private final String getOverview(TrainingCenterRecord run) {
-        ActivityT activityT = run.getTrainingCenterDatabase().getActivities().getActivity().get(0);
-        StringBuffer str = new StringBuffer();
+    private final String getOverview(final TrainingCenterRecord run) {
+        final ActivityT activityT = run.getTrainingCenterDatabase().getActivities().getActivity().get(0);
+        final StringBuffer str = new StringBuffer();
         if (activityT.getLap() != null && activityT.getLap().size() > 1) {
             // intervall
             str.append("Training mit ");
             int activeIntervall = 0;
-            for (ActivityLapT lap : activityT.getLap()) {
+            for (final ActivityLapT lap : activityT.getLap()) {
                 if (IntensityT.ACTIVE.equals(lap.getIntensity())) {
                     activeIntervall++;
                 }
             }
             str.append(activeIntervall).append(" aktiven Intervallen");
         } else if (activityT.getLap() != null && activityT.getLap().size() == 1) {
-            ActivityLapT lap = activityT.getLap().get(0);
+            final ActivityLapT lap = activityT.getLap().get(0);
             str.append("Joggen mit ").append(DistanceHelper.roundDistanceFromMeterToKmMitEinheit(lap.getDistanceMeters()));
             str.append(" in ").append(TimeHelper.convertSecondsToHumanReadableZeit(lap.getTotalTimeSeconds()));
         }

@@ -35,10 +35,9 @@ import ch.iseli.sportanalyzer.client.Application;
 import ch.iseli.sportanalyzer.client.PreferenceConstants;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDataCache;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterRecord;
-import ch.iseli.sportanalyzer.client.helper.DaoHelper;
 import ch.iseli.sportanalyzer.client.helper.FileNameToDateConverter;
 import ch.iseli.sportanalyzer.client.images.IImageKeys;
-import ch.iseli.sportanalyzer.db.IImportedDao;
+import ch.iseli.sportanalyzer.db.DatabaseAccessFactory;
 import ch.iseli.sportanalyzer.importer.FindGarminFiles;
 import ch.iseli.sportanalyzer.importer.IConvert2Tcx;
 import ch.iseli.sportanalyzer.tcx.TrainingCenterDatabaseT;
@@ -54,16 +53,12 @@ public class ImportGpsFilesAction extends Action implements ISelectionListener, 
 
     private final Athlete athlete;
 
-    private final IImportedDao dao;
-
-    public ImportGpsFilesAction(IWorkbenchWindow window, String tooltip) {
+    public ImportGpsFilesAction(final IWorkbenchWindow window, final String tooltip) {
         logger.debug("Import files....");
-        IConfigurationElement[] daos = Platform.getExtensionRegistry().getConfigurationElementsFor("ch.opentrainingdatabase.db");
-        dao = (IImportedDao) DaoHelper.getDao(daos, IImportedDao.EXTENSION_POINT_NAME);
-        String athleteId = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.ATHLETE_NAME);
+        final String athleteId = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.ATHLETE_NAME);
         if (validId(athleteId)) {
             final int id = Integer.parseInt(athleteId);
-            athlete = dao.getAthlete(id);
+            athlete = DatabaseAccessFactory.getDatabaseAccess().getAthlete(id);
         } else {
             athlete = new Athlete(1);
             logger.error("Athlete ist nicht gesetzt....");
@@ -75,12 +70,12 @@ public class ImportGpsFilesAction extends Action implements ISelectionListener, 
         window.getSelectionService().addSelectionListener(this);
     }
 
-    private boolean validId(String athleteId) {
+    private boolean validId(final String athleteId) {
         return athleteId != null && athleteId.length() > 0;
     }
 
     @Override
-    public void selectionChanged(IWorkbenchPart part, ISelection selection) {
+    public void selectionChanged(final IWorkbenchPart part, final ISelection selection) {
 
     }
 
@@ -92,16 +87,16 @@ public class ImportGpsFilesAction extends Action implements ISelectionListener, 
     @Override
     public void run() {
 
-        Map<Integer, String> importedRecordFileNames = dao.getImportedRecords(athlete);
-        List<File> garminFiles = FindGarminFiles.getGarminFiles(importedRecordFileNames.values());
-        Map<String, File> keyToFile = new TreeMap<String, File>();
-        for (File f : garminFiles) {
+        final Map<Integer, String> importedRecordFileNames = DatabaseAccessFactory.getDatabaseAccess().getImportedRecords(athlete);
+        final List<File> garminFiles = FindGarminFiles.getGarminFiles(importedRecordFileNames.values());
+        final Map<String, File> keyToFile = new TreeMap<String, File>();
+        for (final File f : garminFiles) {
             keyToFile.put(FileNameToDateConverter.getHumanReadableDate(f.getName()), f);
         }
-        IStructuredContentProvider contentProvider = new IStructuredContentProvider() {
+        final IStructuredContentProvider contentProvider = new IStructuredContentProvider() {
 
             @Override
-            public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+            public void inputChanged(final Viewer viewer, final Object oldInput, final Object newInput) {
             }
 
             @Override
@@ -109,44 +104,46 @@ public class ImportGpsFilesAction extends Action implements ISelectionListener, 
             }
 
             @Override
-            public Object[] getElements(Object inputElement) {
+            public Object[] getElements(final Object inputElement) {
                 @SuppressWarnings("unchecked")
-                Set<String> fileNames = (Set<String>) inputElement;
+                final Set<String> fileNames = (Set<String>) inputElement;
                 return fileNames.toArray();
             }
         };
-        ILabelProvider labelProvider = new LabelProvider();
-        ListSelectionDialog dialog = new ListSelectionDialog(window.getShell(), keyToFile.keySet(), contentProvider, labelProvider, "Lauf nach Datum sortiert.");
+        final ILabelProvider labelProvider = new LabelProvider();
+        final ListSelectionDialog dialog = new ListSelectionDialog(window.getShell(), keyToFile.keySet(), contentProvider, labelProvider,
+                "Lauf nach Datum sortiert.");
         dialog.setTitle("GPS Files auswählen");
         dialog.open();
-        Object[] result = dialog.getResult();
+        final Object[] result = dialog.getResult();
         if (result == null || result.length == 0) {
             return;
         }
         final List<File> selectedFilesToImport = new ArrayList<File>();
-        for (Object key : result) {
+        for (final Object key : result) {
             selectedFilesToImport.add(keyToFile.get(key));
         }
 
-        IConfigurationElement[] configurationElementsFor = Platform.getExtensionRegistry().getConfigurationElementsFor("ch.iseli.sportanalyzer.myimporter");
+        final IConfigurationElement[] configurationElementsFor = Platform.getExtensionRegistry().getConfigurationElementsFor(
+                "ch.iseli.sportanalyzer.myimporter");
         final IConvert2Tcx tcx = getConverterImplementation(configurationElementsFor);
         final Map<Integer, TrainingCenterRecord> allRecords = new HashMap<Integer, TrainingCenterRecord>();
 
         final Job job = new Job("Lade GPS Daten") {
             @Override
-            protected IStatus run(IProgressMonitor monitor) {
+            protected IStatus run(final IProgressMonitor monitor) {
                 // Set total number of work units
                 monitor.beginTask("Lade GPS Daten...", selectedFilesToImport.size());
                 try {
-                    for (File file : selectedFilesToImport) {
+                    for (final File file : selectedFilesToImport) {
                         monitor.setTaskName("importiere File: " + file.getName());
-                        TrainingCenterDatabaseT record = tcx.convert(file);
-                        Integer importRecordId = dao.importRecord(athlete, file.getName());
+                        final TrainingCenterDatabaseT record = tcx.convert(file);
+                        final Integer importRecordId = DatabaseAccessFactory.getDatabaseAccess().importRecord(athlete, file.getName());
                         allRecords.put(importRecordId, new TrainingCenterRecord(importRecordId, record));
 
                         monitor.worked(1);
                     }
-                } catch (Exception e1) {
+                } catch (final Exception e1) {
                     e1.printStackTrace();
                 }
                 Display.getDefault().asyncExec(new Runnable() {
@@ -156,7 +153,7 @@ public class ImportGpsFilesAction extends Action implements ISelectionListener, 
                         try {
                             TrainingCenterDataCache.getInstance().addAll(allRecords);
 
-                        } catch (Exception e) {
+                        } catch (final Exception e) {
                             e.printStackTrace();
                         }
                     }
@@ -167,11 +164,11 @@ public class ImportGpsFilesAction extends Action implements ISelectionListener, 
         job.schedule();
     }
 
-    private IConvert2Tcx getConverterImplementation(IConfigurationElement[] configurationElementsFor) {
+    private IConvert2Tcx getConverterImplementation(final IConfigurationElement[] configurationElementsFor) {
         for (final IConfigurationElement element : configurationElementsFor) {
             try {
                 return (IConvert2Tcx) element.createExecutableExtension("class");
-            } catch (CoreException e) {
+            } catch (final CoreException e) {
                 logger.error(e.getMessage());
             }
         }

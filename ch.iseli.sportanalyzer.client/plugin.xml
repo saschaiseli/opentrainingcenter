@@ -22,7 +22,7 @@
             name="OTC Perspektive">
       </perspective>
       <perspective
-            class="ch.iseli.sportanalyzer.client.athlete.AthletePerspective"
+            class="ch.iseli.sportanalyzer.client.views.ahtlete.AthletePerspective"
             icon="icons/athlete_perspective.png"
             id="ch.iseli.sportanalyzer.client.athletePerspective"
             name="Athlete Perspektive">
@@ -95,7 +95,7 @@
       </view>
       <view
             category="ch.iseli.sportanalyzer.client.athletecategory"
-            class="ch.iseli.sportanalyzer.client.athlete.CreateAthleteView"
+            class="ch.iseli.sportanalyzer.client.views.ahtlete.CreateAthleteView"
             icon="icons/create.gif"
             id="ch.iseli.sportanalyzer.client.athlete.createathlete"
             name="Create Athlete"

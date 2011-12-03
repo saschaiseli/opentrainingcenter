@@ -18,8 +18,7 @@
       </annotation>
       <complexType>
          <sequence minOccurs="1" maxOccurs="unbounded">
-            <element ref="athleteDao"/>
-            <element ref="importDao"/>
+            <element ref="databaseAccess"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -48,22 +47,7 @@
       </complexType>
    </element>
 
-   <element name="athleteDao">
-      <complexType>
-         <attribute name="classAthleteDao" type="string" use="required">
-            <annotation>
-               <documentation>
-                  
-               </documentation>
-               <appinfo>
-                  <meta.attribute kind="java" basedOn=":ch.iseli.sportanalyzer.db.IDBSessionFactory"/>
-               </appinfo>
-            </annotation>
-         </attribute>
-      </complexType>
-   </element>
-
-   <element name="importDao">
+   <element name="databaseAccess">
       <complexType>
          <attribute name="classImportedDao" type="string" use="required">
             <annotation>
@@ -71,7 +55,7 @@
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":ch.iseli.sportanalyzer.db.IImportedDao"/>
+                  <meta.attribute kind="java" basedOn=":ch.iseli.sportanalyzer.db.IDatabaseAccess"/>
                </appinfo>
             </annotation>
          </attribute>

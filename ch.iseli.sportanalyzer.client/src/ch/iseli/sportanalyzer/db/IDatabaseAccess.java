@@ -8,7 +8,7 @@ import org.eclipse.core.runtime.IExecutableExtensionFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.impl.Athlete;
 
-public interface IImportedDao extends IExecutableExtensionFactory {
+public interface IDatabaseAccess extends IExecutableExtensionFactory {
 
     public static final String EXTENSION_POINT_NAME = "classImportedDao";
 

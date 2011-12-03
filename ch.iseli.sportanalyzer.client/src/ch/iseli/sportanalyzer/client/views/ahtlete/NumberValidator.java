@@ -1,4 +1,4 @@
-package ch.iseli.sportanalyzer.client.athlete;
+package ch.iseli.sportanalyzer.client.views.ahtlete;
 
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
@@ -26,7 +26,7 @@ public class NumberValidator implements IValidator {
                 } else if (number > max) {
                     return ValidationStatus.error("Zahl zu gross. Muss kleiner als " + max + " sein.");
                 } else {
-                    return ValidationStatus.OK_STATUS;
+                    return null;// ValidationStatus.OK_STATUS;
                 }
             }
         }

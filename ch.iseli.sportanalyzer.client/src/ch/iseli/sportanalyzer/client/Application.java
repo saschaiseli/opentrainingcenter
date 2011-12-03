@@ -1,16 +1,13 @@
 package ch.iseli.sportanalyzer.client;
 
 import org.apache.log4j.Logger;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 
-import ch.iseli.sportanalyzer.client.helper.DaoHelper;
-import ch.iseli.sportanalyzer.db.IImportedDao;
+import ch.iseli.sportanalyzer.db.DatabaseAccessFactory;
 
 /**
  * This class controls all aspects of the application's execution
@@ -29,25 +26,22 @@ public class Application implements IApplication {
      * @see org.eclipse.equinox.app.IApplication#start(org.eclipse.equinox.app. IApplicationContext)
      */
     @Override
-    public Object start(IApplicationContext context) {
-        Display display = PlatformUI.createDisplay();
+    public Object start(final IApplicationContext context) {
+        final Display display = PlatformUI.createDisplay();
 
-        // test hier ob es datenbank gibt
-        IConfigurationElement[] daos = Platform.getExtensionRegistry().getConfigurationElementsFor("ch.opentrainingdatabase.db");
-        IImportedDao dao = (IImportedDao) DaoHelper.getDao(daos, IImportedDao.EXTENSION_POINT_NAME);
         try {
-            dao.getAthlete(1);
-        } catch (Exception e) {
+            DatabaseAccessFactory.getDatabaseAccess().getAthlete(1);
+        } catch (final Exception e) {
             // db erstellen
-            Throwable cause = e.getCause();
-            String message = cause.getMessage();
+            final Throwable cause = e.getCause();
+            final String message = cause.getMessage();
             if (message.contains("Table \"ATHLETE\" not found;")) {
                 log.info("Datenbank existiert noch nicht. Es wird eine neue Datenbank erstellt");
-                dao.createDatabase();
+                DatabaseAccessFactory.getDatabaseAccess().createDatabase();
             }
         }
         try {
-            int returnCode = PlatformUI.createAndRunWorkbench(display, new ApplicationWorkbenchAdvisor());
+            final int returnCode = PlatformUI.createAndRunWorkbench(display, new ApplicationWorkbenchAdvisor());
             if (returnCode == PlatformUI.RETURN_RESTART) {
                 return IApplication.EXIT_RESTART;
             }

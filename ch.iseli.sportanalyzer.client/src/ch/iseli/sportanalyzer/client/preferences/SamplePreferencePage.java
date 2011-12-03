@@ -2,8 +2,6 @@ package ch.iseli.sportanalyzer.client.preferences;
 
 import java.util.List;
 
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.preference.ComboFieldEditor;
 import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
@@ -14,10 +12,8 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
 import ch.iseli.sportanalyzer.client.Activator;
-import ch.iseli.sportanalyzer.client.Application;
 import ch.iseli.sportanalyzer.client.PreferenceConstants;
-import ch.iseli.sportanalyzer.client.helper.DaoHelper;
-import ch.iseli.sportanalyzer.db.IImportedDao;
+import ch.iseli.sportanalyzer.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.transfer.impl.Athlete;
 
 /**
@@ -36,9 +32,7 @@ public class SamplePreferencePage extends FieldEditorPreferencePage implements I
         super(GRID);
         setPreferenceStore(Activator.getDefault().getPreferenceStore());
         setDescription("Einige Einstellungen");
-        IConfigurationElement[] daos = Platform.getExtensionRegistry().getConfigurationElementsFor(Application.CH_OPENTRAININGDATABASE_DB);
-        final IImportedDao dao = (IImportedDao) DaoHelper.getDao(daos, IImportedDao.EXTENSION_POINT_NAME);
-        allAthletes = dao.getAllAthletes();
+        allAthletes = DatabaseAccessFactory.getDatabaseAccess().getAllAthletes();
     }
 
     /**
@@ -47,22 +41,22 @@ public class SamplePreferencePage extends FieldEditorPreferencePage implements I
      */
     @Override
     public void createFieldEditors() {
-        Composite fieldEditorParent = getFieldEditorParent();
+        final Composite fieldEditorParent = getFieldEditorParent();
         fieldEditorParent.setSize(50, 60);
         addField(new DirectoryFieldEditor(PreferenceConstants.GPS_FILE_LOCATION, "Ort der GPS Daten:", fieldEditorParent));
 
-        String[][] entryNamesAndValues = new String[][] { {} };
+        final String[][] entryNamesAndValues = new String[][] { {} };
         int i = 0;
-        for (Athlete ath : allAthletes) {
+        for (final Athlete ath : allAthletes) {
             entryNamesAndValues[i] = new String[] { ath.getName(), String.valueOf(ath.getId()) };
             i++;
         }
-        ComboFieldEditor comboField = new ComboFieldEditor(PreferenceConstants.ATHLETE_NAME, "Sportler:", entryNamesAndValues, fieldEditorParent);
+        final ComboFieldEditor comboField = new ComboFieldEditor(PreferenceConstants.ATHLETE_NAME, "Sportler:", entryNamesAndValues, fieldEditorParent);
         addField(comboField);
         comboField.setPropertyChangeListener(new IPropertyChangeListener() {
 
             @Override
-            public void propertyChange(PropertyChangeEvent event) {
+            public void propertyChange(final PropertyChangeEvent event) {
                 System.out.println(event.getNewValue());
             }
         });
@@ -75,7 +69,7 @@ public class SamplePreferencePage extends FieldEditorPreferencePage implements I
      * @see org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
      */
     @Override
-    public void init(IWorkbench workbench) {
+    public void init(final IWorkbench workbench) {
     }
 
 }
