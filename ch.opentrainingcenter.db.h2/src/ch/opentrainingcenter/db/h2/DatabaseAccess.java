@@ -11,17 +11,17 @@ import org.eclipse.core.runtime.CoreException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-import ch.iseli.sportanalyzer.db.IImportedDao;
+import ch.iseli.sportanalyzer.db.IDatabaseAccess;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IImported;
 import ch.opentrainingcenter.transfer.impl.Athlete;
 import ch.opentrainingcenter.transfer.impl.Imported;
 
-public class ImportedDao extends Dao implements IImportedDao {
+public class DatabaseAccess extends Dao implements IDatabaseAccess {
 
     @Override
     public Object create() throws CoreException {
-        return new ImportedDao();
+        return new DatabaseAccess();
     }
 
     @SuppressWarnings("unchecked")
