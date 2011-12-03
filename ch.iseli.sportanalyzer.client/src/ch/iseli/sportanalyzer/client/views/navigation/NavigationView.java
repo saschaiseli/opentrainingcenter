@@ -32,6 +32,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 import ch.iseli.sportanalyzer.client.Activator;
+import ch.iseli.sportanalyzer.client.Application;
 import ch.iseli.sportanalyzer.client.PreferenceConstants;
 import ch.iseli.sportanalyzer.client.action.DeleteImportedRecord;
 import ch.iseli.sportanalyzer.client.cache.IRecordListener;
@@ -50,6 +51,7 @@ import ch.iseli.sportanalyzer.tcx.TrainingCenterDatabaseT;
 import ch.opentrainingcenter.transfer.impl.Athlete;
 
 public class NavigationView extends ViewPart {
+
     public static final String ID = "ch.iseli.sportanalyzer.client.navigationView";
 
     private static final Logger logger = Logger.getLogger(NavigationView.class);
@@ -66,7 +68,7 @@ public class NavigationView extends ViewPart {
 
         String athleteId = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.ATHLETE_NAME);
 
-        IConfigurationElement[] daos = Platform.getExtensionRegistry().getConfigurationElementsFor("ch.opentrainingdatabase.db");
+        IConfigurationElement[] daos = Platform.getExtensionRegistry().getConfigurationElementsFor(Application.CH_OPENTRAININGDATABASE_DB);
         logger.info("daos suchen: " + daos.length);
         IImportedDao dao = (IImportedDao) DaoHelper.getDao(daos, IImportedDao.EXTENSION_POINT_NAME);
         int id = Integer.parseInt(athleteId);

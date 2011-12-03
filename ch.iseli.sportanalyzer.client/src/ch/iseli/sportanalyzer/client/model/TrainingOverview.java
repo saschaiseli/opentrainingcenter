@@ -62,31 +62,43 @@ public class TrainingOverview implements ITrainingOverview {
         timeInSeconds = 0.0;
         short averageHeartRateBpm = 0;
         maxHeartBeat = 0;
-
+        int lapWithCardio = 0;
         for (ActivityLapT lap : laps) {
             if (IntensityT.ACTIVE.equals(lap.getIntensity())) {
                 distance += lap.getDistanceMeters();
-                averageHeartRateBpm += lap.getAverageHeartRateBpm() != null ? lap.getAverageHeartRateBpm().getValue() : 0;
-                if (maxHeartBeat < lap.getMaximumHeartRateBpm().getValue()) {
-                    maxHeartBeat = lap.getMaximumHeartRateBpm().getValue();
-                }
                 if (maximumSpeed < lap.getMaximumSpeed()) {
                     maximumSpeed = lap.getMaximumSpeed();
                 }
                 timeInSeconds += lap.getTotalTimeSeconds();
+                if (!hasCardio(lap)) {
+                    continue;
+                }
+                lapWithCardio++;
+                averageHeartRateBpm += lap.getAverageHeartRateBpm() != null ? lap.getAverageHeartRateBpm().getValue() : 0;
+                if (maxHeartBeat < lap.getMaximumHeartRateBpm().getValue()) {
+                    maxHeartBeat = lap.getMaximumHeartRateBpm().getValue();
+                }
             }
             logger.debug("lap: " + lap.getIntensity() + " distance: " + distance);
         }
         // in kilometer
         roundDistanceFromMeterToKm = DistanceHelper.roundDistanceFromMeterToKm(distance);
         // durschnittliche herzfrequenz
-        avgHeartRate = String.valueOf(averageHeartRateBpm / laps.size());
+        if (lapWithCardio > 0) {
+            avgHeartRate = String.valueOf(averageHeartRateBpm / lapWithCardio);
+        } else {
+            avgHeartRate = "-";
+        }
         // dauer
         dauer = TimeHelper.convertSecondsToHumanReadableZeit(timeInSeconds);
         // durschnittliche geschwindigkeit
         averageSpeed = DistanceHelper.calculatePace(distance, timeInSeconds);
 
         maxPace = DistanceHelper.calculatePace(maximumSpeed);
+    }
+
+    private boolean hasCardio(ActivityLapT lap) {
+        return lap.getMaximumHeartRateBpm() != null;
     }
 
     @Override

@@ -1,5 +1,9 @@
 package ch.iseli.sportanalyzer.client.preferences;
 
+import java.util.List;
+
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.preference.ComboFieldEditor;
 import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
@@ -10,7 +14,11 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
 import ch.iseli.sportanalyzer.client.Activator;
+import ch.iseli.sportanalyzer.client.Application;
 import ch.iseli.sportanalyzer.client.PreferenceConstants;
+import ch.iseli.sportanalyzer.client.helper.DaoHelper;
+import ch.iseli.sportanalyzer.db.IImportedDao;
+import ch.opentrainingcenter.transfer.impl.Athlete;
 
 /**
  * This class represents a preference page that is contributed to the Preferences dialog. By subclassing <samp>FieldEditorPreferencePage</samp>, we can use the field support built
@@ -22,10 +30,15 @@ import ch.iseli.sportanalyzer.client.PreferenceConstants;
 
 public class SamplePreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
+    private final List<Athlete> allAthletes;
+
     public SamplePreferencePage() {
         super(GRID);
         setPreferenceStore(Activator.getDefault().getPreferenceStore());
         setDescription("Einige Einstellungen");
+        IConfigurationElement[] daos = Platform.getExtensionRegistry().getConfigurationElementsFor(Application.CH_OPENTRAININGDATABASE_DB);
+        final IImportedDao dao = (IImportedDao) DaoHelper.getDao(daos, IImportedDao.EXTENSION_POINT_NAME);
+        allAthletes = dao.getAllAthletes();
     }
 
     /**
@@ -37,7 +50,13 @@ public class SamplePreferencePage extends FieldEditorPreferencePage implements I
         Composite fieldEditorParent = getFieldEditorParent();
         fieldEditorParent.setSize(50, 60);
         addField(new DirectoryFieldEditor(PreferenceConstants.GPS_FILE_LOCATION, "Ort der GPS Daten:", fieldEditorParent));
-        String[][] entryNamesAndValues = new String[][] { { "Sascha", "1" }, { "Anna", "2" } };
+
+        String[][] entryNamesAndValues = new String[][] { {} };
+        int i = 0;
+        for (Athlete ath : allAthletes) {
+            entryNamesAndValues[i] = new String[] { ath.getName(), String.valueOf(ath.getId()) };
+            i++;
+        }
         ComboFieldEditor comboField = new ComboFieldEditor(PreferenceConstants.ATHLETE_NAME, "Sportler:", entryNamesAndValues, fieldEditorParent);
         addField(comboField);
         comboField.setPropertyChangeListener(new IPropertyChangeListener() {

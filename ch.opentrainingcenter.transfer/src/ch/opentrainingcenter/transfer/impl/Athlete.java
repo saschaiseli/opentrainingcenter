@@ -13,23 +13,27 @@ public class Athlete implements java.io.Serializable, IAthlete {
     private static final long serialVersionUID = 1L;
     private int id;
     private String name;
+    private Integer age;
+    private Integer maxHeartRate;
+
     private Set<Health> healths = new HashSet<Health>(0);
     private Set<Imported> importeds = new HashSet<Imported>(0);
 
     public Athlete() {
     }
 
-    public Athlete(String name) {
+    public Athlete(final String name) {
         this.name = name;
     }
 
-    public Athlete(int id) {
+    public Athlete(final int id) {
         this.id = id;
     }
 
-    public Athlete(int id, String name, Set<Health> healths, Set<Imported> importeds) {
-        this.id = id;
+    public Athlete(final String name, final Integer age, final Integer maxHeartRate, final Set<Health> healths, final Set<Imported> importeds) {
         this.name = name;
+        this.age = age;
+        this.maxHeartRate = maxHeartRate;
         this.healths = healths;
         this.importeds = importeds;
     }
@@ -50,7 +54,7 @@ public class Athlete implements java.io.Serializable, IAthlete {
      * @see ch.opentrainingcenter.transfer.internal.IAthlete#setId(int)
      */
     @Override
-    public void setId(int id) {
+    public void setId(final int id) {
         this.id = id;
     }
 
@@ -70,8 +74,28 @@ public class Athlete implements java.io.Serializable, IAthlete {
      * @see ch.opentrainingcenter.transfer.internal.IAthlete#setName(java.lang.String)
      */
     @Override
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
+    }
+
+    @Override
+    public Integer getAge() {
+        return age;
+    }
+
+    @Override
+    public void setAge(final Integer age) {
+        this.age = age;
+    }
+
+    @Override
+    public Integer getMaxHeartRate() {
+        return maxHeartRate;
+    }
+
+    @Override
+    public void setMaxHeartRate(final Integer maxHeartRate) {
+        this.maxHeartRate = maxHeartRate;
     }
 
     /*
@@ -90,7 +114,7 @@ public class Athlete implements java.io.Serializable, IAthlete {
      * @see ch.opentrainingcenter.transfer.internal.IAthlete#setHealths(java.util.Set)
      */
     @Override
-    public void setHealths(Set<Health> healths) {
+    public void setHealths(final Set<Health> healths) {
         this.healths = healths;
     }
 
@@ -110,7 +134,7 @@ public class Athlete implements java.io.Serializable, IAthlete {
      * @see ch.opentrainingcenter.transfer.internal.IAthlete#setImporteds(java.util.Set)
      */
     @Override
-    public void setImporteds(Set<Imported> importeds) {
+    public void setImporteds(final Set<Imported> importeds) {
         this.importeds = importeds;
     }
 

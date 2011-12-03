@@ -1,9 +1,11 @@
 package ch.iseli.sportanalyzer.db;
 
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.runtime.IExecutableExtensionFactory;
 
+import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.impl.Athlete;
 
 public interface IImportedDao extends IExecutableExtensionFactory {
@@ -42,10 +44,14 @@ public interface IImportedDao extends IExecutableExtensionFactory {
      */
     Athlete getAthlete(int id);
 
+    List<Athlete> getAllAthletes();
+
     void removeImportedRecord(Integer id);
 
     /**
      * Wenn die db nicht vorhanden ist, wird die ganze datenbank mit sql queries erstellt.
      */
     void createDatabase();
+
+    int save(IAthlete athlete);
 }

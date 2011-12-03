@@ -21,6 +21,8 @@ public class Application implements IApplication {
 
     public static final String ID = "ch.iseli.sportanalyzer.client";
 
+    public static final String CH_OPENTRAININGDATABASE_DB = "ch.opentrainingdatabase.db";
+
     /*
      * (non-Javadoc)
      * 

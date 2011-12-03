@@ -3,25 +3,36 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 21.10.2011 12:19:41 by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="ch.opentrainingcenter.transfer.impl.Athlete" table="ATHLETE" schema="PUBLIC" catalog="OTC">
-        <id name="id" type="int">
-            <column name="ID" />
-            <generator class="assigned" />
-        </id>
-        <property name="name" type="string">
-            <column name="NAME" />
-        </property>
-        <set name="healths" table="HEALTH" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="ID_FK_ATHLETE" />
-            </key>
-            <one-to-many class="ch.opentrainingcenter.transfer.impl.Health" />
-        </set>
-        <set name="importeds" table="IMPORTED" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="ID_FK_ATHLETE" />
-            </key>
-            <one-to-many class="ch.opentrainingcenter.transfer.impl.Imported" />
-        </set>
-    </class>
+	<class name="ch.opentrainingcenter.transfer.impl.Athlete" table="ATHLETE"
+		schema="PUBLIC" catalog="OTC">
+		<id name="id" type="int">
+			<column name="ID" />
+			<generator class="sequence">
+				<param name="sequence">import_id_sequence</param>
+			</generator>
+		</id>
+		<property name="name" type="string">
+			<column name="NAME" />
+		</property>
+		<property name="age" type="int">
+			<column name="AGE" />
+		</property>
+		<property name="maxHeartRate" type="int">
+			<column name="MAXHEARTRATE" />
+		</property>
+		<set name="healths" table="HEALTH" inverse="true" lazy="true"
+			fetch="select">
+			<key>
+				<column name="ID_FK_ATHLETE" />
+			</key>
+			<one-to-many class="ch.opentrainingcenter.transfer.impl.Health" />
+		</set>
+		<set name="importeds" table="IMPORTED" inverse="true" lazy="true"
+			fetch="select">
+			<key>
+				<column name="ID_FK_ATHLETE" />
+			</key>
+			<one-to-many class="ch.opentrainingcenter.transfer.impl.Imported" />
+		</set>
+	</class>
 </hibernate-mapping>

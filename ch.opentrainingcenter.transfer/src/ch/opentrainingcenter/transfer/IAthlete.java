@@ -23,4 +23,12 @@ public interface IAthlete {
 
     public abstract void setImporteds(Set<Imported> importeds);
 
+    Integer getAge();
+
+    void setAge(Integer age);
+
+    Integer getMaxHeartRate();
+
+    void setMaxHeartRate(Integer maxHeartRate);
+
 }
