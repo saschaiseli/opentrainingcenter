@@ -6,6 +6,6 @@ package ch.iseli.sportanalyzer.client;
 public class PreferenceConstants {
 
     public final static String GPS_FILE_LOCATION = "gps_path";
-    public static final String ATHLETE_NAME = "athlete_name";
+    public static final String ATHLETE_ID = "athlete_id";
 
 }

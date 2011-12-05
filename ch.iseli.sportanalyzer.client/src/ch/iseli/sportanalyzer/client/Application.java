@@ -20,6 +20,8 @@ public class Application implements IApplication {
 
     public static final String CH_OPENTRAININGDATABASE_DB = "ch.opentrainingdatabase.db";
 
+    public static final String WINDOW_TITLE = "Open Training Center";
+
     /*
      * (non-Javadoc)
      * 

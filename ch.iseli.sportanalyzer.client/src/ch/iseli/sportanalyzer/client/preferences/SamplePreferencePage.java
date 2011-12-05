@@ -1,5 +1,6 @@
 package ch.iseli.sportanalyzer.client.preferences;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jface.preference.ComboFieldEditor;
@@ -45,13 +46,12 @@ public class SamplePreferencePage extends FieldEditorPreferencePage implements I
         fieldEditorParent.setSize(50, 60);
         addField(new DirectoryFieldEditor(PreferenceConstants.GPS_FILE_LOCATION, "Ort der GPS Daten:", fieldEditorParent));
 
-        final String[][] entryNamesAndValues = new String[][] { {} };
-        int i = 0;
+        final List<String[]> vals = new ArrayList<String[]>();
+        final int i = 0;
         for (final IAthlete ath : allAthletes) {
-            entryNamesAndValues[i] = new String[] { ath.getName(), String.valueOf(ath.getId()) };
-            i++;
+            vals.add(new String[] { ath.getName(), String.valueOf(ath.getId()) });
         }
-        final ComboFieldEditor comboField = new ComboFieldEditor(PreferenceConstants.ATHLETE_NAME, "Sportler:", entryNamesAndValues, fieldEditorParent);
+        final ComboFieldEditor comboField = new ComboFieldEditor(PreferenceConstants.ATHLETE_ID, "Sportler:", vals.toArray(new String[0][0]), fieldEditorParent);
         addField(comboField);
         comboField.setPropertyChangeListener(new IPropertyChangeListener() {
 

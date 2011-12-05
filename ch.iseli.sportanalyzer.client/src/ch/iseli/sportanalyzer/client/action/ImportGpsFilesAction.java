@@ -55,7 +55,7 @@ public class ImportGpsFilesAction extends Action implements ISelectionListener, 
 
     public ImportGpsFilesAction(final IWorkbenchWindow window, final String tooltip) {
         logger.debug("Import files....");
-        final String athleteId = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.ATHLETE_NAME);
+        final String athleteId = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.ATHLETE_ID);
         if (validId(athleteId)) {
             final int id = Integer.parseInt(athleteId);
             athlete = DatabaseAccessFactory.getDatabaseAccess().getAthlete(id);
@@ -138,7 +138,7 @@ public class ImportGpsFilesAction extends Action implements ISelectionListener, 
                     for (final File file : selectedFilesToImport) {
                         monitor.setTaskName("importiere File: " + file.getName());
                         final TrainingCenterDatabaseT record = tcx.convert(file);
-                        final Integer importRecordId = DatabaseAccessFactory.getDatabaseAccess().importRecord(athlete, file.getName());
+                        final Integer importRecordId = DatabaseAccessFactory.getDatabaseAccess().importRecord(athlete.getId(), file.getName());
                         allRecords.put(importRecordId, new TrainingCenterRecord(importRecordId, record));
 
                         monitor.worked(1);

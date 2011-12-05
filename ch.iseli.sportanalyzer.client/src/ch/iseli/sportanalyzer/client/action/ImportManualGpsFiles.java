@@ -51,7 +51,7 @@ public class ImportManualGpsFiles extends Action implements ISelectionListener, 
         this.window = window;
         setId(ID);
         setToolTipText(toolTipText);
-        final String athleteId = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.ATHLETE_NAME);
+        final String athleteId = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.ATHLETE_ID);
         if (validId(athleteId)) {
             final int id = Integer.parseInt(athleteId);
             athlete = DatabaseAccessFactory.getDatabaseAccess().getAthlete(id);
@@ -106,7 +106,7 @@ public class ImportManualGpsFiles extends Action implements ISelectionListener, 
                             final File file = new File(filterPath, fileName);
                             monitor.setTaskName("importiere File: " + file.getName());
                             final TrainingCenterDatabaseT record = tcx.convert(file);
-                            final Integer importRecordId = DatabaseAccessFactory.getDatabaseAccess().importRecord(athlete, file.getName());
+                            final Integer importRecordId = DatabaseAccessFactory.getDatabaseAccess().importRecord(athlete.getId(), file.getName());
                             allRecords.put(importRecordId, new TrainingCenterRecord(importRecordId, record));
                             FileCopy.copyFile(file, new File(defaultLocation, file.getName()));
                             monitor.worked(1);

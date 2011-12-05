@@ -28,7 +28,7 @@ public class NumberValidator implements IValidator {
                 } else if (number > max) {
                     return ValidationStatus.error("Zahl zu gross. Muss kleiner als " + max + " sein.");
                 } else {
-                    return null;// ValidationStatus.OK_STATUS;
+                    return ValidationStatus.OK_STATUS;
                 }
             }
         }

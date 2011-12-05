@@ -12,10 +12,13 @@ import org.eclipse.core.runtime.ListenerList;
 
 import ch.iseli.sportanalyzer.client.model.SimpleTraining;
 import ch.iseli.sportanalyzer.client.model.TrainingOverview;
+import ch.opentrainingcenter.transfer.IAthlete;
 
 public class TrainingCenterDataCache {
 
     private ListenerList listeners;
+
+    private IAthlete selectedProfile;
 
     private static TrainingCenterDataCache INSTANCE = null;
 
@@ -35,8 +38,26 @@ public class TrainingCenterDataCache {
         return INSTANCE;
     }
 
-    public void setSelectedRun(TrainingCenterRecord selected) {
+    public void setSelectedRun(final TrainingCenterRecord selected) {
         TrainingCenterDataCache.selected = selected;
+    }
+
+    public void setSelectedProfile(final IAthlete athlete) {
+        this.selectedProfile = athlete;
+        resetCache();
+        loadCacheForProfile();
+    }
+
+    @SuppressWarnings("unchecked")
+    private void resetCache() {
+        list.clear();
+        selected = null;
+        selectedItems = null;
+        fireRecordAdded(Collections.EMPTY_LIST);
+    }
+
+    private void loadCacheForProfile() {
+
     }
 
     public TrainingCenterRecord getSelected() {
@@ -54,32 +75,32 @@ public class TrainingCenterDataCache {
         return list.values();
     }
 
-    public void addAll(Map<Integer, TrainingCenterRecord> records) {
-        for (Map.Entry<Integer, TrainingCenterRecord> record : records.entrySet()) {
+    public void addAll(final Map<Integer, TrainingCenterRecord> records) {
+        for (final Map.Entry<Integer, TrainingCenterRecord> record : records.entrySet()) {
             list.put(record.getKey(), record.getValue());
         }
         fireRecordAdded(records.values());
     }
 
-    private void fireRecordAdded(Collection<TrainingCenterRecord> collection) {
+    private void fireRecordAdded(final Collection<TrainingCenterRecord> collection) {
         if (listeners == null)
             return;
-        Object[] rls = listeners.getListeners();
+        final Object[] rls = listeners.getListeners();
         for (int i = 0; i < rls.length; i++) {
-            IRecordListener listener = (IRecordListener) rls[i];
+            final IRecordListener listener = (IRecordListener) rls[i];
             listener.recordChanged(collection);
         }
 
     }
 
-    public void addListener(IRecordListener listener) {
+    public void addListener(final IRecordListener listener) {
         if (listeners == null) {
             listeners = new ListenerList();
         }
         listeners.add(listener);
     }
 
-    public void removeListener(IRecordListener listener) {
+    public void removeListener(final IRecordListener listener) {
         if (listeners != null) {
             listeners.remove(listener);
             if (listeners.isEmpty()) {
@@ -89,22 +110,22 @@ public class TrainingCenterDataCache {
 
     }
 
-    public void remove(Integer id) {
+    public void remove(final Integer id) {
         list.remove(id);
         fireRecordAdded(null);
     }
 
     public List<SimpleTraining> getAllSimpleTrainings() {
-        Collection<TrainingCenterRecord> values = list.values();
-        List<SimpleTraining> result = new ArrayList<SimpleTraining>();
-        for (TrainingCenterRecord t : values) {
-            TrainingOverview over = new TrainingOverview(t);
+        final Collection<TrainingCenterRecord> values = list.values();
+        final List<SimpleTraining> result = new ArrayList<SimpleTraining>();
+        for (final TrainingCenterRecord t : values) {
+            final TrainingOverview over = new TrainingOverview(t);
             result.add(over.getSimpleTraining());
         }
         return result;
     }
 
-    public void setSelection(Object[] selectedItems) {
+    public void setSelection(final Object[] selectedItems) {
         this.selectedItems = selectedItems;
     }
 

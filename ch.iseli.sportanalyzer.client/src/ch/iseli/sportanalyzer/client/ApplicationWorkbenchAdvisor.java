@@ -25,7 +25,16 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 
     @Override
     public String getInitialWindowPerspectiveId() {
-        final String athleteId = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.ATHLETE_NAME);
+        try {
+            DatabaseAccessFactory.getDatabaseAccess().getAthlete(1);
+        } catch (final Exception e) {
+            final Throwable cause = e.getCause();
+            final String message = cause.getMessage();
+            if (message.contains("Locked by another process")) {
+                // return Error
+            }
+        }
+        final String athleteId = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.ATHLETE_ID);
         // return Perspective.ID;
         if (athleteId != null && athleteId.length() > 0) {
             final IAthlete athlete = DatabaseAccessFactory.getDatabaseAccess().getAthlete(Integer.parseInt(athleteId));
@@ -46,4 +55,5 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
     public void initialize(final IWorkbenchConfigurer configurer) {
         // configurer.setSaveAndRestore(true);
     }
+
 }

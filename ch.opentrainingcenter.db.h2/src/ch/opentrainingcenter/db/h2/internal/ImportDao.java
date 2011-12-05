@@ -1,6 +1,5 @@
 package ch.opentrainingcenter.db.h2.internal;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -8,14 +7,19 @@ import java.util.Map;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
+import ch.iseli.sportanalyzer.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IImported;
 
-public class ImportDao extends Dao {
+public class ImportDao {
 
-    public ImportDao() {
+    private final Dao dao;
+
+    public ImportDao(final Dao dao) {
+        this.dao = dao;
     }
 
     @SuppressWarnings("unchecked")
@@ -23,7 +27,7 @@ public class ImportDao extends Dao {
         if (athlete == null) {
             return null;
         }
-        final Query query = getSession().createQuery("from Imported where id_fk_athlete=:idAthlete");
+        final Query query = dao.getSession().createQuery("from Imported where id_fk_athlete=:idAthlete");
         query.setParameter("idAthlete", athlete.getId());
         final List<IImported> all = query.list();
         if (all == null) {
@@ -36,27 +40,29 @@ public class ImportDao extends Dao {
         return keyFileName;
     }
 
-    public int importRecord(final IAthlete athlete, final String name) {
+    public int importRecord(final int athleteId, final String name) {
         final IImported record = CommonTransferFactory.createIImported();
+        final IAthlete athlete = DatabaseAccessFactory.getDatabaseAccess().getAthlete(athleteId);
+        athlete.addImported(record);
         record.setAthlete(athlete);
         record.setComments(name);
         record.setImportedDate(new Date());
-        final Session session = getSession();
-        begin();
-        final Serializable save = session.save(record);
-        commit();
+        final Session session = dao.getSession();
+        final Transaction tx = session.beginTransaction();
+        session.saveOrUpdate(record);
+        tx.commit();
         session.flush();
-        return (Integer) save;
+        return record.getId();
     }
 
     public void removeImportedRecord(final Integer id) {
-        final Session session = getSession();
-        begin();
+        final Session session = dao.getSession();
+        dao.begin();
         final Query query = session.createQuery("delete Imported where id=:id");
         query.setParameter("id", id);
         query.executeUpdate();
-        commit();
+        dao.commit();
         session.flush();
-        getSession().flush();
+        dao.getSession().flush();
     }
 }

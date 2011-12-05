@@ -21,7 +21,7 @@ public class Sportler implements PropertyChangeListener {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         propertyChangeSupport.firePropertyChange("name", this.name, this.name = name);
     }
 
@@ -29,7 +29,7 @@ public class Sportler implements PropertyChangeListener {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(final String gender) {
         propertyChangeSupport.firePropertyChange("gender", this.gender, this.gender = gender);
     }
 
@@ -37,8 +37,7 @@ public class Sportler implements PropertyChangeListener {
         return age;
     }
 
-    public void setAge(Integer age) {
-        this.age = age;
+    public void setAge(final Integer age) {
         propertyChangeSupport.firePropertyChange("age", this.age, this.age = age);
     }
 
@@ -46,7 +45,7 @@ public class Sportler implements PropertyChangeListener {
         return maxHeartBeat;
     }
 
-    public void setMaxHeartBeat(Integer maxHeartBeat) {
+    public void setMaxHeartBeat(final Integer maxHeartBeat) {
         propertyChangeSupport.firePropertyChange("maxHeartBeat", this.maxHeartBeat, this.maxHeartBeat = maxHeartBeat);
     }
 
@@ -54,17 +53,17 @@ public class Sportler implements PropertyChangeListener {
         return propertyChangeSupport;
     }
 
-    public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
+    public void addPropertyChangeListener(final String propertyName, final PropertyChangeListener listener) {
         propertyChangeSupport.addPropertyChangeListener(propertyName, listener);
     }
 
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
+    public void removePropertyChangeListener(final PropertyChangeListener listener) {
         propertyChangeSupport.removePropertyChangeListener(listener);
     }
 
     @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        propertyChangeSupport.firePropertyChange("sportler", null, this);
+    public void propertyChange(final PropertyChangeEvent evt) {
+        propertyChangeSupport.firePropertyChange("name", null, this);
     }
 
     @Override

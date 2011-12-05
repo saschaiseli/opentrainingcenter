@@ -33,7 +33,7 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
      *            der Filename des GPS Files.
      * @return die ID von der Datenbank.
      */
-    int importRecord(IAthlete athlete, String name);
+    int importRecord(int athleteId, String name);
 
     /**
      * Gibt den sportler mit
@@ -42,6 +42,15 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
      * @return Gibt den sportler mit der angegeben id zurück oder null.
      */
     IAthlete getAthlete(int id);
+
+    /**
+     * Sucht einen Athleten mit dem angegeben Namen. Der Name muss exakt übereinstimmen, es gibt keine %LIKE% abfrage.
+     * 
+     * @param name
+     *            den vollständigen namen.
+     * @return einen Athleten oder null, wenn dieser nicht gefunden wird.
+     */
+    IAthlete getAthlete(String name);
 
     List<IAthlete> getAllAthletes();
 
@@ -52,5 +61,11 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
      */
     void createDatabase();
 
-    int save(IAthlete athlete);
+    /**
+     * @param athlete
+     * @return
+     * @throws DatabaseException
+     *             wenn das speichern fehlschlägt
+     */
+    int save(IAthlete athlete) throws DatabaseException;
 }

@@ -8,16 +8,16 @@ import org.hibernate.Transaction;
 public class Dao {
     // private static final ThreadLocal session = new ThreadLocal();
     private Session session;
-    private final SessionFactory sessionFactory;
+    private SessionFactory sessionFactory;
 
     public Dao() {
-        final org.hibernate.cfg.Configuration c = new org.hibernate.cfg.Configuration();
-        sessionFactory = c.configure().buildSessionFactory();
-        session = sessionFactory.openSession();
+
     }
 
     public Session getSession() {
         if (session == null) {
+            final org.hibernate.cfg.Configuration c = new org.hibernate.cfg.Configuration();
+            sessionFactory = c.configure().buildSessionFactory();
             session = sessionFactory.openSession();
         }
         return session;

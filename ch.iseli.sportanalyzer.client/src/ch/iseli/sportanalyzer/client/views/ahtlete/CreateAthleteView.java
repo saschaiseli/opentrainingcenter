@@ -1,6 +1,8 @@
 package ch.iseli.sportanalyzer.client.views.ahtlete;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.databinding.Binding;
@@ -34,7 +36,9 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
 import org.eclipse.ui.part.ViewPart;
 
 import ch.iseli.sportanalyzer.client.Activator;
+import ch.iseli.sportanalyzer.client.Application;
 import ch.iseli.sportanalyzer.client.PreferenceConstants;
+import ch.iseli.sportanalyzer.client.cache.TrainingCenterDataCache;
 import ch.iseli.sportanalyzer.client.model.sportler.Sportler;
 import ch.iseli.sportanalyzer.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
@@ -46,17 +50,21 @@ public class CreateAthleteView extends ViewPart {
     public static final String IMAGE = "icons/create.png";
     private final Sportler sportler = new Sportler();
     private Text nameTf;
-    private Text ageText;
+    private Text ageTf;
+    private Text pulseTf;
     private Combo genderCombo;
-    private Text pulseText;
+    private Label errorLabel;
     private FormToolkit toolkit;
     private ScrolledForm form;
     private TableWrapData td;
     private final String athleteId;
     private Combo user;
+    private Section selectSportler;
+    private Section overviewSection;
+    private final Map<Integer, Integer> indexOfSelectBoxMappedToDatabaseId = new HashMap<Integer, Integer>();
 
     public CreateAthleteView() {
-        athleteId = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.ATHLETE_NAME);
+        athleteId = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.ATHLETE_ID);
     }
 
     @Override
@@ -84,7 +92,7 @@ public class CreateAthleteView extends ViewPart {
     }
 
     private void createSelectSportler(final Composite body) {
-        final Section selectSportler = toolkit.createSection(body, Section.DESCRIPTION | Section.TITLE_BAR | Section.TWISTIE | Section.EXPANDED);
+        selectSportler = toolkit.createSection(body, Section.DESCRIPTION | Section.TITLE_BAR | Section.TWISTIE | Section.EXPANDED);
         selectSportler.addExpansionListener(new ExpansionAdapter() {
             @Override
             public void expansionStateChanged(final ExpansionEvent e) {
@@ -115,8 +123,11 @@ public class CreateAthleteView extends ViewPart {
         sportlerLabel.setLayoutData(gridData);
         //
         user = new Combo(sportlerComposite, SWT.NONE);
+        int i = 0;
         for (final IAthlete athlete : allAthletes) {
-            user.add(athlete.getName(), athlete.getId());
+            user.add(athlete.getName(), i);
+            indexOfSelectBoxMappedToDatabaseId.put(i, athlete.getId());
+            i++;
         }
 
         gridData = new GridData();
@@ -133,8 +144,16 @@ public class CreateAthleteView extends ViewPart {
 
             @Override
             public void widgetSelected(final SelectionEvent e) {
-                logger.info("Neuen Benutzer auswählen: ");
-                user.getSelectionIndex();
+                logger.info("Neuen Benutzer ausgewählt: ");
+                final int selectionIndex = user.getSelectionIndex();
+                final int dbId = indexOfSelectBoxMappedToDatabaseId.get(selectionIndex);
+                Activator.getDefault().getPreferenceStore().setValue(PreferenceConstants.ATHLETE_ID, String.valueOf(dbId));
+                setContentDescription("blabla");
+                final IAthlete athlete = DatabaseAccessFactory.getDatabaseAccess().getAthlete(dbId);
+                logger.info("Benutzer: " + athleteId + " wird im Cache gesetzt");
+                TrainingCenterDataCache.getInstance().setSelectedProfile(athlete);
+
+                getViewSite().getWorkbenchWindow().getShell().setText(Application.WINDOW_TITLE + " / " + athlete.getName());
             }
         });
 
@@ -186,7 +205,7 @@ public class CreateAthleteView extends ViewPart {
 
     private void createAddSportlerMask(final Composite body) {
 
-        final Section overviewSection = toolkit.createSection(body, Section.DESCRIPTION | Section.TITLE_BAR | Section.TWISTIE | Section.EXPANDED);
+        overviewSection = toolkit.createSection(body, Section.DESCRIPTION | Section.TITLE_BAR | Section.TWISTIE | Section.EXPANDED);
         overviewSection.addExpansionListener(new ExpansionAdapter() {
             @Override
             public void expansionStateChanged(final ExpansionEvent e) {
@@ -217,24 +236,24 @@ public class CreateAthleteView extends ViewPart {
         // alter
         final Label ageLabel = new Label(overViewComposite, SWT.NONE);
         ageLabel.setText("Alter: ");
-        ageText = new Text(overViewComposite, SWT.BORDER);
+        ageTf = new Text(overViewComposite, SWT.BORDER);
 
         gridData = new GridData();
         gridData.horizontalAlignment = SWT.FILL;
         gridData.grabExcessHorizontalSpace = true;
         gridData.horizontalIndent = 5;
-        ageText.setLayoutData(gridData);
+        ageTf.setLayoutData(gridData);
 
         // pulse
         final Label pulseLabel = new Label(overViewComposite, SWT.NONE);
         pulseLabel.setText("Maximal Puls: ");
-        pulseText = new Text(overViewComposite, SWT.BORDER);
+        pulseTf = new Text(overViewComposite, SWT.BORDER);
 
         gridData = new GridData();
         gridData.horizontalAlignment = SWT.FILL;
         gridData.grabExcessHorizontalSpace = true;
         gridData.horizontalIndent = 5;
-        pulseText.setLayoutData(gridData);
+        pulseTf.setLayoutData(gridData);
 
         // gender
         final Label genderLabel = new Label(overViewComposite, SWT.NONE);
@@ -249,6 +268,14 @@ public class CreateAthleteView extends ViewPart {
         gridData.horizontalIndent = 5;
         genderCombo.setLayoutData(gridData);
 
+        errorLabel = new Label(overViewComposite, SWT.NONE);
+        gridData = new GridData();
+        gridData.horizontalAlignment = SWT.FILL;
+        gridData.grabExcessHorizontalSpace = true;
+        gridData.horizontalAlignment = GridData.FILL;
+        gridData.horizontalSpan = 2;
+        errorLabel.setLayoutData(gridData);
+
         final Button button1 = new Button(overViewComposite, SWT.PUSH);
         button1.setText("Speichern");
         button1.addSelectionListener(new SelectionAdapter() {
@@ -257,7 +284,14 @@ public class CreateAthleteView extends ViewPart {
             public void widgetSelected(final SelectionEvent e) {
                 logger.info("save " + sportler);
                 final IAthlete athlete = CommonTransferFactory.createAthlete(sportler.getName(), sportler.getAge(), sportler.getMaxHeartBeat());
-                DatabaseAccessFactory.getDatabaseAccess().save(athlete);
+                try {
+                    DatabaseAccessFactory.getDatabaseAccess().save(athlete);
+                    errorLabel.setText("");
+                    overviewSection.setExpanded(false);
+                    selectSportler.setExpanded(true);
+                } catch (final Exception e1) {
+                    errorLabel.setText("Fehler beim abspeichern des Profiles / Benutzers");
+                }
             }
         });
         gridData = new GridData();
@@ -283,22 +317,32 @@ public class CreateAthleteView extends ViewPart {
         // The DataBindingContext object will manage the databindings
         // Lets bind it
         final DataBindingContext ctx = new DataBindingContext();
+
+        // name
         IObservableValue widgetValue = WidgetProperties.text(SWT.Modify).observe(nameTf);
         IObservableValue modelValue = BeanProperties.value(Sportler.class, "name").observe(sportler);
-        ctx.bindValue(widgetValue, modelValue);
+        final UpdateValueStrategy strategyName = new UpdateValueStrategy();
+        strategyName.setBeforeSetValidator(new SportlerValidator(5));
+        // strategy.setBeforeSetValidator(validator);
+
+        final Binding bindName = ctx.bindValue(widgetValue, modelValue, strategyName, null);
+        // Add some decorations
+        ControlDecorationSupport.create(bindName, SWT.TOP | SWT.RIGHT);
 
         // Bind the age including a validator
-        widgetValue = WidgetProperties.text(SWT.Modify).observe(ageText);
+        widgetValue = WidgetProperties.text(SWT.Modify).observe(ageTf);
         modelValue = BeanProperties.value(Sportler.class, "age").observe(sportler);
+        // Add an validator so that age can only be a number
+        final UpdateValueStrategy strategy = new UpdateValueStrategy();
+        strategy.setBeforeSetValidator(new NumberValidator(18, 99, "Bitte das Alter eingeben"));
+        // strategy.setBeforeSetValidator(validator);
 
-        final UpdateValueStrategy strategyAge = new UpdateValueStrategy();
-        strategyAge.setBeforeSetValidator(new NumberValidator(18, 120, "Bitte das Alter eingeben"));
-
-        final Binding bindValue = ctx.bindValue(widgetValue, modelValue, strategyAge, null);
+        final Binding bindValue = ctx.bindValue(widgetValue, modelValue, strategy, null);
         // Add some decorations
-        ControlDecorationSupport.create(bindValue, SWT.TOP | SWT.LEFT);
+        ControlDecorationSupport.create(bindValue, SWT.TOP | SWT.RIGHT);
 
-        widgetValue = WidgetProperties.text(SWT.Modify).observe(pulseText);
+        // pulse
+        widgetValue = WidgetProperties.text(SWT.Modify).observe(pulseTf);
         modelValue = BeanProperties.value(Sportler.class, "maxHeartBeat").observe(sportler);
         // Add an validator so that age can only be a number
 
@@ -307,12 +351,18 @@ public class CreateAthleteView extends ViewPart {
 
         final Binding bindMaxPulse = ctx.bindValue(widgetValue, modelValue, strategyPulse, null);
         // Add some decorations
-        ControlDecorationSupport.create(bindMaxPulse, SWT.TOP | SWT.LEFT);
-
+        ControlDecorationSupport.create(bindMaxPulse, SWT.TOP | SWT.RIGHT);
+        // -----------------------
+        //
+        // gender
         widgetValue = WidgetProperties.selection().observe(genderCombo);
         modelValue = BeansObservables.observeValue(sportler, "gender");
-
         ctx.bindValue(widgetValue, modelValue);
+
+        // final IObservableValue errorObservable = WidgetProperties.text().observe(errorLabel);
+        // // This one listenes to all changes
+        // ctx.bindValue(errorObservable, new AggregateValidationStatus(ctx.getBindings(), AggregateValidationStatus.MAX_SEVERITY), null, null);
+
     }
 
     @Override

@@ -7,6 +7,7 @@ import org.eclipse.core.runtime.CoreException;
 
 import ch.iseli.sportanalyzer.db.IDatabaseAccess;
 import ch.opentrainingcenter.db.h2.internal.AthleteDao;
+import ch.opentrainingcenter.db.h2.internal.Dao;
 import ch.opentrainingcenter.db.h2.internal.DatabaseCreator;
 import ch.opentrainingcenter.db.h2.internal.ImportDao;
 import ch.opentrainingcenter.transfer.IAthlete;
@@ -18,8 +19,9 @@ public class DatabaseAccess implements IDatabaseAccess {
     private final DatabaseCreator databaseCreator;
 
     public DatabaseAccess() {
-        athleteDao = new AthleteDao();
-        importDao = new ImportDao();
+        final Dao dao = new Dao();
+        athleteDao = new AthleteDao(dao);
+        importDao = new ImportDao(dao);
         databaseCreator = new DatabaseCreator();
     }
 
@@ -34,8 +36,8 @@ public class DatabaseAccess implements IDatabaseAccess {
     }
 
     @Override
-    public int importRecord(final IAthlete athlete, final String name) {
-        return importDao.importRecord(athlete, name);
+    public int importRecord(final int athleteId, final String name) {
+        return importDao.importRecord(athleteId, name);
     }
 
     @Override
@@ -51,6 +53,11 @@ public class DatabaseAccess implements IDatabaseAccess {
     @Override
     public IAthlete getAthlete(final int id) {
         return athleteDao.getAthlete(id);
+    }
+
+    @Override
+    public IAthlete getAthlete(final String name) {
+        return athleteDao.getAthlete(name);
     }
 
     @Override

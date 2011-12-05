@@ -16,7 +16,7 @@
    <column name="ID_FK_WEATHER"/>
   </many-to-one>
   <many-to-one class="ch.opentrainingcenter.transfer.impl.Athlete"
-   fetch="select" name="athlete">
+   fetch="select" name="athlete" update="false" cascade="all">
    <column name="ID_FK_ATHLETE"/>
   </many-to-one>
   <property generated="never" lazy="false" name="importedDate" type="timestamp">
