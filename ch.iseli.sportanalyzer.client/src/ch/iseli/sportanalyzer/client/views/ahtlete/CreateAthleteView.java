@@ -11,6 +11,7 @@ import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeanProperties;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.swt.SWT;
@@ -41,6 +42,7 @@ import ch.iseli.sportanalyzer.client.PreferenceConstants;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDataCache;
 import ch.iseli.sportanalyzer.client.model.sportler.Sportler;
 import ch.iseli.sportanalyzer.db.DatabaseAccessFactory;
+import ch.iseli.sportanalyzer.importer.ImportJob;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
 
@@ -57,14 +59,12 @@ public class CreateAthleteView extends ViewPart {
     private FormToolkit toolkit;
     private ScrolledForm form;
     private TableWrapData td;
-    private final String athleteId;
     private Combo user;
     private Section selectSportler;
     private Section overviewSection;
     private final Map<Integer, Integer> indexOfSelectBoxMappedToDatabaseId = new HashMap<Integer, Integer>();
 
     public CreateAthleteView() {
-        athleteId = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.ATHLETE_ID);
     }
 
     @Override
@@ -144,15 +144,14 @@ public class CreateAthleteView extends ViewPart {
 
             @Override
             public void widgetSelected(final SelectionEvent e) {
-                logger.info("Neuen Benutzer ausgewählt: ");
                 final int selectionIndex = user.getSelectionIndex();
                 final int dbId = indexOfSelectBoxMappedToDatabaseId.get(selectionIndex);
                 Activator.getDefault().getPreferenceStore().setValue(PreferenceConstants.ATHLETE_ID, String.valueOf(dbId));
-                setContentDescription("blabla");
                 final IAthlete athlete = DatabaseAccessFactory.getDatabaseAccess().getAthlete(dbId);
-                logger.info("Benutzer: " + athleteId + " wird im Cache gesetzt");
+                logger.info("Benutzer: " + athlete + " wird im Cache gesetzt.");
                 TrainingCenterDataCache.getInstance().setSelectedProfile(athlete);
-
+                final Job job = new ImportJob("Profile gewechselt, neue GPS Daten aus DB laden", athlete);
+                job.schedule();
                 getViewSite().getWorkbenchWindow().getShell().setText(Application.WINDOW_TITLE + " / " + athlete.getName());
             }
         });

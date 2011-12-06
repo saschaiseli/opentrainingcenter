@@ -5,9 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.FileLocator;
@@ -16,7 +13,6 @@ import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
 
 import ch.iseli.sport4ever.importer.internal.xml.ConvertXml;
-import ch.iseli.sportanalyzer.importer.FindGarminFiles;
 import ch.iseli.sportanalyzer.importer.IConvert2Tcx;
 import ch.iseli.sportanalyzer.tcx.TrainingCenterDatabaseT;
 
@@ -86,35 +82,8 @@ public class Gmn2Tcx implements IConvert2Tcx {
     }
 
     @Override
-    public List<File> loadAllGPSFiles() {
-        return FindGarminFiles.getGarminFiles();
-    }
-
-    @Override
-    public Map<Integer, File> loadAllGPSFilesFromAthlete(final Map<Integer, String> garminFiles) {
-        if (garminFiles == null) {
-            return Collections.emptyMap();
-        }
-        final List<File> all = loadAllGPSFiles();
-        final Map<String, File> fileNameToFile = new HashMap<String, File>();
-        for (final File file : all) {
-            fileNameToFile.put(file.getName(), file);
-        }
-        final Map<Integer, File> result = new HashMap<Integer, File>();
-        for (final Map.Entry<Integer, String> entry : garminFiles.entrySet()) {
-            if (istFileNameVonKeyIn(fileNameToFile, entry)) {
-                result.put(entry.getKey(), fileNameToFile.get(entry.getValue()));
-            }
-        }
-        return result;
-    }
-
-    @Override
     public String getFilePrefix() {
         return "gmn";
     }
 
-    private boolean istFileNameVonKeyIn(final Map<String, File> fileNameToFile, final Map.Entry<Integer, String> entry) {
-        return fileNameToFile.keySet().contains(entry.getValue());
-    }
 }

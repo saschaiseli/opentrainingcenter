@@ -46,19 +46,17 @@ public class TrainingCenterDataCache {
     public void setSelectedProfile(final IAthlete athlete) {
         this.selectedProfile = athlete;
         resetCache();
-        loadCacheForProfile();
+        reloadCache(this.selectedProfile);
     }
 
-    @SuppressWarnings("unchecked")
+    private void reloadCache(final IAthlete selectedProfile) {
+
+    }
+
     private void resetCache() {
         list.clear();
         selected = null;
         selectedItems = null;
-        fireRecordAdded(Collections.EMPTY_LIST);
-    }
-
-    private void loadCacheForProfile() {
-
     }
 
     public TrainingCenterRecord getSelected() {
@@ -87,6 +85,12 @@ public class TrainingCenterDataCache {
             list.put(record.getKey(), record.getValue());
         }
         fireRecordAdded(records.values());
+    }
+
+    public void addWithoutNotifyAll(final Map<Integer, TrainingCenterRecord> records) {
+        for (final Map.Entry<Integer, TrainingCenterRecord> record : records.entrySet()) {
+            list.put(record.getKey(), record.getValue());
+        }
     }
 
     private void fireRecordAdded(final Collection<TrainingCenterRecord> collection) {
@@ -140,4 +144,7 @@ public class TrainingCenterDataCache {
         return Collections.unmodifiableList(Arrays.asList(selectedItems));
     }
 
+    public IAthlete getSelectedProfile() {
+        return selectedProfile;
+    }
 }

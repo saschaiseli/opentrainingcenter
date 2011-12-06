@@ -3,8 +3,6 @@ package ch.iseli.sportanalyzer.importer;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
-import java.util.Map;
 
 import ch.iseli.sportanalyzer.tcx.TrainingCenterDatabaseT;
 
@@ -38,9 +36,9 @@ public interface IConvert2Tcx {
      * @return alle vorhandenen GPS Files.
      * @throws Exception
      */
-    List<File> loadAllGPSFiles();
+    // List<File> loadAllGPSFiles();
 
-    Map<Integer, File> loadAllGPSFilesFromAthlete(Map<Integer, String> garminFiles);
+    // Map<Integer, File> loadAllGPSFilesFromAthlete(Map<Integer, String> garminFiles);
 
     /**
      * @return den prefix für ein GPS file. Bei Garmin wird demnach 'gmn' zurückgegeben.
