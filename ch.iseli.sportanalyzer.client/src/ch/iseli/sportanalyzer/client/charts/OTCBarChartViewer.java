@@ -33,6 +33,7 @@ import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.labels.StandardXYToolTipGenerator;
 import org.jfree.chart.plot.DatasetRenderingOrder;
+import org.jfree.chart.plot.IntervalMarker;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYBarRenderer;
@@ -47,6 +48,9 @@ import org.jfree.data.time.Week;
 import org.jfree.data.time.Year;
 import org.jfree.data.xy.IntervalXYDataset;
 import org.jfree.experimental.chart.swt.ChartComposite;
+import org.jfree.ui.Layer;
+import org.jfree.ui.RectangleAnchor;
+import org.jfree.ui.TextAnchor;
 
 import ch.iseli.sportanalyzer.client.cache.IRecordListener;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDataCache;
@@ -136,6 +140,14 @@ public class OTCBarChartViewer implements ISelectionProvider {
                 renderer.setSeriesPaint(0, COLOR_HEART);
                 renderer.setShape(Cross.createCross());
                 plot.setRenderer(1, renderer);
+
+                final IntervalMarker target = new IntervalMarker(100, 150);
+                target.setLabel("Anaerober Bereich");
+                // target.setLabelFont(new Font("SansSerif", Font.ITALIC, 11));
+                target.setLabelAnchor(RectangleAnchor.LEFT);
+                target.setLabelTextAnchor(TextAnchor.CENTER_LEFT);
+                target.setPaint(new Color(222, 222, 255, 128));
+                plot.addRangeMarker(target, Layer.BACKGROUND);
 
                 plot.setDatasetRenderingOrder(DatasetRenderingOrder.FORWARD);
                 chartComposite.forceRedraw();

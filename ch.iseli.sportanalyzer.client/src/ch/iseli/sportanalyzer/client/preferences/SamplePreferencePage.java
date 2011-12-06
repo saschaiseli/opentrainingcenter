@@ -6,8 +6,7 @@ import java.util.List;
 import org.eclipse.jface.preference.ComboFieldEditor;
 import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
-import org.eclipse.jface.util.IPropertyChangeListener;
-import org.eclipse.jface.util.PropertyChangeEvent;
+import org.eclipse.jface.preference.IntegerFieldEditor;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
@@ -43,24 +42,44 @@ public class SamplePreferencePage extends FieldEditorPreferencePage implements I
     @Override
     public void createFieldEditors() {
         final Composite fieldEditorParent = getFieldEditorParent();
-        fieldEditorParent.setSize(50, 60);
+        fieldEditorParent.setSize(50, 20);
         addField(new DirectoryFieldEditor(PreferenceConstants.GPS_FILE_LOCATION, "Ort der GPS Daten:", fieldEditorParent));
 
         final List<String[]> vals = new ArrayList<String[]>();
-        final int i = 0;
         for (final IAthlete ath : allAthletes) {
             vals.add(new String[] { ath.getName(), String.valueOf(ath.getId()) });
         }
         final ComboFieldEditor comboField = new ComboFieldEditor(PreferenceConstants.ATHLETE_ID, "Sportler:", vals.toArray(new String[0][0]), fieldEditorParent);
         addField(comboField);
-        comboField.setPropertyChangeListener(new IPropertyChangeListener() {
+        comboField.setEnabled(false, fieldEditorParent);
 
-            @Override
-            public void propertyChange(final PropertyChangeEvent event) {
-                System.out.println(event.getNewValue());
-            }
-        });
+        final IntegerFieldEditor sb = new IntegerFieldEditor(PreferenceConstants.SB, "Spitzenbereich SB", fieldEditorParent);
+        sb.setLabelText("Spitzenbereich [ca. 91-95% HFmax, Eingabe in %]");
+        sb.setValidRange(91, 95);
+        sb.setErrorMessage("Spitzenbereich liegt zwischen 91% und 95% der maximalen Herzfrequenz");
+        sb.setTextLimit(2);
+        addField(sb);
 
+        final IntegerFieldEditor extIntervall = new IntegerFieldEditor(PreferenceConstants.EXTINTERVALL, "Spitzenbereich SB", fieldEditorParent);
+        extIntervall.setLabelText("Extensives Intervall [ca. 85%-89% HFmax, Eingabe in %]");
+        extIntervall.setValidRange(85, 89);
+        extIntervall.setErrorMessage("Extensives Intervall liegt zwischen 85% und 89% der maximalen Herzfrequenz");
+        extIntervall.setTextLimit(2);
+        addField(extIntervall);
+
+        final IntegerFieldEditor intDl = new IntegerFieldEditor(PreferenceConstants.INTDL, "Spitzenbereich SB", fieldEditorParent);
+        intDl.setLabelText("Intensiver Dauerlauf [ca. 75%-80% HFmax, Eingabe in %]");
+        intDl.setValidRange(75, 80);
+        intDl.setErrorMessage("Intensiver Dauerlauf liegt zwischen 85% und 89% der maximalen Herzfrequenz");
+        intDl.setTextLimit(2);
+        addField(intDl);
+
+        final IntegerFieldEditor extDl = new IntegerFieldEditor(PreferenceConstants.EXTDL, "Spitzenbereich SB", fieldEditorParent);
+        extDl.setLabelText("Extensiver Dauerlauf [ca. 70%-75% HFmax, Eingabe in %]");
+        extDl.setValidRange(70, 75);
+        extDl.setErrorMessage("Extensiver Dauerlauf liegt zwischen 70% und 75% der maximalen Herzfrequenz");
+        extDl.setTextLimit(2);
+        addField(extDl);
     }
 
     /*

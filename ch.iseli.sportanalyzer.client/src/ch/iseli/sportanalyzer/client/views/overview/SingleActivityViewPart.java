@@ -20,6 +20,7 @@ import org.eclipse.ui.part.ViewPart;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.plot.IntervalMarker;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
@@ -27,6 +28,9 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.experimental.chart.swt.ChartComposite;
+import org.jfree.ui.Layer;
+import org.jfree.ui.RectangleAnchor;
+import org.jfree.ui.TextAnchor;
 
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDataCache;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterRecord;
@@ -314,7 +318,15 @@ public class SingleActivityViewPart extends ViewPart {
         final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
         renderer.setSeriesLinesVisible(0, true);
         renderer.setSeriesShapesVisible(0, false);
-
+        if (ChartType.HEART_DISTANCE.equals(type)) {
+            final IntervalMarker target = new IntervalMarker(100, 150);
+            target.setLabel("Anaerober Bereich");
+            // target.setLabelFont(new Font("SansSerif", Font.ITALIC, 11));
+            target.setLabelAnchor(RectangleAnchor.LEFT);
+            target.setLabelTextAnchor(TextAnchor.CENTER_LEFT);
+            target.setPaint(new Color(222, 222, 255, 128));
+            plot.addRangeMarker(target, Layer.BACKGROUND);
+        }
         plot.setRenderer(renderer);
 
         // change the auto tick unit selection to integer units only...
