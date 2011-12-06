@@ -31,16 +31,16 @@ public class Gmn2Tcx implements IConvert2Tcx {
     public Gmn2Tcx() {
         log.info("Gmn2Tcx erfolgreich instanziert....");
         bundle = Platform.getBundle("ch.iseli.sportanalyzer.importer");
-        Path path = new Path("resources/tcx.xsd");
-        URL url = FileLocator.find(bundle, path, Collections.EMPTY_MAP);
+        final Path path = new Path("resources/tcx.xsd");
+        final URL url = FileLocator.find(bundle, path, Collections.EMPTY_MAP);
         URL fileUrl = null;
         try {
             fileUrl = FileLocator.toFileURL(url);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             log.error("Fehler beim Instanzieren von Gmn2Tcx: " + e.getMessage());
             throw new RuntimeException(e);
         }
-        File f = new File(fileUrl.getPath());
+        final File f = new File(fileUrl.getPath());
 
         delegate = new ConvertXml(f.getAbsolutePath());
     }
@@ -50,39 +50,38 @@ public class Gmn2Tcx implements IConvert2Tcx {
      * 
      * @param locationOfScript
      */
-    public Gmn2Tcx(String locationOfScript) {
+    public Gmn2Tcx(final String locationOfScript) {
         delegate = null;// new ConvertXml(new URL(locationOfScript));
     }
 
     @Override
-    public InputStream convert2Tcx(java.io.File file) throws IOException {
+    public InputStream convert2Tcx(final java.io.File file) throws IOException {
         log.debug("file " + file.getAbsolutePath() + " existiert: " + file.exists());
-        Path path = new Path("resources/gmn2tcx.sh");
-        URL url = FileLocator.find(bundle, path, Collections.EMPTY_MAP);
+        final Path path = new Path("resources/gmn2tcx.sh");
+        final URL url = FileLocator.find(bundle, path, Collections.EMPTY_MAP);
         URL fileUrl = null;
         try {
             fileUrl = FileLocator.toFileURL(url);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             log.error("Konvertieren der GPS Daten fehlgeschlagen: " + e.getMessage());
         }
-        File f = new File(fileUrl.getPath());
-        ProcessBuilder processBuilder = new ProcessBuilder(f.getAbsolutePath(), file.getAbsolutePath());
+        final File f = new File(fileUrl.getPath());
+        final ProcessBuilder processBuilder = new ProcessBuilder(f.getAbsolutePath(), file.getAbsolutePath());
 
-        Process process = processBuilder.start();
-
+        final Process process = processBuilder.start();
         return process.getInputStream();
     }
 
     @Override
-    public TrainingCenterDatabaseT convert(java.io.File file) throws Exception {
-        InputStream convert2Tcx = convert2Tcx(file);
+    public TrainingCenterDatabaseT convert(final java.io.File file) throws Exception {
+        final InputStream convert2Tcx = convert2Tcx(file);
         return delegate.unmarshall(convert2Tcx);
     }
 
     @SuppressWarnings("unused")
     private String createCommand() {
-        URL resource = Gmn2Tcx.class.getClassLoader().getResource("gmn2tcx.sh");
-        String cmd = resource.getFile().replace("/bin", "/resources");
+        final URL resource = Gmn2Tcx.class.getClassLoader().getResource("gmn2tcx.sh");
+        final String cmd = resource.getFile().replace("/bin", "/resources");
         return cmd;
     }
 
@@ -92,17 +91,17 @@ public class Gmn2Tcx implements IConvert2Tcx {
     }
 
     @Override
-    public Map<Integer, File> loadAllGPSFilesFromAthlete(Map<Integer, String> garminFiles) {
+    public Map<Integer, File> loadAllGPSFilesFromAthlete(final Map<Integer, String> garminFiles) {
         if (garminFiles == null) {
             return Collections.emptyMap();
         }
-        List<File> all = loadAllGPSFiles();
-        Map<String, File> fileNameToFile = new HashMap<String, File>();
-        for (File file : all) {
+        final List<File> all = loadAllGPSFiles();
+        final Map<String, File> fileNameToFile = new HashMap<String, File>();
+        for (final File file : all) {
             fileNameToFile.put(file.getName(), file);
         }
-        Map<Integer, File> result = new HashMap<Integer, File>();
-        for (Map.Entry<Integer, String> entry : garminFiles.entrySet()) {
+        final Map<Integer, File> result = new HashMap<Integer, File>();
+        for (final Map.Entry<Integer, String> entry : garminFiles.entrySet()) {
             if (istFileNameVonKeyIn(fileNameToFile, entry)) {
                 result.put(entry.getKey(), fileNameToFile.get(entry.getValue()));
             }
@@ -115,7 +114,7 @@ public class Gmn2Tcx implements IConvert2Tcx {
         return "gmn";
     }
 
-    private boolean istFileNameVonKeyIn(Map<String, File> fileNameToFile, Map.Entry<Integer, String> entry) {
+    private boolean istFileNameVonKeyIn(final Map<String, File> fileNameToFile, final Map.Entry<Integer, String> entry) {
         return fileNameToFile.keySet().contains(entry.getValue());
     }
 }

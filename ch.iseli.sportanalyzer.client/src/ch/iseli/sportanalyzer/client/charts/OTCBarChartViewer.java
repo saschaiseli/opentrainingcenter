@@ -77,7 +77,7 @@ public class OTCBarChartViewer implements ISelectionProvider {
     private final Class<? extends RegularTimePeriod> clazz;
     private final ChartSerieType type;
 
-    public OTCBarChartViewer(Composite parent, ChartSerieType type) {
+    public OTCBarChartViewer(final Composite parent, final ChartSerieType type) {
         this.type = type;
         clazz = getSeriesType(type);
         distanceSerie = new TimeSeries(DISTANZ);
@@ -86,7 +86,7 @@ public class OTCBarChartViewer implements ISelectionProvider {
         cache.addListener(new IRecordListener() {
 
             @Override
-            public void recordChanged(Collection<TrainingCenterRecord> entry) {
+            public void recordChanged(final Collection<TrainingCenterRecord> entry) {
                 log.info("neue Daten importiert, Charts aktualisieren");
                 createOrUpdateDataSet(new TrainingOverviewDatenAufbereiten());
             }
@@ -94,16 +94,16 @@ public class OTCBarChartViewer implements ISelectionProvider {
 
         composite = new Composite(parent, SWT.NONE | SWT.H_SCROLL);
 
-        GridLayout layout = new GridLayout(2, false);
+        final GridLayout layout = new GridLayout(2, false);
         composite.setLayout(layout);
 
-        Button b = new Button(composite, SWT.CHECK);
+        final Button b = new Button(composite, SWT.CHECK);
         b.setText("Durchschnittliche Herzfrequenz");
 
         b.addSelectionListener(new SelectionListener() {
 
             @Override
-            public void widgetSelected(SelectionEvent e) {
+            public void widgetSelected(final SelectionEvent e) {
                 withHeartRate = !withHeartRate;
                 if (withHeartRate) {
                     addHeartChart();
@@ -141,7 +141,7 @@ public class OTCBarChartViewer implements ISelectionProvider {
             }
 
             @Override
-            public void widgetDefaultSelected(SelectionEvent e) {
+            public void widgetDefaultSelected(final SelectionEvent e) {
 
             }
         });
@@ -159,7 +159,7 @@ public class OTCBarChartViewer implements ISelectionProvider {
         chartComposite.setLayoutData(gd);
     }
 
-    private Class<? extends RegularTimePeriod> getSeriesType(ChartSerieType type) {
+    private Class<? extends RegularTimePeriod> getSeriesType(final ChartSerieType type) {
         final Class<? extends RegularTimePeriod> clazz;
         switch (type) {
         case DAY:
@@ -180,13 +180,13 @@ public class OTCBarChartViewer implements ISelectionProvider {
         return clazz;
     }
 
-    private void createOrUpdateDataSet(TrainingOverviewDatenAufbereiten trainingOverviewDatenAufbereiten) {
+    private void createOrUpdateDataSet(final TrainingOverviewDatenAufbereiten trainingOverviewDatenAufbereiten) {
         createOrUpdateDataSet(trainingOverviewDatenAufbereiten, DISTANZ);
         createOrUpdateDataSet(trainingOverviewDatenAufbereiten, HEART);
     }
 
-    private IntervalXYDataset createOrUpdateDataSet(TrainingOverviewDatenAufbereiten daten, String serieTyp) {
-        Map<String, TimeSeries> series = updateSeries(daten);
+    private IntervalXYDataset createOrUpdateDataSet(final TrainingOverviewDatenAufbereiten daten, final String serieTyp) {
+        final Map<String, TimeSeries> series = updateSeries(daten);
         if (DISTANZ.equals(serieTyp)) {
             timeSeriesDistanzCollection.removeAllSeries();
             timeSeriesDistanzCollection.addSeries(series.get(DISTANZ));
@@ -201,9 +201,9 @@ public class OTCBarChartViewer implements ISelectionProvider {
         throw new IllegalArgumentException("Chart für " + serieTyp + " existiert noch nicht");
     }
 
-    private Map<String, TimeSeries> updateSeries(TrainingOverviewDatenAufbereiten daten) {
-        Map<String, TimeSeries> map = new HashMap<String, TimeSeries>();
-        List<SimpleTraining> trainings = new ArrayList<SimpleTraining>();
+    private Map<String, TimeSeries> updateSeries(final TrainingOverviewDatenAufbereiten daten) {
+        final Map<String, TimeSeries> map = new HashMap<String, TimeSeries>();
+        final List<SimpleTraining> trainings = new ArrayList<SimpleTraining>();
         if (ChartSerieType.DAY.equals(type)) {
             trainings.addAll(daten.getTrainingsPerDay());
         }
@@ -217,10 +217,10 @@ public class OTCBarChartViewer implements ISelectionProvider {
             // trainings.addAll(daten.getTrainingsPerYear());
         }
         //
-        for (SimpleTraining t : trainings) {
-            RegularTimePeriod period = RegularTimePeriod.createInstance(clazz, t.getDatum(), Calendar.getInstance().getTimeZone());
+        for (final SimpleTraining t : trainings) {
+            final RegularTimePeriod period = RegularTimePeriod.createInstance(clazz, t.getDatum(), Calendar.getInstance().getTimeZone());
             distanceSerie.addOrUpdate(period, t.getDistanzInMeter() / 1000);
-            if (withHeartRate) {
+            if (withHeartRate && t.getAvgHeartRate() > 0) {
                 heartSerie.addOrUpdate(period, t.getAvgHeartRate());
             }
         }
@@ -229,34 +229,35 @@ public class OTCBarChartViewer implements ISelectionProvider {
         return map;
     }
 
-    private JFreeChart createChart(IntervalXYDataset dataset) {
+    private JFreeChart createChart(final IntervalXYDataset dataset) {
 
         chart = ChartFactory.createXYBarChart("Lauflängen", "Datum", true, "Distanz[m]", dataset, PlotOrientation.VERTICAL, false, true, false);
         chart.setAntiAlias(true);
         chart.setBorderVisible(false);
-        org.eclipse.swt.graphics.Color b = Display.getDefault().getActiveShell().getBackground();
-        Color paint = new Color(b.getRed(), b.getGreen(), b.getBlue());
+        final org.eclipse.swt.graphics.Color b = Display.getDefault().getActiveShell().getBackground();
+        final Color paint = new Color(b.getRed(), b.getGreen(), b.getBlue());
         chart.setBackgroundPaint(paint);
 
-        XYPlot plot = chart.getXYPlot();
+        final XYPlot plot = chart.getXYPlot();
         plot.setRenderer(new XYBarRenderer());
 
         plot.setBackgroundPaint(paint);
         plot.setDomainGridlinePaint(Color.lightGray);
         plot.setRangeGridlinePaint(Color.lightGray);
 
-        XYBarRenderer renderer = (XYBarRenderer) plot.getRenderer();
+        final XYBarRenderer renderer = (XYBarRenderer) plot.getRenderer();
         renderer.setSeriesPaint(0, COLOR_DISTANCE);
 
-        OTCBarPainter painter = new OTCBarPainter();
+        final OTCBarPainter painter = new OTCBarPainter();
         renderer.setBarPainter(painter);
 
         renderer.setMargin(0.1);
 
-        StandardXYToolTipGenerator generator = new StandardXYToolTipGenerator("{1} = {2}km", new SimpleDateFormat("dd.MM.yyyy"), new DecimalFormat("0.000"));
+        final StandardXYToolTipGenerator generator = new StandardXYToolTipGenerator("{1} = {2}km", new SimpleDateFormat("dd.MM.yyyy"), new DecimalFormat(
+                "0.000"));
         renderer.setBaseToolTipGenerator(generator);
 
-        DateAxis axis = (DateAxis) plot.getDomainAxis();
+        final DateAxis axis = (DateAxis) plot.getDomainAxis();
         axis.setTickMarkPosition(DateTickMarkPosition.MIDDLE);
         // axis.setDateFormatOverride(new SimpleDateFormat("w"));
         return chart;
@@ -280,7 +281,7 @@ public class OTCBarChartViewer implements ISelectionProvider {
     }
 
     @Override
-    public void addSelectionChangedListener(ISelectionChangedListener listener) {
+    public void addSelectionChangedListener(final ISelectionChangedListener listener) {
         selectionListeners.add(listener);
     }
 
@@ -291,12 +292,12 @@ public class OTCBarChartViewer implements ISelectionProvider {
     }
 
     @Override
-    public void removeSelectionChangedListener(ISelectionChangedListener listener) {
+    public void removeSelectionChangedListener(final ISelectionChangedListener listener) {
         selectionListeners.remove(listener);
     }
 
     @Override
-    public void setSelection(ISelection selection) {
+    public void setSelection(final ISelection selection) {
         // TODO Auto-generated method stub
 
     }

@@ -190,6 +190,7 @@ public class NavigationView extends ViewPart {
 
             @Override
             public void recordChanged(final Collection<TrainingCenterRecord> entry) {
+                viewer.setInput(cache.getAllRuns());
                 viewer.refresh();
             }
         });

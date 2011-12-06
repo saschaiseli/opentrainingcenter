@@ -22,13 +22,14 @@ public class TrainingCenterDataCache {
 
     private static TrainingCenterDataCache INSTANCE = null;
 
-    private final Map<Integer, TrainingCenterRecord> list = new TreeMap<Integer, TrainingCenterRecord>();
+    private final Map<Integer, TrainingCenterRecord> list;
 
     private static TrainingCenterRecord selected;
 
     private Object[] selectedItems;
 
     private TrainingCenterDataCache() {
+        list = new TreeMap<Integer, TrainingCenterRecord>();
     }
 
     public static TrainingCenterDataCache getInstance() {
@@ -71,8 +72,14 @@ public class TrainingCenterDataCache {
         return new TrainingOverview(selected);
     }
 
+    /**
+     * @return die sortierte liste von records.
+     */
     public Collection<TrainingCenterRecord> getAllRuns() {
-        return list.values();
+        final Collection<TrainingCenterRecord> values = list.values();
+        final List<TrainingCenterRecord> all = new ArrayList<TrainingCenterRecord>(values);
+        Collections.sort(all, new TrainingCenterRecordComparator());
+        return all;
     }
 
     public void addAll(final Map<Integer, TrainingCenterRecord> records) {
