@@ -36,7 +36,9 @@
       <plugin id="ch.opentrainingcenter.db.h2"/>
       <plugin id="ch.opentrainingcenter.tcx.data"/>
       <plugin id="ch.opentrainingcenter.transfer"/>
+      <plugin id="com.eclipsesource.widgets.gmaps"/>
       <plugin id="com.ibm.icu"/>
+      <plugin id="com.richclientgui.rcptoolbox"/>
       <plugin id="h2_lib"/>
       <plugin id="jfreechart"/>
       <plugin id="junit"/>
@@ -44,12 +46,14 @@
       <plugin id="org.eclipse.core.commands"/>
       <plugin id="org.eclipse.core.contenttype"/>
       <plugin id="org.eclipse.core.databinding"/>
+      <plugin id="org.eclipse.core.databinding.beans"/>
       <plugin id="org.eclipse.core.databinding.observable"/>
       <plugin id="org.eclipse.core.databinding.property"/>
       <plugin id="org.eclipse.core.expressions"/>
       <plugin id="org.eclipse.core.jobs"/>
       <plugin id="org.eclipse.core.runtime"/>
       <plugin id="org.eclipse.core.runtime.compatibility.auth"/>
+      <plugin id="org.eclipse.core.runtime.compatibility.registry" fragment="true"/>
       <plugin id="org.eclipse.equinox.app"/>
       <plugin id="org.eclipse.equinox.common"/>
       <plugin id="org.eclipse.equinox.preferences"/>
