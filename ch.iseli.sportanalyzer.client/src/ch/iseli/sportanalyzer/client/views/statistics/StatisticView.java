@@ -15,11 +15,11 @@ public class StatisticView extends ViewPart {
     public static final String ID = "ch.iseli.sportanalyzer.client.views.statistics.StatisticView";
 
     @Override
-    public void createPartControl(Composite parent) {
-        Composite container = new Composite(parent, SWT.NONE);
+    public void createPartControl(final Composite parent) {
+        final Composite container = new Composite(parent, SWT.NONE);
         container.setLayout(new FillLayout(SWT.FILL));
 
-        TabFolder tabs = new TabFolder(container, SWT.BORDER);
+        final TabFolder tabs = new TabFolder(container, SWT.BORDER);
 
         addItem(tabs, ChartSerieType.DAY);
         addItem(tabs, ChartSerieType.WEEK);
@@ -27,7 +27,7 @@ public class StatisticView extends ViewPart {
         addItem(tabs, ChartSerieType.YEAR);
     }
 
-    private void addItem(TabFolder tabs, ChartSerieType type) {
+    private void addItem(final TabFolder tabs, final ChartSerieType type) {
         final TabItem item = new TabItem(tabs, SWT.PUSH);
         item.setText(type.getName());
 

@@ -24,12 +24,12 @@ public class TrainingOverviewDatenAufbereiten {
 
     public TrainingOverviewDatenAufbereiten() {
         super();
-        TrainingCenterDataCache cache = TrainingCenterDataCache.getInstance();
+        final TrainingCenterDataCache cache = TrainingCenterDataCache.getInstance();
         this.all = cache.getAllSimpleTrainings();
         cache.addListener(new IRecordListener() {
 
             @Override
-            public void recordChanged(Collection<TrainingCenterRecord> entry) {
+            public void recordChanged(final Collection<TrainingCenterRecord> entry) {
                 // Datenstruktur updaten
                 logger.debug("update Struktur...");
                 trainingsPerWeek.clear();
@@ -48,14 +48,14 @@ public class TrainingOverviewDatenAufbereiten {
         logger.debug("Initialize Monat fertig");
     }
 
-    private List<SimpleTraining> createMonatsUndWochenMap(int outer, int inner) {
-        Map<Integer, Map<Integer, List<SimpleTraining>>> trainingsPer = new HashMap<Integer, Map<Integer, List<SimpleTraining>>>();
-        for (SimpleTraining training : all) {
-            Calendar cal = Calendar.getInstance();
+    private List<SimpleTraining> createMonatsUndWochenMap(final int outer, final int inner) {
+        final Map<Integer, Map<Integer, List<SimpleTraining>>> trainingsPer = new HashMap<Integer, Map<Integer, List<SimpleTraining>>>();
+        for (final SimpleTraining training : all) {
+            final Calendar cal = Calendar.getInstance();
             cal.setTime(training.getDatum());
-            int year = cal.get(outer);
+            final int year = cal.get(outer);
             // da monat mit 0 beginnt muss noch eins addiert werden.
-            int week = inner == Calendar.MONTH ? cal.get(inner) + 1 : cal.get(inner);
+            final int week = inner == Calendar.MONTH ? cal.get(inner) + 1 : cal.get(inner);
             logger.debug("Lauf aus der inner " + week + " vom Jahr: " + year);
             Map<Integer, List<SimpleTraining>> yearMap = trainingsPer.get(year);
             if (yearMap == null) {
@@ -73,21 +73,29 @@ public class TrainingOverviewDatenAufbereiten {
         return createSum(trainingsPer);
     }
 
-    private List<SimpleTraining> createSum(Map<Integer, Map<Integer, List<SimpleTraining>>> trainingsPer) {
-        List<SimpleTraining> result = new ArrayList<SimpleTraining>();
-        for (Map.Entry<Integer, Map<Integer, List<SimpleTraining>>> perYear : trainingsPer.entrySet()) {
-            for (Map.Entry<Integer, List<SimpleTraining>> perInner : perYear.getValue().entrySet()) {
+    private List<SimpleTraining> createSum(final Map<Integer, Map<Integer, List<SimpleTraining>>> trainingsPer) {
+        final List<SimpleTraining> result = new ArrayList<SimpleTraining>();
+        for (final Map.Entry<Integer, Map<Integer, List<SimpleTraining>>> perYear : trainingsPer.entrySet()) {
+            for (final Map.Entry<Integer, List<SimpleTraining>> perInner : perYear.getValue().entrySet()) {
                 double distance = 0;
                 double seconds = 0;
                 int heartRate = 0;
+                int countHeartIsZero = 0;
                 Date date = null;
-                for (SimpleTraining training : perInner.getValue()) {
+                for (final SimpleTraining training : perInner.getValue()) {
                     distance += training.getDistanzInMeter();
                     seconds += training.getDauerInSekunden();
-                    heartRate += Integer.valueOf(training.getAvgHeartRate());
+                    final int avgHeartRate = training.getAvgHeartRate();
+                    if (avgHeartRate <= 0) {
+                        countHeartIsZero++;
+                    }
+                    heartRate += Integer.valueOf(avgHeartRate);
                     date = training.getDatum();
                 }
-                result.add(new SimpleTraining(distance, seconds, date, heartRate / perInner.getValue().size()));
+                final SimpleTraining e = new SimpleTraining(distance, seconds, date, heartRate / (perInner.getValue().size() - countHeartIsZero));
+                if (e.getAvgHeartRate() > 0) {
+                    result.add(e);
+                }
             }
         }
         return result;

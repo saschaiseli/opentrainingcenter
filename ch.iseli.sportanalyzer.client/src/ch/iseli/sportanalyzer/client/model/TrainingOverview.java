@@ -41,7 +41,7 @@ public class TrainingOverview implements ITrainingOverview {
 
     private Date dateOfStart;
 
-    public TrainingOverview(TrainingCenterRecord t) {
+    public TrainingOverview(final TrainingCenterRecord t) {
         this.t = t;
         if (t == null) {
             throw new IllegalArgumentException("Trainingdatabase darf nicht null sein!");
@@ -52,18 +52,18 @@ public class TrainingOverview implements ITrainingOverview {
 
     private void init() {
         // datum
-        XMLGregorianCalendar date = t.getTrainingCenterDatabase().getActivities().getActivity().get(0).getId();
+        final XMLGregorianCalendar date = t.getTrainingCenterDatabase().getActivities().getActivity().get(0).getId();
         datum = TimeHelper.convertGregorianDateToString(date, false);
         dateOfStart = date.toGregorianCalendar().getTime();
         // lauflänge
-        ActivityT activityT = t.getTrainingCenterDatabase().getActivities().getActivity().get(0);
-        List<ActivityLapT> laps = activityT.getLap();
+        final ActivityT activityT = t.getTrainingCenterDatabase().getActivities().getActivity().get(0);
+        final List<ActivityLapT> laps = activityT.getLap();
         distance = 0.0;
         timeInSeconds = 0.0;
         short averageHeartRateBpm = 0;
         maxHeartBeat = 0;
         int lapWithCardio = 0;
-        for (ActivityLapT lap : laps) {
+        for (final ActivityLapT lap : laps) {
             if (IntensityT.ACTIVE.equals(lap.getIntensity())) {
                 distance += lap.getDistanceMeters();
                 if (maximumSpeed < lap.getMaximumSpeed()) {
@@ -97,7 +97,7 @@ public class TrainingOverview implements ITrainingOverview {
         maxPace = DistanceHelper.calculatePace(maximumSpeed);
     }
 
-    private boolean hasCardio(ActivityLapT lap) {
+    private boolean hasCardio(final ActivityLapT lap) {
         return lap.getMaximumHeartRateBpm() != null;
     }
 
@@ -150,6 +150,10 @@ public class TrainingOverview implements ITrainingOverview {
     }
 
     public SimpleTraining getSimpleTraining() {
-        return new SimpleTraining(distance, timeInSeconds, dateOfStart, Integer.valueOf(avgHeartRate).intValue());
+        if (avgHeartRate != null && !avgHeartRate.contains("-")) {
+            return new SimpleTraining(distance, timeInSeconds, dateOfStart, Integer.valueOf(avgHeartRate).intValue());
+        } else {
+            return new SimpleTraining(distance, timeInSeconds, dateOfStart, 0);
+        }
     }
 }
