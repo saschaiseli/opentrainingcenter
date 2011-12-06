@@ -122,6 +122,13 @@
             name="StatisticView"
             restorable="true">
       </view>
+      <view
+            allowMultiple="true"
+            class="ch.iseli.sportanalyzer.client.views.overview.GoogleMapViewer"
+            id="ch.iseli.sportanalyzer.client.views.overview.GoogleMap"
+            name="Karte"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.commands">

@@ -76,6 +76,7 @@ public class SingleActivityViewPart extends ViewPart {
         form.setText("Lauf vom " + datumZeit);
 
         addOverviewSection(body);
+        addMapSection(body);
         addHeartSection(body);
         addSpeedSection(body);
         addAltitudeSection(body);
@@ -213,7 +214,6 @@ public class SingleActivityViewPart extends ViewPart {
         final TableWrapLayout layout = new TableWrapLayout();
         layout.numColumns = 2;
         layout.makeColumnsEqualWidth = false;
-
         client.setLayout(layout);
 
         final Label dauerLabel = toolkit.createLabel(client, "blabla 1");
@@ -227,6 +227,45 @@ public class SingleActivityViewPart extends ViewPart {
         chartComposite.setLayoutData(td);
 
         altitude.setClient(client);
+    }
+
+    private void addMapSection(final Composite body) {
+        final Section mapSection = toolkit.createSection(body, Section.DESCRIPTION | Section.TITLE_BAR | Section.TWISTIE | Section.EXPANDED);
+        mapSection.addExpansionListener(new ExpansionAdapter() {
+            @Override
+            public void expansionStateChanged(final ExpansionEvent e) {
+                form.reflow(true);
+            }
+        });
+        mapSection.setExpanded(true);
+
+        td = new TableWrapData(TableWrapData.FILL_GRAB);
+        td.colspan = 1;
+        td.grabHorizontal = true;
+        td.grabVertical = true;
+
+        mapSection.setLayoutData(td);
+        mapSection.setText("Karte");
+        mapSection.setDescription("Lauf auf der Karte");
+
+        final Composite client = toolkit.createComposite(mapSection);
+        // client.setBackground(getViewSite().getWorkbenchWindow().getShell().getDisplay().getSystemColor(SWT.COLOR_CYAN));
+        final TableWrapLayout layout = new TableWrapLayout();
+        layout.numColumns = 1;
+        layout.topMargin = -60;
+        layout.bottomMargin = 5;
+        client.setLayout(layout);
+
+        final TrainingCenterRecord selected = TrainingCenterDataCache.getInstance().getSelected();
+        final String convertTrackpoints = MapConverter.convertTrackpoints(selected);
+        final String firstPointToPan = MapConverter.getFirstPointToPan(convertTrackpoints);
+        final MapViewer mapViewer = new MapViewer(client, SWT.NONE, convertTrackpoints, firstPointToPan);
+        td = new TableWrapData(TableWrapData.FILL_GRAB);
+        td.heightHint = 550;
+        td.grabHorizontal = true;
+        mapViewer.getComposite().setLayoutData(td);
+
+        mapSection.setClient(client);
     }
 
     private void addLabelAndValue(final Composite parent, final String label, final String value, final Units unit) {

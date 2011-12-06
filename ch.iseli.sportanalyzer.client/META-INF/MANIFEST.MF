@@ -12,12 +12,14 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jface,
  org.eclipse.ui.workbench,
  logging,
+ com.richclientgui.rcptoolbox,
  org.eclipse.ui.forms,
  org.eclipse.core.databinding,
  org.eclipse.core.databinding.beans,
  org.eclipse.jface.databinding,
  org.eclipse.core.databinding.property,
- jfreechart
+ jfreechart,
+ com.eclipsesource.widgets.gmaps;bundle-version="1.1.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: ch.iseli.sportanalyzer.client,
  ch.iseli.sportanalyzer.db,
@@ -26,5 +28,5 @@ Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: lib/log4j-1.2.16.jar,
  lib/slf4j-api-1.6.4.jar,
  .
-Eclipse-RegisterBuddy: logging, jfreechart
+Eclipse-RegisterBuddy: logging, jfreechart, com.richclientgui.rcptoolbox
 

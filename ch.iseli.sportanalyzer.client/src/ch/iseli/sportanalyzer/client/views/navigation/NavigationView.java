@@ -105,6 +105,7 @@ public class NavigationView extends ViewPart {
                     final String hash = String.valueOf(cache.getSelected().toString().hashCode());
                     PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
                             .showView(SingleActivityViewPart.ID, hash, IWorkbenchPage.VIEW_ACTIVATE);
+                    // PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(GoogleMapViewer.ID, hash, IWorkbenchPage.VIEW_ACTIVATE);
                 } catch (final PartInitException e) {
                     e.printStackTrace();
                 }

@@ -15,14 +15,17 @@ public class Perspective implements IPerspectiveFactory {
     public static final String ID = "ch.iseli.sportanalyzer.client.perspective";
 
     @Override
-    public void createInitialLayout(IPageLayout layout) {
-        String editorArea = layout.getEditorArea();
+    public void createInitialLayout(final IPageLayout layout) {
+        final String editorArea = layout.getEditorArea();
         layout.setEditorAreaVisible(false);
 
         layout.addStandaloneView(NavigationView.ID, false, IPageLayout.LEFT, 0.25f, editorArea);
         layout.getViewLayout(NavigationView.ID).setCloseable(false);
 
-        IFolderLayout folder = layout.createFolder("rightPart", IPageLayout.TOP, 0.75f, editorArea);
+        final IFolderLayout folder = layout.createFolder("rightPart", IPageLayout.TOP, 0.75f, editorArea);
         folder.addPlaceholder(SingleActivityViewPart.ID + ":*");
+        //
+        // final IFolderLayout folderBottom = layout.createFolder("bottomPart", IPageLayout.BOTTOM, 0.25f, editorArea);
+        // folderBottom.addPlaceholder(GoogleMapViewer.ID + ":*");
     }
 }
