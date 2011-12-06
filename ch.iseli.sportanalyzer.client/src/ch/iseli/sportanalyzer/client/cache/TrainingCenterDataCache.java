@@ -10,8 +10,9 @@ import java.util.TreeMap;
 
 import org.eclipse.core.runtime.ListenerList;
 
+import ch.iseli.sportanalyzer.client.model.ITrainingOverview;
 import ch.iseli.sportanalyzer.client.model.SimpleTraining;
-import ch.iseli.sportanalyzer.client.model.TrainingOverview;
+import ch.iseli.sportanalyzer.client.model.TrainingOverviewFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
 
 public class TrainingCenterDataCache {
@@ -66,8 +67,8 @@ public class TrainingCenterDataCache {
     /**
      * @return eine Übersicht auf das selektierte Training.
      */
-    public TrainingOverview getSelectedOverview() {
-        return new TrainingOverview(selected);
+    public ITrainingOverview getSelectedOverview() {
+        return TrainingOverviewFactory.creatTrainingOverview(selected);
     }
 
     /**
@@ -130,7 +131,7 @@ public class TrainingCenterDataCache {
         final Collection<TrainingCenterRecord> values = list.values();
         final List<SimpleTraining> result = new ArrayList<SimpleTraining>();
         for (final TrainingCenterRecord t : values) {
-            final TrainingOverview over = new TrainingOverview(t);
+            final ITrainingOverview over = TrainingOverviewFactory.creatTrainingOverview(t);
             result.add(over.getSimpleTraining());
         }
         return result;

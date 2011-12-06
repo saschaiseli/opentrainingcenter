@@ -31,7 +31,6 @@ public class SamplePreferencePage extends FieldEditorPreferencePage implements I
 
     public SamplePreferencePage() {
         super(GRID);
-        setPreferenceStore(Activator.getDefault().getPreferenceStore());
         setDescription("Einige Einstellungen");
         allAthletes = DatabaseAccessFactory.getDatabaseAccess().getAllAthletes();
     }
@@ -82,7 +81,7 @@ public class SamplePreferencePage extends FieldEditorPreferencePage implements I
         extDl.setTextLimit(2);
         addField(extDl);
 
-        final IntegerFieldEditor anaerobe = new IntegerFieldEditor(PreferenceConstants.ANAEROBE, "Anaerobe Zone startet bei", fieldEditorParent);
+        final IntegerFieldEditor anaerobe = new IntegerFieldEditor(PreferenceConstants.ANAEROBE, "Anaerobe Zone startet bei [%]", fieldEditorParent);
         anaerobe.setValidRange(90, 100);
         anaerobe.setErrorMessage("Anaerobe Zone ist zwischen 90 und 100%");
         anaerobe.setTextLimit(2);
@@ -90,7 +89,7 @@ public class SamplePreferencePage extends FieldEditorPreferencePage implements I
 
         addField(new ColorFieldEditor(PreferenceConstants.ANAEROBE_COLOR, "Color (anaerobe):", getFieldEditorParent()));
 
-        final IntegerFieldEditor schwellenzone = new IntegerFieldEditor(PreferenceConstants.SCHWELLENZONE, "Schwellenzone bei", fieldEditorParent);
+        final IntegerFieldEditor schwellenzone = new IntegerFieldEditor(PreferenceConstants.SCHWELLENZONE, "Schwellenzone bei [%]", fieldEditorParent);
         schwellenzone.setValidRange(80, 90);
         schwellenzone.setErrorMessage("Schwellen Zone ist zwischen 80 und 90%");
         schwellenzone.setTextLimit(2);
@@ -98,8 +97,7 @@ public class SamplePreferencePage extends FieldEditorPreferencePage implements I
 
         addField(new ColorFieldEditor(PreferenceConstants.SCHWELLENZONE_COLOR, "Color (Schwelle):", getFieldEditorParent()));
 
-        final IntegerFieldEditor aerobe = new IntegerFieldEditor(PreferenceConstants.AEROBE, "Aerobe bei", fieldEditorParent);
-        aerobe.setLabelText("Aerobe bei");
+        final IntegerFieldEditor aerobe = new IntegerFieldEditor(PreferenceConstants.AEROBE, "Aerobe bei [%]", fieldEditorParent);
         aerobe.setErrorMessage("Aerobe Zone ist zwischen 50 und 80%");
         aerobe.setValidRange(50, 80);
         aerobe.setTextLimit(2);

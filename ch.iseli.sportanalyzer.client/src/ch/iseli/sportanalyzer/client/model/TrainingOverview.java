@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterRecord;
 import ch.iseli.sportanalyzer.client.helper.DistanceHelper;
 import ch.iseli.sportanalyzer.client.helper.TimeHelper;
+import ch.iseli.sportanalyzer.client.helper.ZoneHelper.Zone;
 import ch.iseli.sportanalyzer.tcx.ActivityLapT;
 import ch.iseli.sportanalyzer.tcx.ActivityT;
 import ch.iseli.sportanalyzer.tcx.IntensityT;
@@ -41,7 +42,7 @@ public class TrainingOverview implements ITrainingOverview {
 
     private Date dateOfStart;
 
-    public TrainingOverview(final TrainingCenterRecord t) {
+    TrainingOverview(final TrainingCenterRecord t) {
         this.t = t;
         if (t == null) {
             throw new IllegalArgumentException("Trainingdatabase darf nicht null sein!");
@@ -149,11 +150,25 @@ public class TrainingOverview implements ITrainingOverview {
         return timeInSeconds;
     }
 
+    @Override
     public SimpleTraining getSimpleTraining() {
-        if (avgHeartRate != null && !avgHeartRate.contains("-")) {
+        if (validAverageHeartRate()) {
             return new SimpleTraining(distance, timeInSeconds, dateOfStart, Integer.valueOf(avgHeartRate).intValue());
         } else {
             return new SimpleTraining(distance, timeInSeconds, dateOfStart, 0);
         }
+    }
+
+    @Override
+    public Zone getZone() {
+        if (validAverageHeartRate()) {
+            return Zone.AEROBE;
+        } else {
+            return null;
+        }
+    }
+
+    private boolean validAverageHeartRate() {
+        return avgHeartRate != null && !avgHeartRate.contains("-");
     }
 }

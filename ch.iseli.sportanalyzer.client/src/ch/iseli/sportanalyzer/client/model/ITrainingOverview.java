@@ -1,43 +1,49 @@
 package ch.iseli.sportanalyzer.client.model;
 
+import ch.iseli.sportanalyzer.client.helper.ZoneHelper;
+
 public interface ITrainingOverview {
     /**
      * @return das start datum des trainings
      */
-    public String getDatum();
+    String getDatum();
 
     /**
      * @return die Dauer des laufes. z.B 2:52:42
      */
-    public String getDauer();
+    String getDauer();
 
     /**
      * @return die lauf laenge in kilometer (ohne angabe der Einheit)
      */
-    public String getLaengeInKilometer();
+    String getLaengeInKilometer();
 
     /**
      * @return länge des laufes in meter
      */
-    public double getLaengeInMeter();
+    double getLaengeInMeter();
 
     /**
      * @return durchschnittliche herzfrequenz
      */
-    public String getAverageHeartBeat();
+    String getAverageHeartBeat();
 
     /**
      * @return maximale herzfrequenz
      */
-    public String getMaxHeartBeat();
+    String getMaxHeartBeat();
 
     /**
      * @return durschnittliche geschwindigkeit (pace --> min/km)
      */
-    public String getPace();
+    String getPace();
 
     /**
      * @return maximale pace (pace --> min/km).
      */
-    public String getMaxSpeed();
+    String getMaxSpeed();
+
+    SimpleTraining getSimpleTraining();
+
+    ZoneHelper.Zone getZone();
 }

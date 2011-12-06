@@ -21,10 +21,12 @@ import org.eclipse.ui.part.ViewPart;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.plot.IntervalMarker;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.data.Range;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
@@ -36,7 +38,7 @@ import ch.iseli.sportanalyzer.client.charts.HeartIntervallCreator;
 import ch.iseli.sportanalyzer.client.helper.SpeedCalculator;
 import ch.iseli.sportanalyzer.client.helper.ZoneHelper;
 import ch.iseli.sportanalyzer.client.helper.ZoneHelper.Zone;
-import ch.iseli.sportanalyzer.client.model.TrainingOverview;
+import ch.iseli.sportanalyzer.client.model.ITrainingOverview;
 import ch.iseli.sportanalyzer.client.model.Units;
 import ch.iseli.sportanalyzer.tcx.ActivityLapT;
 import ch.iseli.sportanalyzer.tcx.ActivityT;
@@ -50,7 +52,7 @@ public class SingleActivityViewPart extends ViewPart {
     private static final Logger logger = Logger.getLogger(SingleActivityViewPart.class);
     private final TrainingCenterDataCache cache = TrainingCenterDataCache.getInstance();
     private final String datumZeit;
-    private final TrainingOverview trainingOverview;
+    private final ITrainingOverview trainingOverview;
     private FormToolkit toolkit;
     private ScrolledForm form;
     private TableWrapData td;
@@ -319,8 +321,12 @@ public class SingleActivityViewPart extends ViewPart {
         final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
         renderer.setSeriesLinesVisible(0, true);
         renderer.setSeriesShapesVisible(0, false);
+        setLowerAndUpperBounds(plot);
         if (ChartType.HEART_DISTANCE.equals(type)) {
             addIntervallMarker(plot);
+        }
+        if (ChartType.SPEED_DISTANCE.equals(type)) {
+            setLowerAndUpperBounds(plot, 2.5, 10);
         }
         plot.setRenderer(renderer);
 
@@ -329,6 +335,23 @@ public class SingleActivityViewPart extends ViewPart {
         rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
 
         return chart;
+    }
+
+    private void setLowerAndUpperBounds(final XYPlot plot) {
+        final ValueAxis axis = plot.getRangeAxis();
+        final Range dataRange = plot.getDataRange(axis);
+        if (dataRange != null) {
+            axis.setLowerBound(dataRange.getLowerBound() * 0.95);
+            axis.setUpperBound(dataRange.getUpperBound() * 1.05);
+        }
+        plot.setRangeAxis(axis);
+    }
+
+    private void setLowerAndUpperBounds(final XYPlot plot, final double min, final double max) {
+        final ValueAxis axis = plot.getRangeAxis();
+        axis.setLowerBound(min);
+        axis.setUpperBound(max);
+        plot.setRangeAxis(axis);
     }
 
     private void addIntervallMarker(final XYPlot plot) {
@@ -387,10 +410,10 @@ public class SingleActivityViewPart extends ViewPart {
                 final double d1 = previousPoint.getDistanceMeters();
                 final double t2 = point.getTime().toGregorianCalendar().getTimeInMillis() / 1000;
                 final double t1 = previousPoint.getTime().toGregorianCalendar().getTimeInMillis() / 1000;
-                final double vMeterProSekunde = SpeedCalculator.calculatePace(d1, d2, t1, t2);
-                logger.info("vMeterProSekunde: " + vMeterProSekunde);
-                if (vMeterProSekunde > 0) {
-                    serie.add(point.getDistanceMeters().doubleValue(), vMeterProSekunde);
+                final double pace = SpeedCalculator.calculatePace(d1, d2, t1, t2);
+                logger.info("vMeterProSekunde: " + pace);
+                if (0 < pace && pace < 10) {
+                    serie.add(point.getDistanceMeters().doubleValue(), pace);
                 }
             }
         }
