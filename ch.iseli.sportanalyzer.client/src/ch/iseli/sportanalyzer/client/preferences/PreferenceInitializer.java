@@ -19,12 +19,14 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
      */
     @Override
     public void initializeDefaultPreferences() {
-        @SuppressWarnings("deprecation")
-        final IEclipsePreferences defaults = new DefaultScope().getNode(Application.ID);
+        final IEclipsePreferences defaults = DefaultScope.INSTANCE.getNode(Application.ID);
         defaults.putInt(PreferenceConstants.SB, 95);
         defaults.putInt(PreferenceConstants.EXTDL, 75);
         defaults.putInt(PreferenceConstants.INTDL, 80);
         defaults.putInt(PreferenceConstants.EXTINTERVALL, 89);
+        defaults.putInt(PreferenceConstants.ANAEROBE, 90);
+        defaults.putInt(PreferenceConstants.SCHWELLENZONE, 80);
+        defaults.putInt(PreferenceConstants.AEROBE, 45);
     }
 
 }

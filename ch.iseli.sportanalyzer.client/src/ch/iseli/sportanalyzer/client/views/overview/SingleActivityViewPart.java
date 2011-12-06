@@ -2,6 +2,7 @@ package ch.iseli.sportanalyzer.client.views.overview;
 
 import java.awt.Color;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
@@ -28,13 +29,13 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.experimental.chart.swt.ChartComposite;
-import org.jfree.ui.Layer;
-import org.jfree.ui.RectangleAnchor;
-import org.jfree.ui.TextAnchor;
 
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDataCache;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterRecord;
+import ch.iseli.sportanalyzer.client.charts.HeartIntervallCreator;
 import ch.iseli.sportanalyzer.client.helper.SpeedCalculator;
+import ch.iseli.sportanalyzer.client.helper.ZoneHelper;
+import ch.iseli.sportanalyzer.client.helper.ZoneHelper.Zone;
 import ch.iseli.sportanalyzer.client.model.TrainingOverview;
 import ch.iseli.sportanalyzer.client.model.Units;
 import ch.iseli.sportanalyzer.tcx.ActivityLapT;
@@ -319,13 +320,7 @@ public class SingleActivityViewPart extends ViewPart {
         renderer.setSeriesLinesVisible(0, true);
         renderer.setSeriesShapesVisible(0, false);
         if (ChartType.HEART_DISTANCE.equals(type)) {
-            final IntervalMarker target = new IntervalMarker(100, 150);
-            target.setLabel("Anaerober Bereich");
-            // target.setLabelFont(new Font("SansSerif", Font.ITALIC, 11));
-            target.setLabelAnchor(RectangleAnchor.LEFT);
-            target.setLabelTextAnchor(TextAnchor.CENTER_LEFT);
-            target.setPaint(new Color(222, 222, 255, 128));
-            plot.addRangeMarker(target, Layer.BACKGROUND);
+            addIntervallMarker(plot);
         }
         plot.setRenderer(renderer);
 
@@ -334,6 +329,14 @@ public class SingleActivityViewPart extends ViewPart {
         rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
 
         return chart;
+    }
+
+    private void addIntervallMarker(final XYPlot plot) {
+        final TrainingCenterDataCache cache = TrainingCenterDataCache.getInstance();
+        final Map<Zone, IntervalMarker> markers = HeartIntervallCreator.createMarker(cache.getSelectedProfile());
+        plot.addRangeMarker(markers.get(ZoneHelper.Zone.AEROBE));
+        plot.addRangeMarker(markers.get(ZoneHelper.Zone.SCHWELLE));
+        plot.addRangeMarker(markers.get(ZoneHelper.Zone.ANAEROBE));
     }
 
     private XYDataset createDataset(final ChartType type) {
