@@ -212,6 +212,7 @@ public class CreateAthleteView extends ViewPart {
                 form.reflow(true);
             }
         });
+        overviewSection.setExpanded(false);
         td = new TableWrapData();
         td.colspan = 1;
         overviewSection.setLayoutData(td);

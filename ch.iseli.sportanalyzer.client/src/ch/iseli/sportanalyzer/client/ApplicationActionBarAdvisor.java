@@ -20,6 +20,7 @@ import org.eclipse.ui.application.IActionBarConfigurer;
 
 import ch.iseli.sportanalyzer.client.action.ImportGpsFilesAction;
 import ch.iseli.sportanalyzer.client.action.ImportManualGpsFiles;
+import ch.iseli.sportanalyzer.client.action.RestartOtc;
 
 /**
  * An action bar advisor is responsible for creating, adding, and disposing of the actions added to a workbench window. Each window will be populated with new actions.
@@ -30,6 +31,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
     // them
     // in the fill methods. This ensures that the actions aren't recreated
     // when fillActionBars is called with FILL_PROXY.
+    private IWorkbenchAction restart;
     private IWorkbenchAction exitAction;
     private IWorkbenchAction aboutAction;
     private IWorkbenchAction newWindowAction;
@@ -40,7 +42,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
     private IAction windowsAction;
     private IWorkbenchAction openPerspective;
 
-    public ApplicationActionBarAdvisor(IActionBarConfigurer configurer) {
+    public ApplicationActionBarAdvisor(final IActionBarConfigurer configurer) {
         super(configurer);
     }
 
@@ -49,6 +51,9 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 
         exitAction = ActionFactory.QUIT.create(window);
         register(exitAction);
+
+        restart = new RestartOtc(window, "Restart");
+        register(restart);
 
         aboutAction = ActionFactory.ABOUT.create(window);
         register(aboutAction);
@@ -74,10 +79,10 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
     }
 
     @Override
-    protected void fillMenuBar(IMenuManager menuBar) {
-        MenuManager fileMenu = new MenuManager("&File", IWorkbenchActionConstants.M_FILE);
-        MenuManager helpMenu = new MenuManager("&Help", IWorkbenchActionConstants.M_HELP);
-        MenuManager windowsMenu = new MenuManager("&Windows", IWorkbenchActionConstants.M_WINDOW);
+    protected void fillMenuBar(final IMenuManager menuBar) {
+        final MenuManager fileMenu = new MenuManager("&File", IWorkbenchActionConstants.M_FILE);
+        final MenuManager helpMenu = new MenuManager("&Help", IWorkbenchActionConstants.M_HELP);
+        final MenuManager windowsMenu = new MenuManager("&Windows", IWorkbenchActionConstants.M_WINDOW);
         menuBar.add(fileMenu);
         // Add a group marker indicating where action set menus will appear.
         menuBar.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
@@ -91,6 +96,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
         fileMenu.add(messagePopupAction);
         fileMenu.add(openViewAction);
         fileMenu.add(new Separator());
+        fileMenu.add(restart);
         fileMenu.add(exitAction);
 
         // Help
@@ -102,8 +108,8 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
     }
 
     @Override
-    protected void fillCoolBar(ICoolBarManager coolBar) {
-        IToolBarManager toolbar = new ToolBarManager(SWT.FLAT | SWT.RIGHT);
+    protected void fillCoolBar(final ICoolBarManager coolBar) {
+        final IToolBarManager toolbar = new ToolBarManager(SWT.FLAT | SWT.RIGHT);
         coolBar.add(new ToolBarContributionItem(toolbar, "main"));
         // toolbar.add(importGpsFiles);
         toolbar.add(importGpsFilesManual);

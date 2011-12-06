@@ -120,6 +120,7 @@ public class OTCBarChartViewer implements ISelectionProvider {
                 chartComposite.forceRedraw();
             }
 
+            @SuppressWarnings("deprecation")
             private void addHeartChart() {
                 final XYPlot plot = chart.getXYPlot();
                 plot.setBackgroundPaint(new Color(0xEE, 0xEE, 0xFF));
@@ -133,7 +134,7 @@ public class OTCBarChartViewer implements ISelectionProvider {
 
                 final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer(true, true);
                 renderer.setSeriesPaint(0, COLOR_HEART);
-                renderer.setBaseShape(Cross.createCross(), true);
+                renderer.setShape(Cross.createCross());
                 plot.setRenderer(1, renderer);
 
                 plot.setDatasetRenderingOrder(DatasetRenderingOrder.FORWARD);

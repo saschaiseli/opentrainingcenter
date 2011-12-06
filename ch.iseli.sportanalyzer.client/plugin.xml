@@ -159,6 +159,11 @@
             id="ch.iseli.sportanalyzer.client.importManualFiles"
             name="importFilesManual">
       </command>
+      <command
+            description="Die App neu starten"
+            id="ch.iseli.sportanalyzer.client.RestartOtc"
+            name="Request for Restart">
+      </command>
    </extension>
    <extension
          id="opentrainingcenter"
