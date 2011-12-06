@@ -33,6 +33,12 @@
             id="ch.iseli.sportanalyzer.client.StatisticPerspective"
             name="Statistik">
       </perspective>
+      <perspective
+            class="ch.iseli.sportanalyzer.client.OverviewPerspectiveFactory"
+            icon="icons/table_green_24_24.png"
+            id="ch.iseli.sportanalyzer.client.OverviewPerspective"
+            name="Tabellarische Übersicht">
+      </perspective>
    </extension>
    <extension
          point="org.eclipse.ui.views">
@@ -127,6 +133,14 @@
             class="ch.iseli.sportanalyzer.client.views.overview.GoogleMapViewer"
             id="ch.iseli.sportanalyzer.client.views.overview.GoogleMap"
             name="Karte"
+            restorable="true">
+      </view>
+      <view
+            allowMultiple="false"
+            class="ch.iseli.sportanalyzer.client.views.table.OverviewViewer"
+            icon="icons/table_green_24_24.png"
+            id="ch.iseli.sportanalyzer.client.table.overview"
+            name="TableView"
             restorable="true">
       </view>
    </extension>
