@@ -25,7 +25,8 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
     Map<Integer, String> getImportedRecords(IAthlete athlete);
 
     /**
-     * Setzt in der Datenbank den Record auf importiert.
+     * Importiert den Record in die Datenbank. Zweimaliges importieren wird ignoriert. Das heisst ein anderer Benutzer kann nicht denselben Record auch importieren. Massgebendes
+     * Kriterium hierfür ist der Filename.
      * 
      * @param athleteId
      *            die ID des Athleten

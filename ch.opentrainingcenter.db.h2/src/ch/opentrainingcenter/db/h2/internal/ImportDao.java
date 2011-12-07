@@ -41,6 +41,10 @@ public class ImportDao {
     }
 
     public int importRecord(final int athleteId, final String name) {
+        final int id = searchRecord(name);
+        if (id > 0) {
+            return id;
+        }
         final IImported record = CommonTransferFactory.createIImported();
         final IAthlete athlete = DatabaseAccessFactory.getDatabaseAccess().getAthlete(athleteId);
         athlete.addImported(record);
@@ -53,6 +57,26 @@ public class ImportDao {
         tx.commit();
         session.flush();
         return record.getId();
+    }
+
+    /**
+     * sucht ob es bereits einen importierten datensatz mit diesem namen gibt. Damit soll geschaut werden, ob der Record bereits einmal importiert wurde.
+     */
+    private int searchRecord(final String name) {
+        final Session session = dao.getSession();
+        dao.begin();
+        final Query query = session.createQuery("from Imported where COMMENTS=:name");
+        query.setParameter("name", name);
+        @SuppressWarnings("unchecked")
+        final List<IImported> all = query.list();
+        dao.commit();
+        session.flush();
+        if (all != null && !all.isEmpty()) {
+            return all.get(0).getId();
+        } else {
+            // record noch nicht vorhanden!!
+            return -1;
+        }
     }
 
     public void removeImportedRecord(final Integer id) {
