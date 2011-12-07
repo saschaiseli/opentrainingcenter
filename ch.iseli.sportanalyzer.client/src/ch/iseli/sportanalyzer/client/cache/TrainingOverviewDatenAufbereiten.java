@@ -92,7 +92,13 @@ public class TrainingOverviewDatenAufbereiten {
                     heartRate += Integer.valueOf(avgHeartRate);
                     date = training.getDatum();
                 }
-                final SimpleTraining e = new SimpleTraining(distance, seconds, date, heartRate / (perInner.getValue().size() - countHeartIsZero));
+                int avgHeartRate;
+                if (heartRate > 0) {
+                    avgHeartRate = heartRate / (perInner.getValue().size() - countHeartIsZero);
+                } else {
+                    avgHeartRate = 0;
+                }
+                final SimpleTraining e = new SimpleTraining(distance, seconds, date, avgHeartRate);
                 if (e.getAvgHeartRate() > 0) {
                     result.add(e);
                 }

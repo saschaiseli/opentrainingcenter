@@ -12,6 +12,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import ch.iseli.sportanalyzer.client.helper.FileCopy;
+
 public class FileCopyTest {
     private static final String HELLO_FROM_JUNIT = "Hello from junit";
     private File source;

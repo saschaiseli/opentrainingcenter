@@ -42,6 +42,9 @@ public class Application implements IApplication {
                 DatabaseAccessFactory.getDatabaseAccess().createDatabase();
             }
         }
+
+        // job.addJobChangeListener(new ImportJobChangeListener(viewer));
+
         try {
             final int returnCode = PlatformUI.createAndRunWorkbench(display, new ApplicationWorkbenchAdvisor());
             if (returnCode == PlatformUI.RETURN_RESTART) {

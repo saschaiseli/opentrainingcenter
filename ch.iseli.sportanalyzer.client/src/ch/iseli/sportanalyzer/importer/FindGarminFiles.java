@@ -14,26 +14,8 @@ import ch.iseli.sportanalyzer.client.PreferenceConstants;
 
 public class FindGarminFiles {
 
-    public static List<File> getGarminFiles() {
-
-        final String defaultLocation = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.GPS_FILE_LOCATION);
-
-        final File f = new File(defaultLocation);
-        final File[] listFiles = f.listFiles(new FilenameFilter() {
-
-            @Override
-            public boolean accept(final File dir, final String name) {
-                return name.contains(".gmn");
-            }
-        });
-        if (listFiles != null && listFiles.length > 0) {
-            return Arrays.asList(listFiles);
-        }
-        return Collections.emptyList();
-    }
-
     /**
-     * Sucht aus allen gps files diejenigen raus, die auch zu dem entsprechenden athleten gehören
+     * Sucht aus allen gps files diejenigen raus, die auch zu dem entsprechenden athleten gehören. Es werden nur Files gefunden, die auch schon einmal importiert wurden.
      * 
      * @param garminFileNamesAlreadyImported
      *            map mit der id und dem filenamen der bereits importiert ist.
@@ -57,11 +39,39 @@ public class FindGarminFiles {
         return result;
     }
 
+    /**
+     * Sucht alle garmin files welche bereits einmal mit dem otc importiert wurden.
+     */
+    private static List<File> getGarminFiles() {
+
+        final String defaultLocation = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.GPS_FILE_LOCATION_PROG);
+
+        final File f = new File(defaultLocation);
+        final File[] listFiles = f.listFiles(new FilenameFilter() {
+
+            @Override
+            public boolean accept(final File dir, final String name) {
+                return name.contains(".gmn");
+            }
+        });
+        if (listFiles != null && listFiles.length > 0) {
+            return Arrays.asList(listFiles);
+        }
+        return Collections.emptyList();
+    }
+
     private static boolean istFileNameVonKeyIn(final Map<String, File> fileNameToFile, final Map.Entry<Integer, String> entry) {
         return fileNameToFile.keySet().contains(entry.getValue());
     }
 
-    public static List<File> getGarminFiles(final Collection<String> blacklist) {
+    /**
+     * Lädt alle Files vom Ort wo die Daten von der Uhr aus abgelegt wurden. Dies ist nicht der Ort wo OTC die Datenablegt, sondern nur der Ort wo die Daten initial auf dem Compi
+     * sind.
+     * 
+     * @param blacklist
+     * @return
+     */
+    public static List<File> getGarminFilesFromWatchExportedPlace(final Collection<String> blacklist) {
         final String defaultLocation = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.GPS_FILE_LOCATION);
         final File f = new File(defaultLocation);
         final File[] listFiles = f.listFiles(new FilenameFilter() {

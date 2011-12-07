@@ -28,10 +28,10 @@ import ch.iseli.sportanalyzer.client.Application;
 import ch.iseli.sportanalyzer.client.PreferenceConstants;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDataCache;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterRecord;
+import ch.iseli.sportanalyzer.client.helper.FileCopy;
 import ch.iseli.sportanalyzer.client.views.IImageKeys;
 import ch.iseli.sportanalyzer.db.DatabaseAccessFactory;
 import ch.iseli.sportanalyzer.importer.IConvert2Tcx;
-import ch.iseli.sportanalyzer.importer.util.FileCopy;
 import ch.iseli.sportanalyzer.tcx.TrainingCenterDatabaseT;
 import ch.opentrainingcenter.transfer.IAthlete;
 
@@ -47,6 +47,8 @@ public class ImportManualGpsFiles extends Action implements ISelectionListener, 
 
     private final String defaultLocation;
 
+    private final String locationForBackupFiles;
+
     public ImportManualGpsFiles(final IWorkbenchWindow window, final String toolTipText) {
         this.window = window;
         setId(ID);
@@ -60,6 +62,7 @@ public class ImportManualGpsFiles extends Action implements ISelectionListener, 
             logger.error("Athlete ist nicht gesetzt....");
         }
         defaultLocation = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.GPS_FILE_LOCATION);
+        locationForBackupFiles = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.GPS_FILE_LOCATION_PROG);
         setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(Application.ID, IImageKeys.IMPORT_GPS));
         window.getSelectionService().addSelectionListener(this);
     }
@@ -105,10 +108,12 @@ public class ImportManualGpsFiles extends Action implements ISelectionListener, 
                         for (final String fileName : fileNames) {
                             final File file = new File(filterPath, fileName);
                             monitor.setTaskName("importiere File: " + file.getName());
+                            logger.info("importiere File: " + file.getName());
                             final TrainingCenterDatabaseT record = tcx.convert(file);
+                            logger.info("record: " + record != null ? record.toString() : " record ist null");
                             final Integer importRecordId = DatabaseAccessFactory.getDatabaseAccess().importRecord(athlete.getId(), file.getName());
                             allRecords.put(importRecordId, new TrainingCenterRecord(importRecordId, record));
-                            FileCopy.copyFile(file, new File(defaultLocation, file.getName()));
+                            FileCopy.copyFile(file, new File(locationForBackupFiles, file.getName()));
                             monitor.worked(1);
                         }
                     } catch (final Exception e1) {

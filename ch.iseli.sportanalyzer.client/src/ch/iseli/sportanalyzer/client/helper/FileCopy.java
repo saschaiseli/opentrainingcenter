@@ -1,4 +1,4 @@
-package ch.iseli.sportanalyzer.importer.util;
+package ch.iseli.sportanalyzer.client.helper;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,7 +10,7 @@ public class FileCopy {
     /**
      * Kopiert ein file in ein anderes das destination file wird nie überschrieben werden.
      */
-    public static void copyFile(File sourceFile, File destFile) throws IOException {
+    public static void copyFile(final File sourceFile, final File destFile) throws IOException {
         if (sourceFile.getAbsolutePath().equals(destFile.getAbsolutePath())) {
             return;
         }
@@ -25,7 +25,7 @@ public class FileCopy {
             destination = new FileOutputStream(destFile).getChannel();
 
             long count = 0;
-            long size = source.size();
+            final long size = source.size();
             while ((count += destination.transferFrom(source, 0, size - count)) < size)
                 ;
         } finally {

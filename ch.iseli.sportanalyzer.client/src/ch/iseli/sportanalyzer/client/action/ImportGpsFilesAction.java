@@ -88,7 +88,7 @@ public class ImportGpsFilesAction extends Action implements ISelectionListener, 
     public void run() {
 
         final Map<Integer, String> importedRecordFileNames = DatabaseAccessFactory.getDatabaseAccess().getImportedRecords(athlete);
-        final List<File> garminFiles = FindGarminFiles.getGarminFiles(importedRecordFileNames.values());
+        final List<File> garminFiles = FindGarminFiles.getGarminFilesFromWatchExportedPlace(importedRecordFileNames.values());
         final Map<String, File> keyToFile = new TreeMap<String, File>();
         for (final File f : garminFiles) {
             keyToFile.put(FileNameToDateConverter.getHumanReadableDate(f.getName()), f);

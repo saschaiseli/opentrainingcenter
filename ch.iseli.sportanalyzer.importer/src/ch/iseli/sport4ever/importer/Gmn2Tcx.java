@@ -54,17 +54,24 @@ public class Gmn2Tcx implements IConvert2Tcx {
     public InputStream convert2Tcx(final java.io.File file) throws IOException {
         log.debug("file " + file.getAbsolutePath() + " existiert: " + file.exists());
         final Path path = new Path("resources/gmn2tcx.sh");
+        log.debug("vor url");
         final URL url = FileLocator.find(bundle, path, Collections.EMPTY_MAP);
+        log.debug("nach url: " + url.getPath());
         URL fileUrl = null;
         try {
+            log.debug("vor fileUrl");
             fileUrl = FileLocator.toFileURL(url);
+            log.debug("nach fileUrl: " + fileUrl.getPath());
         } catch (final IOException e) {
             log.error("Konvertieren der GPS Daten fehlgeschlagen: " + e.getMessage());
         }
+        log.debug("vor f");
         final File f = new File(fileUrl.getPath());
+        log.debug("nach f: " + f.getAbsolutePath());
         final ProcessBuilder processBuilder = new ProcessBuilder(f.getAbsolutePath(), file.getAbsolutePath());
-
+        log.debug("nach processBuilder");
         final Process process = processBuilder.start();
+        log.debug("nach process und back zurück");
         return process.getInputStream();
     }
 

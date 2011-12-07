@@ -6,7 +6,14 @@ package ch.iseli.sportanalyzer.client;
 public class PreferenceConstants {
 
     private static final String COLOR_POSTFIX = "_color";
+    /**
+     * Ort wo die Daten auf dem Compi gespeichert sind
+     */
     public final static String GPS_FILE_LOCATION = "gps_path";
+    /**
+     * Ort, wo OTC die Daten absichert.
+     */
+    public static final String GPS_FILE_LOCATION_PROG = "gps_path_prog";
     public static final String ATHLETE_ID = "athlete_id";
     public static final String SB = "spitzenbereich";
     public static final String EXTDL = "extensiver_dauerlauf";

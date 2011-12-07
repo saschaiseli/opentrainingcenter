@@ -43,7 +43,9 @@ public class SamplePreferencePage extends FieldEditorPreferencePage implements I
     public void createFieldEditors() {
         final Composite fieldEditorParent = getFieldEditorParent();
 
-        addField(new DirectoryFieldEditor(PreferenceConstants.GPS_FILE_LOCATION, "Ort der GPS Daten:", fieldEditorParent));
+        addField(new DirectoryFieldEditor(PreferenceConstants.GPS_FILE_LOCATION, "Ort der GPS Daten zum importieren:", fieldEditorParent));
+
+        addField(new DirectoryFieldEditor(PreferenceConstants.GPS_FILE_LOCATION_PROG, "Ort der GPS Daten für das Programm:", fieldEditorParent));
 
         final List<String[]> vals = new ArrayList<String[]>();
         for (final IAthlete ath : allAthletes) {

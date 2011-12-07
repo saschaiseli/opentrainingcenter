@@ -11,11 +11,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.part.ViewPart;
 
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDataCache;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterRecord;
+import ch.iseli.sportanalyzer.client.helper.DistanceHelper;
 import ch.iseli.sportanalyzer.client.helper.TimeHelper;
 import ch.iseli.sportanalyzer.client.model.ITrainingOverview;
 import ch.iseli.sportanalyzer.client.model.TrainingOverviewFactory;
@@ -33,9 +33,8 @@ public class OverviewViewer extends ViewPart {
         final GridLayout layout = new GridLayout(2, false);
         parent.setLayout(layout);
         final Label searchLabel = new Label(parent, SWT.NONE);
-        searchLabel.setText("Search: ");
-        final Text searchText = new Text(parent, SWT.BORDER | SWT.SEARCH);
-        searchText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
+        searchLabel.setText("Alle Läufe:");
+        searchLabel.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
         createViewer(parent);
     }
 
@@ -66,10 +65,10 @@ public class OverviewViewer extends ViewPart {
 
     // This will create the columns for the table
     private void createColumns(final Composite parent, final TableViewer viewer) {
-        final String[] titles = { "First name", "Last name", "Gender", "Married" };
-        final int[] bounds = { 100, 100, 100, 100 };
+        final String[] titles = { "Datum", "Dauer", "Distanz [km]", "Pace", "Herzfrequenz" };
+        final int[] bounds = { 220, 100, 150, 120, 180 };
 
-        // First column is for the first name
+        // Datum
         TableViewerColumn col = createTableViewerColumn(titles[0], bounds[0], 0);
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
@@ -79,7 +78,7 @@ public class OverviewViewer extends ViewPart {
             }
         });
 
-        // Second column is for the last name
+        // Zeit
         col = createTableViewerColumn(titles[1], bounds[1], 1);
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
@@ -89,18 +88,28 @@ public class OverviewViewer extends ViewPart {
             }
         });
 
-        // Now the gender
+        // distanz
         col = createTableViewerColumn(titles[2], bounds[2], 2);
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(final Object element) {
                 final ITrainingOverview overview = TrainingOverviewFactory.creatTrainingOverview((TrainingCenterRecord) element);
-                return String.valueOf(overview.getLaengeInMeter());
+                return DistanceHelper.roundDistanceFromMeterToKm(overview.getLaengeInMeter());
             }
         });
 
-        // // Now the status married
+        // pace
         col = createTableViewerColumn(titles[3], bounds[3], 3);
+        col.setLabelProvider(new ColumnLabelProvider() {
+            @Override
+            public String getText(final Object element) {
+                final ITrainingOverview overview = TrainingOverviewFactory.creatTrainingOverview((TrainingCenterRecord) element);
+                return overview.getPace();
+            }
+        });
+
+        // Herzfrequenz
+        col = createTableViewerColumn(titles[4], bounds[4], 4);
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(final Object element) {
