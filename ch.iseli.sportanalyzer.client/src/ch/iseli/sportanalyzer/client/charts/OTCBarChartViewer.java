@@ -31,7 +31,9 @@ import org.jfree.chart.axis.DateAxis;
 import org.jfree.chart.axis.DateTickMarkPosition;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.ValueAxis;
+import org.jfree.chart.labels.StandardXYItemLabelGenerator;
 import org.jfree.chart.labels.StandardXYToolTipGenerator;
+import org.jfree.chart.labels.XYItemLabelGenerator;
 import org.jfree.chart.plot.DatasetRenderingOrder;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
@@ -63,7 +65,6 @@ public class OTCBarChartViewer implements ISelectionProvider {
     private static final String DISTANZ = "Distanz";
     private static final String HEART = "Herzfrequenz";
     private final Composite composite;
-    private final JFreeChart chartDay;
     private final IntervalXYDataset dataset;
     private final ChartComposite chartComposite;
     private final TrainingCenterDataCache cache;
@@ -72,10 +73,11 @@ public class OTCBarChartViewer implements ISelectionProvider {
     private final TimeSeries heartSerie;
     private final TimeSeriesCollection timeSeriesDistanzCollection = new TimeSeriesCollection();
     private final TimeSeriesCollection timeSeriesHeartCollection = new TimeSeriesCollection();
-    private JFreeChart chart;
     private boolean withHeartRate = false;
     private final Class<? extends RegularTimePeriod> clazz;
     private final ChartSerieType type;
+
+    private JFreeChart chart;
 
     public OTCBarChartViewer(final Composite parent, final ChartSerieType type) {
         this.type = type;
@@ -150,8 +152,8 @@ public class OTCBarChartViewer implements ISelectionProvider {
         GridData gd = new GridData();
         b.setLayoutData(gd);
         dataset = createOrUpdateDataSet(new TrainingOverviewDatenAufbereiten(), DISTANZ);
-        chartDay = createChart(dataset);
-        chartComposite = new ChartComposite(composite, SWT.NONE, chartDay, true);
+        createChart(dataset, type);
+        chartComposite = new ChartComposite(composite, SWT.NONE, chart, true);
         gd = new GridData(SWT.FILL);
         gd.grabExcessHorizontalSpace = true;
         gd.grabExcessVerticalSpace = true;
@@ -230,7 +232,7 @@ public class OTCBarChartViewer implements ISelectionProvider {
         return map;
     }
 
-    private JFreeChart createChart(final IntervalXYDataset dataset) {
+    private JFreeChart createChart(final IntervalXYDataset dataset, final ChartSerieType type) {
 
         chart = ChartFactory.createXYBarChart("Lauflängen", "Datum", true, "Distanz[m]", dataset, PlotOrientation.VERTICAL, false, true, false);
         chart.setAntiAlias(true);
@@ -254,9 +256,17 @@ public class OTCBarChartViewer implements ISelectionProvider {
 
         renderer.setMargin(0.1);
 
-        final StandardXYToolTipGenerator generator = new StandardXYToolTipGenerator("{1} = {2}km", new SimpleDateFormat("dd.MM.yyyy"), new DecimalFormat(
-                "0.000"));
-        renderer.setBaseToolTipGenerator(generator);
+        if (type.isLabelVisible()) {
+            final String formatString = "{2}km (" + type.getLabel() + "{1})";
+            final StandardXYToolTipGenerator generator = new StandardXYToolTipGenerator(formatString, new SimpleDateFormat(type.getFormatPattern()),
+                    new DecimalFormat("0.000"));
+            renderer.setBaseToolTipGenerator(generator);
+
+            final XYItemLabelGenerator labelGenerator = new StandardXYItemLabelGenerator(formatString, new SimpleDateFormat(type.getFormatPattern()),
+                    new DecimalFormat("0.000"));
+            renderer.setBaseItemLabelGenerator(labelGenerator);
+            renderer.setBaseItemLabelsVisible(true);
+        }
 
         final DateAxis axis = (DateAxis) plot.getDomainAxis();
         axis.setTickMarkPosition(DateTickMarkPosition.MIDDLE);

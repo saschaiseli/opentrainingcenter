@@ -6,7 +6,6 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 
 public class RestartOtc extends Action implements ISelectionListener, IWorkbenchAction {
@@ -24,20 +23,17 @@ public class RestartOtc extends Action implements ISelectionListener, IWorkbench
     }
 
     @Override
-    public void dispose() {
-        // TODO Auto-generated method stub
+    public void run() {
+        logger.info("OTC wird restarted");
+        window.getWorkbench().restart();
+    }
 
+    @Override
+    public void dispose() {
     }
 
     @Override
     public void selectionChanged(final IWorkbenchPart part, final ISelection selection) {
-        // TODO Auto-generated method stub
-
     }
 
-    @Override
-    public void run() {
-        final IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-        window.getWorkbench().restart();
-    }
 }
