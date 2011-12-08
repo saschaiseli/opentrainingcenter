@@ -411,7 +411,6 @@ public class SingleActivityViewPart extends ViewPart {
                 final double t2 = point.getTime().toGregorianCalendar().getTimeInMillis() / 1000;
                 final double t1 = previousPoint.getTime().toGregorianCalendar().getTimeInMillis() / 1000;
                 final double pace = SpeedCalculator.calculatePace(d1, d2, t1, t2);
-                logger.info("vMeterProSekunde: " + pace);
                 if (0 < pace && pace < 10) {
                     serie.add(point.getDistanceMeters().doubleValue(), pace);
                 }

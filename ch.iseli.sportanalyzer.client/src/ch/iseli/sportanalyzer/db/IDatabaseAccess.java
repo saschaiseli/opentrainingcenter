@@ -68,5 +68,5 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
      * @throws DatabaseException
      *             wenn das speichern fehlschlägt
      */
-    int save(IAthlete athlete) throws DatabaseException;
+    int save(IAthlete athlete);
 }
