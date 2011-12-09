@@ -3,6 +3,7 @@
 <plugin>
    <extension-point id="ch.iseli.sportanalyzer.myimporter" name="myimporter" schema="schema/ch.iseli.sportanalyzer.myimporter.exsd"/>
    <extension-point id="ch.opentrainingdatabase.db" name="dbaccess" schema="schema/ch.opentrainingdatabase.dbaccess.exsd"/>
+   <extension-point id="splashExtension" name="Splash Extensions" schema="schema/splashExtension.exsd"/>
 
    <extension
          id="application"
@@ -43,11 +44,12 @@
    <extension
          point="org.eclipse.ui.views">
       <view
-            name="Mailboxes"
             allowMultiple="true"
-            icon="icons/1321200870_Compass.png"
             class="ch.iseli.sportanalyzer.client.views.navigation.NavigationView"
-            id="ch.iseli.sportanalyzer.client.navigationView">
+            fastViewWidthRatio="0.25"
+            icon="icons/package_games_sports_24_24.png"
+            id="ch.iseli.sportanalyzer.client.navigationView"
+            name="Läufe">
       </view>
       <view
             allowMultiple="true"
@@ -198,12 +200,12 @@
                value="Open Training Center">
          </property>
          <property
-               name="startupProgressRect"
-               value="5,350,440,10">
-         </property>
-         <property
                name="preferenceCustomization"
                value="plugin_customization.ini">
+         </property>
+         <property
+               name="startupProgressRect"
+               value="5,320,440,10">
          </property>
       </product>
    </extension>
@@ -248,6 +250,16 @@
                label="label">
          </menu>
       </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.splashHandlers">
+      <splashHandler
+            class="ch.iseli.sportanalyzer.client.splashHandlers.ExtensibleSplashHandler"
+            id="ch.iseli.sportanalyzer.client.splashHandlers.extensible">
+      </splashHandler>
+   </extension>
+   <extension
+         point="ch.iseli.sportanalyzer.client.splashExtension">
    </extension>
 
 </plugin>

@@ -18,7 +18,7 @@
 
    <splash
       location="ch.iseli.sportanalyzer.client"
-      startupProgressRect="5,350,440,10" />
+      startupProgressRect="5,320,440,10" />
    <launcher name="opentrainingcenter">
       <solaris/>
       <win useIco="false">
@@ -29,6 +29,7 @@
 
    <vm>
    </vm>
+
 
    <plugins>
       <plugin id="ch.iseli.sportanalyzer.client"/>

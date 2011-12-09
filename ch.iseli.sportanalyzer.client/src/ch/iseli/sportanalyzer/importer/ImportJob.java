@@ -45,6 +45,7 @@ public class ImportJob extends Job {
         monitor.beginTask("Lade GPS Daten", loadAllGPSFiles.size());
         try {
             for (final Map.Entry<Integer, File> entry : loadAllGPSFiles.entrySet()) {
+                monitor.subTask("Importiere File: " + entry.getValue());
                 final TrainingCenterDatabaseT record = tcx.convert(entry.getValue());
                 allRuns.put(entry.getKey(), new TrainingCenterRecord(entry.getKey(), record));
                 monitor.worked(1);

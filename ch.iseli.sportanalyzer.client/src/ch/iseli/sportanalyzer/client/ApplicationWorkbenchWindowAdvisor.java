@@ -33,4 +33,12 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
             configurer.setTitle(Application.WINDOW_TITLE);
         }
     }
+
+    @Override
+    public boolean isDurableFolder(final String perspectiveId, final String folderId) {
+        if (Perspective.ID.equals(perspectiveId) && Perspective.RIGHT_PART.equals(folderId)) {
+            return true;
+        }
+        return super.isDurableFolder(perspectiveId, folderId);
+    }
 }

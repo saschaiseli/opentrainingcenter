@@ -32,7 +32,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
         defaults.put(PreferenceConstants.ANAEROBE_COLOR, "219,76,82");
         defaults.putInt(PreferenceConstants.SCHWELLENZONE, 80);
         defaults.put(PreferenceConstants.SCHWELLENZONE_COLOR, "96,134,216");
-        defaults.putInt(PreferenceConstants.AEROBE, 45);
+        defaults.putInt(PreferenceConstants.AEROBE, 50);
         defaults.put(PreferenceConstants.AEROBE_COLOR, "144,238,144");
     }
 

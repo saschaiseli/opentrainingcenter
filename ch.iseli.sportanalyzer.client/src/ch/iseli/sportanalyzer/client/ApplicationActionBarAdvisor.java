@@ -3,6 +3,7 @@ package ch.iseli.sportanalyzer.client;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.ICoolBarManager;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
@@ -15,6 +16,7 @@ import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
+import org.eclipse.ui.actions.ContributionItemFactory;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
 
@@ -41,6 +43,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
     private Action importGpsFilesManual;
     private IAction windowsAction;
     private IWorkbenchAction openPerspective;
+    private IContributionItem perspectiveShortList;
 
     public ApplicationActionBarAdvisor(final IActionBarConfigurer configurer) {
         super(configurer);
@@ -76,6 +79,8 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 
         importGpsFilesManual = new ImportManualGpsFiles(window, "Importiere GPS Files");
         register(importGpsFiles);
+
+        perspectiveShortList = ContributionItemFactory.PERSPECTIVES_SHORTLIST.create(window);
     }
 
     @Override
@@ -87,6 +92,10 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
         // Add a group marker indicating where action set menus will appear.
         menuBar.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
         menuBar.add(helpMenu);
+
+        final MenuManager layoutMenu = new MenuManager("Switch Layout", "layout");
+        fileMenu.add(layoutMenu);
+        layoutMenu.add(perspectiveShortList);
 
         menuBar.add(windowsMenu);
 
