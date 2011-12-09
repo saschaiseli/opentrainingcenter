@@ -1,5 +1,7 @@
 package ch.iseli.sportanalyzer.client.views.table;
 
+import java.util.Collection;
+
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
@@ -13,6 +15,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.part.ViewPart;
 
+import ch.iseli.sportanalyzer.client.cache.IRecordListener;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDataCache;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterRecord;
 import ch.iseli.sportanalyzer.client.helper.DistanceHelper;
@@ -61,6 +64,18 @@ public class OverviewViewer extends ViewPart {
         gridData.grabExcessVerticalSpace = true;
         gridData.horizontalAlignment = GridData.FILL;
         viewer.getControl().setLayoutData(gridData);
+
+        final TrainingCenterDataCache cache = TrainingCenterDataCache.getInstance();
+        cache.addListener(new IRecordListener() {
+
+            @Override
+            public void recordChanged(final Collection<TrainingCenterRecord> entry) {
+                viewer.setInput(TrainingCenterDataCache.getInstance().getAllRuns());
+                viewer.refresh();
+            }
+
+        });
+
     }
 
     // This will create the columns for the table
@@ -114,7 +129,7 @@ public class OverviewViewer extends ViewPart {
             @Override
             public String getText(final Object element) {
                 final ITrainingOverview overview = TrainingOverviewFactory.creatTrainingOverview((TrainingCenterRecord) element);
-                return overview.getPace();
+                return overview.getAverageHeartBeat();
             }
         });
 
