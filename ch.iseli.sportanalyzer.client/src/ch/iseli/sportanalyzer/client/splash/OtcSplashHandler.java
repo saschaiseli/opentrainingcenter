@@ -107,16 +107,15 @@ public class OtcSplashHandler extends BasicSplashHandler {
                             final Map<Integer, String> importedRecords = DatabaseAccessFactory.getDatabaseAccess().getImportedRecords(athlete);
                             final Map<Integer, File> loadAllGPSFiles = FindGarminFiles.loadAllGPSFilesFromAthlete(importedRecords);
                             final int size = loadAllGPSFiles.size();
-                            titel.setText("Lade GPS Daten:    " + size);
                             fBar.setMaximum(size);
                             int i = 0;
                             try {
                                 for (final Map.Entry<Integer, File> entry : loadAllGPSFiles.entrySet()) {
-                                    fBar.setSelection(i);
-                                    infotext.setText("Importiere : " + entry.getValue().getName());
-                                    titel.setText("Lade GPS Daten:    " + (size - (i)));
-                                    i++;
+                                    titel.setText("Lade GPS Daten: " + (size - (i)));
+                                    infotext.setText("Importiere: " + entry.getValue().getName());
                                     final TrainingCenterDatabaseT record = tcx.convert(entry.getValue());
+                                    fBar.setSelection(i);
+                                    i++;
                                     allRuns.put(entry.getKey(), new TrainingCenterRecord(entry.getKey(), record));
                                 }
                                 TrainingCenterDataCache.getInstance().setSelectedProfile(athlete);
@@ -151,7 +150,7 @@ public class OtcSplashHandler extends BasicSplashHandler {
 
         titel = new Label(container, SWT.NONE);
         titel.setLayoutData(gd);
-        titel.setText("Lade GPS Daten:" + SPACER);
+        titel.setText(SPACER);
         titel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false));
         infotext = new Label(container, SWT.NONE);
         final FontData fd = new FontData();
