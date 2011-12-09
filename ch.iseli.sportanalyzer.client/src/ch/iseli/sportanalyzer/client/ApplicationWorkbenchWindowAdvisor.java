@@ -5,7 +5,7 @@ import org.eclipse.ui.application.IActionBarConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 
-import ch.iseli.sportanalyzer.client.perspectives.Perspective;
+import ch.iseli.sportanalyzer.client.perspectives.PerspectiveNavigation;
 import ch.iseli.sportanalyzer.db.DatabaseAccessFactory;
 
 public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
@@ -37,7 +37,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 
     @Override
     public boolean isDurableFolder(final String perspectiveId, final String folderId) {
-        if (Perspective.ID.equals(perspectiveId) && Perspective.RIGHT_PART.equals(folderId)) {
+        if (PerspectiveNavigation.ID.equals(perspectiveId) && PerspectiveNavigation.RIGHT_PART.equals(folderId)) {
             return true;
         }
         return super.isDurableFolder(perspectiveId, folderId);

@@ -94,6 +94,14 @@ public class TrainingCenterDataCache {
         }
     }
 
+    public void remove(final List<Integer> ids) {
+        final List<TrainingCenterRecord> deletedRecords = new ArrayList<TrainingCenterRecord>();
+        for (final Integer id : ids) {
+            deletedRecords.add(list.remove(id));
+        }
+        fireRecordDeleted(deletedRecords);
+    }
+
     private void fireRecordAdded(final Collection<TrainingCenterRecord> collection) {
         if (listeners == null)
             return;
@@ -103,6 +111,16 @@ public class TrainingCenterDataCache {
             listener.recordChanged(collection);
         }
 
+    }
+
+    private void fireRecordDeleted(final List<TrainingCenterRecord> deletedRecords) {
+        if (listeners == null)
+            return;
+        final Object[] rls = listeners.getListeners();
+        for (int i = 0; i < rls.length; i++) {
+            final IRecordListener listener = (IRecordListener) rls[i];
+            listener.deleteRecord(deletedRecords);
+        }
     }
 
     public void addListener(final IRecordListener listener) {
@@ -120,11 +138,6 @@ public class TrainingCenterDataCache {
             }
         }
 
-    }
-
-    public void remove(final Integer id) {
-        list.remove(id);
-        fireRecordAdded(null);
     }
 
     public List<SimpleTraining> getAllSimpleTrainings() {

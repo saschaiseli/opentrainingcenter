@@ -70,10 +70,18 @@ public class OverviewViewer extends ViewPart {
 
             @Override
             public void recordChanged(final Collection<TrainingCenterRecord> entry) {
+                update();
+            }
+
+            @Override
+            public void deleteRecord(final Collection<TrainingCenterRecord> entry) {
+                update();
+            }
+
+            private void update() {
                 viewer.setInput(TrainingCenterDataCache.getInstance().getAllRuns());
                 viewer.refresh();
             }
-
         });
 
     }

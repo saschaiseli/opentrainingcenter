@@ -7,7 +7,7 @@ import org.eclipse.ui.IPerspectiveFactory;
 import ch.iseli.sportanalyzer.client.views.navigation.NavigationView;
 import ch.iseli.sportanalyzer.client.views.overview.SingleActivityViewPart;
 
-public class Perspective implements IPerspectiveFactory {
+public class PerspectiveNavigation implements IPerspectiveFactory {
 
     public static final String RIGHT_PART = "rightPart";
 
@@ -26,7 +26,7 @@ public class Perspective implements IPerspectiveFactory {
         final IFolderLayout folderRight = layout.createFolder(RIGHT_PART, IPageLayout.RIGHT, 0.80f, editorArea);
         folderRight.addPlaceholder(SingleActivityViewPart.ID + MULTI_VIEW);
 
-        layout.addPerspectiveShortcut(Perspective.ID);
+        layout.addPerspectiveShortcut(PerspectiveNavigation.ID);
         layout.addPerspectiveShortcut(OverviewPerspectiveFactory.ID);
         layout.addPerspectiveShortcut(StatisticPerspectiveFactory.ID);
         layout.addPerspectiveShortcut(AthletePerspective.ID);

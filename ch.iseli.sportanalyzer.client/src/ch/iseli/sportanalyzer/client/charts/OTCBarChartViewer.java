@@ -67,7 +67,6 @@ public class OTCBarChartViewer implements ISelectionProvider {
     private final Composite composite;
     private final IntervalXYDataset dataset;
     private final ChartComposite chartComposite;
-    private final TrainingCenterDataCache cache;
     private final ListenerList selectionListeners = new ListenerList(ListenerList.IDENTITY);
     private final TimeSeries distanceSerie;
     private final TimeSeries heartSerie;
@@ -84,12 +83,20 @@ public class OTCBarChartViewer implements ISelectionProvider {
         clazz = getSeriesType(type);
         distanceSerie = new TimeSeries(DISTANZ);
         heartSerie = new TimeSeries(HEART);
-        cache = TrainingCenterDataCache.getInstance();
-        cache.addListener(new IRecordListener() {
+        TrainingCenterDataCache.getInstance().addListener(new IRecordListener() {
 
             @Override
             public void recordChanged(final Collection<TrainingCenterRecord> entry) {
-                log.info("neue Daten importiert, Charts aktualisieren");
+                update();
+            }
+
+            @Override
+            public void deleteRecord(final Collection<TrainingCenterRecord> entry) {
+                update();
+            }
+
+            private void update() {
+                log.info("neue Daten, Charts aktualisieren");
                 createOrUpdateDataSet(new TrainingOverviewDatenAufbereiten());
             }
         });

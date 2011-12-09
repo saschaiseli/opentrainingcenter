@@ -151,6 +151,17 @@ public class NavigationView extends ViewPart {
                     }
                 });
             }
+
+            @Override
+            public void deleteRecord(final Collection<TrainingCenterRecord> entry) {
+                viewer.setInput(cache.getAllRuns());
+                viewer.refresh();
+                final IWorkbenchPage wbp = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+                for (final TrainingCenterRecord record : entry) {
+                    final String secondaryViewId = String.valueOf(record.toString().hashCode());
+                    wbp.hideView(wbp.findViewReference(SingleActivityViewPart.ID, secondaryViewId));
+                }
+            }
         });
     }
 

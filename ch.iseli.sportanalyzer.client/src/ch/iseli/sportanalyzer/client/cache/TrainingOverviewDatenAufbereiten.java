@@ -19,33 +19,40 @@ public class TrainingOverviewDatenAufbereiten {
     private static final Logger logger = Logger.getLogger(TrainingOverviewDatenAufbereiten.class);
 
     private final List<SimpleTraining> all;
-    private final List<SimpleTraining> trainingsPerWeek;
-    private final List<SimpleTraining> trainingsPerMonth;
+    private final List<SimpleTraining> trainingsPerWeek = Collections.emptyList();
+    private final List<SimpleTraining> trainingsPerMonth = Collections.emptyList();
+
+    private final TrainingCenterDataCache cache;
 
     public TrainingOverviewDatenAufbereiten() {
         super();
-        final TrainingCenterDataCache cache = TrainingCenterDataCache.getInstance();
-        this.all = cache.getAllSimpleTrainings();
+        cache = TrainingCenterDataCache.getInstance();
+        all = cache.getAllSimpleTrainings();
         cache.addListener(new IRecordListener() {
 
             @Override
             public void recordChanged(final Collection<TrainingCenterRecord> entry) {
-                // Datenstruktur updaten
-                logger.debug("update Struktur...");
-                trainingsPerWeek.clear();
-                trainingsPerWeek.addAll(createMonatsUndWochenMap(Calendar.YEAR, Calendar.WEEK_OF_MONTH));
-                //
-                trainingsPerMonth.clear();
-                trainingsPerMonth.addAll(createMonatsUndWochenMap(Calendar.YEAR, Calendar.MONTH));
+                loadDataFromCache();
             }
-        });
-        logger.debug("Initialize Woche Start");
-        trainingsPerWeek = createMonatsUndWochenMap(Calendar.YEAR, Calendar.WEEK_OF_MONTH);
-        logger.debug("Initialize Woche fertig");
 
-        logger.debug("Initialize Monat Start");
-        trainingsPerMonth = createMonatsUndWochenMap(Calendar.YEAR, Calendar.MONTH);
-        logger.debug("Initialize Monat fertig");
+            @Override
+            public void deleteRecord(final Collection<TrainingCenterRecord> entry) {
+                loadDataFromCache();
+            }
+
+        });
+        loadDataFromCache();
+    }
+
+    private void loadDataFromCache() {
+        logger.debug("update daten vom cache");
+        all.clear();
+        all.addAll(cache.getAllSimpleTrainings());
+        trainingsPerWeek.clear();
+        trainingsPerWeek.addAll(createMonatsUndWochenMap(Calendar.YEAR, Calendar.WEEK_OF_MONTH));
+        //
+        trainingsPerMonth.clear();
+        trainingsPerMonth.addAll(createMonatsUndWochenMap(Calendar.YEAR, Calendar.MONTH));
     }
 
     private List<SimpleTraining> createMonatsUndWochenMap(final int outer, final int inner) {
@@ -120,7 +127,6 @@ public class TrainingOverviewDatenAufbereiten {
     }
 
     public List<SimpleTraining> getTrainingsPerYear() {
-        // TODO Auto-generated method stub
         return null;
     }
 

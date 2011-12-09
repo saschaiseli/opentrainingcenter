@@ -1,5 +1,6 @@
 package ch.iseli.sportanalyzer.client.action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -37,11 +38,13 @@ public class DeleteImportedRecord extends Action implements ISelectionListener, 
     @Override
     public void run() {
         final List<?> selection = cache.getSelection();
+        final List<Integer> deletedIds = new ArrayList<Integer>();
         for (final Object obj : selection) {
             final TrainingCenterRecord t = (TrainingCenterRecord) obj;
             log.debug("Lösche den Lauf mit der ID " + t.getId());
             DatabaseAccessFactory.getDatabaseAccess().removeImportedRecord(t.getId());
-            cache.remove(t.getId());
+            deletedIds.add(t.getId());
         }
+        cache.remove(deletedIds);
     }
 }

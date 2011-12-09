@@ -9,4 +9,9 @@ public interface IRecordListener {
      */
     public void recordChanged(Collection<TrainingCenterRecord> entry);
 
+    /**
+     * Ein record wird aus dem Cache gelöscht. Wird verwendet um die entsprechenden Views zu schliessen.
+     */
+    public void deleteRecord(Collection<TrainingCenterRecord> entry);
+
 }
