@@ -29,6 +29,8 @@ public class TrainingCenterDataCache {
 
     private Object[] selectedItems;
 
+    private boolean cacheLoaded;
+
     private TrainingCenterDataCache() {
         list = new TreeMap<Integer, TrainingCenterRecord>();
     }
@@ -160,5 +162,13 @@ public class TrainingCenterDataCache {
 
     public IAthlete getSelectedProfile() {
         return selectedProfile;
+    }
+
+    public void cacheLoaded() {
+        cacheLoaded = true;
+    }
+
+    public boolean isCacheLoaded() {
+        return cacheLoaded;
     }
 }

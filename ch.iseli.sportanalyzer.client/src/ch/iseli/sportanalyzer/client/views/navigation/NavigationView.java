@@ -123,11 +123,17 @@ public class NavigationView extends ViewPart {
             }
         });
 
-        final Job job = new ImportJob("Lade GPS Daten", athlete);
-        job.schedule();
-        job.addJobChangeListener(new ImportJobChangeListener(viewer));
-
         final TrainingCenterDataCache cache = TrainingCenterDataCache.getInstance();
+        if (!cache.isCacheLoaded()) {
+            final Job job = new ImportJob("Lade GPS Daten", athlete);
+            job.schedule();
+            job.addJobChangeListener(new ImportJobChangeListener(viewer));
+        } else {
+            final Collection<TrainingCenterRecord> allRuns = cache.getAllRuns();
+            viewer.setInput(allRuns);
+            writeStatus("Es wurden " + allRuns.size() + " GPS Files importiert.");
+        }
+
         cache.addListener(new IRecordListener() {
 
             @Override
@@ -140,8 +146,6 @@ public class NavigationView extends ViewPart {
                         try {
                             if (allRuns == null || allRuns.isEmpty()) {
                                 writeStatus("Keine GPS Files gefunden. Files müssen noch importiert werden.");
-                            } else {
-                                writeStatus("Es wurden " + allRuns.size() + " GPS Files importiert.");
                             }
                             viewer.setInput(allRuns);
                             viewer.refresh();
