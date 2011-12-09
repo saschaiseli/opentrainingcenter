@@ -5,7 +5,8 @@ import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchAdvisor;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 
-import ch.iseli.sportanalyzer.client.views.ahtlete.AthletePerspective;
+import ch.iseli.sportanalyzer.client.perspectives.AthletePerspective;
+import ch.iseli.sportanalyzer.client.perspectives.Perspective;
 import ch.iseli.sportanalyzer.client.views.navigation.NavigationView;
 import ch.iseli.sportanalyzer.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.transfer.IAthlete;

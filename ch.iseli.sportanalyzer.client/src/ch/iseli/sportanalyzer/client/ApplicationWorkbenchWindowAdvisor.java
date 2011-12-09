@@ -5,6 +5,7 @@ import org.eclipse.ui.application.IActionBarConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 
+import ch.iseli.sportanalyzer.client.perspectives.Perspective;
 import ch.iseli.sportanalyzer.db.DatabaseAccessFactory;
 
 public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {

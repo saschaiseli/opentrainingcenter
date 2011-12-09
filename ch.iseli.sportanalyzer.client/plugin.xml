@@ -17,25 +17,25 @@
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            class="ch.iseli.sportanalyzer.client.Perspective"
+            class="ch.iseli.sportanalyzer.client.perspectives.Perspective"
             icon="icons/otc_perspective.png"
             id="ch.iseli.sportanalyzer.client.perspective"
             name="OTC Perspektive">
       </perspective>
       <perspective
-            class="ch.iseli.sportanalyzer.client.views.ahtlete.AthletePerspective"
+            class="ch.iseli.sportanalyzer.client.perspectives.AthletePerspective"
             icon="icons/athlete_perspective.png"
             id="ch.iseli.sportanalyzer.client.athletePerspective"
             name="Athlete Perspektive">
       </perspective>
       <perspective
-            class="ch.iseli.sportanalyzer.client.StatisticPerspectiveFactory"
+            class="ch.iseli.sportanalyzer.client.perspectives.StatisticPerspectiveFactory"
             icon="icons/chart_bar.png"
             id="ch.iseli.sportanalyzer.client.StatisticPerspective"
             name="Statistik">
       </perspective>
       <perspective
-            class="ch.iseli.sportanalyzer.client.OverviewPerspectiveFactory"
+            class="ch.iseli.sportanalyzer.client.perspectives.OverviewPerspectiveFactory"
             icon="icons/table_green_24_24.png"
             id="ch.iseli.sportanalyzer.client.OverviewPerspective"
             name="Tabellarische Übersicht">

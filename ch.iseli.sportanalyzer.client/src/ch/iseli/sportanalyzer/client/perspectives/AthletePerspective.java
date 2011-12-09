@@ -1,9 +1,11 @@
-package ch.iseli.sportanalyzer.client.views.ahtlete;
+package ch.iseli.sportanalyzer.client.perspectives;
 
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import ch.iseli.sportanalyzer.client.views.ahtlete.CreateAthleteView;
 
 
 public class AthletePerspective implements IPerspectiveFactory {

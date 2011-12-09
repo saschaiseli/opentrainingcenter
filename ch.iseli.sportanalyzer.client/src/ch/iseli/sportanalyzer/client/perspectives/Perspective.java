@@ -1,10 +1,9 @@
-package ch.iseli.sportanalyzer.client;
+package ch.iseli.sportanalyzer.client.perspectives;
 
 import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 
-import ch.iseli.sportanalyzer.client.views.ahtlete.AthletePerspective;
 import ch.iseli.sportanalyzer.client.views.navigation.NavigationView;
 import ch.iseli.sportanalyzer.client.views.overview.SingleActivityViewPart;
 
