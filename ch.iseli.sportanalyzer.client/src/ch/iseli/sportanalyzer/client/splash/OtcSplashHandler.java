@@ -51,10 +51,12 @@ public class OtcSplashHandler extends BasicSplashHandler {
 
     public OtcSplashHandler() {
 
+        final boolean dblocked = isDatabaseLocked();
+
         createDataBaseIfNotExists();
 
         final String athleteId = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.ATHLETE_ID);
-        if (!isValidId(athleteId)) {
+        if (dblocked && !isValidId(athleteId)) {
             loadFromCache = false;
             athlete = null;
             tcx = null;
@@ -67,7 +69,23 @@ public class OtcSplashHandler extends BasicSplashHandler {
         }
     }
 
+    private boolean isDatabaseLocked() {
+        try {
+            DatabaseAccessFactory.getDatabaseAccess().getAthlete(1);
+        } catch (final Exception e) {
+            final Throwable cause = e.getCause();
+            final String message = cause.getMessage();
+            if (message.contains("Locked by another process")) { //$NON-NLS-1$
+                logger.error("Database Locked by another process"); //$NON-NLS-1$
+                System.exit(0);
+                return true;
+            }
+        }
+        return false;
+    }
+
     private void createDataBaseIfNotExists() {
+
         try {
             DatabaseAccessFactory.getDatabaseAccess().getAthlete(1);
         } catch (final Exception e) {

@@ -26,15 +26,6 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 
     @Override
     public String getInitialWindowPerspectiveId() {
-        try {
-            DatabaseAccessFactory.getDatabaseAccess().getAthlete(1);
-        } catch (final Exception e) {
-            final Throwable cause = e.getCause();
-            final String message = cause.getMessage();
-            if (message.contains("Locked by another process")) { //$NON-NLS-1$
-                logger.error("Database Locked by another process"); //$NON-NLS-1$
-            }
-        }
         final String athleteId = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.ATHLETE_ID);
         if (athleteId != null && athleteId.length() > 0) {
             final IAthlete athlete = DatabaseAccessFactory.getDatabaseAccess().getAthlete(Integer.parseInt(athleteId));

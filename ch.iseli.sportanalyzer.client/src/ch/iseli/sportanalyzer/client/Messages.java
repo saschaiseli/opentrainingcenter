@@ -4,6 +4,9 @@ import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
     private static final String BUNDLE_NAME = "ch.iseli.sportanalyzer.client.messages"; //$NON-NLS-1$
+    public static String Application_0;
+    public static String Application_1;
+    public static String Application_2;
     public static String Application_WindowTitle;
     public static String ApplicationActionBarAdvisor_File;
     public static String ApplicationActionBarAdvisor_Help;
