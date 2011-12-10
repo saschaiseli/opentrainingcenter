@@ -7,8 +7,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 
-import ch.iseli.sportanalyzer.db.DatabaseAccessFactory;
-
 /**
  * This class controls all aspects of the application's execution
  */
@@ -30,21 +28,6 @@ public class Application implements IApplication {
     @Override
     public Object start(final IApplicationContext context) {
         final Display display = PlatformUI.createDisplay();
-
-        try {
-            DatabaseAccessFactory.getDatabaseAccess().getAthlete(1);
-        } catch (final Exception e) {
-            // db erstellen
-            final Throwable cause = e.getCause();
-            final String message = cause.getMessage();
-            if (message.contains("Table \"ATHLETE\" not found;")) {
-                log.info("Datenbank existiert noch nicht. Es wird eine neue Datenbank erstellt");
-                DatabaseAccessFactory.getDatabaseAccess().createDatabase();
-            }
-        }
-
-        // job.addJobChangeListener(new ImportJobChangeListener(viewer));
-
         try {
             final int returnCode = PlatformUI.createAndRunWorkbench(display, new ApplicationWorkbenchAdvisor());
             if (returnCode == PlatformUI.RETURN_RESTART) {

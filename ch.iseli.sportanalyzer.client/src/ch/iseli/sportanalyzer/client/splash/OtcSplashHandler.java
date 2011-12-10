@@ -34,6 +34,8 @@ import ch.opentrainingcenter.transfer.IAthlete;
 
 public class OtcSplashHandler extends BasicSplashHandler {
 
+    public static final Logger log = Logger.getLogger(OtcSplashHandler.class);
+
     private static final String SPACER = "                                                                            ";
 
     private static final Logger logger = Logger.getLogger(NavigationView.class);
@@ -46,21 +48,38 @@ public class OtcSplashHandler extends BasicSplashHandler {
     private ProgressBar fBar;
     private Label titel;
     private Label infotext;
-    private final boolean preload;
+    private final boolean loadFromCache;
     private final IAthlete athlete;
 
     public OtcSplashHandler() {
+
+        createDataBaseIfNotExists();
+
         final String athleteId = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.ATHLETE_ID);
         if (!isValidId(athleteId)) {
-            preload = false;
+            loadFromCache = false;
             athlete = null;
             tcx = null;
         } else {
-            preload = true;
+            loadFromCache = true;
             athlete = DatabaseAccessFactory.getDatabaseAccess().getAthlete(Integer.parseInt(athleteId));
             final IConfigurationElement[] configurationElementsFor = Platform.getExtensionRegistry().getConfigurationElementsFor(
                     CH_ISELI_SPORTANALYZER_MYIMPORTER);
             this.tcx = getConverterImplementation(configurationElementsFor);
+        }
+    }
+
+    private void createDataBaseIfNotExists() {
+        try {
+            DatabaseAccessFactory.getDatabaseAccess().getAthlete(1);
+        } catch (final Exception e) {
+            // db erstellen
+            final Throwable cause = e.getCause();
+            final String message = cause.getMessage();
+            if (message.contains("Table \"ATHLETE\" not found;")) {
+                log.info("Datenbank existiert noch nicht. Es wird eine neue Datenbank erstellt");
+                DatabaseAccessFactory.getDatabaseAccess().createDatabase();
+            }
         }
     }
 
@@ -83,9 +102,33 @@ public class OtcSplashHandler extends BasicSplashHandler {
     public void init(final Shell splash) {
         super.init(splash);
         getSplash().setBackgroundMode(SWT.INHERIT_DEFAULT);
-        if (preload) {
+        if (loadFromCache) {
             createUI(splash);
         }
+    }
+
+    private void createUI(final Shell shell) {
+        final Composite container = new Composite(shell, SWT.NONE);
+        container.setLayout(new GridLayout(1, false));
+        container.setLocation(5, 310);
+        container.setSize(430, 60);
+
+        /* Progress Bar */
+        fBar = new ProgressBar(container, SWT.HORIZONTAL);
+        fBar.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
+        ((GridData) fBar.getLayoutData()).heightHint = 10;
+
+        titel = new Label(container, SWT.NONE);
+        titel.setText(SPACER);
+        titel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false));
+        infotext = new Label(container, SWT.NONE);
+        final FontData fd = new FontData();
+        fd.setHeight(9);
+        final Font font = new Font(shell.getDisplay(), fd);
+        infotext.setFont(font);
+        infotext.setText(SPACER);
+        infotext.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false));
+        shell.layout(true, true);
     }
 
     @Override
@@ -95,7 +138,7 @@ public class OtcSplashHandler extends BasicSplashHandler {
 
     @Override
     public IProgressMonitor getBundleProgressMonitor() {
-        if (preload) {
+        if (loadFromCache) {
             return new NullProgressMonitor() {
 
                 @Override
@@ -131,35 +174,6 @@ public class OtcSplashHandler extends BasicSplashHandler {
             };
         }
         return null;
-    }
-
-    private void createUI(final Shell shell) {
-
-        final Composite container = new Composite(shell, SWT.NONE);
-        container.setLayout(new GridLayout(1, false));
-        container.setLocation(5, 310);
-        container.setSize(430, 60);
-
-        /* Progress Bar */
-        final GridData gd = new GridData();
-
-        fBar = new ProgressBar(container, SWT.HORIZONTAL);
-        fBar.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
-        gd.grabExcessHorizontalSpace = true;
-        ((GridData) fBar.getLayoutData()).heightHint = 10;
-
-        titel = new Label(container, SWT.NONE);
-        titel.setLayoutData(gd);
-        titel.setText(SPACER);
-        titel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false));
-        infotext = new Label(container, SWT.NONE);
-        final FontData fd = new FontData();
-        fd.setHeight(9);
-        final Font font = new Font(shell.getDisplay(), fd);
-        infotext.setFont(font);
-        infotext.setText(SPACER);
-        infotext.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false));
-        shell.layout(true, true);
     }
 
     @Override
