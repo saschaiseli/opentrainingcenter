@@ -22,6 +22,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.splash.BasicSplashHandler;
 
 import ch.iseli.sportanalyzer.client.Activator;
+import ch.iseli.sportanalyzer.client.Messages;
 import ch.iseli.sportanalyzer.client.PreferenceConstants;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDataCache;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterRecord;
@@ -151,8 +152,8 @@ public class OtcSplashHandler extends BasicSplashHandler {
                             int i = 0;
                             try {
                                 for (final Map.Entry<Integer, File> entry : loadAllGPSFiles.entrySet()) {
-                                    titel.setText("Lade GPS Daten: " + (size - (i)));
-                                    infotext.setText("Importiere: " + entry.getValue().getName());
+                                    titel.setText(Messages.OtcSplashHandler_0 + (size - (i)));
+                                    infotext.setText(Messages.OtcSplashHandler_1 + entry.getValue().getName());
                                     final TrainingCenterDatabaseT record = tcx.convert(entry.getValue());
                                     fBar.setSelection(i);
                                     i++;

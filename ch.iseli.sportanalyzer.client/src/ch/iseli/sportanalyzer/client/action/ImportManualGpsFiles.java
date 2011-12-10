@@ -25,6 +25,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 import ch.iseli.sportanalyzer.client.Activator;
 import ch.iseli.sportanalyzer.client.Application;
+import ch.iseli.sportanalyzer.client.Messages;
 import ch.iseli.sportanalyzer.client.PreferenceConstants;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDataCache;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterRecord;
@@ -89,25 +90,25 @@ public class ImportManualGpsFiles extends Action implements ISelectionListener, 
         final FileDialog fileDialog = new FileDialog(window.getShell(), SWT.MULTI);
         fileDialog.setFilterPath(defaultLocation);
         fileDialog.setFilterExtensions(new String[] { "*." + tcx.getFilePrefix() }); //$NON-NLS-1$
-        fileDialog.setFilterNames(new String[] { "Configuration files (*." + tcx.getFilePrefix() + ")" }); //$NON-NLS-1$
-        fileDialog.setText("FileDialog");
+        fileDialog.setFilterNames(new String[] { "Configuration files (*." + tcx.getFilePrefix() + Messages.ImportManualGpsFiles_0 }); //$NON-NLS-1$
+        fileDialog.setText(Messages.ImportManualGpsFiles_FileDialog);
         final String s = fileDialog.open();
         if (s != null) {
             final String[] fileNames = fileDialog.getFileNames();
             final String filterPath = fileDialog.getFilterPath();
             for (final String string : fileNames) {
-                logger.debug("File " + string + " selektiert"); //$NON-NLS-2$
+                logger.debug(Messages.ImportManualGpsFiles_File + string + Messages.ImportManualGpsFiles_1);
             }
             final Map<Integer, TrainingCenterRecord> allRecords = new HashMap<Integer, TrainingCenterRecord>();
-            final Job job = new Job("Lade GPS Daten") {
+            final Job job = new Job(Messages.ImportManualGpsFiles_LadeGpsFiles) {
                 @Override
                 protected IStatus run(final IProgressMonitor monitor) {
                     // Set total number of work units
-                    monitor.beginTask("Lade GPS Daten...", fileNames.length);
+                    monitor.beginTask(Messages.ImportManualGpsFiles_4, fileNames.length);
                     try {
                         for (final String fileName : fileNames) {
                             final File file = new File(filterPath, fileName);
-                            monitor.setTaskName("importiere File: " + file.getName());
+                            monitor.setTaskName(Messages.ImportManualGpsFiles_5 + file.getName());
                             logger.info("importiere File: " + file.getName()); //$NON-NLS-1$
                             final TrainingCenterDatabaseT record = tcx.convert(file);
                             logger.info("record: " + record != null ? record.toString() : " record ist null"); //$NON-NLS-1$//$NON-NLS-2$

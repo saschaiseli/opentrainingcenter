@@ -13,6 +13,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
 import ch.iseli.sportanalyzer.client.Activator;
+import ch.iseli.sportanalyzer.client.Messages;
 import ch.iseli.sportanalyzer.client.PreferenceConstants;
 import ch.iseli.sportanalyzer.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
@@ -31,7 +32,7 @@ public class SamplePreferencePage extends FieldEditorPreferencePage implements I
 
     public SamplePreferencePage() {
         super(GRID);
-        setDescription("Einige Einstellungen");
+        setDescription(Messages.SamplePreferencePage_0);
         allAthletes = DatabaseAccessFactory.getDatabaseAccess().getAllAthletes();
     }
 
@@ -43,69 +44,69 @@ public class SamplePreferencePage extends FieldEditorPreferencePage implements I
     public void createFieldEditors() {
         final Composite fieldEditorParent = getFieldEditorParent();
 
-        addField(new DirectoryFieldEditor(PreferenceConstants.GPS_FILE_LOCATION, "Ort der GPS Daten zum importieren:", fieldEditorParent));
+        addField(new DirectoryFieldEditor(PreferenceConstants.GPS_FILE_LOCATION, Messages.SamplePreferencePage_1, fieldEditorParent));
 
-        addField(new DirectoryFieldEditor(PreferenceConstants.GPS_FILE_LOCATION_PROG, "Ort der GPS Daten für das Programm:", fieldEditorParent));
+        addField(new DirectoryFieldEditor(PreferenceConstants.GPS_FILE_LOCATION_PROG, Messages.SamplePreferencePage_2, fieldEditorParent));
 
         final List<String[]> vals = new ArrayList<String[]>();
         for (final IAthlete ath : allAthletes) {
             vals.add(new String[] { ath.getName(), String.valueOf(ath.getId()) });
         }
-        final ComboFieldEditor comboField = new ComboFieldEditor(PreferenceConstants.ATHLETE_ID, "Sportler:", vals.toArray(new String[0][0]), fieldEditorParent);
+        final ComboFieldEditor comboField = new ComboFieldEditor(PreferenceConstants.ATHLETE_ID, Messages.SamplePreferencePage_3, vals.toArray(new String[0][0]), fieldEditorParent);
         addField(comboField);
         comboField.setEnabled(false, fieldEditorParent);
 
-        final IntegerFieldEditor sb = new IntegerFieldEditor(PreferenceConstants.SB, "", fieldEditorParent);
-        sb.setLabelText("Spitzenbereich [ca. 91-95% HFmax, Eingabe in %]");
+        final IntegerFieldEditor sb = new IntegerFieldEditor(PreferenceConstants.SB, Messages.SamplePreferencePage_4, fieldEditorParent);
+        sb.setLabelText(Messages.SamplePreferencePage_5);
         sb.setValidRange(91, 95);
-        sb.setErrorMessage("Spitzenbereich liegt zwischen 91% und 95% der maximalen Herzfrequenz");
+        sb.setErrorMessage(Messages.SamplePreferencePage_6);
         sb.setTextLimit(2);
         addField(sb);
 
-        final IntegerFieldEditor extIntervall = new IntegerFieldEditor(PreferenceConstants.EXTINTERVALL, "", fieldEditorParent);
-        extIntervall.setLabelText("Extensives Intervall [ca. 85%-89% HFmax, Eingabe in %]");
+        final IntegerFieldEditor extIntervall = new IntegerFieldEditor(PreferenceConstants.EXTINTERVALL, Messages.SamplePreferencePage_7, fieldEditorParent);
+        extIntervall.setLabelText(Messages.SamplePreferencePage_8);
         extIntervall.setValidRange(85, 89);
-        extIntervall.setErrorMessage("Extensives Intervall liegt zwischen 85% und 89% der maximalen Herzfrequenz");
+        extIntervall.setErrorMessage(Messages.SamplePreferencePage_9);
         extIntervall.setTextLimit(2);
         addField(extIntervall);
 
-        final IntegerFieldEditor intDl = new IntegerFieldEditor(PreferenceConstants.INTDL, "", fieldEditorParent);
-        intDl.setLabelText("Intensiver Dauerlauf [ca. 75%-80% HFmax, Eingabe in %]");
+        final IntegerFieldEditor intDl = new IntegerFieldEditor(PreferenceConstants.INTDL, Messages.SamplePreferencePage_10, fieldEditorParent);
+        intDl.setLabelText(Messages.SamplePreferencePage_11);
         intDl.setValidRange(75, 80);
-        intDl.setErrorMessage("Intensiver Dauerlauf liegt zwischen 85% und 89% der maximalen Herzfrequenz");
+        intDl.setErrorMessage(Messages.SamplePreferencePage_12);
         intDl.setTextLimit(2);
         addField(intDl);
 
-        final IntegerFieldEditor extDl = new IntegerFieldEditor(PreferenceConstants.EXTDL, "", fieldEditorParent);
-        extDl.setLabelText("Extensiver Dauerlauf [ca. 70%-75% HFmax, Eingabe in %]");
+        final IntegerFieldEditor extDl = new IntegerFieldEditor(PreferenceConstants.EXTDL, Messages.SamplePreferencePage_13, fieldEditorParent);
+        extDl.setLabelText(Messages.SamplePreferencePage_14);
         extDl.setValidRange(70, 75);
-        extDl.setErrorMessage("Extensiver Dauerlauf liegt zwischen 70% und 75% der maximalen Herzfrequenz");
+        extDl.setErrorMessage(Messages.SamplePreferencePage_15);
         extDl.setTextLimit(2);
         addField(extDl);
 
-        final IntegerFieldEditor anaerobe = new IntegerFieldEditor(PreferenceConstants.ANAEROBE, "Anaerobe Zone startet bei [%]", fieldEditorParent);
+        final IntegerFieldEditor anaerobe = new IntegerFieldEditor(PreferenceConstants.ANAEROBE, Messages.SamplePreferencePage_16, fieldEditorParent);
         anaerobe.setValidRange(90, 100);
-        anaerobe.setErrorMessage("Anaerobe Zone ist zwischen 90 und 100%");
+        anaerobe.setErrorMessage(Messages.SamplePreferencePage_17);
         anaerobe.setTextLimit(2);
         addField(anaerobe);
 
-        addField(new ColorFieldEditor(PreferenceConstants.ANAEROBE_COLOR, "Color (anaerobe):", getFieldEditorParent()));
+        addField(new ColorFieldEditor(PreferenceConstants.ANAEROBE_COLOR, Messages.SamplePreferencePage_18, getFieldEditorParent()));
 
-        final IntegerFieldEditor schwellenzone = new IntegerFieldEditor(PreferenceConstants.SCHWELLENZONE, "Schwellenzone bei [%]", fieldEditorParent);
+        final IntegerFieldEditor schwellenzone = new IntegerFieldEditor(PreferenceConstants.SCHWELLENZONE, Messages.SamplePreferencePage_19, fieldEditorParent);
         schwellenzone.setValidRange(80, 90);
-        schwellenzone.setErrorMessage("Schwellen Zone ist zwischen 80 und 90%");
+        schwellenzone.setErrorMessage(Messages.SamplePreferencePage_20);
         schwellenzone.setTextLimit(2);
         addField(schwellenzone);
 
-        addField(new ColorFieldEditor(PreferenceConstants.SCHWELLENZONE_COLOR, "Color (Schwelle):", getFieldEditorParent()));
+        addField(new ColorFieldEditor(PreferenceConstants.SCHWELLENZONE_COLOR, Messages.SamplePreferencePage_21, getFieldEditorParent()));
 
-        final IntegerFieldEditor aerobe = new IntegerFieldEditor(PreferenceConstants.AEROBE, "Aerobe bei [%]", fieldEditorParent);
-        aerobe.setErrorMessage("Aerobe Zone ist zwischen 50 und 80%");
+        final IntegerFieldEditor aerobe = new IntegerFieldEditor(PreferenceConstants.AEROBE, Messages.SamplePreferencePage_22, fieldEditorParent);
+        aerobe.setErrorMessage(Messages.SamplePreferencePage_23);
         aerobe.setValidRange(50, 80);
         aerobe.setTextLimit(2);
         addField(aerobe);
 
-        addField(new ColorFieldEditor(PreferenceConstants.AEROBE_COLOR, "Color (Aerobe):", getFieldEditorParent()));
+        addField(new ColorFieldEditor(PreferenceConstants.AEROBE_COLOR, Messages.SamplePreferencePage_24, getFieldEditorParent()));
 
     }
 

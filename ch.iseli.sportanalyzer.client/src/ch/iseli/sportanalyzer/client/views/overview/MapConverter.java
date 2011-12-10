@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import ch.iseli.sportanalyzer.client.Messages;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterRecord;
 import ch.iseli.sportanalyzer.tcx.ActivityLapT;
 import ch.iseli.sportanalyzer.tcx.ActivityListT;
@@ -35,7 +36,7 @@ public final class MapConverter {
                         final PositionT position = point.getPosition();
                         if (position != null) {
                             str.append('[').append(position.getLatitudeDegrees()).append(',').append(position.getLongitudeDegrees()).append("],"); //$NON-NLS-1$
-                            logger.debug("Position: " + position.getLatitudeDegrees() + " / " + position.getLongitudeDegrees()); //$NON-NLS-2$
+                            logger.debug(Messages.MapConverter_0 + position.getLatitudeDegrees() + " / " + position.getLongitudeDegrees()); //$NON-NLS-1$
                             pointAdded = true;
                         }
                     }
@@ -65,6 +66,6 @@ public final class MapConverter {
         if (convertedPoints != null && convertedPoints.length() > 10) {
             return convertedPoints.substring(2, convertedPoints.indexOf(']'));
         }
-        return "";
+        return Messages.MapConverter_1;
     }
 }

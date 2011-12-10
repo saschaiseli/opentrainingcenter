@@ -7,6 +7,8 @@ import java.util.Locale;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import ch.iseli.sportanalyzer.client.Messages;
+
 public class TimeHelper {
 
     /**
@@ -50,15 +52,15 @@ public class TimeHelper {
         final Calendar calendar = Calendar.getInstance();
         calendar.setTime(time);
         calendar.get(Calendar.DAY_OF_WEEK);
-        final SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+        final SimpleDateFormat format = new SimpleDateFormat(Messages.TimeHelper_0);
         if (withDay) {
-            return calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()) + " " + format.format(time);
+            return calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()) + Messages.TimeHelper_1 + format.format(time);
         } else {
             return format.format(time);
         }
     }
 
     private static String addZero(final int i) {
-        return i < 10 ? "0" + i : "" + i;
+        return i < 10 ? Messages.TimeHelper_2 + i : Messages.TimeHelper_3 + i;
     }
 }

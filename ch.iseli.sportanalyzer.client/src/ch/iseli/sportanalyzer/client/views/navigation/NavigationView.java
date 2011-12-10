@@ -22,6 +22,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 import ch.iseli.sportanalyzer.client.Activator;
+import ch.iseli.sportanalyzer.client.Messages;
 import ch.iseli.sportanalyzer.client.PreferenceConstants;
 import ch.iseli.sportanalyzer.client.action.DeleteImportedRecord;
 import ch.iseli.sportanalyzer.client.cache.IRecordListener;
@@ -117,7 +118,7 @@ public class NavigationView extends ViewPart {
             }
 
             private void writeToStatusLine(final TrainingCenterRecord selectedRun) {
-                writeToStatusLine("Lauf vom "
+                writeToStatusLine(Messages.NavigationView_0
                         + TimeHelper.convertGregorianDateToString(selectedRun.getTrainingCenterDatabase().getActivities().getActivity().get(0).getId(), false)
                         + " " + getOverview(selectedRun)); //$NON-NLS-1$
             }
@@ -125,13 +126,13 @@ public class NavigationView extends ViewPart {
 
         final TrainingCenterDataCache cache = TrainingCenterDataCache.getInstance();
         if (!cache.isCacheLoaded()) {
-            final Job job = new ImportJob("Lade GPS Daten", athlete);
+            final Job job = new ImportJob(Messages.NavigationView_1, athlete);
             job.schedule();
             job.addJobChangeListener(new ImportJobChangeListener(viewer));
         } else {
             final Collection<TrainingCenterRecord> allRuns = cache.getAllRuns();
             viewer.setInput(allRuns);
-            writeStatus("Es wurden " + allRuns.size() + " GPS Files importiert.");
+            writeStatus(Messages.NavigationView_2 + allRuns.size() + Messages.NavigationView_3);
         }
 
         cache.addListener(new IRecordListener() {
@@ -145,7 +146,7 @@ public class NavigationView extends ViewPart {
                     public void run() {
                         try {
                             if (allRuns == null || allRuns.isEmpty()) {
-                                writeStatus("Keine GPS Files gefunden. Files müssen noch importiert werden.");
+                                writeStatus(Messages.NavigationView_4);
                             }
                             viewer.setInput(allRuns);
                             viewer.refresh();
@@ -178,18 +179,18 @@ public class NavigationView extends ViewPart {
         final StringBuffer str = new StringBuffer();
         if (activityT.getLap() != null && activityT.getLap().size() > 1) {
             // intervall
-            str.append("Training mit ");
+            str.append(Messages.NavigationView_5);
             int activeIntervall = 0;
             for (final ActivityLapT lap : activityT.getLap()) {
                 if (IntensityT.ACTIVE.equals(lap.getIntensity())) {
                     activeIntervall++;
                 }
             }
-            str.append(activeIntervall).append(" aktiven Intervallen");
+            str.append(activeIntervall).append(Messages.NavigationView_6);
         } else if (activityT.getLap() != null && activityT.getLap().size() == 1) {
             final ActivityLapT lap = activityT.getLap().get(0);
-            str.append("Joggen mit ").append(DistanceHelper.roundDistanceFromMeterToKmMitEinheit(lap.getDistanceMeters()));
-            str.append(" in ").append(TimeHelper.convertSecondsToHumanReadableZeit(lap.getTotalTimeSeconds()));
+            str.append(Messages.NavigationView_7).append(DistanceHelper.roundDistanceFromMeterToKmMitEinheit(lap.getDistanceMeters()));
+            str.append(Messages.NavigationView_8).append(TimeHelper.convertSecondsToHumanReadableZeit(lap.getTotalTimeSeconds()));
         }
         return str.toString();
     }

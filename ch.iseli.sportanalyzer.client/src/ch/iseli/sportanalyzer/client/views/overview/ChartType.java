@@ -1,9 +1,11 @@
 package ch.iseli.sportanalyzer.client.views.overview;
 
+import ch.iseli.sportanalyzer.client.Messages;
+
 public enum ChartType {
-    HEART_DISTANCE("Herzfrequenz in Funktion der Distanz", "Herzfrequenz", "Distanz[m]"), //
-    SPEED_DISTANCE("Pace in Funktion der Distanz", "Pace[min/km]", "Distanz[m]"), //
-    ALTITUDE_DISTANCE("Höhe in Funktion der Distanz", "Höhe[m]", "Distanz[m]");
+    HEART_DISTANCE(Messages.ChartType_0, Messages.ChartType_1, Messages.ChartType_2), //
+    SPEED_DISTANCE(Messages.ChartType_3, Messages.ChartType_4, Messages.ChartType_5), //
+    ALTITUDE_DISTANCE(Messages.ChartType_6, Messages.ChartType_7, Messages.ChartType_8);
 
     private final String titel;
     private final String yAchse;

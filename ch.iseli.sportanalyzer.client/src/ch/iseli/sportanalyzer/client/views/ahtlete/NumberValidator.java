@@ -4,6 +4,8 @@ import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
 
+import ch.iseli.sportanalyzer.client.Messages;
+
 public class NumberValidator implements IValidator {
 
     private final int max;
@@ -24,9 +26,9 @@ public class NumberValidator implements IValidator {
             if (s.matches("\\d*")) { //$NON-NLS-1$
                 final int number = Integer.parseInt(s);
                 if (number < min) {
-                    return ValidationStatus.error("Zahl zu klein. Muss mindestens " + min + " sein.");
+                    return ValidationStatus.error(Messages.NumberValidator_0 + min + Messages.NumberValidator_1);
                 } else if (number > max) {
-                    return ValidationStatus.error("Zahl zu gross. Muss kleiner als " + max + " sein.");
+                    return ValidationStatus.error(Messages.NumberValidator_2 + max + Messages.NumberValidator_3);
                 } else {
                     return ValidationStatus.OK_STATUS;
                 }

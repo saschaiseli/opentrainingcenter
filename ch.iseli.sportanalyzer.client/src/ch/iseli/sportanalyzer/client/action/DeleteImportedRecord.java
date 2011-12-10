@@ -10,6 +10,7 @@ import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 
+import ch.iseli.sportanalyzer.client.Messages;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDataCache;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterRecord;
 import ch.iseli.sportanalyzer.db.DatabaseAccessFactory;
@@ -18,13 +19,13 @@ public class DeleteImportedRecord extends Action implements ISelectionListener, 
 
     public static final String ID = "ch.iseli.sportanalyzer.client.action.DeleteImportedRecord"; //$NON-NLS-1$
 
-    private static final Logger log = Logger.getLogger(ImportGpsFilesAction.class.getName());
+    private static final Logger log = Logger.getLogger(DeleteImportedRecord.class.getName());
 
     private final TrainingCenterDataCache cache = TrainingCenterDataCache.getInstance();
 
     public DeleteImportedRecord() {
         setId(ID);
-        setText("Lauf löschen");
+        setText(Messages.DeleteImportedRecord_0);
     }
 
     @Override

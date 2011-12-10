@@ -15,6 +15,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.part.ViewPart;
 
+import ch.iseli.sportanalyzer.client.Messages;
 import ch.iseli.sportanalyzer.client.cache.IRecordListener;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDataCache;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterRecord;
@@ -36,14 +37,14 @@ public class OverviewViewer extends ViewPart {
         final GridLayout layout = new GridLayout(2, false);
         parent.setLayout(layout);
         final Label searchLabel = new Label(parent, SWT.NONE);
-        searchLabel.setText("Alle Läufe:");
+        searchLabel.setText(Messages.OverviewViewer_0);
         searchLabel.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
         createViewer(parent);
     }
 
     private void createViewer(final Composite parent) {
         viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
-        createColumns(parent, viewer);
+        createColumns();
         final Table table = viewer.getTable();
         table.setHeaderVisible(true);
         table.setLinesVisible(true);
@@ -87,8 +88,8 @@ public class OverviewViewer extends ViewPart {
     }
 
     // This will create the columns for the table
-    private void createColumns(final Composite parent, final TableViewer viewer) {
-        final String[] titles = { "Datum", "Dauer", "Distanz [km]", "Pace", "Herzfrequenz" };
+    private void createColumns() {
+        final String[] titles = { Messages.OverviewViewer_1, Messages.OverviewViewer_2, Messages.OverviewViewer_3, Messages.OverviewViewer_4, Messages.OverviewViewer_5 };
         final int[] bounds = { 220, 100, 150, 120, 180 };
 
         // Datum

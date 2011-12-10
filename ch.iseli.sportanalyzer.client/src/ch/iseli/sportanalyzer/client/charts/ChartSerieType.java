@@ -1,7 +1,9 @@
 package ch.iseli.sportanalyzer.client.charts;
 
+import ch.iseli.sportanalyzer.client.Messages;
+
 public enum ChartSerieType {
-    YEAR("Jahr"), MONTH("Monat", "MMMMM", ""), WEEK("Woche", "w", "KW"), DAY("Tag");
+    YEAR(Messages.ChartSerieType_0), MONTH(Messages.ChartSerieType_1, Messages.ChartSerieType_2, Messages.ChartSerieType_3), WEEK(Messages.ChartSerieType_4, Messages.ChartSerieType_5, Messages.ChartSerieType_6), DAY(Messages.ChartSerieType_7);
 
     private final String name;
     private final String formatPattern;

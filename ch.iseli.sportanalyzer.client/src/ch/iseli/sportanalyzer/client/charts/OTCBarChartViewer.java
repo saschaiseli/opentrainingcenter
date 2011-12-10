@@ -50,6 +50,7 @@ import org.jfree.data.time.Year;
 import org.jfree.data.xy.IntervalXYDataset;
 import org.jfree.experimental.chart.swt.ChartComposite;
 
+import ch.iseli.sportanalyzer.client.Messages;
 import ch.iseli.sportanalyzer.client.cache.IRecordListener;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDataCache;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterRecord;
@@ -62,8 +63,8 @@ public class OTCBarChartViewer implements ISelectionProvider {
 
     private static final Color COLOR_DISTANCE = new Color(128, 175, 83);
     private static final Color COLOR_HEART = new Color(186, 6, 6);
-    private static final String DISTANZ = "Distanz";
-    private static final String HEART = "Herzfrequenz";
+    private static final String DISTANZ = Messages.OTCBarChartViewer_0;
+    private static final String HEART = Messages.OTCBarChartViewer_1;
     private final Composite composite;
     private final IntervalXYDataset dataset;
     private final ChartComposite chartComposite;
@@ -107,7 +108,7 @@ public class OTCBarChartViewer implements ISelectionProvider {
         composite.setLayout(layout);
 
         final Button b = new Button(composite, SWT.CHECK);
-        b.setText("Durchschnittliche Herzfrequenz");
+        b.setText(Messages.OTCBarChartViewer_2);
 
         b.addSelectionListener(new SelectionListener() {
 
@@ -138,7 +139,7 @@ public class OTCBarChartViewer implements ISelectionProvider {
                 plot.setDataset(1, createOrUpdateDataSet(new TrainingOverviewDatenAufbereiten(), HEART));
                 plot.mapDatasetToRangeAxis(1, 1);
 
-                final ValueAxis axis2 = new NumberAxis("Herzfrequenz");
+                final ValueAxis axis2 = new NumberAxis(Messages.OTCBarChartViewer_3);
                 plot.setRangeAxis(1, axis2);
 
                 final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer(true, true);
@@ -208,7 +209,7 @@ public class OTCBarChartViewer implements ISelectionProvider {
             timeSeriesHeartCollection.setXPosition(TimePeriodAnchor.MIDDLE);
             return timeSeriesHeartCollection;
         }
-        throw new IllegalArgumentException("Chart für " + serieTyp + " existiert noch nicht");
+        throw new IllegalArgumentException(Messages.OTCBarChartViewer_4 + serieTyp + Messages.OTCBarChartViewer_5);
     }
 
     private Map<String, TimeSeries> updateSeries(final TrainingOverviewDatenAufbereiten daten) {
@@ -241,7 +242,7 @@ public class OTCBarChartViewer implements ISelectionProvider {
 
     private JFreeChart createChart(final IntervalXYDataset dataset, final ChartSerieType type) {
 
-        chart = ChartFactory.createXYBarChart("Lauflängen", "Datum", true, "Distanz[m]", dataset, PlotOrientation.VERTICAL, false, true, false);
+        chart = ChartFactory.createXYBarChart(Messages.OTCBarChartViewer_6, Messages.OTCBarChartViewer_7, true, Messages.OTCBarChartViewer_8, dataset, PlotOrientation.VERTICAL, false, true, false);
         chart.setAntiAlias(true);
         chart.setBorderVisible(false);
         final org.eclipse.swt.graphics.Color b = Display.getDefault().getActiveShell().getBackground();

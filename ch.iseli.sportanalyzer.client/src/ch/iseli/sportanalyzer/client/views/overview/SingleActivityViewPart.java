@@ -32,6 +32,7 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.experimental.chart.swt.ChartComposite;
 
+import ch.iseli.sportanalyzer.client.Messages;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDataCache;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterRecord;
 import ch.iseli.sportanalyzer.client.charts.HeartIntervallCreator;
@@ -80,7 +81,7 @@ public class SingleActivityViewPart extends ViewPart {
 
         td = new TableWrapData(TableWrapData.FILL_GRAB);
         body.setLayoutData(td);
-        form.setText("Lauf vom " + datumZeit);
+        form.setText(Messages.SingleActivityViewPart_0 + datumZeit);
 
         addOverviewSection(body);
         addMapSection(body);
@@ -101,19 +102,19 @@ public class SingleActivityViewPart extends ViewPart {
         td = new TableWrapData();
         td.colspan = 1;
         overviewSection.setLayoutData(td);
-        overviewSection.setText("Übersicht");
-        overviewSection.setDescription("Eine erste Übersicht auf den Lauf");
+        overviewSection.setText(Messages.SingleActivityViewPart_1);
+        overviewSection.setDescription(Messages.SingleActivityViewPart_2);
 
         final Composite overViewComposite = toolkit.createComposite(overviewSection);
         final GridLayout layoutClient = new GridLayout(3, false);
         overViewComposite.setLayout(layoutClient);
 
-        addLabelAndValue(overViewComposite, "Dauer", trainingOverview.getDauer(), Units.HOUR_MINUTE_SEC);
-        addLabelAndValue(overViewComposite, "Distanz", trainingOverview.getLaengeInKilometer(), Units.KM);
-        addLabelAndValue(overViewComposite, "durchschnittliche Herzfrequenz", String.valueOf(trainingOverview.getAverageHeartBeat()), Units.BEATS_PER_MINUTE);
-        addLabelAndValue(overViewComposite, "maximale Herzfrequenz", String.valueOf(trainingOverview.getMaxHeartBeat()), Units.BEATS_PER_MINUTE);
-        addLabelAndValue(overViewComposite, "durchschnittliche Geschwindigkeit", String.valueOf(trainingOverview.getPace()), Units.PACE);
-        addLabelAndValue(overViewComposite, "maximal Geschwindigkeit", String.valueOf(trainingOverview.getMaxSpeed()), Units.PACE);
+        addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_3, trainingOverview.getDauer(), Units.HOUR_MINUTE_SEC);
+        addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_4, trainingOverview.getLaengeInKilometer(), Units.KM);
+        addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_5, String.valueOf(trainingOverview.getAverageHeartBeat()), Units.BEATS_PER_MINUTE);
+        addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_6, String.valueOf(trainingOverview.getMaxHeartBeat()), Units.BEATS_PER_MINUTE);
+        addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_7, String.valueOf(trainingOverview.getPace()), Units.PACE);
+        addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_8, String.valueOf(trainingOverview.getMaxSpeed()), Units.PACE);
         overviewSection.setClient(overViewComposite);
     }
 
@@ -134,8 +135,8 @@ public class SingleActivityViewPart extends ViewPart {
         td.grabHorizontal = true;
         td.grabVertical = true;
         heartSection.setLayoutData(td);
-        heartSection.setText("Herz");
-        heartSection.setDescription("Herzfrequenz in Funktion der Distanz");
+        heartSection.setText(Messages.SingleActivityViewPart_9);
+        heartSection.setDescription(Messages.SingleActivityViewPart_10);
         //
         final Composite client = toolkit.createComposite(heartSection);
 
@@ -172,8 +173,8 @@ public class SingleActivityViewPart extends ViewPart {
         td.grabHorizontal = true;
         td.grabVertical = true;
         speedSection.setLayoutData(td);
-        speedSection.setText("Geschwindigkeit");
-        speedSection.setDescription("Pace [min/km]");
+        speedSection.setText(Messages.SingleActivityViewPart_11);
+        speedSection.setDescription(Messages.SingleActivityViewPart_12);
         //
         final Composite client = toolkit.createComposite(speedSection);
 
@@ -213,8 +214,8 @@ public class SingleActivityViewPart extends ViewPart {
         td.grabHorizontal = true;
         td.grabVertical = true;
         altitude.setLayoutData(td);
-        altitude.setText("Höhe");
-        altitude.setDescription("Verlauf der Höhe");
+        altitude.setText(Messages.SingleActivityViewPart_13);
+        altitude.setDescription(Messages.SingleActivityViewPart_14);
 
         final Composite client = toolkit.createComposite(altitude);
 
@@ -223,7 +224,7 @@ public class SingleActivityViewPart extends ViewPart {
         layout.makeColumnsEqualWidth = false;
         client.setLayout(layout);
 
-        final Label dauerLabel = toolkit.createLabel(client, "blabla 1");
+        final Label dauerLabel = toolkit.createLabel(client, Messages.SingleActivityViewPart_15);
         td = new TableWrapData();
         dauerLabel.setLayoutData(td);
 
@@ -252,8 +253,8 @@ public class SingleActivityViewPart extends ViewPart {
         td.grabVertical = true;
 
         mapSection.setLayoutData(td);
-        mapSection.setText("Karte");
-        mapSection.setDescription("Lauf auf der Karte");
+        mapSection.setText(Messages.SingleActivityViewPart_16);
+        mapSection.setDescription(Messages.SingleActivityViewPart_17);
 
         final Composite client = toolkit.createComposite(mapSection);
         // client.setBackground(getViewSite().getWorkbenchWindow().getShell().getDisplay().getSystemColor(SWT.COLOR_CYAN));
@@ -367,7 +368,7 @@ public class SingleActivityViewPart extends ViewPart {
         final TrainingCenterRecord selected = cache.getSelected();
         final ActivityT activityT = selected.getTrainingCenterDatabase().getActivities().getActivity().get(0);
         final List<ActivityLapT> laps = activityT.getLap();
-        final XYSeries series1 = new XYSeries("");
+        final XYSeries series1 = new XYSeries(Messages.SingleActivityViewPart_18);
         for (final ActivityLapT activityLapT : laps) {
             final List<TrackT> tracks = activityLapT.getTrack();
             for (final TrackT track : tracks) {

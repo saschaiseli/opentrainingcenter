@@ -13,6 +13,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
+import ch.iseli.sportanalyzer.client.Messages;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDataCache;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterRecord;
 import ch.iseli.sportanalyzer.client.views.navigation.NavigationView;
@@ -42,10 +43,10 @@ public class ImportJob extends Job {
     protected IStatus run(final IProgressMonitor monitor) {
         final Map<Integer, String> importedRecords = DatabaseAccessFactory.getDatabaseAccess().getImportedRecords(athlete);
         final Map<Integer, File> loadAllGPSFiles = FindGarminFiles.loadAllGPSFilesFromAthlete(importedRecords);
-        monitor.beginTask("Lade GPS Daten", loadAllGPSFiles.size());
+        monitor.beginTask(Messages.ImportJob_0, loadAllGPSFiles.size());
         try {
             for (final Map.Entry<Integer, File> entry : loadAllGPSFiles.entrySet()) {
-                monitor.subTask("Importiere File: " + entry.getValue());
+                monitor.subTask(Messages.ImportJob_1 + entry.getValue());
                 final TrainingCenterDatabaseT record = tcx.convert(entry.getValue());
                 allRuns.put(entry.getKey(), new TrainingCenterRecord(entry.getKey(), record));
                 monitor.worked(1);
