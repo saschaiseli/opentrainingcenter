@@ -40,6 +40,7 @@ import org.jfree.chart.plot.DatasetRenderingOrder;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYBarRenderer;
+import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.time.Day;
 import org.jfree.data.time.Month;
@@ -76,9 +77,10 @@ public class OTCBarChartViewer implements ISelectionProvider {
     private final TimeSeriesCollection timeSeriesDistanzCollection = new TimeSeriesCollection();
     private final TimeSeriesCollection timeSeriesHeartCollection = new TimeSeriesCollection();
     private boolean withHeartRate = false;
+    private boolean withLabel = true;
     private final Class<? extends RegularTimePeriod> clazz;
     private final ChartSerieType type;
-
+    private XYItemLabelGenerator labelGenerator;
     private JFreeChart chart;
 
     public OTCBarChartViewer(final Composite parent, final ChartSerieType type) {
@@ -109,7 +111,37 @@ public class OTCBarChartViewer implements ISelectionProvider {
         final GridLayout layout = new GridLayout(2, false);
         composite.setLayout(layout);
 
-        final Button b = new Button(composite, SWT.CHECK);
+        final Composite buttonsContainer = new Composite(composite, SWT.NONE);
+        final GridLayout buttonsLayout = new GridLayout(1, false);
+        buttonsContainer.setLayout(buttonsLayout);
+
+        if (type.isLabelVisible()) {
+            final Button bItemLabelPrinter = new Button(buttonsContainer, SWT.CHECK);
+            bItemLabelPrinter.setText(Messages.OTCBarChartViewer_9);
+            bItemLabelPrinter.setSelection(true);
+            bItemLabelPrinter.addSelectionListener(new SelectionListener() {
+
+                @Override
+                public void widgetSelected(final SelectionEvent e) {
+                    withLabel = !withLabel;
+                    final XYPlot plot = chart.getXYPlot();
+                    final XYItemRenderer renderer = plot.getRenderer(0);
+                    if (withLabel) {
+                        renderer.setBaseItemLabelGenerator(labelGenerator);
+                    } else {
+                        labelGenerator = renderer.getBaseItemLabelGenerator();
+                        renderer.setBaseItemLabelGenerator(null);
+                    }
+                    chartComposite.forceRedraw();
+                }
+
+                @Override
+                public void widgetDefaultSelected(final SelectionEvent e) {
+                }
+            });
+        }
+
+        final Button b = new Button(buttonsContainer, SWT.CHECK);
         b.setText(Messages.OTCBarChartViewer_2);
 
         b.addSelectionListener(new SelectionListener() {

@@ -90,6 +90,7 @@ public class Messages extends NLS {
     public static String OTCBarChartViewer_6;
     public static String OTCBarChartViewer_7;
     public static String OTCBarChartViewer_8;
+    public static String OTCBarChartViewer_9;
     public static String OtcSplashHandler_0;
     public static String OtcSplashHandler_1;
     public static String OverviewViewer_0;
