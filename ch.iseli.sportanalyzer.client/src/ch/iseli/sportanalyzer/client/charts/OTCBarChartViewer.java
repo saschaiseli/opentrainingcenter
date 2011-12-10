@@ -58,7 +58,7 @@ import ch.iseli.sportanalyzer.client.model.SimpleTraining;
 
 public class OTCBarChartViewer implements ISelectionProvider {
 
-    private static final Logger log = Logger.getLogger(OTCBarChartViewer.class);
+    private static final Logger logger = Logger.getLogger(OTCBarChartViewer.class);
 
     private static final Color COLOR_DISTANCE = new Color(128, 175, 83);
     private static final Color COLOR_HEART = new Color(186, 6, 6);
@@ -96,7 +96,7 @@ public class OTCBarChartViewer implements ISelectionProvider {
             }
 
             private void update() {
-                log.info("neue Daten, Charts aktualisieren");
+                logger.info("neue Daten, Charts aktualisieren"); //$NON-NLS-1$
                 createOrUpdateDataSet(new TrainingOverviewDatenAufbereiten());
             }
         });
@@ -264,13 +264,13 @@ public class OTCBarChartViewer implements ISelectionProvider {
         renderer.setMargin(0.1);
 
         if (type.isLabelVisible()) {
-            final String formatString = "{2}km (" + type.getLabel() + "{1})";
+            final String formatString = "{2}km (" + type.getLabel() + "{1})"; //$NON-NLS-1$//$NON-NLS-2$
             final StandardXYToolTipGenerator generator = new StandardXYToolTipGenerator(formatString, new SimpleDateFormat(type.getFormatPattern()),
-                    new DecimalFormat("0.000"));
+                    new DecimalFormat("0.000")); //$NON-NLS-1$
             renderer.setBaseToolTipGenerator(generator);
 
             final XYItemLabelGenerator labelGenerator = new StandardXYItemLabelGenerator(formatString, new SimpleDateFormat(type.getFormatPattern()),
-                    new DecimalFormat("0.000"));
+                    new DecimalFormat("0.000")); //$NON-NLS-1$
             renderer.setBaseItemLabelGenerator(labelGenerator);
             renderer.setBaseItemLabelsVisible(true);
         }

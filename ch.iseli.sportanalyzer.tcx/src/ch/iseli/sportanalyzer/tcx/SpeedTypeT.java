@@ -34,11 +34,11 @@ import javax.xml.bind.annotation.XmlType;
 public enum SpeedTypeT {
 
     @XmlEnumValue("Pace")
-    PACE("Pace"), @XmlEnumValue("Speed")
-    SPEED("Speed");
+    PACE("Pace"), @XmlEnumValue("Speed")//$NON-NLS-1$
+    SPEED("Speed");//$NON-NLS-1$
     private final String value;
 
-    SpeedTypeT(String v) {
+    SpeedTypeT(final String v) {
         value = v;
     }
 
@@ -46,8 +46,8 @@ public enum SpeedTypeT {
         return value;
     }
 
-    public static SpeedTypeT fromValue(String v) {
-        for (SpeedTypeT c : SpeedTypeT.values()) {
+    public static SpeedTypeT fromValue(final String v) {
+        for (final SpeedTypeT c : SpeedTypeT.values()) {
             if (c.value.equals(v)) {
                 return c;
             }

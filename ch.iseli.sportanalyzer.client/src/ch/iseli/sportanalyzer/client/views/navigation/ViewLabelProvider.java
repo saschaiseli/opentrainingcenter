@@ -2,14 +2,13 @@ package ch.iseli.sportanalyzer.client.views.navigation;
 
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Composite;
 
 import ch.iseli.sportanalyzer.client.Activator;
 import ch.iseli.sportanalyzer.client.views.IImageKeys;
 
 public class ViewLabelProvider extends LabelProvider {
 
-    public ViewLabelProvider(final Composite parent) {
+    public ViewLabelProvider() {
     }
 
     @Override

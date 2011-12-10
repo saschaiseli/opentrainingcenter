@@ -49,11 +49,6 @@ public class TrainingCenterDataCache {
     public void setSelectedProfile(final IAthlete athlete) {
         this.selectedProfile = athlete;
         resetCache();
-        reloadCache(this.selectedProfile);
-    }
-
-    private void reloadCache(final IAthlete selectedProfile) {
-
     }
 
     private void resetCache() {

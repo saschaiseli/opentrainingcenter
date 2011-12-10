@@ -12,7 +12,7 @@ import org.junit.Test;
 
 public class Gmn2TcxTest {
 
-    private static final String GARMIN_FILE = "garmin/20110814T142321.gmn";
+    private static final String GARMIN_FILE = "garmin/20110814T142321.gmn";//$NON-NLS-1$
     private Gmn2Tcx importer;
     private File file;
     private String path;
@@ -21,7 +21,7 @@ public class Gmn2TcxTest {
     public void setUp() {
         file = new File(GARMIN_FILE);
         path = file.getAbsolutePath();
-        path = path.replace(GARMIN_FILE, "resources");
+        path = path.replace(GARMIN_FILE, "resources");//$NON-NLS-1$
         importer = new Gmn2Tcx(path);
     }
 
@@ -33,7 +33,7 @@ public class Gmn2TcxTest {
 
     @Test
     public void simpleConvert() throws IOException {
-        InputStream stream = importer.convert2Tcx(file);
+        final InputStream stream = importer.convert2Tcx(file);
         assertNotNull(stream);
     }
 }

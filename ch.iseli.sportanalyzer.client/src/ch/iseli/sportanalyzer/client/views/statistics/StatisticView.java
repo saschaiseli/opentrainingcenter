@@ -12,7 +12,7 @@ import ch.iseli.sportanalyzer.client.charts.OTCBarChartViewer;
 
 public class StatisticView extends ViewPart {
 
-    public static final String ID = "ch.iseli.sportanalyzer.client.views.statistics.StatisticView";
+    public static final String ID = "ch.iseli.sportanalyzer.client.views.statistics.StatisticView"; //$NON-NLS-1$
 
     @Override
     public void createPartControl(final Composite parent) {

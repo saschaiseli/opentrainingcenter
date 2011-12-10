@@ -16,7 +16,7 @@ import ch.iseli.sportanalyzer.db.DatabaseAccessFactory;
 
 public class DeleteImportedRecord extends Action implements ISelectionListener, IWorkbenchAction {
 
-    public static final String ID = "ch.iseli.sportanalyzer.client.action.DeleteImportedRecord";
+    public static final String ID = "ch.iseli.sportanalyzer.client.action.DeleteImportedRecord"; //$NON-NLS-1$
 
     private static final Logger log = Logger.getLogger(ImportGpsFilesAction.class.getName());
 
@@ -41,7 +41,7 @@ public class DeleteImportedRecord extends Action implements ISelectionListener, 
         final List<Integer> deletedIds = new ArrayList<Integer>();
         for (final Object obj : selection) {
             final TrainingCenterRecord t = (TrainingCenterRecord) obj;
-            log.debug("Lösche den Lauf mit der ID " + t.getId());
+            log.debug("Lösche den Lauf mit der ID " + t.getId()); //$NON-NLS-1$
             DatabaseAccessFactory.getDatabaseAccess().removeImportedRecord(t.getId());
             deletedIds.add(t.getId());
         }

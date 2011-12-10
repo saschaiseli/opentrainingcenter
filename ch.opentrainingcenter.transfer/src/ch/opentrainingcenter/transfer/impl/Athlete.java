@@ -145,7 +145,7 @@ public class Athlete implements java.io.Serializable, IAthlete {
 
     @Override
     public String toString() {
-        return "Athlete [id=" + id + ", name=" + name + ", importeds=" + importeds.size() + "]";
+        return "Athlete [id=" + id + ", name=" + name + ", importeds=" + importeds.size() + "]";//$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
     }
 
     @Override

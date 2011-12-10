@@ -25,7 +25,6 @@ import ch.iseli.sportanalyzer.client.Activator;
 import ch.iseli.sportanalyzer.client.PreferenceConstants;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDataCache;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterRecord;
-import ch.iseli.sportanalyzer.client.views.navigation.NavigationView;
 import ch.iseli.sportanalyzer.db.DatabaseAccessFactory;
 import ch.iseli.sportanalyzer.importer.FindGarminFiles;
 import ch.iseli.sportanalyzer.importer.IConvert2Tcx;
@@ -34,13 +33,11 @@ import ch.opentrainingcenter.transfer.IAthlete;
 
 public class OtcSplashHandler extends BasicSplashHandler {
 
-    public static final Logger log = Logger.getLogger(OtcSplashHandler.class);
+    public static final Logger logger = Logger.getLogger(OtcSplashHandler.class);
 
-    private static final String SPACER = "                                                                            ";
+    private static final String SPACER = "                                                                            "; //$NON-NLS-1$
 
-    private static final Logger logger = Logger.getLogger(NavigationView.class);
-
-    private static final String CH_ISELI_SPORTANALYZER_MYIMPORTER = "ch.iseli.sportanalyzer.myimporter";
+    private static final String CH_ISELI_SPORTANALYZER_MYIMPORTER = "ch.iseli.sportanalyzer.myimporter"; //$NON-NLS-1$
 
     private final Map<Integer, TrainingCenterRecord> allRuns = new HashMap<Integer, TrainingCenterRecord>();
     private final IConvert2Tcx tcx;
@@ -76,8 +73,8 @@ public class OtcSplashHandler extends BasicSplashHandler {
             // db erstellen
             final Throwable cause = e.getCause();
             final String message = cause.getMessage();
-            if (message.contains("Table \"ATHLETE\" not found;")) {
-                log.info("Datenbank existiert noch nicht. Es wird eine neue Datenbank erstellt");
+            if (message.contains("Table \"ATHLETE\" not found;")) { //$NON-NLS-1$
+                logger.info("Datenbank existiert noch nicht. Es wird eine neue Datenbank erstellt"); //$NON-NLS-1$
                 DatabaseAccessFactory.getDatabaseAccess().createDatabase();
             }
         }
@@ -90,7 +87,7 @@ public class OtcSplashHandler extends BasicSplashHandler {
     private IConvert2Tcx getConverterImplementation(final IConfigurationElement[] configurationElementsFor) {
         for (final IConfigurationElement element : configurationElementsFor) {
             try {
-                return (IConvert2Tcx) element.createExecutableExtension("class");
+                return (IConvert2Tcx) element.createExecutableExtension("class"); //$NON-NLS-1$
             } catch (final CoreException e) {
                 System.err.println(e.getMessage());
             }

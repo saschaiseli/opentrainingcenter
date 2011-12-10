@@ -7,14 +7,14 @@ import org.eclipse.core.runtime.Platform;
 
 public class DatabaseAccessFactory {
 
-    public static final Logger log = Logger.getLogger(DatabaseAccessFactory.class);
+    public static final Logger logger = Logger.getLogger(DatabaseAccessFactory.class);
 
     private static DatabaseAccessFactory INSTANCE = null;
     private final IDatabaseAccess dao;
 
     private DatabaseAccessFactory() {
         // test hier ob es datenbank gibt
-        final IConfigurationElement[] daos = Platform.getExtensionRegistry().getConfigurationElementsFor("ch.opentrainingdatabase.db");
+        final IConfigurationElement[] daos = Platform.getExtensionRegistry().getConfigurationElementsFor("ch.opentrainingdatabase.db"); //$NON-NLS-1$
         dao = (IDatabaseAccess) getDao(daos, IDatabaseAccess.EXTENSION_POINT_NAME);
     }
 
@@ -26,14 +26,14 @@ public class DatabaseAccessFactory {
     }
 
     private Object getDao(final IConfigurationElement[] confItems, final String extensionAttr) {
-        log.info("Anzahl Configuration Elements: " + confItems.length);
+        logger.info("Anzahl Configuration Elements: " + confItems.length); //$NON-NLS-1$
         for (final IConfigurationElement element : confItems) {
             try {
                 final Object createExecutableExtension = element.createExecutableExtension(extensionAttr);
-                log.info("Extension gefunden.");
+                logger.info("Extension gefunden."); //$NON-NLS-1$
                 return createExecutableExtension;
             } catch (final CoreException e) {
-                log.error("Extension nicht gefunden: " + e.getMessage());
+                logger.error("Extension nicht gefunden: " + e.getMessage()); //$NON-NLS-1$
             }
         }
         return null;

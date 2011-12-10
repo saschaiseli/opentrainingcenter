@@ -29,11 +29,11 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
         defaults.putInt(PreferenceConstants.INTDL, 80);
         defaults.putInt(PreferenceConstants.EXTINTERVALL, 89);
         defaults.putInt(PreferenceConstants.ANAEROBE, 90);
-        defaults.put(PreferenceConstants.ANAEROBE_COLOR, "219,76,82");
+        defaults.put(PreferenceConstants.ANAEROBE_COLOR, "219,76,82"); //$NON-NLS-1$
         defaults.putInt(PreferenceConstants.SCHWELLENZONE, 80);
-        defaults.put(PreferenceConstants.SCHWELLENZONE_COLOR, "96,134,216");
+        defaults.put(PreferenceConstants.SCHWELLENZONE_COLOR, "96,134,216"); //$NON-NLS-1$
         defaults.putInt(PreferenceConstants.AEROBE, 50);
-        defaults.put(PreferenceConstants.AEROBE_COLOR, "144,238,144");
+        defaults.put(PreferenceConstants.AEROBE_COLOR, "144,238,144"); //$NON-NLS-1$
     }
 
 }

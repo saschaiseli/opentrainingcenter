@@ -63,38 +63,12 @@
             id="ch.iseli.sportanalyzer.client.otccategory"
             name="OTC">
       </category>
-      <category
-            id="ch.iseli.sportanalyzer.client.athletecategory"
-            name="Athlete">
-      </category>
-      <view
-            category="ch.iseli.sportanalyzer.client.athletecategory"
-            class="ch.iseli.sportanalyzer.client.athlete.AthleteView"
-            icon="icons/package_games_sports.png"
-            id="ch.iseli.sportanalyzer.client.athlete.athleteview"
-            name="Athlete"
-            restorable="true">
-      </view>
       <view
             category="ch.iseli.sportanalyzer.client.athletecategory"
             class="ch.iseli.sportanalyzer.client.views.ahtlete.CreateAthleteView"
             icon="icons/create.gif"
             id="ch.iseli.sportanalyzer.client.athlete.createathlete"
             name="Create Athlete"
-            restorable="true">
-      </view>
-      <view
-            class="ch.iseli.sportanalyzer.client.athlete.SelectAthleteViewPart"
-            id="ch.iseli.sportanalyzer.client.athlete.selectAthlete"
-            name="Athlete selektieren"
-            restorable="true">
-      </view>
-      <view
-            category="ch.iseli.sportanalyzer.client.otccategory"
-            class="ch.iseli.sportanalyzer.client.athlete.AthleteOverview"
-            icon="icons/package_games_sports.png"
-            id="ch.iseli.sportanalyzer.client.athlete.athleteOverview"
-            name="Kurzübersicht Athlete"
             restorable="true">
       </view>
       <view

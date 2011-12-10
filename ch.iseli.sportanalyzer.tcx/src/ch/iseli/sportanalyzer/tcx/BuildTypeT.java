@@ -36,13 +36,13 @@ import javax.xml.bind.annotation.XmlType;
 public enum BuildTypeT {
 
     @XmlEnumValue("Internal")
-    INTERNAL("Internal"), @XmlEnumValue("Alpha")
-    ALPHA("Alpha"), @XmlEnumValue("Beta")
-    BETA("Beta"), @XmlEnumValue("Release")
-    RELEASE("Release");
+    INTERNAL("Internal"), @XmlEnumValue("Alpha")//$NON-NLS-1$
+    ALPHA("Alpha"), @XmlEnumValue("Beta")//$NON-NLS-1$
+    BETA("Beta"), @XmlEnumValue("Release")//$NON-NLS-1$
+    RELEASE("Release");//$NON-NLS-1$
     private final String value;
 
-    BuildTypeT(String v) {
+    BuildTypeT(final String v) {
         value = v;
     }
 
@@ -50,8 +50,8 @@ public enum BuildTypeT {
         return value;
     }
 
-    public static BuildTypeT fromValue(String v) {
-        for (BuildTypeT c : BuildTypeT.values()) {
+    public static BuildTypeT fromValue(final String v) {
+        for (final BuildTypeT c : BuildTypeT.values()) {
             if (c.value.equals(v)) {
                 return c;
             }

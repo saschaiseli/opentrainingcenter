@@ -13,20 +13,20 @@ import ch.opentrainingcenter.tcx.data.Cardio;
 
 public class CardioImpl implements Cardio {
 
-    private final static Logger   logger = Logger.getLogger(CardioImpl.class.getName());
+    private final static Logger logger = Logger.getLogger(CardioImpl.class.getName());
     private final List<ActivityT> activities;
 
-    public CardioImpl(TrainingCenterDatabaseT t) {
+    public CardioImpl(final TrainingCenterDatabaseT t) {
         activities = t.getActivities().getActivity();
     }
 
     @Override
     public int getAverageCardio() {
-        List<Short> beats = new ArrayList<Short>();
-        for (ActivityT activityT : activities) {
-            List<ActivityLapT> lap = activityT.getLap();
-            for (ActivityLapT activityLapT : lap) {
-                List<TrackT> track = activityLapT.getTrack();
+        final List<Short> beats = new ArrayList<Short>();
+        for (final ActivityT activityT : activities) {
+            final List<ActivityLapT> lap = activityT.getLap();
+            for (final ActivityLapT activityLapT : lap) {
+                final List<TrackT> track = activityLapT.getTrack();
                 if (track.size() == 0) {
                     return activityLapT.getAverageHeartRateBpm().getValue();
                 } else {
@@ -37,26 +37,26 @@ public class CardioImpl implements Cardio {
         return sum(beats) / beats.size();
     }
 
-    private void iterateOverAllTracks(List<Short> beats, List<TrackT> track) {
-        for (TrackT trackT : track) {
-            List<TrackpointT> trackpoint = trackT.getTrackpoint();
+    private void iterateOverAllTracks(final List<Short> beats, final List<TrackT> track) {
+        for (final TrackT trackT : track) {
+            final List<TrackpointT> trackpoint = trackT.getTrackpoint();
             iterateOverEachTrackPoint(beats, trackpoint);
         }
     }
 
-    private void iterateOverEachTrackPoint(List<Short> beats, List<TrackpointT> trackpoint) {
-        for (TrackpointT trackpointT : trackpoint) {
+    private void iterateOverEachTrackPoint(final List<Short> beats, final List<TrackpointT> trackpoint) {
+        for (final TrackpointT trackpointT : trackpoint) {
             if (trackpointT.getHeartRateBpm() != null) {
-                short value = trackpointT.getHeartRateBpm().getValue();
+                final short value = trackpointT.getHeartRateBpm().getValue();
                 beats.add(value);
-                logger.fine("Heartbeat found: " + value);
+                logger.fine("Heartbeat found: " + value);//$NON-NLS-1$
             }
         }
     }
 
-    private int sum(List<Short> beats) {
+    private int sum(final List<Short> beats) {
         int sum = 0;
-        for (Short beat : beats) {
+        for (final Short beat : beats) {
             sum += beat;
         }
         return sum;

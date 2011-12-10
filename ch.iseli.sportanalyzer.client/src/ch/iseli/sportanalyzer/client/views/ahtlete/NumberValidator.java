@@ -21,7 +21,7 @@ public class NumberValidator implements IValidator {
     public IStatus validate(final Object value) {
         if (value instanceof Integer) {
             final String s = String.valueOf(value);
-            if (s.matches("\\d*")) {
+            if (s.matches("\\d*")) { //$NON-NLS-1$
                 final int number = Integer.parseInt(s);
                 if (number < min) {
                     return ValidationStatus.error("Zahl zu klein. Muss mindestens " + min + " sein.");

@@ -35,12 +35,12 @@ import javax.xml.bind.annotation.XmlType;
 public enum SportT {
 
     @XmlEnumValue("Running")
-    RUNNING("Running"), @XmlEnumValue("Biking")
-    BIKING("Biking"), @XmlEnumValue("Other")
-    OTHER("Other");
+    RUNNING("Running"), @XmlEnumValue("Biking")//$NON-NLS-1$
+    BIKING("Biking"), @XmlEnumValue("Other")//$NON-NLS-1$
+    OTHER("Other");//$NON-NLS-1$
     private final String value;
 
-    SportT(String v) {
+    SportT(final String v) {
         value = v;
     }
 
@@ -48,8 +48,8 @@ public enum SportT {
         return value;
     }
 
-    public static SportT fromValue(String v) {
-        for (SportT c : SportT.values()) {
+    public static SportT fromValue(final String v) {
+        for (final SportT c : SportT.values()) {
             if (c.value.equals(v)) {
                 return c;
             }

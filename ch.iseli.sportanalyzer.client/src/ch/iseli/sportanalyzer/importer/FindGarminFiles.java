@@ -51,7 +51,7 @@ public class FindGarminFiles {
 
             @Override
             public boolean accept(final File dir, final String name) {
-                return name.contains(".gmn");
+                return name.contains(".gmn"); //$NON-NLS-1$
             }
         });
         if (listFiles != null && listFiles.length > 0) {
@@ -78,7 +78,7 @@ public class FindGarminFiles {
 
             @Override
             public boolean accept(final File dir, final String name) {
-                return name.contains(".gmn") && !blacklist.contains(name);
+                return name.contains(".gmn") && !blacklist.contains(name); //$NON-NLS-1$
             }
         });
         if (listFiles != null && listFiles.length > 0) {

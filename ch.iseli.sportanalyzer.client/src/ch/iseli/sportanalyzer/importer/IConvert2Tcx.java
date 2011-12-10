@@ -8,7 +8,7 @@ import ch.iseli.sportanalyzer.tcx.TrainingCenterDatabaseT;
 
 public interface IConvert2Tcx {
 
-    public static final String CORE_PLUGIN_ID = "ch.iseli.sportanalyzer.client";
+    public static final String CORE_PLUGIN_ID = "ch.iseli.sportanalyzer.client"; //$NON-NLS-1$
 
     /**
      * Konvertiert ein *.gmn File in eine Garmin spezifisches XML.

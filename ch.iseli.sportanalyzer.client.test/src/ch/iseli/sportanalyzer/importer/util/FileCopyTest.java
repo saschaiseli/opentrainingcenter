@@ -15,7 +15,7 @@ import org.junit.Test;
 import ch.iseli.sportanalyzer.client.helper.FileCopy;
 
 public class FileCopyTest {
-    private static final String HELLO_FROM_JUNIT = "Hello from junit";
+    private static final String HELLO_FROM_JUNIT = "Hello from junit";//$NON-NLS-1$
     private File source;
     private File destination;
 
@@ -35,11 +35,11 @@ public class FileCopyTest {
     @Test
     public void simpleCopy() throws IOException {
         // prepare
-        source = File.createTempFile("testa", "testa");
-        FileWriter writer = new FileWriter(source);
+        source = File.createTempFile("testa", "testa");//$NON-NLS-1$//$NON-NLS-2$
+        final FileWriter writer = new FileWriter(source);
         writer.write(HELLO_FROM_JUNIT);
         writer.close();
-        destination = File.createTempFile("testb", "testb");
+        destination = File.createTempFile("testb", "testb");//$NON-NLS-1$//$NON-NLS-2$
 
         // action
         FileCopy.copyFile(source, destination);
@@ -50,8 +50,8 @@ public class FileCopyTest {
     @Test
     public void doNotOverwriterFile() throws IOException {
         // prepare
-        source = File.createTempFile("testa", "testa");
-        FileWriter writer = new FileWriter(source);
+        source = File.createTempFile("testa", "testa");//$NON-NLS-1$//$NON-NLS-2$
+        final FileWriter writer = new FileWriter(source);
         writer.write(HELLO_FROM_JUNIT);
         writer.close();
 
@@ -60,14 +60,14 @@ public class FileCopyTest {
         assertFileCopy(source);
     }
 
-    private void assertFileCopy(File file) throws FileNotFoundException, IOException {
-        FileReader reader = new FileReader(file);
+    private void assertFileCopy(final File file) throws FileNotFoundException, IOException {
+        final FileReader reader = new FileReader(file);
         int c;
-        StringBuffer str = new StringBuffer();
+        final StringBuffer str = new StringBuffer();
         while ((c = reader.read()) != -1) {
             str.append((char) c);
         }
         reader.close();
-        assertEquals("Text '" + HELLO_FROM_JUNIT + "' sollte kopiert worden sein", HELLO_FROM_JUNIT, str.toString());
+        assertEquals("Text '" + HELLO_FROM_JUNIT + "' sollte kopiert worden sein", HELLO_FROM_JUNIT, str.toString());//$NON-NLS-1$//$NON-NLS-2$
     }
 }

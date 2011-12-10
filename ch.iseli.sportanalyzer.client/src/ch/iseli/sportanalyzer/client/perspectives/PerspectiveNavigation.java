@@ -9,11 +9,11 @@ import ch.iseli.sportanalyzer.client.views.overview.SingleActivityViewPart;
 
 public class PerspectiveNavigation implements IPerspectiveFactory {
 
-    public static final String RIGHT_PART = "rightPart";
+    public static final String RIGHT_PART = "rightPart"; //$NON-NLS-1$
 
-    public static final String ID = "ch.iseli.sportanalyzer.client.perspective";
+    public static final String ID = "ch.iseli.sportanalyzer.client.perspective"; //$NON-NLS-1$
 
-    private static final String MULTI_VIEW = ":*";
+    private static final String MULTI_VIEW = ":*"; //$NON-NLS-1$
 
     @Override
     public void createInitialLayout(final IPageLayout layout) {

@@ -45,7 +45,7 @@ public class TrainingOverviewDatenAufbereiten {
     }
 
     private void loadDataFromCache() {
-        logger.debug("update daten vom cache");
+        logger.debug("update daten vom cache"); //$NON-NLS-1$
         all.clear();
         all.addAll(cache.getAllSimpleTrainings());
         trainingsPerWeek.clear();
@@ -63,7 +63,7 @@ public class TrainingOverviewDatenAufbereiten {
             final int year = cal.get(outer);
             // da monat mit 0 beginnt muss noch eins addiert werden.
             final int week = inner == Calendar.MONTH ? cal.get(inner) + 1 : cal.get(inner);
-            logger.debug("Lauf aus der inner " + week + " vom Jahr: " + year);
+            logger.debug("Lauf aus der inner " + week + " vom Jahr: " + year); //$NON-NLS-1$//$NON-NLS-2$
             Map<Integer, List<SimpleTraining>> yearMap = trainingsPer.get(year);
             if (yearMap == null) {
                 yearMap = new TreeMap<Integer, List<SimpleTraining>>();

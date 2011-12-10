@@ -45,7 +45,7 @@ public class TrainingOverview implements ITrainingOverview {
     TrainingOverview(final TrainingCenterRecord t) {
         this.t = t;
         if (t == null) {
-            throw new IllegalArgumentException("Trainingdatabase darf nicht null sein!");
+            throw new IllegalArgumentException("Trainingdatabase darf nicht null sein!"); //$NON-NLS-1$
         }
         // werte auslesen
         init();
@@ -80,7 +80,7 @@ public class TrainingOverview implements ITrainingOverview {
                     maxHeartBeat = lap.getMaximumHeartRateBpm().getValue();
                 }
             }
-            logger.debug("lap: " + lap.getIntensity() + " distance: " + distance);
+            logger.debug("lap: " + lap.getIntensity() + " distance: " + distance); //$NON-NLS-1$//$NON-NLS-2$
         }
         // in kilometer
         roundDistanceFromMeterToKm = DistanceHelper.roundDistanceFromMeterToKm(distance);
@@ -88,7 +88,7 @@ public class TrainingOverview implements ITrainingOverview {
         if (lapWithCardio > 0) {
             avgHeartRate = String.valueOf(averageHeartRateBpm / lapWithCardio);
         } else {
-            avgHeartRate = "-";
+            avgHeartRate = "-"; //$NON-NLS-1$
         }
         // dauer
         dauer = TimeHelper.convertSecondsToHumanReadableZeit(timeInSeconds);
@@ -169,6 +169,6 @@ public class TrainingOverview implements ITrainingOverview {
     }
 
     private boolean validAverageHeartRate() {
-        return avgHeartRate != null && !avgHeartRate.contains("-");
+        return avgHeartRate != null && !avgHeartRate.contains("-"); //$NON-NLS-1$
     }
 }

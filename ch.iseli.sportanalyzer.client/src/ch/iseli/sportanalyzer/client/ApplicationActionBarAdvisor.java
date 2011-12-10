@@ -64,7 +64,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
         menuBar.add(windowsMenu);
         menuBar.add(helpMenu);
 
-        final MenuManager layoutMenu = new MenuManager(Messages.ApplicationActionBarAdvisor_SwitchPerspective, "layout"); //$NON-NLS-2$
+        final MenuManager layoutMenu = new MenuManager(Messages.ApplicationActionBarAdvisor_SwitchPerspective, "layout"); //$NON-NLS-1$
         layoutMenu.add(perspectiveShortList);
 
         // File

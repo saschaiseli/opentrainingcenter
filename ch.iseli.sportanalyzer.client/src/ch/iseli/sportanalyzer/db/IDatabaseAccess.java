@@ -9,7 +9,7 @@ import ch.opentrainingcenter.transfer.IAthlete;
 
 public interface IDatabaseAccess extends IExecutableExtensionFactory {
 
-    public static final String EXTENSION_POINT_NAME = "classImportedDao";
+    public static final String EXTENSION_POINT_NAME = "classImportedDao"; //$NON-NLS-1$
 
     /**
      * Gibt eine Liste von Filenamen zurück die diesem Athleten gehören. Das Resultat ist nicht ein absoluter File Pfad sondern einfach der Filename.

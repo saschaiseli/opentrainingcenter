@@ -25,7 +25,7 @@ import ch.iseli.sportanalyzer.client.model.TrainingOverviewFactory;
 
 public class OverviewViewer extends ViewPart {
 
-    public static final String ID = "ch.iseli.sportanalyzer.client.table.overview";
+    public static final String ID = "ch.iseli.sportanalyzer.client.table.overview"; //$NON-NLS-1$
     private TableViewer viewer;
 
     public OverviewViewer() {
@@ -92,7 +92,7 @@ public class OverviewViewer extends ViewPart {
         final int[] bounds = { 220, 100, 150, 120, 180 };
 
         // Datum
-        TableViewerColumn col = createTableViewerColumn(titles[0], bounds[0], 0);
+        TableViewerColumn col = createTableViewerColumn(titles[0], bounds[0]);
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(final Object element) {
@@ -102,7 +102,7 @@ public class OverviewViewer extends ViewPart {
         });
 
         // Zeit
-        col = createTableViewerColumn(titles[1], bounds[1], 1);
+        col = createTableViewerColumn(titles[1], bounds[1]);
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(final Object element) {
@@ -112,7 +112,7 @@ public class OverviewViewer extends ViewPart {
         });
 
         // distanz
-        col = createTableViewerColumn(titles[2], bounds[2], 2);
+        col = createTableViewerColumn(titles[2], bounds[2]);
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(final Object element) {
@@ -122,7 +122,7 @@ public class OverviewViewer extends ViewPart {
         });
 
         // pace
-        col = createTableViewerColumn(titles[3], bounds[3], 3);
+        col = createTableViewerColumn(titles[3], bounds[3]);
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(final Object element) {
@@ -132,7 +132,7 @@ public class OverviewViewer extends ViewPart {
         });
 
         // Herzfrequenz
-        col = createTableViewerColumn(titles[4], bounds[4], 4);
+        col = createTableViewerColumn(titles[4], bounds[4]);
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(final Object element) {
@@ -143,7 +143,7 @@ public class OverviewViewer extends ViewPart {
 
     }
 
-    private TableViewerColumn createTableViewerColumn(final String title, final int bound, final int colNumber) {
+    private TableViewerColumn createTableViewerColumn(final String title, final int bound) {
         final TableViewerColumn viewerColumn = new TableViewerColumn(viewer, SWT.NONE);
         final TableColumn column = viewerColumn.getColumn();
         column.setText(title);

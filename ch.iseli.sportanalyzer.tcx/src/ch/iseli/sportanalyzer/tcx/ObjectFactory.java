@@ -23,7 +23,7 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
-    private final static QName _TrainingCenterDatabase_QNAME = new QName("http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2", "TrainingCenterDatabase");
+    private final static QName _TrainingCenterDatabase_QNAME = new QName("http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2", "TrainingCenterDatabase");//$NON-NLS-1$//$NON-NLS-2$
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: ch.iseli.sport4ever.tcx
@@ -461,7 +461,7 @@ public class ObjectFactory {
      * 
      */
     @XmlElementDecl(namespace = "http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2", name = "TrainingCenterDatabase")
-    public JAXBElement<TrainingCenterDatabaseT> createTrainingCenterDatabase(TrainingCenterDatabaseT value) {
+    public JAXBElement<TrainingCenterDatabaseT> createTrainingCenterDatabase(final TrainingCenterDatabaseT value) {
         return new JAXBElement<TrainingCenterDatabaseT>(_TrainingCenterDatabase_QNAME, TrainingCenterDatabaseT.class, null, value);
     }
 

@@ -45,7 +45,7 @@ import ch.opentrainingcenter.transfer.IAthlete;
 
 public class ImportGpsFilesAction extends Action implements ISelectionListener, IWorkbenchAction {
 
-    public static final String ID = "ch.iseli.sportanalyzer.client.importFiles";
+    public static final String ID = "ch.iseli.sportanalyzer.client.importFiles"; //$NON-NLS-1$
 
     private static final Logger logger = Logger.getLogger(ImportGpsFilesAction.class.getName());
 
@@ -54,14 +54,14 @@ public class ImportGpsFilesAction extends Action implements ISelectionListener, 
     private final IAthlete athlete;
 
     public ImportGpsFilesAction(final IWorkbenchWindow window, final String tooltip) {
-        logger.debug("Import files....");
+        logger.debug("Import files...."); //$NON-NLS-1$
         final String athleteId = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.ATHLETE_ID);
         if (validId(athleteId)) {
             final int id = Integer.parseInt(athleteId);
             athlete = DatabaseAccessFactory.getDatabaseAccess().getAthlete(id);
         } else {
             athlete = null;
-            logger.error("Athlete ist nicht gesetzt....");
+            logger.error("Athlete ist nicht gesetzt...."); //$NON-NLS-1$
         }
         this.window = window;
         setId(ID);
@@ -125,7 +125,7 @@ public class ImportGpsFilesAction extends Action implements ISelectionListener, 
         }
 
         final IConfigurationElement[] configurationElementsFor = Platform.getExtensionRegistry().getConfigurationElementsFor(
-                "ch.iseli.sportanalyzer.myimporter");
+                "ch.iseli.sportanalyzer.myimporter"); //$NON-NLS-1$
         final IConvert2Tcx tcx = getConverterImplementation(configurationElementsFor);
         final Map<Integer, TrainingCenterRecord> allRecords = new HashMap<Integer, TrainingCenterRecord>();
 
@@ -167,7 +167,7 @@ public class ImportGpsFilesAction extends Action implements ISelectionListener, 
     private IConvert2Tcx getConverterImplementation(final IConfigurationElement[] configurationElementsFor) {
         for (final IConfigurationElement element : configurationElementsFor) {
             try {
-                return (IConvert2Tcx) element.createExecutableExtension("class");
+                return (IConvert2Tcx) element.createExecutableExtension("class"); //$NON-NLS-1$
             } catch (final CoreException e) {
                 logger.error(e.getMessage());
             }

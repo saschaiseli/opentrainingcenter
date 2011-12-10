@@ -48,7 +48,7 @@ import ch.iseli.sportanalyzer.tcx.TrackpointT;
 
 public class SingleActivityViewPart extends ViewPart {
 
-    public static final String ID = "ch.iseli.sportanalyzer.client.views.singlerun";
+    public static final String ID = "ch.iseli.sportanalyzer.client.views.singlerun"; //$NON-NLS-1$
     private static final Logger logger = Logger.getLogger(SingleActivityViewPart.class);
     private final TrainingCenterDataCache cache = TrainingCenterDataCache.getInstance();
     private final String datumZeit;
@@ -65,7 +65,7 @@ public class SingleActivityViewPart extends ViewPart {
 
     @Override
     public void createPartControl(final Composite parent) {
-        logger.debug("create single activity view");
+        logger.debug("create single activity view"); //$NON-NLS-1$
         toolkit = new FormToolkit(parent.getDisplay());
         form = toolkit.createScrolledForm(parent);
         // form.setSize(1000, 2000);
@@ -145,7 +145,7 @@ public class SingleActivityViewPart extends ViewPart {
 
         client.setLayout(layout);
 
-        final Label dauerLabel = toolkit.createLabel(client, "blabla 2");
+        final Label dauerLabel = toolkit.createLabel(client, ""); //$NON-NLS-1$
         td = new TableWrapData();
         dauerLabel.setLayoutData(td);
 
@@ -183,7 +183,7 @@ public class SingleActivityViewPart extends ViewPart {
 
         client.setLayout(layout);
 
-        final Label dauerLabel = toolkit.createLabel(client, "");
+        final Label dauerLabel = toolkit.createLabel(client, ""); //$NON-NLS-1$
         td = new TableWrapData();
         dauerLabel.setLayoutData(td);
 
@@ -277,7 +277,7 @@ public class SingleActivityViewPart extends ViewPart {
 
     private void addLabelAndValue(final Composite parent, final String label, final String value, final Units unit) {
         // Label
-        final Label dauerLabel = toolkit.createLabel(parent, label + ": ");
+        final Label dauerLabel = toolkit.createLabel(parent, label + ": "); //$NON-NLS-1$
         GridData gd = new GridData();
         gd.verticalIndent = 4;
         dauerLabel.setLayoutData(gd);

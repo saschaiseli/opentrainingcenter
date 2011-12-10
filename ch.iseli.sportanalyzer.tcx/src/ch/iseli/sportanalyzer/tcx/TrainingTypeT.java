@@ -34,11 +34,11 @@ import javax.xml.bind.annotation.XmlType;
 public enum TrainingTypeT {
 
     @XmlEnumValue("Workout")
-    WORKOUT("Workout"), @XmlEnumValue("Course")
-    COURSE("Course");
+    WORKOUT("Workout"), @XmlEnumValue("Course")//$NON-NLS-1$
+    COURSE("Course");//$NON-NLS-1$
     private final String value;
 
-    TrainingTypeT(String v) {
+    TrainingTypeT(final String v) {
         value = v;
     }
 
@@ -46,8 +46,8 @@ public enum TrainingTypeT {
         return value;
     }
 
-    public static TrainingTypeT fromValue(String v) {
-        for (TrainingTypeT c : TrainingTypeT.values()) {
+    public static TrainingTypeT fromValue(final String v) {
+        for (final TrainingTypeT c : TrainingTypeT.values()) {
             if (c.value.equals(v)) {
                 return c;
             }

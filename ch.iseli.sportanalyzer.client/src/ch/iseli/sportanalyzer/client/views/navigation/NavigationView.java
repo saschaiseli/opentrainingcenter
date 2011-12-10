@@ -39,7 +39,7 @@ import ch.opentrainingcenter.transfer.IAthlete;
 
 public class NavigationView extends ViewPart {
 
-    public static final String ID = "ch.iseli.sportanalyzer.client.navigationView";
+    public static final String ID = "ch.iseli.sportanalyzer.client.navigationView"; //$NON-NLS-1$
 
     private TreeViewer viewer;
 
@@ -57,9 +57,9 @@ public class NavigationView extends ViewPart {
 
         viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
         viewer.setContentProvider(new ViewContentProvider());
-        viewer.setLabelProvider(new ViewLabelProvider(parent));
+        viewer.setLabelProvider(new ViewLabelProvider());
 
-        final MenuManager menuMgr = new MenuManager("#PopupMenu");
+        final MenuManager menuMgr = new MenuManager("#PopupMenu"); //$NON-NLS-1$
         menuMgr.setRemoveAllWhenShown(true);
         menuMgr.addMenuListener(new IMenuListener() {
             @Override
@@ -107,7 +107,7 @@ public class NavigationView extends ViewPart {
                     cache.setSelection(selection.toArray());
                     writeToStatusLine(trainingCenterDatabase);
                 } else {
-                    writeToStatusLine("");
+                    writeToStatusLine(""); //$NON-NLS-1$
                     cache.setSelectedRun(null);
                 }
             }
@@ -119,7 +119,7 @@ public class NavigationView extends ViewPart {
             private void writeToStatusLine(final TrainingCenterRecord selectedRun) {
                 writeToStatusLine("Lauf vom "
                         + TimeHelper.convertGregorianDateToString(selectedRun.getTrainingCenterDatabase().getActivities().getActivity().get(0).getId(), false)
-                        + " " + getOverview(selectedRun));
+                        + " " + getOverview(selectedRun)); //$NON-NLS-1$
             }
         });
 

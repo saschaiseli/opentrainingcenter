@@ -34,11 +34,11 @@ import javax.xml.bind.annotation.XmlType;
 public enum GenderT {
 
     @XmlEnumValue("Male")
-    MALE("Male"), @XmlEnumValue("Female")
-    FEMALE("Female");
+    MALE("Male"), @XmlEnumValue("Female")//$NON-NLS-1$
+    FEMALE("Female");//$NON-NLS-1$
     private final String value;
 
-    GenderT(String v) {
+    GenderT(final String v) {
         value = v;
     }
 
@@ -46,8 +46,8 @@ public enum GenderT {
         return value;
     }
 
-    public static GenderT fromValue(String v) {
-        for (GenderT c : GenderT.values()) {
+    public static GenderT fromValue(final String v) {
+        for (final GenderT c : GenderT.values()) {
             if (c.value.equals(v)) {
                 return c;
             }

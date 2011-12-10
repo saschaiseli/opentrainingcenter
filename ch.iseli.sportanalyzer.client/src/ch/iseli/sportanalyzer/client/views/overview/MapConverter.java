@@ -34,8 +34,8 @@ public final class MapConverter {
                     for (final TrackpointT point : trackpoint) {
                         final PositionT position = point.getPosition();
                         if (position != null) {
-                            str.append('[').append(position.getLatitudeDegrees()).append(',').append(position.getLongitudeDegrees()).append("],");
-                            logger.debug("Position: " + position.getLatitudeDegrees() + " / " + position.getLongitudeDegrees());
+                            str.append('[').append(position.getLatitudeDegrees()).append(',').append(position.getLongitudeDegrees()).append("],"); //$NON-NLS-1$
+                            logger.debug("Position: " + position.getLatitudeDegrees() + " / " + position.getLongitudeDegrees()); //$NON-NLS-2$
                             pointAdded = true;
                         }
                     }
@@ -44,9 +44,9 @@ public final class MapConverter {
         }
         if (pointAdded) {
             str.append(']');
-            str.replace(str.length() - 2, str.length() - 1, "");
+            str.replace(str.length() - 2, str.length() - 1, ""); //$NON-NLS-1$
         } else {
-            return "[[46.954, 7.448]]";
+            return "[[46.954, 7.448]]"; //$NON-NLS-1$
         }
         return str.toString();
     }

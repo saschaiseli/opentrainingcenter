@@ -9,9 +9,9 @@ public class DistanceHelper {
      * @param distanceInMeter
      * @return distanz in kilometer, gerundet auf einen meter
      */
-    public static String roundDistanceFromMeterToKm(double distanceInMeter) {
-        double distanceInKilometer = distanceInMeter / 1000;
-        DecimalFormat format = new DecimalFormat("0.000");
+    public static String roundDistanceFromMeterToKm(final double distanceInMeter) {
+        final double distanceInKilometer = distanceInMeter / 1000;
+        final DecimalFormat format = new DecimalFormat("0.000"); //$NON-NLS-1$
         return format.format(distanceInKilometer);
     }
 
@@ -21,8 +21,8 @@ public class DistanceHelper {
      * @param distanceInMeter
      * @return distanz in kilometer, gerundet auf einen meter und mit einheit
      */
-    public static String roundDistanceFromMeterToKmMitEinheit(double distanceInMeter) {
-        return roundDistanceFromMeterToKm(distanceInMeter) + "km";
+    public static String roundDistanceFromMeterToKmMitEinheit(final double distanceInMeter) {
+        return roundDistanceFromMeterToKm(distanceInMeter) + "km"; //$NON-NLS-1$
     }
 
     /**
@@ -37,20 +37,20 @@ public class DistanceHelper {
      * @param timeInSeconds
      * @return min/km im format MM:SS
      */
-    public static String calculatePace(double distanceInMeter, double timeInSeconds) {
-        double km = distanceInMeter / 1000;
-        double min = timeInSeconds / 60;
-        double d = min / km;
-        double floor = Math.floor(d);
-        double sek = d - floor;
-        double sekunden = 60 / (1 / sek);
+    public static String calculatePace(final double distanceInMeter, final double timeInSeconds) {
+        final double km = distanceInMeter / 1000;
+        final double min = timeInSeconds / 60;
+        final double d = min / km;
+        final double floor = Math.floor(d);
+        final double sek = d - floor;
+        final double sekunden = 60 / (1 / sek);
         String s;
         if ((int) sekunden < 10) {
-            s = "0" + (int) sekunden;
+            s = "0" + (int) sekunden; //$NON-NLS-1$
         } else {
             s = String.valueOf((int) sekunden);
         }
-        return String.valueOf((int) floor) + ":" + s;
+        return String.valueOf((int) floor) + ":" + s; //$NON-NLS-1$
     }
 
     /**
@@ -59,8 +59,8 @@ public class DistanceHelper {
      * @param maximumSpeed
      * @return
      */
-    public static String calculatePace(double speedMperSecond) {
-        double secPerKm = 1000 / speedMperSecond;
+    public static String calculatePace(final double speedMperSecond) {
+        final double secPerKm = 1000 / speedMperSecond;
         return calculatePace(1000, secPerKm);
     }
 }

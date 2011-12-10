@@ -34,11 +34,11 @@ import javax.xml.bind.annotation.XmlType;
 public enum SensorStateT {
 
     @XmlEnumValue("Present")
-    PRESENT("Present"), @XmlEnumValue("Absent")
-    ABSENT("Absent");
+    PRESENT("Present"), @XmlEnumValue("Absent")//$NON-NLS-1$
+    ABSENT("Absent");//$NON-NLS-1$
     private final String value;
 
-    SensorStateT(String v) {
+    SensorStateT(final String v) {
         value = v;
     }
 
@@ -46,8 +46,8 @@ public enum SensorStateT {
         return value;
     }
 
-    public static SensorStateT fromValue(String v) {
-        for (SensorStateT c : SensorStateT.values()) {
+    public static SensorStateT fromValue(final String v) {
+        for (final SensorStateT c : SensorStateT.values()) {
             if (c.value.equals(v)) {
                 return c;
             }

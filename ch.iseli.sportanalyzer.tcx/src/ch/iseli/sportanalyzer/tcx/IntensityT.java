@@ -34,11 +34,11 @@ import javax.xml.bind.annotation.XmlType;
 public enum IntensityT {
 
     @XmlEnumValue("Active")
-    ACTIVE("Active"), @XmlEnumValue("Resting")
-    RESTING("Resting");
+    ACTIVE("Active"), @XmlEnumValue("Resting")//$NON-NLS-1$
+    RESTING("Resting");//$NON-NLS-1$
     private final String value;
 
-    IntensityT(String v) {
+    IntensityT(final String v) {
         value = v;
     }
 
@@ -46,8 +46,8 @@ public enum IntensityT {
         return value;
     }
 
-    public static IntensityT fromValue(String v) {
-        for (IntensityT c : IntensityT.values()) {
+    public static IntensityT fromValue(final String v) {
+        for (final IntensityT c : IntensityT.values()) {
             if (c.value.equals(v)) {
                 return c;
             }

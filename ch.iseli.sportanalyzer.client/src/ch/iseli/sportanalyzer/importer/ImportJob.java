@@ -24,7 +24,7 @@ public class ImportJob extends Job {
 
     private static final Logger logger = Logger.getLogger(NavigationView.class);
 
-    private static final String CH_ISELI_SPORTANALYZER_MYIMPORTER = "ch.iseli.sportanalyzer.myimporter";
+    private static final String CH_ISELI_SPORTANALYZER_MYIMPORTER = "ch.iseli.sportanalyzer.myimporter"; //$NON-NLS-1$
 
     final Map<Integer, TrainingCenterRecord> allRuns = new HashMap<Integer, TrainingCenterRecord>();
     private final IConvert2Tcx tcx;
@@ -61,7 +61,7 @@ public class ImportJob extends Job {
     private IConvert2Tcx getConverterImplementation(final IConfigurationElement[] configurationElementsFor) {
         for (final IConfigurationElement element : configurationElementsFor) {
             try {
-                return (IConvert2Tcx) element.createExecutableExtension("class");
+                return (IConvert2Tcx) element.createExecutableExtension("class"); //$NON-NLS-1$
             } catch (final CoreException e) {
                 System.err.println(e.getMessage());
             }

@@ -37,14 +37,14 @@ import javax.xml.bind.annotation.XmlType;
 public enum TriggerMethodT {
 
     @XmlEnumValue("Manual")
-    MANUAL("Manual"), @XmlEnumValue("Distance")
-    DISTANCE("Distance"), @XmlEnumValue("Location")
-    LOCATION("Location"), @XmlEnumValue("Time")
-    TIME("Time"), @XmlEnumValue("HeartRate")
-    HEART_RATE("HeartRate");
+    MANUAL("Manual"), @XmlEnumValue("Distance")//$NON-NLS-1$
+    DISTANCE("Distance"), @XmlEnumValue("Location")//$NON-NLS-1$
+    LOCATION("Location"), @XmlEnumValue("Time")//$NON-NLS-1$
+    TIME("Time"), @XmlEnumValue("HeartRate")//$NON-NLS-1$
+    HEART_RATE("HeartRate");//$NON-NLS-1$
     private final String value;
 
-    TriggerMethodT(String v) {
+    TriggerMethodT(final String v) {
         value = v;
     }
 
@@ -52,8 +52,8 @@ public enum TriggerMethodT {
         return value;
     }
 
-    public static TriggerMethodT fromValue(String v) {
-        for (TriggerMethodT c : TriggerMethodT.values()) {
+    public static TriggerMethodT fromValue(final String v) {
+        for (final TriggerMethodT c : TriggerMethodT.values()) {
             if (c.value.equals(v)) {
                 return c;
             }

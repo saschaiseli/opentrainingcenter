@@ -7,7 +7,7 @@ import ch.iseli.sportanalyzer.client.views.table.OverviewViewer;
 
 public class OverviewPerspectiveFactory implements IPerspectiveFactory {
 
-    public static final String ID = "ch.iseli.sportanalyzer.client.OverviewPerspective";
+    public static final String ID = "ch.iseli.sportanalyzer.client.OverviewPerspective"; //$NON-NLS-1$
 
     @Override
     public void createInitialLayout(final IPageLayout layout) {

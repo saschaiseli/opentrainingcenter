@@ -17,13 +17,13 @@ public class TimeHelper {
      * @return Zeit im Format HH:MM:ss
      */
     public static final String convertSecondsToHumanReadableZeit(final double sec) {
-        Calendar cal = Calendar.getInstance();
+        final Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis((long) sec * 1000);
-        StringBuffer calStr = new StringBuffer();
-        int hour = cal.get(Calendar.HOUR) - 1;
-        int m = cal.get(Calendar.MINUTE);
-        int s = cal.get(Calendar.SECOND);
-        calStr.append(hour).append(":").append(addZero(m)).append(":").append(addZero(s));
+        final StringBuffer calStr = new StringBuffer();
+        final int hour = cal.get(Calendar.HOUR) - 1;
+        final int m = cal.get(Calendar.MINUTE);
+        final int s = cal.get(Calendar.SECOND);
+        calStr.append(hour).append(":").append(addZero(m)).append(":").append(addZero(s)); //$NON-NLS-1$ //$NON-NLS-2$
         return calStr.toString();
     }
 
@@ -45,12 +45,12 @@ public class TimeHelper {
      *            flag ob der wochenag auch mitgegeben werden soll.
      * @return das datum '2010.11.23 14:23' und wenn das flag with Day ist wird noch der ausgeschreibene wochentag vorangestellt.
      */
-    public static final String convertGregorianDateToString(final XMLGregorianCalendar datum, boolean withDay) {
-        Date time = datum.toGregorianCalendar().getTime();
-        Calendar calendar = Calendar.getInstance();
+    public static final String convertGregorianDateToString(final XMLGregorianCalendar datum, final boolean withDay) {
+        final Date time = datum.toGregorianCalendar().getTime();
+        final Calendar calendar = Calendar.getInstance();
         calendar.setTime(time);
         calendar.get(Calendar.DAY_OF_WEEK);
-        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+        final SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
         if (withDay) {
             return calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()) + " " + format.format(time);
         } else {
@@ -58,7 +58,7 @@ public class TimeHelper {
         }
     }
 
-    private static String addZero(int i) {
+    private static String addZero(final int i) {
         return i < 10 ? "0" + i : "" + i;
     }
 }

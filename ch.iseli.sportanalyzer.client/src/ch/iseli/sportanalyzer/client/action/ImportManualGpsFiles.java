@@ -37,7 +37,7 @@ import ch.opentrainingcenter.transfer.IAthlete;
 
 public class ImportManualGpsFiles extends Action implements ISelectionListener, IWorkbenchAction {
 
-    public static final String ID = "ch.iseli.sportanalyzer.client.importManualFiles";
+    public static final String ID = "ch.iseli.sportanalyzer.client.importManualFiles"; //$NON-NLS-1$
 
     private static final Logger logger = Logger.getLogger(ImportManualGpsFiles.class.getName());
 
@@ -59,7 +59,7 @@ public class ImportManualGpsFiles extends Action implements ISelectionListener, 
             athlete = DatabaseAccessFactory.getDatabaseAccess().getAthlete(id);
         } else {
             athlete = null;
-            logger.error("Athlete ist nicht gesetzt....");
+            logger.error("Athlete ist nicht gesetzt...."); //$NON-NLS-1$
         }
         defaultLocation = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.GPS_FILE_LOCATION);
         locationForBackupFiles = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.GPS_FILE_LOCATION_PROG);
@@ -84,19 +84,19 @@ public class ImportManualGpsFiles extends Action implements ISelectionListener, 
     @Override
     public void run() {
         final IConfigurationElement[] configurationElementsFor = Platform.getExtensionRegistry().getConfigurationElementsFor(
-                "ch.iseli.sportanalyzer.myimporter");
+                "ch.iseli.sportanalyzer.myimporter"); //$NON-NLS-1$
         final IConvert2Tcx tcx = getConverterImplementation(configurationElementsFor);
         final FileDialog fileDialog = new FileDialog(window.getShell(), SWT.MULTI);
         fileDialog.setFilterPath(defaultLocation);
-        fileDialog.setFilterExtensions(new String[] { "*." + tcx.getFilePrefix() });
-        fileDialog.setFilterNames(new String[] { "Configuration files (*." + tcx.getFilePrefix() + ")" });
+        fileDialog.setFilterExtensions(new String[] { "*." + tcx.getFilePrefix() }); //$NON-NLS-1$
+        fileDialog.setFilterNames(new String[] { "Configuration files (*." + tcx.getFilePrefix() + ")" }); //$NON-NLS-1$
         fileDialog.setText("FileDialog");
         final String s = fileDialog.open();
         if (s != null) {
             final String[] fileNames = fileDialog.getFileNames();
             final String filterPath = fileDialog.getFilterPath();
             for (final String string : fileNames) {
-                logger.debug("File " + string + " selektiert");
+                logger.debug("File " + string + " selektiert"); //$NON-NLS-2$
             }
             final Map<Integer, TrainingCenterRecord> allRecords = new HashMap<Integer, TrainingCenterRecord>();
             final Job job = new Job("Lade GPS Daten") {
@@ -108,9 +108,9 @@ public class ImportManualGpsFiles extends Action implements ISelectionListener, 
                         for (final String fileName : fileNames) {
                             final File file = new File(filterPath, fileName);
                             monitor.setTaskName("importiere File: " + file.getName());
-                            logger.info("importiere File: " + file.getName());
+                            logger.info("importiere File: " + file.getName()); //$NON-NLS-1$
                             final TrainingCenterDatabaseT record = tcx.convert(file);
-                            logger.info("record: " + record != null ? record.toString() : " record ist null");
+                            logger.info("record: " + record != null ? record.toString() : " record ist null"); //$NON-NLS-1$//$NON-NLS-2$
                             final Integer importRecordId = DatabaseAccessFactory.getDatabaseAccess().importRecord(athlete.getId(), file.getName());
                             allRecords.put(importRecordId, new TrainingCenterRecord(importRecordId, record));
                             FileCopy.copyFile(file, new File(locationForBackupFiles, file.getName()));
@@ -141,12 +141,11 @@ public class ImportManualGpsFiles extends Action implements ISelectionListener, 
     private IConvert2Tcx getConverterImplementation(final IConfigurationElement[] configurationElementsFor) {
         for (final IConfigurationElement element : configurationElementsFor) {
             try {
-                logger.info("plugin extension suchen: " + "class");
                 final String[] attributeNames = element.getAttributeNames();
                 for (final String str : attributeNames) {
-                    logger.info("Attr name: '" + str + "'");
+                    logger.info("Attr name: '" + str + "'"); //$NON-NLS-1$//$NON-NLS-2$
                 }
-                return (IConvert2Tcx) element.createExecutableExtension("class");
+                return (IConvert2Tcx) element.createExecutableExtension("class"); //$NON-NLS-1$
             } catch (final CoreException e) {
                 logger.error(e.getMessage());
             }

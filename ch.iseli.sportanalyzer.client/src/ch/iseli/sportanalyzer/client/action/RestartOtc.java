@@ -10,7 +10,7 @@ import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 
 public class RestartOtc extends Action implements ISelectionListener, IWorkbenchAction {
 
-    public static final String ID = "ch.iseli.sportanalyzer.client.RestartOtc";
+    public static final String ID = "ch.iseli.sportanalyzer.client.RestartOtc"; //$NON-NLS-1$
 
     private static final Logger logger = Logger.getLogger(RestartOtc.class.getName());
 
@@ -24,7 +24,7 @@ public class RestartOtc extends Action implements ISelectionListener, IWorkbench
 
     @Override
     public void run() {
-        logger.info("OTC wird restarted");
+        logger.info("OTC wird restarted"); //$NON-NLS-1$
         window.getWorkbench().restart();
     }
 

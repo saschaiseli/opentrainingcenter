@@ -8,7 +8,7 @@ public class TimeHelperTest {
 
     @Test
     public void testConvertSekundenInReadableFormat() {
-        String t = TimeHelper.convertSecondsToHumanReadableZeit(6273.27);
-        assertEquals("1:44:33", t);
+        final String t = TimeHelper.convertSecondsToHumanReadableZeit(6273.27);
+        assertEquals("1:44:33", t);//$NON-NLS-1$
     }
 }

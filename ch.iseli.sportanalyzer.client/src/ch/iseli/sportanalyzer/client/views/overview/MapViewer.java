@@ -11,7 +11,7 @@ import com.eclipsesource.widgets.gmaps.LatLng;
 public class MapViewer extends Composite {
 
     private final static Logger logger = Logger.getLogger(MapViewer.class);
-    public final static String ID = "ch.iseli.sportanalyzer.client.views.overview.MapViewer";
+    public final static String ID = "ch.iseli.sportanalyzer.client.views.overview.MapViewer"; //$NON-NLS-1$
     private GMap gmap;
     private final String INIT_CENTER;
     static final private int INIT_ZOOM = 16;
@@ -27,7 +27,7 @@ public class MapViewer extends Composite {
     }
 
     public Composite getComposite() {
-        logger.debug("create map");
+        logger.debug("create map"); //$NON-NLS-1$
         final SashForm sash = new SashForm(parent, SWT.HORIZONTAL);
         createMap(sash, path);
         return sash;
@@ -43,7 +43,7 @@ public class MapViewer extends Composite {
     private LatLng stringToLatLng(final String input) {
         LatLng result = null;
         if (input != null) {
-            final String temp[] = input.split(",");
+            final String temp[] = input.split(","); //$NON-NLS-1$
             if (temp.length == 2) {
                 try {
                     final double lat = Double.parseDouble(temp[0]);

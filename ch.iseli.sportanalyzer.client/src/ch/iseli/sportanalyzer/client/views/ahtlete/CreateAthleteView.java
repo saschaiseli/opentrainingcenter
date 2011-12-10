@@ -47,9 +47,9 @@ import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
 
 public class CreateAthleteView extends ViewPart {
-    public static final String ID = "ch.iseli.sportanalyzer.client.athlete.createathlete";
+    public static final String ID = "ch.iseli.sportanalyzer.client.athlete.createathlete"; //$NON-NLS-1$
     private static final Logger logger = Logger.getLogger(CreateAthleteView.class);
-    public static final String IMAGE = "icons/create.png";
+    public static final String IMAGE = "icons/create.png"; //$NON-NLS-1$
     private final Sportler sportler = new Sportler();
     private Text nameTf;
     private Text ageTf;
@@ -70,7 +70,7 @@ public class CreateAthleteView extends ViewPart {
     @Override
     public void createPartControl(final Composite parent) {
 
-        logger.debug("create single activity view");
+        logger.debug("create single activity view"); //$NON-NLS-1$
         toolkit = new FormToolkit(parent.getDisplay());
         form = toolkit.createScrolledForm(parent);
         // form.setSize(1000, 2000);
@@ -148,7 +148,7 @@ public class CreateAthleteView extends ViewPart {
                 final int dbId = indexOfSelectBoxMappedToDatabaseId.get(selectionIndex);
                 Activator.getDefault().getPreferenceStore().setValue(PreferenceConstants.ATHLETE_ID, String.valueOf(dbId));
                 final IAthlete athlete = DatabaseAccessFactory.getDatabaseAccess().getAthlete(dbId);
-                logger.info("Benutzer: " + athlete + " wird im Cache gesetzt.");
+                logger.info("Benutzer: " + athlete + " wird im Cache gesetzt."); //$NON-NLS-2$
                 TrainingCenterDataCache.getInstance().setSelectedProfile(athlete);
                 final Job job = new ImportJob("Profile gewechselt, neue GPS Daten aus DB laden", athlete);
                 job.schedule();
@@ -190,7 +190,7 @@ public class CreateAthleteView extends ViewPart {
         selectUser.setLayoutData(gridData);
 
         final Label spacer = new Label(sportlerComposite, SWT.NONE);
-        spacer.setText("");
+        spacer.setText(""); //$NON-NLS-1$
 
         gridData = new GridData();
         gridData.horizontalAlignment = SWT.FILL;
@@ -282,11 +282,11 @@ public class CreateAthleteView extends ViewPart {
 
             @Override
             public void widgetSelected(final SelectionEvent e) {
-                logger.info("save " + sportler);
+                logger.info("save " + sportler); //$NON-NLS-1$
                 final IAthlete athlete = CommonTransferFactory.createAthlete(sportler.getName(), sportler.getAge(), sportler.getMaxHeartBeat());
                 try {
                     DatabaseAccessFactory.getDatabaseAccess().save(athlete);
-                    errorLabel.setText("");
+                    errorLabel.setText(""); //$NON-NLS-1$
                     overviewSection.setExpanded(false);
                     selectSportler.setExpanded(true);
                 } catch (final Exception e1) {
@@ -320,7 +320,7 @@ public class CreateAthleteView extends ViewPart {
 
         // name
         IObservableValue widgetValue = WidgetProperties.text(SWT.Modify).observe(nameTf);
-        IObservableValue modelValue = BeanProperties.value(Sportler.class, "name").observe(sportler);
+        IObservableValue modelValue = BeanProperties.value(Sportler.class, "name").observe(sportler); //$NON-NLS-1$
         final UpdateValueStrategy strategyName = new UpdateValueStrategy();
         strategyName.setBeforeSetValidator(new SportlerValidator(5));
         // strategy.setBeforeSetValidator(validator);
@@ -331,7 +331,7 @@ public class CreateAthleteView extends ViewPart {
 
         // Bind the age including a validator
         widgetValue = WidgetProperties.text(SWT.Modify).observe(ageTf);
-        modelValue = BeanProperties.value(Sportler.class, "age").observe(sportler);
+        modelValue = BeanProperties.value(Sportler.class, "age").observe(sportler); //$NON-NLS-1$
         // Add an validator so that age can only be a number
         final UpdateValueStrategy strategy = new UpdateValueStrategy();
         strategy.setBeforeSetValidator(new NumberValidator(18, 99, "Bitte das Alter eingeben"));
@@ -343,7 +343,7 @@ public class CreateAthleteView extends ViewPart {
 
         // pulse
         widgetValue = WidgetProperties.text(SWT.Modify).observe(pulseTf);
-        modelValue = BeanProperties.value(Sportler.class, "maxHeartBeat").observe(sportler);
+        modelValue = BeanProperties.value(Sportler.class, "maxHeartBeat").observe(sportler); //$NON-NLS-1$
         // Add an validator so that age can only be a number
 
         final UpdateValueStrategy strategyPulse = new UpdateValueStrategy();
@@ -356,7 +356,7 @@ public class CreateAthleteView extends ViewPart {
         //
         // gender
         widgetValue = WidgetProperties.selection().observe(genderCombo);
-        modelValue = BeansObservables.observeValue(sportler, "gender");
+        modelValue = BeansObservables.observeValue(sportler, "gender"); //$NON-NLS-1$
         ctx.bindValue(widgetValue, modelValue);
 
         // final IObservableValue errorObservable = WidgetProperties.text().observe(errorLabel);

@@ -22,7 +22,7 @@ public class Sportler implements PropertyChangeListener {
     }
 
     public void setName(final String name) {
-        propertyChangeSupport.firePropertyChange("name", this.name, this.name = name);
+        propertyChangeSupport.firePropertyChange("name", this.name, this.name = name); //$NON-NLS-1$
     }
 
     public String getGender() {
@@ -30,7 +30,7 @@ public class Sportler implements PropertyChangeListener {
     }
 
     public void setGender(final String gender) {
-        propertyChangeSupport.firePropertyChange("gender", this.gender, this.gender = gender);
+        propertyChangeSupport.firePropertyChange("gender", this.gender, this.gender = gender); //$NON-NLS-1$
     }
 
     public Integer getAge() {
@@ -38,7 +38,7 @@ public class Sportler implements PropertyChangeListener {
     }
 
     public void setAge(final Integer age) {
-        propertyChangeSupport.firePropertyChange("age", this.age, this.age = age);
+        propertyChangeSupport.firePropertyChange("age", this.age, this.age = age); //$NON-NLS-1$
     }
 
     public Integer getMaxHeartBeat() {
@@ -46,7 +46,7 @@ public class Sportler implements PropertyChangeListener {
     }
 
     public void setMaxHeartBeat(final Integer maxHeartBeat) {
-        propertyChangeSupport.firePropertyChange("maxHeartBeat", this.maxHeartBeat, this.maxHeartBeat = maxHeartBeat);
+        propertyChangeSupport.firePropertyChange("maxHeartBeat", this.maxHeartBeat, this.maxHeartBeat = maxHeartBeat); //$NON-NLS-1$
     }
 
     public PropertyChangeSupport getPropertyChangeSupport() {
@@ -63,12 +63,12 @@ public class Sportler implements PropertyChangeListener {
 
     @Override
     public void propertyChange(final PropertyChangeEvent evt) {
-        propertyChangeSupport.firePropertyChange("name", null, this);
+        propertyChangeSupport.firePropertyChange("name", null, this); //$NON-NLS-1$
     }
 
     @Override
     public String toString() {
-        return "Sportler [name=" + name + ", gender=" + gender + ", age=" + age + ", maxHeartBeat=" + maxHeartBeat + "]";
+        return "Sportler [name=" + name + ", gender=" + gender + ", age=" + age + ", maxHeartBeat=" + maxHeartBeat + "]"; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
     }
 
 }

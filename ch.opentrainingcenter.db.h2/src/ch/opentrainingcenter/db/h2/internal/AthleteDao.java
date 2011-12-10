@@ -19,7 +19,7 @@ public class AthleteDao {
     public List<IAthlete> getAllAthletes() {
         final Session session = dao.getSession();
         dao.begin();
-        final Query query = session.createQuery("from Athlete");
+        final Query query = session.createQuery("from Athlete");//$NON-NLS-1$
         @SuppressWarnings("unchecked")
         final List<IAthlete> list = query.list();
         dao.commit();
@@ -30,8 +30,8 @@ public class AthleteDao {
     public final IAthlete getAthlete(final int id) {
         final Session session = dao.getSession();
         dao.begin();
-        final Query query = session.createQuery("from Athlete where id=:idAthlete");
-        query.setParameter("idAthlete", id);
+        final Query query = session.createQuery("from Athlete where id=:idAthlete");//$NON-NLS-1$
+        query.setParameter("idAthlete", id);//$NON-NLS-1$
         IAthlete athlete = null;
         if (query.list() != null && query.list().size() == 1) {
             athlete = (IAthlete) query.list().get(0);
@@ -44,8 +44,8 @@ public class AthleteDao {
     public IAthlete getAthlete(final String name) {
         final Session session = dao.getSession();
         dao.begin();
-        final Query query = session.createQuery("from Athlete where name=:name");
-        query.setParameter("name", name);
+        final Query query = session.createQuery("from Athlete where name=:name");//$NON-NLS-1$
+        query.setParameter("name", name);//$NON-NLS-1$
         IAthlete athlete = null;
         if (query.list() != null && query.list().size() == 1) {
             athlete = (IAthlete) query.list().get(0);
