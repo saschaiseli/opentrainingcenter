@@ -3,7 +3,8 @@ package ch.iseli.sportanalyzer.client.charts;
 import ch.iseli.sportanalyzer.client.Messages;
 
 public enum ChartSerieType {
-    YEAR(Messages.ChartSerieType_0), MONTH(Messages.ChartSerieType_1, Messages.ChartSerieType_2, Messages.ChartSerieType_3), WEEK(Messages.ChartSerieType_4, Messages.ChartSerieType_5, Messages.ChartSerieType_6), DAY(Messages.ChartSerieType_7);
+    YEAR(Messages.ChartSerieType_0, Messages.ChartSerieType_8, Messages.ChartSerieType_3), MONTH(Messages.ChartSerieType_1, Messages.ChartSerieType_2, Messages.ChartSerieType_3), WEEK(
+            Messages.ChartSerieType_4, Messages.ChartSerieType_5, Messages.ChartSerieType_6), DAY(Messages.ChartSerieType_7);
 
     private final String name;
     private final String formatPattern;

@@ -31,9 +31,11 @@ import org.jfree.chart.axis.DateAxis;
 import org.jfree.chart.axis.DateTickMarkPosition;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.ValueAxis;
+import org.jfree.chart.labels.CustomXYToolTipGenerator;
 import org.jfree.chart.labels.StandardXYItemLabelGenerator;
 import org.jfree.chart.labels.StandardXYToolTipGenerator;
 import org.jfree.chart.labels.XYItemLabelGenerator;
+import org.jfree.chart.labels.XYToolTipGenerator;
 import org.jfree.chart.plot.DatasetRenderingOrder;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
@@ -145,6 +147,8 @@ public class OTCBarChartViewer implements ISelectionProvider {
                 final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer(true, true);
                 renderer.setSeriesPaint(0, COLOR_HEART);
                 renderer.setShape(Cross.createCross());
+                final XYToolTipGenerator generator = new CustomXYToolTipGenerator();
+                renderer.setToolTipGenerator(generator);
                 plot.setRenderer(1, renderer);
 
                 plot.setDatasetRenderingOrder(DatasetRenderingOrder.FORWARD);
@@ -225,7 +229,7 @@ public class OTCBarChartViewer implements ISelectionProvider {
             trainings.addAll(daten.getTrainingsPerMonth());
         }
         if (ChartSerieType.YEAR.equals(type)) {
-            // trainings.addAll(daten.getTrainingsPerYear());
+            trainings.addAll(daten.getTrainingsPerYear());
         }
         //
         for (final SimpleTraining t : trainings) {
@@ -242,7 +246,8 @@ public class OTCBarChartViewer implements ISelectionProvider {
 
     private JFreeChart createChart(final IntervalXYDataset dataset, final ChartSerieType type) {
 
-        chart = ChartFactory.createXYBarChart(Messages.OTCBarChartViewer_6, Messages.OTCBarChartViewer_7, true, Messages.OTCBarChartViewer_8, dataset, PlotOrientation.VERTICAL, false, true, false);
+        chart = ChartFactory.createXYBarChart(Messages.OTCBarChartViewer_6, Messages.OTCBarChartViewer_7, true, Messages.OTCBarChartViewer_8, dataset,
+                PlotOrientation.VERTICAL, false, true, false);
         chart.setAntiAlias(true);
         chart.setBorderVisible(false);
         final org.eclipse.swt.graphics.Color b = Display.getDefault().getActiveShell().getBackground();

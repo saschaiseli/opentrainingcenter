@@ -21,6 +21,7 @@ public class TrainingOverviewDatenAufbereiten {
     private final List<SimpleTraining> all;
     private final List<SimpleTraining> trainingsPerWeek = new ArrayList<SimpleTraining>();
     private final List<SimpleTraining> trainingsPerMonth = new ArrayList<SimpleTraining>();
+    private final List<SimpleTraining> trainingsPerYear = new ArrayList<SimpleTraining>();
 
     private final TrainingCenterDataCache cache;
 
@@ -49,10 +50,32 @@ public class TrainingOverviewDatenAufbereiten {
         all.clear();
         all.addAll(cache.getAllSimpleTrainings());
         trainingsPerWeek.clear();
-        trainingsPerWeek.addAll(createMonatsUndWochenMap(Calendar.YEAR, Calendar.WEEK_OF_MONTH));
+        trainingsPerWeek.addAll(createMonatsUndWochenMap(Calendar.YEAR, Calendar.WEEK_OF_YEAR));
         //
         trainingsPerMonth.clear();
         trainingsPerMonth.addAll(createMonatsUndWochenMap(Calendar.YEAR, Calendar.MONTH));
+
+        trainingsPerYear.clear();
+        trainingsPerYear.addAll(createYear());
+    }
+
+    private List<SimpleTraining> createYear() {
+        final Map<Integer, List<SimpleTraining>> trainingsPer = new HashMap<Integer, List<SimpleTraining>>();
+        for (final SimpleTraining training : all) {
+            final Calendar cal = Calendar.getInstance();
+            cal.setTime(training.getDatum());
+            final int year = cal.get(Calendar.YEAR);
+            logger.debug("Lauf aus dem Jahr " + year); //$NON-NLS-1$
+            List<SimpleTraining> perYear = trainingsPer.get(year);
+            if (perYear == null) {
+                perYear = new ArrayList<SimpleTraining>();
+            }
+            perYear.add(training);
+            trainingsPer.put(year, perYear);
+        }
+        final Map<Integer, Map<Integer, List<SimpleTraining>>> all = new HashMap<Integer, Map<Integer, List<SimpleTraining>>>();
+        all.put(1, trainingsPer);
+        return createSum(all);
     }
 
     private List<SimpleTraining> createMonatsUndWochenMap(final int outer, final int inner) {
@@ -127,7 +150,7 @@ public class TrainingOverviewDatenAufbereiten {
     }
 
     public List<SimpleTraining> getTrainingsPerYear() {
-        return null;
+        return Collections.unmodifiableList(trainingsPerYear);
     }
 
 }

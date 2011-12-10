@@ -22,6 +22,7 @@ public class Messages extends NLS {
     public static String ChartSerieType_5;
     public static String ChartSerieType_6;
     public static String ChartSerieType_7;
+    public static String ChartSerieType_8;
     public static String ChartType_0;
     public static String ChartType_1;
     public static String ChartType_2;

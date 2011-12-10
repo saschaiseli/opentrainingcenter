@@ -9,13 +9,13 @@ public final class Cross extends Polygon {
 
     private Cross() {
         this.addPoint(0, 0);
-        this.addPoint(5, 5);
+        this.addPoint(2, 2);
         this.addPoint(0, 0);
-        this.addPoint(-5, 5);
+        this.addPoint(-2, 2);
         this.addPoint(0, 0);
-        this.addPoint(-5, -5);
+        this.addPoint(-2, -2);
         this.addPoint(0, 0);
-        this.addPoint(5, -5);
+        this.addPoint(2, -2);
     }
 
     public static Cross createCross() {
