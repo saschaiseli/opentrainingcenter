@@ -64,7 +64,7 @@
             name="OTC">
       </category>
       <view
-            category="ch.iseli.sportanalyzer.client.athletecategory"
+            category="ch.iseli.sportanalyzer.client.otccategory"
             class="ch.iseli.sportanalyzer.client.views.ahtlete.CreateAthleteView"
             icon="icons/create.gif"
             id="ch.iseli.sportanalyzer.client.athlete.createathlete"
@@ -90,7 +90,6 @@
    <extension
          point="org.eclipse.ui.commands">
       <command
-            categoryId="ch.iseli.sportanalyzer.client.category"
             description="Öffnet einen einzelnen Lauf"
             id="ch.iseli.sportanalyzer.client.command.openSingleRun"
             name="openSingleRun">
@@ -159,20 +158,6 @@
       <initializer
             class="ch.iseli.sportanalyzer.client.preferences.PreferenceInitializer">
       </initializer>
-   </extension>
-   <extension
-         point="org.eclipse.ui.viewActions">
-      <viewContribution
-            id="ch.iseli.sportanalyzer.client.viewContribution1"
-            targetID="ch.iseli.sportanalyzer.client.viewContribution1">
-         <action
-               class="ch.iseli.sportanalyzer.client.action.DeleteImportedRecord"
-               id="ch.iseli.sportanalyzer.client.action1"
-               label="ch.iseli.sportanalyzer.client.action.DeleteImportedRecord"
-               style="push"
-               tooltip="blabla">
-         </action>
-      </viewContribution>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
