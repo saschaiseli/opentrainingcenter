@@ -29,7 +29,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
         configurer.setShowStatusLine(true);
         final String id = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.ATHLETE_ID);
         if (id != null && id.length() > 0) {
-            configurer.setTitle(Application.WINDOW_TITLE + " / " + DatabaseAccessFactory.getDatabaseAccess().getAthlete(Integer.parseInt(id)).getName());
+            configurer.setTitle(Application.WINDOW_TITLE + " / " + DatabaseAccessFactory.getDatabaseAccess().getAthlete(Integer.parseInt(id)).getName()); //$NON-NLS-1$
         } else {
             configurer.setTitle(Application.WINDOW_TITLE);
         }

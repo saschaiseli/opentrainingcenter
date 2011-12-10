@@ -115,22 +115,6 @@
    </extension>
    <extension
          point="org.eclipse.ui.commands">
-      <category
-            name="Mail"
-            id="ch.iseli.sportanalyzer.client.category">
-      </category>
-      <command
-            name="Open Mailbox"
-            description="Opens a mailbox"
-            categoryId="ch.iseli.sportanalyzer.client.category"
-            id="ch.iseli.sportanalyzer.client.open">
-      </command>
-      <command
-            name="Open Message Dialog"
-            description="Open a message dialog"
-            categoryId="ch.iseli.sportanalyzer.client.category"
-            id="ch.iseli.sportanalyzer.client.openMessage">
-      </command>
       <command
             categoryId="ch.iseli.sportanalyzer.client.category"
             description="Öffnet einen einzelnen Lauf"
@@ -236,34 +220,6 @@
             productId="ch.iseli.sportanalyzer.client.opentrainingcenter"
             splashId="ch.iseli.sportanalyzer.client.splashHandlers.extensible">
       </splashHandlerProductBinding>
-   </extension>
-   <extension
-         point="ch.iseli.sportanalyzer.client.splashExtension">
-      <splashExtension
-            icon="icons/af.png"
-            id="af"
-            tooltip="Application Framework">
-      </splashExtension>
-      <splashExtension
-            icon="icons/embedded.png"
-            id="embedded"
-            tooltip="Embedded">
-      </splashExtension>
-      <splashExtension
-            icon="icons/enterprise.png"
-            id="enterprise"
-            tooltip="Enterprise">
-      </splashExtension>
-      <splashExtension
-            icon="icons/languages.png"
-            id="languages"
-            tooltip="Languages">
-      </splashExtension>
-      <splashExtension
-            icon="icons/rcp.png"
-            id="rcp"
-            tooltip="RCP">
-      </splashExtension>
    </extension>
 
 </plugin>

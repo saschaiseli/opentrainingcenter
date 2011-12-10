@@ -30,22 +30,22 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
         } catch (final Exception e) {
             final Throwable cause = e.getCause();
             final String message = cause.getMessage();
-            if (message.contains("Locked by another process")) {
-                logger.error("Database Locked by another process");
+            if (message.contains("Locked by another process")) { //$NON-NLS-1$
+                logger.error("Database Locked by another process"); //$NON-NLS-1$
             }
         }
         final String athleteId = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.ATHLETE_ID);
         if (athleteId != null && athleteId.length() > 0) {
             final IAthlete athlete = DatabaseAccessFactory.getDatabaseAccess().getAthlete(Integer.parseInt(athleteId));
             if (athlete == null) {
-                logger.info("Athlete nicht gefunden.");
+                logger.info(Messages.ApplicationWorkbenchAdvisor_AthleteNotFound);
                 return AthletePerspective.ID;
             } else {
-                logger.info("athlete gefunden");
+                logger.info(Messages.ApplicationWorkbenchAdvisor_AthleteFound);
                 return PerspectiveNavigation.ID;
             }
         } else {
-            logger.info("athlete auch nicht in den preferences gesetzt");
+            logger.info(Messages.ApplicationWorkbenchAdvisor_AthleteNotInPreferences);
             return AthletePerspective.ID;
         }
     }

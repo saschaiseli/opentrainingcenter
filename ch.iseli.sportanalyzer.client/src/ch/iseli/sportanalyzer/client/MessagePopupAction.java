@@ -16,10 +16,10 @@ public class MessagePopupAction extends Action {
         // Associate the action with a pre-defined command, to allow key
         // bindings.
         setActionDefinitionId(ICommandIds.CMD_OPEN_MESSAGE);
-        setImageDescriptor(ch.iseli.sportanalyzer.client.Activator.getImageDescriptor("/icons/sample3.gif"));
+        setImageDescriptor(ch.iseli.sportanalyzer.client.Activator.getImageDescriptor("/icons/sample3.gif")); //$NON-NLS-1$
     }
 
     public void run() {
-        MessageDialog.openInformation(window.getShell(), "Open", "Open Message Dialog!");
+        MessageDialog.openInformation(window.getShell(), "Open", "Open Message Dialog!"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 }

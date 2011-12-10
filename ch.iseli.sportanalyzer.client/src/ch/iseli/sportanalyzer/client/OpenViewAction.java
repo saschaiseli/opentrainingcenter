@@ -21,7 +21,7 @@ public class OpenViewAction extends Action {
         // Associate the action with a pre-defined command, to allow key
         // bindings.
         setActionDefinitionId(ICommandIds.CMD_OPEN);
-        setImageDescriptor(ch.iseli.sportanalyzer.client.Activator.getImageDescriptor("/icons/sample2.gif"));
+        setImageDescriptor(ch.iseli.sportanalyzer.client.Activator.getImageDescriptor("/icons/sample2.gif")); //$NON-NLS-1$
     }
 
     public void run() {
@@ -29,7 +29,7 @@ public class OpenViewAction extends Action {
             try {
                 window.getActivePage().showView(viewId, Integer.toString(instanceNum++), IWorkbenchPage.VIEW_ACTIVATE);
             } catch (PartInitException e) {
-                MessageDialog.openError(window.getShell(), "Error", "Error opening view:" + e.getMessage());
+                MessageDialog.openError(window.getShell(), "Error", "Error opening view:" + e.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
             }
         }
     }

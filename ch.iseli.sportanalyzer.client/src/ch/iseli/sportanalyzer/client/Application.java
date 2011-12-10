@@ -14,11 +14,11 @@ public class Application implements IApplication {
 
     public static final Logger log = Logger.getLogger(Application.class);
 
-    public static final String ID = "ch.iseli.sportanalyzer.client";
+    public static final String ID = "ch.iseli.sportanalyzer.client"; //$NON-NLS-1$
 
-    public static final String CH_OPENTRAININGDATABASE_DB = "ch.opentrainingdatabase.db";
+    public static final String CH_OPENTRAININGDATABASE_DB = "ch.opentrainingdatabase.db"; //$NON-NLS-1$
 
-    public static final String WINDOW_TITLE = "Open Training Center";
+    public static final String WINDOW_TITLE = Messages.Application_WindowTitle;
 
     /*
      * (non-Javadoc)

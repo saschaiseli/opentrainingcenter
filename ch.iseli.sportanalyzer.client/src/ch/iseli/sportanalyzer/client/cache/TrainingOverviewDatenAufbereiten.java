@@ -19,8 +19,8 @@ public class TrainingOverviewDatenAufbereiten {
     private static final Logger logger = Logger.getLogger(TrainingOverviewDatenAufbereiten.class);
 
     private final List<SimpleTraining> all;
-    private final List<SimpleTraining> trainingsPerWeek = Collections.emptyList();
-    private final List<SimpleTraining> trainingsPerMonth = Collections.emptyList();
+    private final List<SimpleTraining> trainingsPerWeek = new ArrayList<SimpleTraining>();
+    private final List<SimpleTraining> trainingsPerMonth = new ArrayList<SimpleTraining>();
 
     private final TrainingCenterDataCache cache;
 
