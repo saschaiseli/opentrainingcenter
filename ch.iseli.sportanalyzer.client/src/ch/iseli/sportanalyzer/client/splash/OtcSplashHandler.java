@@ -22,6 +22,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.splash.BasicSplashHandler;
 
 import ch.iseli.sportanalyzer.client.Activator;
+import ch.iseli.sportanalyzer.client.Application;
 import ch.iseli.sportanalyzer.client.Messages;
 import ch.iseli.sportanalyzer.client.PreferenceConstants;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDataCache;
@@ -37,8 +38,6 @@ public class OtcSplashHandler extends BasicSplashHandler {
     public static final Logger logger = Logger.getLogger(OtcSplashHandler.class);
 
     private static final String SPACER = "                                                                            "; //$NON-NLS-1$
-
-    private static final String CH_ISELI_SPORTANALYZER_MYIMPORTER = "ch.iseli.sportanalyzer.myimporter"; //$NON-NLS-1$
 
     private final Map<Integer, TrainingCenterRecord> allRuns = new HashMap<Integer, TrainingCenterRecord>();
     private final IConvert2Tcx tcx;
@@ -64,7 +63,7 @@ public class OtcSplashHandler extends BasicSplashHandler {
             loadFromCache = true;
             athlete = DatabaseAccessFactory.getDatabaseAccess().getAthlete(Integer.parseInt(athleteId));
             final IConfigurationElement[] configurationElementsFor = Platform.getExtensionRegistry().getConfigurationElementsFor(
-                    CH_ISELI_SPORTANALYZER_MYIMPORTER);
+                    Application.IMPORT_EXTENSION_POINT);
             this.tcx = getConverterImplementation(configurationElementsFor);
         }
     }

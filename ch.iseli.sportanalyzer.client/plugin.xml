@@ -175,10 +175,6 @@
             class="ch.iseli.sportanalyzer.client.splash.OtcSplashHandler"
             id="ch.iseli.sportanalyzer.client.splashHandlers.extensible">
       </splashHandler>
-      <splashHandlerProductBinding
-            productId="ch.iseli.sportanalyzer.client.opentrainingcenter"
-            splashId="ch.iseli.sportanalyzer.client.splashHandlers.extensible">
-      </splashHandlerProductBinding>
    </extension>
 
 </plugin>

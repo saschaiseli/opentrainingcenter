@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Fitnesslog
+Bundle-SymbolicName: ch.opentrainingcenter.importer.fitnesslog;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: ch.opentrainingcenter.importer.fitnesslog.Activator
+Require-Bundle: org.eclipse.core.runtime,
+ ch.iseli.sportanalyzer.client;bundle-version="1.0.0",
+ ch.iseli.sportanalyzer.tcx;bundle-version="1.0.0",
+ logging;bundle-version="1.0.0"
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Eclipse-RegisterBuddy: logging

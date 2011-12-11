@@ -13,6 +13,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
+import ch.iseli.sportanalyzer.client.Application;
 import ch.iseli.sportanalyzer.client.Messages;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDataCache;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterRecord;
@@ -25,8 +26,6 @@ public class ImportJob extends Job {
 
     private static final Logger logger = Logger.getLogger(NavigationView.class);
 
-    private static final String CH_ISELI_SPORTANALYZER_MYIMPORTER = "ch.iseli.sportanalyzer.myimporter"; //$NON-NLS-1$
-
     final Map<Integer, TrainingCenterRecord> allRuns = new HashMap<Integer, TrainingCenterRecord>();
     private final IConvert2Tcx tcx;
 
@@ -35,7 +34,8 @@ public class ImportJob extends Job {
     public ImportJob(final String name, final IAthlete athlete) {
         super(name);
         this.athlete = athlete;
-        final IConfigurationElement[] configurationElementsFor = Platform.getExtensionRegistry().getConfigurationElementsFor(CH_ISELI_SPORTANALYZER_MYIMPORTER);
+        final IConfigurationElement[] configurationElementsFor = Platform.getExtensionRegistry()
+                .getConfigurationElementsFor(Application.IMPORT_EXTENSION_POINT);
         this.tcx = getConverterImplementation(configurationElementsFor);
     }
 

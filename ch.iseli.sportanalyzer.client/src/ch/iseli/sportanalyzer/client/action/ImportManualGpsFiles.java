@@ -2,6 +2,7 @@ package ch.iseli.sportanalyzer.client.action;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -32,15 +33,15 @@ import ch.iseli.sportanalyzer.client.cache.TrainingCenterRecord;
 import ch.iseli.sportanalyzer.client.helper.FileCopy;
 import ch.iseli.sportanalyzer.client.views.IImageKeys;
 import ch.iseli.sportanalyzer.db.DatabaseAccessFactory;
+import ch.iseli.sportanalyzer.importer.ConvertHandler;
 import ch.iseli.sportanalyzer.importer.IConvert2Tcx;
 import ch.iseli.sportanalyzer.tcx.TrainingCenterDatabaseT;
 import ch.opentrainingcenter.transfer.IAthlete;
 
 public class ImportManualGpsFiles extends Action implements ISelectionListener, IWorkbenchAction {
+    private static final Logger logger = Logger.getLogger(ImportManualGpsFiles.class.getName());
 
     public static final String ID = "ch.iseli.sportanalyzer.client.importManualFiles"; //$NON-NLS-1$
-
-    private static final Logger logger = Logger.getLogger(ImportManualGpsFiles.class.getName());
 
     private final IWorkbenchWindow window;
 
@@ -84,13 +85,14 @@ public class ImportManualGpsFiles extends Action implements ISelectionListener, 
 
     @Override
     public void run() {
-        final IConfigurationElement[] configurationElementsFor = Platform.getExtensionRegistry().getConfigurationElementsFor(
-                "ch.iseli.sportanalyzer.myimporter"); //$NON-NLS-1$
-        final IConvert2Tcx tcx = getConverterImplementation(configurationElementsFor);
+        final IConfigurationElement[] configurationElementsFor = Platform.getExtensionRegistry()
+                .getConfigurationElementsFor(Application.IMPORT_EXTENSION_POINT);
+        final ConvertHandler handler = getConverterImplementation(configurationElementsFor);
         final FileDialog fileDialog = new FileDialog(window.getShell(), SWT.MULTI);
         fileDialog.setFilterPath(defaultLocation);
-        fileDialog.setFilterExtensions(new String[] { "*." + tcx.getFilePrefix() }); //$NON-NLS-1$
-        fileDialog.setFilterNames(new String[] { "Configuration files (*." + tcx.getFilePrefix() + Messages.ImportManualGpsFiles_0 }); //$NON-NLS-1$
+        final List<String> filePrefixes = handler.getSupportedFileSuffixes();
+        fileDialog.setFilterExtensions(filePrefixes.toArray(new String[0]));//new String[] { "*." + tcx.getFilePrefix() }); //$NON-NLS-1$
+        //        fileDialog.setFilterNames(new String[] { "Configuration files (*." + tcx.getFilePrefix() + Messages.ImportManualGpsFiles_0 }); //$NON-NLS-1$
         fileDialog.setText(Messages.ImportManualGpsFiles_FileDialog);
         final String s = fileDialog.open();
         if (s != null) {
@@ -110,7 +112,7 @@ public class ImportManualGpsFiles extends Action implements ISelectionListener, 
                             final File file = new File(filterPath, fileName);
                             monitor.setTaskName(Messages.ImportManualGpsFiles_5 + file.getName());
                             logger.info("importiere File: " + file.getName()); //$NON-NLS-1$
-                            final TrainingCenterDatabaseT record = tcx.convert(file);
+                            final TrainingCenterDatabaseT record = handler.getMatchingConverter(file).convert(file);
                             logger.info("record: " + record != null ? record.toString() : " record ist null"); //$NON-NLS-1$//$NON-NLS-2$
                             final Integer importRecordId = DatabaseAccessFactory.getDatabaseAccess().importRecord(athlete.getId(), file.getName());
                             allRecords.put(importRecordId, new TrainingCenterRecord(importRecordId, record));
@@ -139,18 +141,16 @@ public class ImportManualGpsFiles extends Action implements ISelectionListener, 
         }
     }
 
-    private IConvert2Tcx getConverterImplementation(final IConfigurationElement[] configurationElementsFor) {
+    private ConvertHandler getConverterImplementation(final IConfigurationElement[] configurationElementsFor) {
+        final ConvertHandler handler = new ConvertHandler();
         for (final IConfigurationElement element : configurationElementsFor) {
             try {
-                final String[] attributeNames = element.getAttributeNames();
-                for (final String str : attributeNames) {
-                    logger.info("Attr name: '" + str + "'"); //$NON-NLS-1$//$NON-NLS-2$
-                }
-                return (IConvert2Tcx) element.createExecutableExtension("class"); //$NON-NLS-1$
+                final IConvert2Tcx tcx = (IConvert2Tcx) element.createExecutableExtension(IConvert2Tcx.PROPERETY);
+                handler.addConverter(tcx);
             } catch (final CoreException e) {
                 logger.error(e.getMessage());
             }
         }
-        return null;
+        return handler;
     }
 }

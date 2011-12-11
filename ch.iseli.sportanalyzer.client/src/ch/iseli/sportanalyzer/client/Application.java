@@ -19,7 +19,9 @@ public class Application implements IApplication {
 
     public static final String ID = "ch.iseli.sportanalyzer.client"; //$NON-NLS-1$
 
-    public static final String CH_OPENTRAININGDATABASE_DB = "ch.opentrainingdatabase.db"; //$NON-NLS-1$
+    public static final String DATABASE_EXTENSION_POINT = "ch.opentrainingdatabase.db"; //$NON-NLS-1$
+
+    public static final String IMPORT_EXTENSION_POINT = "ch.iseli.sportanalyzer.myimporter";//$NON-NLS-1$
 
     public static final String WINDOW_TITLE = Messages.Application_WindowTitle;
 
