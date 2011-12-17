@@ -66,15 +66,18 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 
     @Override
     public IStatus restoreState(final IMemento memento) {
-        if (memento != null) {
-            final IMemento mementoChild = memento.getChild(MEMENTO_CHILD);
-            if (mementoChild != null) {
-                final TrainingCenterDataCache cache = TrainingCenterDataCache.getInstance();
-                final Integer id = mementoChild.getInteger(MEMENTO_KEY);
+        if (existsMementoChild(memento)) {
+            final TrainingCenterDataCache cache = TrainingCenterDataCache.getInstance();
+            final Integer id = memento.getChild(MEMENTO_CHILD).getInteger(MEMENTO_KEY);
+            if (id != null) {
                 cache.setSelectedRun(id);
-                logger.debug("Der zuletzt selektierte Lauf hatte die ID: '" + id + "'"); //$NON-NLS-1$ //$NON-NLS-2$
             }
+            logger.debug("Der zuletzt selektierte Lauf hatte die ID: '" + id + "'"); //$NON-NLS-1$ //$NON-NLS-2$
         }
         return super.restoreState(memento);
+    }
+
+    private boolean existsMementoChild(final IMemento memento) {
+        return memento != null && memento.getChild(MEMENTO_CHILD) != null;
     }
 }

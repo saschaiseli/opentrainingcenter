@@ -170,7 +170,10 @@ public class TrainingCenterDataCache {
         return cacheLoaded;
     }
 
-    public void setSelectedRun(final Integer id) {
+    /**
+     * setzt im cache den lauf mit der angegeben id oder null, wenn dieser nicht im cache geladen ist.
+     */
+    public void setSelectedRun(final int id) {
         selected = list.get(id);
     }
 }
