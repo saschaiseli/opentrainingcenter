@@ -58,7 +58,13 @@ public class TrainingCenterDataCache {
         selectedItems = null;
     }
 
+    /**
+     * Ist noch keiner selektiert, wird der neuste, also derjenige mit dem jüngsten datum, zurückgegeben. Dieser wird dann auch als selektierten Lauf gesetzt.
+     * 
+     * @return den selektierten record oder den neusten record.
+     */
     public TrainingCenterRecord getSelected() {
+        setIfNothingSelectedTheNewestAsSelected();
         return selected;
     }
 
@@ -66,17 +72,26 @@ public class TrainingCenterDataCache {
      * @return eine Übersicht auf das selektierte Training.
      */
     public ITrainingOverview getSelectedOverview() {
-        if (selected == null && !list.isEmpty()) {
-            final TrainingCenterRecord newest = Collections.max(new ArrayList<TrainingCenterRecord>(list.values()), new Comparator<TrainingCenterRecord>() {
+        setIfNothingSelectedTheNewestAsSelected();
+        return TrainingOverviewFactory.creatTrainingOverview(selected);
+    }
 
-                @Override
-                public int compare(final TrainingCenterRecord o1, final TrainingCenterRecord o2) {
-                    return Long.valueOf(o1.getDate().toGregorianCalendar().getTimeInMillis()).compareTo(o2.getDate().toGregorianCalendar().getTimeInMillis());
-                }
-            });
+    private void setIfNothingSelectedTheNewestAsSelected() {
+        if (selected == null && !list.isEmpty()) {
+            final TrainingCenterRecord newest = getLatestRun();
             selected = newest;
         }
-        return TrainingOverviewFactory.creatTrainingOverview(selected);
+    }
+
+    private TrainingCenterRecord getLatestRun() {
+        final TrainingCenterRecord newest = Collections.max(new ArrayList<TrainingCenterRecord>(list.values()), new Comparator<TrainingCenterRecord>() {
+
+            @Override
+            public int compare(final TrainingCenterRecord o1, final TrainingCenterRecord o2) {
+                return Long.valueOf(o1.getDate().toGregorianCalendar().getTimeInMillis()).compareTo(o2.getDate().toGregorianCalendar().getTimeInMillis());
+            }
+        });
+        return newest;
     }
 
     /**

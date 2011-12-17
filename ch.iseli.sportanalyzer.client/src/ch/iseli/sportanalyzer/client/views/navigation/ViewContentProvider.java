@@ -9,7 +9,7 @@ import org.eclipse.jface.viewers.Viewer;
 public class ViewContentProvider implements IStructuredContentProvider, ITreeContentProvider {
 
     @Override
-    public void inputChanged(Viewer v, Object oldInput, Object newInput) {
+    public void inputChanged(final Viewer v, final Object oldInput, final Object newInput) {
     }
 
     @Override
@@ -17,31 +17,23 @@ public class ViewContentProvider implements IStructuredContentProvider, ITreeCon
     }
 
     @Override
-    public Object[] getElements(Object parent) {
-        Collection<?> l = (Collection<?>) parent;
+    public Object[] getElements(final Object parent) {
+        final Collection<?> l = (Collection<?>) parent;
         return l.toArray();
     }
 
     @Override
-    public Object[] getChildren(Object parentElement) {
-        // TrainingCenterDatabaseTParent parent = (TrainingCenterDatabaseTParent) parentElement;
-        // return parent.getChilds().toArray();
+    public Object[] getChildren(final Object parentElement) {
         return null;
     }
 
     @Override
-    public Object getParent(Object element) {
-        // if (element instanceof TrainingCenterDatabaseTParent) {
-        // return null;
-        // }
-        // TrainingCenterDatabaseTChild child = (TrainingCenterDatabaseTChild) element;
-        // return child.getParent();
+    public Object getParent(final Object element) {
         return null;
     }
 
     @Override
-    public boolean hasChildren(Object element) {
-        // return element instanceof TrainingCenterDatabaseTParent;
+    public boolean hasChildren(final Object element) {
         return false;
     }
 

@@ -11,6 +11,7 @@ import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -168,6 +169,7 @@ public class NavigationView extends ViewPart {
                 }
             }
         });
+        viewer.setSelection(new StructuredSelection(cache.getSelected()), true);
     }
 
     private void writeStatus(final String message) {
