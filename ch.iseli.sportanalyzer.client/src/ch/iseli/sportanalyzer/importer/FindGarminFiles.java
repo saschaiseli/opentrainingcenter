@@ -1,9 +1,7 @@
 package ch.iseli.sportanalyzer.importer;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -47,13 +45,7 @@ public class FindGarminFiles {
         final String defaultLocation = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.GPS_FILE_LOCATION_PROG);
 
         final File f = new File(defaultLocation);
-        final File[] listFiles = f.listFiles(new FilenameFilter() {
-
-            @Override
-            public boolean accept(final File dir, final String name) {
-                return name.contains(".gmn"); //$NON-NLS-1$
-            }
-        });
+        final File[] listFiles = f.listFiles();
         if (listFiles != null && listFiles.length > 0) {
             return Arrays.asList(listFiles);
         }
@@ -62,28 +54,5 @@ public class FindGarminFiles {
 
     private static boolean istFileNameVonKeyIn(final Map<String, File> fileNameToFile, final Map.Entry<Integer, String> entry) {
         return fileNameToFile.keySet().contains(entry.getValue());
-    }
-
-    /**
-     * Lädt alle Files vom Ort wo die Daten von der Uhr aus abgelegt wurden. Dies ist nicht der Ort wo OTC die Datenablegt, sondern nur der Ort wo die Daten initial auf dem Compi
-     * sind.
-     * 
-     * @param blacklist
-     * @return
-     */
-    public static List<File> getGarminFilesFromWatchExportedPlace(final Collection<String> blacklist) {
-        final String defaultLocation = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.GPS_FILE_LOCATION);
-        final File f = new File(defaultLocation);
-        final File[] listFiles = f.listFiles(new FilenameFilter() {
-
-            @Override
-            public boolean accept(final File dir, final String name) {
-                return name.contains(".gmn") && !blacklist.contains(name); //$NON-NLS-1$
-            }
-        });
-        if (listFiles != null && listFiles.length > 0) {
-            return Arrays.asList(listFiles);
-        }
-        return Collections.emptyList();
     }
 }

@@ -27,16 +27,18 @@ public class ImportJob extends Job {
     private static final Logger logger = Logger.getLogger(NavigationView.class);
 
     final Map<Integer, TrainingCenterRecord> allRuns = new HashMap<Integer, TrainingCenterRecord>();
-    private final IConvert2Tcx tcx;
+    // private final IConvert2Tcx tcx;
 
     private final IAthlete athlete;
+
+    private final ConvertHandler convertHandler;
 
     public ImportJob(final String name, final IAthlete athlete) {
         super(name);
         this.athlete = athlete;
         final IConfigurationElement[] configurationElementsFor = Platform.getExtensionRegistry()
                 .getConfigurationElementsFor(Application.IMPORT_EXTENSION_POINT);
-        this.tcx = getConverterImplementation(configurationElementsFor);
+        convertHandler = getConverterImplementation(configurationElementsFor);
     }
 
     @Override
@@ -46,8 +48,9 @@ public class ImportJob extends Job {
         monitor.beginTask(Messages.ImportJob_0, loadAllGPSFiles.size());
         try {
             for (final Map.Entry<Integer, File> entry : loadAllGPSFiles.entrySet()) {
-                monitor.subTask(Messages.ImportJob_1 + entry.getValue());
-                final TrainingCenterDatabaseT record = tcx.convert(entry.getValue());
+                final File fileForConverting = entry.getValue();
+                monitor.subTask(Messages.ImportJob_1 + fileForConverting);
+                final TrainingCenterDatabaseT record = convertHandler.getMatchingConverter(fileForConverting).convert(fileForConverting);
                 allRuns.put(entry.getKey(), new TrainingCenterRecord(entry.getKey(), record));
                 monitor.worked(1);
             }
@@ -59,14 +62,16 @@ public class ImportJob extends Job {
         return Status.OK_STATUS;
     }
 
-    private IConvert2Tcx getConverterImplementation(final IConfigurationElement[] configurationElementsFor) {
+    private ConvertHandler getConverterImplementation(final IConfigurationElement[] configurationElementsFor) {
+        final ConvertHandler handler = new ConvertHandler();
         for (final IConfigurationElement element : configurationElementsFor) {
             try {
-                return (IConvert2Tcx) element.createExecutableExtension("class"); //$NON-NLS-1$
+                final IConvert2Tcx tcx = (IConvert2Tcx) element.createExecutableExtension(IConvert2Tcx.PROPERETY);
+                handler.addConverter(tcx);
             } catch (final CoreException e) {
-                System.err.println(e.getMessage());
+                logger.error(e.getMessage());
             }
         }
-        return null;
+        return handler;
     }
 }

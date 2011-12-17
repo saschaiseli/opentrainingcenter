@@ -28,6 +28,7 @@ import ch.iseli.sportanalyzer.client.PreferenceConstants;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDataCache;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterRecord;
 import ch.iseli.sportanalyzer.db.DatabaseAccessFactory;
+import ch.iseli.sportanalyzer.importer.ConvertHandler;
 import ch.iseli.sportanalyzer.importer.FindGarminFiles;
 import ch.iseli.sportanalyzer.importer.IConvert2Tcx;
 import ch.iseli.sportanalyzer.tcx.TrainingCenterDatabaseT;
@@ -40,13 +41,14 @@ public class OtcSplashHandler extends BasicSplashHandler {
     private static final String SPACER = "                                                                            "; //$NON-NLS-1$
 
     private final Map<Integer, TrainingCenterRecord> allRuns = new HashMap<Integer, TrainingCenterRecord>();
-    private final IConvert2Tcx tcx;
 
     private ProgressBar fBar;
     private Label titel;
     private Label infotext;
     private final boolean loadFromCache;
     private final IAthlete athlete;
+
+    private final ConvertHandler convertHandler;
 
     public OtcSplashHandler() {
 
@@ -58,13 +60,13 @@ public class OtcSplashHandler extends BasicSplashHandler {
         if (dblocked && !isValidId(athleteId)) {
             loadFromCache = false;
             athlete = null;
-            tcx = null;
+            convertHandler = null;
         } else {
             loadFromCache = true;
             athlete = DatabaseAccessFactory.getDatabaseAccess().getAthlete(Integer.parseInt(athleteId));
             final IConfigurationElement[] configurationElementsFor = Platform.getExtensionRegistry().getConfigurationElementsFor(
                     Application.IMPORT_EXTENSION_POINT);
-            this.tcx = getConverterImplementation(configurationElementsFor);
+            convertHandler = getConverterImplementation(configurationElementsFor);
         }
     }
 
@@ -102,15 +104,17 @@ public class OtcSplashHandler extends BasicSplashHandler {
         return athleteId != null && athleteId.length() > 0;
     }
 
-    private IConvert2Tcx getConverterImplementation(final IConfigurationElement[] configurationElementsFor) {
+    private ConvertHandler getConverterImplementation(final IConfigurationElement[] configurationElementsFor) {
+        final ConvertHandler handler = new ConvertHandler();
         for (final IConfigurationElement element : configurationElementsFor) {
             try {
-                return (IConvert2Tcx) element.createExecutableExtension("class"); //$NON-NLS-1$
+                final IConvert2Tcx tcx = (IConvert2Tcx) element.createExecutableExtension(IConvert2Tcx.PROPERETY);
+                handler.addConverter(tcx);
             } catch (final CoreException e) {
-                System.err.println(e.getMessage());
+                logger.error(e.getMessage());
             }
         }
-        return null;
+        return handler;
     }
 
     @Override
@@ -171,7 +175,8 @@ public class OtcSplashHandler extends BasicSplashHandler {
                                 for (final Map.Entry<Integer, File> entry : loadAllGPSFiles.entrySet()) {
                                     titel.setText(Messages.OtcSplashHandler_0 + (size - (i)));
                                     infotext.setText(Messages.OtcSplashHandler_1 + entry.getValue().getName());
-                                    final TrainingCenterDatabaseT record = tcx.convert(entry.getValue());
+                                    final File fileForConverting = entry.getValue();
+                                    final TrainingCenterDatabaseT record = convertHandler.getMatchingConverter(fileForConverting).convert(fileForConverting);
                                     fBar.setSelection(i);
                                     i++;
                                     allRuns.put(entry.getKey(), new TrainingCenterRecord(entry.getKey(), record));

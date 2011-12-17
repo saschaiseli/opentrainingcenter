@@ -17,6 +17,11 @@ public class ConvertHandler {
         converters.put(converter.getFilePrefix(), converter);
     }
 
+    /**
+     * @param fileToImport
+     *            file welches importiert werden möchte
+     * @return dem cpmverter, der dieses file brauch
+     */
     public IConvert2Tcx getMatchingConverter(final File fileToImport) {
         final String name = fileToImport.getName();
         final String prefix = name.substring(name.indexOf('.') + 1, name.length());
