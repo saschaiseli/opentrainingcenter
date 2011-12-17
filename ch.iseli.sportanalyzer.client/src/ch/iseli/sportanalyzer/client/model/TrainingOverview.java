@@ -67,7 +67,7 @@ public class TrainingOverview implements ITrainingOverview {
         for (final ActivityLapT lap : laps) {
             if (IntensityT.ACTIVE.equals(lap.getIntensity())) {
                 distance += lap.getDistanceMeters();
-                if (maximumSpeed < lap.getMaximumSpeed()) {
+                if (lap.getMaximumSpeed() != null && maximumSpeed < lap.getMaximumSpeed()) {
                     maximumSpeed = lap.getMaximumSpeed();
                 }
                 timeInSeconds += lap.getTotalTimeSeconds();

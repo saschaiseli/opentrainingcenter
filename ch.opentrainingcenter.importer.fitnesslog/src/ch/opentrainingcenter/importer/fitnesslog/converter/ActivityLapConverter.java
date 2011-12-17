@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 import ch.iseli.sportanalyzer.tcx.ActivityLapT;
 import ch.iseli.sportanalyzer.tcx.HeartRateInBeatsPerMinuteT;
+import ch.iseli.sportanalyzer.tcx.IntensityT;
 import ch.opentrainingcenter.importer.fitnesslog.model.Calories;
 import ch.opentrainingcenter.importer.fitnesslog.model.Distance;
 import ch.opentrainingcenter.importer.fitnesslog.model.HeartRate;
@@ -32,12 +33,13 @@ public class ActivityLapConverter implements Convert<Lap, ActivityLapT> {
         if (durationSeconds != null) {
             lapT.setTotalTimeSeconds(durationSeconds.intValue());
         }
+        lapT.setIntensity(IntensityT.ACTIVE);
         return lapT;
     }
 
-    protected HeartRateInBeatsPerMinuteT convert(final BigDecimal rate) {
+    private HeartRateInBeatsPerMinuteT convert(final BigDecimal rate) {
         final HeartRateInBeatsPerMinuteT bpm = new HeartRateInBeatsPerMinuteT();
-        bpm.setValue(rate.shortValue());
+        bpm.setValue(rate != null ? rate.shortValue() : 0);
         return bpm;
     }
 }

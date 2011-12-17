@@ -65,6 +65,9 @@ public class TrainingCenterDataCache {
      * @return eine Übersicht auf das selektierte Training.
      */
     public ITrainingOverview getSelectedOverview() {
+        if (selected == null && !list.isEmpty()) {
+
+        }
         return TrainingOverviewFactory.creatTrainingOverview(selected);
     }
 
@@ -165,5 +168,9 @@ public class TrainingCenterDataCache {
 
     public boolean isCacheLoaded() {
         return cacheLoaded;
+    }
+
+    public void setSelectedRun(final Integer id) {
+        selected = list.get(id);
     }
 }

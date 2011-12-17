@@ -58,7 +58,9 @@ public class ConvertFitnesslog2Tcx implements IConvert2Tcx {
 
     @Override
     public TrainingCenterDatabaseT convert(final File file) throws Exception {
-        return null;
+        final FitnessWorkbook workbook = unmarshall(file);
+        final ConvertWorkbook2Tcx convertWorkbook2Tcx = new ConvertWorkbook2Tcx();
+        return convertWorkbook2Tcx.convert(workbook);
     }
 
     protected FitnessWorkbook unmarshall(final File file) throws JAXBException, SAXException {

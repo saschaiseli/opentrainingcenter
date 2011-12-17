@@ -173,8 +173,11 @@
          point="org.eclipse.ui.splashHandlers">
       <splashHandler
             class="ch.iseli.sportanalyzer.client.splash.OtcSplashHandler"
-            id="ch.iseli.sportanalyzer.client.splashHandlers.extensible">
+            id="ch.iseli.sportanalyzer.client.splashHandlers.mySplash">
       </splashHandler>
+      <splashHandlerProductBinding
+            productId="ch.iseli.sportanalyzer.client.opentrainingcenter"
+            splashId="ch.iseli.sportanalyzer.client.splashHandlers.mySplash">
+      </splashHandlerProductBinding>
    </extension>
-
 </plugin>

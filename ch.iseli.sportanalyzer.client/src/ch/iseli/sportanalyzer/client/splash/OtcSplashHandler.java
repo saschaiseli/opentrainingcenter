@@ -176,9 +176,10 @@ public class OtcSplashHandler extends BasicSplashHandler {
                                     i++;
                                     allRuns.put(entry.getKey(), new TrainingCenterRecord(entry.getKey(), record));
                                 }
-                                TrainingCenterDataCache.getInstance().setSelectedProfile(athlete);
-                                TrainingCenterDataCache.getInstance().addAll(allRuns);
-                                TrainingCenterDataCache.getInstance().cacheLoaded();
+                                final TrainingCenterDataCache cache = TrainingCenterDataCache.getInstance();
+                                cache.setSelectedProfile(athlete);
+                                cache.addAll(allRuns);
+                                cache.cacheLoaded();
                             } catch (final Exception e) {
                                 logger.error(e.getMessage());
                             }

@@ -1,21 +1,28 @@
 package ch.opentrainingcenter.importer.fitnesslog.converter;
 
-import java.math.BigDecimal;
 import java.util.List;
+
+import javax.xml.datatype.XMLGregorianCalendar;
 
 import ch.iseli.sportanalyzer.tcx.ActivityLapT;
 import ch.iseli.sportanalyzer.tcx.ActivityListT;
 import ch.iseli.sportanalyzer.tcx.ActivityT;
+import ch.iseli.sportanalyzer.tcx.SportT;
+import ch.iseli.sportanalyzer.tcx.TrackT;
+import ch.iseli.sportanalyzer.tcx.TrackpointT;
 import ch.iseli.sportanalyzer.tcx.TrainingCenterDatabaseT;
 import ch.opentrainingcenter.importer.fitnesslog.model.Activity;
 import ch.opentrainingcenter.importer.fitnesslog.model.AthleteLog;
-import ch.opentrainingcenter.importer.fitnesslog.model.Distance;
 import ch.opentrainingcenter.importer.fitnesslog.model.FitnessWorkbook;
-import ch.opentrainingcenter.importer.fitnesslog.model.HeartRate;
 import ch.opentrainingcenter.importer.fitnesslog.model.Lap;
 import ch.opentrainingcenter.importer.fitnesslog.model.Laps;
+import ch.opentrainingcenter.importer.fitnesslog.model.Pt;
+import ch.opentrainingcenter.importer.fitnesslog.model.Track;
 
 public class ConvertWorkbook2Tcx {
+
+    private final ActivityLapConverter lapConverter = new ActivityLapConverter();
+
     public TrainingCenterDatabaseT convert(final FitnessWorkbook workbook) {
         final TrainingCenterDatabaseT database = new TrainingCenterDatabaseT();
         final ActivityListT activityList = new ActivityListT();
@@ -24,21 +31,39 @@ public class ConvertWorkbook2Tcx {
         for (final AthleteLog log : athleteLog) {
             final List<Activity> activities = log.getActivity();
             for (final Activity activity : activities) {
-                final ActivityT activityT = new ActivityT();
-                activityT.setId(activity.getStartTime());
-                activityList.getActivity().add(activityT);
-                final List<ActivityLapT> lap2 = activityT.getLap();
-                final ActivityLapT e;
-                // final e.get
-                // lap2.add(e)
-                //
+                final ActivityT aT = new ActivityT();
+
+                aT.setSport(SportT.RUNNING);
+                final XMLGregorianCalendar startTime = activity.getStartTime();
+
+                aT.setId(startTime);
+
                 final Laps laps = activity.getLaps();
-                for (final Lap lap : laps.getLap()) {
-                    final HeartRate heartRate = lap.getHeartRate();
-                    final Distance distance = lap.getDistance();
-                    final BigDecimal durationSeconds = lap.getDurationSeconds();
+                ActivityLapT converted = null;
+
+                // da in fitnesslog kein mapping von lap auf tracks sind, werden einfach alle trackpoints der ersten runde zugewiesen
+                final List<Lap> singleLap = laps.getLap();
+                if (singleLap != null && !singleLap.isEmpty()) {
+                    converted = lapConverter.convert(singleLap.get(0));
                 }
+
+                // wenn ein lap da ist, werden die points einfach zu der ersten hinzugefügt
+                if (converted != null) {
+                    final List<TrackT> tcxTracks = converted.getTrack();
+                    final Track track = activity.getTrack();
+                    final List<Pt> points = track.getPt();
+                    final TrackT tcxTrack = new TrackT();
+                    final TrackpointConverter trackPointConverter = new TrackpointConverter(startTime);
+                    for (final Pt pt : points) {
+                        final TrackpointT tcxTrackPoint = trackPointConverter.convert(pt);
+                        tcxTrack.getTrackpoint().add(tcxTrackPoint);
+                    }
+                    tcxTracks.add(tcxTrack);
+                }
+                aT.getLap().add(converted);
+                activityList.getActivity().add(aT);
             }
+
         }
         database.setActivities(activityList);
         return database;
