@@ -38,7 +38,7 @@ public class FindGarminFiles {
     }
 
     /**
-     * Sucht alle garmin files welche bereits einmal mit dem otc importiert wurden.
+     * Gibt alle Files zurück, welche im Verzeichnis sind, wo das Programm die GPS Files ablegt.
      */
     private static List<File> getGarminFiles() {
 
