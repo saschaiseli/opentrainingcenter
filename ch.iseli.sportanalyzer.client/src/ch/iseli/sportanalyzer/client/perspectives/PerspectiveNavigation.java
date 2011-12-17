@@ -22,9 +22,10 @@ public class PerspectiveNavigation implements IPerspectiveFactory {
         layout.setEditorAreaVisible(false);
 
         layout.addStandaloneView(NavigationView.ID, false, IPageLayout.LEFT, 0.20f, editorArea);
+        layout.getViewLayout(NavigationView.ID).setCloseable(false);
 
         final IFolderLayout folderRight = layout.createFolder(RIGHT_PART, IPageLayout.RIGHT, 0.80f, editorArea);
-        folderRight.addPlaceholder(SingleActivityViewPart.ID + MULTI_VIEW);
+        folderRight.addView(SingleActivityViewPart.ID + MULTI_VIEW);
 
         layout.addPerspectiveShortcut(PerspectiveNavigation.ID);
         layout.addPerspectiveShortcut(OverviewPerspectiveFactory.ID);

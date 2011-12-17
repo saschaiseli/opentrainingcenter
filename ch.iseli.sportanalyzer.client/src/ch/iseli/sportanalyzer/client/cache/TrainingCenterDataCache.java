@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -66,7 +67,14 @@ public class TrainingCenterDataCache {
      */
     public ITrainingOverview getSelectedOverview() {
         if (selected == null && !list.isEmpty()) {
+            final TrainingCenterRecord newest = Collections.max(new ArrayList<TrainingCenterRecord>(list.values()), new Comparator<TrainingCenterRecord>() {
 
+                @Override
+                public int compare(final TrainingCenterRecord o1, final TrainingCenterRecord o2) {
+                    return Long.valueOf(o1.getDate().toGregorianCalendar().getTimeInMillis()).compareTo(o2.getDate().toGregorianCalendar().getTimeInMillis());
+                }
+            });
+            selected = newest;
         }
         return TrainingOverviewFactory.creatTrainingOverview(selected);
     }
