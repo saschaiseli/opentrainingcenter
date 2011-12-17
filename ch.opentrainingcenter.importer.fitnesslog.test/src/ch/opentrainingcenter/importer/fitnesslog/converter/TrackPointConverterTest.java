@@ -19,7 +19,8 @@ import ch.opentrainingcenter.importer.fitnesslog.model.Pt;
 
 public class TrackPointConverterTest {
     private TrackpointConverter conv;
-    private Pt pt;
+    private Pt previousPoint;
+    private Pt currentPoint;
 
     private XMLGregorianCalendar startTime;
     private GregorianCalendar cal;
@@ -38,29 +39,48 @@ public class TrackPointConverterTest {
         startTime = DatatypeFactory.newInstance().newXMLGregorianCalendar(cal);
 
         conv = new TrackpointConverter(startTime);
-        pt = new Pt();
-        pt.setEle(BigDecimal.valueOf(510.000));
-        pt.setLat(BigDecimal.valueOf(43.123456));
-        pt.setLon(BigDecimal.valueOf(7.123456));
-        pt.setHr(BigDecimal.valueOf(142.000));
-        pt.setTm(BigDecimal.valueOf(42.000));
+        previousPoint = new Pt();
+        previousPoint.setLat(BigDecimal.valueOf(43.123456));
+        previousPoint.setLon(BigDecimal.valueOf(7.123456));
+        previousPoint.setDist(BigDecimal.valueOf(0));
+
+        currentPoint = new Pt();
+        currentPoint.setEle(BigDecimal.valueOf(510.000));
+        currentPoint.setLat(BigDecimal.valueOf(43.123456));
+        currentPoint.setLon(BigDecimal.valueOf(7.123456));
+        currentPoint.setHr(BigDecimal.valueOf(142.000));
+        currentPoint.setTm(BigDecimal.valueOf(42.000));
     }
 
     @Test
     public void testSimple() {
-        final TrackpointT convert = conv.convert(pt);
+        final TrackpointT convert = conv.convert(previousPoint, currentPoint);
         assertNotNull(convert);
     }
 
     @Test
     public void testFull() {
-        final TrackpointT convert = conv.convert(pt);
+        final TrackpointT convert = conv.convert(previousPoint, currentPoint);
         assertEquals(510.00, convert.getAltitudeMeters().doubleValue(), 0.0001);
         assertEquals(43.123456, convert.getPosition().getLatitudeDegrees(), 0.0001);
         assertEquals(7.123456, convert.getPosition().getLongitudeDegrees(), 0.0001);
         assertEquals(142, convert.getHeartRateBpm().getValue(), 0.0001);
+        assertEquals(0.0, convert.getDistanceMeters(), 0.0001);
         cal.add(Calendar.SECOND, 42);
         final GregorianCalendar gregorianCalendar = convert.getTime().toGregorianCalendar();
         assertEquals(cal.getTimeInMillis(), gregorianCalendar.getTimeInMillis());
+    }
+
+    @Test
+    public void testDistance() {
+
+        previousPoint.setLat(BigDecimal.valueOf(49.9917));
+        previousPoint.setLon(BigDecimal.valueOf(8.41321));
+
+        currentPoint.setLat(BigDecimal.valueOf(50.0049));
+        currentPoint.setLon(BigDecimal.valueOf(8.42182));
+
+        final TrackpointT convert = conv.convert(previousPoint, currentPoint);
+        assertEquals(1591.4944, convert.getDistanceMeters(), 0.0001);
     }
 }

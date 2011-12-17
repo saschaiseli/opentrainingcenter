@@ -2,8 +2,6 @@ package ch.iseli.sportanalyzer.client.views.overview;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
-
 import ch.iseli.sportanalyzer.client.Messages;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterRecord;
 import ch.iseli.sportanalyzer.tcx.ActivityLapT;
@@ -15,10 +13,7 @@ import ch.iseli.sportanalyzer.tcx.TrackpointT;
 
 public final class MapConverter {
 
-    private static final Logger logger = Logger.getLogger(MapConverter.class);
-
     private MapConverter() {
-
     }
 
     public static String convertTrackpoints(final TrainingCenterRecord record) {
@@ -36,7 +31,6 @@ public final class MapConverter {
                         final PositionT position = point.getPosition();
                         if (position != null) {
                             str.append('[').append(position.getLatitudeDegrees()).append(',').append(position.getLongitudeDegrees()).append("],"); //$NON-NLS-1$
-                            logger.debug(Messages.MapConverter_0 + position.getLatitudeDegrees() + " / " + position.getLongitudeDegrees()); //$NON-NLS-1$
                             pointAdded = true;
                         }
                     }

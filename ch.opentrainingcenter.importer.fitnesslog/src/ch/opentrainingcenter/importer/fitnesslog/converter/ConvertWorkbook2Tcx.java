@@ -1,5 +1,6 @@
 package ch.opentrainingcenter.importer.fitnesslog.converter;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -54,9 +55,12 @@ public class ConvertWorkbook2Tcx {
                     final List<Pt> points = track.getPt();
                     final TrackT tcxTrack = new TrackT();
                     final TrackpointConverter trackPointConverter = new TrackpointConverter(startTime);
+                    Pt previousPoint = null;
                     for (final Pt pt : points) {
-                        final TrackpointT tcxTrackPoint = trackPointConverter.convert(pt);
+                        final TrackpointT tcxTrackPoint = trackPointConverter.convert(previousPoint, pt);
                         tcxTrack.getTrackpoint().add(tcxTrackPoint);
+                        previousPoint = pt;
+                        previousPoint.setDist(BigDecimal.valueOf(tcxTrackPoint.getDistanceMeters()));
                     }
                     tcxTracks.add(tcxTrack);
                 }
