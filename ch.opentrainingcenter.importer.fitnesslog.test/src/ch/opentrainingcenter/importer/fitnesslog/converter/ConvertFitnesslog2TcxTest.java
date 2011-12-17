@@ -12,7 +12,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
-import ch.opentrainingcenter.importer.fitnesslog.converter.ConvertFitnesslog2Tcx;
 import ch.opentrainingcenter.importer.fitnesslog.model.Activity;
 import ch.opentrainingcenter.importer.fitnesslog.model.AthleteLog;
 import ch.opentrainingcenter.importer.fitnesslog.model.FitnessWorkbook;
@@ -39,5 +38,17 @@ public class ConvertFitnesslog2TcxTest {
         final AthleteLog athleteLog = workbook.getAthleteLog().get(0);
         final Activity activity = athleteLog.getActivity().get(0);
         assertNotNull(activity);
+    }
+
+    @Test
+    public void testConvertTwoFitlogs() throws JAXBException, SAXException {
+        final File gpBern = new File("resources/twoActivities.fitlog"); //$NON-NLS-1$
+        assertTrue(gpBern.exists());
+        final FitnessWorkbook workbook = convertFitnesslog2Tcx.unmarshall(gpBern);
+        assertNotNull(workbook);
+        final AthleteLog athleteLog = workbook.getAthleteLog().get(0);
+        assertEquals(2, athleteLog.getActivity().size());
+        // final Activity activity = athleteLog.getActivity().get(0);
+        // assertNotNull(activity);
     }
 }

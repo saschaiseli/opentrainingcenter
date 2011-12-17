@@ -34,14 +34,16 @@ public class TrackpointConverter {
      */
     public TrackpointT convert(final Pt previousPoint, final Pt currentPoint) {
         final TrackpointT point = new TrackpointT();
-        point.setAltitudeMeters(currentPoint.getEle().doubleValue());
+        point.setAltitudeMeters(currentPoint.getEle() != null ? currentPoint.getEle().doubleValue() : 0);
         // point.setDistanceMeters(pt.getDist().doubleValue());
         final HeartRateInBeatsPerMinuteT beatsPerMinuteT = new HeartRateInBeatsPerMinuteT();
-        beatsPerMinuteT.setValue(currentPoint.getHr().shortValue());
+        beatsPerMinuteT.setValue(currentPoint.getHr() != null ? currentPoint.getHr().shortValue() : 0);
         point.setHeartRateBpm(beatsPerMinuteT);
         final PositionT position = new PositionT();
-        position.setLatitudeDegrees(currentPoint.getLat().doubleValue());
-        position.setLongitudeDegrees(currentPoint.getLon().doubleValue());
+        if (isPointValid(currentPoint)) {
+            position.setLatitudeDegrees(currentPoint.getLat().doubleValue());
+            position.setLongitudeDegrees(currentPoint.getLon().doubleValue());
+        }
         point.setPosition(position);
 
         try {
@@ -50,10 +52,7 @@ public class TrackpointConverter {
             final Duration duration = DatatypeFactory.newInstance().newDuration(secondsAfterStart.intValue() * 1000);
             time.add(duration);
             point.setTime(time);
-            final HeartRateInBeatsPerMinuteT heartRate = new HeartRateInBeatsPerMinuteT();
-            heartRate.setValue(currentPoint.getHr().shortValue());
-            point.setHeartRateBpm(heartRate);
-            if (previousPoint != null && previousPoint.getLat() != null && previousPoint.getLon() != null) {
+            if (isPointValid(previousPoint) && isPointValid(currentPoint)) {
                 // final Double distance = calculateDistance(previousPoint, currentPoint);
                 double distance = distance(previousPoint.getLat().doubleValue(), previousPoint.getLon().doubleValue(), currentPoint.getLat().doubleValue(),
                         currentPoint.getLon().doubleValue());
@@ -67,6 +66,10 @@ public class TrackpointConverter {
             logger.error(e);
         }
         return point;
+    }
+
+    private boolean isPointValid(final Pt point) {
+        return point != null && point.getLat() != null && point.getLon() != null;
     }
 
     private double distance(final double lat1, final double lon1, final double lat2, final double lon2) {

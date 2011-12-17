@@ -13,10 +13,10 @@ public class TrainingCenterRecord implements Comparable<TrainingCenterRecord> {
 
     private final XMLGregorianCalendar date;
 
-    public TrainingCenterRecord(Integer id, TrainingCenterDatabaseT databaseT) {
+    public TrainingCenterRecord(final Integer id, final TrainingCenterDatabaseT partialTrainingCenterDatabase) {
         this.id = id;
-        this.databaseT = databaseT;
-        date = databaseT.getActivities().getActivity().get(0).getId();
+        this.databaseT = partialTrainingCenterDatabase;
+        date = partialTrainingCenterDatabase.getActivities().getActivity().get(0).getId();
     }
 
     @Override
@@ -37,7 +37,7 @@ public class TrainingCenterRecord implements Comparable<TrainingCenterRecord> {
     }
 
     @Override
-    public int compareTo(TrainingCenterRecord o) {
+    public int compareTo(final TrainingCenterRecord o) {
         return getDate().compare(o.getDate());
     }
 

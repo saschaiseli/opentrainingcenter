@@ -9,6 +9,7 @@ package ch.iseli.sportanalyzer.tcx;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -52,17 +53,17 @@ public class ActivityT {
     @XmlSchemaType(name = "dateTime")
     protected XMLGregorianCalendar id;
     @XmlElement(name = "Lap", required = true)
-    protected List<ActivityLapT>   lap;
+    protected List<ActivityLapT> lap;
     @XmlElement(name = "Notes")
-    protected String               notes;
+    protected String notes;
     @XmlElement(name = "Training")
-    protected TrainingT            training;
+    protected TrainingT training;
     @XmlElement(name = "Creator")
-    protected AbstractSourceT      creator;
+    protected AbstractSourceT creator;
     @XmlElement(name = "Extensions")
-    protected ExtensionsT          extensions;
+    protected ExtensionsT extensions;
     @XmlAttribute(name = "Sport", required = true)
-    protected SportT               sport;
+    protected SportT sport;
 
     /**
      * Gets the value of the id property.
@@ -81,7 +82,7 @@ public class ActivityT {
      *            allowed object is {@link XMLGregorianCalendar }
      * 
      */
-    public void setId(XMLGregorianCalendar value) {
+    public void setId(final XMLGregorianCalendar value) {
         this.id = value;
     }
 
@@ -129,7 +130,7 @@ public class ActivityT {
      *            allowed object is {@link String }
      * 
      */
-    public void setNotes(String value) {
+    public void setNotes(final String value) {
         this.notes = value;
     }
 
@@ -150,7 +151,7 @@ public class ActivityT {
      *            allowed object is {@link TrainingT }
      * 
      */
-    public void setTraining(TrainingT value) {
+    public void setTraining(final TrainingT value) {
         this.training = value;
     }
 
@@ -171,7 +172,7 @@ public class ActivityT {
      *            allowed object is {@link AbstractSourceT }
      * 
      */
-    public void setCreator(AbstractSourceT value) {
+    public void setCreator(final AbstractSourceT value) {
         this.creator = value;
     }
 
@@ -192,7 +193,7 @@ public class ActivityT {
      *            allowed object is {@link ExtensionsT }
      * 
      */
-    public void setExtensions(ExtensionsT value) {
+    public void setExtensions(final ExtensionsT value) {
         this.extensions = value;
     }
 
@@ -213,8 +214,12 @@ public class ActivityT {
      *            allowed object is {@link SportT }
      * 
      */
-    public void setSport(SportT value) {
+    public void setSport(final SportT value) {
         this.sport = value;
     }
 
+    @Override
+    public String toString() {
+        return id.toString();
+    }
 }

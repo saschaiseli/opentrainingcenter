@@ -82,6 +82,6 @@ public class ConvertFitnesslog2Tcx implements IConvert2Tcx {
 
     @Override
     public String getFilePrefix() {
-        return "logfile"; //$NON-NLS-1$
+        return "fitlog"; //$NON-NLS-1$
     }
 }

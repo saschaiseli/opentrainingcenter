@@ -91,8 +91,7 @@ public class ImportManualGpsFiles extends Action implements ISelectionListener, 
         final FileDialog fileDialog = new FileDialog(window.getShell(), SWT.MULTI);
         fileDialog.setFilterPath(defaultLocation);
         final List<String> filePrefixes = handler.getSupportedFileSuffixes();
-        fileDialog.setFilterExtensions(filePrefixes.toArray(new String[0]));//new String[] { "*." + tcx.getFilePrefix() }); //$NON-NLS-1$
-        //        fileDialog.setFilterNames(new String[] { "Configuration files (*." + tcx.getFilePrefix() + Messages.ImportManualGpsFiles_0 }); //$NON-NLS-1$
+        fileDialog.setFilterExtensions(filePrefixes.toArray(new String[0]));
         fileDialog.setText(Messages.ImportManualGpsFiles_FileDialog);
         final String s = fileDialog.open();
         if (s != null) {
@@ -113,6 +112,11 @@ public class ImportManualGpsFiles extends Action implements ISelectionListener, 
                             monitor.setTaskName(Messages.ImportManualGpsFiles_5 + file.getName());
                             logger.info("importiere File: " + file.getName()); //$NON-NLS-1$
                             final TrainingCenterDatabaseT record = handler.getMatchingConverter(file).convert(file);
+
+                            if (record != null && record.getActivities() != null && record.getActivities().getActivity().size() > 1) {
+                                logger.info("mehrere aktivitaeten --> mehrere records...."); //$NON-NLS-1$
+                            }
+
                             logger.info("record: " + record != null ? record.toString() : " record ist null"); //$NON-NLS-1$//$NON-NLS-2$
                             final Integer importRecordId = DatabaseAccessFactory.getDatabaseAccess().importRecord(athlete.getId(), file.getName());
                             allRecords.put(importRecordId, new TrainingCenterRecord(importRecordId, record));
