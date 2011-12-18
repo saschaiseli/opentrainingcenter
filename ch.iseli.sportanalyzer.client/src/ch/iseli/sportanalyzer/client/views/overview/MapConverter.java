@@ -3,9 +3,7 @@ package ch.iseli.sportanalyzer.client.views.overview;
 import java.util.List;
 
 import ch.iseli.sportanalyzer.client.Messages;
-import ch.iseli.sportanalyzer.client.cache.TrainingCenterRecord;
 import ch.iseli.sportanalyzer.tcx.ActivityLapT;
-import ch.iseli.sportanalyzer.tcx.ActivityListT;
 import ch.iseli.sportanalyzer.tcx.ActivityT;
 import ch.iseli.sportanalyzer.tcx.PositionT;
 import ch.iseli.sportanalyzer.tcx.TrackT;
@@ -16,26 +14,24 @@ public final class MapConverter {
     private MapConverter() {
     }
 
-    public static String convertTrackpoints(final TrainingCenterRecord record) {
+    public static String convertTrackpoints(final ActivityT activity) {
         final StringBuffer str = new StringBuffer();
         str.append('[');
         boolean pointAdded = false;
-        final ActivityListT activities = record.getTrainingCenterDatabase().getActivities();
-        for (final ActivityT activity : activities.getActivity()) {
-            final List<ActivityLapT> lap = activity.getLap();
-            for (final ActivityLapT activityLapT : lap) {
-                final List<TrackT> track = activityLapT.getTrack();
-                for (final TrackT trackT : track) {
-                    final List<TrackpointT> trackpoint = trackT.getTrackpoint();
-                    for (final TrackpointT point : trackpoint) {
-                        final PositionT position = point.getPosition();
-                        if (position != null) {
-                            str.append('[').append(position.getLatitudeDegrees()).append(',').append(position.getLongitudeDegrees()).append("],"); //$NON-NLS-1$
-                            pointAdded = true;
-                        }
+        final List<ActivityLapT> lap = activity.getLap();
+        for (final ActivityLapT activityLapT : lap) {
+            final List<TrackT> track = activityLapT.getTrack();
+            for (final TrackT trackT : track) {
+                final List<TrackpointT> trackpoint = trackT.getTrackpoint();
+                for (final TrackpointT point : trackpoint) {
+                    final PositionT position = point.getPosition();
+                    if (position != null) {
+                        str.append('[').append(position.getLatitudeDegrees()).append(',').append(position.getLongitudeDegrees()).append("],"); //$NON-NLS-1$
+                        pointAdded = true;
                     }
                 }
             }
+
         }
         if (pointAdded) {
             str.append(']');

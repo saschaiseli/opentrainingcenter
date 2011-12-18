@@ -13,6 +13,7 @@ import java.util.TreeMap;
 import org.apache.log4j.Logger;
 
 import ch.iseli.sportanalyzer.client.model.SimpleTraining;
+import ch.iseli.sportanalyzer.tcx.ActivityT;
 
 public class TrainingOverviewDatenAufbereiten {
 
@@ -32,12 +33,12 @@ public class TrainingOverviewDatenAufbereiten {
         cache.addListener(new IRecordListener() {
 
             @Override
-            public void recordChanged(final Collection<TrainingCenterRecord> entry) {
+            public void recordChanged(final Collection<ActivityT> entry) {
                 loadDataFromCache();
             }
 
             @Override
-            public void deleteRecord(final Collection<TrainingCenterRecord> entry) {
+            public void deleteRecord(final Collection<ActivityT> entry) {
                 loadDataFromCache();
             }
 

@@ -34,7 +34,6 @@ import org.jfree.experimental.chart.swt.ChartComposite;
 
 import ch.iseli.sportanalyzer.client.Messages;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDataCache;
-import ch.iseli.sportanalyzer.client.cache.TrainingCenterRecord;
 import ch.iseli.sportanalyzer.client.charts.HeartIntervallCreator;
 import ch.iseli.sportanalyzer.client.helper.SpeedCalculator;
 import ch.iseli.sportanalyzer.client.helper.ZoneHelper;
@@ -264,7 +263,7 @@ public class SingleActivityViewPart extends ViewPart {
         layout.bottomMargin = 5;
         client.setLayout(layout);
 
-        final TrainingCenterRecord selected = TrainingCenterDataCache.getInstance().getSelected();
+        final ActivityT selected = TrainingCenterDataCache.getInstance().getSelected();
         final String convertTrackpoints = MapConverter.convertTrackpoints(selected);
         final String firstPointToPan = MapConverter.getFirstPointToPan(convertTrackpoints);
         final MapViewer mapViewer = new MapViewer(client, SWT.NONE, convertTrackpoints, firstPointToPan);
@@ -365,9 +364,8 @@ public class SingleActivityViewPart extends ViewPart {
 
     private XYDataset createDataset(final ChartType type) {
 
-        final TrainingCenterRecord selected = cache.getSelected();
-        final ActivityT activityT = selected.getTrainingCenterDatabase().getActivities().getActivity().get(0);
-        final List<ActivityLapT> laps = activityT.getLap();
+        final ActivityT selectedActivity = cache.getSelected();
+        final List<ActivityLapT> laps = selectedActivity.getLap();
         final XYSeries series1 = new XYSeries(Messages.SingleActivityViewPart_18);
         for (final ActivityLapT activityLapT : laps) {
             final List<TrackT> tracks = activityLapT.getTrack();

@@ -22,6 +22,9 @@
   <property generated="never" lazy="false" name="importedDate" type="timestamp">
    <column length="23" name="IMPORTED_DATE"/>
   </property>
+  <property generated="never" lazy="false" name="activityId" type="timestamp">
+   <column length="23" name="ACTIVITY_ID"/>
+  </property>
   <property generated="never" lazy="false" name="comments" type="string">
    <column name="COMMENTS"/>
   </property>

@@ -1,5 +1,6 @@
 package ch.iseli.sportanalyzer.db;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -12,7 +13,8 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
     public static final String EXTENSION_POINT_NAME = "classImportedDao"; //$NON-NLS-1$
 
     /**
-     * Gibt eine Liste von Filenamen zurück die diesem Athleten gehören. Das Resultat ist nicht ein absoluter File Pfad sondern einfach der Filename.
+     * Gibt eine Liste von Filenamen zurück die diesem Athleten gehören. Das Resultat ist nicht ein absoluter File Pfad sondern einfach der Filename. Die Id der Map ist das
+     * Startdatum des Laufes. Dies ist sogleich die ID.
      * 
      * <pre>
      * z.b.: 201011201234.gmn
@@ -22,19 +24,21 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
      *            id des sportlers.
      * @return eine liste mit den records von diesem sportler.
      */
-    Map<Integer, String> getImportedRecords(IAthlete athlete);
+    Map<Date, String> getImportedRecords(IAthlete athlete);
 
     /**
      * Importiert den Record in die Datenbank. Zweimaliges importieren wird ignoriert. Das heisst ein anderer Benutzer kann nicht denselben Record auch importieren. Massgebendes
-     * Kriterium hierfür ist der Filename.
+     * Kriterium hierfür ist der Filename und die id der Actitvity.
      * 
      * @param athleteId
      *            die ID des Athleten
      * @param name
      *            der Filename des GPS Files.
-     * @return die ID von der Datenbank.
+     * @param activityId
+     *            id der aktivität.
+     * @return id des datenbankeintrages oder -1 wenn der record bereits in der datenbank war.
      */
-    int importRecord(int athleteId, String name);
+    int importRecord(int athleteId, String fileName, Date activityId);
 
     /**
      * Gibt den sportler mit
@@ -55,7 +59,7 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
 
     List<IAthlete> getAllAthletes();
 
-    void removeImportedRecord(Integer id);
+    void removeImportedRecord(Date activityId);
 
     /**
      * Wenn die db nicht vorhanden ist, wird die ganze datenbank mit sql queries erstellt.
@@ -69,4 +73,5 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
      *             wenn das speichern fehlschlägt
      */
     int save(IAthlete athlete);
+
 }

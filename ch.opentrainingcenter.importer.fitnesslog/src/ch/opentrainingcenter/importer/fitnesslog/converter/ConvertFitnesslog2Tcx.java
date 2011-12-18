@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
+import java.util.List;
 
 import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
@@ -20,6 +21,7 @@ import org.osgi.framework.Bundle;
 import org.xml.sax.SAXException;
 
 import ch.iseli.sportanalyzer.importer.IConvert2Tcx;
+import ch.iseli.sportanalyzer.tcx.ActivityT;
 import ch.iseli.sportanalyzer.tcx.TrainingCenterDatabaseT;
 import ch.opentrainingcenter.importer.fitnesslog.Activator;
 import ch.opentrainingcenter.importer.fitnesslog.model.FitnessWorkbook;
@@ -84,4 +86,10 @@ public class ConvertFitnesslog2Tcx implements IConvert2Tcx {
     public String getFilePrefix() {
         return "fitlog"; //$NON-NLS-1$
     }
+
+    @Override
+    public List<ActivityT> convertActivity(final File file) throws Exception {
+        return convert(file).getActivities().getActivity();
+    }
+
 }

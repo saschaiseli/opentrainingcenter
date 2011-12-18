@@ -31,7 +31,7 @@ public class ImportJobChangeListener implements IJobChangeListener {
             @Override
             public void run() {
                 try {
-                    viewer.setInput(TrainingCenterDataCache.getInstance().getAllRuns());
+                    viewer.setInput(TrainingCenterDataCache.getInstance().getAllActivities());
                 } catch (final Exception e) {
                     e.printStackTrace();
                 }

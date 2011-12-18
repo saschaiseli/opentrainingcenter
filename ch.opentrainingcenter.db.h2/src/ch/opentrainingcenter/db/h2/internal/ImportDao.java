@@ -23,7 +23,7 @@ public class ImportDao {
     }
 
     @SuppressWarnings("unchecked")
-    public Map<Integer, String> getImportedRecords(final IAthlete athlete) {
+    public Map<Date, String> getImportedRecords(final IAthlete athlete) {
         if (athlete == null) {
             return null;
         }
@@ -33,24 +33,25 @@ public class ImportDao {
         if (all == null) {
             return null;
         }
-        final Map<Integer, String> keyFileName = new HashMap<Integer, String>();
+        final Map<Date, String> keyFileName = new HashMap<Date, String>();
         for (final IImported rec : all) {
-            keyFileName.put(rec.getId(), rec.getComments());
+            keyFileName.put(rec.getActivityId(), rec.getComments());
         }
         return keyFileName;
     }
 
-    public int importRecord(final int athleteId, final String name) {
-        final int id = searchRecord(name);
+    public int importRecord(final int athleteId, final String fileName, final Date activityId) {
+        final int id = searchRecord(activityId);
         if (id > 0) {
-            return id;
+            return -1;
         }
         final IImported record = CommonTransferFactory.createIImported();
         final IAthlete athlete = DatabaseAccessFactory.getDatabaseAccess().getAthlete(athleteId);
         athlete.addImported(record);
         record.setAthlete(athlete);
-        record.setComments(name);
+        record.setComments(fileName);
         record.setImportedDate(new Date());
+        record.setActivityId(activityId);
         final Session session = dao.getSession();
         final Transaction tx = session.beginTransaction();
         session.saveOrUpdate(record);
@@ -62,11 +63,11 @@ public class ImportDao {
     /**
      * sucht ob es bereits einen importierten datensatz mit diesem namen gibt. Damit soll geschaut werden, ob der Record bereits einmal importiert wurde.
      */
-    private int searchRecord(final String name) {
+    private int searchRecord(final Date activityId) {
         final Session session = dao.getSession();
         dao.begin();
-        final Query query = session.createQuery("from Imported where COMMENTS=:name");//$NON-NLS-1$
-        query.setParameter("name", name);//$NON-NLS-1$
+        final Query query = session.createQuery("from Imported where activityId=:id");//$NON-NLS-1$
+        query.setParameter("id", activityId); //$NON-NLS-1$
         @SuppressWarnings("unchecked")
         final List<IImported> all = query.list();
         dao.commit();
@@ -79,14 +80,15 @@ public class ImportDao {
         }
     }
 
-    public void removeImportedRecord(final Integer id) {
+    public void removeImportedRecord(final Date activityId) {
         final Session session = dao.getSession();
         dao.begin();
-        final Query query = session.createQuery("delete Imported where id=:id");//$NON-NLS-1$
-        query.setParameter("id", id);//$NON-NLS-1$
+        final Query query = session.createQuery("delete Imported where activityId=:id");//$NON-NLS-1$
+        query.setParameter("id", activityId);//$NON-NLS-1$
         query.executeUpdate();
         dao.commit();
         session.flush();
         dao.getSession().flush();
     }
+
 }

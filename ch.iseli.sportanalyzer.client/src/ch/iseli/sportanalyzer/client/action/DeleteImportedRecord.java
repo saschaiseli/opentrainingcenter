@@ -1,6 +1,7 @@
 package ch.iseli.sportanalyzer.client.action;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -12,8 +13,8 @@ import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 
 import ch.iseli.sportanalyzer.client.Messages;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDataCache;
-import ch.iseli.sportanalyzer.client.cache.TrainingCenterRecord;
 import ch.iseli.sportanalyzer.db.DatabaseAccessFactory;
+import ch.iseli.sportanalyzer.tcx.ActivityT;
 
 public class DeleteImportedRecord extends Action implements ISelectionListener, IWorkbenchAction {
 
@@ -39,12 +40,13 @@ public class DeleteImportedRecord extends Action implements ISelectionListener, 
     @Override
     public void run() {
         final List<?> selection = cache.getSelection();
-        final List<Integer> deletedIds = new ArrayList<Integer>();
+        final List<Date> deletedIds = new ArrayList<Date>();
         for (final Object obj : selection) {
-            final TrainingCenterRecord t = (TrainingCenterRecord) obj;
-            log.debug("Lösche den Lauf mit der ID " + t.getId()); //$NON-NLS-1$
-            DatabaseAccessFactory.getDatabaseAccess().removeImportedRecord(t.getId());
-            deletedIds.add(t.getId());
+            final ActivityT activity = (ActivityT) obj;
+            log.info("Lösche den Lauf mit der ID " + activity.getId() + " und der DB Id: " + activity.getNotes()); //$NON-NLS-1$ //$NON-NLS-2$
+            final Date activityId = activity.getId().toGregorianCalendar().getTime();
+            DatabaseAccessFactory.getDatabaseAccess().removeImportedRecord(activityId);
+            deletedIds.add(activityId);
         }
         cache.remove(deletedIds);
     }

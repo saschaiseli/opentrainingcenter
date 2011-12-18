@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Collections;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.FileLocator;
@@ -14,6 +15,7 @@ import org.osgi.framework.Bundle;
 
 import ch.iseli.sport4ever.importer.internal.xml.ConvertXml;
 import ch.iseli.sportanalyzer.importer.IConvert2Tcx;
+import ch.iseli.sportanalyzer.tcx.ActivityT;
 import ch.iseli.sportanalyzer.tcx.TrainingCenterDatabaseT;
 
 public class Gmn2Tcx implements IConvert2Tcx {
@@ -54,6 +56,11 @@ public class Gmn2Tcx implements IConvert2Tcx {
     public TrainingCenterDatabaseT convert(final java.io.File file) throws Exception {
         final InputStream convert2Tcx = convert2Tcx(file);
         return delegate.unmarshall(convert2Tcx);
+    }
+
+    @Override
+    public List<ActivityT> convertActivity(final File file) throws Exception {
+        return convert(file).getActivities().getActivity();
     }
 
     protected InputStream convert2Tcx(final java.io.File file) throws IOException {

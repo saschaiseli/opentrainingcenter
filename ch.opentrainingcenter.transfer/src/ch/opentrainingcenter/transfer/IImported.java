@@ -24,4 +24,15 @@ public interface IImported {
 
     void setComments(String comments);
 
+    /**
+     * @param time
+     *            die startzeit der aktivität. dies ist gleichzeitig auch die id des records.
+     */
+    void setActivityId(Date time);
+
+    /**
+     * @return das startdatum des Laufes. Dies ist auch gleich die Id.
+     */
+    Date getActivityId();
+
 }

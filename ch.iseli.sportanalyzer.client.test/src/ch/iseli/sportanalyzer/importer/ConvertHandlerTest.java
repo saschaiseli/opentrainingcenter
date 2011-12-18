@@ -11,6 +11,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import ch.iseli.sportanalyzer.tcx.ActivityT;
 import ch.iseli.sportanalyzer.tcx.TrainingCenterDatabaseT;
 
 public class ConvertHandlerTest {
@@ -62,6 +63,11 @@ public class ConvertHandlerTest {
         @Override
         public String getFilePrefix() {
             return prefix;
+        }
+
+        @Override
+        public List<ActivityT> convertActivity(final File file) throws Exception {
+            return null;
         }
 
     }

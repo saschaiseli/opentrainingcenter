@@ -23,6 +23,7 @@ import ch.iseli.sportanalyzer.client.helper.DistanceHelper;
 import ch.iseli.sportanalyzer.client.helper.TimeHelper;
 import ch.iseli.sportanalyzer.client.model.ITrainingOverview;
 import ch.iseli.sportanalyzer.client.model.TrainingOverviewFactory;
+import ch.iseli.sportanalyzer.tcx.ActivityT;
 
 public class OverviewViewer extends ViewPart {
 
@@ -52,7 +53,7 @@ public class OverviewViewer extends ViewPart {
         viewer.setContentProvider(new ArrayContentProvider());
         // Get the content for the viewer, setInput will call getElements in the
         // contentProvider
-        viewer.setInput(TrainingCenterDataCache.getInstance().getAllRuns());
+        viewer.setInput(TrainingCenterDataCache.getInstance().getAllActivities());
         // Make the selection available to other views
         getSite().setSelectionProvider(viewer);
         // Set the sorter for the table
@@ -70,17 +71,17 @@ public class OverviewViewer extends ViewPart {
         cache.addListener(new IRecordListener() {
 
             @Override
-            public void recordChanged(final Collection<TrainingCenterRecord> entry) {
+            public void recordChanged(final Collection<ActivityT> entry) {
                 update();
             }
 
             @Override
-            public void deleteRecord(final Collection<TrainingCenterRecord> entry) {
+            public void deleteRecord(final Collection<ActivityT> entry) {
                 update();
             }
 
             private void update() {
-                viewer.setInput(TrainingCenterDataCache.getInstance().getAllRuns());
+                viewer.setInput(TrainingCenterDataCache.getInstance().getAllActivities());
                 viewer.refresh();
             }
         });
@@ -89,7 +90,8 @@ public class OverviewViewer extends ViewPart {
 
     // This will create the columns for the table
     private void createColumns() {
-        final String[] titles = { Messages.OverviewViewer_1, Messages.OverviewViewer_2, Messages.OverviewViewer_3, Messages.OverviewViewer_4, Messages.OverviewViewer_5 };
+        final String[] titles = { Messages.OverviewViewer_1, Messages.OverviewViewer_2, Messages.OverviewViewer_3, Messages.OverviewViewer_4,
+                Messages.OverviewViewer_5 };
         final int[] bounds = { 220, 100, 150, 120, 180 };
 
         // Datum
@@ -107,7 +109,7 @@ public class OverviewViewer extends ViewPart {
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(final Object element) {
-                final ITrainingOverview overview = TrainingOverviewFactory.creatTrainingOverview((TrainingCenterRecord) element);
+                final ITrainingOverview overview = TrainingOverviewFactory.creatTrainingOverview((ActivityT) element);
                 return overview.getDauer();
             }
         });
@@ -117,7 +119,7 @@ public class OverviewViewer extends ViewPart {
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(final Object element) {
-                final ITrainingOverview overview = TrainingOverviewFactory.creatTrainingOverview((TrainingCenterRecord) element);
+                final ITrainingOverview overview = TrainingOverviewFactory.creatTrainingOverview((ActivityT) element);
                 return DistanceHelper.roundDistanceFromMeterToKm(overview.getLaengeInMeter());
             }
         });
@@ -127,7 +129,7 @@ public class OverviewViewer extends ViewPart {
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(final Object element) {
-                final ITrainingOverview overview = TrainingOverviewFactory.creatTrainingOverview((TrainingCenterRecord) element);
+                final ITrainingOverview overview = TrainingOverviewFactory.creatTrainingOverview((ActivityT) element);
                 return overview.getPace();
             }
         });
@@ -137,7 +139,7 @@ public class OverviewViewer extends ViewPart {
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(final Object element) {
-                final ITrainingOverview overview = TrainingOverviewFactory.creatTrainingOverview((TrainingCenterRecord) element);
+                final ITrainingOverview overview = TrainingOverviewFactory.creatTrainingOverview((ActivityT) element);
                 return overview.getAverageHeartBeat();
             }
         });

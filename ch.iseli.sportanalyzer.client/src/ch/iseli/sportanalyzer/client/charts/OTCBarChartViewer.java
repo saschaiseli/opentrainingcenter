@@ -56,9 +56,9 @@ import org.jfree.experimental.chart.swt.ChartComposite;
 import ch.iseli.sportanalyzer.client.Messages;
 import ch.iseli.sportanalyzer.client.cache.IRecordListener;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDataCache;
-import ch.iseli.sportanalyzer.client.cache.TrainingCenterRecord;
 import ch.iseli.sportanalyzer.client.cache.TrainingOverviewDatenAufbereiten;
 import ch.iseli.sportanalyzer.client.model.SimpleTraining;
+import ch.iseli.sportanalyzer.tcx.ActivityT;
 
 public class OTCBarChartViewer implements ISelectionProvider {
 
@@ -91,12 +91,12 @@ public class OTCBarChartViewer implements ISelectionProvider {
         TrainingCenterDataCache.getInstance().addListener(new IRecordListener() {
 
             @Override
-            public void recordChanged(final Collection<TrainingCenterRecord> entry) {
+            public void recordChanged(final Collection<ActivityT> entry) {
                 update();
             }
 
             @Override
-            public void deleteRecord(final Collection<TrainingCenterRecord> entry) {
+            public void deleteRecord(final Collection<ActivityT> entry) {
                 update();
             }
 

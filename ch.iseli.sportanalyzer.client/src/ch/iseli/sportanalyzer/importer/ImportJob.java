@@ -1,7 +1,9 @@
 package ch.iseli.sportanalyzer.importer;
 
 import java.io.File;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -16,18 +18,14 @@ import org.eclipse.core.runtime.jobs.Job;
 import ch.iseli.sportanalyzer.client.Application;
 import ch.iseli.sportanalyzer.client.Messages;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDataCache;
-import ch.iseli.sportanalyzer.client.cache.TrainingCenterRecord;
 import ch.iseli.sportanalyzer.client.views.navigation.NavigationView;
 import ch.iseli.sportanalyzer.db.DatabaseAccessFactory;
-import ch.iseli.sportanalyzer.tcx.TrainingCenterDatabaseT;
+import ch.iseli.sportanalyzer.tcx.ActivityT;
 import ch.opentrainingcenter.transfer.IAthlete;
 
 public class ImportJob extends Job {
 
     private static final Logger logger = Logger.getLogger(NavigationView.class);
-
-    final Map<Integer, TrainingCenterRecord> allRuns = new HashMap<Integer, TrainingCenterRecord>();
-    // private final IConvert2Tcx tcx;
 
     private final IAthlete athlete;
 
@@ -43,19 +41,25 @@ public class ImportJob extends Job {
 
     @Override
     protected IStatus run(final IProgressMonitor monitor) {
-        final Map<Integer, String> importedRecords = DatabaseAccessFactory.getDatabaseAccess().getImportedRecords(athlete);
-        final Map<Integer, File> loadAllGPSFiles = FindGarminFiles.loadAllGPSFilesFromAthlete(importedRecords);
+        final Map<Date, String> importedRecords = DatabaseAccessFactory.getDatabaseAccess().getImportedRecords(athlete);
+        final Map<Date, File> loadAllGPSFiles = FindGarminFiles.loadAllGPSFilesFromAthlete(importedRecords);
         monitor.beginTask(Messages.ImportJob_0, loadAllGPSFiles.size());
         try {
-            for (final Map.Entry<Integer, File> entry : loadAllGPSFiles.entrySet()) {
+            final List<ActivityT> activitiesToStore = new ArrayList<ActivityT>();
+            for (final Map.Entry<Date, File> entry : loadAllGPSFiles.entrySet()) {
                 final File fileForConverting = entry.getValue();
                 monitor.subTask(Messages.ImportJob_1 + fileForConverting);
-                final TrainingCenterDatabaseT record = convertHandler.getMatchingConverter(fileForConverting).convert(fileForConverting);
-                allRuns.put(entry.getKey(), new TrainingCenterRecord(entry.getKey(), record));
+
+                final List<ActivityT> activities = convertHandler.getMatchingConverter(fileForConverting).convertActivity(fileForConverting);
+                for (final ActivityT activityT : activities) {
+                    if (activityT.getId().toGregorianCalendar().getTime().equals(entry.getKey()) && !activitiesToStore.contains(activityT)) {
+                        activitiesToStore.add(activityT);
+                    }
+                }
                 monitor.worked(1);
             }
             TrainingCenterDataCache.getInstance().setSelectedProfile(athlete);
-            TrainingCenterDataCache.getInstance().addAll(allRuns);
+            TrainingCenterDataCache.getInstance().addAll(activitiesToStore);
         } catch (final Exception e) {
             logger.error(e.getMessage());
         }

@@ -3,12 +3,14 @@ package ch.iseli.sportanalyzer.importer;
 import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import ch.iseli.sportanalyzer.client.Activator;
 import ch.iseli.sportanalyzer.client.PreferenceConstants;
+import ch.iseli.sportanalyzer.client.action.ImportManualGpsFiles;
 
 public class FindGarminFiles {
 
@@ -19,7 +21,7 @@ public class FindGarminFiles {
      *            map mit der id und dem filenamen der bereits importiert ist.
      * @return map mit derselben id welche als value das {@link File} hat.
      */
-    public static Map<Integer, File> loadAllGPSFilesFromAthlete(final Map<Integer, String> garminFileNamesAlreadyImported) {
+    public static Map<Date, File> loadAllGPSFilesFromAthlete(final Map<Date, String> garminFileNamesAlreadyImported) {
         if (garminFileNamesAlreadyImported == null) {
             return Collections.emptyMap();
         }
@@ -28,10 +30,12 @@ public class FindGarminFiles {
         for (final File file : all) {
             fileNameToFile.put(file.getName(), file);
         }
-        final Map<Integer, File> result = new HashMap<Integer, File>();
-        for (final Map.Entry<Integer, String> entry : garminFileNamesAlreadyImported.entrySet()) {
-            if (istFileNameVonKeyIn(fileNameToFile, entry)) {
-                result.put(entry.getKey(), fileNameToFile.get(entry.getValue()));
+        final Map<Date, File> result = new HashMap<Date, File>();
+        for (final Map.Entry<Date, String> entry : garminFileNamesAlreadyImported.entrySet()) {
+            final String fileName = entry.getValue();
+            if (istFileNameVonKeyIn(fileNameToFile, fileName)) {
+                final String withoutImportPattern = removeImportPattern(fileName);
+                result.put(entry.getKey(), fileNameToFile.get(withoutImportPattern));
             }
         }
         return result;
@@ -52,7 +56,15 @@ public class FindGarminFiles {
         return Collections.emptyList();
     }
 
-    private static boolean istFileNameVonKeyIn(final Map<String, File> fileNameToFile, final Map.Entry<Integer, String> entry) {
-        return fileNameToFile.keySet().contains(entry.getValue());
+    private static boolean istFileNameVonKeyIn(final Map<String, File> fileNameToFile, final String fileName) {
+        final String tmpFileName = removeImportPattern(fileName);
+        return fileNameToFile.keySet().contains(tmpFileName);
+    }
+
+    private static String removeImportPattern(String fileName) {
+        if (fileName.contains(ImportManualGpsFiles.IMPORT_PATTERN)) {
+            fileName = fileName.substring(0, fileName.indexOf(ImportManualGpsFiles.IMPORT_PATTERN));
+        }
+        return fileName;
     }
 }

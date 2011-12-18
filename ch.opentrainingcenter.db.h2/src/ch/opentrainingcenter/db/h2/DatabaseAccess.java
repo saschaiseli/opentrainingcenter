@@ -1,5 +1,6 @@
 package ch.opentrainingcenter.db.h2;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -31,18 +32,18 @@ public class DatabaseAccess implements IDatabaseAccess {
     }
 
     @Override
-    public Map<Integer, String> getImportedRecords(final IAthlete athlete) {
+    public Map<Date, String> getImportedRecords(final IAthlete athlete) {
         return importDao.getImportedRecords(athlete);
     }
 
     @Override
-    public int importRecord(final int athleteId, final String name) {
-        return importDao.importRecord(athleteId, name);
+    public int importRecord(final int athleteId, final String fileName, final Date activityId) {
+        return importDao.importRecord(athleteId, fileName, activityId);
     }
 
     @Override
-    public void removeImportedRecord(final Integer id) {
-        importDao.removeImportedRecord(id);
+    public void removeImportedRecord(final Date activityId) {
+        importDao.removeImportedRecord(activityId);
     }
 
     @Override

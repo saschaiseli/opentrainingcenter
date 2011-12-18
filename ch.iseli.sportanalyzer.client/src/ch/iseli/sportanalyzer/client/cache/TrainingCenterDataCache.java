@@ -5,15 +5,17 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 import org.eclipse.core.runtime.ListenerList;
 
 import ch.iseli.sportanalyzer.client.model.ITrainingOverview;
 import ch.iseli.sportanalyzer.client.model.SimpleTraining;
 import ch.iseli.sportanalyzer.client.model.TrainingOverviewFactory;
+import ch.iseli.sportanalyzer.tcx.ActivityListT;
+import ch.iseli.sportanalyzer.tcx.ActivityT;
+import ch.iseli.sportanalyzer.tcx.TrainingCenterDatabaseT;
 import ch.opentrainingcenter.transfer.IAthlete;
 
 public class TrainingCenterDataCache {
@@ -24,16 +26,18 @@ public class TrainingCenterDataCache {
 
     private static TrainingCenterDataCache INSTANCE = null;
 
-    private final Map<Integer, TrainingCenterRecord> list;
-
-    private static TrainingCenterRecord selected;
+    private ActivityT selectedActivity;
 
     private Object[] selectedItems;
 
     private boolean cacheLoaded;
 
+    private final TrainingCenterDatabaseT database;
+
     private TrainingCenterDataCache() {
-        list = new TreeMap<Integer, TrainingCenterRecord>();
+        database = new TrainingCenterDatabaseT();
+        final ActivityListT activityList = new ActivityListT();
+        database.setActivities(activityList);
     }
 
     public static TrainingCenterDataCache getInstance() {
@@ -43,8 +47,32 @@ public class TrainingCenterDataCache {
         return INSTANCE;
     }
 
-    public void setSelectedRun(final TrainingCenterRecord selected) {
-        TrainingCenterDataCache.selected = selected;
+    /**
+     * @param activities
+     *            eine Liste von Aktivitäten.
+     */
+    public void addAll(final List<ActivityT> activities) {
+        database.getActivities().getActivity().addAll(activities);
+        fireRecordAdded(null);
+    }
+
+    /**
+     * @return eine nach Datum sortierte Liste von {@link ActivityT}
+     */
+    public Collection<ActivityT> getAllActivities() {
+        final List<ActivityT> activities = database.getActivities().getActivity();
+        Collections.sort(activities, new Comparator<ActivityT>() {
+
+            @Override
+            public int compare(final ActivityT o1, final ActivityT o2) {
+                return o2.getId().compare(o1.getId());
+            }
+        });
+        return activities;
+    }
+
+    public void setSelectedRun(final ActivityT selected) {
+        selectedActivity = selected;
     }
 
     public void setSelectedProfile(final IAthlete athlete) {
@@ -53,8 +81,8 @@ public class TrainingCenterDataCache {
     }
 
     private void resetCache() {
-        list.clear();
-        selected = null;
+        database.getActivities().getActivity().clear();
+        selectedActivity = null;
         selectedItems = null;
     }
 
@@ -63,9 +91,9 @@ public class TrainingCenterDataCache {
      * 
      * @return den selektierten record oder den neusten record.
      */
-    public TrainingCenterRecord getSelected() {
+    public ActivityT getSelected() {
         setIfNothingSelectedTheNewestAsSelected();
-        return selected;
+        return selectedActivity;
     }
 
     /**
@@ -73,76 +101,58 @@ public class TrainingCenterDataCache {
      */
     public ITrainingOverview getSelectedOverview() {
         setIfNothingSelectedTheNewestAsSelected();
-        return TrainingOverviewFactory.creatTrainingOverview(selected);
+        return TrainingOverviewFactory.creatTrainingOverview(selectedActivity);
     }
 
     private void setIfNothingSelectedTheNewestAsSelected() {
-        if (selected == null && !list.isEmpty()) {
-            final TrainingCenterRecord newest = getLatestRun();
-            selected = newest;
+        if (selectedActivity == null && !database.getActivities().getActivity().isEmpty()) {
+            final ActivityT newest = getLatestRun();
+            selectedActivity = newest;
         }
     }
 
-    private TrainingCenterRecord getLatestRun() {
-        final TrainingCenterRecord newest = Collections.max(new ArrayList<TrainingCenterRecord>(list.values()), new Comparator<TrainingCenterRecord>() {
+    private ActivityT getLatestRun() {
+        final List<ActivityT> activities = database.getActivities().getActivity();
+        Collections.sort(activities, new Comparator<ActivityT>() {
 
             @Override
-            public int compare(final TrainingCenterRecord o1, final TrainingCenterRecord o2) {
-                return Long.valueOf(o1.getDate().toGregorianCalendar().getTimeInMillis()).compareTo(o2.getDate().toGregorianCalendar().getTimeInMillis());
+            public int compare(final ActivityT o1, final ActivityT o2) {
+                return o2.getId().compare(o1.getId());
             }
         });
-        return newest;
+        return activities.get(0);
     }
 
-    /**
-     * @return die sortierte liste von records.
-     */
-    public Collection<TrainingCenterRecord> getAllRuns() {
-        final Collection<TrainingCenterRecord> values = list.values();
-        final List<TrainingCenterRecord> all = new ArrayList<TrainingCenterRecord>(values);
-        Collections.sort(all, new TrainingCenterRecordComparator());
-        return all;
-    }
-
-    public void addAll(final Map<Integer, TrainingCenterRecord> records) {
-        for (final Map.Entry<Integer, TrainingCenterRecord> record : records.entrySet()) {
-            list.put(record.getKey(), record.getValue());
+    public void remove(final List<Date> deletedIds) {
+        final List<ActivityT> activities = database.getActivities().getActivity();
+        final List<ActivityT> activitiesToDelete = new ArrayList<ActivityT>();
+        for (final ActivityT activity : activities) {
+            if (deletedIds.contains(activity.getId().toGregorianCalendar().getTime())) {
+                activitiesToDelete.add(activity);
+            }
         }
-        fireRecordAdded(records.values());
+        database.getActivities().getActivity().removeAll(activitiesToDelete);
+        fireRecordDeleted(activitiesToDelete);
     }
 
-    public void addWithoutNotifyAll(final Map<Integer, TrainingCenterRecord> records) {
-        for (final Map.Entry<Integer, TrainingCenterRecord> record : records.entrySet()) {
-            list.put(record.getKey(), record.getValue());
-        }
-    }
-
-    public void remove(final List<Integer> ids) {
-        final List<TrainingCenterRecord> deletedRecords = new ArrayList<TrainingCenterRecord>();
-        for (final Integer id : ids) {
-            deletedRecords.add(list.remove(id));
-        }
-        fireRecordDeleted(deletedRecords);
-    }
-
-    private void fireRecordAdded(final Collection<TrainingCenterRecord> collection) {
+    private void fireRecordAdded(final Collection<ActivityT> activitiesAdded) {
         if (listeners == null)
             return;
         final Object[] rls = listeners.getListeners();
         for (int i = 0; i < rls.length; i++) {
             final IRecordListener listener = (IRecordListener) rls[i];
-            listener.recordChanged(collection);
+            listener.recordChanged(activitiesAdded);
         }
 
     }
 
-    private void fireRecordDeleted(final List<TrainingCenterRecord> deletedRecords) {
+    private void fireRecordDeleted(final List<ActivityT> deletedActivities) {
         if (listeners == null)
             return;
         final Object[] rls = listeners.getListeners();
         for (int i = 0; i < rls.length; i++) {
             final IRecordListener listener = (IRecordListener) rls[i];
-            listener.deleteRecord(deletedRecords);
+            listener.deleteRecord(deletedActivities);
         }
     }
 
@@ -164,10 +174,9 @@ public class TrainingCenterDataCache {
     }
 
     public List<SimpleTraining> getAllSimpleTrainings() {
-        final Collection<TrainingCenterRecord> values = list.values();
         final List<SimpleTraining> result = new ArrayList<SimpleTraining>();
-        for (final TrainingCenterRecord t : values) {
-            final ITrainingOverview over = TrainingOverviewFactory.creatTrainingOverview(t);
+        for (final ActivityT activity : database.getActivities().getActivity()) {
+            final ITrainingOverview over = TrainingOverviewFactory.creatTrainingOverview(activity);
             result.add(over.getSimpleTraining());
         }
         return result;
@@ -191,12 +200,5 @@ public class TrainingCenterDataCache {
 
     public boolean isCacheLoaded() {
         return cacheLoaded;
-    }
-
-    /**
-     * setzt im cache den lauf mit der angegeben id oder null, wenn dieser nicht im cache geladen ist.
-     */
-    public void setSelectedRun(final int id) {
-        selected = list.get(id);
     }
 }

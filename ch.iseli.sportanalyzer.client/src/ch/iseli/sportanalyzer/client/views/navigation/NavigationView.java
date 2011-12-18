@@ -28,7 +28,6 @@ import ch.iseli.sportanalyzer.client.PreferenceConstants;
 import ch.iseli.sportanalyzer.client.action.DeleteImportedRecord;
 import ch.iseli.sportanalyzer.client.cache.IRecordListener;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDataCache;
-import ch.iseli.sportanalyzer.client.cache.TrainingCenterRecord;
 import ch.iseli.sportanalyzer.client.helper.DistanceHelper;
 import ch.iseli.sportanalyzer.client.helper.TimeHelper;
 import ch.iseli.sportanalyzer.client.views.overview.SingleActivityViewPart;
@@ -80,22 +79,24 @@ public class NavigationView extends ViewPart {
             public void doubleClick(final DoubleClickEvent event) {
                 final IStructuredSelection selection = (IStructuredSelection) event.getSelection();
                 final Object first = selection.getFirstElement();
-                if (first instanceof TrainingCenterRecord) {
-                    openSingleRunView((TrainingCenterRecord) first);
+
+                if (first instanceof ActivityT) {
+                    openSingleRunView((ActivityT) first);
                 }
             }
 
-            private void openSingleRunView(final TrainingCenterRecord first) {
+            private void openSingleRunView(final ActivityT first) {
                 cache.setSelectedRun(first);
 
                 try {
-                    final String hash = String.valueOf(cache.getSelected().toString().hashCode());
+                    final String hash = getSecondaryId(first);
                     PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
                             .showView(SingleActivityViewPart.ID, hash, IWorkbenchPage.VIEW_ACTIVATE);
                 } catch (final PartInitException e) {
                     e.printStackTrace();
                 }
             }
+
         });
 
         viewer.addSelectionChangedListener(new ISelectionChangedListener() {
@@ -104,10 +105,10 @@ public class NavigationView extends ViewPart {
             public void selectionChanged(final SelectionChangedEvent event) {
                 final IStructuredSelection selection = (IStructuredSelection) event.getSelection();
                 final Object first = selection.getFirstElement();
-                if (first instanceof TrainingCenterRecord) {
-                    final TrainingCenterRecord trainingCenterDatabase = (TrainingCenterRecord) first;
+                if (first instanceof ActivityT) {
+                    final ActivityT activity = (ActivityT) first;
                     cache.setSelection(selection.toArray());
-                    writeToStatusLine(trainingCenterDatabase);
+                    writeToStatusLine(activity);
                 } else {
                     writeToStatusLine(""); //$NON-NLS-1$
                     cache.setSelectedRun(null);
@@ -118,9 +119,8 @@ public class NavigationView extends ViewPart {
                 getViewSite().getActionBars().getStatusLineManager().setMessage(message);
             }
 
-            private void writeToStatusLine(final TrainingCenterRecord selectedRun) {
-                writeToStatusLine(Messages.NavigationView_0
-                        + TimeHelper.convertGregorianDateToString(selectedRun.getTrainingCenterDatabase().getActivities().getActivity().get(0).getId(), false)
+            private void writeToStatusLine(final ActivityT selectedRun) {
+                writeToStatusLine(Messages.NavigationView_0 + TimeHelper.convertGregorianDateToString(selectedRun.getId(), false)
                         + " " + getOverview(selectedRun)); //$NON-NLS-1$
             }
         });
@@ -131,25 +131,27 @@ public class NavigationView extends ViewPart {
             job.schedule();
             job.addJobChangeListener(new ImportJobChangeListener(viewer));
         } else {
-            final Collection<TrainingCenterRecord> allRuns = cache.getAllRuns();
-            viewer.setInput(allRuns);
-            writeStatus(Messages.NavigationView_2 + allRuns.size() + Messages.NavigationView_3);
+            // final Collection<TrainingCenterRecord> allRuns = cache.getAllRuns();
+            final Collection<ActivityT> allActivities = cache.getAllActivities();
+            viewer.setInput(allActivities);
+            writeStatus(Messages.NavigationView_2 + allActivities.size() + Messages.NavigationView_3);
         }
 
         cache.addListener(new IRecordListener() {
 
             @Override
-            public void recordChanged(final Collection<TrainingCenterRecord> entry) {
-                final Collection<TrainingCenterRecord> allRuns = cache.getAllRuns();
+            public void recordChanged(final Collection<ActivityT> entry) {
+                // final Collection<TrainingCenterRecord> allRuns = cache.getAllRuns();
+                final Collection<ActivityT> allActivities = cache.getAllActivities();
                 Display.getDefault().asyncExec(new Runnable() {
 
                     @Override
                     public void run() {
                         try {
-                            if (allRuns == null || allRuns.isEmpty()) {
+                            if (allActivities == null || allActivities.isEmpty()) {
                                 writeStatus(Messages.NavigationView_4);
                             }
-                            viewer.setInput(allRuns);
+                            viewer.setInput(allActivities);
                             viewer.refresh();
                         } catch (final Exception e) {
                             e.printStackTrace();
@@ -159,12 +161,12 @@ public class NavigationView extends ViewPart {
             }
 
             @Override
-            public void deleteRecord(final Collection<TrainingCenterRecord> entry) {
-                viewer.setInput(cache.getAllRuns());
+            public void deleteRecord(final Collection<ActivityT> entry) {
+                viewer.setInput(cache.getAllActivities());
                 viewer.refresh();
                 final IWorkbenchPage wbp = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-                for (final TrainingCenterRecord record : entry) {
-                    final String secondaryViewId = String.valueOf(record.toString().hashCode());
+                for (final ActivityT record : entry) {
+                    final String secondaryViewId = getSecondaryId(record);
                     wbp.hideView(wbp.findViewReference(SingleActivityViewPart.ID, secondaryViewId));
                 }
             }
@@ -176,21 +178,20 @@ public class NavigationView extends ViewPart {
         getViewSite().getActionBars().getStatusLineManager().setMessage(message);
     }
 
-    private final String getOverview(final TrainingCenterRecord run) {
-        final ActivityT activityT = run.getTrainingCenterDatabase().getActivities().getActivity().get(0);
+    private final String getOverview(final ActivityT activity) {
         final StringBuffer str = new StringBuffer();
-        if (activityT.getLap() != null && activityT.getLap().size() > 1) {
+        if (activity.getLap() != null && activity.getLap().size() > 1) {
             // intervall
             str.append(Messages.NavigationView_5);
             int activeIntervall = 0;
-            for (final ActivityLapT lap : activityT.getLap()) {
+            for (final ActivityLapT lap : activity.getLap()) {
                 if (IntensityT.ACTIVE.equals(lap.getIntensity())) {
                     activeIntervall++;
                 }
             }
             str.append(activeIntervall).append(Messages.NavigationView_6);
-        } else if (activityT.getLap() != null && activityT.getLap().size() == 1) {
-            final ActivityLapT lap = activityT.getLap().get(0);
+        } else if (activity.getLap() != null && activity.getLap().size() == 1) {
+            final ActivityLapT lap = activity.getLap().get(0);
             str.append(Messages.NavigationView_7).append(DistanceHelper.roundDistanceFromMeterToKmMitEinheit(lap.getDistanceMeters()));
             str.append(Messages.NavigationView_8).append(TimeHelper.convertSecondsToHumanReadableZeit(lap.getTotalTimeSeconds()));
         }
@@ -205,4 +206,7 @@ public class NavigationView extends ViewPart {
         viewer.getControl().setFocus();
     }
 
+    private String getSecondaryId(final ActivityT record) {
+        return String.valueOf(record.getId().hashCode());
+    }
 }
