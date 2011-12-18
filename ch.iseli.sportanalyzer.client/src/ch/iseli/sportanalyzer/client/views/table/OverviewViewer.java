@@ -18,7 +18,6 @@ import org.eclipse.ui.part.ViewPart;
 import ch.iseli.sportanalyzer.client.Messages;
 import ch.iseli.sportanalyzer.client.cache.IRecordListener;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDataCache;
-import ch.iseli.sportanalyzer.client.cache.TrainingCenterRecord;
 import ch.iseli.sportanalyzer.client.helper.DistanceHelper;
 import ch.iseli.sportanalyzer.client.helper.TimeHelper;
 import ch.iseli.sportanalyzer.client.model.ITrainingOverview;
@@ -99,8 +98,8 @@ public class OverviewViewer extends ViewPart {
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(final Object element) {
-                final TrainingCenterRecord record = (TrainingCenterRecord) element;
-                return TimeHelper.convertGregorianDateToString(record.getDate(), true);
+                final ActivityT activity = (ActivityT) element;
+                return TimeHelper.convertGregorianDateToString(activity.getId(), true);
             }
         });
 
