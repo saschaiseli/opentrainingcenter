@@ -162,6 +162,12 @@ public class OverviewViewer extends ViewPart {
 
     @Override
     public void setFocus() {
+        viewer.getControl().setFocus();
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
     }
 
 }
