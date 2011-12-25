@@ -53,11 +53,9 @@ public class TrackpointConverter {
             time.add(duration);
             point.setTime(time);
             if (isPointValid(previousPoint) && isPointValid(currentPoint)) {
-                // final Double distance = calculateDistance(previousPoint, currentPoint);
                 double distance = distance(previousPoint.getLat().doubleValue(), previousPoint.getLon().doubleValue(), currentPoint.getLat().doubleValue(),
                         currentPoint.getLon().doubleValue());
                 distance += previousPoint.getDist().doubleValue();
-                logger.debug("Distance: " + distance); //$NON-NLS-1$
                 point.setDistanceMeters(distance);
             } else {
                 point.setDistanceMeters(0.0);
