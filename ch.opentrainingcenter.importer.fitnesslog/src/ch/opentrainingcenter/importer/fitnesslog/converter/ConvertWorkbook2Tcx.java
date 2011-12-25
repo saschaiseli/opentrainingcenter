@@ -52,6 +52,9 @@ public class ConvertWorkbook2Tcx {
             if (converted != null) {
                 final List<TrackT> tcxTracks = converted.getTrack();
                 final Track track = activity.getTrack();
+                if (track == null) {
+                    continue;
+                }
                 final List<Pt> points = track.getPt();
                 final TrackT tcxTrack = new TrackT();
                 final TrackpointConverter trackPointConverter = new TrackpointConverter(startTime);
