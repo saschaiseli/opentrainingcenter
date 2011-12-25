@@ -131,7 +131,6 @@ public class NavigationView extends ViewPart {
             job.schedule();
             job.addJobChangeListener(new ImportJobChangeListener(viewer));
         } else {
-            // final Collection<TrainingCenterRecord> allRuns = cache.getAllRuns();
             final Collection<ActivityT> allActivities = cache.getAllActivities();
             viewer.setInput(allActivities);
             writeStatus(Messages.NavigationView_2 + allActivities.size() + Messages.NavigationView_3);
@@ -141,7 +140,6 @@ public class NavigationView extends ViewPart {
 
             @Override
             public void recordChanged(final Collection<ActivityT> entry) {
-                // final Collection<TrainingCenterRecord> allRuns = cache.getAllRuns();
                 final Collection<ActivityT> allActivities = cache.getAllActivities();
                 Display.getDefault().asyncExec(new Runnable() {
 
@@ -171,7 +169,9 @@ public class NavigationView extends ViewPart {
                 }
             }
         });
-        viewer.setSelection(new StructuredSelection(cache.getSelected()), true);
+        if (cache.getSelected() != null) {
+            viewer.setSelection(new StructuredSelection(cache.getSelected()), true);
+        }
     }
 
     private void writeStatus(final String message) {

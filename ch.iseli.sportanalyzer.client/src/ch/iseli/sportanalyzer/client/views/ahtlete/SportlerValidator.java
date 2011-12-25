@@ -21,7 +21,7 @@ public class SportlerValidator implements IValidator {
     public IStatus validate(final Object value) {
         if (value instanceof String) {
             final String name = String.valueOf(value);
-            if (name != null && name.length() > 5) {
+            if (name != null && name.length() >= 4) {
                 // in db schauen ob es den user bereits gibt
                 final IAthlete athlete = DatabaseAccessFactory.getDatabaseAccess().getAthlete(name);
                 if (athlete != null) {

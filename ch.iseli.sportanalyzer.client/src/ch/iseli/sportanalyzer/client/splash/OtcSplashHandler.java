@@ -62,12 +62,16 @@ public class OtcSplashHandler extends BasicSplashHandler {
             loadFromCache = false;
             athlete = null;
             convertHandler = null;
-        } else {
+        } else if (isValidId(athleteId)) {
             loadFromCache = true;
             athlete = DatabaseAccessFactory.getDatabaseAccess().getAthlete(Integer.parseInt(athleteId));
             final IConfigurationElement[] configurationElementsFor = Platform.getExtensionRegistry().getConfigurationElementsFor(
                     Application.IMPORT_EXTENSION_POINT);
             convertHandler = getConverterImplementation(configurationElementsFor);
+        } else {
+            loadFromCache = false;
+            athlete = null;
+            convertHandler = null;
         }
     }
 
@@ -101,6 +105,9 @@ public class OtcSplashHandler extends BasicSplashHandler {
         }
     }
 
+    /**
+     * id nicht null und laenge grösser 0
+     */
     private boolean isValidId(final String athleteId) {
         return athleteId != null && athleteId.length() > 0;
     }

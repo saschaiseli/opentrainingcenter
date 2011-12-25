@@ -51,7 +51,6 @@ public class SingleActivityViewPart extends ViewPart {
     public static final String ID = "ch.iseli.sportanalyzer.client.views.singlerun"; //$NON-NLS-1$
     private static final Logger logger = Logger.getLogger(SingleActivityViewPart.class);
     private final TrainingCenterDataCache cache = TrainingCenterDataCache.getInstance();
-    private final String datumZeit;
     private final ITrainingOverview trainingOverview;
     private FormToolkit toolkit;
     private ScrolledForm form;
@@ -59,8 +58,7 @@ public class SingleActivityViewPart extends ViewPart {
 
     public SingleActivityViewPart() {
         trainingOverview = cache.getSelectedOverview();
-        datumZeit = trainingOverview.getDatum();
-        setPartName(datumZeit);
+        setPartName(trainingOverview.getDatum());
     }
 
     @Override
@@ -68,8 +66,6 @@ public class SingleActivityViewPart extends ViewPart {
         logger.debug("create single activity view"); //$NON-NLS-1$
         toolkit = new FormToolkit(parent.getDisplay());
         form = toolkit.createScrolledForm(parent);
-        // form.setSize(1000, 2000);
-        // gridlayout definieren
 
         final TableWrapLayout layout = new TableWrapLayout();
         layout.numColumns = 1;
@@ -80,7 +76,7 @@ public class SingleActivityViewPart extends ViewPart {
 
         td = new TableWrapData(TableWrapData.FILL_GRAB);
         body.setLayoutData(td);
-        form.setText(Messages.SingleActivityViewPart_0 + datumZeit);
+        form.setText(Messages.SingleActivityViewPart_0 + trainingOverview.getDatum());
 
         addOverviewSection(body);
         addMapSection(body);

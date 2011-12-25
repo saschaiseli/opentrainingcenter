@@ -8,6 +8,10 @@ public class TrainingOverviewFactory {
     }
 
     public static ITrainingOverview creatTrainingOverview(final ActivityT activity) {
-        return new TrainingOverview(activity);
+        if (activity != null) {
+            return new TrainingOverview(activity);
+        } else {
+            return null;
+        }
     }
 }

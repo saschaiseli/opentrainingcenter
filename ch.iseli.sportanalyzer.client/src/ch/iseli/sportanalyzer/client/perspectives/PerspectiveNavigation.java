@@ -4,6 +4,7 @@ import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 
+import ch.iseli.sportanalyzer.client.cache.TrainingCenterDataCache;
 import ch.iseli.sportanalyzer.client.views.navigation.NavigationView;
 import ch.iseli.sportanalyzer.client.views.overview.SingleActivityViewPart;
 
@@ -25,7 +26,11 @@ public class PerspectiveNavigation implements IPerspectiveFactory {
         layout.getViewLayout(NavigationView.ID).setCloseable(false);
 
         final IFolderLayout folderRight = layout.createFolder(RIGHT_PART, IPageLayout.RIGHT, 0.80f, editorArea);
-        folderRight.addView(SingleActivityViewPart.ID + MULTI_VIEW);
+        if (TrainingCenterDataCache.getInstance().getSelectedOverview() != null) {
+            folderRight.addView(SingleActivityViewPart.ID + MULTI_VIEW);
+        } else {
+            folderRight.addPlaceholder(SingleActivityViewPart.ID);
+        }
 
         layout.addPerspectiveShortcut(PerspectiveNavigation.ID);
         layout.addPerspectiveShortcut(OverviewPerspectiveFactory.ID);
