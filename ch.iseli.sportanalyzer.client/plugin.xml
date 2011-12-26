@@ -113,11 +113,11 @@
             name="Open Training Center">
          <property
                name="windowImages"
-               value="icons/athlete_perspective.png,icons/athlete_perspective.png,icons/athlete_perspective.png,icons/athlete_perspective.png,icons/athlete_perspective.png">
+               value="icons/16_16/icon_16_16.png,icons/32_32/icon_32_32.png,icons/48_48/icon_48_48.png,icons/64_64/icon_64_64.png,icons/128_128/icon_128_128.png">
          </property>
          <property
                name="aboutImage"
-               value="icons/mutthorn.gif">
+               value="icons/simpsons-icon.png">
          </property>
          <property
                name="appName"
