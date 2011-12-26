@@ -6,8 +6,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 public class ConvertHandler {
-    final Map<String, IConvert2Tcx> converters;
+
+    public static final Logger logger = Logger.getLogger(ConvertHandler.class);
+
+    private final Map<String, IConvert2Tcx> converters;
 
     public ConvertHandler() {
         this.converters = new HashMap<String, IConvert2Tcx>();
@@ -15,6 +20,7 @@ public class ConvertHandler {
 
     public void addConverter(final IConvert2Tcx converter) {
         converters.put(converter.getFilePrefix(), converter);
+        logger.info("Adding Extension for Fileimporting: " + converter.getFilePrefix()); //$NON-NLS-1$
     }
 
     /**

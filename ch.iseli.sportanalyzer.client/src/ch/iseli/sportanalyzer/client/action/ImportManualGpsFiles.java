@@ -85,9 +85,9 @@ public class ImportManualGpsFiles extends Action implements ISelectionListener, 
 
     @Override
     public void run() {
-        final IConfigurationElement[] configurationElementsFor = Platform.getExtensionRegistry()
-                .getConfigurationElementsFor(Application.IMPORT_EXTENSION_POINT);
-        final ConvertHandler handler = getConverterImplementation(configurationElementsFor);
+        final IConfigurationElement[] extensions = Platform.getExtensionRegistry().getConfigurationElementsFor(Application.IMPORT_EXTENSION_POINT);
+        logger.info("Anzahl Extensions: " + extensions.length); //$NON-NLS-1$
+        final ConvertHandler handler = getConverterImplementation(extensions);
         final FileDialog fileDialog = new FileDialog(window.getShell(), SWT.MULTI);
         fileDialog.setFilterPath(defaultLocation);
         final List<String> filePrefixes = handler.getSupportedFileSuffixes();
@@ -145,9 +145,11 @@ public class ImportManualGpsFiles extends Action implements ISelectionListener, 
 
     private ConvertHandler getConverterImplementation(final IConfigurationElement[] configurationElementsFor) {
         final ConvertHandler handler = new ConvertHandler();
+        logger.info("Beginne mit Extensions einzulesen......."); //$NON-NLS-1$
         for (final IConfigurationElement element : configurationElementsFor) {
             try {
                 final IConvert2Tcx tcx = (IConvert2Tcx) element.createExecutableExtension(IConvert2Tcx.PROPERETY);
+                logger.info("Beginne mit Extensions einzulesen.......: " + element.getAttribute(IConvert2Tcx.PROPERETY)); //$NON-NLS-1$
                 handler.addConverter(tcx);
             } catch (final CoreException e) {
                 logger.error(e.getMessage());

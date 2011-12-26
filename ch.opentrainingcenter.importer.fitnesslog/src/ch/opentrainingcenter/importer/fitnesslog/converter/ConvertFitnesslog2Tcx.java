@@ -1,7 +1,6 @@
 package ch.opentrainingcenter.importer.fitnesslog.converter;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.List;
@@ -34,19 +33,28 @@ public class ConvertFitnesslog2Tcx implements IConvert2Tcx {
     private final String locationOfScript;
 
     public ConvertFitnesslog2Tcx() {
-        logger.info("ConvertFitnesslog2Tcx erfolgreich instanziert....");//$NON-NLS-1$
+        logger.info("ConvertFitnesslog2Tcx erfolgreich instanziert....1");//$NON-NLS-1$
         bundle = Platform.getBundle(Activator.BUNDLE_ID);
+        logger.info("ConvertFitnesslog2Tcx erfolgreich instanziert....2 " + bundle);//$NON-NLS-1$
         final Path path = new Path(RESOURCES_FITNESSLOGBOOK_XSD);
+        logger.info("ConvertFitnesslog2Tcx erfolgreich instanziert....3 " + path);//$NON-NLS-1$
         final URL url = FileLocator.find(bundle, path, Collections.EMPTY_MAP);
+        logger.info("ConvertFitnesslog2Tcx erfolgreich instanziert....4 " + url);//$NON-NLS-1$
         URL fileUrl = null;
         try {
+            logger.info("ConvertFitnesslog2Tcx erfolgreich instanziert....5 " + url);//$NON-NLS-1$
             fileUrl = FileLocator.toFileURL(url);
-        } catch (final IOException e) {
-            logger.error("Fehler beim Instanzieren von Gmn2Tcx: " + e.getMessage());//$NON-NLS-1$
-            throw new RuntimeException(e);
+            logger.info("ConvertFitnesslog2Tcx erfolgreich instanziert....6 " + fileUrl);//$NON-NLS-1$
+        } catch (final Exception e) {
+            logger.error("Fehler beim Instanzieren von ConvertFitnesslog2Tcx: " + e.getMessage());//$NON-NLS-1$
+            // throw new RuntimeException(e);
         }
+        logger.info("ConvertFitnesslog2Tcx erfolgreich instanziert....7 ");//$NON-NLS-1$
         final File f = new File(fileUrl.getPath());
+        logger.info("ConvertFitnesslog2Tcx erfolgreich instanziert....8 ");//$NON-NLS-1$
         locationOfScript = f.getAbsolutePath();
+        logger.info("ConvertFitnesslog2Tcx erfolgreich instanziert....9 ");//$NON-NLS-1$
+        logger.info("ConvertFitnesslog2Tcx erfolgreich instanziert....fertig");//$NON-NLS-1$
     }
 
     public ConvertFitnesslog2Tcx(final boolean withJunit) {

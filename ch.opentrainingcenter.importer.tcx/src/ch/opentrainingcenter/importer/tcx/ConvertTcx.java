@@ -32,7 +32,7 @@ public class ConvertTcx implements IConvert2Tcx {
     private final String locationOfScript;
 
     public ConvertTcx() {
-        logger.info("ConvertFitnesslog2Tcx erfolgreich instanziert....");//$NON-NLS-1$
+        logger.info("ConvertTcx erfolgreich instanziert....");//$NON-NLS-1$
         bundle = Platform.getBundle(Activator.BUNDLE_ID);
         final Path path = new Path(RESOURCES_FITNESSLOGBOOK_XSD);
         final URL url = FileLocator.find(bundle, path, Collections.EMPTY_MAP);
@@ -40,11 +40,12 @@ public class ConvertTcx implements IConvert2Tcx {
         try {
             fileUrl = FileLocator.toFileURL(url);
         } catch (final IOException e) {
-            logger.error("Fehler beim Instanzieren von Gmn2Tcx: " + e.getMessage());//$NON-NLS-1$
+            logger.error("Fehler beim Instanzieren von ConvertTcx: " + e.getMessage());//$NON-NLS-1$
             throw new RuntimeException(e);
         }
         final File f = new File(fileUrl.getPath());
         locationOfScript = f.getAbsolutePath();
+        logger.info("ConvertTcx erfolgreich instanziert....fertig");//$NON-NLS-1$
     }
 
     @Override

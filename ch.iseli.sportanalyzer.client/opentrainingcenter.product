@@ -5,6 +5,9 @@
 
    <aboutInfo>
       <image path="/ch.iseli.sportanalyzer.client/icons/simpsons-icon.png"/>
+      <text>
+         Hello, hello...
+      </text>
    </aboutInfo>
 
    <configIni use="default">
@@ -32,6 +35,7 @@
 
    <vm>
    </vm>
+
 
    <plugins>
       <plugin id="ch.iseli.sportanalyzer.client"/>

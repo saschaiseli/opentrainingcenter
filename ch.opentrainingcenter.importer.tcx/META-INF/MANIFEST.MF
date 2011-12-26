@@ -5,9 +5,9 @@ Bundle-SymbolicName: ch.opentrainingcenter.importer.tcx;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: ch.opentrainingcenter.importer.tcx.Activator
 Require-Bundle: org.eclipse.core.runtime,
- ch.iseli.sportanalyzer.client;bundle-version="1.0.0",
- ch.iseli.sportanalyzer.tcx;bundle-version="1.0.0",
- logging;bundle-version="1.0.0"
+ ch.iseli.sportanalyzer.client,
+ ch.iseli.sportanalyzer.tcx,
+ logging
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Eclipse-RegisterBuddy: logging

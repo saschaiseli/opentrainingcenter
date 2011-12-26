@@ -139,6 +139,10 @@
                name="startupProgressRect"
                value="5,320,440,10">
          </property>
+         <property
+               name="aboutText"
+               value="Hello, hello...">
+         </property>
       </product>
    </extension>
    <extension
