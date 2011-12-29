@@ -82,7 +82,12 @@ public class Gmn2Tcx implements IConvert2Tcx {
         logger.debug("nach f: " + f.getAbsolutePath());//$NON-NLS-1$
         final ProcessBuilder processBuilder = new ProcessBuilder(f.getAbsolutePath(), file.getAbsolutePath());
         logger.debug("nach processBuilder");//$NON-NLS-1$
-        final Process process = processBuilder.start();
+        Process process = null;
+        try {
+            process = processBuilder.start();
+        } catch (final IOException ioe) {
+            logger.error("Process konnte nicht ausgeführt werden: " + ioe.getMessage()); //$NON-NLS-1$
+        }
         logger.debug("nach process und back zurück");//$NON-NLS-1$
         return process.getInputStream();
     }
