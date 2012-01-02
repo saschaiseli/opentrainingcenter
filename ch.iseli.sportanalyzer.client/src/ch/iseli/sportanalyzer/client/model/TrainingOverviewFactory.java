@@ -7,8 +7,6 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.apache.log4j.Logger;
 
-import ch.iseli.sportanalyzer.client.helper.DistanceHelper;
-import ch.iseli.sportanalyzer.client.helper.TimeHelper;
 import ch.iseli.sportanalyzer.tcx.ActivityLapT;
 import ch.iseli.sportanalyzer.tcx.ActivityT;
 import ch.iseli.sportanalyzer.tcx.IntensityT;
@@ -33,9 +31,7 @@ public class TrainingOverviewFactory {
     private static ITraining create(final ActivityT activity) {
         // datum
         final XMLGregorianCalendar date = activity.getId();
-        final String datum = TimeHelper.convertGregorianDateToString(date, false);
         final Date dateOfStart = date.toGregorianCalendar().getTime();
-        // lauflänge
         final List<ActivityLapT> laps = activity.getLap();
         double distance = 0.0;
         double timeInSeconds = 0.0;
@@ -61,26 +57,13 @@ public class TrainingOverviewFactory {
             }
             logger.debug("lap: " + lap.getIntensity() + " distance: " + distance); //$NON-NLS-1$//$NON-NLS-2$
         }
-        // in kilometer
-        final String roundDistanceFromMeterToKm = DistanceHelper.roundDistanceFromMeterToKm(distance);
         Integer avgHeartRate = null;
-        // durschnittliche herzfrequenz
         if (lapWithCardio > 0) {
             avgHeartRate = averageHeartRateBpm / lapWithCardio;
         } else {
             avgHeartRate = 0;
         }
-        // dauer
-        final String dauer = TimeHelper.convertSecondsToHumanReadableZeit(timeInSeconds);
-        // durschnittliche geschwindigkeit
-        final String pace = DistanceHelper.calculatePace(distance, timeInSeconds);
-
-        final String speed = DistanceHelper.calculatePace(maximumSpeed);
-
         return CommonTransferFactory.createTrainingDatabaseRecord(dateOfStart, timeInSeconds, distance, avgHeartRate, maxHeartBeat, maximumSpeed);
-
-        // return CommonTransferFactory
-        // .createTraining(dateOfStart, datum, dauer, timeInSeconds, distance, avgHeartRate, String.valueOf(maxHeartBeat), pace, speed);
     }
 
     private static boolean hasCardio(final ActivityLapT lap) {
