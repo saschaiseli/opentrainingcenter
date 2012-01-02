@@ -29,6 +29,7 @@ import ch.iseli.sportanalyzer.client.Messages;
 import ch.iseli.sportanalyzer.client.PreferenceConstants;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDataCache;
 import ch.iseli.sportanalyzer.db.DatabaseAccessFactory;
+import ch.iseli.sportanalyzer.db.DatabaseHelper;
 import ch.iseli.sportanalyzer.importer.ConvertHandler;
 import ch.iseli.sportanalyzer.importer.FindGarminFiles;
 import ch.iseli.sportanalyzer.importer.IConvert2Tcx;
@@ -53,7 +54,7 @@ public class OtcSplashHandler extends BasicSplashHandler {
 
     public OtcSplashHandler() {
 
-        final boolean dblocked = isDatabaseLocked();
+        final boolean dblocked = DatabaseHelper.isDatabaseLocked();
 
         createDataBaseIfNotExists();
 
@@ -75,21 +76,6 @@ public class OtcSplashHandler extends BasicSplashHandler {
         }
     }
 
-    private boolean isDatabaseLocked() {
-        try {
-            DatabaseAccessFactory.getDatabaseAccess().getAthlete(1);
-        } catch (final Exception e) {
-            final Throwable cause = e.getCause();
-            final String message = cause.getMessage();
-            if (message.contains("Locked by another process")) { //$NON-NLS-1$
-                logger.error("Database Locked by another process"); //$NON-NLS-1$
-                System.exit(0);
-                return true;
-            }
-        }
-        return false;
-    }
-
     private void createDataBaseIfNotExists() {
 
         try {
@@ -98,7 +84,7 @@ public class OtcSplashHandler extends BasicSplashHandler {
             // db erstellen
             final Throwable cause = e.getCause();
             final String message = cause.getMessage();
-            if (message.contains("Table \"ATHLETE\" not found;")) { //$NON-NLS-1$
+            if (message != null && message.contains("Table \"ATHLETE\" not found;")) { //$NON-NLS-1$
                 logger.info("Datenbank existiert noch nicht. Es wird eine neue Datenbank erstellt"); //$NON-NLS-1$
                 DatabaseAccessFactory.getDatabaseAccess().createDatabase();
             }

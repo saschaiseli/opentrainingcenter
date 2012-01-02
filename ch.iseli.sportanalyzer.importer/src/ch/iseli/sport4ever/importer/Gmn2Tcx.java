@@ -54,8 +54,15 @@ public class Gmn2Tcx implements IConvert2Tcx {
 
     @Override
     public TrainingCenterDatabaseT convert(final java.io.File file) throws Exception {
+        final long start = System.currentTimeMillis();
+        logger.debug("Start Time: " + start); //$NON-NLS-1$
         final InputStream convert2Tcx = convert2Tcx(file);
-        return delegate.unmarshall(convert2Tcx);
+        final long nachTcx = System.currentTimeMillis();
+        logger.debug("Zeit für das convertieren nach tcx: " + (nachTcx - start)); //$NON-NLS-1$
+        final TrainingCenterDatabaseT unmarshall = delegate.unmarshall(convert2Tcx);
+        final long nachUnmarshall = System.currentTimeMillis();
+        logger.debug("Zeit für das unmarshalling: " + (nachUnmarshall - nachTcx)); //$NON-NLS-1$
+        return unmarshall;
     }
 
     @Override
@@ -63,7 +70,7 @@ public class Gmn2Tcx implements IConvert2Tcx {
         return convert(file).getActivities().getActivity();
     }
 
-    protected InputStream convert2Tcx(final java.io.File file) throws IOException {
+    protected InputStream convert2Tcx(final java.io.File file) {
         logger.debug("file " + file.getAbsolutePath() + " existiert: " + file.exists());//$NON-NLS-1$//$NON-NLS-2$
         final Path path = new Path("resources/gmn2tcx.sh");//$NON-NLS-1$
         logger.debug("vor url");//$NON-NLS-1$

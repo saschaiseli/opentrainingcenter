@@ -12,6 +12,7 @@ import ch.opentrainingcenter.db.h2.internal.Dao;
 import ch.opentrainingcenter.db.h2.internal.DatabaseCreator;
 import ch.opentrainingcenter.db.h2.internal.ImportDao;
 import ch.opentrainingcenter.transfer.IAthlete;
+import ch.opentrainingcenter.transfer.ITraining;
 
 public class DatabaseAccess implements IDatabaseAccess {
 
@@ -37,8 +38,8 @@ public class DatabaseAccess implements IDatabaseAccess {
     }
 
     @Override
-    public int importRecord(final int athleteId, final String fileName, final Date activityId) {
-        return importDao.importRecord(athleteId, fileName, activityId);
+    public int importRecord(final int athleteId, final String fileName, final Date activityId, final ITraining overview) {
+        return importDao.importRecord(athleteId, fileName, activityId, overview);
     }
 
     @Override

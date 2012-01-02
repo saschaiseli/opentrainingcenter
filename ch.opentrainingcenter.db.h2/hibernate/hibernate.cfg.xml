@@ -21,5 +21,6 @@ Enable Hibernate's automatic session context management
   <mapping resource="Health.hbm.xml"/>
   <mapping resource="Imported.hbm.xml"/>
   <mapping resource="Weather.hbm.xml"/>
+  <mapping resource="TrainingOverview.hbm.xml"/>
  </session-factory>
 </hibernate-configuration>

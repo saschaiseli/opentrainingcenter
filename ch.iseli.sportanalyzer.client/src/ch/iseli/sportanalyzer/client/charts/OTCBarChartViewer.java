@@ -57,7 +57,7 @@ import ch.iseli.sportanalyzer.client.Messages;
 import ch.iseli.sportanalyzer.client.cache.IRecordListener;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDataCache;
 import ch.iseli.sportanalyzer.client.cache.TrainingOverviewDatenAufbereiten;
-import ch.iseli.sportanalyzer.client.model.SimpleTraining;
+import ch.iseli.sportanalyzer.client.model.ISimpleTraining;
 import ch.iseli.sportanalyzer.tcx.ActivityT;
 
 public class OTCBarChartViewer implements ISelectionProvider {
@@ -250,7 +250,7 @@ public class OTCBarChartViewer implements ISelectionProvider {
 
     private Map<String, TimeSeries> updateSeries(final TrainingOverviewDatenAufbereiten daten) {
         final Map<String, TimeSeries> map = new HashMap<String, TimeSeries>();
-        final List<SimpleTraining> trainings = new ArrayList<SimpleTraining>();
+        final List<ISimpleTraining> trainings = new ArrayList<ISimpleTraining>();
         if (ChartSerieType.DAY.equals(type)) {
             trainings.addAll(daten.getTrainingsPerDay());
         }
@@ -264,7 +264,7 @@ public class OTCBarChartViewer implements ISelectionProvider {
             trainings.addAll(daten.getTrainingsPerYear());
         }
         //
-        for (final SimpleTraining t : trainings) {
+        for (final ISimpleTraining t : trainings) {
             final RegularTimePeriod period = RegularTimePeriod.createInstance(clazz, t.getDatum(), Calendar.getInstance().getTimeZone());
             distanceSerie.addOrUpdate(period, t.getDistanzInMeter() / 1000);
             if (withHeartRate && t.getAvgHeartRate() > 0) {

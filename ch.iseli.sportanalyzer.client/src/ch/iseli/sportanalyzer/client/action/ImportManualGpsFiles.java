@@ -29,12 +29,14 @@ import ch.iseli.sportanalyzer.client.Messages;
 import ch.iseli.sportanalyzer.client.PreferenceConstants;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDataCache;
 import ch.iseli.sportanalyzer.client.helper.FileCopy;
+import ch.iseli.sportanalyzer.client.model.TrainingOverviewFactory;
 import ch.iseli.sportanalyzer.client.views.IImageKeys;
 import ch.iseli.sportanalyzer.db.DatabaseAccessFactory;
 import ch.iseli.sportanalyzer.importer.ConvertHandler;
 import ch.iseli.sportanalyzer.importer.IConvert2Tcx;
 import ch.iseli.sportanalyzer.tcx.ActivityT;
 import ch.opentrainingcenter.transfer.IAthlete;
+import ch.opentrainingcenter.transfer.ITraining;
 
 public class ImportManualGpsFiles extends Action implements ISelectionListener, IWorkbenchAction {
     public static final String IMPORT_PATTERN = "_$_"; //$NON-NLS-1$
@@ -98,7 +100,6 @@ public class ImportManualGpsFiles extends Action implements ISelectionListener, 
             final String[] fileNames = fileDialog.getFileNames();
             final String filterPath = fileDialog.getFilterPath();
 
-            // final Map<Integer, TrainingCenterRecord> allRecords = new HashMap<Integer, TrainingCenterRecord>();
             final Job job = new Job(Messages.ImportManualGpsFiles_LadeGpsFiles) {
                 @Override
                 protected IStatus run(final IProgressMonitor monitor) {
@@ -112,8 +113,9 @@ public class ImportManualGpsFiles extends Action implements ISelectionListener, 
                             final List<ActivityT> activities = handler.getMatchingConverter(file).convertActivity(file);
 
                             for (final ActivityT activity : activities) {
+                                final ITraining overview = TrainingOverviewFactory.creatTrainingOverview(activity);
                                 final int importRecord = DatabaseAccessFactory.getDatabaseAccess().importRecord(athlete.getId(), file.getName(),
-                                        activity.getId().toGregorianCalendar().getTime());
+                                        activity.getId().toGregorianCalendar().getTime(), overview);
                                 if (importRecord > 0) {
                                     // neu hinzugefügt
                                     activitiesToImport.add(activity);

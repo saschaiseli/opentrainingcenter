@@ -35,4 +35,8 @@ public interface IImported {
      */
     Date getActivityId();
 
+    void setTraining(ITraining overview);
+
+    ITraining getTraining();
+
 }

@@ -12,17 +12,18 @@ import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
 
-import ch.iseli.sportanalyzer.client.model.SimpleTraining;
+import ch.iseli.sportanalyzer.client.model.ISimpleTraining;
+import ch.iseli.sportanalyzer.client.model.ModelFactory;
 import ch.iseli.sportanalyzer.tcx.ActivityT;
 
 public class TrainingOverviewDatenAufbereiten {
 
     private static final Logger logger = Logger.getLogger(TrainingOverviewDatenAufbereiten.class);
 
-    private final List<SimpleTraining> all;
-    private final List<SimpleTraining> trainingsPerWeek = new ArrayList<SimpleTraining>();
-    private final List<SimpleTraining> trainingsPerMonth = new ArrayList<SimpleTraining>();
-    private final List<SimpleTraining> trainingsPerYear = new ArrayList<SimpleTraining>();
+    private final List<ISimpleTraining> all;
+    private final List<ISimpleTraining> trainingsPerWeek = new ArrayList<ISimpleTraining>();
+    private final List<ISimpleTraining> trainingsPerMonth = new ArrayList<ISimpleTraining>();
+    private final List<ISimpleTraining> trainingsPerYear = new ArrayList<ISimpleTraining>();
 
     private final TrainingCenterDataCache cache;
 
@@ -60,41 +61,41 @@ public class TrainingOverviewDatenAufbereiten {
         trainingsPerYear.addAll(createYear());
     }
 
-    private List<SimpleTraining> createYear() {
-        final Map<Integer, List<SimpleTraining>> trainingsPer = new HashMap<Integer, List<SimpleTraining>>();
-        for (final SimpleTraining training : all) {
+    private List<ISimpleTraining> createYear() {
+        final Map<Integer, List<ISimpleTraining>> trainingsPer = new HashMap<Integer, List<ISimpleTraining>>();
+        for (final ISimpleTraining training : all) {
             final Calendar cal = Calendar.getInstance();
             cal.setTime(training.getDatum());
             final int year = cal.get(Calendar.YEAR);
             logger.debug("Lauf aus dem Jahr " + year); //$NON-NLS-1$
-            List<SimpleTraining> perYear = trainingsPer.get(year);
+            List<ISimpleTraining> perYear = trainingsPer.get(year);
             if (perYear == null) {
-                perYear = new ArrayList<SimpleTraining>();
+                perYear = new ArrayList<ISimpleTraining>();
             }
             perYear.add(training);
             trainingsPer.put(year, perYear);
         }
-        final Map<Integer, Map<Integer, List<SimpleTraining>>> all = new HashMap<Integer, Map<Integer, List<SimpleTraining>>>();
+        final Map<Integer, Map<Integer, List<ISimpleTraining>>> all = new HashMap<Integer, Map<Integer, List<ISimpleTraining>>>();
         all.put(1, trainingsPer);
         return createSum(all);
     }
 
-    private List<SimpleTraining> createMonatsUndWochenMap(final int outer, final int inner) {
-        final Map<Integer, Map<Integer, List<SimpleTraining>>> trainingsPer = new HashMap<Integer, Map<Integer, List<SimpleTraining>>>();
-        for (final SimpleTraining training : all) {
+    private List<ISimpleTraining> createMonatsUndWochenMap(final int outer, final int inner) {
+        final Map<Integer, Map<Integer, List<ISimpleTraining>>> trainingsPer = new HashMap<Integer, Map<Integer, List<ISimpleTraining>>>();
+        for (final ISimpleTraining training : all) {
             final Calendar cal = Calendar.getInstance();
             cal.setTime(training.getDatum());
             final int year = cal.get(outer);
             // da monat mit 0 beginnt muss noch eins addiert werden.
             final int week = inner == Calendar.MONTH ? cal.get(inner) + 1 : cal.get(inner);
             logger.debug("Lauf aus der inner " + week + " vom Jahr: " + year); //$NON-NLS-1$//$NON-NLS-2$
-            Map<Integer, List<SimpleTraining>> yearMap = trainingsPer.get(year);
+            Map<Integer, List<ISimpleTraining>> yearMap = trainingsPer.get(year);
             if (yearMap == null) {
-                yearMap = new TreeMap<Integer, List<SimpleTraining>>();
+                yearMap = new TreeMap<Integer, List<ISimpleTraining>>();
             }
-            List<SimpleTraining> weekMap = yearMap.get(week);
+            List<ISimpleTraining> weekMap = yearMap.get(week);
             if (weekMap == null) {
-                weekMap = new ArrayList<SimpleTraining>();
+                weekMap = new ArrayList<ISimpleTraining>();
             }
             weekMap.add(training);
             yearMap.put(week, weekMap);
@@ -104,16 +105,16 @@ public class TrainingOverviewDatenAufbereiten {
         return createSum(trainingsPer);
     }
 
-    private List<SimpleTraining> createSum(final Map<Integer, Map<Integer, List<SimpleTraining>>> trainingsPer) {
-        final List<SimpleTraining> result = new ArrayList<SimpleTraining>();
-        for (final Map.Entry<Integer, Map<Integer, List<SimpleTraining>>> perYear : trainingsPer.entrySet()) {
-            for (final Map.Entry<Integer, List<SimpleTraining>> perInner : perYear.getValue().entrySet()) {
+    private List<ISimpleTraining> createSum(final Map<Integer, Map<Integer, List<ISimpleTraining>>> trainingsPer) {
+        final List<ISimpleTraining> result = new ArrayList<ISimpleTraining>();
+        for (final Map.Entry<Integer, Map<Integer, List<ISimpleTraining>>> perYear : trainingsPer.entrySet()) {
+            for (final Map.Entry<Integer, List<ISimpleTraining>> perInner : perYear.getValue().entrySet()) {
                 double distance = 0;
                 double seconds = 0;
                 int heartRate = 0;
                 int countHeartIsZero = 0;
                 Date date = null;
-                for (final SimpleTraining training : perInner.getValue()) {
+                for (final ISimpleTraining training : perInner.getValue()) {
                     distance += training.getDistanzInMeter();
                     seconds += training.getDauerInSekunden();
                     final int avgHeartRate = training.getAvgHeartRate();
@@ -129,28 +130,25 @@ public class TrainingOverviewDatenAufbereiten {
                 } else {
                     avgHeartRate = 0;
                 }
-                final SimpleTraining e = new SimpleTraining(distance, seconds, date, avgHeartRate);
-                if (e.getAvgHeartRate() > 0) {
-                    result.add(e);
-                }
+                result.add(ModelFactory.createSimpleTraining(distance, seconds, date, avgHeartRate, 0, 0));
             }
         }
         return result;
     }
 
-    public List<SimpleTraining> getTrainingsPerDay() {
+    public List<ISimpleTraining> getTrainingsPerDay() {
         return Collections.unmodifiableList(all);
     }
 
-    public List<SimpleTraining> getTrainingsPerMonth() {
+    public List<ISimpleTraining> getTrainingsPerMonth() {
         return Collections.unmodifiableList(trainingsPerMonth);
     }
 
-    public List<SimpleTraining> getTrainingsPerWeek() {
+    public List<ISimpleTraining> getTrainingsPerWeek() {
         return Collections.unmodifiableList(trainingsPerWeek);
     }
 
-    public List<SimpleTraining> getTrainingsPerYear() {
+    public List<ISimpleTraining> getTrainingsPerYear() {
         return Collections.unmodifiableList(trainingsPerYear);
     }
 

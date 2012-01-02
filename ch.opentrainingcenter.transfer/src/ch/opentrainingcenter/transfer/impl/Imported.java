@@ -7,6 +7,7 @@ import java.util.Date;
 
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IImported;
+import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.IWeather;
 
 /**
@@ -21,6 +22,7 @@ public class Imported implements java.io.Serializable, IImported {
     private Date importedDate;
     private String comments;
     private Date activityId;
+    private ITraining overview;
 
     public Imported() {
     }
@@ -133,5 +135,15 @@ public class Imported implements java.io.Serializable, IImported {
     @Override
     public Date getActivityId() {
         return activityId;
+    }
+
+    @Override
+    public void setTraining(final ITraining overview) {
+        this.overview = overview;
+    }
+
+    @Override
+    public ITraining getTraining() {
+        return overview;
     }
 }

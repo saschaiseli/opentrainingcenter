@@ -13,6 +13,7 @@ import ch.iseli.sportanalyzer.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IImported;
+import ch.opentrainingcenter.transfer.ITraining;
 
 public class ImportDao {
 
@@ -40,7 +41,7 @@ public class ImportDao {
         return keyFileName;
     }
 
-    public int importRecord(final int athleteId, final String fileName, final Date activityId) {
+    public int importRecord(final int athleteId, final String fileName, final Date activityId, final ITraining overview) {
         final int id = searchRecord(activityId);
         if (id > 0) {
             return -1;
@@ -52,6 +53,7 @@ public class ImportDao {
         record.setComments(fileName);
         record.setImportedDate(new Date());
         record.setActivityId(activityId);
+        record.setTraining(overview);
         final Session session = dao.getSession();
         final Transaction tx = session.beginTransaction();
         session.saveOrUpdate(record);

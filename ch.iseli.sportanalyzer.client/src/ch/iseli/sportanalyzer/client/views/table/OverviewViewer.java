@@ -18,9 +18,8 @@ import org.eclipse.ui.part.ViewPart;
 import ch.iseli.sportanalyzer.client.Messages;
 import ch.iseli.sportanalyzer.client.cache.IRecordListener;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDataCache;
-import ch.iseli.sportanalyzer.client.helper.DistanceHelper;
 import ch.iseli.sportanalyzer.client.helper.TimeHelper;
-import ch.iseli.sportanalyzer.client.model.ITrainingOverview;
+import ch.iseli.sportanalyzer.client.model.ISimpleTraining;
 import ch.iseli.sportanalyzer.client.model.TrainingOverviewFactory;
 import ch.iseli.sportanalyzer.tcx.ActivityT;
 
@@ -108,8 +107,8 @@ public class OverviewViewer extends ViewPart {
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(final Object element) {
-                final ITrainingOverview overview = TrainingOverviewFactory.creatTrainingOverview((ActivityT) element);
-                return overview.getDauer();
+                final ISimpleTraining simpleTraining = TrainingOverviewFactory.creatSimpleTraining((ActivityT) element);
+                return simpleTraining.getZeit();
             }
         });
 
@@ -118,8 +117,8 @@ public class OverviewViewer extends ViewPart {
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(final Object element) {
-                final ITrainingOverview overview = TrainingOverviewFactory.creatTrainingOverview((ActivityT) element);
-                return DistanceHelper.roundDistanceFromMeterToKm(overview.getLaengeInMeter());
+                final ISimpleTraining simpleTraining = TrainingOverviewFactory.creatSimpleTraining((ActivityT) element);
+                return simpleTraining.getLaengeInKilometer();
             }
         });
 
@@ -128,8 +127,8 @@ public class OverviewViewer extends ViewPart {
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(final Object element) {
-                final ITrainingOverview overview = TrainingOverviewFactory.creatTrainingOverview((ActivityT) element);
-                return overview.getPace();
+                final ISimpleTraining simpleTraining = TrainingOverviewFactory.creatSimpleTraining((ActivityT) element);
+                return simpleTraining.getPace();
             }
         });
 
@@ -138,8 +137,8 @@ public class OverviewViewer extends ViewPart {
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(final Object element) {
-                final ITrainingOverview overview = TrainingOverviewFactory.creatTrainingOverview((ActivityT) element);
-                return overview.getAverageHeartBeat();
+                final ISimpleTraining simpleTraining = TrainingOverviewFactory.creatSimpleTraining((ActivityT) element);
+                return String.valueOf(simpleTraining.getAvgHeartRate());
             }
         });
 

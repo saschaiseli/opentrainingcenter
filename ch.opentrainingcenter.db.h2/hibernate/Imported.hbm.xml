@@ -19,6 +19,10 @@
    fetch="select" name="athlete" update="false" cascade="all">
    <column name="ID_FK_ATHLETE"/>
   </many-to-one>
+   <many-to-one class="ch.opentrainingcenter.transfer.impl.Training"
+   fetch="select" name="training" update="false" cascade="all">
+   <column name="ID_FK_TRAINING"/>
+  </many-to-one>
   <property generated="never" lazy="false" name="importedDate" type="timestamp">
    <column length="23" name="IMPORTED_DATE"/>
   </property>

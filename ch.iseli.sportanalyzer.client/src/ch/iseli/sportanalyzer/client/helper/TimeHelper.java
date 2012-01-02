@@ -60,6 +60,28 @@ public class TimeHelper {
         }
     }
 
+    /**
+     * konvertiere ein {@link Date} in ein lesbareres format.
+     * 
+     * wenn der parameter withDay true ist wird der wochentag noch mit ausgegeben
+     * 
+     * @param datum
+     *            {@link XMLGregorianCalendar}
+     * @param withDay
+     *            flag ob der wochenag auch mitgegeben werden soll.
+     * @return das datum '2010.11.23 14:23' und wenn das flag with Day ist wird noch der ausgeschreibene wochentag vorangestellt.
+     */
+    public static final String convertDateToString(final Date datum, final boolean withDay) {
+        final Calendar calendar = Calendar.getInstance();
+        calendar.setTime(datum);
+        final SimpleDateFormat format = new SimpleDateFormat(Messages.TimeHelper_0);
+        if (withDay) {
+            return calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()) + Messages.TimeHelper_1 + format.format(datum);
+        } else {
+            return format.format(datum);
+        }
+    }
+
     private static String addZero(final int i) {
         return i < 10 ? Messages.TimeHelper_2 + i : Messages.TimeHelper_3 + i;
     }

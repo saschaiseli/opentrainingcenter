@@ -7,6 +7,7 @@ import java.util.Map;
 import org.eclipse.core.runtime.IExecutableExtensionFactory;
 
 import ch.opentrainingcenter.transfer.IAthlete;
+import ch.opentrainingcenter.transfer.ITraining;
 
 public interface IDatabaseAccess extends IExecutableExtensionFactory {
 
@@ -38,7 +39,7 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
      *            id der aktivität.
      * @return id des datenbankeintrages oder -1 wenn der record bereits in der datenbank war.
      */
-    int importRecord(int athleteId, String fileName, Date activityId);
+    int importRecord(int athleteId, String fileName, Date activityId, ITraining overview);
 
     /**
      * Gibt den sportler mit

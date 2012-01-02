@@ -10,8 +10,7 @@ import java.util.List;
 
 import org.eclipse.core.runtime.ListenerList;
 
-import ch.iseli.sportanalyzer.client.model.ITrainingOverview;
-import ch.iseli.sportanalyzer.client.model.SimpleTraining;
+import ch.iseli.sportanalyzer.client.model.ISimpleTraining;
 import ch.iseli.sportanalyzer.client.model.TrainingOverviewFactory;
 import ch.iseli.sportanalyzer.tcx.ActivityListT;
 import ch.iseli.sportanalyzer.tcx.ActivityT;
@@ -99,9 +98,9 @@ public class TrainingCenterDataCache {
     /**
      * @return eine Übersicht auf das selektierte Training.
      */
-    public ITrainingOverview getSelectedOverview() {
+    public ISimpleTraining getSelectedOverview() {
         setIfNothingSelectedTheNewestAsSelected();
-        return TrainingOverviewFactory.creatTrainingOverview(selectedActivity);
+        return TrainingOverviewFactory.creatSimpleTraining(selectedActivity);
     }
 
     private void setIfNothingSelectedTheNewestAsSelected() {
@@ -173,11 +172,10 @@ public class TrainingCenterDataCache {
 
     }
 
-    public List<SimpleTraining> getAllSimpleTrainings() {
-        final List<SimpleTraining> result = new ArrayList<SimpleTraining>();
+    public List<ISimpleTraining> getAllSimpleTrainings() {
+        final List<ISimpleTraining> result = new ArrayList<ISimpleTraining>();
         for (final ActivityT activity : database.getActivities().getActivity()) {
-            final ITrainingOverview over = TrainingOverviewFactory.creatTrainingOverview(activity);
-            result.add(over.getSimpleTraining());
+            result.add(TrainingOverviewFactory.creatSimpleTraining(activity));
         }
         return result;
     }

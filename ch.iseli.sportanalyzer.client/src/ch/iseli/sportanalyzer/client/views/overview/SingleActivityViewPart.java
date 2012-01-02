@@ -38,7 +38,7 @@ import ch.iseli.sportanalyzer.client.charts.HeartIntervallCreator;
 import ch.iseli.sportanalyzer.client.helper.SpeedCalculator;
 import ch.iseli.sportanalyzer.client.helper.ZoneHelper;
 import ch.iseli.sportanalyzer.client.helper.ZoneHelper.Zone;
-import ch.iseli.sportanalyzer.client.model.ITrainingOverview;
+import ch.iseli.sportanalyzer.client.model.ISimpleTraining;
 import ch.iseli.sportanalyzer.client.model.Units;
 import ch.iseli.sportanalyzer.tcx.ActivityLapT;
 import ch.iseli.sportanalyzer.tcx.ActivityT;
@@ -51,14 +51,17 @@ public class SingleActivityViewPart extends ViewPart {
     public static final String ID = "ch.iseli.sportanalyzer.client.views.singlerun"; //$NON-NLS-1$
     private static final Logger logger = Logger.getLogger(SingleActivityViewPart.class);
     private final TrainingCenterDataCache cache = TrainingCenterDataCache.getInstance();
-    private final ITrainingOverview trainingOverview;
+    private final ISimpleTraining simpleTraining;
+    private final ActivityT selected;
     private FormToolkit toolkit;
     private ScrolledForm form;
     private TableWrapData td;
+    private String convertTrackpoints;
 
     public SingleActivityViewPart() {
-        trainingOverview = cache.getSelectedOverview();
-        setPartName(trainingOverview.getDatum());
+        simpleTraining = cache.getSelectedOverview();
+        selected = cache.getSelected();
+        setPartName(simpleTraining.getFormattedDate());
     }
 
     @Override
@@ -76,7 +79,7 @@ public class SingleActivityViewPart extends ViewPart {
 
         td = new TableWrapData(TableWrapData.FILL_GRAB);
         body.setLayoutData(td);
-        form.setText(Messages.SingleActivityViewPart_0 + trainingOverview.getDatum());
+        form.setText(Messages.SingleActivityViewPart_0 + simpleTraining.getDatum());
 
         addOverviewSection(body);
         addMapSection(body);
@@ -104,13 +107,56 @@ public class SingleActivityViewPart extends ViewPart {
         final GridLayout layoutClient = new GridLayout(3, false);
         overViewComposite.setLayout(layoutClient);
 
-        addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_3, trainingOverview.getDauer(), Units.HOUR_MINUTE_SEC);
-        addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_4, trainingOverview.getLaengeInKilometer(), Units.KM);
-        addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_5, String.valueOf(trainingOverview.getAverageHeartBeat()), Units.BEATS_PER_MINUTE);
-        addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_6, String.valueOf(trainingOverview.getMaxHeartBeat()), Units.BEATS_PER_MINUTE);
-        addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_7, String.valueOf(trainingOverview.getPace()), Units.PACE);
-        addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_8, String.valueOf(trainingOverview.getMaxSpeed()), Units.PACE);
+        addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_3, simpleTraining.getZeit(), Units.HOUR_MINUTE_SEC);
+        addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_4, simpleTraining.getLaengeInKilometer(), Units.KM);
+        final int avgHeartRate = simpleTraining.getAvgHeartRate();
+        if (avgHeartRate > 0) {
+            addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_5, String.valueOf(avgHeartRate), Units.BEATS_PER_MINUTE);
+        } else {
+            addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_5, "-", Units.BEATS_PER_MINUTE); //$NON-NLS-1$
+        }
+        addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_6, simpleTraining.getMaxHeartBeat(), Units.BEATS_PER_MINUTE);
+        addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_7, simpleTraining.getPace(), Units.PACE);
+        addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_8, simpleTraining.getMaxSpeed(), Units.PACE);
         overviewSection.setClient(overViewComposite);
+    }
+
+    private void addMapSection(final Composite body) {
+        final Section mapSection = toolkit.createSection(body, Section.DESCRIPTION | Section.TITLE_BAR | Section.TWISTIE | Section.EXPANDED);
+        mapSection.addExpansionListener(new ExpansionAdapter() {
+            @Override
+            public void expansionStateChanged(final ExpansionEvent e) {
+                form.reflow(true);
+            }
+        });
+        mapSection.setExpanded(false);
+
+        td = new TableWrapData(TableWrapData.FILL_GRAB);
+        td.colspan = 1;
+        td.grabHorizontal = true;
+        td.grabVertical = true;
+
+        mapSection.setLayoutData(td);
+        mapSection.setText(Messages.SingleActivityViewPart_16);
+        mapSection.setDescription(Messages.SingleActivityViewPart_17);
+
+        final Composite client = toolkit.createComposite(mapSection);
+        // client.setBackground(getViewSite().getWorkbenchWindow().getShell().getDisplay().getSystemColor(SWT.COLOR_CYAN));
+        final TableWrapLayout layout = new TableWrapLayout();
+        layout.numColumns = 1;
+        layout.topMargin = -60;
+        layout.bottomMargin = 5;
+        client.setLayout(layout);
+
+        convertTrackpoints = MapConverter.convertTrackpoints(selected);
+        final String firstPointToPan = MapConverter.getFirstPointToPan(convertTrackpoints);
+        final MapViewer mapViewer = new MapViewer(client, SWT.NONE, convertTrackpoints, firstPointToPan);
+        td = new TableWrapData(TableWrapData.FILL_GRAB);
+        td.heightHint = 550;
+        td.grabHorizontal = true;
+        mapViewer.getComposite().setLayoutData(td);
+
+        mapSection.setClient(client);
     }
 
     /**
@@ -232,45 +278,6 @@ public class SingleActivityViewPart extends ViewPart {
         altitude.setClient(client);
     }
 
-    private void addMapSection(final Composite body) {
-        final Section mapSection = toolkit.createSection(body, Section.DESCRIPTION | Section.TITLE_BAR | Section.TWISTIE | Section.EXPANDED);
-        mapSection.addExpansionListener(new ExpansionAdapter() {
-            @Override
-            public void expansionStateChanged(final ExpansionEvent e) {
-                form.reflow(true);
-            }
-        });
-        mapSection.setExpanded(true);
-
-        td = new TableWrapData(TableWrapData.FILL_GRAB);
-        td.colspan = 1;
-        td.grabHorizontal = true;
-        td.grabVertical = true;
-
-        mapSection.setLayoutData(td);
-        mapSection.setText(Messages.SingleActivityViewPart_16);
-        mapSection.setDescription(Messages.SingleActivityViewPart_17);
-
-        final Composite client = toolkit.createComposite(mapSection);
-        // client.setBackground(getViewSite().getWorkbenchWindow().getShell().getDisplay().getSystemColor(SWT.COLOR_CYAN));
-        final TableWrapLayout layout = new TableWrapLayout();
-        layout.numColumns = 1;
-        layout.topMargin = -60;
-        layout.bottomMargin = 5;
-        client.setLayout(layout);
-
-        final ActivityT selected = TrainingCenterDataCache.getInstance().getSelected();
-        final String convertTrackpoints = MapConverter.convertTrackpoints(selected);
-        final String firstPointToPan = MapConverter.getFirstPointToPan(convertTrackpoints);
-        final MapViewer mapViewer = new MapViewer(client, SWT.NONE, convertTrackpoints, firstPointToPan);
-        td = new TableWrapData(TableWrapData.FILL_GRAB);
-        td.heightHint = 550;
-        td.grabHorizontal = true;
-        mapViewer.getComposite().setLayoutData(td);
-
-        mapSection.setClient(client);
-    }
-
     private void addLabelAndValue(final Composite parent, final String label, final String value, final Units unit) {
         // Label
         final Label dauerLabel = toolkit.createLabel(parent, label + ": "); //$NON-NLS-1$
@@ -351,7 +358,6 @@ public class SingleActivityViewPart extends ViewPart {
     }
 
     private void addIntervallMarker(final XYPlot plot) {
-        final TrainingCenterDataCache cache = TrainingCenterDataCache.getInstance();
         final Map<Zone, IntervalMarker> markers = HeartIntervallCreator.createMarker(cache.getSelectedProfile());
         plot.addRangeMarker(markers.get(ZoneHelper.Zone.AEROBE));
         plot.addRangeMarker(markers.get(ZoneHelper.Zone.SCHWELLE));
@@ -359,9 +365,7 @@ public class SingleActivityViewPart extends ViewPart {
     }
 
     private XYDataset createDataset(final ChartType type) {
-
-        final ActivityT selectedActivity = cache.getSelected();
-        final List<ActivityLapT> laps = selectedActivity.getLap();
+        final List<ActivityLapT> laps = selected.getLap();
         final XYSeries series1 = new XYSeries(Messages.SingleActivityViewPart_18);
         for (final ActivityLapT activityLapT : laps) {
             final List<TrackT> tracks = activityLapT.getTrack();
