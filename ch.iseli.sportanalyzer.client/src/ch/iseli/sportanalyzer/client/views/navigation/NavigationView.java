@@ -2,6 +2,7 @@ package ch.iseli.sportanalyzer.client.views.navigation;
 
 import java.util.Collection;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
@@ -32,11 +33,12 @@ import ch.iseli.sportanalyzer.client.helper.DistanceHelper;
 import ch.iseli.sportanalyzer.client.helper.TimeHelper;
 import ch.iseli.sportanalyzer.client.views.overview.SingleActivityViewPart;
 import ch.iseli.sportanalyzer.db.DatabaseAccessFactory;
+import ch.iseli.sportanalyzer.importer.GpsFileLoader;
 import ch.iseli.sportanalyzer.importer.ImportJob;
-import ch.iseli.sportanalyzer.tcx.ActivityLapT;
 import ch.iseli.sportanalyzer.tcx.ActivityT;
-import ch.iseli.sportanalyzer.tcx.IntensityT;
 import ch.opentrainingcenter.transfer.IAthlete;
+import ch.opentrainingcenter.transfer.IImported;
+import ch.opentrainingcenter.transfer.ITraining;
 
 public class NavigationView extends ViewPart {
 
@@ -44,7 +46,11 @@ public class NavigationView extends ViewPart {
 
     private TreeViewer viewer;
 
+    public static final Logger logger = Logger.getLogger(NavigationView.class);
+
     private final TrainingCenterDataCache cache = TrainingCenterDataCache.getInstance();
+
+    private final GpsFileLoader loadGpsFile = new GpsFileLoader();
 
     /**
      * This is a callback that will allow us to create the viewer and initialize it.
@@ -78,18 +84,17 @@ public class NavigationView extends ViewPart {
             @Override
             public void doubleClick(final DoubleClickEvent event) {
                 final IStructuredSelection selection = (IStructuredSelection) event.getSelection();
-                final Object first = selection.getFirstElement();
+                final Object selectedRecord = selection.getFirstElement();
 
-                if (first instanceof ActivityT) {
-                    openSingleRunView((ActivityT) first);
+                if (selectedRecord instanceof IImported) {
+                    openSingleRunView((IImported) selectedRecord);
                 }
             }
 
-            private void openSingleRunView(final ActivityT first) {
-                cache.setSelectedRun(first);
-
+            private void openSingleRunView(final IImported record) {
+                final ActivityT selected = getActivity(record);
+                final String hash = getSecondaryId(selected);
                 try {
-                    final String hash = getSecondaryId(first);
                     PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
                             .showView(SingleActivityViewPart.ID, hash, IWorkbenchPage.VIEW_ACTIVATE);
                 } catch (final PartInitException e) {
@@ -97,6 +102,23 @@ public class NavigationView extends ViewPart {
                 }
             }
 
+            private ActivityT getActivity(final IImported selectedRecord) {
+                ActivityT selected = null;
+                if (!cache.contains(selectedRecord.getActivityId())) {
+                    try {
+                        selected = loadGpsFile.convertActivity(selectedRecord);
+                        cache.setSelectedRun(selectedRecord);
+                        cache.add(selected);
+                    } catch (final Exception e) {
+                        logger.error("Konnte File nicht einlesen"); //$NON-NLS-1$
+                    }
+
+                } else {
+                    // read from cache
+                    selected = cache.get(selectedRecord.getActivityId());
+                }
+                return selected;
+            }
         });
 
         viewer.addSelectionChangedListener(new ISelectionChangedListener() {
@@ -105,10 +127,10 @@ public class NavigationView extends ViewPart {
             public void selectionChanged(final SelectionChangedEvent event) {
                 final IStructuredSelection selection = (IStructuredSelection) event.getSelection();
                 final Object first = selection.getFirstElement();
-                if (first instanceof ActivityT) {
-                    final ActivityT activity = (ActivityT) first;
+                if (first instanceof IImported) {
+                    final IImported record = (IImported) first;
                     cache.setSelection(selection.toArray());
-                    writeToStatusLine(activity);
+                    writeToStatusLine(record);
                 } else {
                     writeToStatusLine(""); //$NON-NLS-1$
                     cache.setSelectedRun(null);
@@ -119,9 +141,8 @@ public class NavigationView extends ViewPart {
                 getViewSite().getActionBars().getStatusLineManager().setMessage(message);
             }
 
-            private void writeToStatusLine(final ActivityT selectedRun) {
-                writeToStatusLine(Messages.NavigationView_0 + TimeHelper.convertGregorianDateToString(selectedRun.getId(), false)
-                        + " " + getOverview(selectedRun)); //$NON-NLS-1$
+            private void writeToStatusLine(final IImported record) {
+                writeToStatusLine(Messages.NavigationView_0 + TimeHelper.convertDateToString(record.getActivityId(), false) + " " + getOverview(record)); //$NON-NLS-1$
             }
         });
 
@@ -131,25 +152,25 @@ public class NavigationView extends ViewPart {
             job.schedule();
             job.addJobChangeListener(new ImportJobChangeListener(viewer));
         } else {
-            final Collection<ActivityT> allActivities = cache.getAllActivities();
-            viewer.setInput(allActivities);
-            writeStatus(Messages.NavigationView_2 + allActivities.size() + Messages.NavigationView_3);
+            final Collection<IImported> allImported = cache.getAllActivities();
+            viewer.setInput(allImported);
+            writeStatus(Messages.NavigationView_2 + allImported.size() + Messages.NavigationView_3);
         }
 
         cache.addListener(new IRecordListener() {
 
             @Override
             public void recordChanged(final Collection<ActivityT> entry) {
-                final Collection<ActivityT> allActivities = cache.getAllActivities();
+                final Collection<IImported> allImported = cache.getAllActivities();
                 Display.getDefault().asyncExec(new Runnable() {
 
                     @Override
                     public void run() {
                         try {
-                            if (allActivities == null || allActivities.isEmpty()) {
+                            if (allImported == null || allImported.isEmpty()) {
                                 writeStatus(Messages.NavigationView_4);
                             }
-                            viewer.setInput(allActivities);
+                            viewer.setInput(allImported);
                             viewer.refresh();
                         } catch (final Exception e) {
                             e.printStackTrace();
@@ -178,23 +199,11 @@ public class NavigationView extends ViewPart {
         getViewSite().getActionBars().getStatusLineManager().setMessage(message);
     }
 
-    private final String getOverview(final ActivityT activity) {
+    private final String getOverview(final IImported record) {
         final StringBuffer str = new StringBuffer();
-        if (activity.getLap() != null && activity.getLap().size() > 1) {
-            // intervall
-            str.append(Messages.NavigationView_5);
-            int activeIntervall = 0;
-            for (final ActivityLapT lap : activity.getLap()) {
-                if (IntensityT.ACTIVE.equals(lap.getIntensity())) {
-                    activeIntervall++;
-                }
-            }
-            str.append(activeIntervall).append(Messages.NavigationView_6);
-        } else if (activity.getLap() != null && activity.getLap().size() == 1) {
-            final ActivityLapT lap = activity.getLap().get(0);
-            str.append(Messages.NavigationView_7).append(DistanceHelper.roundDistanceFromMeterToKmMitEinheit(lap.getDistanceMeters()));
-            str.append(Messages.NavigationView_8).append(TimeHelper.convertSecondsToHumanReadableZeit(lap.getTotalTimeSeconds()));
-        }
+        final ITraining training = record.getTraining();
+        str.append(Messages.NavigationView_7).append(DistanceHelper.roundDistanceFromMeterToKmMitEinheit(training.getLaengeInMeter()));
+        str.append(Messages.NavigationView_8).append(TimeHelper.convertSecondsToHumanReadableZeit(training.getDauerInSekunden()));
         return str.toString();
     }
 

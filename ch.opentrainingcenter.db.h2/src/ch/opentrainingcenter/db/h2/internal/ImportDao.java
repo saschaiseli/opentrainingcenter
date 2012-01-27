@@ -90,7 +90,37 @@ public class ImportDao {
         query.executeUpdate();
         dao.commit();
         session.flush();
-        dao.getSession().flush();
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<IImported> getAllImported(final IAthlete athlete) {
+        final Session session = dao.getSession();
+        dao.begin();
+        if (athlete == null) {
+            return null;
+        }
+        final Query query = dao.getSession().createQuery("from Imported where id_fk_athlete=:idAthlete");//$NON-NLS-1$
+        query.setParameter("idAthlete", athlete.getId());//$NON-NLS-1$
+        final List<IImported> all = query.list();
+        dao.commit();
+        session.flush();
+        return all;
+    }
+
+    @SuppressWarnings("unchecked")
+    public IImported getImportedRecord(final Date key) {
+        final Session session = dao.getSession();
+        dao.begin();
+        final Query query = dao.getSession().createQuery("from Imported where ACTIVITY_ID=:key");//$NON-NLS-1$
+        query.setParameter("key", key);//$NON-NLS-1$
+        final List<IImported> all = query.list();
+        dao.commit();
+        session.flush();
+        if (all.isEmpty()) {
+            return null;
+        } else {
+            return all.get(0);
+        }
     }
 
 }

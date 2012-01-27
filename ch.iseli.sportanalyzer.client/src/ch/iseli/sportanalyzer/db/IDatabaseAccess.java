@@ -7,6 +7,7 @@ import java.util.Map;
 import org.eclipse.core.runtime.IExecutableExtensionFactory;
 
 import ch.opentrainingcenter.transfer.IAthlete;
+import ch.opentrainingcenter.transfer.IImported;
 import ch.opentrainingcenter.transfer.ITraining;
 
 public interface IDatabaseAccess extends IExecutableExtensionFactory {
@@ -28,6 +29,15 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
     Map<Date, String> getImportedRecords(IAthlete athlete);
 
     /**
+     * Gibt eine Liste von allen importierted Records zurück.
+     * 
+     * @param athlete
+     *            der Athlete der die Records importierte
+     * @return eine Liste von {@link IImported}
+     */
+    List<IImported> getAllImported(IAthlete athlete);
+
+    /**
      * Importiert den Record in die Datenbank. Zweimaliges importieren wird ignoriert. Das heisst ein anderer Benutzer kann nicht denselben Record auch importieren. Massgebendes
      * Kriterium hierfür ist der Filename und die id der Actitvity.
      * 
@@ -40,6 +50,13 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
      * @return id des datenbankeintrages oder -1 wenn der record bereits in der datenbank war.
      */
     int importRecord(int athleteId, String fileName, Date activityId, ITraining overview);
+
+    /**
+     * @param key
+     *            das datum des importierten records. das datum ist die id des laufes.
+     * @return
+     */
+    IImported getImportedRecord(Date key);
 
     /**
      * Gibt den sportler mit

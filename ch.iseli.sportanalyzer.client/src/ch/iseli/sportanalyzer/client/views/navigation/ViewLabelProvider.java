@@ -6,7 +6,7 @@ import org.eclipse.swt.graphics.Image;
 import ch.iseli.sportanalyzer.client.Activator;
 import ch.iseli.sportanalyzer.client.helper.TimeHelper;
 import ch.iseli.sportanalyzer.client.views.IImageKeys;
-import ch.iseli.sportanalyzer.tcx.ActivityT;
+import ch.opentrainingcenter.transfer.IImported;
 
 public class ViewLabelProvider extends LabelProvider {
 
@@ -15,8 +15,8 @@ public class ViewLabelProvider extends LabelProvider {
 
     @Override
     public String getText(final Object object) {
-        // wird immer eine ActivityT sein
-        return TimeHelper.convertGregorianDateToString(((ActivityT) object).getId());
+        // wird immer eine IImported sein
+        return TimeHelper.convertDateToString(((IImported) object).getActivityId(), false);
     }
 
     @Override

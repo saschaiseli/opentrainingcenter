@@ -1,11 +1,5 @@
 package ch.iseli.sportanalyzer.client.splash;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -25,15 +19,12 @@ import org.eclipse.ui.splash.BasicSplashHandler;
 
 import ch.iseli.sportanalyzer.client.Activator;
 import ch.iseli.sportanalyzer.client.Application;
-import ch.iseli.sportanalyzer.client.Messages;
 import ch.iseli.sportanalyzer.client.PreferenceConstants;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDataCache;
 import ch.iseli.sportanalyzer.db.DatabaseAccessFactory;
 import ch.iseli.sportanalyzer.db.DatabaseHelper;
 import ch.iseli.sportanalyzer.importer.ConvertHandler;
-import ch.iseli.sportanalyzer.importer.FindGarminFiles;
 import ch.iseli.sportanalyzer.importer.IConvert2Tcx;
-import ch.iseli.sportanalyzer.tcx.ActivityT;
 import ch.opentrainingcenter.transfer.IAthlete;
 
 public class OtcSplashHandler extends BasicSplashHandler {
@@ -160,37 +151,36 @@ public class OtcSplashHandler extends BasicSplashHandler {
                     getSplash().getDisplay().syncExec(new Runnable() {
                         @Override
                         public void run() {
-                            final Map<Date, String> importedRecords = DatabaseAccessFactory.getDatabaseAccess().getImportedRecords(athlete);
-                            final Map<Date, File> loadAllGPSFiles = FindGarminFiles.loadAllGPSFilesFromAthlete(importedRecords);
-                            final List<ActivityT> activitiesToImport = new ArrayList<ActivityT>();
-                            final int size = loadAllGPSFiles.size();
-                            fBar.setMaximum(size);
-                            int i = 0;
-                            try {
-                                for (final Map.Entry<Date, File> entry : loadAllGPSFiles.entrySet()) {
-                                    titel.setText(Messages.OtcSplashHandler_0 + (size - (i)));
-                                    infotext.setText(Messages.OtcSplashHandler_1 + entry.getValue().getName());
-                                    final File fileForConverting = entry.getValue();
-
-                                    final List<ActivityT> activities = convertHandler.getMatchingConverter(fileForConverting)
-                                            .convertActivity(fileForConverting);
-                                    for (final ActivityT activityT : activities) {
-                                        if (activityT.getId().toGregorianCalendar().getTime().equals(entry.getKey()) && !activitiesToImport.contains(activityT)) {
-                                            activitiesToImport.add(activityT);
-                                        }
-                                    }
-
-                                    fBar.setSelection(i);
-                                    i++;
-                                }
-                                final TrainingCenterDataCache cache = TrainingCenterDataCache.getInstance();
-                                cache.setSelectedProfile(athlete);
-                                cache.addAll(activitiesToImport);
-                                cache.cacheLoaded();
-                            } catch (final Exception e) {
-                                logger.error(e.getMessage());
-                            }
-
+                            // final Map<Date, String> importedRecords = DatabaseAccessFactory.getDatabaseAccess().getImportedRecords(athlete);
+                            // final Map<Date, File> loadAllGPSFiles = FindGarminFiles.loadAllGPSFilesFromAthlete(importedRecords);
+                            // final List<ActivityT> activitiesToImport = new ArrayList<ActivityT>();
+                            // final int size = loadAllGPSFiles.size();
+                            // fBar.setMaximum(size);
+                            // int i = 0;
+                            // try {
+                            // for (final Map.Entry<Date, File> entry : loadAllGPSFiles.entrySet()) {
+                            // titel.setText(Messages.OtcSplashHandler_0 + (size - (i)));
+                            // infotext.setText(Messages.OtcSplashHandler_1 + entry.getValue().getName());
+                            // final File fileForConverting = entry.getValue();
+                            //
+                            // final List<ActivityT> activities = convertHandler.getMatchingConverter(fileForConverting)
+                            // .convertActivity(fileForConverting);
+                            // for (final ActivityT activityT : activities) {
+                            // if (activityT.getId().toGregorianCalendar().getTime().equals(entry.getKey()) && !activitiesToImport.contains(activityT)) {
+                            // activitiesToImport.add(activityT);
+                            // }
+                            // }
+                            //
+                            // fBar.setSelection(i);
+                            // i++;
+                            // }
+                            final TrainingCenterDataCache cache = TrainingCenterDataCache.getInstance();
+                            cache.setSelectedProfile(athlete);
+                            cache.addAllImported(DatabaseAccessFactory.getDatabaseAccess().getAllImported(athlete));
+                            cache.cacheLoaded();
+                            // } catch (final Exception e) {
+                            // logger.error(e.getMessage());
+                            // }
                         }
                     });
                 }

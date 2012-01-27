@@ -146,4 +146,10 @@ public class Imported implements java.io.Serializable, IImported {
     public ITraining getTraining() {
         return overview;
     }
+
+    @Override
+    public String toString() {
+        return "Imported [id=" + id + ", weather=" + weather + ", athlete=" + athlete + ", importedDate=" + importedDate + ", comments=" + comments //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+                + ", activityId=" + activityId + ", overview=" + overview + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    }
 }

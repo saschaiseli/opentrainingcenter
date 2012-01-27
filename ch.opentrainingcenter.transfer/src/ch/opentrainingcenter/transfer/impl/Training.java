@@ -14,6 +14,10 @@ public class Training implements ITraining {
     private int maxHeartRate;
     private double maxSpeed;
 
+    public Training() {
+        // maybe for hibernate
+    }
+
     public Training(final Date dateOfStart, final double timeInSeconds, final double distance, final int avgHeartRate, final int maxHeartBeat,
             final double maximumSpeed) {
         date = dateOfStart;
@@ -92,6 +96,12 @@ public class Training implements ITraining {
     @Override
     public void setMaxSpeed(final double maxSpeed) {
         this.maxSpeed = maxSpeed;
+    }
+
+    @Override
+    public String toString() {
+        return "Training [id=" + id + ", date=" + date + ", dauerInSekunden=" + dauerInSekunden + ", laengeInMeter=" + laengeInMeter + ", avgHeartBeat=" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+                + avgHeartBeat + ", maxHeartRate=" + maxHeartRate + ", maxSpeed=" + maxSpeed + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 
 }

@@ -14,7 +14,7 @@ import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 import ch.iseli.sportanalyzer.client.Messages;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDataCache;
 import ch.iseli.sportanalyzer.db.DatabaseAccessFactory;
-import ch.iseli.sportanalyzer.tcx.ActivityT;
+import ch.opentrainingcenter.transfer.IImported;
 
 public class DeleteImportedRecord extends Action implements ISelectionListener, IWorkbenchAction {
 
@@ -42,11 +42,11 @@ public class DeleteImportedRecord extends Action implements ISelectionListener, 
         final List<?> selection = cache.getSelection();
         final List<Date> deletedIds = new ArrayList<Date>();
         for (final Object obj : selection) {
-            final ActivityT activity = (ActivityT) obj;
-            log.info("Lösche den Lauf mit der ID " + activity.getId() + " und der DB Id: " + activity.getNotes()); //$NON-NLS-1$ //$NON-NLS-2$
-            final Date activityId = activity.getId().toGregorianCalendar().getTime();
-            DatabaseAccessFactory.getDatabaseAccess().removeImportedRecord(activityId);
-            deletedIds.add(activityId);
+            final IImported record = (IImported) obj;
+            final int dbId = record.getId();
+            log.info("Lösche den Lauf mit der ID " + record.getActivityId() + " und der DB Id: " + dbId); //$NON-NLS-1$ //$NON-NLS-2$
+            DatabaseAccessFactory.getDatabaseAccess().removeImportedRecord(record.getActivityId());
+            deletedIds.add(record.getActivityId());
         }
         cache.remove(deletedIds);
     }

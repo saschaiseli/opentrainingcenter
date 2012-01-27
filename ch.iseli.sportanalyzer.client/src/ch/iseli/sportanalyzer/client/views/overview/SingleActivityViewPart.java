@@ -60,7 +60,7 @@ public class SingleActivityViewPart extends ViewPart {
 
     public SingleActivityViewPart() {
         simpleTraining = cache.getSelectedOverview();
-        selected = cache.getSelected();
+        selected = cache.get(simpleTraining.getDatum());
         setPartName(simpleTraining.getFormattedDate());
     }
 

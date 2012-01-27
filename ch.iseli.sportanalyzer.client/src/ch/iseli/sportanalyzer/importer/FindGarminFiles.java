@@ -15,13 +15,34 @@ import ch.iseli.sportanalyzer.client.action.ImportManualGpsFiles;
 public class FindGarminFiles {
 
     /**
+     * Sucht aus allen gps files diejenigen raus, die auch zu dem entsprechenden athleten gehören. Das File wird nur gefunden, wenn der record bereits einmal importiert wurde.
+     * 
+     * @param garminFileNamesAlreadyImported
+     *            map mit der id und dem filenamen der bereits importiert ist.
+     * @return das effektive gps file.
+     */
+    static File loadAllGPSFilesFromAthlete(final String garminFileNamesAlreadyImported) {
+
+        final List<File> all = FindGarminFiles.getGarminFiles();
+        final Map<String, File> fileNameToFile = new HashMap<String, File>();
+        for (final File file : all) {
+            fileNameToFile.put(file.getName(), file);
+        }
+        if (istFileNameVonKeyIn(fileNameToFile, garminFileNamesAlreadyImported)) {
+            final String withoutImportPattern = removeImportPattern(garminFileNamesAlreadyImported);
+            return fileNameToFile.get(withoutImportPattern);
+        }
+        return null;
+    }
+
+    /**
      * Sucht aus allen gps files diejenigen raus, die auch zu dem entsprechenden athleten gehören. Es werden nur Files gefunden, die auch schon einmal importiert wurden.
      * 
      * @param garminFileNamesAlreadyImported
      *            map mit der id und dem filenamen der bereits importiert ist.
      * @return map mit derselben id welche als value das {@link File} hat.
      */
-    public static Map<Date, File> loadAllGPSFilesFromAthlete(final Map<Date, String> garminFileNamesAlreadyImported) {
+    static Map<Date, File> loadAllGPSFilesFromAthlete(final Map<Date, String> garminFileNamesAlreadyImported) {
         if (garminFileNamesAlreadyImported == null) {
             return Collections.emptyMap();
         }

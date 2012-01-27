@@ -18,10 +18,11 @@ import org.eclipse.ui.part.ViewPart;
 import ch.iseli.sportanalyzer.client.Messages;
 import ch.iseli.sportanalyzer.client.cache.IRecordListener;
 import ch.iseli.sportanalyzer.client.cache.TrainingCenterDataCache;
+import ch.iseli.sportanalyzer.client.helper.DistanceHelper;
 import ch.iseli.sportanalyzer.client.helper.TimeHelper;
-import ch.iseli.sportanalyzer.client.model.ISimpleTraining;
-import ch.iseli.sportanalyzer.client.model.TrainingOverviewFactory;
 import ch.iseli.sportanalyzer.tcx.ActivityT;
+import ch.opentrainingcenter.transfer.IImported;
+import ch.opentrainingcenter.transfer.ITraining;
 
 public class OverviewViewer extends ViewPart {
 
@@ -97,8 +98,8 @@ public class OverviewViewer extends ViewPart {
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(final Object element) {
-                final ActivityT activity = (ActivityT) element;
-                return TimeHelper.convertGregorianDateToString(activity.getId(), true);
+                final IImported record = (IImported) element;
+                return TimeHelper.convertDateToString(record.getActivityId(), true);
             }
         });
 
@@ -107,8 +108,8 @@ public class OverviewViewer extends ViewPart {
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(final Object element) {
-                final ISimpleTraining simpleTraining = TrainingOverviewFactory.creatSimpleTraining((ActivityT) element);
-                return simpleTraining.getZeit();
+                final IImported record = (IImported) element;
+                return TimeHelper.convertSecondsToHumanReadableZeit(record.getTraining().getDauerInSekunden());
             }
         });
 
@@ -117,8 +118,8 @@ public class OverviewViewer extends ViewPart {
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(final Object element) {
-                final ISimpleTraining simpleTraining = TrainingOverviewFactory.creatSimpleTraining((ActivityT) element);
-                return simpleTraining.getLaengeInKilometer();
+                final IImported record = (IImported) element;
+                return DistanceHelper.roundDistanceFromMeterToKm(record.getTraining().getLaengeInMeter());
             }
         });
 
@@ -127,8 +128,9 @@ public class OverviewViewer extends ViewPart {
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(final Object element) {
-                final ISimpleTraining simpleTraining = TrainingOverviewFactory.creatSimpleTraining((ActivityT) element);
-                return simpleTraining.getPace();
+                final IImported record = (IImported) element;
+                final ITraining training = record.getTraining();
+                return DistanceHelper.calculatePace(training.getLaengeInMeter(), training.getDauerInSekunden());
             }
         });
 
@@ -137,8 +139,9 @@ public class OverviewViewer extends ViewPart {
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(final Object element) {
-                final ISimpleTraining simpleTraining = TrainingOverviewFactory.creatSimpleTraining((ActivityT) element);
-                return String.valueOf(simpleTraining.getAvgHeartRate());
+                final IImported record = (IImported) element;
+                final ITraining training = record.getTraining();
+                return String.valueOf(training.getAverageHeartBeat());
             }
         });
 

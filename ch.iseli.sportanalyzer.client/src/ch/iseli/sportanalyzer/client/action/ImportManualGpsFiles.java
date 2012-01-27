@@ -105,6 +105,7 @@ public class ImportManualGpsFiles extends Action implements ISelectionListener, 
                 protected IStatus run(final IProgressMonitor monitor) {
                     monitor.beginTask(Messages.ImportManualGpsFiles_4, fileNames.length);
                     final List<ActivityT> activitiesToImport = new ArrayList<ActivityT>();
+                    final List<Integer> ids = new ArrayList<Integer>();
                     try {
                         for (final String fileName : fileNames) {
                             final File file = new File(filterPath, fileName);
@@ -114,11 +115,12 @@ public class ImportManualGpsFiles extends Action implements ISelectionListener, 
 
                             for (final ActivityT activity : activities) {
                                 final ITraining overview = TrainingOverviewFactory.creatTrainingOverview(activity);
-                                final int importRecord = DatabaseAccessFactory.getDatabaseAccess().importRecord(athlete.getId(), file.getName(),
+                                final int id = DatabaseAccessFactory.getDatabaseAccess().importRecord(athlete.getId(), file.getName(),
                                         activity.getId().toGregorianCalendar().getTime(), overview);
-                                if (importRecord > 0) {
+                                if (id > 0) {
                                     // neu hinzugefügt
                                     activitiesToImport.add(activity);
+                                    ids.add(id);
                                 }
                             }
                             FileCopy.copyFile(file, new File(locationForBackupFiles, file.getName()));

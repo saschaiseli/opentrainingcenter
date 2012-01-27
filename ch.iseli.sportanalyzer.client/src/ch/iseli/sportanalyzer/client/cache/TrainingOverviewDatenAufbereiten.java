@@ -49,8 +49,8 @@ public class TrainingOverviewDatenAufbereiten {
 
     private void loadDataFromCache() {
         logger.debug("update daten vom cache"); //$NON-NLS-1$
-        all.clear();
-        all.addAll(cache.getAllSimpleTrainings());
+        // all.clear();
+        // all.addAll(cache.getAllSimpleTrainings());
         trainingsPerWeek.clear();
         trainingsPerWeek.addAll(createMonatsUndWochenMap(Calendar.YEAR, Calendar.WEEK_OF_YEAR));
         //

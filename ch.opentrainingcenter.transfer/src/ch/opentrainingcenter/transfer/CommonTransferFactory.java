@@ -15,6 +15,12 @@ public class CommonTransferFactory {
         return new Imported();
     }
 
+    public static IImported createIImported(final ITraining training) {
+        final Imported imported = new Imported();
+
+        return imported;
+    }
+
     public static IAthlete createAthlete(final String name, final Integer age, final Integer maxHeartBeat) {
         return new Athlete(name, age, maxHeartBeat);
     }
