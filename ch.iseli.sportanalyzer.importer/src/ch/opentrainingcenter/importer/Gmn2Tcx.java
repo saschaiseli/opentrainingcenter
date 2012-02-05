@@ -1,4 +1,4 @@
-package ch.iseli.sport4ever.importer;
+package ch.opentrainingcenter.importer;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,10 +13,10 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
 
-import ch.iseli.sport4ever.importer.internal.xml.ConvertXml;
-import ch.iseli.sportanalyzer.importer.IConvert2Tcx;
-import ch.iseli.sportanalyzer.tcx.ActivityT;
-import ch.iseli.sportanalyzer.tcx.TrainingCenterDatabaseT;
+import ch.opentrainingcenter.importer.IConvert2Tcx;
+import ch.opentrainingcenter.importer.internal.xml.ConvertXml;
+import ch.opentrainingcenter.tcx.ActivityT;
+import ch.opentrainingcenter.tcx.TrainingCenterDatabaseT;
 
 public class Gmn2Tcx implements IConvert2Tcx {
 
@@ -28,7 +28,7 @@ public class Gmn2Tcx implements IConvert2Tcx {
 
     public Gmn2Tcx() {
         logger.info("Gmn2Tcx erfolgreich instanziert....");//$NON-NLS-1$
-        bundle = Platform.getBundle("ch.iseli.sportanalyzer.importer");//$NON-NLS-1$
+        bundle = Platform.getBundle("ch.opentrainingcenter.importer");//$NON-NLS-1$
         final Path path = new Path("resources/tcx.xsd");//$NON-NLS-1$
         final URL url = FileLocator.find(bundle, path, Collections.EMPTY_MAP);
         URL fileUrl = null;
