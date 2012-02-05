@@ -1,0 +1,41 @@
+package ch.opentrainingcenter.client.perspectives;
+
+import org.eclipse.ui.IFolderLayout;
+import org.eclipse.ui.IPageLayout;
+import org.eclipse.ui.IPerspectiveFactory;
+
+import ch.opentrainingcenter.client.cache.TrainingCenterDataCache;
+import ch.opentrainingcenter.client.views.navigation.NavigationView;
+import ch.opentrainingcenter.client.views.overview.SingleActivityViewPart;
+
+public class PerspectiveNavigation implements IPerspectiveFactory {
+
+    public static final String RIGHT_PART = "rightPart"; //$NON-NLS-1$
+
+    public static final String ID = "ch.opentrainingcenter.client.perspective"; //$NON-NLS-1$
+
+    private static final String MULTI_VIEW = ":*"; //$NON-NLS-1$
+
+    @Override
+    public void createInitialLayout(final IPageLayout layout) {
+
+        final String editorArea = layout.getEditorArea();
+        layout.setEditorAreaVisible(false);
+
+        layout.addStandaloneView(NavigationView.ID, false, IPageLayout.LEFT, 0.20f, editorArea);
+        layout.getViewLayout(NavigationView.ID).setCloseable(false);
+
+        final IFolderLayout folderRight = layout.createFolder(RIGHT_PART, IPageLayout.RIGHT, 0.80f, editorArea);
+        if (TrainingCenterDataCache.getInstance().getSelectedOverview() != null) {
+            folderRight.addView(SingleActivityViewPart.ID + MULTI_VIEW);
+        } else {
+            folderRight.addPlaceholder(SingleActivityViewPart.ID);
+        }
+
+        layout.addPerspectiveShortcut(PerspectiveNavigation.ID);
+        layout.addPerspectiveShortcut(OverviewPerspectiveFactory.ID);
+        layout.addPerspectiveShortcut(StatisticPerspectiveFactory.ID);
+        layout.addPerspectiveShortcut(AthletePerspective.ID);
+
+    }
+}

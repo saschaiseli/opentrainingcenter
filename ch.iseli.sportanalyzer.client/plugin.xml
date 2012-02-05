@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-   <extension-point id="ch.iseli.sportanalyzer.myimporter" name="myimporter" schema="schema/ch.iseli.sportanalyzer.myimporter.exsd"/>
+   <extension-point id="ch.opentrainingcenter.myimporter" name="myimporter" schema="schema/ch.opentrainingcenter.myimporter.exsd"/>
    <extension-point id="ch.opentrainingdatabase.db" name="dbaccess" schema="schema/ch.opentrainingdatabase.dbaccess.exsd"/>
    <extension-point id="splashExtension" name="Splash Extensions" schema="schema/splashExtension.exsd"/>
 
@@ -10,34 +10,34 @@
          point="org.eclipse.core.runtime.applications">
       <application>
          <run
-               class="ch.iseli.sportanalyzer.client.Application">
+               class="ch.opentrainingcenter.client.Application">
          </run>
       </application>
    </extension>
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            class="ch.iseli.sportanalyzer.client.perspectives.PerspectiveNavigation"
+            class="ch.opentrainingcenter.client.perspectives.PerspectiveNavigation"
             icon="icons/otc_perspective.png"
-            id="ch.iseli.sportanalyzer.client.perspective"
+            id="ch.opentrainingcenter.client.perspective"
             name="OTC Perspektive">
       </perspective>
       <perspective
-            class="ch.iseli.sportanalyzer.client.perspectives.AthletePerspective"
+            class="ch.opentrainingcenter.client.perspectives.AthletePerspective"
             icon="icons/athlete_perspective.png"
-            id="ch.iseli.sportanalyzer.client.athletePerspective"
+            id="ch.opentrainingcenter.client.athletePerspective"
             name="Athlete Perspektive">
       </perspective>
       <perspective
-            class="ch.iseli.sportanalyzer.client.perspectives.StatisticPerspectiveFactory"
+            class="ch.opentrainingcenter.client.perspectives.StatisticPerspectiveFactory"
             icon="icons/chart_bar.png"
-            id="ch.iseli.sportanalyzer.client.StatisticPerspective"
+            id="ch.opentrainingcenter.client.StatisticPerspective"
             name="Statistik">
       </perspective>
       <perspective
-            class="ch.iseli.sportanalyzer.client.perspectives.OverviewPerspectiveFactory"
+            class="ch.opentrainingcenter.client.perspectives.OverviewPerspectiveFactory"
             icon="icons/table_green_24_24.png"
-            id="ch.iseli.sportanalyzer.client.OverviewPerspective"
+            id="ch.opentrainingcenter.client.OverviewPerspective"
             name="Tabellarische Übersicht">
       </perspective>
    </extension>
@@ -45,44 +45,44 @@
          point="org.eclipse.ui.views">
       <view
             allowMultiple="true"
-            class="ch.iseli.sportanalyzer.client.views.navigation.NavigationView"
+            class="ch.opentrainingcenter.client.views.navigation.NavigationView"
             fastViewWidthRatio="0.25"
             icon="icons/package_games_sports_24_24.png"
-            id="ch.iseli.sportanalyzer.client.navigationView"
+            id="ch.opentrainingcenter.client.navigationView"
             name="Läufe">
       </view>
       <view
             allowMultiple="true"
-            category="ch.iseli.sportanalyzer.client.otccategory"
-            class="ch.iseli.sportanalyzer.client.views.overview.SingleActivityViewPart"
+            category="ch.opentrainingcenter.client.otccategory"
+            class="ch.opentrainingcenter.client.views.overview.SingleActivityViewPart"
             icon="icons/overview_chart.png"
-            id="ch.iseli.sportanalyzer.client.views.singlerun"
+            id="ch.opentrainingcenter.client.views.singlerun"
             name="Uebersicht eines Trainings">
       </view>
       <category
-            id="ch.iseli.sportanalyzer.client.otccategory"
+            id="ch.opentrainingcenter.client.otccategory"
             name="OTC">
       </category>
       <view
-            category="ch.iseli.sportanalyzer.client.otccategory"
-            class="ch.iseli.sportanalyzer.client.views.ahtlete.CreateAthleteView"
+            category="ch.opentrainingcenter.client.otccategory"
+            class="ch.opentrainingcenter.client.views.ahtlete.CreateAthleteView"
             icon="icons/create.gif"
-            id="ch.iseli.sportanalyzer.client.athlete.createathlete"
+            id="ch.opentrainingcenter.client.athlete.createathlete"
             name="Create Athlete"
             restorable="true">
       </view>
       <view
-            class="ch.iseli.sportanalyzer.client.views.statistics.StatisticView"
+            class="ch.opentrainingcenter.client.views.statistics.StatisticView"
             icon="icons/chart_bar.png"
-            id="ch.iseli.sportanalyzer.client.views.statistics.StatisticView"
+            id="ch.opentrainingcenter.client.views.statistics.StatisticView"
             name="StatisticView"
             restorable="true">
       </view>
       <view
             allowMultiple="false"
-            class="ch.iseli.sportanalyzer.client.views.table.OverviewViewer"
+            class="ch.opentrainingcenter.client.views.table.OverviewViewer"
             icon="icons/table_green_24_24.png"
-            id="ch.iseli.sportanalyzer.client.table.overview"
+            id="ch.opentrainingcenter.client.table.overview"
             name="TableView"
             restorable="true">
       </view>
@@ -91,17 +91,17 @@
          point="org.eclipse.ui.commands">
       <command
             description="Öffnet einen einzelnen Lauf"
-            id="ch.iseli.sportanalyzer.client.command.openSingleRun"
+            id="ch.opentrainingcenter.client.command.openSingleRun"
             name="openSingleRun">
       </command>
       <command
             description="GPS Files importieren"
-            id="ch.iseli.sportanalyzer.client.importManualFiles"
+            id="ch.opentrainingcenter.client.importManualFiles"
             name="importFilesManual">
       </command>
       <command
             description="Die App neu starten"
-            id="ch.iseli.sportanalyzer.client.RestartOtc"
+            id="ch.opentrainingcenter.client.RestartOtc"
             name="Request for Restart">
       </command>
    </extension>
@@ -109,7 +109,7 @@
          id="opentrainingcenter"
          point="org.eclipse.core.runtime.products">
       <product
-            application="ch.iseli.sportanalyzer.client.application"
+            application="ch.opentrainingcenter.client.application"
             name="Open Training Center">
          <property
                name="windowImages"
@@ -138,8 +138,8 @@
          name="kein prefPage Name"
          point="org.eclipse.ui.preferencePages">
       <page
-            class="ch.iseli.sportanalyzer.client.preferences.SamplePreferencePage"
-            id="ch.iseli.sportanalyzer.client.preferences.SamplePreferencePage"
+            class="ch.opentrainingcenter.client.preferences.SamplePreferencePage"
+            id="ch.opentrainingcenter.client.preferences.SamplePreferencePage"
             name="Einstellungen">
       </page>
    </extension>
@@ -148,14 +148,14 @@
          name="kein name"
          point="org.eclipse.core.runtime.preferences">
       <initializer
-            class="ch.iseli.sportanalyzer.client.preferences.PreferenceInitializer">
+            class="ch.opentrainingcenter.client.preferences.PreferenceInitializer">
       </initializer>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
       <menuContribution
             allPopups="false"
-            locationURI="ch.iseli.sportanalyzer.client.menuContribution2">
+            locationURI="ch.opentrainingcenter.client.menuContribution2">
          <menu
                label="label">
          </menu>
@@ -164,8 +164,8 @@
    <extension
          point="org.eclipse.ui.splashHandlers">
       <splashHandlerProductBinding
-            productId="ch.iseli.sportanalyzer.client.opentrainingcenter"
-            splashId="ch.iseli.sportanalyzer.client.splashHandlers.mySplash">
+            productId="ch.opentrainingcenter.client.opentrainingcenter"
+            splashId="ch.opentrainingcenter.client.splashHandlers.mySplash">
       </splashHandlerProductBinding>
    </extension>
 </plugin>

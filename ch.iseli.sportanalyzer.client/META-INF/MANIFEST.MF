@@ -1,12 +1,12 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Client
-Bundle-SymbolicName: ch.iseli.sportanalyzer.client;singleton:=true
+Bundle-SymbolicName: ch.opentrainingcenter.client;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: ch.iseli.sportanalyzer.client.Activator
+Bundle-Activator: ch.opentrainingcenter.client.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- ch.iseli.sportanalyzer.tcx,
+ ch.opentrainingcenter.tcx,
  ch.opentrainingcenter.transfer,
  org.eclipse.swt,
  org.eclipse.jface,
@@ -21,9 +21,9 @@ Require-Bundle: org.eclipse.ui,
  jfreechart,
  com.eclipsesource.widgets.gmaps
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: ch.iseli.sportanalyzer.client,
- ch.iseli.sportanalyzer.db,
- ch.iseli.sportanalyzer.importer
+Export-Package: ch.opentrainingcenter.client,
+ ch.opentrainingcenter.db,
+ ch.opentrainingcenter.importer
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: lib/log4j-1.2.16.jar,
  lib/slf4j-api-1.6.4.jar,

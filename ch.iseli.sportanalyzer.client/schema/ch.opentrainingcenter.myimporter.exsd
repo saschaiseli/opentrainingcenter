@@ -3,7 +3,7 @@
 <schema targetNamespace="ch.opentrainingcenter.client" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="ch.opentrainingcenter.client" id="ch.opentrainingdatabase.db" name="Database Extension Point"/>
+         <meta.schema plugin="ch.opentrainingcenter.client" id="ch.opentrainingcenter.myimporter" name="myimporter"/>
       </appinfo>
       <documentation>
          [Enter description of this extension point.]
@@ -18,7 +18,7 @@
       </annotation>
       <complexType>
          <sequence minOccurs="1" maxOccurs="unbounded">
-            <element ref="databaseAccess"/>
+            <element ref="convert"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -47,15 +47,15 @@
       </complexType>
    </element>
 
-   <element name="databaseAccess">
+   <element name="convert">
       <complexType>
-         <attribute name="classImportedDao" type="string" use="required">
+         <attribute name="class" type="string" use="required">
             <annotation>
                <documentation>
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":ch.opentrainingcenter.db.IDatabaseAccess"/>
+                  <meta.attribute kind="java" basedOn=":ch.opentrainingcenter.core.importer.IConvert2Tcx"/>
                </appinfo>
             </annotation>
          </attribute>

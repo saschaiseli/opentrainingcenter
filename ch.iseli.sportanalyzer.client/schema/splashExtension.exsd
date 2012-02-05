@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="ch.iseli.sportanalyzer.client">
+<schema targetNamespace="ch.opentrainingcenter.client">
 <annotation>
       <appInfo>
-         <meta.schema plugin="ch.iseli.sportanalyzer.client" id="splashExtension" name="Splash Extensions"/>
+         <meta.schema plugin="ch.opentrainingcenter.client" id="splashExtension" name="Splash Extensions"/>
       </appInfo>
       <documentation>
          [Enter description of this extension point.]
