@@ -2,7 +2,7 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         point="ch.iseli.sportanalyzer.myimporter">
+         point="ch.opentrainingcenter.myimporter">
       <convert
             class="ch.opentrainingcenter.importer.tcx.ConvertTcx">
       </convert>

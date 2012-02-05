@@ -21,9 +21,9 @@ import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
 import org.xml.sax.SAXException;
 
-import ch.iseli.sportanalyzer.importer.IConvert2Tcx;
-import ch.iseli.sportanalyzer.tcx.ActivityT;
-import ch.iseli.sportanalyzer.tcx.TrainingCenterDatabaseT;
+import ch.opentrainingcenter.importer.IConvert2Tcx;
+import ch.opentrainingcenter.tcx.ActivityT;
+import ch.opentrainingcenter.tcx.TrainingCenterDatabaseT;
 
 public class ConvertTcx implements IConvert2Tcx {
     private static final String RESOURCES_FITNESSLOGBOOK_XSD = "resources/tcx.xsd";//$NON-NLS-1$
