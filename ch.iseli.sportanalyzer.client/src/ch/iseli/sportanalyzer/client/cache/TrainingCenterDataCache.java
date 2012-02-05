@@ -44,7 +44,7 @@ public class TrainingCenterDataCache {
 
     private final List<ISimpleTraining> simpleTrainings = new ArrayList<ISimpleTraining>();
 
-    private final Map<Date, ActivityT> cache = new HashMap<Date, ActivityT>();
+    private final Map<Long, ActivityT> cache = new HashMap<Long, ActivityT>();
 
     private final GpsFileLoader loadGpsFile = new GpsFileLoader();
 
@@ -86,7 +86,7 @@ public class TrainingCenterDataCache {
         for (final ActivityT activity : activities) {
             simpleTrainings.add(TrainingOverviewFactory.creatSimpleTraining(activity));
             final Date key = activity.getId().toGregorianCalendar().getTime();
-            cache.put(key, activity);
+            cache.put(key.getTime(), activity);
 
             final IImported imported = DatabaseAccessFactory.getDatabaseAccess().getImportedRecord(key);
             allImported.put(key, imported);
@@ -98,7 +98,6 @@ public class TrainingCenterDataCache {
      * @return eine nach Datum sortierte Liste von {@link ActivityT}
      */
     public Collection<IImported> getAllActivities() {
-        // TODO vielleicht noch sortieren
         return allImported.values();
     }
 
@@ -132,9 +131,18 @@ public class TrainingCenterDataCache {
      */
     public ISimpleTraining getSelectedOverview() {
         setIfNothingSelectedTheNewestAsSelected();
+        if (selectedImport == null) {
+            return null;
+        } else {
+            return createSimpleTraining();
+        }
+    }
+
+    private ISimpleTraining createSimpleTraining() {
         final ActivityT activity;
-        if (cache.containsKey(selectedImport)) {
-            activity = cache.get(selectedImport);
+        final long key = selectedImport.getActivityId().getTime();
+        if (cache.containsKey(key)) {
+            activity = cache.get(key);
         } else {
             try {
                 activity = loadGpsFile.convertActivity(selectedImport);
@@ -144,7 +152,6 @@ public class TrainingCenterDataCache {
             }
         }
         return TrainingOverviewFactory.creatSimpleTraining(activity);
-
     }
 
     private void setIfNothingSelectedTheNewestAsSelected() {
@@ -252,10 +259,12 @@ public class TrainingCenterDataCache {
     }
 
     public boolean contains(final Date activityId) {
-        return cache.containsKey(activityId);
+        final long key = activityId.getTime();
+        return cache.containsKey(key);
     }
 
     public ActivityT get(final Date activityId) {
-        return cache.get(activityId);
+        final long key = activityId.getTime();
+        return cache.get(key);
     }
 }
