@@ -1,8 +1,10 @@
-package ch.iseli.sportanalyzer.client.helper;
+package ch.opentrainingcenter.client.helper;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+
+import ch.opentrainingcenter.client.helper.FileNameToDateConverter;
 
 public class FileNameToDateConverterTest {
 

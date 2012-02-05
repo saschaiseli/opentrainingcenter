@@ -1,4 +1,4 @@
-package ch.iseli.sportanalyzer.importer.util;
+package ch.opentrainingcenter.importer.util;
 
 import static org.junit.Assert.assertEquals;
 
@@ -12,7 +12,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import ch.iseli.sportanalyzer.client.helper.FileCopy;
+import ch.opentrainingcenter.client.helper.FileCopy;
 
 public class FileCopyTest {
     private static final String HELLO_FROM_JUNIT = "Hello from junit";//$NON-NLS-1$

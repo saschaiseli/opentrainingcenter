@@ -1,4 +1,4 @@
-package ch.iseli.sportanalyzer.importer;
+package ch.opentrainingcenter.importer;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -11,8 +11,10 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import ch.iseli.sportanalyzer.tcx.ActivityT;
-import ch.iseli.sportanalyzer.tcx.TrainingCenterDatabaseT;
+import ch.opentrainingcenter.importer.ConvertHandler;
+import ch.opentrainingcenter.importer.IConvert2Tcx;
+import ch.opentrainingcenter.tcx.ActivityT;
+import ch.opentrainingcenter.tcx.TrainingCenterDatabaseT;
 
 public class ConvertHandlerTest {
     private ConvertHandler handler;

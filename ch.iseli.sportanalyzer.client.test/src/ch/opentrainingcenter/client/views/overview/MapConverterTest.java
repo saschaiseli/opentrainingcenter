@@ -1,8 +1,10 @@
-package ch.iseli.sportanalyzer.client.views.overview;
+package ch.opentrainingcenter.client.views.overview;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+
+import ch.opentrainingcenter.client.views.overview.MapConverter;
 
 public class MapConverterTest {
     @Test
