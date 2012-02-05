@@ -33,19 +33,17 @@ public class ImportActivityJob extends Job {
     }
 
     private ActivityT loadActivity(final IImported selectedRecord) {
+        cache.setSelectedRun(selectedRecord);
         ActivityT result = null;
         if (!cache.contains(selectedRecord.getActivityId())) {
             try {
                 result = loadGpsFile.convertActivity(selectedRecord);
-                cache.setSelectedRun(selectedRecord);
                 cache.add(result);
             } catch (final Exception e) {
                 logger.error("Konnte File nicht einlesen"); //$NON-NLS-1$
             }
-
         } else {
             // read from cache
-            cache.setSelectedRun(selectedRecord);
             result = cache.get(selectedRecord.getActivityId());
         }
         return result;
