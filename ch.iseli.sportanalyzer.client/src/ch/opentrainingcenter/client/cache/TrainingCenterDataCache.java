@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.ListenerList;
@@ -40,7 +41,7 @@ public class TrainingCenterDataCache {
 
     private final TrainingCenterDatabaseT database;
 
-    private final Map<Date, IImported> allImported = new HashMap<Date, IImported>();
+    private final Map<Date, IImported> allImported = new TreeMap<Date, IImported>(new ImportedComparator());
 
     private final List<ISimpleTraining> simpleTrainings = new ArrayList<ISimpleTraining>();
 
