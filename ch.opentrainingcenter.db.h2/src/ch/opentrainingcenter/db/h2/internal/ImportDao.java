@@ -9,7 +9,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import ch.iseli.sportanalyzer.db.DatabaseAccessFactory;
+import ch.opentrainingcenter.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IImported;

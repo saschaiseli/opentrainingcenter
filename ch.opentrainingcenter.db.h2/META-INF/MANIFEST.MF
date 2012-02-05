@@ -5,8 +5,8 @@ Bundle-SymbolicName: ch.opentrainingcenter.db.h2;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Require-Bundle: org.eclipse.core.runtime,
  ch.opentrainingcenter.transfer,
- ch.iseli.sportanalyzer.client,
- ch.iseli.sportanalyzer.importer,
+ ch.opentrainingcenter.client,
+ ch.opentrainingcenter.importer,
  h2_lib,
  org.hibernate,
  logging
@@ -15,7 +15,7 @@ Export-Package: ch.opentrainingcenter.db.h2;
   uses:="ch.opentrainingcenter.transfer.impl,
    ch.opentrainingcenter.transfer,
    org.hibernate,
-   ch.iseli.sportanalyzer.db"
+   ch.opentrainingcenter.db"
 Bundle-ClassPath: hibernate/,
  bin/
 Eclipse-RegisterBuddy: org.hibernate, logging
