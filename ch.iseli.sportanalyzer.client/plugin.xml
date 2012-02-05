@@ -128,18 +128,6 @@
                value="plugin_customization.ini">
          </property>
          <property
-               name="startupForegroundColor"
-               value="000000">
-         </property>
-         <property
-               name="startupMessageRect"
-               value="7,252,445,20">
-         </property>
-         <property
-               name="startupProgressRect"
-               value="5,320,440,10">
-         </property>
-         <property
                name="aboutText"
                value="Hello, hello...">
          </property>
@@ -175,10 +163,6 @@
    </extension>
    <extension
          point="org.eclipse.ui.splashHandlers">
-      <splashHandler
-            class="ch.iseli.sportanalyzer.client.splash.OtcSplashHandler"
-            id="ch.iseli.sportanalyzer.client.splashHandlers.mySplash">
-      </splashHandler>
       <splashHandlerProductBinding
             productId="ch.iseli.sportanalyzer.client.opentrainingcenter"
             splashId="ch.iseli.sportanalyzer.client.splashHandlers.mySplash">

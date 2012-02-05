@@ -5,6 +5,7 @@ import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchAdvisor;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 
+import ch.iseli.sportanalyzer.client.cache.TrainingCenterDataCache;
 import ch.iseli.sportanalyzer.client.perspectives.AthletePerspective;
 import ch.iseli.sportanalyzer.client.perspectives.PerspectiveNavigation;
 import ch.iseli.sportanalyzer.db.DatabaseAccessFactory;
@@ -32,11 +33,21 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
                 return AthletePerspective.ID;
             } else {
                 logger.info(Messages.ApplicationWorkbenchAdvisor_AthleteFound);
+
+                initCache(athlete);
+
                 return PerspectiveNavigation.ID;
             }
         } else {
             logger.info(Messages.ApplicationWorkbenchAdvisor_AthleteNotInPreferences);
             return AthletePerspective.ID;
         }
+    }
+
+    private void initCache(final IAthlete athlete) {
+        final TrainingCenterDataCache cache = TrainingCenterDataCache.getInstance();
+        cache.setSelectedProfile(athlete);
+        cache.addAllImported(DatabaseAccessFactory.getDatabaseAccess().getAllImported(athlete));
+        cache.cacheLoaded();
     }
 }

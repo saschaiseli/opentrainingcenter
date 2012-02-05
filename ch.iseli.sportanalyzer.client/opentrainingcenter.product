@@ -20,10 +20,7 @@
    <windowImages i16="/ch.iseli.sportanalyzer.client/icons/16_16/icon_16_16.png" i32="/ch.iseli.sportanalyzer.client/icons/32_32/icon_32_32.png" i48="/ch.iseli.sportanalyzer.client/icons/48_48/icon_48_48.png" i64="/ch.iseli.sportanalyzer.client/icons/64_64/icon_64_64.png" i128="/ch.iseli.sportanalyzer.client/icons/128_128/icon_128_128.png"/>
 
    <splash
-      location="ch.iseli.sportanalyzer.client"
-      startupProgressRect="5,320,440,10"
-      startupMessageRect="7,252,445,20"
-      startupForegroundColor="000000" />
+      location="ch.iseli.sportanalyzer.client" />
    <launcher name="opentrainingcenter">
       <linux icon="/ch.iseli.sportanalyzer.client/icons/start.xpm"/>
       <solaris/>
@@ -32,10 +29,8 @@
       </win>
    </launcher>
 
-
    <vm>
    </vm>
-
 
    <plugins>
       <plugin id="ch.iseli.sportanalyzer.client"/>
