@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Export-Package: ch.iseli.sportanalyzer.tcx
+Export-Package: ch.opentrainingcenter.tcx
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.hibernate
@@ -7,6 +7,6 @@ Bundle-ActivationPolicy: lazy
 Bundle-Version: 1.0.0.qualifier
 Bundle-Name: Tcx
 Bundle-ManifestVersion: 2
-Bundle-SymbolicName: ch.iseli.sportanalyzer.tcx
+Bundle-SymbolicName: ch.opentrainingcenter.tcx
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 
