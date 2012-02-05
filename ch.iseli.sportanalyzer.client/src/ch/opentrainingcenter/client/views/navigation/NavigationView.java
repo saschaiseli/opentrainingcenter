@@ -19,7 +19,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
@@ -34,6 +33,7 @@ import ch.opentrainingcenter.client.helper.TimeHelper;
 import ch.opentrainingcenter.client.views.overview.SingleActivityViewPart;
 import ch.opentrainingcenter.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.importer.GpsFileLoader;
+import ch.opentrainingcenter.importer.ImportActivityJob;
 import ch.opentrainingcenter.importer.ImportJob;
 import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.transfer.IAthlete;
@@ -92,33 +92,11 @@ public class NavigationView extends ViewPart {
             }
 
             private void openSingleRunView(final IImported record) {
-                final ActivityT selected = getActivity(record);
-                final String hash = getSecondaryId(selected);
-                try {
-                    PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-                            .showView(SingleActivityViewPart.ID, hash, IWorkbenchPage.VIEW_ACTIVATE);
-                } catch (final PartInitException e) {
-                    e.printStackTrace();
-                }
+                final ImportActivityJob job = new ImportActivityJob(Messages.NavigationView_1, record, loadGpsFile);
+                job.schedule();
+                job.addJobChangeListener(new ImportActivityJobListener());
             }
 
-            private ActivityT getActivity(final IImported selectedRecord) {
-                ActivityT selected = null;
-                if (!cache.contains(selectedRecord.getActivityId())) {
-                    try {
-                        selected = loadGpsFile.convertActivity(selectedRecord);
-                        cache.setSelectedRun(selectedRecord);
-                        cache.add(selected);
-                    } catch (final Exception e) {
-                        logger.error("Konnte File nicht einlesen"); //$NON-NLS-1$
-                    }
-
-                } else {
-                    // read from cache
-                    selected = cache.get(selectedRecord.getActivityId());
-                }
-                return selected;
-            }
         });
 
         viewer.addSelectionChangedListener(new ISelectionChangedListener() {
