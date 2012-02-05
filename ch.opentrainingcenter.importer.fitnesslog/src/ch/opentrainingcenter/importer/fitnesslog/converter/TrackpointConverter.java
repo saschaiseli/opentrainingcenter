@@ -10,10 +10,10 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.apache.log4j.Logger;
 
-import ch.iseli.sportanalyzer.tcx.HeartRateInBeatsPerMinuteT;
-import ch.iseli.sportanalyzer.tcx.PositionT;
-import ch.iseli.sportanalyzer.tcx.TrackpointT;
 import ch.opentrainingcenter.importer.fitnesslog.model.Pt;
+import ch.opentrainingcenter.tcx.HeartRateInBeatsPerMinuteT;
+import ch.opentrainingcenter.tcx.PositionT;
+import ch.opentrainingcenter.tcx.TrackpointT;
 
 public class TrackpointConverter {
 

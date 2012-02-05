@@ -5,19 +5,19 @@ import java.util.List;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import ch.iseli.sportanalyzer.tcx.ActivityLapT;
-import ch.iseli.sportanalyzer.tcx.ActivityListT;
-import ch.iseli.sportanalyzer.tcx.ActivityT;
-import ch.iseli.sportanalyzer.tcx.SportT;
-import ch.iseli.sportanalyzer.tcx.TrackT;
-import ch.iseli.sportanalyzer.tcx.TrackpointT;
-import ch.iseli.sportanalyzer.tcx.TrainingCenterDatabaseT;
 import ch.opentrainingcenter.importer.fitnesslog.model.Activity;
 import ch.opentrainingcenter.importer.fitnesslog.model.FitnessWorkbook;
 import ch.opentrainingcenter.importer.fitnesslog.model.Lap;
 import ch.opentrainingcenter.importer.fitnesslog.model.Laps;
 import ch.opentrainingcenter.importer.fitnesslog.model.Pt;
 import ch.opentrainingcenter.importer.fitnesslog.model.Track;
+import ch.opentrainingcenter.tcx.ActivityLapT;
+import ch.opentrainingcenter.tcx.ActivityListT;
+import ch.opentrainingcenter.tcx.ActivityT;
+import ch.opentrainingcenter.tcx.SportT;
+import ch.opentrainingcenter.tcx.TrackT;
+import ch.opentrainingcenter.tcx.TrackpointT;
+import ch.opentrainingcenter.tcx.TrainingCenterDatabaseT;
 
 public class ConvertWorkbook2Tcx {
 

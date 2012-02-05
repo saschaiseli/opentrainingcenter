@@ -2,13 +2,13 @@ package ch.opentrainingcenter.importer.fitnesslog.converter;
 
 import java.math.BigDecimal;
 
-import ch.iseli.sportanalyzer.tcx.ActivityLapT;
-import ch.iseli.sportanalyzer.tcx.HeartRateInBeatsPerMinuteT;
-import ch.iseli.sportanalyzer.tcx.IntensityT;
 import ch.opentrainingcenter.importer.fitnesslog.model.Calories;
 import ch.opentrainingcenter.importer.fitnesslog.model.Distance;
 import ch.opentrainingcenter.importer.fitnesslog.model.HeartRate;
 import ch.opentrainingcenter.importer.fitnesslog.model.Lap;
+import ch.opentrainingcenter.tcx.ActivityLapT;
+import ch.opentrainingcenter.tcx.HeartRateInBeatsPerMinuteT;
+import ch.opentrainingcenter.tcx.IntensityT;
 
 public class ActivityLapConverter implements Convert<Lap, ActivityLapT> {
 
