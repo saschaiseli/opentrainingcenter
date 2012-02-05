@@ -14,8 +14,8 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import org.junit.Before;
 import org.junit.Test;
 
-import ch.iseli.sportanalyzer.tcx.TrackpointT;
 import ch.opentrainingcenter.importer.fitnesslog.model.Pt;
+import ch.opentrainingcenter.tcx.TrackpointT;
 
 public class TrackPointConverterTest {
     private TrackpointConverter conv;

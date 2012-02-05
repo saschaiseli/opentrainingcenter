@@ -14,11 +14,11 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import org.junit.Before;
 import org.junit.Test;
 
-import ch.iseli.sportanalyzer.tcx.ActivityLapT;
 import ch.opentrainingcenter.importer.fitnesslog.model.Calories;
 import ch.opentrainingcenter.importer.fitnesslog.model.Distance;
 import ch.opentrainingcenter.importer.fitnesslog.model.HeartRate;
 import ch.opentrainingcenter.importer.fitnesslog.model.Lap;
+import ch.opentrainingcenter.tcx.ActivityLapT;
 
 public class ActivityLapConverterTest {
     private ActivityLapConverter conv;
