@@ -16,8 +16,6 @@ public class ImportJob extends Job {
 
     private final IAthlete athlete;
 
-    // private final ConvertHandler convertHandler;
-
     public ImportJob(final String name, final IAthlete athlete) {
         super(name);
         this.athlete = athlete;
