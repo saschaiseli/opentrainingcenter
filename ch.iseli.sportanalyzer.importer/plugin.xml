@@ -2,9 +2,9 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         point="ch.iseli.sportanalyzer.myimporter">
+         point="ch.opentrainingcenter.myimporter">
       <convert
-            class="ch.iseli.sport4ever.importer.Gmn2Tcx">
+            class="ch.opentrainingcenter.importer.Gmn2Tcx">
       </convert>
    </extension>
 </plugin>
