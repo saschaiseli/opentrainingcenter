@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Test
 Bundle-SymbolicName: ch.iseli.sportanalyzer.importer.test;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Fragment-Host: ch.iseli.sportanalyzer.importer
+Fragment-Host: ch.opentrainingcenter.importer
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: junit,
  org.eclipse.core.runtime,
