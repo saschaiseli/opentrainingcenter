@@ -35,12 +35,14 @@ public class ConvertHandler {
     }
 
     /**
-     * Gibt alle unterstützen File Suffixes zurück. Also zum Beispiel {"*.gmn", "*.fitnesslog"}
+     * Gibt alle unterstützen File Suffixes zurück. Einmal UpperCase und einmal LowerCase. Also zum Beispiel {"*.gmn, *.GMN,*.fitnesslog"}
      */
     public List<String> getSupportedFileSuffixes() {
         final List<String> suffixes = new ArrayList<String>();
         for (final Map.Entry<String, IConvert2Tcx> entry : converters.entrySet()) {
-            suffixes.add("*." + entry.getKey()); //$NON-NLS-1$
+            final String key = entry.getKey();
+            suffixes.add("*." + key.toLowerCase()); //$NON-NLS-1$
+            suffixes.add("*." + key.toUpperCase()); //$NON-NLS-1$
         }
         return suffixes;
     }

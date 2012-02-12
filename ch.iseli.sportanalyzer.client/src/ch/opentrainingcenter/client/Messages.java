@@ -159,6 +159,17 @@ public class Messages extends NLS {
     public static String Units_2;
     public static String Units_3;
     public static String Units_4;
+    public static String RunType_0;
+    public static String RunType_1;
+    public static String RunType_2;
+    public static String RunType_3;
+    public static String RunType_4;
+    public static String RunType_5;
+    public static String RunTypeDialog_0;
+    public static String RunTypeDialog_1;
+    public static String RunTypeDialog_2;
+    public static String RunTypeDialog_3;
+    public static String RunTypeDialog_4;
     static {
         // initialize resource bundle
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);

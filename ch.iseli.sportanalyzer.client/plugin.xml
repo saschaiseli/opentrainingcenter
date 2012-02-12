@@ -104,6 +104,11 @@
             id="ch.opentrainingcenter.client.RestartOtc"
             name="Request for Restart">
       </command>
+      <command
+            description="GPS Files mit einem Wizard importieren"
+            id="ch.opentrainingcenter.client.importManualFilesWizard"
+            name="importFilesManualWizard">
+      </command>
    </extension>
    <extension
          id="opentrainingcenter"
@@ -167,5 +172,19 @@
             productId="ch.opentrainingcenter.client.opentrainingcenter"
             splashId="ch.opentrainingcenter.client.splashHandlers.mySplash">
       </splashHandlerProductBinding>
+   </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            id="ch.opentrainingcenter.client"
+            name="Sample Wizards">
+      </category>
+      <wizard
+            category="ch.opentrainingcenter.client"
+            class="ch.opentrainingcenter.client.wizards.SampleNewWizard"
+            icon="icons/sample.gif"
+            id="ch.opentrainingcenter.client.wizards.SampleNewWizard"
+            name="Multi-page Editor file">
+      </wizard>
    </extension>
 </plugin>

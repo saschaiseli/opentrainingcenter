@@ -17,6 +17,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -29,6 +30,7 @@ import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.client.PreferenceConstants;
 import ch.opentrainingcenter.client.cache.TrainingCenterDataCache;
 import ch.opentrainingcenter.client.helper.FileCopy;
+import ch.opentrainingcenter.client.model.IGpsFileModel;
 import ch.opentrainingcenter.client.model.TrainingOverviewFactory;
 import ch.opentrainingcenter.client.views.IImageKeys;
 import ch.opentrainingcenter.db.DatabaseAccessFactory;
@@ -67,13 +69,12 @@ public class ImportManualGpsFiles extends Action implements ISelectionListener, 
         }
         defaultLocation = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.GPS_FILE_LOCATION);
         locationForBackupFiles = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.GPS_FILE_LOCATION_PROG);
-        setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(Application.ID, IImageKeys.IMPORT_GPS));
+        setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(Application.ID, IImageKeys.IMPORT_GPS_KLEIN));
         window.getSelectionService().addSelectionListener(this);
     }
 
     @Override
     public void selectionChanged(final IWorkbenchPart part, final ISelection selection) {
-
     }
 
     @Override
@@ -87,6 +88,8 @@ public class ImportManualGpsFiles extends Action implements ISelectionListener, 
 
     @Override
     public void run() {
+
+        final Shell sh = window.getShell();
         final IConfigurationElement[] extensions = Platform.getExtensionRegistry().getConfigurationElementsFor(Application.IMPORT_EXTENSION_POINT);
         logger.info("Anzahl Extensions: " + extensions.length); //$NON-NLS-1$
         final ConvertHandler handler = getConverterImplementation(extensions);
@@ -100,51 +103,58 @@ public class ImportManualGpsFiles extends Action implements ISelectionListener, 
             final String[] fileNames = fileDialog.getFileNames();
             final String filterPath = fileDialog.getFilterPath();
 
-            final Job job = new Job(Messages.ImportManualGpsFiles_LadeGpsFiles) {
-                @Override
-                protected IStatus run(final IProgressMonitor monitor) {
-                    monitor.beginTask(Messages.ImportManualGpsFiles_4, fileNames.length);
-                    final List<ActivityT> activitiesToImport = new ArrayList<ActivityT>();
-                    final List<Integer> ids = new ArrayList<Integer>();
-                    try {
-                        for (final String fileName : fileNames) {
-                            final File file = new File(filterPath, fileName);
-                            monitor.setTaskName(Messages.ImportManualGpsFiles_5 + file.getName());
-                            logger.info("importiere File: " + file.getName()); //$NON-NLS-1$
-                            final List<ActivityT> activities = handler.getMatchingConverter(file).convertActivity(file);
+            final RunTypeDialog dialog = new RunTypeDialog(sh, fileNames);
+            final int open = dialog.open();
+            if (open >= 0) {
+                final List<IGpsFileModel> models = dialog.getModels();
+                final Job job = new Job(Messages.ImportManualGpsFiles_LadeGpsFiles) {
+                    @Override
+                    protected IStatus run(final IProgressMonitor monitor) {
+                        monitor.beginTask(Messages.ImportManualGpsFiles_4, models.size());
+                        final List<ActivityT> activitiesToImport = new ArrayList<ActivityT>();
+                        final List<Integer> ids = new ArrayList<Integer>();
+                        try {
+                            for (final IGpsFileModel model : models) {
+                                final File file = new File(filterPath, model.getFileName());
+                                monitor.setTaskName(Messages.ImportManualGpsFiles_5 + file.getName());
+                                logger.info("importiere File: " + file.getName()); //$NON-NLS-1$
+                                final List<ActivityT> activities = handler.getMatchingConverter(file).convertActivity(file);
 
-                            for (final ActivityT activity : activities) {
-                                final ITraining overview = TrainingOverviewFactory.creatTrainingOverview(activity);
-                                final int id = DatabaseAccessFactory.getDatabaseAccess().importRecord(athlete.getId(), file.getName(),
-                                        activity.getId().toGregorianCalendar().getTime(), overview);
-                                if (id > 0) {
-                                    // neu hinzugefügt
-                                    activitiesToImport.add(activity);
-                                    ids.add(id);
+                                for (final ActivityT activity : activities) {
+                                    final ITraining overview = TrainingOverviewFactory.creatTrainingOverview(activity);
+                                    final int id = DatabaseAccessFactory.getDatabaseAccess().importRecord(athlete.getId(), file.getName(),
+                                            activity.getId().toGregorianCalendar().getTime(), overview);
+                                    if (id > 0) {
+                                        // neu hinzugefügt
+                                        activitiesToImport.add(activity);
+                                        ids.add(id);
+                                    }
+                                }
+                                FileCopy.copyFile(file, new File(locationForBackupFiles, file.getName()));
+                                monitor.worked(1);
+                            }
+                        } catch (final Exception e1) {
+                            e1.printStackTrace();
+                        }
+                        Display.getDefault().asyncExec(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                try {
+                                    TrainingCenterDataCache.getInstance().addAll(activitiesToImport);
+                                } catch (final Exception e) {
+                                    e.printStackTrace();
                                 }
                             }
-                            FileCopy.copyFile(file, new File(locationForBackupFiles, file.getName()));
-                            monitor.worked(1);
-                        }
-                    } catch (final Exception e1) {
-                        e1.printStackTrace();
+                        });
+                        return Status.OK_STATUS;
                     }
-                    Display.getDefault().asyncExec(new Runnable() {
+                };
+                job.schedule();
+            }
 
-                        @Override
-                        public void run() {
-                            try {
-                                TrainingCenterDataCache.getInstance().addAll(activitiesToImport);
-                            } catch (final Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-                    return Status.OK_STATUS;
-                }
-            };
-            job.schedule();
         }
+
     }
 
     private ConvertHandler getConverterImplementation(final IConfigurationElement[] configurationElementsFor) {
