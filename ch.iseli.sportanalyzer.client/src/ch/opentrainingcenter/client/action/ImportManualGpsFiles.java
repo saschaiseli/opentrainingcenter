@@ -31,6 +31,7 @@ import ch.opentrainingcenter.client.PreferenceConstants;
 import ch.opentrainingcenter.client.cache.TrainingCenterDataCache;
 import ch.opentrainingcenter.client.helper.FileCopy;
 import ch.opentrainingcenter.client.model.IGpsFileModel;
+import ch.opentrainingcenter.client.model.IGpsFileModelWrapper;
 import ch.opentrainingcenter.client.model.TrainingOverviewFactory;
 import ch.opentrainingcenter.client.views.IImageKeys;
 import ch.opentrainingcenter.db.DatabaseAccessFactory;
@@ -106,15 +107,15 @@ public class ImportManualGpsFiles extends Action implements ISelectionListener, 
             final RunTypeDialog dialog = new RunTypeDialog(sh, fileNames);
             final int open = dialog.open();
             if (open >= 0) {
-                final List<IGpsFileModel> models = dialog.getModels();
+                final IGpsFileModelWrapper modelWrapper = dialog.getModelWrapper();
                 final Job job = new Job(Messages.ImportManualGpsFiles_LadeGpsFiles) {
                     @Override
                     protected IStatus run(final IProgressMonitor monitor) {
-                        monitor.beginTask(Messages.ImportManualGpsFiles_4, models.size());
+                        monitor.beginTask(Messages.ImportManualGpsFiles_4, modelWrapper.size());
                         final List<ActivityT> activitiesToImport = new ArrayList<ActivityT>();
                         final List<Integer> ids = new ArrayList<Integer>();
                         try {
-                            for (final IGpsFileModel model : models) {
+                            for (final IGpsFileModel model : modelWrapper.getGpsFileModels()) {
                                 final File file = new File(filterPath, model.getFileName());
                                 monitor.setTaskName(Messages.ImportManualGpsFiles_5 + file.getName());
                                 logger.info("importiere File: " + file.getName()); //$NON-NLS-1$
@@ -123,7 +124,7 @@ public class ImportManualGpsFiles extends Action implements ISelectionListener, 
                                 for (final ActivityT activity : activities) {
                                     final ITraining overview = TrainingOverviewFactory.creatTrainingOverview(activity);
                                     final int id = DatabaseAccessFactory.getDatabaseAccess().importRecord(athlete.getId(), file.getName(),
-                                            activity.getId().toGregorianCalendar().getTime(), overview);
+                                            activity.getId().toGregorianCalendar().getTime(), overview, model.getId());
                                     if (id > 0) {
                                         // neu hinzugefügt
                                         activitiesToImport.add(activity);

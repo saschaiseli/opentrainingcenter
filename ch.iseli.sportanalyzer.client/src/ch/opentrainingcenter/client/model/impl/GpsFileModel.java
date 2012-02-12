@@ -15,6 +15,11 @@ public class GpsFileModel implements IGpsFileModel {
         typ = RunType.NONE;
     }
 
+    @Override
+    public int getId() {
+        return typ.getIndex();
+    }
+
     /*
      * (non-Javadoc)
      * 

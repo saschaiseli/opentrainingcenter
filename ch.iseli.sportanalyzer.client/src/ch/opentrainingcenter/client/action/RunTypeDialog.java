@@ -22,20 +22,21 @@ import org.eclipse.swt.widgets.TableColumn;
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.client.model.IGpsFileModel;
+import ch.opentrainingcenter.client.model.IGpsFileModelWrapper;
 import ch.opentrainingcenter.client.model.ModelFactory;
 import ch.opentrainingcenter.client.views.IImageKeys;
 
 public class RunTypeDialog extends TitleAreaDialog {
+
+    private final List<IGpsFileModel> models = new ArrayList<IGpsFileModel>();
+
+    private TableViewer viewer;
 
     public RunTypeDialog(final Shell parentShell, final String[] fileNames) {
         super(parentShell);
 
         initModel(fileNames);
     }
-
-    private final List<IGpsFileModel> models = new ArrayList<IGpsFileModel>();
-
-    private TableViewer viewer;
 
     private void initModel(final String[] fileNames) {
         for (final String fileName : fileNames) {
@@ -126,12 +127,10 @@ public class RunTypeDialog extends TitleAreaDialog {
             }
         });
         col.setEditingSupport(new RunTypeEditingSupport(viewer));
-        //
-
     }
 
-    public List<IGpsFileModel> getModels() {
-        return models;
+    public IGpsFileModelWrapper getModelWrapper() {
+        return ModelFactory.createGpsFileModelWrapper(models);
     }
 
     private TableViewerColumn createTableViewerColumn(final String title, final int bound) {

@@ -14,6 +14,7 @@ import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IImported;
 import ch.opentrainingcenter.transfer.ITraining;
+import ch.opentrainingcenter.transfer.ITrainingType;
 
 public class ImportDao {
 
@@ -41,7 +42,7 @@ public class ImportDao {
         return keyFileName;
     }
 
-    public int importRecord(final int athleteId, final String fileName, final Date activityId, final ITraining overview) {
+    public int importRecord(final int athleteId, final String fileName, final Date activityId, final ITraining overview, final int type) {
         final int id = searchRecord(activityId);
         if (id > 0) {
             return -1;
@@ -54,12 +55,21 @@ public class ImportDao {
         record.setImportedDate(new Date());
         record.setActivityId(activityId);
         record.setTraining(overview);
+        record.setTrainingType(getTrainingType(type));
         final Session session = dao.getSession();
         final Transaction tx = session.beginTransaction();
         session.saveOrUpdate(record);
         tx.commit();
         session.flush();
         return record.getId();
+    }
+
+    @SuppressWarnings("unchecked")
+    private ITrainingType getTrainingType(final int id) {
+        final Query query = dao.getSession().createQuery("from TrainingType where id=:idType");//$NON-NLS-1$
+        query.setParameter("idType", id);//$NON-NLS-1$
+        final List<ITrainingType> list = query.list();
+        return list.get(0);
     }
 
     /**

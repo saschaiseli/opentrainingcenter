@@ -15,6 +15,10 @@
    fetch="select" name="weather">
    <column name="ID_FK_WEATHER"/>
   </many-to-one>
+  <many-to-one class="ch.opentrainingcenter.transfer.impl.TrainingType"
+   fetch="select" name="trainingType">
+   <column name="ID_FK_TRAININGTYPE"/>
+  </many-to-one>
   <many-to-one class="ch.opentrainingcenter.transfer.impl.Athlete"
    fetch="select" name="athlete" update="false" cascade="all">
    <column name="ID_FK_ATHLETE"/>

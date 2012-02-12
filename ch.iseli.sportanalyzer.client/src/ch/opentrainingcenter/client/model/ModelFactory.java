@@ -1,8 +1,10 @@
 package ch.opentrainingcenter.client.model;
 
 import java.util.Date;
+import java.util.List;
 
 import ch.opentrainingcenter.client.model.impl.GpsFileModel;
+import ch.opentrainingcenter.client.model.impl.GpsFileModelWrapper;
 import ch.opentrainingcenter.client.model.impl.SimpleTraining;
 import ch.opentrainingcenter.transfer.ITraining;
 
@@ -19,5 +21,9 @@ public class ModelFactory {
 
     public static IGpsFileModel createGpsFileModel(final String fileName) {
         return new GpsFileModel(fileName);
+    }
+
+    public static IGpsFileModelWrapper createGpsFileModelWrapper(final List<IGpsFileModel> fileModels) {
+        return new GpsFileModelWrapper(fileModels);
     }
 }

@@ -12,6 +12,10 @@ public interface IImported {
 
     void setWeather(IWeather weather);
 
+    ITrainingType getTrainingType();
+
+    void setTrainingType(ITrainingType type);
+
     IAthlete getAthlete();
 
     void setAthlete(IAthlete athlete);

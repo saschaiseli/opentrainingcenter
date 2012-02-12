@@ -20,4 +20,18 @@ public class DatabaseHelper {
         }
         return false;
     }
+
+    public static boolean isDatabaseExisting() {
+        try {
+            DatabaseAccessFactory.getDatabaseAccess().getAthlete(1);
+        } catch (final Exception e) {
+            final Throwable cause = e.getCause();
+            final String message = cause.getMessage();
+            if (message != null && message.contains("Table \"ATHLETE\" not found; SQL statement:")) { //$NON-NLS-1$
+                logger.error("Database existiert noch nicht"); //$NON-NLS-1$
+                return false;
+            }
+        }
+        return true;
+    }
 }

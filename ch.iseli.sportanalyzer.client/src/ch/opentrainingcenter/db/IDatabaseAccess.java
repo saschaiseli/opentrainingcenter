@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.IExecutableExtensionFactory;
 
+import ch.opentrainingcenter.client.model.RunType;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IImported;
 import ch.opentrainingcenter.transfer.ITraining;
@@ -47,9 +48,11 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
      *            der Filename des GPS Files.
      * @param activityId
      *            id der aktivität.
+     * @param type
+     *            der typ des trainings {@link RunType#getIndex()}
      * @return id des datenbankeintrages oder -1 wenn der record bereits in der datenbank war.
      */
-    int importRecord(int athleteId, String fileName, Date activityId, ITraining overview);
+    int importRecord(int athleteId, String fileName, Date activityId, ITraining overview, int type);
 
     /**
      * @param key

@@ -8,6 +8,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 
+import ch.opentrainingcenter.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.db.DatabaseHelper;
 
 /**
@@ -41,6 +42,11 @@ public class Application implements IApplication {
                         MessageDialog.ERROR, new String[] { Messages.Application_2 }, 0);
                 if (messageDialog.open() == 1) {
                     return IApplication.EXIT_OK;
+                }
+            } else {
+                final boolean isExisting = DatabaseHelper.isDatabaseExisting();
+                if (!isExisting) {
+                    DatabaseAccessFactory.getDatabaseAccess().createDatabase();
                 }
             }
             final int returnCode = PlatformUI.createAndRunWorkbench(display, new ApplicationWorkbenchAdvisor());

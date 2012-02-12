@@ -1,7 +1,8 @@
 package ch.opentrainingcenter.client.model;
 
-
 public interface IGpsFileModel {
+
+    public abstract int getId();
 
     public abstract String getFileName();
 
