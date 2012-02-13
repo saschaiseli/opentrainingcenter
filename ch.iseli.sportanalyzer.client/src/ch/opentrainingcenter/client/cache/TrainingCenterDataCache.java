@@ -180,10 +180,10 @@ public class TrainingCenterDataCache {
         for (final ActivityT activity : activities) {
             final Date key = activity.getId().toGregorianCalendar().getTime();
             if (deletedIds.contains(key)) {
-                database.getActivities().getActivity().remove(activity);
+                activitiesToDelete.add(activity);
             }
         }
-
+        database.getActivities().getActivity().removeAll(activitiesToDelete);
         for (final Date key : deletedIds) {
             allImported.remove(key);
         }
