@@ -22,7 +22,7 @@
    <splash
       location="ch.iseli.sportanalyzer.client" />
    <launcher name="opentrainingcenter">
-      <linux icon="/ch.iseli.sportanalyzer.client/icons/start.xpm"/>
+      <linux icon="/ch.opentrainingcenter.client/icons/start.xpm"/>
       <solaris/>
       <win useIco="false">
          <bmp/>
