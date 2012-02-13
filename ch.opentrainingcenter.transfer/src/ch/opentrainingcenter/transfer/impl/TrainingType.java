@@ -11,6 +11,7 @@ public class TrainingType implements ITrainingType {
     private int id;
     private String title;
     private String description;
+    private String imageIcon;
     private Set<IImported> importeds = new HashSet<IImported>(0);
 
     public TrainingType() {
@@ -58,5 +59,14 @@ public class TrainingType implements ITrainingType {
 
     public void setImporteds(final Set<IImported> importeds) {
         this.importeds = importeds;
+    }
+
+    @Override
+    public String getImageicon() {
+        return imageIcon;
+    }
+
+    public void setImageicon(final String imageIcon) {
+        this.imageIcon = imageIcon;
     }
 }

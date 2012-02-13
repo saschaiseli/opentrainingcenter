@@ -10,5 +10,7 @@ public interface ITrainingType {
 
     public abstract String getDescription();
 
+    public abstract String getImageicon();
+
     public abstract Set<IImported> getImporteds();
 }

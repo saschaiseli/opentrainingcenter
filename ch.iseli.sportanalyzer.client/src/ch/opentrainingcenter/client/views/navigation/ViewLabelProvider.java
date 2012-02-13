@@ -21,6 +21,6 @@ public class ViewLabelProvider extends LabelProvider {
     @Override
     public Image getImage(final Object element) {
         final IImported record = (IImported) element;
-        return Activator.getImageDescriptor(record.getTrainingType().getImageIcon()).createImage();
+        return Activator.getImageDescriptor(record.getTrainingType().getImageicon()).createImage();
     }
 }
