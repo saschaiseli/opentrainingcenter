@@ -64,6 +64,15 @@ public class ImportDao {
         return record.getId();
     }
 
+    public void updateRecord(final IImported record, final int index) {
+        record.setTrainingType(getTrainingType(index));
+        final Session session = dao.getSession();
+        final Transaction tx = session.beginTransaction();
+        session.update(record);
+        tx.commit();
+        session.flush();
+    }
+
     @SuppressWarnings("unchecked")
     private ITrainingType getTrainingType(final int id) {
         final Query query = dao.getSession().createQuery("from TrainingType where id=:idType");//$NON-NLS-1$

@@ -25,11 +25,13 @@ import org.eclipse.ui.part.ViewPart;
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.client.PreferenceConstants;
+import ch.opentrainingcenter.client.action.ChangeRunType;
 import ch.opentrainingcenter.client.action.DeleteImportedRecord;
 import ch.opentrainingcenter.client.cache.IRecordListener;
 import ch.opentrainingcenter.client.cache.TrainingCenterDataCache;
 import ch.opentrainingcenter.client.helper.DistanceHelper;
 import ch.opentrainingcenter.client.helper.TimeHelper;
+import ch.opentrainingcenter.client.model.RunType;
 import ch.opentrainingcenter.client.views.overview.SingleActivityViewPart;
 import ch.opentrainingcenter.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.importer.GpsFileLoader;
@@ -66,12 +68,30 @@ public class NavigationView extends ViewPart {
         viewer.setContentProvider(new ViewContentProvider());
         viewer.setLabelProvider(new ViewLabelProvider());
 
-        final MenuManager menuMgr = new MenuManager("#PopupMenu"); //$NON-NLS-1$
+        final ChangeRunType changeIIAction = new ChangeRunType(RunType.INT__INTERVALL);
+        final ChangeRunType changeEIAction = new ChangeRunType(RunType.EXT_INTERVALL);
+        final ChangeRunType changeLJAction = new ChangeRunType(RunType.LONG_JOG);
+        final ChangeRunType changePLJAction = new ChangeRunType(RunType.POWER_LONG_JOG);
+        final ChangeRunType changeTJAction = new ChangeRunType(RunType.TEMPO_JOG);
+        final ChangeRunType changeUAction = new ChangeRunType(RunType.NONE);
+        final DeleteImportedRecord deleteRecordAction = new DeleteImportedRecord();
+
+        final MenuManager menuMgr = new MenuManager("KontextMenu"); //$NON-NLS-1$
         menuMgr.setRemoveAllWhenShown(true);
         menuMgr.addMenuListener(new IMenuListener() {
             @Override
             public void menuAboutToShow(final IMenuManager manager) {
-                manager.add(new DeleteImportedRecord());
+
+                final MenuManager subMenu = new MenuManager("Lauftyp ändern");
+                subMenu.add(changeIIAction);
+                subMenu.add(changeEIAction);
+                subMenu.add(changeLJAction);
+                subMenu.add(changePLJAction);
+                subMenu.add(changeTJAction);
+                subMenu.add(changeUAction);
+
+                manager.add(subMenu);
+                manager.add(deleteRecordAction);
             }
         });
 

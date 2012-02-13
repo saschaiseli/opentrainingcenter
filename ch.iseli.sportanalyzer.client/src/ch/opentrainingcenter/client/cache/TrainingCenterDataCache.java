@@ -190,6 +190,14 @@ public class TrainingCenterDataCache {
         fireRecordDeleted(activitiesToDelete);
     }
 
+    public void update() {
+        final Object[] rls = listeners.getListeners();
+        for (int i = 0; i < rls.length; i++) {
+            final IRecordListener listener = (IRecordListener) rls[i];
+            listener.recordChanged(null);
+        }
+    }
+
     private void fireRecordAdded(final Collection<ActivityT> activitiesAdded) {
         if (listeners == null)
             return;

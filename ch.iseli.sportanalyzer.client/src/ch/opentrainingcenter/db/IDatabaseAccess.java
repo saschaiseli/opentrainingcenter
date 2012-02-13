@@ -95,4 +95,6 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
      */
     int save(IAthlete athlete);
 
+    void updateRecord(IImported record, int index);
+
 }
