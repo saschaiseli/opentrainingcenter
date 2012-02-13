@@ -5,7 +5,6 @@ import org.eclipse.swt.graphics.Image;
 
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.helper.TimeHelper;
-import ch.opentrainingcenter.client.views.IImageKeys;
 import ch.opentrainingcenter.transfer.IImported;
 
 public class ViewLabelProvider extends LabelProvider {
@@ -14,13 +13,14 @@ public class ViewLabelProvider extends LabelProvider {
     }
 
     @Override
-    public String getText(final Object object) {
-        // wird immer eine IImported sein
-        return TimeHelper.convertDateToString(((IImported) object).getActivityId(), false);
+    public String getText(final Object element) {
+        final IImported record = (IImported) element;
+        return TimeHelper.convertDateToString(record.getActivityId(), false);
     }
 
     @Override
-    public Image getImage(final Object obj) {
-        return Activator.getImageDescriptor(IImageKeys.RUNNING_MAN).createImage();
+    public Image getImage(final Object element) {
+        final IImported record = (IImported) element;
+        return Activator.getImageDescriptor(record.getTrainingType().getImageIcon()).createImage();
     }
 }
