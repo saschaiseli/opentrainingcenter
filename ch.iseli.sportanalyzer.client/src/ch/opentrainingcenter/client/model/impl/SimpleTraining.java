@@ -5,6 +5,7 @@ import java.util.Date;
 import ch.opentrainingcenter.client.helper.DistanceHelper;
 import ch.opentrainingcenter.client.helper.TimeHelper;
 import ch.opentrainingcenter.client.model.ISimpleTraining;
+import ch.opentrainingcenter.client.model.RunType;
 
 public class SimpleTraining implements ISimpleTraining {
     private final double distanzInMeter;
@@ -16,12 +17,14 @@ public class SimpleTraining implements ISimpleTraining {
     private final String laengeInKilometer;
     private final String pace;
     private final String speed;
+    private final RunType type;
 
     public SimpleTraining(final double distanzInMeter, final double dauerInSekunden, final Date datum, final int avgHeartRate, final int maxHeartRate,
-            final double speed) {
+            final double speed, final RunType type) {
         this.distanzInMeter = distanzInMeter;
         this.avgHeartRate = avgHeartRate;
         this.maxHeartRate = maxHeartRate;
+        this.type = type;
         laengeInKilometer = DistanceHelper.roundDistanceFromMeterToKm(distanzInMeter);
         this.dauerInSekunden = dauerInSekunden;
         readableZeit = TimeHelper.convertSecondsToHumanReadableZeit(dauerInSekunden);
@@ -102,6 +105,11 @@ public class SimpleTraining implements ISimpleTraining {
     @Override
     public String getMaxSpeed() {
         return speed;
+    }
+
+    @Override
+    public RunType getType() {
+        return type;
     }
 
     @Override

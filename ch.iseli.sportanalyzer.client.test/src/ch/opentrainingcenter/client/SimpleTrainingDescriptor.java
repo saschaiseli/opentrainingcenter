@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import ch.opentrainingcenter.client.model.ISimpleTraining;
+import ch.opentrainingcenter.client.model.RunType;
 import ch.opentrainingcenter.client.model.impl.SimpleTraining;
 
 public class SimpleTrainingDescriptor {
@@ -17,6 +18,7 @@ public class SimpleTrainingDescriptor {
     private int avgHeartRate = 0;
     private int maxHeartRate = 0;
     private double speed = 0;
+    private RunType type = RunType.NONE;
 
     private SimpleTrainingDescriptor(final int year, final int monat, final int day) {
         this.year = year;
@@ -68,12 +70,17 @@ public class SimpleTrainingDescriptor {
         return this;
     }
 
+    public SimpleTrainingDescriptor setRunType(final RunType type) {
+        this.type = type;
+        return this;
+    }
+
     public ISimpleTraining build() {
         final Calendar cal = Calendar.getInstance(Locale.GERMAN);
         cal.set(Calendar.DAY_OF_MONTH, day);
         cal.set(Calendar.MONTH, monat - 1);
         cal.set(Calendar.YEAR, year);
         final Date datum = cal.getTime();
-        return new SimpleTraining(distanzInMeter, dauerInSekunden, datum, avgHeartRate, maxHeartRate, speed);
+        return new SimpleTraining(distanzInMeter, dauerInSekunden, datum, avgHeartRate, maxHeartRate, speed, type);
     }
 }

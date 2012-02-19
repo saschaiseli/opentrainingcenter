@@ -23,4 +23,6 @@ public interface ISimpleTraining {
     String getPace();
 
     String getMaxSpeed();
+
+    RunType getType();
 }

@@ -52,17 +52,17 @@ public class TrainingOverviewDatenAufbereiten {
 
         trainingsPerWeek.clear();
         final Map<Integer, Map<Integer, List<ISimpleTraining>>> trainingsProWoche = statistik.getTrainingsProWoche(all);
-        trainingsPerWeek.addAll(SimpleTrainingCalculator.createSum(trainingsProWoche));
+        trainingsPerWeek.addAll(SimpleTrainingCalculator.createSum(trainingsProWoche, null));
 
         trainingsPerMonth.clear();
         final Map<Integer, Map<Integer, List<ISimpleTraining>>> trainingsProMonat = statistik.getTrainingsProMonat(all);
-        trainingsPerMonth.addAll(SimpleTrainingCalculator.createSum(trainingsProMonat));
+        trainingsPerMonth.addAll(SimpleTrainingCalculator.createSum(trainingsProMonat, null));
 
         trainingsPerYear.clear();
         final Map<Integer, List<ISimpleTraining>> trainingsProJahr = statistik.getTrainingsProJahr(all);
         final Map<Integer, Map<Integer, List<ISimpleTraining>>> tmp = new HashMap<Integer, Map<Integer, List<ISimpleTraining>>>();
         tmp.put(1, trainingsProJahr);
-        trainingsPerYear.addAll(SimpleTrainingCalculator.createSum(tmp));
+        trainingsPerYear.addAll(SimpleTrainingCalculator.createSum(tmp, null));
     }
 
     public List<ISimpleTraining> getTrainingsPerDay() {

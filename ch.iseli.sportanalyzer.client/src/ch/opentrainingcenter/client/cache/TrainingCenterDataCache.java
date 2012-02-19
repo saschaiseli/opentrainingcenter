@@ -16,6 +16,7 @@ import org.eclipse.core.runtime.ListenerList;
 
 import ch.opentrainingcenter.client.model.ISimpleTraining;
 import ch.opentrainingcenter.client.model.ModelFactory;
+import ch.opentrainingcenter.client.model.RunType;
 import ch.opentrainingcenter.client.model.TrainingOverviewFactory;
 import ch.opentrainingcenter.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.importer.GpsFileLoader;
@@ -262,7 +263,7 @@ public class TrainingCenterDataCache {
 
     public void addAllImported(final List<IImported> records) {
         for (final IImported record : records) {
-            simpleTrainings.add(ModelFactory.createSimpleTraining(record.getTraining()));
+            simpleTrainings.add(ModelFactory.createSimpleTraining(record.getTraining(), RunType.getRunType(record.getTrainingType().getId())));
             allImported.put(record.getActivityId(), record);
         }
     }

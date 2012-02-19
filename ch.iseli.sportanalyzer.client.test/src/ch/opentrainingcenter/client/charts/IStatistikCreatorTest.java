@@ -182,6 +182,6 @@ public class IStatistikCreatorTest {
         final int avgHeartRate = 0;
         final int maxHeartRate = 1;
         final double speed = 0;
-        return new SimpleTraining(distanzInMeter, dauerInSekunden, datum, avgHeartRate, maxHeartRate, speed);
+        return new SimpleTraining(distanzInMeter, dauerInSekunden, datum, avgHeartRate, maxHeartRate, speed, null);
     }
 }
