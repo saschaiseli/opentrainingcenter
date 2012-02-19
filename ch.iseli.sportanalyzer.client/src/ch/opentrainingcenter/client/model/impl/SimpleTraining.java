@@ -103,4 +103,10 @@ public class SimpleTraining implements ISimpleTraining {
     public String getMaxSpeed() {
         return speed;
     }
+
+    @Override
+    public String toString() {
+        return "SimpleTraining [distanzInMeter=" + distanzInMeter + ", dauerInSekunden=" + dauerInSekunden + ", datum=" + datum + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+    }
+
 }

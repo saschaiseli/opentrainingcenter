@@ -34,7 +34,6 @@
    </vm>
 
    <plugins>
-      <plugin id="ch.opentrainingcenter.importer.test" fragment="true"/>
       <plugin id="ch.opentrainingcenter.client"/>
       <plugin id="ch.opentrainingcenter.client.test" fragment="true"/>
       <plugin id="ch.opentrainingcenter.db.h2"/>

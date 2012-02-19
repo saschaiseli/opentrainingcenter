@@ -57,6 +57,7 @@ import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.client.cache.IRecordListener;
 import ch.opentrainingcenter.client.cache.TrainingCenterDataCache;
 import ch.opentrainingcenter.client.cache.TrainingOverviewDatenAufbereiten;
+import ch.opentrainingcenter.client.charts.internal.StatistikCreator;
 import ch.opentrainingcenter.client.model.ISimpleTraining;
 import ch.opentrainingcenter.tcx.ActivityT;
 
@@ -82,10 +83,15 @@ public class OTCBarChartViewer implements ISelectionProvider {
     private final ChartSerieType type;
     private XYItemLabelGenerator labelGenerator;
     private JFreeChart chart;
+    private final IStatistikCreator statistik;
+    private final TrainingOverviewDatenAufbereiten daten;
 
     public OTCBarChartViewer(final Composite parent, final ChartSerieType type) {
         this.type = type;
         clazz = getSeriesType(type);
+        statistik = new StatistikCreator();
+        daten = new TrainingOverviewDatenAufbereiten(statistik);
+
         distanceSerie = new TimeSeries(DISTANZ);
         heartSerie = new TimeSeries(HEART);
         TrainingCenterDataCache.getInstance().addListener(new IRecordListener() {
@@ -102,7 +108,7 @@ public class OTCBarChartViewer implements ISelectionProvider {
 
             private void update() {
                 logger.info("neue Daten, Charts aktualisieren"); //$NON-NLS-1$
-                createOrUpdateDataSet(new TrainingOverviewDatenAufbereiten());
+                createOrUpdateDataSet(daten);
             }
         });
 
@@ -170,7 +176,7 @@ public class OTCBarChartViewer implements ISelectionProvider {
                 plot.setBackgroundPaint(new Color(0xEE, 0xEE, 0xFF));
                 plot.setDomainAxisLocation(AxisLocation.BOTTOM_OR_RIGHT);
 
-                plot.setDataset(1, createOrUpdateDataSet(new TrainingOverviewDatenAufbereiten(), HEART));
+                plot.setDataset(1, createOrUpdateDataSet(daten, HEART));
                 plot.mapDatasetToRangeAxis(1, 1);
 
                 final ValueAxis axis2 = new NumberAxis(Messages.OTCBarChartViewer_3);
@@ -195,7 +201,7 @@ public class OTCBarChartViewer implements ISelectionProvider {
 
         GridData gd = new GridData();
         b.setLayoutData(gd);
-        dataset = createOrUpdateDataSet(new TrainingOverviewDatenAufbereiten(), DISTANZ);
+        dataset = createOrUpdateDataSet(daten, DISTANZ);
         createChart(dataset, type);
         chartComposite = new ChartComposite(composite, SWT.NONE, chart, true);
         gd = new GridData(SWT.FILL);
