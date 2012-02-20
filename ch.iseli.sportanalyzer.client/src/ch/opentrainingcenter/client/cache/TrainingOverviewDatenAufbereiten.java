@@ -12,13 +12,14 @@ import org.apache.log4j.Logger;
 import ch.opentrainingcenter.client.charts.IStatistikCreator;
 import ch.opentrainingcenter.client.helper.SimpleTrainingCalculator;
 import ch.opentrainingcenter.client.model.ISimpleTraining;
+import ch.opentrainingcenter.client.model.RunType;
 import ch.opentrainingcenter.tcx.ActivityT;
 
 public class TrainingOverviewDatenAufbereiten {
 
     private static final Logger logger = Logger.getLogger(TrainingOverviewDatenAufbereiten.class);
 
-    private final List<ISimpleTraining> all;
+    private final List<ISimpleTraining> trainingsPerDay = new ArrayList<ISimpleTraining>();
     private final List<ISimpleTraining> trainingsPerWeek = new ArrayList<ISimpleTraining>();
     private final List<ISimpleTraining> trainingsPerMonth = new ArrayList<ISimpleTraining>();
     private final List<ISimpleTraining> trainingsPerYear = new ArrayList<ISimpleTraining>();
@@ -30,43 +31,60 @@ public class TrainingOverviewDatenAufbereiten {
     public TrainingOverviewDatenAufbereiten(final IStatistikCreator statistik) {
         this.statistik = statistik;
         cache = TrainingCenterDataCache.getInstance();
-        all = cache.getAllSimpleTrainings();
+        // wenn sich noch was im cache ändert...
         cache.addListener(new IRecordListener() {
 
             @Override
             public void recordChanged(final Collection<ActivityT> entry) {
-                update();
+                update(null);
             }
 
             @Override
             public void deleteRecord(final Collection<ActivityT> entry) {
-                update();
+                update(null);
             }
 
         });
-        update();
+        update(null);
     }
 
-    private void update() {
-        logger.debug("update daten vom cache"); //$NON-NLS-1$
+    /**
+     * Filtert die Daten nach dem angegeben Lauftyp.
+     */
+    public void update(final RunType type) {
+        logger.debug("update/filter daten vom cache: " + type); //$NON-NLS-1$
+        trainingsPerDay.clear();
+        final List<ISimpleTraining> allTrainings = statistik.getTrainingsProTag(cache.getAllSimpleTrainings());
+        for (final ISimpleTraining training : allTrainings) {
+            if (isTypeMatching(type, training.getType())) {
+                trainingsPerDay.add(training);
+            }
+        }
 
         trainingsPerWeek.clear();
-        final Map<Integer, Map<Integer, List<ISimpleTraining>>> trainingsProWoche = statistik.getTrainingsProWoche(all);
-        trainingsPerWeek.addAll(SimpleTrainingCalculator.createSum(trainingsProWoche, null));
+        final Map<Integer, Map<Integer, List<ISimpleTraining>>> trainingsProWoche = statistik.getTrainingsProWoche(allTrainings);
+        trainingsPerWeek.addAll(SimpleTrainingCalculator.createSum(trainingsProWoche, type));
 
         trainingsPerMonth.clear();
-        final Map<Integer, Map<Integer, List<ISimpleTraining>>> trainingsProMonat = statistik.getTrainingsProMonat(all);
-        trainingsPerMonth.addAll(SimpleTrainingCalculator.createSum(trainingsProMonat, null));
+        final Map<Integer, Map<Integer, List<ISimpleTraining>>> trainingsProMonat = statistik.getTrainingsProMonat(allTrainings);
+        trainingsPerMonth.addAll(SimpleTrainingCalculator.createSum(trainingsProMonat, type));
 
         trainingsPerYear.clear();
-        final Map<Integer, List<ISimpleTraining>> trainingsProJahr = statistik.getTrainingsProJahr(all);
+        final Map<Integer, List<ISimpleTraining>> trainingsProJahr = statistik.getTrainingsProJahr(allTrainings);
         final Map<Integer, Map<Integer, List<ISimpleTraining>>> tmp = new HashMap<Integer, Map<Integer, List<ISimpleTraining>>>();
         tmp.put(1, trainingsProJahr);
-        trainingsPerYear.addAll(SimpleTrainingCalculator.createSum(tmp, null));
+        trainingsPerYear.addAll(SimpleTrainingCalculator.createSum(tmp, type));
+    }
+
+    private boolean isTypeMatching(final RunType filterType, final RunType trainingType) {
+        if (filterType == null || filterType.equals(trainingType)) {
+            return true;
+        }
+        return false;
     }
 
     public List<ISimpleTraining> getTrainingsPerDay() {
-        return Collections.unmodifiableList(all);
+        return Collections.unmodifiableList(trainingsPerDay);
     }
 
     public List<ISimpleTraining> getTrainingsPerMonth() {
@@ -81,4 +99,26 @@ public class TrainingOverviewDatenAufbereiten {
         return Collections.unmodifiableList(trainingsPerYear);
     }
 
+    @Override
+    public String toString() {
+        final StringBuffer str = new StringBuffer();
+        str.append("Übersicht auf die aufbereiteten Daten:\n"); //$NON-NLS-1$
+
+        str.append("Trainings pro Monat:\n"); //$NON-NLS-1$
+        printTraining(str, trainingsPerMonth);
+
+        str.append("Trainings pro Woche:\n"); //$NON-NLS-1$
+        printTraining(str, trainingsPerWeek);
+
+        str.append("Trainings pro Tag:\n"); //$NON-NLS-1$
+        printTraining(str, trainingsPerDay);
+
+        return str.toString();
+    }
+
+    private void printTraining(final StringBuffer str, final List<ISimpleTraining> trainings) {
+        for (final ISimpleTraining training : trainings) {
+            str.append(training.getDatum()).append(' ').append(training.getDistanzInMeter()).append("[m]").append(" ").append(training.getType()).append('\n'); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+    }
 }

@@ -5,11 +5,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import ch.opentrainingcenter.client.model.ISimpleTraining;
 import ch.opentrainingcenter.client.model.ModelFactory;
 import ch.opentrainingcenter.client.model.RunType;
 
 public class SimpleTrainingCalculator {
+
+    private static final Logger logger = Logger.getLogger(SimpleTrainingCalculator.class);
 
     /**
      * Erstellt eine neue Liste von Trainings. Der Input ist entweder nach dem
@@ -47,6 +51,7 @@ public class SimpleTrainingCalculator {
         Date date = null;
         int count = 0;
         for (final ISimpleTraining training : trainingsProWocheOderMonat.getValue()) {
+            logger.debug("compress Trainings --> Filter nach " + filter + " matches? " + matchFilter(filter, filterResults, training)); //$NON-NLS-1$ //$NON-NLS-2$
             if (matchFilter(filter, filterResults, training)) {
                 distance += training.getDistanzInMeter();
                 seconds += training.getDauerInSekunden();
@@ -68,7 +73,9 @@ public class SimpleTrainingCalculator {
         } else {
             avgHeartRate = 0;
         }
-        result.add(ModelFactory.createSimpleTraining(distance, seconds, date, avgHeartRate, maxHeart, 0, filter));
+        if (count > 0) {
+            result.add(ModelFactory.createSimpleTraining(distance, seconds, date, avgHeartRate, maxHeart, 0, filter));
+        }
     }
 
     /**

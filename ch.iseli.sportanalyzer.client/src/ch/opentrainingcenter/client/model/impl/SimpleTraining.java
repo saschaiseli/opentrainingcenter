@@ -17,7 +17,7 @@ public class SimpleTraining implements ISimpleTraining {
     private final String laengeInKilometer;
     private final String pace;
     private final String speed;
-    private final RunType type;
+    private RunType type;
 
     public SimpleTraining(final double distanzInMeter, final double dauerInSekunden, final Date datum, final int avgHeartRate, final int maxHeartRate,
             final double speed, final RunType type) {
@@ -110,6 +110,11 @@ public class SimpleTraining implements ISimpleTraining {
     @Override
     public RunType getType() {
         return type;
+    }
+
+    @Override
+    public void setType(final RunType type) {
+        this.type = type;
     }
 
     @Override

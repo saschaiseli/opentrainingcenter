@@ -15,14 +15,14 @@ public class ImportActivityJob extends Job {
     public static final Logger logger = Logger.getLogger(ImportActivityJob.class);
 
     private final IImported record;
-    private final GpsFileLoader loadGpsFile;
+    private final IGpsFileLoader loadGpsFile;
     private final TrainingCenterDataCache cache;
     private ActivityT selected;
 
-    public ImportActivityJob(final String name, final IImported record, final GpsFileLoader loadGpsFile) {
+    public ImportActivityJob(final String name, final IImported record) {
         super(name);
         this.record = record;
-        this.loadGpsFile = loadGpsFile;
+        this.loadGpsFile = GpsFileLoaderFactory.createGpsFileLoader();
         this.cache = TrainingCenterDataCache.getInstance();
     }
 

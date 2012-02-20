@@ -34,7 +34,6 @@ import ch.opentrainingcenter.client.helper.TimeHelper;
 import ch.opentrainingcenter.client.model.RunType;
 import ch.opentrainingcenter.client.views.overview.SingleActivityViewPart;
 import ch.opentrainingcenter.db.DatabaseAccessFactory;
-import ch.opentrainingcenter.importer.GpsFileLoader;
 import ch.opentrainingcenter.importer.ImportActivityJob;
 import ch.opentrainingcenter.importer.ImportJob;
 import ch.opentrainingcenter.tcx.ActivityT;
@@ -52,8 +51,6 @@ public class NavigationView extends ViewPart {
 
     private final TrainingCenterDataCache cache = TrainingCenterDataCache.getInstance();
 
-    private final GpsFileLoader loadGpsFile = new GpsFileLoader();
-
     /**
      * This is a callback that will allow us to create the viewer and initialize it.
      */
@@ -68,7 +65,7 @@ public class NavigationView extends ViewPart {
         viewer.setContentProvider(new ViewContentProvider());
         viewer.setLabelProvider(new ViewLabelProvider());
 
-        final ChangeRunType changeIIAction = new ChangeRunType(RunType.INT__INTERVALL);
+        final ChangeRunType changeIIAction = new ChangeRunType(RunType.INT_INTERVALL);
         final ChangeRunType changeEIAction = new ChangeRunType(RunType.EXT_INTERVALL);
         final ChangeRunType changeLJAction = new ChangeRunType(RunType.LONG_JOG);
         final ChangeRunType changePLJAction = new ChangeRunType(RunType.POWER_LONG_JOG);
@@ -112,7 +109,7 @@ public class NavigationView extends ViewPart {
             }
 
             private void openSingleRunView(final IImported record) {
-                final ImportActivityJob job = new ImportActivityJob(Messages.NavigationView_1, record, loadGpsFile);
+                final ImportActivityJob job = new ImportActivityJob(Messages.NavigationView_1, record);
                 job.schedule();
                 job.addJobChangeListener(new ImportActivityJobListener());
             }

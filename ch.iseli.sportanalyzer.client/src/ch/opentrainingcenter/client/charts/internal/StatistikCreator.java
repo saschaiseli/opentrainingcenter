@@ -91,4 +91,9 @@ public class StatistikCreator implements IStatistikCreator {
         cal.setTime(datum);
         return cal.get(Calendar.WEEK_OF_YEAR) == 52 && cal.get(Calendar.MONTH) == 0;
     }
+
+    @Override
+    public List<ISimpleTraining> getTrainingsProTag(final List<ISimpleTraining> allTrainings) {
+        return allTrainings;
+    }
 }

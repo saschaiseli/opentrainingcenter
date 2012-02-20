@@ -59,6 +59,7 @@ import ch.opentrainingcenter.client.cache.TrainingCenterDataCache;
 import ch.opentrainingcenter.client.cache.TrainingOverviewDatenAufbereiten;
 import ch.opentrainingcenter.client.charts.internal.StatistikCreator;
 import ch.opentrainingcenter.client.model.ISimpleTraining;
+import ch.opentrainingcenter.client.model.RunType;
 import ch.opentrainingcenter.tcx.ActivityT;
 
 public class OTCBarChartViewer implements ISelectionProvider {
@@ -85,6 +86,7 @@ public class OTCBarChartViewer implements ISelectionProvider {
     private JFreeChart chart;
     private final IStatistikCreator statistik;
     private final TrainingOverviewDatenAufbereiten daten;
+    private RunType filter = RunType.NONE;
 
     public OTCBarChartViewer(final Composite parent, final ChartSerieType type) {
         this.type = type;
@@ -108,7 +110,7 @@ public class OTCBarChartViewer implements ISelectionProvider {
 
             private void update() {
                 logger.info("neue Daten, Charts aktualisieren"); //$NON-NLS-1$
-                createOrUpdateDataSet(daten);
+                createOrUpdateDataSet(daten, filter);
             }
         });
 
@@ -117,12 +119,23 @@ public class OTCBarChartViewer implements ISelectionProvider {
         final GridLayout layout = new GridLayout(2, false);
         composite.setLayout(layout);
 
-        final Composite buttonsContainer = new Composite(composite, SWT.NONE);
-        final GridLayout buttonsLayout = new GridLayout(1, false);
-        buttonsContainer.setLayout(buttonsLayout);
+        final Composite radioContainer = new Composite(composite, SWT.NONE);
+        final GridLayout radioLayout = new GridLayout(1, false);
+        radioLayout.marginTop = 10;
+        radioLayout.marginBottom = 40;
+        radioContainer.setLayout(radioLayout);
+
+        createFilterButton(radioContainer, null);
+        for (final RunType runType : RunType.values()) {
+            createFilterButton(radioContainer, runType);
+        }
+
+        // final Composite buttonsContainer = new Composite(composite, SWT.NONE);
+        // final GridLayout buttonsLayout = new GridLayout(1, false);
+        // buttonsContainer.setLayout(radioLayout);
 
         if (type.isLabelVisible()) {
-            final Button bItemLabelPrinter = new Button(buttonsContainer, SWT.CHECK);
+            final Button bItemLabelPrinter = new Button(radioContainer, SWT.CHECK);
             bItemLabelPrinter.setText(Messages.OTCBarChartViewer_9);
             bItemLabelPrinter.setSelection(true);
             bItemLabelPrinter.addSelectionListener(new SelectionListener() {
@@ -147,7 +160,7 @@ public class OTCBarChartViewer implements ISelectionProvider {
             });
         }
 
-        final Button b = new Button(buttonsContainer, SWT.CHECK);
+        final Button b = new Button(radioContainer, SWT.CHECK);
         b.setText(Messages.OTCBarChartViewer_2);
 
         b.addSelectionListener(new SelectionListener() {
@@ -176,7 +189,7 @@ public class OTCBarChartViewer implements ISelectionProvider {
                 plot.setBackgroundPaint(new Color(0xEE, 0xEE, 0xFF));
                 plot.setDomainAxisLocation(AxisLocation.BOTTOM_OR_RIGHT);
 
-                plot.setDataset(1, createOrUpdateDataSet(daten, HEART));
+                plot.setDataset(1, createOrUpdateDataSet(daten, HEART, filter));
                 plot.mapDatasetToRangeAxis(1, 1);
 
                 final ValueAxis axis2 = new NumberAxis(Messages.OTCBarChartViewer_3);
@@ -201,7 +214,7 @@ public class OTCBarChartViewer implements ISelectionProvider {
 
         GridData gd = new GridData();
         b.setLayoutData(gd);
-        dataset = createOrUpdateDataSet(daten, DISTANZ);
+        dataset = createOrUpdateDataSet(daten, DISTANZ, null);
         createChart(dataset, type);
         chartComposite = new ChartComposite(composite, SWT.NONE, chart, true);
         gd = new GridData(SWT.FILL);
@@ -210,6 +223,33 @@ public class OTCBarChartViewer implements ISelectionProvider {
         gd.horizontalAlignment = SWT.FILL;
         gd.verticalAlignment = SWT.FILL;
         chartComposite.setLayoutData(gd);
+    }
+
+    private void createFilterButton(final Composite radioContainer, final RunType buttonFilter) {
+        final Button button = new Button(radioContainer, SWT.RADIO);
+        if (buttonFilter != null) {
+            button.setText(buttonFilter.getTitle());
+        } else {
+            button.setText("Kein Filter");
+            button.setSelection(true);
+        }
+        button.addSelectionListener(new SelectionListener() {
+
+            @Override
+            public void widgetSelected(final SelectionEvent e) {
+                final Button source = (Button) e.getSource();
+                if (source.getSelection()) {
+                    filter = buttonFilter;
+                    createOrUpdateDataSet(daten, filter);
+                }
+            }
+
+            @Override
+            public void widgetDefaultSelected(final SelectionEvent e) {
+
+            }
+        });
+
     }
 
     private Class<? extends RegularTimePeriod> getSeriesType(final ChartSerieType type) {
@@ -233,13 +273,14 @@ public class OTCBarChartViewer implements ISelectionProvider {
         return clazz;
     }
 
-    private void createOrUpdateDataSet(final TrainingOverviewDatenAufbereiten trainingOverviewDatenAufbereiten) {
-        createOrUpdateDataSet(trainingOverviewDatenAufbereiten, DISTANZ);
-        createOrUpdateDataSet(trainingOverviewDatenAufbereiten, HEART);
+    private void createOrUpdateDataSet(final TrainingOverviewDatenAufbereiten trainingOverviewDatenAufbereiten, final RunType filter) {
+        logger.debug("createOrUpdateDataSet... " + filter); //$NON-NLS-1$
+        createOrUpdateDataSet(trainingOverviewDatenAufbereiten, DISTANZ, filter);
+        createOrUpdateDataSet(trainingOverviewDatenAufbereiten, HEART, filter);
     }
 
-    private IntervalXYDataset createOrUpdateDataSet(final TrainingOverviewDatenAufbereiten daten, final String serieTyp) {
-        final Map<String, TimeSeries> series = updateSeries(daten);
+    private IntervalXYDataset createOrUpdateDataSet(final TrainingOverviewDatenAufbereiten daten, final String serieTyp, final RunType filter) {
+        final Map<String, TimeSeries> series = updateSeries(daten, filter);
         if (DISTANZ.equals(serieTyp)) {
             timeSeriesDistanzCollection.removeAllSeries();
             timeSeriesDistanzCollection.addSeries(series.get(DISTANZ));
@@ -254,9 +295,11 @@ public class OTCBarChartViewer implements ISelectionProvider {
         throw new IllegalArgumentException(Messages.OTCBarChartViewer_4 + serieTyp + Messages.OTCBarChartViewer_5);
     }
 
-    private Map<String, TimeSeries> updateSeries(final TrainingOverviewDatenAufbereiten daten) {
+    private Map<String, TimeSeries> updateSeries(final TrainingOverviewDatenAufbereiten daten, final RunType filter) {
         final Map<String, TimeSeries> map = new HashMap<String, TimeSeries>();
         final List<ISimpleTraining> trainings = new ArrayList<ISimpleTraining>();
+        daten.update(filter);
+        logger.debug(daten);
         if (ChartSerieType.DAY.equals(type)) {
             trainings.addAll(daten.getTrainingsPerDay());
         }
@@ -270,6 +313,8 @@ public class OTCBarChartViewer implements ISelectionProvider {
             trainings.addAll(daten.getTrainingsPerYear());
         }
         //
+        distanceSerie.clear();
+        heartSerie.clear();
         for (final ISimpleTraining t : trainings) {
             final RegularTimePeriod period = RegularTimePeriod.createInstance(clazz, t.getDatum(), Calendar.getInstance().getTimeZone());
             distanceSerie.addOrUpdate(period, t.getDistanzInMeter() / 1000);

@@ -19,7 +19,8 @@ import ch.opentrainingcenter.client.model.ModelFactory;
 import ch.opentrainingcenter.client.model.RunType;
 import ch.opentrainingcenter.client.model.TrainingOverviewFactory;
 import ch.opentrainingcenter.db.DatabaseAccessFactory;
-import ch.opentrainingcenter.importer.GpsFileLoader;
+import ch.opentrainingcenter.importer.IGpsFileLoader;
+import ch.opentrainingcenter.importer.impl.GpsFileLoader;
 import ch.opentrainingcenter.tcx.ActivityListT;
 import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.tcx.TrainingCenterDatabaseT;
@@ -48,19 +49,31 @@ public class TrainingCenterDataCache {
 
     private final Map<Long, ActivityT> cache = new HashMap<Long, ActivityT>();
 
-    private final GpsFileLoader loadGpsFile = new GpsFileLoader();
+    private final IGpsFileLoader loadGpsFile;
 
     public static final Logger logger = Logger.getLogger(TrainingCenterDataCache.class);
 
     private TrainingCenterDataCache() {
+        this(new GpsFileLoader());
+    }
+
+    private TrainingCenterDataCache(final IGpsFileLoader loadGpsFile) {
         database = new TrainingCenterDatabaseT();
         final ActivityListT activityList = new ActivityListT();
         database.setActivities(activityList);
+        this.loadGpsFile = loadGpsFile;
     }
 
     public static TrainingCenterDataCache getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new TrainingCenterDataCache();
+        }
+        return INSTANCE;
+    }
+
+    protected static TrainingCenterDataCache getInstance(final IGpsFileLoader loadGpsFile) {
+        if (INSTANCE == null) {
+            INSTANCE = new TrainingCenterDataCache(loadGpsFile);
         }
         return INSTANCE;
     }
@@ -191,6 +204,18 @@ public class TrainingCenterDataCache {
         fireRecordDeleted(activitiesToDelete);
     }
 
+    public void update(final List<IImported> changedType, final RunType type) {
+        for (final IImported record : changedType) {
+            final IImported imp = allImported.get(record.getActivityId());
+            for (final ISimpleTraining st : simpleTrainings) {
+                if (st.getDatum().equals(imp.getActivityId())) {
+                    st.setType(type);
+                }
+            }
+        }
+
+    }
+
     public void update() {
         final Object[] rls = listeners.getListeners();
         for (int i = 0; i < rls.length; i++) {
@@ -277,4 +302,5 @@ public class TrainingCenterDataCache {
         final long key = activityId.getTime();
         return cache.get(key);
     }
+
 }

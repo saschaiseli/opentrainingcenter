@@ -25,4 +25,6 @@ public interface ISimpleTraining {
     String getMaxSpeed();
 
     RunType getType();
+
+    void setType(RunType type);
 }

@@ -21,7 +21,7 @@ public class FindGarminFiles {
      *            map mit der id und dem filenamen der bereits importiert ist.
      * @return das effektive gps file.
      */
-    static File loadAllGPSFilesFromAthlete(final String garminFileNamesAlreadyImported) {
+    public static File loadAllGPSFilesFromAthlete(final String garminFileNamesAlreadyImported) {
 
         final List<File> all = FindGarminFiles.getGarminFiles();
         final Map<String, File> fileNameToFile = new HashMap<String, File>();

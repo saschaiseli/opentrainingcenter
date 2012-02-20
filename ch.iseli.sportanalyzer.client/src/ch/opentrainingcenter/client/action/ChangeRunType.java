@@ -1,5 +1,6 @@
 package ch.opentrainingcenter.client.action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jface.action.Action;
@@ -32,16 +33,18 @@ public class ChangeRunType extends Action implements ISelectionListener, IWorkbe
 
     @Override
     public void selectionChanged(final IWorkbenchPart part, final ISelection selection) {
-
     }
 
     @Override
     public void run() {
         final List<?> selection = cache.getSelection();
+        final List<IImported> changedTypes = new ArrayList<IImported>();
         for (final Object obj : selection) {
             final IImported record = (IImported) obj;
             DatabaseAccessFactory.getDatabaseAccess().updateRecord(record, type.getIndex());
+            changedTypes.add(record);
         }
+        cache.update(changedTypes, type);
         cache.update();
     }
 }

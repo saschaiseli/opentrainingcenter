@@ -20,7 +20,7 @@ public enum RunType {
      * anschliessend erhält er Zeit, sich zum Teil wieder zu erholen. Dann folgt der nächste Intervall. Intensive Intervalltrainings werden meist in der Wettkampfvorbereitung
      * durchgeführt.
      */
-    INT__INTERVALL(2, Messages.RunType_2),
+    INT_INTERVALL(2, Messages.RunType_2),
     /**
      * Langer Dauerlauf 70-75% maximalen Herzfrequenz.
      */

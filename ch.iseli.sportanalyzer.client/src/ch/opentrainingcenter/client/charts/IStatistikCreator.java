@@ -15,12 +15,14 @@ public interface IStatistikCreator {
     public Map<Integer, List<ISimpleTraining>> getTrainingsProJahr(List<ISimpleTraining> allTrainings);
 
     /**
+     * Erster Key ist das Jahr. Zweiter Key ist der Monat, Value ist eine Liste der Trainings der entsprechender KW.
+     */
+    public Map<Integer, Map<Integer, List<ISimpleTraining>>> getTrainingsProMonat(List<ISimpleTraining> allTrainings);
+
+    /**
      * Erster Key ist das Jahr. Zweiter Key ist die KW, Value ist eine Liste der Trainings der entsprechender KW.
      */
     public Map<Integer, Map<Integer, List<ISimpleTraining>>> getTrainingsProWoche(List<ISimpleTraining> allTrainings);
 
-    /**
-     * Erster Key ist das Jahr. Zweiter Key ist der Monat, Value ist eine Liste der Trainings der entsprechender KW.
-     */
-    public Map<Integer, Map<Integer, List<ISimpleTraining>>> getTrainingsProMonat(List<ISimpleTraining> allTrainings);
+    public List<ISimpleTraining> getTrainingsProTag(List<ISimpleTraining> allTrainings);
 }
