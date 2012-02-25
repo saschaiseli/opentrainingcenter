@@ -27,6 +27,7 @@ import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.client.PreferenceConstants;
 import ch.opentrainingcenter.client.action.ChangeRunType;
 import ch.opentrainingcenter.client.action.DeleteImportedRecord;
+import ch.opentrainingcenter.client.action.RunTypeActionContainer;
 import ch.opentrainingcenter.client.cache.IRecordListener;
 import ch.opentrainingcenter.client.cache.TrainingCenterDataCache;
 import ch.opentrainingcenter.client.helper.DistanceHelper;
@@ -40,6 +41,7 @@ import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IImported;
 import ch.opentrainingcenter.transfer.ITraining;
+import ch.opentrainingcenter.transfer.ITrainingType;
 
 public class NavigationView extends ViewPart {
 
@@ -78,15 +80,10 @@ public class NavigationView extends ViewPart {
         menuMgr.addMenuListener(new IMenuListener() {
             @Override
             public void menuAboutToShow(final IMenuManager manager) {
-
                 final MenuManager subMenu = new MenuManager("Lauftyp ändern");
-                subMenu.add(changeIIAction);
-                subMenu.add(changeEIAction);
-                subMenu.add(changeLJAction);
-                subMenu.add(changePLJAction);
-                subMenu.add(changeTJAction);
-                subMenu.add(changeUAction);
-
+                for (final ChangeRunType crt : RunTypeActionContainer.getActions()) {
+                    subMenu.add(crt);
+                }
                 manager.add(subMenu);
                 manager.add(deleteRecordAction);
             }
@@ -125,6 +122,8 @@ public class NavigationView extends ViewPart {
                 if (first instanceof IImported) {
                     final IImported record = (IImported) first;
                     cache.setSelection(selection.toArray());
+                    final ITrainingType trainingType = record.getTrainingType();
+                    RunTypeActionContainer.update(trainingType.getId());
                     writeToStatusLine(record);
                 } else {
                     writeToStatusLine(""); //$NON-NLS-1$

@@ -27,8 +27,6 @@ public class ChangeRunType extends Action implements ISelectionListener, IWorkbe
 
     @Override
     public void dispose() {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
@@ -41,10 +39,15 @@ public class ChangeRunType extends Action implements ISelectionListener, IWorkbe
         final List<IImported> changedTypes = new ArrayList<IImported>();
         for (final Object obj : selection) {
             final IImported record = (IImported) obj;
-            DatabaseAccessFactory.getDatabaseAccess().updateRecord(record, type.getIndex());
+            DatabaseAccessFactory.getDatabaseAccess().updateRecord(record, getType().getIndex());
+            RunTypeActionContainer.update(record.getTrainingType().getId());
             changedTypes.add(record);
         }
-        cache.update(changedTypes, type);
+        cache.update(changedTypes, getType());
         cache.update();
+    }
+
+    public RunType getType() {
+        return type;
     }
 }
