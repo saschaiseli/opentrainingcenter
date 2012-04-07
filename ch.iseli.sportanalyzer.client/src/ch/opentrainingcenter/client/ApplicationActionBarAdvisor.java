@@ -18,6 +18,7 @@ import org.eclipse.ui.actions.ContributionItemFactory;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
 
+import ch.opentrainingcenter.client.action.BackupGpsFiles;
 import ch.opentrainingcenter.client.action.ImportManualGpsFiles;
 import ch.opentrainingcenter.client.action.RestartOtc;
 
@@ -28,6 +29,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
     private IAction windowsAction;
     private IWorkbenchAction aboutAction;
     private Action importGpsFilesManual;
+    private Action backupGpsFiles;
     private IContributionItem perspectiveShortList;
 
     public ApplicationActionBarAdvisor(final IActionBarConfigurer configurer) {
@@ -51,6 +53,9 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 
         importGpsFilesManual = new ImportManualGpsFiles(window, Messages.ApplicationActionBarAdvisor_ImportGpsFiles);
         register(importGpsFilesManual);
+
+        backupGpsFiles = new BackupGpsFiles(Messages.ApplicationActionBarAdvisor_0);
+        register(backupGpsFiles);
 
         perspectiveShortList = ContributionItemFactory.PERSPECTIVES_SHORTLIST.create(window);
     }
@@ -85,5 +90,6 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
         final IToolBarManager toolbar = new ToolBarManager(SWT.FLAT | SWT.RIGHT);
         coolBar.add(new ToolBarContributionItem(toolbar, "main")); //$NON-NLS-1$
         toolbar.add(importGpsFilesManual);
+        toolbar.add(backupGpsFiles);
     }
 }

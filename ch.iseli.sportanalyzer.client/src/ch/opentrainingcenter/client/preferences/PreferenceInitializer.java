@@ -53,6 +53,8 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
         defaults.put(PreferenceConstants.SCHWELLENZONE_COLOR, "96,134,216"); //$NON-NLS-1$
         defaults.putInt(PreferenceConstants.AEROBE, 50);
         defaults.put(PreferenceConstants.AEROBE_COLOR, "144,238,144"); //$NON-NLS-1$
+
+        defaults.put(PreferenceConstants.BACKUP_FILE_LOCATION, System.getProperty("user.home") + File.separator + ".otc/backup"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 }

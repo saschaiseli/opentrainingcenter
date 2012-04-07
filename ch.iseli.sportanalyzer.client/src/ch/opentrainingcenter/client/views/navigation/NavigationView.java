@@ -73,7 +73,7 @@ public class NavigationView extends ViewPart {
         menuMgr.addMenuListener(new IMenuListener() {
             @Override
             public void menuAboutToShow(final IMenuManager manager) {
-                final MenuManager subMenu = new MenuManager("Lauftyp ändern");
+                final MenuManager subMenu = new MenuManager(Messages.NavigationView_9);
                 for (final ChangeRunType crt : RunTypeActionContainer.getActions()) {
                     subMenu.add(crt);
                 }

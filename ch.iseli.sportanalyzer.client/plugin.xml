@@ -147,6 +147,11 @@
             id="ch.opentrainingcenter.client.preferences.SamplePreferencePage"
             name="Einstellungen">
       </page>
+      <page
+            class="ch.opentrainingcenter.client.preferences.BackupPreferencePage"
+            id="ch.opentrainingcenter.client.preferences.BackupPreferencePage"
+            name="Backup">
+      </page>
    </extension>
    <extension
          id="prefs"

@@ -230,7 +230,7 @@ public class OTCBarChartViewer implements ISelectionProvider {
         if (buttonFilter != null) {
             button.setText(buttonFilter.getTitle());
         } else {
-            button.setText("Kein Filter");
+            button.setText(Messages.OTCBarChartViewer_10);
             button.setSelection(true);
         }
         button.addSelectionListener(new SelectionListener() {

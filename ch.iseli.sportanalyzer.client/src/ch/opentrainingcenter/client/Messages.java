@@ -8,6 +8,7 @@ public class Messages extends NLS {
     public static String Application_1;
     public static String Application_2;
     public static String Application_WindowTitle;
+    public static String ApplicationActionBarAdvisor_0;
     public static String ApplicationActionBarAdvisor_File;
     public static String ApplicationActionBarAdvisor_Help;
     public static String ApplicationActionBarAdvisor_ImportGpsFiles;
@@ -17,6 +18,10 @@ public class Messages extends NLS {
     public static String ApplicationWorkbenchAdvisor_AthleteFound;
     public static String ApplicationWorkbenchAdvisor_AthleteNotFound;
     public static String ApplicationWorkbenchAdvisor_AthleteNotInPreferences;
+    public static String BackupGpsFiles_0;
+    public static String BackupGpsFiles_1;
+    public static String BackupPreferencePage_0;
+    public static String BackupPreferencePage_1;
     public static String ChartSerieType_0;
     public static String ChartSerieType_1;
     public static String ChartSerieType_2;
@@ -80,12 +85,14 @@ public class Messages extends NLS {
     public static String NavigationView_6;
     public static String NavigationView_7;
     public static String NavigationView_8;
+    public static String NavigationView_9;
     public static String NumberValidator_0;
     public static String NumberValidator_1;
     public static String NumberValidator_2;
     public static String NumberValidator_3;
     public static String OTCBarChartViewer_0;
     public static String OTCBarChartViewer_1;
+    public static String OTCBarChartViewer_10;
     public static String OTCBarChartViewer_2;
     public static String OTCBarChartViewer_3;
     public static String OTCBarChartViewer_4;
