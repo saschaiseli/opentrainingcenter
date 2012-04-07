@@ -33,6 +33,7 @@
    <vm>
    </vm>
 
+
    <plugins>
       <plugin id="ch.opentrainingcenter.client"/>
       <plugin id="ch.opentrainingcenter.client.test" fragment="true"/>
@@ -119,6 +120,7 @@
 
    <configurations>
       <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="0" />
+      <property name="db.connection.url" value="jdbc:h2:file:~/.otc/otc" />
    </configurations>
 
 </product>

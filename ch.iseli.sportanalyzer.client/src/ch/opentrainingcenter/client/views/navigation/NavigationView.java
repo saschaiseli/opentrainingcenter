@@ -32,7 +32,6 @@ import ch.opentrainingcenter.client.cache.IRecordListener;
 import ch.opentrainingcenter.client.cache.TrainingCenterDataCache;
 import ch.opentrainingcenter.client.helper.DistanceHelper;
 import ch.opentrainingcenter.client.helper.TimeHelper;
-import ch.opentrainingcenter.client.model.RunType;
 import ch.opentrainingcenter.client.views.overview.SingleActivityViewPart;
 import ch.opentrainingcenter.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.importer.ImportActivityJob;
@@ -67,12 +66,6 @@ public class NavigationView extends ViewPart {
         viewer.setContentProvider(new ViewContentProvider());
         viewer.setLabelProvider(new ViewLabelProvider());
 
-        final ChangeRunType changeIIAction = new ChangeRunType(RunType.INT_INTERVALL);
-        final ChangeRunType changeEIAction = new ChangeRunType(RunType.EXT_INTERVALL);
-        final ChangeRunType changeLJAction = new ChangeRunType(RunType.LONG_JOG);
-        final ChangeRunType changePLJAction = new ChangeRunType(RunType.POWER_LONG_JOG);
-        final ChangeRunType changeTJAction = new ChangeRunType(RunType.TEMPO_JOG);
-        final ChangeRunType changeUAction = new ChangeRunType(RunType.NONE);
         final DeleteImportedRecord deleteRecordAction = new DeleteImportedRecord();
 
         final MenuManager menuMgr = new MenuManager("KontextMenu"); //$NON-NLS-1$

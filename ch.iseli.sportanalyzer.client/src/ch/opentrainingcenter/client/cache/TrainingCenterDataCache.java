@@ -303,4 +303,11 @@ public class TrainingCenterDataCache {
         return cache.get(key);
     }
 
+    @Override
+    public String toString() {
+        final StringBuffer str = new StringBuffer();
+        str.append("Cache: Anzahl Elemente: ").append(cache.size()); //$NON-NLS-1$
+        return str.toString();
+    }
+
 }
