@@ -20,11 +20,14 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 import ch.opentrainingcenter.client.Activator;
+import ch.opentrainingcenter.client.Application;
 import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.client.PreferenceConstants;
 import ch.opentrainingcenter.client.helper.GpsFileNameFilter;
+import ch.opentrainingcenter.client.views.IImageKeys;
 
 public class BackupGpsFiles extends Action implements ISelectionListener, IWorkbenchAction {
 
@@ -39,6 +42,7 @@ public class BackupGpsFiles extends Action implements ISelectionListener, IWorkb
     public BackupGpsFiles(final String tooltip) {
         setId(ID);
         setToolTipText(tooltip);
+        setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(Application.ID, IImageKeys.BACKUP));
         source = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.GPS_FILE_LOCATION_PROG);
         destination = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.BACKUP_FILE_LOCATION);
     }
