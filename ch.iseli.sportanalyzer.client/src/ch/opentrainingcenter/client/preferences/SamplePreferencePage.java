@@ -1,13 +1,16 @@
 package ch.opentrainingcenter.client.preferences;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.eclipse.jface.preference.ColorFieldEditor;
 import org.eclipse.jface.preference.ComboFieldEditor;
 import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IntegerFieldEditor;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
@@ -15,6 +18,8 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.client.PreferenceConstants;
+import ch.opentrainingcenter.client.helper.FileCopy;
+import ch.opentrainingcenter.client.helper.GpsFileNameFilter;
 import ch.opentrainingcenter.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
 
@@ -27,6 +32,8 @@ import ch.opentrainingcenter.transfer.IAthlete;
  */
 
 public class SamplePreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
+
+    public static final Logger logger = Logger.getLogger(SamplePreferencePage.class);
 
     private final List<IAthlete> allAthletes;
 
@@ -52,7 +59,8 @@ public class SamplePreferencePage extends FieldEditorPreferencePage implements I
         for (final IAthlete ath : allAthletes) {
             vals.add(new String[] { ath.getName(), String.valueOf(ath.getId()) });
         }
-        final ComboFieldEditor comboField = new ComboFieldEditor(PreferenceConstants.ATHLETE_ID, Messages.SamplePreferencePage_3, vals.toArray(new String[0][0]), fieldEditorParent);
+        final ComboFieldEditor comboField = new ComboFieldEditor(PreferenceConstants.ATHLETE_ID, Messages.SamplePreferencePage_3,
+                vals.toArray(new String[0][0]), fieldEditorParent);
         addField(comboField);
         comboField.setEnabled(false, fieldEditorParent);
 
@@ -118,6 +126,25 @@ public class SamplePreferencePage extends FieldEditorPreferencePage implements I
     @Override
     public void init(final IWorkbench workbench) {
         setPreferenceStore(Activator.getDefault().getPreferenceStore());
+    }
+
+    @Override
+    public void propertyChange(final PropertyChangeEvent event) {
+        super.propertyChange(event);
+        final Object source = event.getSource();
+        if (source instanceof DirectoryFieldEditor) {
+            final DirectoryFieldEditor dfe = (DirectoryFieldEditor) source;
+            final String preferenceName = dfe.getPreferenceName();
+            if (preferenceName.equals(PreferenceConstants.GPS_FILE_LOCATION_PROG)) {
+                logger.debug("Neuer Ort für GPS files ausgewählt. Files von: " + event.getOldValue() + " nach: " + event.getNewValue() + " kopieren"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
+                try {
+                    FileCopy.copyFiles(event.getOldValue().toString(), event.getNewValue().toString(), new GpsFileNameFilter());
+                } catch (final IOException e) {
+                    logger.error(e.getMessage(), e.fillInStackTrace());
+                }
+            }
+        }
     }
 
 }

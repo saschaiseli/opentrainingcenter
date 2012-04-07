@@ -3,6 +3,7 @@ package ch.opentrainingcenter.client.helper;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 
@@ -35,6 +36,14 @@ public class FileCopy {
             if (destination != null) {
                 destination.close();
             }
+        }
+    }
+
+    public static void copyFiles(final String sourceFolder, final String destinationFolder, final FilenameFilter filter) throws IOException {
+        final File file = new File(sourceFolder);
+        final String[] filteredFileNames = file.list(filter);
+        for (final String fileName : filteredFileNames) {
+            copyFile(new File(sourceFolder, fileName), new File(destinationFolder, fileName));
         }
     }
 }
