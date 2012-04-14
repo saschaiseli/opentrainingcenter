@@ -54,10 +54,12 @@ import org.jfree.data.xy.IntervalXYDataset;
 import org.jfree.experimental.chart.swt.ChartComposite;
 
 import ch.opentrainingcenter.client.Messages;
+import ch.opentrainingcenter.client.PreferenceConstants;
 import ch.opentrainingcenter.client.cache.IRecordListener;
 import ch.opentrainingcenter.client.cache.TrainingCenterDataCache;
 import ch.opentrainingcenter.client.cache.TrainingOverviewDatenAufbereiten;
 import ch.opentrainingcenter.client.charts.internal.StatistikCreator;
+import ch.opentrainingcenter.client.helper.ColorFromPreferenceHelper;
 import ch.opentrainingcenter.client.model.ISimpleTraining;
 import ch.opentrainingcenter.client.model.RunType;
 import ch.opentrainingcenter.tcx.ActivityT;
@@ -66,8 +68,6 @@ public class OTCBarChartViewer implements ISelectionProvider {
 
     private static final Logger logger = Logger.getLogger(OTCBarChartViewer.class);
 
-    private static final Color COLOR_DISTANCE = new Color(128, 175, 83);
-    private static final Color COLOR_HEART = new Color(186, 6, 6);
     private static final String DISTANZ = Messages.OTCBarChartViewer_0;
     private static final String HEART = Messages.OTCBarChartViewer_1;
     private final Composite composite;
@@ -196,7 +196,7 @@ public class OTCBarChartViewer implements ISelectionProvider {
                 plot.setRangeAxis(1, axis2);
 
                 final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer(true, true);
-                renderer.setSeriesPaint(0, COLOR_HEART);
+                renderer.setSeriesPaint(0, ColorFromPreferenceHelper.getColor(PreferenceConstants.DISTANCE_HEART_COLOR, 255));
                 renderer.setShape(Cross.createCross());
                 final XYToolTipGenerator generator = new CustomXYToolTipGenerator();
                 renderer.setToolTipGenerator(generator);
@@ -338,14 +338,21 @@ public class OTCBarChartViewer implements ISelectionProvider {
         chart.setBackgroundPaint(paint);
 
         final XYPlot plot = chart.getXYPlot();
-        plot.setRenderer(new XYBarRenderer());
 
+        XYItemRenderer myXyBarRenderer;
+        if (ChartSerieType.WEEK.equals(type)) {
+            myXyBarRenderer = new WeekXYBarRenderer(dataset, plot);
+        } else {
+            myXyBarRenderer = new XYBarRenderer();
+            myXyBarRenderer.setSeriesPaint(0, ColorFromPreferenceHelper.getColor(PreferenceConstants.DISTANCE_CHART_COLOR, 255));
+        }
+
+        plot.setRenderer(myXyBarRenderer);// new XYBarRenderer());
         plot.setBackgroundPaint(paint);
         plot.setDomainGridlinePaint(Color.lightGray);
         plot.setRangeGridlinePaint(Color.lightGray);
 
         final XYBarRenderer renderer = (XYBarRenderer) plot.getRenderer();
-        renderer.setSeriesPaint(0, COLOR_DISTANCE);
 
         final OTCBarPainter painter = new OTCBarPainter();
         renderer.setBarPainter(painter);
@@ -368,7 +375,6 @@ public class OTCBarChartViewer implements ISelectionProvider {
         axis.setTickMarkPosition(DateTickMarkPosition.MIDDLE);
         // axis.setDateFormatOverride(new SimpleDateFormat("w"));
         return chart;
-
     }
 
     public void dispose() {

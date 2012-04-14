@@ -36,9 +36,7 @@ public class ZoneHelper {
      * @return die farbe aus der preferences page
      */
     public static Color getZonenFarbe(final Zone zone) {
-        final String color = Activator.getDefault().getPreferenceStore().getString(zone.getName() + "_color"); //$NON-NLS-1$
-        final String[] split = color.split(","); //$NON-NLS-1$
-        final Color c = new Color(Integer.valueOf(split[0]), Integer.valueOf(split[1]), Integer.valueOf(split[2]), 80);
+        final Color c = ColorFromPreferenceHelper.getColor(zone.getName() + "_color", 80);//  //$NON-NLS-1$
         return c;
     }
 

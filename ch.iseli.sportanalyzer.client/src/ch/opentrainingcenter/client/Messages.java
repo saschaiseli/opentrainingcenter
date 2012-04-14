@@ -74,6 +74,7 @@ public class Messages extends NLS {
     public static String ImportManualGpsFiles_File;
     public static String ImportManualGpsFiles_FileDialog;
     public static String ImportManualGpsFiles_LadeGpsFiles;
+    public static String ImportPreferencePage_0;
     public static String MapConverter_0;
     public static String MapConverter_1;
     public static String NavigationView_0;
@@ -161,6 +162,15 @@ public class Messages extends NLS {
     public static String TimeHelper_1;
     public static String TimeHelper_2;
     public static String TimeHelper_3;
+    public static String TrainingTargetPreferencePage_0;
+    public static String TrainingTargetPreferencePage_1;
+    public static String TrainingTargetPreferencePage_3;
+    public static String TrainingTargetPreferencePage_4;
+    public static String TrainingTargetPreferencePage_5;
+    public static String TrainingTargetPreferencePage_6;
+    public static String TrainingTargetPreferencePage_7;
+    public static String TrainingTargetPreferencePage_8;
+    public static String TrainingTargetPreferencePage_9;
     public static String Units_0;
     public static String Units_1;
     public static String Units_2;

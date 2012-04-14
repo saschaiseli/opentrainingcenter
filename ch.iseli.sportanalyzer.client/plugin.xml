@@ -157,6 +157,11 @@
             id="ch.opentrainingcenter.client.preferences.ImportPreferencePage"
             name="Import">
       </page>
+      <page
+            class="ch.opentrainingcenter.client.preferences.TrainingTargetPreferencePage"
+            id="ch.opentrainingcenter.client.preferences.TrainingTargetPage"
+            name="Trainingsziele">
+      </page>
    </extension>
    <extension
          id="prefs"

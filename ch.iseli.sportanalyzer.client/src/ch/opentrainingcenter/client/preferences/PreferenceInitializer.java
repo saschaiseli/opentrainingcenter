@@ -63,5 +63,13 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
             defaults.putBoolean(PreferenceConstants.FILE_SUFFIX_FOR_BACKUP + tcx.getFilePrefix(), true);
         }
 
+        // training target
+        defaults.putInt(PreferenceConstants.KM_PER_WEEK, 40);
+
+        defaults.put(PreferenceConstants.DISTANCE_CHART_COLOR, "120,39,93"); //$NON-NLS-1$
+        defaults.put(PreferenceConstants.DISTANCE_HEART_COLOR, "0,97,73"); //$NON-NLS-1$
+
+        defaults.put(PreferenceConstants.KM_PER_WEEK_COLOR_ABOVE, "120,39,93"); //$NON-NLS-1$
+        defaults.put(PreferenceConstants.KM_PER_WEEK_COLOR_BELOW, "0,97,73"); //$NON-NLS-1$
     }
 }

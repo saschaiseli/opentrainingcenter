@@ -1,6 +1,5 @@
 package ch.opentrainingcenter.client.preferences;
 
-import org.apache.log4j.Logger;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
@@ -17,11 +16,9 @@ import ch.opentrainingcenter.importer.IConvert2Tcx;
 
 public class ImportPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
-    private static final Logger logger = Logger.getLogger(ImportPreferencePage.class.getName());
-
     public ImportPreferencePage() {
         super(GRID);
-        setDescription("Einstellungen für den Datenimport");
+        setDescription(Messages.ImportPreferencePage_0);
     }
 
     @Override
