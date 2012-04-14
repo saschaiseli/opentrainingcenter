@@ -152,6 +152,11 @@
             id="ch.opentrainingcenter.client.preferences.BackupPreferencePage"
             name="Backup">
       </page>
+      <page
+            class="ch.opentrainingcenter.client.preferences.ImportPreferencePage"
+            id="ch.opentrainingcenter.client.preferences.ImportPreferencePage"
+            name="Import">
+      </page>
    </extension>
    <extension
          id="prefs"

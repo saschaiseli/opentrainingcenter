@@ -26,5 +26,6 @@ public class PreferenceConstants {
     public static final String ANAEROBE = "anaerobe"; //$NON-NLS-1$
     public static final String ANAEROBE_COLOR = ANAEROBE + COLOR_POSTFIX;
     public static final String BACKUP_FILE_LOCATION = "backup_path"; //$NON-NLS-1$
+    public static final String FILE_SUFFIX_FOR_BACKUP = "filesuffix_"; //$NON-NLS-1$
 
 }

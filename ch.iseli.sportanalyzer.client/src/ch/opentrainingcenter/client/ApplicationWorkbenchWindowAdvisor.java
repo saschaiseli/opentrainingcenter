@@ -1,5 +1,7 @@
 package ch.opentrainingcenter.client;
 
+import org.eclipse.jface.preference.PreferenceManager;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
@@ -33,6 +35,10 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
         } else {
             configurer.setTitle(Application.WINDOW_TITLE);
         }
+
+        final PreferenceManager pm = PlatformUI.getWorkbench().getPreferenceManager();
+        pm.remove("org.eclipse.ui.preferencePages.Workbench"); //$NON-NLS-1$
+
     }
 
     @Override

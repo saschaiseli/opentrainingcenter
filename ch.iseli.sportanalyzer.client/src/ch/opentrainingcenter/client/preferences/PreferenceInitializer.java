@@ -16,6 +16,9 @@ import org.osgi.framework.Bundle;
 
 import ch.opentrainingcenter.client.Application;
 import ch.opentrainingcenter.client.PreferenceConstants;
+import ch.opentrainingcenter.importer.ConvertContainer;
+import ch.opentrainingcenter.importer.ExtensionHelper;
+import ch.opentrainingcenter.importer.IConvert2Tcx;
 
 /**
  * Class used to initialize default preference values.
@@ -55,6 +58,10 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
         defaults.put(PreferenceConstants.AEROBE_COLOR, "144,238,144"); //$NON-NLS-1$
 
         defaults.put(PreferenceConstants.BACKUP_FILE_LOCATION, System.getProperty("user.home") + File.separator + ".otc/backup"); //$NON-NLS-1$ //$NON-NLS-2$
-    }
+        final ConvertContainer cc = new ConvertContainer(ExtensionHelper.getConverters());
+        for (final IConvert2Tcx tcx : cc.getAllConverter()) {
+            defaults.putBoolean(PreferenceConstants.FILE_SUFFIX_FOR_BACKUP + tcx.getFilePrefix(), true);
+        }
 
+    }
 }

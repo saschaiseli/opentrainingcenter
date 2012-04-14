@@ -38,8 +38,13 @@ public interface IConvert2Tcx {
     List<ActivityT> convertActivity(final File file) throws Exception;
 
     /**
-     * @return den prefix für ein GPS file. Bei Garmin wird demnach '*.gmn' zurückgegeben.
+     * @return den prefix für ein GPS file. Bei Garmin wird demnach 'gmn' zurückgegeben.
      */
     String getFilePrefix();
+
+    /**
+     * @return Den Namen des Importers
+     */
+    String getName();
 
 }

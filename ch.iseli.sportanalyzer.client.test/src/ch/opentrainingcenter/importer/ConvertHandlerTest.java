@@ -6,32 +6,34 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import ch.opentrainingcenter.importer.ConvertHandler;
-import ch.opentrainingcenter.importer.IConvert2Tcx;
 import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.tcx.TrainingCenterDatabaseT;
 
 public class ConvertHandlerTest {
-    private ConvertHandler handler;
+    private Map<String, IConvert2Tcx> converters;
+    ConvertContainer cc;
 
     @Before
     public void setUp() {
-        handler = new ConvertHandler();
+        converters = new HashMap<String, IConvert2Tcx>();
     }
 
     @Test
     public void testMatchingConverter() throws IOException {
         final IConvert2Tcx converterGarmin = new MockConverter("gmn"); //$NON-NLS-1$
-        handler.addConverter(converterGarmin);
+        converters.put(converterGarmin.getFilePrefix(), converterGarmin);
         final IConvert2Tcx converterFitnesslog = new MockConverter("fitnesslog"); //$NON-NLS-1$
-        handler.addConverter(converterFitnesslog);
+        converters.put(converterFitnesslog.getFilePrefix(), converterFitnesslog);
+        cc = new ConvertContainer(converters);
 
-        final IConvert2Tcx matchingConverter = handler.getMatchingConverter(File.createTempFile("abc", ".gmn")); //$NON-NLS-1$ //$NON-NLS-2$
+        final IConvert2Tcx matchingConverter = cc.getMatchingConverter(File.createTempFile("abc", ".gmn")); //$NON-NLS-1$ //$NON-NLS-2$
         assertNotNull(matchingConverter);
         assertEquals("gmn", matchingConverter.getFilePrefix()); //$NON-NLS-1$
     }
@@ -39,11 +41,12 @@ public class ConvertHandlerTest {
     @Test
     public void testSupportedFiles() {
         final IConvert2Tcx converterGarmin = new MockConverter("gmn"); //$NON-NLS-1$
-        handler.addConverter(converterGarmin);
+        converters.put(converterGarmin.getFilePrefix(), converterGarmin);
         final IConvert2Tcx converterFitnesslog = new MockConverter("fitnesslog"); //$NON-NLS-1$
-        handler.addConverter(converterFitnesslog);
+        converters.put(converterFitnesslog.getFilePrefix(), converterFitnesslog);
+        cc = new ConvertContainer(converters);
 
-        final List<String> supportedFileSuffixes = handler.getSupportedFileSuffixes();
+        final List<String> supportedFileSuffixes = cc.getSupportedFileSuffixes();
         assertTrue(supportedFileSuffixes.contains("*.gmn")); //$NON-NLS-1$
         assertTrue(supportedFileSuffixes.contains("*.fitnesslog")); //$NON-NLS-1$
     }
@@ -70,6 +73,11 @@ public class ConvertHandlerTest {
         @Override
         public List<ActivityT> convertActivity(final File file) throws Exception {
             return null;
+        }
+
+        @Override
+        public String getName() {
+            return "name"; //$NON-NLS-1$
         }
 
     }

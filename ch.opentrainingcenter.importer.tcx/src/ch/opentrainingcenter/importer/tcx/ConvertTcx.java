@@ -83,4 +83,9 @@ public class ConvertTcx implements IConvert2Tcx {
         return "tcx"; //$NON-NLS-1$
     }
 
+    @Override
+    public String getName() {
+        return "TCX (mit ANT+ aus der Uhr exportiert)";
+    }
+
 }

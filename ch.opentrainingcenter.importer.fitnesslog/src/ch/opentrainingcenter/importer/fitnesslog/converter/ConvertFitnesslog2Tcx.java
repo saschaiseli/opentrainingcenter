@@ -100,4 +100,9 @@ public class ConvertFitnesslog2Tcx implements IConvert2Tcx {
         return "fitlog"; //$NON-NLS-1$
     }
 
+    @Override
+    public String getName() {
+        return "Fitness Log (Export von Sporttracks)";
+    }
+
 }

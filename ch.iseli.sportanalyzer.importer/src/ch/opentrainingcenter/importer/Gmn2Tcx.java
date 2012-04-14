@@ -13,7 +13,6 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
 
-import ch.opentrainingcenter.importer.IConvert2Tcx;
 import ch.opentrainingcenter.importer.internal.xml.ConvertXml;
 import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.tcx.TrainingCenterDatabaseT;
@@ -109,6 +108,11 @@ public class Gmn2Tcx implements IConvert2Tcx {
     @Override
     public String getFilePrefix() {
         return "gmn";//$NON-NLS-1$
+    }
+
+    @Override
+    public String getName() {
+        return "Garmin Files";
     }
 
 }

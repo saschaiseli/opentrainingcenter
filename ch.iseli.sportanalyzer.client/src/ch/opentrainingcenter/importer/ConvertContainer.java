@@ -8,19 +8,14 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-public class ConvertHandler {
+public class ConvertContainer {
 
-    public static final Logger logger = Logger.getLogger(ConvertHandler.class);
+    public static final Logger logger = Logger.getLogger(ConvertContainer.class);
 
     private final Map<String, IConvert2Tcx> converters;
 
-    public ConvertHandler() {
-        this.converters = new HashMap<String, IConvert2Tcx>();
-    }
-
-    public void addConverter(final IConvert2Tcx converter) {
-        converters.put(converter.getFilePrefix(), converter);
-        logger.info("Adding Extension for Fileimporting: " + converter.getFilePrefix()); //$NON-NLS-1$
+    public ConvertContainer(final Map<String, IConvert2Tcx> converters) {
+        this.converters = new HashMap<String, IConvert2Tcx>(converters);
     }
 
     /**
@@ -32,6 +27,10 @@ public class ConvertHandler {
         final String name = fileToImport.getName();
         final String prefix = name.substring(name.indexOf('.') + 1, name.length());
         return converters.get(prefix);
+    }
+
+    public List<IConvert2Tcx> getAllConverter() {
+        return new ArrayList<IConvert2Tcx>(converters.values());
     }
 
     /**
