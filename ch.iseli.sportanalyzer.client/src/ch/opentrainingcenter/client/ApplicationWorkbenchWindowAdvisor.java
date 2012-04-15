@@ -1,6 +1,7 @@
 package ch.opentrainingcenter.client;
 
 import org.eclipse.jface.preference.PreferenceManager;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
@@ -47,5 +48,11 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
             return true;
         }
         return super.isDurableFolder(perspectiveId, folderId);
+    }
+
+    @Override
+    public void createWindowContents(final Shell shell) {
+        super.createWindowContents(shell);
+        shell.setMaximized(true);
     }
 }

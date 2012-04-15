@@ -58,6 +58,8 @@ public class NavigationView extends ViewPart {
     @Override
     public void createPartControl(final Composite parent) {
 
+        parent.getShell().setMaximized(true);
+
         final String athleteId = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.ATHLETE_ID);
         final int id = Integer.parseInt(athleteId);
         final IAthlete athlete = DatabaseAccessFactory.getDatabaseAccess().getAthlete(id);

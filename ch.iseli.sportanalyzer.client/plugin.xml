@@ -24,18 +24,21 @@
       </perspective>
       <perspective
             class="ch.opentrainingcenter.client.perspectives.AthletePerspective"
+            fixed="true"
             icon="icons/athlete_perspective.png"
             id="ch.opentrainingcenter.client.athletePerspective"
             name="Athlete Perspektive">
       </perspective>
       <perspective
             class="ch.opentrainingcenter.client.perspectives.StatisticPerspectiveFactory"
+            fixed="true"
             icon="icons/chart_bar.png"
             id="ch.opentrainingcenter.client.StatisticPerspective"
             name="Statistik">
       </perspective>
       <perspective
             class="ch.opentrainingcenter.client.perspectives.OverviewPerspectiveFactory"
+            fixed="true"
             icon="icons/table_green_24_24.png"
             id="ch.opentrainingcenter.client.OverviewPerspective"
             name="Tabellarische Übersicht">
@@ -57,7 +60,8 @@
             class="ch.opentrainingcenter.client.views.overview.SingleActivityViewPart"
             icon="icons/overview_chart.png"
             id="ch.opentrainingcenter.client.views.singlerun"
-            name="Uebersicht eines Trainings">
+            name="Uebersicht eines Trainings"
+            restorable="true">
       </view>
       <category
             id="ch.opentrainingcenter.client.otccategory"
@@ -84,6 +88,21 @@
             icon="icons/table_green_24_24.png"
             id="ch.opentrainingcenter.client.table.overview"
             name="TableView"
+            restorable="true">
+      </view>
+      <view
+            allowMultiple="false"
+            category="ch.opentrainingcenter.client.otccategory"
+            class="ch.opentrainingcenter.client.views.weeks.WeeklyOverview"
+            id="ch.opentrainingcenter.client.weeks.weeklyOverview"
+            name="Wochenübersicht"
+            restorable="false">
+      </view>
+      <view
+            allowMultiple="false"
+            class="ch.opentrainingcenter.client.views.best.BestRunsView"
+            id="ch.opentrainingcenter.client.best.bestof"
+            name="Bestzeiten"
             restorable="true">
       </view>
    </extension>

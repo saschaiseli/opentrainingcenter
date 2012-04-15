@@ -1,6 +1,7 @@
 package ch.opentrainingcenter.client;
 
 import org.apache.log4j.Logger;
+import org.eclipse.ui.application.IWorkbenchConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchAdvisor;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
@@ -42,6 +43,12 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
             logger.info(Messages.ApplicationWorkbenchAdvisor_AthleteNotInPreferences);
             return AthletePerspective.ID;
         }
+    }
+
+    @Override
+    public void initialize(final IWorkbenchConfigurer configurer) {
+        super.initialize(configurer);
+        // configurer.setSaveAndRestore(true);
     }
 
     private void initCache(final IAthlete athlete) {

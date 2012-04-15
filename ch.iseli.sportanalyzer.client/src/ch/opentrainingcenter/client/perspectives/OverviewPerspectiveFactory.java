@@ -16,6 +16,11 @@ public class OverviewPerspectiveFactory implements IPerspectiveFactory {
 
         layout.addStandaloneView(OverviewViewer.ID, false, IPageLayout.LEFT, 1f, editorArea);
         layout.getViewLayout(OverviewViewer.ID).setCloseable(false);
+
+        layout.addPerspectiveShortcut(PerspectiveNavigation.ID);
+        layout.addPerspectiveShortcut(OverviewPerspectiveFactory.ID);
+        layout.addPerspectiveShortcut(StatisticPerspectiveFactory.ID);
+        layout.addPerspectiveShortcut(AthletePerspective.ID);
     }
 
 }

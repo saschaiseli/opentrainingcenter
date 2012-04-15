@@ -5,8 +5,10 @@ import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 
 import ch.opentrainingcenter.client.cache.TrainingCenterDataCache;
+import ch.opentrainingcenter.client.views.best.BestRunsView;
 import ch.opentrainingcenter.client.views.navigation.NavigationView;
 import ch.opentrainingcenter.client.views.overview.SingleActivityViewPart;
+import ch.opentrainingcenter.client.views.weeks.WeeklyOverview;
 
 public class PerspectiveNavigation implements IPerspectiveFactory {
 
@@ -25,12 +27,18 @@ public class PerspectiveNavigation implements IPerspectiveFactory {
         layout.addStandaloneView(NavigationView.ID, false, IPageLayout.LEFT, 0.20f, editorArea);
         layout.getViewLayout(NavigationView.ID).setCloseable(false);
 
-        final IFolderLayout folderRight = layout.createFolder(RIGHT_PART, IPageLayout.RIGHT, 0.80f, editorArea);
+        final IFolderLayout folderMiddle = layout.createFolder(RIGHT_PART, IPageLayout.LEFT, 0.70f, editorArea);
         if (TrainingCenterDataCache.getInstance().getSelectedOverview() != null) {
-            folderRight.addView(SingleActivityViewPart.ID + MULTI_VIEW);
+            folderMiddle.addView(SingleActivityViewPart.ID + MULTI_VIEW);
         } else {
-            folderRight.addPlaceholder(SingleActivityViewPart.ID);
+            folderMiddle.addPlaceholder(SingleActivityViewPart.ID + MULTI_VIEW);
         }
+
+        layout.addStandaloneView(WeeklyOverview.ID, false, IPageLayout.RIGHT, 0.10f, editorArea);
+        layout.getViewLayout(WeeklyOverview.ID).setCloseable(false);
+
+        layout.addStandaloneView(BestRunsView.ID, false, IPageLayout.BOTTOM, 0.50f, WeeklyOverview.ID);
+        layout.getViewLayout(BestRunsView.ID).setCloseable(false);
 
         layout.addPerspectiveShortcut(PerspectiveNavigation.ID);
         layout.addPerspectiveShortcut(OverviewPerspectiveFactory.ID);
