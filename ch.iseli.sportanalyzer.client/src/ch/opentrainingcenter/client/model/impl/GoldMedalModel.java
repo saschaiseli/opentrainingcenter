@@ -1,13 +1,91 @@
 package ch.opentrainingcenter.client.model.impl;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import ch.opentrainingcenter.client.model.IGoldMedalModel;
-import ch.opentrainingcenter.transfer.IAthlete;
 
 public class GoldMedalModel implements IGoldMedalModel {
 
-    private final IAthlete athlete;
+    public enum Intervall {
+        KLEINER_10(0), VON10_BIS_15(10), VON15_BIS_20(15), VON20_BIS_25(20), PLUS25(25);
 
-    public GoldMedalModel(final IAthlete athlete) {
-        this.athlete = athlete;
+        private final int von;
+
+        private Intervall(final int von) {
+            this.von = von;
+        }
+
+        public int getVon() {
+            return von;
+        }
     }
+
+    private String schnellstePace;
+    private final Map<Intervall, String> schnellstePaces = new HashMap<Intervall, String>();
+    private double longestDistance;
+    private String longestRun;
+    private int highestPulse;
+    private int highestAveragePulse;
+
+    @Override
+    public String getSchnellstePace() {
+        return schnellstePace;
+    }
+
+    @Override
+    public void setSchnellstePace(final String schnellstePace) {
+        this.schnellstePace = schnellstePace;
+    }
+
+    @Override
+    public String getSchnellstePace(final Intervall intervall) {
+        return schnellstePaces.get(intervall);
+    }
+
+    @Override
+    public void setSchnellstePace(final Intervall intervall, final String schnellstePace) {
+        schnellstePaces.put(intervall, schnellstePace);
+    }
+
+    @Override
+    public String getLongestDistance() {
+        return String.valueOf(longestDistance);
+    }
+
+    @Override
+    public void setLongestDistance(final double longestDistance) {
+        this.longestDistance = longestDistance;
+    }
+
+    @Override
+    public String getLongestRun() {
+        return longestRun;
+    }
+
+    @Override
+    public void setLongestRun(final String longestRun) {
+        this.longestRun = longestRun;
+    }
+
+    @Override
+    public String getHighestPulse() {
+        return String.valueOf(highestPulse);
+    }
+
+    @Override
+    public void setHighestPulse(final int highestPulse) {
+        this.highestPulse = highestPulse;
+    }
+
+    @Override
+    public String getHighestAveragePulse() {
+        return String.valueOf(highestAveragePulse);
+    }
+
+    @Override
+    public void setHighestAveragePulse(final int highestAveragePulse) {
+        this.highestAveragePulse = highestAveragePulse;
+    }
+
 }
