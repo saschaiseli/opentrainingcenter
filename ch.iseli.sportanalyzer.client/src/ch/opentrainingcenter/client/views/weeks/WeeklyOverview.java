@@ -8,6 +8,8 @@ import org.eclipse.ui.forms.widgets.TableWrapData;
 import org.eclipse.ui.forms.widgets.TableWrapLayout;
 import org.eclipse.ui.part.ViewPart;
 
+import ch.opentrainingcenter.client.Messages;
+
 public class WeeklyOverview extends ViewPart {
     public static final String ID = "ch.opentrainingcenter.client.weeks.weeklyOverview"; //$NON-NLS-1$
 
@@ -37,7 +39,7 @@ public class WeeklyOverview extends ViewPart {
 
         td = new TableWrapData(TableWrapData.FILL_GRAB);
         body.setLayoutData(td);
-        form.setText("Wochenübersicht:");
+        form.setText(Messages.WeeklyOverview_0);
     }
 
     /**

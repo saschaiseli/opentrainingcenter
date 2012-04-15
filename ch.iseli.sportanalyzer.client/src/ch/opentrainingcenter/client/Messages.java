@@ -207,6 +207,7 @@ public class Messages extends NLS {
     public static String RunTypeDialog_2;
     public static String RunTypeDialog_3;
     public static String RunTypeDialog_4;
+    public static String WeeklyOverview_0;
     static {
         // initialize resource bundle
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);
