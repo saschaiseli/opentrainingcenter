@@ -51,6 +51,7 @@ public class GoldMedalAction {
         result.setLongestRun(TimeHelper.convertSecondsToHumanReadableZeit(Collections.max(dauer)));
         result.setHighestPulse(Collections.max(heart));
         result.setHighestAveragePulse(Collections.max(averageHeart));
+        result.setLowestAveragePulse(Collections.min(averageHeart));
         return result;
     }
 }

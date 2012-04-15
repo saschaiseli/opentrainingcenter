@@ -27,6 +27,7 @@ public class GoldMedalModel implements IGoldMedalModel {
     private String longestRun;
     private int highestPulse;
     private int highestAveragePulse;
+    private int lowestAveragePulse;
 
     @Override
     public String getSchnellstePace() {
@@ -86,6 +87,16 @@ public class GoldMedalModel implements IGoldMedalModel {
     @Override
     public void setHighestAveragePulse(final int highestAveragePulse) {
         this.highestAveragePulse = highestAveragePulse;
+    }
+
+    @Override
+    public String getLowestAveragePulse() {
+        return String.valueOf(lowestAveragePulse);
+    }
+
+    @Override
+    public void setLowestAveragePulse(final int lowestAveragePulse) {
+        this.lowestAveragePulse = lowestAveragePulse;
     }
 
 }

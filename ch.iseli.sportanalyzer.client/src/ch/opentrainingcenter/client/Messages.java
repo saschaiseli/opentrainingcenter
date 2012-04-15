@@ -35,6 +35,7 @@ public class Messages extends NLS {
     public static String BestRunsView_18;
     public static String BestRunsView_19;
     public static String BestRunsView_2;
+    public static String BestRunsView_20;
     public static String BestRunsView_3;
     public static String BestRunsView_4;
     public static String BestRunsView_5;

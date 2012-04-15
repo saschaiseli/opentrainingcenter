@@ -50,6 +50,8 @@ public class BestRunsView extends ViewPart {
 
     private Label highAvPulse;
 
+    private Label lowestAvPulse;
+
     private GoldMedalAction action;
 
     private IAthlete athlete;
@@ -140,6 +142,7 @@ public class BestRunsView extends ViewPart {
         longestRun = createLabel(overViewComposite, Messages.BestRunsView_5, model.getLongestRun(), Units.HOUR_MINUTE_SEC);
         highestPulse = createLabel(overViewComposite, Messages.BestRunsView_6, model.getHighestPulse(), Units.BEATS_PER_MINUTE);
         highAvPulse = createLabel(overViewComposite, Messages.BestRunsView_7, model.getHighestAveragePulse(), Units.BEATS_PER_MINUTE);
+        lowestAvPulse = createLabel(overViewComposite, Messages.BestRunsView_20, model.getLowestAveragePulse(), Units.BEATS_PER_MINUTE);
 
         sectionOverall.setClient(overViewComposite);
     }
@@ -160,10 +163,14 @@ public class BestRunsView extends ViewPart {
         final GridLayout layoutClient = new GridLayout(3, false);
         overViewComposite.setLayout(layoutClient);
 
-        bestKl10 = createLabel(overViewComposite, Messages.BestRunsView_10 + Messages.BestRunsView_11, model.getSchnellstePace(Intervall.KLEINER_10), Units.PACE);
-        best10 = createLabel(overViewComposite, Messages.BestRunsView_12 + Messages.BestRunsView_13, model.getSchnellstePace(Intervall.VON10_BIS_15), Units.PACE);
-        best15 = createLabel(overViewComposite, Messages.BestRunsView_14 + Messages.BestRunsView_15, model.getSchnellstePace(Intervall.VON15_BIS_20), Units.PACE);
-        best20 = createLabel(overViewComposite, Messages.BestRunsView_16 + Messages.BestRunsView_17, model.getSchnellstePace(Intervall.VON20_BIS_25), Units.PACE);
+        bestKl10 = createLabel(overViewComposite, Messages.BestRunsView_10 + Messages.BestRunsView_11, model.getSchnellstePace(Intervall.KLEINER_10),
+                Units.PACE);
+        best10 = createLabel(overViewComposite, Messages.BestRunsView_12 + Messages.BestRunsView_13, model.getSchnellstePace(Intervall.VON10_BIS_15),
+                Units.PACE);
+        best15 = createLabel(overViewComposite, Messages.BestRunsView_14 + Messages.BestRunsView_15, model.getSchnellstePace(Intervall.VON15_BIS_20),
+                Units.PACE);
+        best20 = createLabel(overViewComposite, Messages.BestRunsView_16 + Messages.BestRunsView_17, model.getSchnellstePace(Intervall.VON20_BIS_25),
+                Units.PACE);
         best25 = createLabel(overViewComposite, Messages.BestRunsView_18 + Messages.BestRunsView_19, model.getSchnellstePace(Intervall.PLUS25), Units.PACE);
         sectionPace.setClient(overViewComposite);
 
@@ -176,6 +183,7 @@ public class BestRunsView extends ViewPart {
         longestRun.setText(model.getLongestRun());
         highestPulse.setText(model.getHighestPulse());
         highAvPulse.setText(model.getHighestAveragePulse());
+        lowestAvPulse.setText(model.getLowestAveragePulse());
 
         bestKl10.setText(model.getSchnellstePace(Intervall.KLEINER_10));
         best10.setText(model.getSchnellstePace(Intervall.VON10_BIS_15));

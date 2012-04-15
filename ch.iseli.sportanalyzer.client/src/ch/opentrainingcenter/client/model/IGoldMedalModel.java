@@ -28,4 +28,7 @@ public interface IGoldMedalModel {
 
     void setHighestAveragePulse(final int highestAveragePulse);
 
+    String getLowestAveragePulse();
+
+    void setLowestAveragePulse(final int lowestAveragePulse);
 }
