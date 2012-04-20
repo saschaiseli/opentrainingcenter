@@ -4,13 +4,23 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import ch.opentrainingcenter.client.helper.DistanceHelper;
-
 public class DistanceHelperTest {
     @Test
     public void testConvert() {
         final String roundDistance = DistanceHelper.roundDistanceFromMeterToKmMitEinheit(10123.4567890);
         assertEquals("10.123km", roundDistance); //$NON-NLS-1$
+    }
+
+    @Test
+    public void testConvertLessZeros() {
+        final String roundDistance = DistanceHelper.roundDistanceFromMeterToKmMitEinheit(0.0);
+        assertEquals("0.000km", roundDistance); //$NON-NLS-1$
+    }
+
+    @Test
+    public void testConvertNoZeros() {
+        final String roundDistance = DistanceHelper.roundDistanceFromMeterToKm(4);
+        assertEquals("0.004", roundDistance); //$NON-NLS-1$
     }
 
     @Test

@@ -1,6 +1,7 @@
 package ch.opentrainingcenter.client.helper;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 
 public class DistanceHelper {
     /**
@@ -12,6 +13,9 @@ public class DistanceHelper {
     public static String roundDistanceFromMeterToKm(final double distanceInMeter) {
         final double distanceInKilometer = distanceInMeter / 1000;
         final DecimalFormat format = new DecimalFormat("0.000"); //$NON-NLS-1$
+        final DecimalFormatSymbols dfs = new DecimalFormatSymbols();
+        dfs.setDecimalSeparator('.');
+        format.setDecimalFormatSymbols(dfs);
         return format.format(distanceInKilometer);
     }
 

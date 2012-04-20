@@ -32,26 +32,41 @@ public class GoldMedalAction {
             laenge.add(training.getLaengeInMeter());
             dauer.add(training.getDauerInSekunden());
             heart.add(training.getMaxHeartBeat());
-            averageHeart.add(training.getAverageHeartBeat());
+            if (training.getAverageHeartBeat() > 0) {
+                averageHeart.add(training.getAverageHeartBeat());
+            }
         }
-        result.setSchnellstePace(String.valueOf(Collections.min(maxSpeed)));
+
+        result.setSchnellstePace(calculateBestePace(maxSpeed));
+        result.setLongestDistance(!laenge.isEmpty() ? Double.parseDouble(DistanceHelper.roundDistanceFromMeterToKm(Collections.max(laenge))) : -1);
+        result.setLongestRun(!dauer.isEmpty() ? TimeHelper.convertSecondsToHumanReadableZeit(Collections.max(dauer)) : UNKNOWN);
+        result.setHighestPulse(!heart.isEmpty() ? Collections.max(heart) : -1);
+        result.setHighestAveragePulse(!averageHeart.isEmpty() ? Collections.max(averageHeart) : -1);
+        result.setLowestAveragePulse(!averageHeart.isEmpty() ? Collections.min(averageHeart) : -1);
 
         final String paceKl10 = String.valueOf(di.getMax(Intervall.KLEINER_10) > 0 ? di.getMax(Intervall.KLEINER_10) : UNKNOWN);
-        result.setSchnellstePace(Intervall.KLEINER_10, paceKl10);
         final String pace10 = String.valueOf(di.getMax(Intervall.VON10_BIS_15) > 0 ? di.getMax(Intervall.VON10_BIS_15) : UNKNOWN);
-        result.setSchnellstePace(Intervall.VON10_BIS_15, pace10);
         final String pace15 = String.valueOf(di.getMax(Intervall.VON15_BIS_20) > 0 ? di.getMax(Intervall.VON15_BIS_20) : UNKNOWN);
-        result.setSchnellstePace(Intervall.VON15_BIS_20, pace15);
         final String pace20 = String.valueOf(di.getMax(Intervall.VON20_BIS_25) > 0 ? di.getMax(Intervall.VON20_BIS_25) : UNKNOWN);
-        result.setSchnellstePace(Intervall.VON20_BIS_25, pace20);
         final String pace25 = String.valueOf(di.getMax(Intervall.PLUS25) > 0 ? di.getMax(Intervall.PLUS25) : UNKNOWN);
+
+        result.setSchnellstePace(Intervall.KLEINER_10, paceKl10);
+        result.setSchnellstePace(Intervall.VON10_BIS_15, pace10);
+        result.setSchnellstePace(Intervall.VON15_BIS_20, pace15);
+        result.setSchnellstePace(Intervall.VON20_BIS_25, pace20);
         result.setSchnellstePace(Intervall.PLUS25, pace25);
 
-        result.setLongestDistance(Double.valueOf(DistanceHelper.roundDistanceFromMeterToKm(Collections.max(laenge))));
-        result.setLongestRun(TimeHelper.convertSecondsToHumanReadableZeit(Collections.max(dauer)));
-        result.setHighestPulse(Collections.max(heart));
-        result.setHighestAveragePulse(Collections.max(averageHeart));
-        result.setLowestAveragePulse(Collections.min(averageHeart));
+        return result;
+    }
+
+    private String calculateBestePace(final List<Double> maxSpeed) {
+        String result = UNKNOWN;
+        if (!maxSpeed.isEmpty()) {
+            final Double min = Collections.min(maxSpeed);
+            if (min != null && min > 0) {
+                result = String.valueOf(min);
+            }
+        }
         return result;
     }
 }

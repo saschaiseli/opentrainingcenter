@@ -11,14 +11,19 @@ import ch.opentrainingcenter.client.Messages;
 
 public class TimeHelper {
 
+    private final static String UNKNOWN_DATE = "--:--:--"; //$NON-NLS-1$
+
     /**
      * Konvertiert Sekunden in H:MM:ss
      * 
      * @param sec
      *            sekunden
-     * @return Zeit im Format HH:MM:ss
+     * @return Zeit im Format HH:MM:ss. Wenn Zeit negativ ist, wird --:--:-- zurückgegeben.
      */
     public static final String convertSecondsToHumanReadableZeit(final double sec) {
+        if (sec < 0) {
+            return UNKNOWN_DATE;
+        }
         final Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis((long) sec * 1000);
         final StringBuffer calStr = new StringBuffer();

@@ -7,6 +7,8 @@ import ch.opentrainingcenter.client.model.IGoldMedalModel;
 
 public class GoldMedalModel implements IGoldMedalModel {
 
+    private static final String UNKNOWN = "-"; //$NON-NLS-1$
+
     public enum Intervall {
         KLEINER_10(0), VON10_BIS_15(10), VON15_BIS_20(15), VON20_BIS_25(20), PLUS25(25);
 
@@ -51,7 +53,7 @@ public class GoldMedalModel implements IGoldMedalModel {
 
     @Override
     public String getLongestDistance() {
-        return String.valueOf(longestDistance);
+        return longestDistance > 0 ? String.valueOf(longestDistance) : UNKNOWN;
     }
 
     @Override
@@ -71,7 +73,7 @@ public class GoldMedalModel implements IGoldMedalModel {
 
     @Override
     public String getHighestPulse() {
-        return String.valueOf(highestPulse);
+        return highestPulse > 0 ? String.valueOf(highestPulse) : UNKNOWN;
     }
 
     @Override
@@ -81,7 +83,7 @@ public class GoldMedalModel implements IGoldMedalModel {
 
     @Override
     public String getHighestAveragePulse() {
-        return String.valueOf(highestAveragePulse);
+        return highestAveragePulse > 0 ? String.valueOf(highestAveragePulse) : UNKNOWN;
     }
 
     @Override
@@ -91,7 +93,7 @@ public class GoldMedalModel implements IGoldMedalModel {
 
     @Override
     public String getLowestAveragePulse() {
-        return String.valueOf(lowestAveragePulse);
+        return lowestAveragePulse > 0 ? String.valueOf(lowestAveragePulse) : UNKNOWN;
     }
 
     @Override
