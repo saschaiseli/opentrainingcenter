@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?pde version="3.5"?>
+
+<product name="OpenTrainingCenter" uid="ch.opentrainingcenter.product" id="ch.opentrainingcenter.client.OpenTrainingCenter" application="ch.opentrainingcenter.client.application" useFeatures="false" includeLaunchers="true">
+
+   <aboutInfo>
+      <image path="/ch.opentrainingcenter.client/icons/simpsons-icon.png"/>
+      <text>
+         Hello, hello...
+      </text>
+   </aboutInfo>
+
+   <configIni use="default">
+   </configIni>
+
+   <launcherArgs>
+      <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
+   </launcherArgs>
+
+   <windowImages i16="/ch.opentrainingcenter.client/icons/16_16/icon_16_16.png" i32="/ch.opentrainingcenter.client/icons/32_32/icon_32_32.png" i48="/ch.opentrainingcenter.client/icons/48_48/icon_48_48.png" i64="/ch.opentrainingcenter.client/icons/64_64/icon_64_64.png" i128="/ch.opentrainingcenter.client/icons/128_128/icon_128_128.png"/>
+
+   <splash
+      location="/ch.opentrainingcenter.client/icons/start.xpm" />
+   <launcher>
+      <linux icon="/ch.opentrainingcenter.client/icons/start.xpm"/>
+      <solaris/>
+      <win useIco="false">
+         <bmp/>
+      </win>
+   </launcher>
+
+   <vm>
+   </vm>
+
+   <plugins>
+      <plugin id="ch.opentrainingcenter.client"/>
+      <plugin id="ch.opentrainingcenter.db.h2"/>
+      <plugin id="ch.opentrainingcenter.importer"/>
+      <plugin id="ch.opentrainingcenter.importer.fitnesslog"/>
+      <plugin id="ch.opentrainingcenter.importer.tcx"/>
+      <plugin id="ch.opentrainingcenter.tcx"/>
+      <plugin id="ch.opentrainingcenter.transfer"/>
+   </plugins>
+
+   <features>
+      <feature id="ch.opentrainingcenter.feature" version="1.0.0.qualifier"/>
+   </features>
+
+
+</product>

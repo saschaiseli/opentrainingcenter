@@ -29,10 +29,8 @@
       </win>
    </launcher>
 
-
    <vm>
    </vm>
-
 
    <plugins>
       <plugin id="ch.opentrainingcenter.client"/>
@@ -45,7 +43,6 @@
       <plugin id="ch.opentrainingcenter.transfer"/>
       <plugin id="com.eclipsesource.widgets.gmaps"/>
       <plugin id="com.ibm.icu"/>
-      <plugin id="com.richclientgui.rcptoolbox"/>
       <plugin id="h2_lib"/>
       <plugin id="jfreechart"/>
       <plugin id="junit"/>
