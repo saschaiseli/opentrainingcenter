@@ -11,7 +11,7 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>parent_pom.txt</name>
+			<name>parent_pom.xml</name>
 			<type>1</type>
 			<location>/home/sascha/workspace/pom.xml</location>
 		</link>
