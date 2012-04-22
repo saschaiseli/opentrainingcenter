@@ -12,6 +12,7 @@
 		<groupId>ch.opentrainingcenter</groupId>
 		<artifactId>rcp-parent</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
+		<relativePath>../ch.opentrainingcenter.product/master_pom.xml</relativePath>
 	</parent>
 
 	<groupId>ch.opentrainingcenter</groupId>
