@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Test
-Bundle-SymbolicName: ch.iseli.sportanalyzer.importer.test;singleton:=true
+Bundle-SymbolicName: ch.opentrainingcenter.importer.tests;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Fragment-Host: ch.opentrainingcenter.importer
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
