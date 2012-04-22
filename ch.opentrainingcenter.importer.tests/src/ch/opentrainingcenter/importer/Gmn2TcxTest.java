@@ -4,13 +4,10 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import ch.opentrainingcenter.importer.Gmn2Tcx;
 
 public class Gmn2TcxTest {
 
@@ -34,7 +31,7 @@ public class Gmn2TcxTest {
     }
 
     @Test
-    public void simpleConvert() throws IOException {
+    public void simpleConvert() {
         final InputStream stream = importer.convert2Tcx(file);
         assertNotNull(stream);
     }
