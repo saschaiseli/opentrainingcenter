@@ -39,14 +39,14 @@
 
 
    <plugins>
-      <plugin id="ch.iseli.sportanalyzer.importer.test" fragment="true"/>
+      <plugin id="ch.opentrainingcenter.importer.tests" fragment="true"/>
       <plugin id="ch.opentrainingcenter.client"/>
-      <plugin id="ch.opentrainingcenter.client.test" fragment="true"/>
+      <plugin id="ch.opentrainingcenter.client.tests" fragment="true"/>
       <plugin id="ch.opentrainingcenter.db.h2"/>
-      <plugin id="ch.opentrainingcenter.db.h2.test" fragment="true"/>
+      <plugin id="ch.opentrainingcenter.db.h2.tests" fragment="true"/>
       <plugin id="ch.opentrainingcenter.importer"/>
       <plugin id="ch.opentrainingcenter.importer.fitnesslog"/>
-      <plugin id="ch.opentrainingcenter.importer.fitnesslog.test" fragment="true"/>
+      <plugin id="ch.opentrainingcenter.importer.fitnesslog.tests" fragment="true"/>
       <plugin id="ch.opentrainingcenter.importer.tcx"/>
       <plugin id="ch.opentrainingcenter.tcx"/>
       <plugin id="ch.opentrainingcenter.transfer"/>
