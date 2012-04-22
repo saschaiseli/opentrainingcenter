@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>ch.opentrainingcenter</groupId>
-	<artifactId>rcp-parent</artifactId>
+	<artifactId>ch.opentrainingcenter.master</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
@@ -15,7 +15,7 @@
 		<sonar.host.url>http://192.168.1.100:9000</sonar.host.url>
         <sonar.dynamicAnalysis>false</sonar.dynamicAnalysis>
         <sonar.phase>generate-sources</sonar.phase>
-        <sonar.exclusions>rcp-parent, org.hibernate, logging, jfreechart, com.eclipsesource.widgets.gmaps,junit,h2_lib, ch.opentrainingcenter.tcx</sonar.exclusions>
+        <sonar.exclusions>ch.opentrainingcenter.master, org.hibernate, logging, jfreechart, com.eclipsesource.widgets.gmaps,junit,h2_lib, ch.opentrainingcenter.tcx</sonar.exclusions>
 	</properties>
 
 	<repositories>
@@ -27,25 +27,25 @@
 	</repositories>
 
 	<modules>
-		<module>ch.opentrainingcenter.product</module>
-		<module>ch.opentrainingcenter.client</module>
-		<!-- <module>ch.opentrainingcenter.client.test</module> -->
-		<module>ch.opentrainingcenter.db.h2</module>
-		<!-- <module>ch.opentrainingcenter.db.h2.test</module> -->
-		<!-- <module>ch.opentrainingcenter.featureNew</module> -->
-		<module>ch.opentrainingcenter.importer</module>
-		<module>ch.opentrainingcenter.importer.fitnesslog</module>
-		<!-- <module>ch.opentrainingcenter.importer.fitnesslog.test</module> -->
-		<module>ch.opentrainingcenter.importer.tcx</module>
-		<!-- <module>ch.opentrainingcenter.importer.test</module> -->
-		<module>ch.opentrainingcenter.tcx</module>
-		<module>ch.opentrainingcenter.transfer</module>
-		<module>com.eclipsesource.widgets.gmaps</module>
-		<module>h2</module>
-		<module>jfreechart</module>
-		<module>junit</module>
-		<module>logging</module>
-		<module>org.hibernate</module>
+		<module>../ch.opentrainingcenter.product</module>
+		<module>../ch.opentrainingcenter.client</module>
+		<!-- <module>../ch.opentrainingcenter.client.test</module> -->
+		<module>../ch.opentrainingcenter.db.h2</module>
+		<!-- <module>../ch.opentrainingcenter.db.h2.test</module> -->
+		<!-- <module>../ch.opentrainingcenter.featureNew</module> -->
+		<module>../ch.opentrainingcenter.importer</module>
+		<module>../ch.opentrainingcenter.importer.fitnesslog</module>
+		<!-- <module>../ch.opentrainingcenter.importer.fitnesslog.test</module> -->
+		<module>../ch.opentrainingcenter.importer.tcx</module>
+		<!-- <module>../ch.opentrainingcenter.importer.test</module> -->
+		<module>../ch.opentrainingcenter.tcx</module>
+		<module>../ch.opentrainingcenter.transfer</module>
+		<module>../com.eclipsesource.widgets.gmaps</module>
+		<module>../h2</module>
+		<module>../jfreechart</module>
+		<module>../junit</module>
+		<module>../logging</module>
+		<module>../org.hibernate</module>
 	</modules>
 
 	<profiles>

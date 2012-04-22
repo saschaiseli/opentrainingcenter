@@ -10,7 +10,7 @@
 
 	<parent>
 		<groupId>ch.opentrainingcenter</groupId>
-		<artifactId>rcp-parent</artifactId>
+		<artifactId>ch.opentrainingcenter.master</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
