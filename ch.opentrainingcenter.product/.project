@@ -9,4 +9,11 @@
 	</buildSpec>
 	<natures>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>master_pom.xml</name>
+			<type>1</type>
+			<location>/home/sascha/workspace/pom.xml</location>
+		</link>
+	</linkedResources>
 </projectDescription>
