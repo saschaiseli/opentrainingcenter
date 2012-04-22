@@ -10,7 +10,7 @@
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 	<groupId>ch.opentrainingcenter</groupId>
-	<artifactId>ch.iseli.sportanalyzer.importer.tests</artifactId>
+	<artifactId>ch.opentrainingcenter.importer.tests</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>eclipse-test-plugin</packaging>
 
