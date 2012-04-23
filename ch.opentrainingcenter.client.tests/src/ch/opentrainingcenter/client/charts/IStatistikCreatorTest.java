@@ -170,7 +170,7 @@ public class IStatistikCreatorTest {
     }
 
     private ISimpleTraining createTraining(final int year) {
-        final Calendar cal = Calendar.getInstance();
+        final Calendar cal = Calendar.getInstance(Locale.GERMAN);
         cal.set(Calendar.YEAR, year);
         return createSimpleTraining(cal);
     }
