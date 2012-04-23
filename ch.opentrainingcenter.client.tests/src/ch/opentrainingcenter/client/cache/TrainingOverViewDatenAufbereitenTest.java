@@ -27,11 +27,8 @@ public class TrainingOverViewDatenAufbereitenTest {
 
     private final Map<Integer, List<ISimpleTraining>> trainingsProJahr = new HashMap<Integer, List<ISimpleTraining>>();
 
-    private TrainingCenterDataCache cache;
-
     @Before
     public void setUp() {
-        cache = TrainingCenterDataCache.getInstance(new MockGpsFileLoader());
 
         auf = new TrainingOverviewDatenAufbereiten(new IStatistikCreator() {
 

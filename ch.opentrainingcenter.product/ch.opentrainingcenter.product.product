@@ -13,10 +13,6 @@
    <configIni use="default">
    </configIni>
 
- <configurations> 
-      <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="4" /> 
-   </configurations> 
-   
    <launcherArgs>
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
    </launcherArgs>
@@ -39,13 +35,10 @@
 
 
    <plugins>
-      <plugin id="ch.opentrainingcenter.importer.tests" fragment="true"/>
       <plugin id="ch.opentrainingcenter.client"/>
-      <plugin id="ch.opentrainingcenter.client.tests" fragment="true"/>
       <plugin id="ch.opentrainingcenter.db.h2"/>
       <plugin id="ch.opentrainingcenter.importer"/>
       <plugin id="ch.opentrainingcenter.importer.fitnesslog"/>
-      <plugin id="ch.opentrainingcenter.importer.fitnesslog.tests" fragment="true"/>
       <plugin id="ch.opentrainingcenter.importer.tcx"/>
       <plugin id="ch.opentrainingcenter.tcx"/>
       <plugin id="ch.opentrainingcenter.transfer"/>
@@ -89,7 +82,7 @@
       <plugin id="org.eclipse.osgi"/>
       <plugin id="org.eclipse.osgi.services"/>
       <plugin id="org.eclipse.swt"/>
-      <plugin id="org.eclipse.swt.carbon.macosx" fragment="true" os="macosx" ws="carbon" arch="x86"/>
+<plugin id="org.eclipse.swt.carbon.macosx" fragment="true" os="macosx" ws="carbon" arch="x86"/>
       <plugin id="org.eclipse.swt.cocoa.macosx" fragment="true" os="macosx" ws="cocoa" arch="x86"/>
       <plugin id="org.eclipse.swt.cocoa.macosx.x86_64" fragment="true" os="macosx" ws="cocoa" arch="x86_64"/>
       <plugin id="org.eclipse.swt.gtk.linux.x86" fragment="true" os="linux" ws="gtk" arch="x86"/>
@@ -105,9 +98,8 @@
       <plugin id="org.hibernate"/>
    </plugins>
 
-   <features>
-      <feature id="ch.opentrainingcenter.feature" version="1.0.0.qualifier"/>
-   </features>
-
+   <configurations>
+      <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="4" />
+   </configurations>
 
 </product>
