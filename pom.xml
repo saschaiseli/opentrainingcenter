@@ -65,25 +65,12 @@
 				<artifactId>tycho-maven-plugin</artifactId>
 				<version>${tycho.version}</version>
 				<extensions>true</extensions>
-				<configuration>
-					<strictBinIncludes>false</strictBinIncludes>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>tycho-packaging-plugin</artifactId>
-				<version>${tycho.version}</version>
-				<extensions>true</extensions>
-				<configuration>
-					<strictBinIncludes>false</strictBinIncludes>
-				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>target-platform-configuration</artifactId>
 				<version>${tycho.version}</version>
 				<configuration>
-					<strictBinIncludes>false</strictBinIncludes>
 					<resolver>p2</resolver>
 					<environments>
 						<environment>
