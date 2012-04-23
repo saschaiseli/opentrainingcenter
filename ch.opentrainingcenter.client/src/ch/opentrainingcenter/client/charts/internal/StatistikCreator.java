@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -21,7 +22,7 @@ public class StatistikCreator implements IStatistikCreator {
     public Map<Integer, List<ISimpleTraining>> getTrainingsProJahr(final List<ISimpleTraining> allTrainings) {
         final Map<Integer, List<ISimpleTraining>> trainingsPer = new HashMap<Integer, List<ISimpleTraining>>();
         for (final ISimpleTraining training : allTrainings) {
-            final Calendar cal = Calendar.getInstance();
+            final Calendar cal = Calendar.getInstance(Locale.GERMAN);
             cal.setTime(training.getDatum());
             final int year = cal.get(Calendar.YEAR);
             logger.debug("Lauf aus dem Jahr " + year); //$NON-NLS-1$
@@ -56,7 +57,7 @@ public class StatistikCreator implements IStatistikCreator {
     private void calculate(final List<ISimpleTraining> allTrainings, final Map<Integer, Map<Integer, List<ISimpleTraining>>> trainingsPer, final int outer,
             final int inner) {
         for (final ISimpleTraining training : allTrainings) {
-            final Calendar cal = Calendar.getInstance();
+            final Calendar cal = Calendar.getInstance(Locale.GERMAN);
             final Date datum = training.getDatum();
             cal.setTime(datum);
             final int year;
