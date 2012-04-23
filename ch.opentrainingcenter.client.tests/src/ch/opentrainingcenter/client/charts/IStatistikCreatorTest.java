@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import org.junit.After;
 import org.junit.Before;
@@ -117,8 +118,21 @@ public class IStatistikCreatorTest {
 
     @Test
     public void testGetTrainingsProWoche_1() {
+    	System.out.println("--------------------------------------");
         trainings.add(createTraining(2012, 2, 19));
+        System.out.println("--------------------------------------:"+trainings.size());
         final Map<Integer, Map<Integer, List<ISimpleTraining>>> trainingsProMonat = stats.getTrainingsProWoche(trainings);
+        for(Map.Entry<Integer, Map<Integer, List<ISimpleTraining>>> entry : trainingsProMonat.entrySet()){
+        	Map<Integer, List<ISimpleTraining>> value = entry.getValue();
+        	for(Map.Entry<Integer, List<ISimpleTraining>> em : value.entrySet()){
+        		List<ISimpleTraining> simpletra = em.getValue();
+        		for (ISimpleTraining t : simpletra) {
+					System.out.println("Simple Training: "+t);
+				}
+        	}
+        }
+        
+        
         assertNotNull("Resultat darf nie null sein", trainingsProMonat); //$NON-NLS-1$
         final Map<Integer, List<ISimpleTraining>> jahr = trainingsProMonat.get(2012);
         assertNotNull("Resultat darf nie null sein", jahr.get(7)); //$NON-NLS-1$
