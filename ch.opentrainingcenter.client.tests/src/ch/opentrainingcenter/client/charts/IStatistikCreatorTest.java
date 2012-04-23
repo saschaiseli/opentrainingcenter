@@ -12,7 +12,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import org.junit.After;
 import org.junit.Before;
@@ -31,6 +30,7 @@ public class IStatistikCreatorTest {
     public void setUp() {
         stats = new StatistikCreator();
         trainings = new ArrayList<ISimpleTraining>();
+        Locale.setDefault(Locale.GERMAN);
     }
 
     @After
@@ -169,7 +169,7 @@ public class IStatistikCreatorTest {
     }
 
     private ISimpleTraining createTraining(final int year, final int monat, final int day) {
-        final Calendar cal = Calendar.getInstance(Locale.GERMAN);
+        final Calendar cal = Calendar.getInstance();
         cal.set(Calendar.DAY_OF_MONTH, day);
         cal.set(Calendar.MONTH, monat - 1);
         cal.set(Calendar.YEAR, year);
@@ -177,14 +177,14 @@ public class IStatistikCreatorTest {
     }
 
     private ISimpleTraining createTraining(final int year, final int monat) {
-        final Calendar cal = Calendar.getInstance(Locale.GERMAN);
+        final Calendar cal = Calendar.getInstance();
         cal.set(Calendar.MONTH, monat - 1);
         cal.set(Calendar.YEAR, year);
         return createSimpleTraining(cal);
     }
 
     private ISimpleTraining createTraining(final int year) {
-        final Calendar cal = Calendar.getInstance(Locale.GERMAN);
+        final Calendar cal = Calendar.getInstance();
         cal.set(Calendar.YEAR, year);
         return createSimpleTraining(cal);
     }
