@@ -26,7 +26,7 @@ public class ConvertFitnesslog2TcxTest {
 
     @Test
     public void testSuffix() {
-        assertEquals("logfile", convertFitnesslog2Tcx.getFilePrefix()); //$NON-NLS-1$
+        assertEquals("fitlog", convertFitnesslog2Tcx.getFilePrefix()); //$NON-NLS-1$
     }
 
     @Test
