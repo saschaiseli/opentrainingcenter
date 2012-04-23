@@ -9,6 +9,7 @@ import java.io.File;
 import javax.xml.bind.JAXBException;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
@@ -25,6 +26,7 @@ public class ConvertXmlTest {
     }
 
     @Test
+    @Ignore
     public void simpleTest() {
         try {
             final TrainingCenterDatabaseT value = convertXml.unmarshall(new File("resources/example.xml"));//$NON-NLS-1$

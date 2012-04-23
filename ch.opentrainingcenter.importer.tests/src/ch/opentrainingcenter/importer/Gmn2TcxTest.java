@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.InputStream;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class Gmn2TcxTest {
@@ -31,6 +32,7 @@ public class Gmn2TcxTest {
     }
 
     @Test
+    @Ignore
     public void simpleConvert() {
         final InputStream stream = importer.convert2Tcx(file);
         assertNotNull(stream);
