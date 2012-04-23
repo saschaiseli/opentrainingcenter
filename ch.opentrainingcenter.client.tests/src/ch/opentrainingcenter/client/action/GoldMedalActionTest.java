@@ -352,7 +352,7 @@ public class GoldMedalActionTest {
 
         final IGoldMedalModel model = action.getModel(allImported);
 
-        assertEquals("Wert muss ausgegeben werden", "0.0020", model.getLongestDistance());
+        assertEquals("Wert muss ausgegeben werden", "0.002", model.getLongestDistance());
     }
 
     @Test
@@ -367,7 +367,7 @@ public class GoldMedalActionTest {
         allImported.add(impB);
         final IGoldMedalModel model = action.getModel(allImported);
 
-        assertEquals("Grösserer Wert muss ausgegeben werden", "0.0040", model.getLongestDistance());
+        assertEquals("Grösserer Wert muss ausgegeben werden", "0.004", model.getLongestDistance());
     }
 
     @Test
@@ -382,6 +382,6 @@ public class GoldMedalActionTest {
         allImported.add(impB);
         final IGoldMedalModel model = action.getModel(allImported);
 
-        assertEquals("Grösserer Wert muss ausgegeben werden", "0.0040", model.getLongestDistance());
+        assertEquals("Grösserer Wert muss ausgegeben werden", "0.004", model.getLongestDistance());
     }
 }
