@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Test
-Bundle-SymbolicName: ch.opentrainingcenter.importer.tests;singleton:=true
+Bundle-SymbolicName: ch.opentrainingcenter.importer.tests
 Bundle-Version: 1.0.0.qualifier
-Fragment-Host: ch.opentrainingcenter.importer;bundle-version="1.0.0"
+Fragment-Host: ch.opentrainingcenter.importer;bundle-version="1.0.0.qualifier"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: junit,
  org.eclipse.core.runtime,
