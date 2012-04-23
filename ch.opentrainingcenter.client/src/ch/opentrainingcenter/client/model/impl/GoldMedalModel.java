@@ -1,5 +1,7 @@
 package ch.opentrainingcenter.client.model.impl;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,10 +55,16 @@ public class GoldMedalModel implements IGoldMedalModel {
 
     @Override
     public String getLongestDistance() {
-        return longestDistance > 0 ? String.valueOf(longestDistance) : UNKNOWN;
+    	if(longestDistance>0){
+    		return getFormattedString(longestDistance);
+    	}else{
+    		return UNKNOWN;
+    	}
     }
 
-    @Override
+
+
+	@Override
     public void setLongestDistance(final double longestDistance) {
         this.longestDistance = longestDistance;
     }
@@ -100,5 +108,12 @@ public class GoldMedalModel implements IGoldMedalModel {
     public void setLowestAveragePulse(final int lowestAveragePulse) {
         this.lowestAveragePulse = lowestAveragePulse;
     }
-
+    
+    private String getFormattedString(double value) {
+    	final DecimalFormat format = new DecimalFormat("0.000"); //$NON-NLS-1$
+        final DecimalFormatSymbols dfs = new DecimalFormatSymbols();
+        dfs.setDecimalSeparator('.');
+        format.setDecimalFormatSymbols(dfs);
+		return format.format(value);
+	}
 }
