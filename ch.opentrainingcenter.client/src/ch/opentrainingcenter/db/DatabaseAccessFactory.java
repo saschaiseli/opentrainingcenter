@@ -29,6 +29,7 @@ public class DatabaseAccessFactory {
         logger.info("Anzahl Configuration Elements: " + confItems.length); //$NON-NLS-1$
         for (final IConfigurationElement element : confItems) {
             try {
+            	logger.info("Element: "+element.getName());//$NON-NLS-1$
                 final Object createExecutableExtension = element.createExecutableExtension(extensionAttr);
                 logger.info("Extension gefunden."); //$NON-NLS-1$
                 return createExecutableExtension;
