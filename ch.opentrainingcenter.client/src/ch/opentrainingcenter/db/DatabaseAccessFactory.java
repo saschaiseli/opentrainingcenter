@@ -30,11 +30,12 @@ public class DatabaseAccessFactory {
         for (final IConfigurationElement element : confItems) {
             try {
             	logger.info("Element: "+element.getName());//$NON-NLS-1$
+            	logger.info("Namespaceidentifier: "+element.getNamespaceIdentifier());
                 final Object createExecutableExtension = element.createExecutableExtension(extensionAttr);
                 logger.info("Extension gefunden."); //$NON-NLS-1$
                 return createExecutableExtension;
             } catch (final CoreException e) {
-                logger.error("Extension nicht gefunden: " + e.getMessage()); //$NON-NLS-1$
+                logger.error("Extension nicht gefunden: ",e); //$NON-NLS-1$
             }
         }
         return null;
