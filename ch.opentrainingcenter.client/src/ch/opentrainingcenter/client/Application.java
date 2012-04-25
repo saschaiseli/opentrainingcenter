@@ -16,7 +16,7 @@ import ch.opentrainingcenter.db.DatabaseHelper;
  */
 public class Application implements IApplication {
 
-    public static final Logger logger = Logger.getLogger(Application.class);
+    public static final Logger LOGGER = Logger.getLogger(Application.class);
 
     public static final String ID = "ch.opentrainingcenter.client"; //$NON-NLS-1$
 
@@ -29,34 +29,35 @@ public class Application implements IApplication {
     /*
      * (non-Javadoc)
      * 
-     * @see org.eclipse.equinox.app.IApplication#start(org.eclipse.equinox.app. IApplicationContext)
+     * @see org.eclipse.equinox.app.IApplication#start(org.eclipse.equinox.app.
+     * IApplicationContext)
      */
     @Override
     public Object start(final IApplicationContext context) {
-        final Display display = PlatformUI.createDisplay();
-        final boolean isLocked = DatabaseHelper.isDatabaseLocked();
+	final Display display = PlatformUI.createDisplay();
+	final boolean isLocked = DatabaseHelper.isDatabaseLocked();
 
-        try {
-            if (isLocked) {
-                final MessageDialog messageDialog = new MessageDialog(display.getActiveShell(), Messages.Application_0, null, Messages.Application_1,
-                        MessageDialog.ERROR, new String[] { Messages.Application_2 }, 0);
-                if (messageDialog.open() == 1) {
-                    return IApplication.EXIT_OK;
-                }
-            } else {
-                final boolean isExisting = DatabaseHelper.isDatabaseExisting();
-                if (!isExisting) {
-                    DatabaseAccessFactory.getDatabaseAccess().createDatabase();
-                }
-            }
-            final int returnCode = PlatformUI.createAndRunWorkbench(display, new ApplicationWorkbenchAdvisor());
-            if (returnCode == PlatformUI.RETURN_RESTART) {
-                return IApplication.EXIT_RESTART;
-            }
-            return IApplication.EXIT_OK;
-        } finally {
-            display.dispose();
-        }
+	try {
+	    if (isLocked) {
+		final MessageDialog messageDialog = new MessageDialog(display.getActiveShell(), Messages.Application_0, null, Messages.Application_1, MessageDialog.ERROR,
+			new String[] { Messages.Application_2 }, 0);
+		if (messageDialog.open() == 1) {
+		    return IApplication.EXIT_OK;
+		}
+	    } else {
+		final boolean isExisting = DatabaseHelper.isDatabaseExisting();
+		if (!isExisting) {
+		    DatabaseAccessFactory.getDatabaseAccess().createDatabase();
+		}
+	    }
+	    final int returnCode = PlatformUI.createAndRunWorkbench(display, new ApplicationWorkbenchAdvisor());
+	    if (returnCode == PlatformUI.RETURN_RESTART) {
+		return IApplication.EXIT_RESTART;
+	    }
+	    return IApplication.EXIT_OK;
+	} finally {
+	    display.dispose();
+	}
     }
 
     /*
@@ -66,16 +67,18 @@ public class Application implements IApplication {
      */
     @Override
     public void stop() {
-        if (!PlatformUI.isWorkbenchRunning())
-            return;
-        final IWorkbench workbench = PlatformUI.getWorkbench();
-        final Display display = workbench.getDisplay();
-        display.syncExec(new Runnable() {
-            @Override
-            public void run() {
-                if (!display.isDisposed())
-                    workbench.close();
-            }
-        });
+	if (!PlatformUI.isWorkbenchRunning()) {
+	    return;
+	}
+	final IWorkbench workbench = PlatformUI.getWorkbench();
+	final Display display = workbench.getDisplay();
+	display.syncExec(new Runnable() {
+	    @Override
+	    public void run() {
+		if (!display.isDisposed()) {
+		    workbench.close();
+		}
+	    }
+	});
     }
 }

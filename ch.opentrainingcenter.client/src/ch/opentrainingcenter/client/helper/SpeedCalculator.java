@@ -6,6 +6,9 @@ public class SpeedCalculator {
 
     private static final int MINUTE_IN_SEKUNDEN = 60;
 
+    private SpeedCalculator(){
+    	
+    }
     /**
      * @param d1
      *            position 1 in meter

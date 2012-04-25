@@ -13,9 +13,9 @@ import ch.opentrainingcenter.tcx.IntensityT;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.ITraining;
 
-public class TrainingOverviewFactory {
+public final class TrainingOverviewFactory {
 
-    private static final Logger logger = Logger.getLogger(TrainingOverviewFactory.class);
+    private static final Logger LOGGER = Logger.getLogger(TrainingOverviewFactory.class);
 
     private TrainingOverviewFactory() {
     }
@@ -55,7 +55,7 @@ public class TrainingOverviewFactory {
                     maxHeartBeat = lap.getMaximumHeartRateBpm().getValue();
                 }
             }
-            logger.debug("lap: " + lap.getIntensity() + " distance: " + distance); //$NON-NLS-1$//$NON-NLS-2$
+            LOGGER.debug("lap: " + lap.getIntensity() + " distance: " + distance); //$NON-NLS-1$//$NON-NLS-2$
         }
         Integer avgHeartRate = null;
         if (lapWithCardio > 0) {

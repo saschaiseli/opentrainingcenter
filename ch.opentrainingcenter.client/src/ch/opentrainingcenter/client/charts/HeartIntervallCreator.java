@@ -11,7 +11,7 @@ import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.client.helper.ZoneHelper;
 import ch.opentrainingcenter.transfer.IAthlete;
 
-public class HeartIntervallCreator {
+public final class HeartIntervallCreator {
 
     private HeartIntervallCreator() {
 

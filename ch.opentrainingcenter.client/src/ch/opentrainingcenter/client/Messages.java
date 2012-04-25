@@ -2,7 +2,7 @@ package ch.opentrainingcenter.client;
 
 import org.eclipse.osgi.util.NLS;
 
-public class Messages extends NLS {
+public final class Messages extends NLS {
     private static final String BUNDLE_NAME = "ch.opentrainingcenter.client.messages"; //$NON-NLS-1$
     public static String Application_0;
     public static String Application_1;
@@ -210,8 +210,8 @@ public class Messages extends NLS {
     public static String RunTypeDialog_4;
     public static String WeeklyOverview_0;
     static {
-        // initialize resource bundle
-        NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+	// initialize resource bundle
+	NLS.initializeMessages(BUNDLE_NAME, Messages.class);
     }
 
     private Messages() {

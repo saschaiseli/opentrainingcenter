@@ -11,8 +11,12 @@ import ch.opentrainingcenter.client.Messages;
 
 public class TimeHelper {
 
-    private final static String UNKNOWN_DATE = "--:--:--"; //$NON-NLS-1$
+    private static final int SEKUNDE_IN_MS = 1000;
+	private static final  String UNKNOWN_DATE = "--:--:--"; //$NON-NLS-1$
 
+    private TimeHelper(){
+    	
+    }
     /**
      * Konvertiert Sekunden in H:MM:ss
      * 
@@ -25,7 +29,7 @@ public class TimeHelper {
             return UNKNOWN_DATE;
         }
         final Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis((long) sec * 1000);
+        cal.setTimeInMillis((long) sec * SEKUNDE_IN_MS);
         final StringBuffer calStr = new StringBuffer();
         final int hour = cal.get(Calendar.HOUR) - 1;
         final int m = cal.get(Calendar.MINUTE);

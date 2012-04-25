@@ -17,7 +17,7 @@ import ch.opentrainingcenter.tcx.ActivityT;
 
 public class TrainingOverviewDatenAufbereiten {
 
-    private static final Logger logger = Logger.getLogger(TrainingOverviewDatenAufbereiten.class);
+    private static final Logger LOGGER = Logger.getLogger(TrainingOverviewDatenAufbereiten.class);
 
     private final List<ISimpleTraining> trainingsPerDay = new ArrayList<ISimpleTraining>();
     private final List<ISimpleTraining> trainingsPerWeek = new ArrayList<ISimpleTraining>();
@@ -51,8 +51,8 @@ public class TrainingOverviewDatenAufbereiten {
     /**
      * Filtert die Daten nach dem angegeben Lauftyp.
      */
-    public void update(final RunType type) {
-        logger.debug("update/filter daten vom cache: " + type); //$NON-NLS-1$
+    public final void update(final RunType type) {
+        LOGGER.debug("update/filter daten vom cache: " + type); //$NON-NLS-1$
         trainingsPerDay.clear();
         final List<ISimpleTraining> allTrainings = statistik.getTrainingsProTag(cache.getAllSimpleTrainings());
         for (final ISimpleTraining training : allTrainings) {

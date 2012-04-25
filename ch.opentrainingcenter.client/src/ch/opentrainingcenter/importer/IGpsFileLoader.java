@@ -8,8 +8,8 @@ import ch.opentrainingcenter.transfer.IImported;
 
 public interface IGpsFileLoader {
 
-    public abstract ActivityT convertActivity(final IImported record) throws Exception;
+    List<ActivityT> convertActivity(final File file) throws Exception;
 
-    public abstract List<ActivityT> convertActivity(final File file) throws Exception;
+    ActivityT convertActivity(final IImported record) throws Exception;
 
 }

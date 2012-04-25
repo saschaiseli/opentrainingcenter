@@ -16,7 +16,11 @@ import ch.opentrainingcenter.client.helper.ColorFromPreferenceHelper;
 
 public class WeekXYBarRenderer extends XYBarRenderer implements XYItemRenderer {
 
-    private static final long serialVersionUID = -7407945301726330129L;
+	private static final double INTERVALL_MARKER_BREITE= 0.01;
+	
+    private static final int ALPHA = 255;
+
+	private static final long serialVersionUID = -7407945301726330129L;
 
     private final IntervalXYDataset dataset;
 
@@ -31,10 +35,11 @@ public class WeekXYBarRenderer extends XYBarRenderer implements XYItemRenderer {
         final IPreferenceStore preferenceStore = Activator.getDefault().getPreferenceStore();
         targetKmPerWeek = preferenceStore.getInt(PreferenceConstants.KM_PER_WEEK);
 
-        colorBelow = ColorFromPreferenceHelper.getColor(PreferenceConstants.KM_PER_WEEK_COLOR_BELOW, 255);
-        colorAbove = ColorFromPreferenceHelper.getColor(PreferenceConstants.KM_PER_WEEK_COLOR_ABOVE, 255);
+        colorBelow = ColorFromPreferenceHelper.getColor(PreferenceConstants.KM_PER_WEEK_COLOR_BELOW, ALPHA);
+        colorAbove = ColorFromPreferenceHelper.getColor(PreferenceConstants.KM_PER_WEEK_COLOR_ABOVE, ALPHA);
 
-        final IntervalMarker below = new IntervalMarker(targetKmPerWeek - 0.01, targetKmPerWeek + 0.01);
+        
+		final IntervalMarker below = new IntervalMarker(targetKmPerWeek - INTERVALL_MARKER_BREITE, targetKmPerWeek +INTERVALL_MARKER_BREITE);
         below.setPaint(colorBelow);
         below.setAlpha(1f);
 

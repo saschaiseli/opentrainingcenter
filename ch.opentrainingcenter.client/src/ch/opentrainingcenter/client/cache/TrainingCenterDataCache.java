@@ -27,13 +27,13 @@ import ch.opentrainingcenter.tcx.TrainingCenterDatabaseT;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IImported;
 
-public class TrainingCenterDataCache {
+public final class TrainingCenterDataCache {
 
     private ListenerList listeners;
 
     private IAthlete selectedProfile;
 
-    private static TrainingCenterDataCache INSTANCE = null;
+    private static TrainingCenterDataCache instance = null;
 
     private IImported selectedImport;
 
@@ -51,7 +51,7 @@ public class TrainingCenterDataCache {
 
     private final IGpsFileLoader loadGpsFile;
 
-    public static final Logger logger = Logger.getLogger(TrainingCenterDataCache.class);
+    public static final Logger LOGGER = Logger.getLogger(TrainingCenterDataCache.class);
 
     private TrainingCenterDataCache() {
         this(new GpsFileLoader());
@@ -65,17 +65,17 @@ public class TrainingCenterDataCache {
     }
 
     public static TrainingCenterDataCache getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new TrainingCenterDataCache();
+        if (instance == null) {
+            instance = new TrainingCenterDataCache();
         }
-        return INSTANCE;
+        return instance;
     }
 
     protected static TrainingCenterDataCache getInstance(final IGpsFileLoader loadGpsFile) {
-        if (INSTANCE == null) {
-            INSTANCE = new TrainingCenterDataCache(loadGpsFile);
+        if (instance == null) {
+            instance = new TrainingCenterDataCache(loadGpsFile);
         }
-        return INSTANCE;
+        return instance;
     }
 
     /**
@@ -162,7 +162,7 @@ public class TrainingCenterDataCache {
             try {
                 activity = loadGpsFile.convertActivity(selectedImport);
             } catch (final Exception e) {
-                logger.error(e.getMessage());
+                LOGGER.error(e.getMessage());
                 return null;
             }
         }
@@ -225,8 +225,9 @@ public class TrainingCenterDataCache {
     }
 
     private void fireRecordAdded(final Collection<ActivityT> activitiesAdded) {
-        if (listeners == null)
+        if (listeners == null){
             return;
+        }
         final Object[] rls = listeners.getListeners();
         for (int i = 0; i < rls.length; i++) {
             final IRecordListener listener = (IRecordListener) rls[i];
@@ -236,8 +237,9 @@ public class TrainingCenterDataCache {
     }
 
     private void fireRecordDeleted(final List<ActivityT> deletedActivities) {
-        if (listeners == null)
+        if (listeners == null){
             return;
+        }
         final Object[] rls = listeners.getListeners();
         for (int i = 0; i < rls.length; i++) {
             final IRecordListener listener = (IRecordListener) rls[i];
@@ -267,7 +269,7 @@ public class TrainingCenterDataCache {
     }
 
     public void setSelection(final Object[] selectedItems) {
-        this.selectedItems = selectedItems;
+        this.selectedItems = Arrays.copyOf(selectedItems, selectedItems.length);
     }
 
     public List<?> getSelection() {

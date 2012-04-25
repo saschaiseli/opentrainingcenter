@@ -13,11 +13,55 @@ import ch.opentrainingcenter.transfer.ITraining;
 
 public interface IDatabaseAccess extends IExecutableExtensionFactory {
 
-    public static final String EXTENSION_POINT_NAME = "classImportedDao"; //$NON-NLS-1$
+    static final String EXTENSION_POINT_NAME = "classImportedDao"; //$NON-NLS-1$
 
     /**
-     * Gibt eine Liste von Filenamen zurück die diesem Athleten gehören. Das Resultat ist nicht ein absoluter File Pfad sondern einfach der Filename. Die Id der Map ist das
-     * Startdatum des Laufes. Dies ist sogleich die ID.
+     * Wenn die db nicht vorhanden ist, wird die ganze datenbank mit sql queries
+     * erstellt.
+     */
+    void createDatabase();
+
+    List<IAthlete> getAllAthletes();
+
+    /**
+     * Gibt eine Liste von allen importierted Records zurück.
+     * 
+     * @param athlete
+     *            der Athlete der die Records importierte
+     * @return eine Liste von {@link IImported}
+     */
+    List<IImported> getAllImported(IAthlete athlete);
+
+    /**
+     * Gibt den sportler mit
+     * 
+     * @param id
+     * @return Gibt den sportler mit der angegeben id zurück oder null.
+     */
+    IAthlete getAthlete(int id);
+
+    /**
+     * Sucht einen Athleten mit dem angegeben Namen. Der Name muss exakt
+     * übereinstimmen, es gibt keine %LIKE% abfrage.
+     * 
+     * @param name
+     *            den vollständigen namen.
+     * @return einen Athleten oder null, wenn dieser nicht gefunden wird.
+     */
+    IAthlete getAthlete(String name);
+
+    /**
+     * @param key
+     *            das datum des importierten records. das datum ist die id des
+     *            laufes.
+     * @return
+     */
+    IImported getImportedRecord(Date key);
+
+    /**
+     * Gibt eine Liste von Filenamen zurück die diesem Athleten gehören. Das
+     * Resultat ist nicht ein absoluter File Pfad sondern einfach der Filename.
+     * Die Id der Map ist das Startdatum des Laufes. Dies ist sogleich die ID.
      * 
      * <pre>
      * z.b.: 201011201234.gmn
@@ -30,17 +74,10 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
     Map<Date, String> getImportedRecords(IAthlete athlete);
 
     /**
-     * Gibt eine Liste von allen importierted Records zurück.
-     * 
-     * @param athlete
-     *            der Athlete der die Records importierte
-     * @return eine Liste von {@link IImported}
-     */
-    List<IImported> getAllImported(IAthlete athlete);
-
-    /**
-     * Importiert den Record in die Datenbank. Zweimaliges importieren wird ignoriert. Das heisst ein anderer Benutzer kann nicht denselben Record auch importieren. Massgebendes
-     * Kriterium hierfür ist der Filename und die id der Actitvity.
+     * Importiert den Record in die Datenbank. Zweimaliges importieren wird
+     * ignoriert. Das heisst ein anderer Benutzer kann nicht denselben Record
+     * auch importieren. Massgebendes Kriterium hierfür ist der Filename und die
+     * id der Actitvity.
      * 
      * @param athleteId
      *            die ID des Athleten
@@ -50,42 +87,12 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
      *            id der aktivität.
      * @param type
      *            der typ des trainings {@link RunType#getIndex()}
-     * @return id des datenbankeintrages oder -1 wenn der record bereits in der datenbank war.
+     * @return id des datenbankeintrages oder -1 wenn der record bereits in der
+     *         datenbank war.
      */
     int importRecord(int athleteId, String fileName, Date activityId, ITraining overview, int type);
 
-    /**
-     * @param key
-     *            das datum des importierten records. das datum ist die id des laufes.
-     * @return
-     */
-    IImported getImportedRecord(Date key);
-
-    /**
-     * Gibt den sportler mit
-     * 
-     * @param id
-     * @return Gibt den sportler mit der angegeben id zurück oder null.
-     */
-    IAthlete getAthlete(int id);
-
-    /**
-     * Sucht einen Athleten mit dem angegeben Namen. Der Name muss exakt übereinstimmen, es gibt keine %LIKE% abfrage.
-     * 
-     * @param name
-     *            den vollständigen namen.
-     * @return einen Athleten oder null, wenn dieser nicht gefunden wird.
-     */
-    IAthlete getAthlete(String name);
-
-    List<IAthlete> getAllAthletes();
-
     void removeImportedRecord(Date activityId);
-
-    /**
-     * Wenn die db nicht vorhanden ist, wird die ganze datenbank mit sql queries erstellt.
-     */
-    void createDatabase();
 
     /**
      * @param athlete

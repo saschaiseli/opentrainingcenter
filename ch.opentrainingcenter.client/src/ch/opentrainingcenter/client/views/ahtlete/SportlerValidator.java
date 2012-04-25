@@ -10,7 +10,8 @@ import ch.opentrainingcenter.transfer.IAthlete;
 
 public class SportlerValidator implements IValidator {
 
-    private final int minLength;
+    private static final int MINIMALE_LAENGE = 4;
+	private final int minLength;
 
     public SportlerValidator(final int minLength) {
         this.minLength = minLength;
@@ -21,7 +22,7 @@ public class SportlerValidator implements IValidator {
     public IStatus validate(final Object value) {
         if (value instanceof String) {
             final String name = String.valueOf(value);
-            if (name != null && name.length() >= 4) {
+            if (name != null && name.length() >= MINIMALE_LAENGE) {
                 // in db schauen ob es den user bereits gibt
                 final IAthlete athlete = DatabaseAccessFactory.getDatabaseAccess().getAthlete(name);
                 if (athlete != null) {

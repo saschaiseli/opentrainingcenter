@@ -16,7 +16,8 @@ import ch.opentrainingcenter.client.model.ISimpleTraining;
 
 public class StatistikCreator implements IStatistikCreator {
 
-    private static final Logger logger = Logger.getLogger(StatistikCreator.class);
+    private static final int LAST_KW_IN_YEAR = 52;
+	private static final Logger LOGGER = Logger.getLogger(StatistikCreator.class);
 
     @Override
     public Map<Integer, List<ISimpleTraining>> getTrainingsProJahr(final List<ISimpleTraining> allTrainings) {
@@ -25,7 +26,7 @@ public class StatistikCreator implements IStatistikCreator {
             final Calendar cal = Calendar.getInstance(Locale.GERMAN);
             cal.setTime(training.getDatum());
             final int year = cal.get(Calendar.YEAR);
-            logger.debug("Lauf aus dem Jahr " + year); //$NON-NLS-1$
+            LOGGER.debug("Lauf aus dem Jahr " + year); //$NON-NLS-1$
             List<ISimpleTraining> perYear = trainingsPer.get(year);
             if (perYear == null) {
                 perYear = new ArrayList<ISimpleTraining>();
@@ -68,7 +69,7 @@ public class StatistikCreator implements IStatistikCreator {
             } else {
                 year = cal.get(outer);
             }
-            logger.debug("Lauf aus der inner " + week + " vom Jahr: " + year); //$NON-NLS-1$//$NON-NLS-2$
+            LOGGER.debug("Lauf aus der inner " + week + " vom Jahr: " + year); //$NON-NLS-1$//$NON-NLS-2$
             Map<Integer, List<ISimpleTraining>> yearMap = trainingsPer.get(year);
             if (yearMap == null) {
                 yearMap = new TreeMap<Integer, List<ISimpleTraining>>();
@@ -90,7 +91,7 @@ public class StatistikCreator implements IStatistikCreator {
     private boolean isKWFehler(final Date datum) {
         final Calendar cal = Calendar.getInstance();
         cal.setTime(datum);
-        return cal.get(Calendar.WEEK_OF_YEAR) == 52 && cal.get(Calendar.MONTH) == 0;
+        return cal.get(Calendar.WEEK_OF_YEAR) == LAST_KW_IN_YEAR && cal.get(Calendar.MONTH) == 0;
     }
 
     @Override

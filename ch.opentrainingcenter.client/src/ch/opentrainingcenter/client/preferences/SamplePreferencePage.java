@@ -33,7 +33,7 @@ import ch.opentrainingcenter.transfer.IAthlete;
 
 public class SamplePreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
-    public static final Logger logger = Logger.getLogger(SamplePreferencePage.class);
+    public static final Logger LOGGER = Logger.getLogger(SamplePreferencePage.class);
 
     private final List<IAthlete> allAthletes;
 
@@ -136,12 +136,12 @@ public class SamplePreferencePage extends FieldEditorPreferencePage implements I
             final DirectoryFieldEditor dfe = (DirectoryFieldEditor) source;
             final String preferenceName = dfe.getPreferenceName();
             if (preferenceName.equals(PreferenceConstants.GPS_FILE_LOCATION_PROG)) {
-                logger.debug("Neuer Ort für GPS files ausgewählt. Files von: " + event.getOldValue() + " nach: " + event.getNewValue() + " kopieren"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                LOGGER.debug("Neuer Ort für GPS files ausgewählt. Files von: " + event.getOldValue() + " nach: " + event.getNewValue() + " kopieren"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
                 try {
                     FileCopy.copyFiles(event.getOldValue().toString(), event.getNewValue().toString(), new GpsFileNameFilter());
                 } catch (final IOException e) {
-                    logger.error(e.getMessage(), e.fillInStackTrace());
+                    LOGGER.error(e.getMessage(), e.fillInStackTrace());
                 }
             }
         }

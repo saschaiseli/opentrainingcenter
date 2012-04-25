@@ -7,7 +7,16 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 
+import org.apache.log4j.Logger;
+
 public class FileCopy {
+	
+	private static final Logger LOG = Logger.getLogger(FileCopy.class);
+	
+	private FileCopy(){
+		// do not create Instance of an Helper Methode.
+	}
+	
     /**
      * Kopiert ein file in ein anderes das destination file wird nie überschrieben werden.
      */
@@ -27,8 +36,9 @@ public class FileCopy {
 
             long count = 0;
             final long size = source.size();
-            while ((count += destination.transferFrom(source, 0, size - count)) < size)
-                ;
+            while ((count += destination.transferFrom(source, 0, size - count)) < size){
+            	LOG.info("do copy work...");
+            }
         } finally {
             if (source != null) {
                 source.close();

@@ -10,6 +10,10 @@ import ch.opentrainingcenter.transfer.ITraining;
 
 public class ModelFactory {
 
+	
+	private ModelFactory(){
+		
+	}
     /**
      * Erstellt ein SimpleTraining mit dem Lauf Typ NONE
      */

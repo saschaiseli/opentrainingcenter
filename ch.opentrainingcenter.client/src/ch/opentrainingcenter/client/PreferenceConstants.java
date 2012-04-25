@@ -33,4 +33,8 @@ public class PreferenceConstants {
     public static final String DISTANCE_CHART_COLOR = "DISTANCE_CHART_COLOR"; //$NON-NLS-1$
     public static final String DISTANCE_HEART_COLOR = "DISTANCE_HEART_COLOR"; //$NON-NLS-1$
 
+    private PreferenceConstants() {
+
+    }
+
 }

@@ -4,6 +4,13 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
 public class DistanceHelper {
+	
+	private static final int MINUTE_IN_SEKUNDEN = 60;
+	private static final int KILOMETER_IN_METER = 1000;
+
+	private DistanceHelper(){
+		
+	}
     /**
      * z.B. aus 10123.234535 --> 10.123
      * 
@@ -11,7 +18,7 @@ public class DistanceHelper {
      * @return distanz in kilometer, gerundet auf einen meter
      */
     public static String roundDistanceFromMeterToKm(final double distanceInMeter) {
-        final double distanceInKilometer = distanceInMeter / 1000;
+        final double distanceInKilometer = distanceInMeter / KILOMETER_IN_METER;
         final DecimalFormat format = new DecimalFormat("0.000"); //$NON-NLS-1$
         final DecimalFormatSymbols dfs = new DecimalFormatSymbols();
         dfs.setDecimalSeparator('.');
@@ -42,12 +49,12 @@ public class DistanceHelper {
      * @return min/km im format MM:SS
      */
     public static String calculatePace(final double distanceInMeter, final double timeInSeconds) {
-        final double km = distanceInMeter / 1000;
-        final double min = timeInSeconds / 60;
+        final double km = distanceInMeter / KILOMETER_IN_METER;
+        final double min = timeInSeconds / MINUTE_IN_SEKUNDEN;
         final double d = min / km;
         final double floor = Math.floor(d);
         final double sek = d - floor;
-        final double sekunden = 60 / (1 / sek);
+        final double sekunden = MINUTE_IN_SEKUNDEN / (1 / sek);
         String s;
         if ((int) sekunden < 10) {
             s = "0" + (int) sekunden; //$NON-NLS-1$
@@ -64,7 +71,7 @@ public class DistanceHelper {
      * @return
      */
     public static String calculatePace(final double speedMperSecond) {
-        final double secPerKm = 1000 / speedMperSecond;
-        return calculatePace(1000, secPerKm);
+        final double secPerKm = KILOMETER_IN_METER / speedMperSecond;
+        return calculatePace(KILOMETER_IN_METER, secPerKm);
     }
 }

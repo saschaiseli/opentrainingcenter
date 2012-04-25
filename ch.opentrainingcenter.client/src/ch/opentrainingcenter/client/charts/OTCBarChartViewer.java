@@ -66,7 +66,11 @@ import ch.opentrainingcenter.tcx.ActivityT;
 
 public class OTCBarChartViewer implements ISelectionProvider {
 
-    private static final Logger logger = Logger.getLogger(OTCBarChartViewer.class);
+    private static final int ALPHA = 255;
+
+	private static final int KILOMETER_IN_METER = 1000;
+
+	private static final Logger LOGGER = Logger.getLogger(OTCBarChartViewer.class);
 
     private static final String DISTANZ = Messages.OTCBarChartViewer_0;
     private static final String HEART = Messages.OTCBarChartViewer_1;
@@ -109,7 +113,7 @@ public class OTCBarChartViewer implements ISelectionProvider {
             }
 
             private void update() {
-                logger.info("neue Daten, Charts aktualisieren"); //$NON-NLS-1$
+                LOGGER.info("neue Daten, Charts aktualisieren"); //$NON-NLS-1$
                 createOrUpdateDataSet(daten, filter);
             }
         });
@@ -253,28 +257,28 @@ public class OTCBarChartViewer implements ISelectionProvider {
     }
 
     private Class<? extends RegularTimePeriod> getSeriesType(final ChartSerieType type) {
-        final Class<? extends RegularTimePeriod> clazz;
+        final Class<? extends RegularTimePeriod> thisClazz;
         switch (type) {
         case DAY:
-            clazz = Day.class;
+            thisClazz = Day.class;
             break;
         case WEEK:
-            clazz = Week.class;
+            thisClazz = Week.class;
             break;
         case MONTH:
-            clazz = Month.class;
+            thisClazz = Month.class;
             break;
         case YEAR:
-            clazz = Year.class;
+            thisClazz = Year.class;
             break;
         default:
-            clazz = Day.class;
+            thisClazz = Day.class;
         }
-        return clazz;
+        return thisClazz;
     }
 
     private void createOrUpdateDataSet(final TrainingOverviewDatenAufbereiten trainingOverviewDatenAufbereiten, final RunType filter) {
-        logger.debug("createOrUpdateDataSet... " + filter); //$NON-NLS-1$
+        LOGGER.debug("createOrUpdateDataSet... " + filter); //$NON-NLS-1$
         createOrUpdateDataSet(trainingOverviewDatenAufbereiten, DISTANZ, filter);
         createOrUpdateDataSet(trainingOverviewDatenAufbereiten, HEART, filter);
     }
@@ -299,7 +303,7 @@ public class OTCBarChartViewer implements ISelectionProvider {
         final Map<String, TimeSeries> map = new HashMap<String, TimeSeries>();
         final List<ISimpleTraining> trainings = new ArrayList<ISimpleTraining>();
         daten.update(filter);
-        logger.debug(daten);
+        LOGGER.debug(daten);
         if (ChartSerieType.DAY.equals(type)) {
             trainings.addAll(daten.getTrainingsPerDay());
         }
@@ -317,7 +321,7 @@ public class OTCBarChartViewer implements ISelectionProvider {
         heartSerie.clear();
         for (final ISimpleTraining t : trainings) {
             final RegularTimePeriod period = RegularTimePeriod.createInstance(clazz, t.getDatum(), Calendar.getInstance().getTimeZone());
-            distanceSerie.addOrUpdate(period, t.getDistanzInMeter() / 1000);
+            distanceSerie.addOrUpdate(period, t.getDistanzInMeter() / KILOMETER_IN_METER);
             if (withHeartRate && t.getAvgHeartRate() > 0) {
                 heartSerie.addOrUpdate(period, t.getAvgHeartRate());
             }
@@ -344,7 +348,7 @@ public class OTCBarChartViewer implements ISelectionProvider {
             myXyBarRenderer = new WeekXYBarRenderer(dataset, plot);
         } else {
             myXyBarRenderer = new XYBarRenderer();
-            myXyBarRenderer.setSeriesPaint(0, ColorFromPreferenceHelper.getColor(PreferenceConstants.DISTANCE_CHART_COLOR, 255));
+            myXyBarRenderer.setSeriesPaint(0, ColorFromPreferenceHelper.getColor(PreferenceConstants.DISTANCE_CHART_COLOR, ALPHA));
         }
 
         plot.setRenderer(myXyBarRenderer);// new XYBarRenderer());

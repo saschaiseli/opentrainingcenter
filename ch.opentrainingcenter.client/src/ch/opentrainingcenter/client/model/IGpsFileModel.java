@@ -2,16 +2,16 @@ package ch.opentrainingcenter.client.model;
 
 public interface IGpsFileModel {
 
-    public abstract int getId();
+    int getId();
 
-    public abstract String getFileName();
+    String getFileName();
 
-    public abstract RunType getTyp();
+    RunType getTyp();
 
-    public abstract void setTyp(final RunType typ);
+    void setTyp(final RunType typ);
 
-    public abstract boolean isImportFile();
+    boolean isImportFile();
 
-    public abstract void setImportFile(final boolean importFile);
+    void setImportFile(final boolean importFile);
 
 }

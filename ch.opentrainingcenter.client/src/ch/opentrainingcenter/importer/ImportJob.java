@@ -17,15 +17,15 @@ public class ImportJob extends Job {
     private final IAthlete athlete;
 
     public ImportJob(final String name, final IAthlete athlete) {
-        super(name);
-        this.athlete = athlete;
+	super(name);
+	this.athlete = athlete;
     }
 
     @Override
     protected IStatus run(final IProgressMonitor monitor) {
-        final List<IImported> allImported = DatabaseAccessFactory.getDatabaseAccess().getAllImported(athlete);
-        TrainingCenterDataCache.getInstance().setSelectedProfile(athlete);
-        TrainingCenterDataCache.getInstance().addAllImported(allImported);
-        return Status.OK_STATUS;
+	final List<IImported> allImported = DatabaseAccessFactory.getDatabaseAccess().getAllImported(athlete);
+	TrainingCenterDataCache.getInstance().setSelectedProfile(athlete);
+	TrainingCenterDataCache.getInstance().addAllImported(allImported);
+	return Status.OK_STATUS;
     }
 }

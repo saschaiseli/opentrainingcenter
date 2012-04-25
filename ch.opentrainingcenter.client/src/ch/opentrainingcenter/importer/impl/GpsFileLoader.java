@@ -17,36 +17,39 @@ import ch.opentrainingcenter.transfer.IImported;
 
 public class GpsFileLoader implements IGpsFileLoader {
 
-    public static final Logger logger = Logger.getLogger(GpsFileLoader.class);
+    public static final Logger LOGGER = Logger.getLogger(GpsFileLoader.class);
 
     /*
      * (non-Javadoc)
      * 
-     * @see ch.opentrainingcenter.importer.IGpsFileLoader#convertActivity(ch.opentrainingcenter.transfer.IImported)
+     * @see
+     * ch.opentrainingcenter.importer.IGpsFileLoader#convertActivity(java.io
+     * .File)
      */
     @Override
-    public ActivityT convertActivity(final IImported record) throws Exception {
-        final String fileName = record.getComments();
-        final File file = FindGarminFiles.loadAllGPSFilesFromAthlete(fileName);
-        return convertActivity(file).get(0);
+    public List<ActivityT> convertActivity(final File file) throws Exception {
+	final ConvertContainer cc = new ConvertContainer(ExtensionHelper.getConverters());
+	final IConvert2Tcx converter = cc.getMatchingConverter(file);
+	final List<ActivityT> activities = new ArrayList<ActivityT>();
+	try {
+	    final List<ActivityT> convertActivity = converter.convertActivity(file);
+	    activities.addAll(convertActivity);
+	} catch (final Exception e1) {
+	    LOGGER.error("Fehler beim Importeren"); //$NON-NLS-1$
+	}
+	return Collections.unmodifiableList(activities);
     }
 
     /*
      * (non-Javadoc)
      * 
-     * @see ch.opentrainingcenter.importer.IGpsFileLoader#convertActivity(java.io.File)
+     * @see ch.opentrainingcenter.importer.IGpsFileLoader#convertActivity(ch.
+     * opentrainingcenter.transfer.IImported)
      */
     @Override
-    public List<ActivityT> convertActivity(final File file) throws Exception {
-        final ConvertContainer cc = new ConvertContainer(ExtensionHelper.getConverters());
-        final IConvert2Tcx converter = cc.getMatchingConverter(file);
-        final List<ActivityT> activities = new ArrayList<ActivityT>();
-        try {
-            final List<ActivityT> convertActivity = converter.convertActivity(file);
-            activities.addAll(convertActivity);
-        } catch (final Exception e1) {
-            logger.error("Fehler beim Importeren"); //$NON-NLS-1$
-        }
-        return Collections.unmodifiableList(activities);
+    public ActivityT convertActivity(final IImported record) throws Exception {
+	final String fileName = record.getComments();
+	final File file = FindGarminFiles.loadAllGPSFilesFromAthlete(fileName);
+	return convertActivity(file).get(0);
     }
 }

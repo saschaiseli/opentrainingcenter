@@ -12,7 +12,7 @@ import ch.opentrainingcenter.transfer.IImported;
 
 public class ImportActivityJob extends Job {
 
-    public static final Logger logger = Logger.getLogger(ImportActivityJob.class);
+    public static final Logger LOGGER = Logger.getLogger(ImportActivityJob.class);
 
     private final IImported record;
     private final IGpsFileLoader loadGpsFile;
@@ -20,36 +20,36 @@ public class ImportActivityJob extends Job {
     private ActivityT selected;
 
     public ImportActivityJob(final String name, final IImported record) {
-        super(name);
-        this.record = record;
-        this.loadGpsFile = GpsFileLoaderFactory.createGpsFileLoader();
-        this.cache = TrainingCenterDataCache.getInstance();
+	super(name);
+	this.record = record;
+	this.loadGpsFile = GpsFileLoaderFactory.createGpsFileLoader();
+	this.cache = TrainingCenterDataCache.getInstance();
+    }
+
+    public ActivityT getLoaded() {
+	return selected;
+    }
+
+    private ActivityT loadActivity(final IImported selectedRecord) {
+	cache.setSelectedRun(selectedRecord);
+	ActivityT result = null;
+	if (!cache.contains(selectedRecord.getActivityId())) {
+	    try {
+		result = loadGpsFile.convertActivity(selectedRecord);
+		cache.add(result);
+	    } catch (final Exception e) {
+		LOGGER.error("Konnte File nicht einlesen"); //$NON-NLS-1$
+	    }
+	} else {
+	    // read from cache
+	    result = cache.get(selectedRecord.getActivityId());
+	}
+	return result;
     }
 
     @Override
     protected IStatus run(final IProgressMonitor monitor) {
-        selected = loadActivity(record);
-        return Status.OK_STATUS;
-    }
-
-    private ActivityT loadActivity(final IImported selectedRecord) {
-        cache.setSelectedRun(selectedRecord);
-        ActivityT result = null;
-        if (!cache.contains(selectedRecord.getActivityId())) {
-            try {
-                result = loadGpsFile.convertActivity(selectedRecord);
-                cache.add(result);
-            } catch (final Exception e) {
-                logger.error("Konnte File nicht einlesen"); //$NON-NLS-1$
-            }
-        } else {
-            // read from cache
-            result = cache.get(selectedRecord.getActivityId());
-        }
-        return result;
-    }
-
-    public ActivityT getLoaded() {
-        return selected;
+	selected = loadActivity(record);
+	return Status.OK_STATUS;
     }
 }

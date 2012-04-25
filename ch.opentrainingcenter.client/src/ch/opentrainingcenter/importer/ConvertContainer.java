@@ -10,12 +10,16 @@ import org.apache.log4j.Logger;
 
 public class ConvertContainer {
 
-    public static final Logger logger = Logger.getLogger(ConvertContainer.class);
+    public static final Logger LOGGER = Logger.getLogger(ConvertContainer.class);
 
     private final Map<String, IConvert2Tcx> converters;
 
     public ConvertContainer(final Map<String, IConvert2Tcx> converters) {
-        this.converters = new HashMap<String, IConvert2Tcx>(converters);
+	this.converters = new HashMap<String, IConvert2Tcx>(converters);
+    }
+
+    public List<IConvert2Tcx> getAllConverter() {
+	return new ArrayList<IConvert2Tcx>(converters.values());
     }
 
     /**
@@ -24,25 +28,22 @@ public class ConvertContainer {
      * @return dem cpmverter, der dieses file brauch
      */
     public IConvert2Tcx getMatchingConverter(final File fileToImport) {
-        final String name = fileToImport.getName();
-        final String prefix = name.substring(name.indexOf('.') + 1, name.length());
-        return converters.get(prefix);
-    }
-
-    public List<IConvert2Tcx> getAllConverter() {
-        return new ArrayList<IConvert2Tcx>(converters.values());
+	final String name = fileToImport.getName();
+	final String prefix = name.substring(name.indexOf('.') + 1, name.length());
+	return converters.get(prefix);
     }
 
     /**
-     * Gibt alle unterstützen File Suffixes zurück. Einmal UpperCase und einmal LowerCase. Also zum Beispiel {"*.gmn, *.GMN,*.fitnesslog"}
+     * Gibt alle unterstützen File Suffixes zurück. Einmal UpperCase und einmal
+     * LowerCase. Also zum Beispiel {"*.gmn, *.GMN,*.fitnesslog"}
      */
     public List<String> getSupportedFileSuffixes() {
-        final List<String> suffixes = new ArrayList<String>();
-        for (final Map.Entry<String, IConvert2Tcx> entry : converters.entrySet()) {
-            final String key = entry.getKey();
-            suffixes.add("*." + key.toLowerCase()); //$NON-NLS-1$
-            suffixes.add("*." + key.toUpperCase()); //$NON-NLS-1$
-        }
-        return suffixes;
+	final List<String> suffixes = new ArrayList<String>();
+	for (final Map.Entry<String, IConvert2Tcx> entry : converters.entrySet()) {
+	    final String key = entry.getKey();
+	    suffixes.add("*." + key.toLowerCase()); //$NON-NLS-1$
+	    suffixes.add("*." + key.toUpperCase()); //$NON-NLS-1$
+	}
+	return suffixes;
     }
 }

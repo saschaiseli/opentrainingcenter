@@ -5,39 +5,40 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
 
-public class DatabaseAccessFactory {
+public final class DatabaseAccessFactory {
 
-    public static final Logger logger = Logger.getLogger(DatabaseAccessFactory.class);
+    public static final Logger LOGGER = Logger.getLogger(DatabaseAccessFactory.class);
 
-    private static DatabaseAccessFactory INSTANCE = null;
+    private static DatabaseAccessFactory instance = null;
+
+    public static IDatabaseAccess getDatabaseAccess() {
+	if (instance == null) {
+	    instance = new DatabaseAccessFactory();
+	}
+	return instance.dao;
+    }
+
     private final IDatabaseAccess dao;
 
     private DatabaseAccessFactory() {
-        // test hier ob es datenbank gibt
-        final IConfigurationElement[] daos = Platform.getExtensionRegistry().getConfigurationElementsFor("ch.opentrainingdatabase.db"); //$NON-NLS-1$
-        dao = (IDatabaseAccess) getDao(daos, IDatabaseAccess.EXTENSION_POINT_NAME);
-    }
-
-    public static IDatabaseAccess getDatabaseAccess() {
-        if (INSTANCE == null) {
-            INSTANCE = new DatabaseAccessFactory();
-        }
-        return INSTANCE.dao;
+	// test hier ob es datenbank gibt
+	final IConfigurationElement[] daos = Platform.getExtensionRegistry().getConfigurationElementsFor("ch.opentrainingdatabase.db"); //$NON-NLS-1$
+	dao = (IDatabaseAccess) getDao(daos, IDatabaseAccess.EXTENSION_POINT_NAME);
     }
 
     private Object getDao(final IConfigurationElement[] confItems, final String extensionAttr) {
-        logger.info("Anzahl Configuration Elements: " + confItems.length); //$NON-NLS-1$
-        for (final IConfigurationElement element : confItems) {
-            try {
-            	logger.info("Element: "+element.getName());//$NON-NLS-1$
-            	logger.info("Namespaceidentifier: "+element.getNamespaceIdentifier());
-                final Object createExecutableExtension = element.createExecutableExtension(extensionAttr);
-                logger.info("Extension gefunden."); //$NON-NLS-1$
-                return createExecutableExtension;
-            } catch (final CoreException e) {
-                logger.error("Extension nicht gefunden: ",e); //$NON-NLS-1$
-            }
-        }
-        return null;
+	LOGGER.info("Anzahl Configuration Elements: " + confItems.length); //$NON-NLS-1$
+	for (final IConfigurationElement element : confItems) {
+	    try {
+		LOGGER.info("Element: " + element.getName());//$NON-NLS-1$
+		LOGGER.info("Namespaceidentifier: " + element.getNamespaceIdentifier());
+		final Object createExecutableExtension = element.createExecutableExtension(extensionAttr);
+		LOGGER.info("Extension gefunden."); //$NON-NLS-1$
+		return createExecutableExtension;
+	    } catch (final CoreException e) {
+		LOGGER.error("Extension nicht gefunden: ", e); //$NON-NLS-1$
+	    }
+	}
+	return null;
     }
 }

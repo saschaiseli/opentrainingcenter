@@ -13,8 +13,12 @@ import ch.opentrainingcenter.client.model.RunType;
 
 public class SimpleTrainingCalculator {
 
-    private static final Logger logger = Logger.getLogger(SimpleTrainingCalculator.class);
+    private static final Logger LOGGER = Logger.getLogger(SimpleTrainingCalculator.class);
 
+    
+    private SimpleTrainingCalculator(){
+    	
+    }
     /**
      * Erstellt eine neue Liste von Trainings. Der Input ist entweder nach dem
      * 
@@ -51,7 +55,7 @@ public class SimpleTrainingCalculator {
         Date date = null;
         int count = 0;
         for (final ISimpleTraining training : trainingsProWocheOderMonat.getValue()) {
-            logger.debug("compress Trainings --> Filter nach " + filter + " matches? " + matchFilter(filter, filterResults, training)); //$NON-NLS-1$ //$NON-NLS-2$
+            LOGGER.debug("compress Trainings --> Filter nach " + filter + " matches? " + matchFilter(filter, filterResults, training)); //$NON-NLS-1$ //$NON-NLS-2$
             if (matchFilter(filter, filterResults, training)) {
                 distance += training.getDistanzInMeter();
                 seconds += training.getDauerInSekunden();
@@ -91,14 +95,15 @@ public class SimpleTrainingCalculator {
     }
 
     private static int getMax(int maxSpeed, final String speed) {
+    	int result =maxSpeed;
         try {
             final int geschw = Integer.parseInt(speed);
             if (geschw > maxSpeed) {
-                maxSpeed = geschw;
+            	result = geschw;
             }
         } catch (final NumberFormatException nfe) {
             // do nothing
         }
-        return maxSpeed;
+        return result;
     }
 }
