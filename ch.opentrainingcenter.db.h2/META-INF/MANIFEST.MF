@@ -16,6 +16,7 @@ Export-Package: ch.opentrainingcenter.db.h2;
    ch.opentrainingcenter.transfer,
    org.hibernate,
    ch.opentrainingcenter.db"
-Bundle-ClassPath: hibernate/,
- bin/
+Bundle-ClassPath: hibernate/,.
 Eclipse-RegisterBuddy: org.hibernate, logging
+Bundle-Activator: ch.opentrainingcenter.db.h2.Activator
+Bundle-ActivationPolicy: lazy

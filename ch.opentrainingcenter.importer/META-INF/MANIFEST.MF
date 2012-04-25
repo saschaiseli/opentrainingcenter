@@ -11,5 +11,5 @@ Require-Bundle: org.eclipse.core.runtime,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: ch.opentrainingcenter.importer;uses:="ch.opentrainingcenter.tcx,ch.opentrainingcenter.importer"
 Bundle-ClassPath: bin/,
- resources/
+ resources/,.
 Eclipse-RegisterBuddy: logging
