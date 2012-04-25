@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="ch.opentrainingcenter.myimporter" name="myimporter" schema="schema/ch.opentrainingcenter.myimporter.exsd"/>
+   <extension-point id="ch.opentrainingdatabase.db" name="dbaccess" schema="schema/ch.opentrainingdatabase.dbaccess.exsd"/>
+   <extension-point id="splashExtension" name="Splash Extensions" schema="schema/splashExtension.exsd"/>
+
+   <extension
+         id="application"
+         point="org.eclipse.core.runtime.applications">
+      <application>
+         <run
+               class="ch.opentrainingcenter.client.Application">
+         </run>
+      </application>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="ch.opentrainingcenter.client.perspectives.PerspectiveNavigation"
+            icon="icons/otc_perspective.png"
+            id="ch.opentrainingcenter.client.perspective"
+            name="OTC Perspektive">
+      </perspective>
+      <perspective
+            class="ch.opentrainingcenter.client.perspectives.AthletePerspective"
+            fixed="true"
+            icon="icons/athlete_perspective.png"
+            id="ch.opentrainingcenter.client.athletePerspective"
+            name="Athlete Perspektive">
+      </perspective>
+      <perspective
+            class="ch.opentrainingcenter.client.perspectives.StatisticPerspectiveFactory"
+            fixed="true"
+            icon="icons/chart_bar.png"
+            id="ch.opentrainingcenter.client.StatisticPerspective"
+            name="Statistik">
+      </perspective>
+      <perspective
+            class="ch.opentrainingcenter.client.perspectives.OverviewPerspectiveFactory"
+            fixed="true"
+            icon="icons/table_green_24_24.png"
+            id="ch.opentrainingcenter.client.OverviewPerspective"
+            name="Tabellarische Übersicht">
+      </perspective>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="true"
+            class="ch.opentrainingcenter.client.views.navigation.NavigationView"
+            fastViewWidthRatio="0.25"
+            icon="icons/package_games_sports_24_24.png"
+            id="ch.opentrainingcenter.client.navigationView"
+            name="Läufe">
+      </view>
+      <view
+            allowMultiple="true"
+            category="ch.opentrainingcenter.client.otccategory"
+            class="ch.opentrainingcenter.client.views.overview.SingleActivityViewPart"
+            icon="icons/overview_chart.png"
+            id="ch.opentrainingcenter.client.views.singlerun"
+            name="Uebersicht eines Trainings"
+            restorable="true">
+      </view>
+      <category
+            id="ch.opentrainingcenter.client.otccategory"
+            name="OTC">
+      </category>
+      <view
+            category="ch.opentrainingcenter.client.otccategory"
+            class="ch.opentrainingcenter.client.views.ahtlete.CreateAthleteView"
+            icon="icons/create.gif"
+            id="ch.opentrainingcenter.client.athlete.createathlete"
+            name="Create Athlete"
+            restorable="true">
+      </view>
+      <view
+            class="ch.opentrainingcenter.client.views.statistics.StatisticView"
+            icon="icons/chart_bar.png"
+            id="ch.opentrainingcenter.client.views.statistics.StatisticView"
+            name="StatisticView"
+            restorable="true">
+      </view>
+      <view
+            allowMultiple="false"
+            class="ch.opentrainingcenter.client.views.table.OverviewViewer"
+            icon="icons/table_green_24_24.png"
+            id="ch.opentrainingcenter.client.table.overview"
+            name="TableView"
+            restorable="true">
+      </view>
+      <view
+            allowMultiple="false"
+            category="ch.opentrainingcenter.client.otccategory"
+            class="ch.opentrainingcenter.client.views.weeks.WeeklyOverview"
+            id="ch.opentrainingcenter.client.weeks.weeklyOverview"
+            name="Wochenübersicht"
+            restorable="false">
+      </view>
+      <view
+            allowMultiple="false"
+            class="ch.opentrainingcenter.client.views.best.BestRunsView"
+            id="ch.opentrainingcenter.client.best.bestof"
+            name="Bestzeiten"
+            restorable="true">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            description="Öffnet einen einzelnen Lauf"
+            id="ch.opentrainingcenter.client.command.openSingleRun"
+            name="openSingleRun">
+      </command>
+      <command
+            description="GPS Files importieren"
+            id="ch.opentrainingcenter.client.importManualFiles"
+            name="importFilesManual">
+      </command>
+      <command
+            description="Die App neu starten"
+            id="ch.opentrainingcenter.client.RestartOtc"
+            name="Request for Restart">
+      </command>
+      <command
+            description="GPS Files mit einem Wizard importieren"
+            id="ch.opentrainingcenter.client.importManualFilesWizard"
+            name="importFilesManualWizard">
+      </command>
+   </extension>
+   <extension
+         id="opentrainingcenter"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="ch.opentrainingcenter.client.application"
+            name="Open Training Center">
+         <property
+               name="windowImages"
+               value="icons/16_16/icon_16_16.png,icons/32_32/icon_32_32.png,icons/48_48/icon_48_48.png,icons/64_64/icon_64_64.png,icons/128_128/icon_128_128.png">
+         </property>
+         <property
+               name="aboutImage"
+               value="icons/simpsons-icon.png">
+         </property>
+         <property
+               name="appName"
+               value="Open Training Center">
+         </property>
+         <property
+               name="preferenceCustomization"
+               value="plugin_customization.ini">
+         </property>
+         <property
+               name="aboutText"
+               value="Hello, hello...">
+         </property>
+      </product>
+   </extension>
+   <extension
+         id="prefPage"
+         name="kein prefPage Name"
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="ch.opentrainingcenter.client.preferences.SamplePreferencePage"
+            id="ch.opentrainingcenter.client.preferences.SamplePreferencePage"
+            name="Einstellungen">
+      </page>
+      <page
+            class="ch.opentrainingcenter.client.preferences.BackupPreferencePage"
+            id="ch.opentrainingcenter.client.preferences.BackupPreferencePage"
+            name="Backup">
+      </page>
+      <page
+            class="ch.opentrainingcenter.client.preferences.ImportPreferencePage"
+            id="ch.opentrainingcenter.client.preferences.ImportPreferencePage"
+            name="Import">
+      </page>
+      <page
+            class="ch.opentrainingcenter.client.preferences.TrainingTargetPreferencePage"
+            id="ch.opentrainingcenter.client.preferences.TrainingTargetPage"
+            name="Trainingsziele">
+      </page>
+   </extension>
+   <extension
+         id="prefs"
+         name="kein name"
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="ch.opentrainingcenter.client.preferences.PreferenceInitializer">
+      </initializer>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="ch.opentrainingcenter.client.menuContribution2">
+         <menu
+               label="label">
+         </menu>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.splashHandlers">
+      <splashHandlerProductBinding
+            productId="ch.opentrainingcenter.client.opentrainingcenter"
+            splashId="ch.opentrainingcenter.client.splashHandlers.mySplash">
+      </splashHandlerProductBinding>
+   </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            id="ch.opentrainingcenter.client"
+            name="Sample Wizards">
+      </category>
+      <wizard
+            category="ch.opentrainingcenter.client"
+            class="ch.opentrainingcenter.client.wizards.SampleNewWizard"
+            icon="icons/sample.gif"
+            id="ch.opentrainingcenter.client.wizards.SampleNewWizard"
+            name="Multi-page Editor file">
+      </wizard>
+   </extension>
+   <extension
+         id="OpenTrainingCenter"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="ch.opentrainingcenter.client.application"
+            name="OpenTrainingCenter">
+         <property
+               name="appName"
+               value="OpenTrainingCenter">
+         </property>
+         <property
+               name="aboutImage"
+               value="icons/simpsons-icon.png">
+         </property>
+         <property
+               name="aboutText"
+               value="Hello, hello...">
+         </property>
+         <property
+               name="windowImages"
+               value="icons/16_16/icon_16_16.png,icons/32_32/icon_32_32.png,icons/48_48/icon_48_48.png,icons/64_64/icon_64_64.png,icons/128_128/icon_128_128.png">
+         </property>
+      </product>
+   </extension>
+   <extension
+         id="Open_TrainingCenter"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="ch.opentrainingcenter.client.application"
+            name="OpenTrainingCenter">
+         <property
+               name="windowImages"
+               value="icons/16_16/icon_16_16.png,icons/32_32/icon_32_32.png,icons/48_48/icon_48_48.png,icons/64_64/icon_64_64.png,icons/128_128/icon_128_128.png">
+         </property>
+         <property
+               name="aboutText"
+               value="Hello, hello...">
+         </property>
+         <property
+               name="aboutImage"
+               value="icons/simpsons-icon.png">
+         </property>
+         <property
+               name="appName"
+               value="OpenTrainingCenter">
+         </property>
+      </product>
+   </extension>
+</plugin>

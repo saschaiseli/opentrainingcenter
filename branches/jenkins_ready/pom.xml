@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>ch.opentrainingcenter</groupId>
+	<artifactId>rcp-parent</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<properties>
+		<tycho.version>0.14.1</tycho.version>
+		<eclipse-repository-url>http://download.eclipse.org/eclipse/updates/3.7</eclipse-repository-url>
+		<sonar.host.url>http://192.168.1.100:9000</sonar.host.url>
+		<sonar.dynamicAnalysis>false</sonar.dynamicAnalysis>
+		<sonar.phase>generate-sources</sonar.phase>
+		<sonar.exclusions>rcp-parent, org.hibernate, logging, jfreechart,
+			com.eclipsesource.widgets.gmaps,junit,h2_lib,
+			ch.opentrainingcenter.tcx</sonar.exclusions>
+	</properties>
+
+	<repositories>
+		<repository>
+			<id>indigo</id>
+			<layout>p2</layout>
+			<url>http://download.eclipse.org/releases/indigo/</url>
+		</repository>
+	</repositories>
+
+	<modules>
+		<module>ch.opentrainingcenter.product</module>
+		<module>ch.opentrainingcenter.client</module>
+		<module>ch.opentrainingcenter.db.h2</module>
+		<module>ch.opentrainingcenter.importer</module>
+		<module>ch.opentrainingcenter.importer.fitnesslog</module>
+		<module>ch.opentrainingcenter.importer.tcx</module>
+		<module>ch.opentrainingcenter.tcx</module>
+		<module>ch.opentrainingcenter.transfer</module>
+		<module>com.eclipsesource.widgets.gmaps</module>
+		<module>h2</module>
+		<module>jfreechart</module>
+		<module>junit</module>
+		<module>logging</module>
+		<module>org.hibernate</module>
+		<!-- Tests -->
+		<module>ch.opentrainingcenter.client.tests</module>
+		<module>ch.opentrainingcenter.importer.tests</module>
+		<module>ch.opentrainingcenter.importer.fitnesslog.tests</module>
+	</modules>
+
+	<profiles>
+		<profile>
+			<id>e37</id>
+			<properties>
+				<eclipse-repository-url>${eclipse-repository-url}</eclipse-repository-url>
+			</properties>
+		</profile>
+	</profiles>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-maven-plugin</artifactId>
+				<version>${tycho.version}</version>
+				<extensions>true</extensions>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>target-platform-configuration</artifactId>
+				<version>${tycho.version}</version>
+				<configuration>
+					<resolver>p2</resolver>
+					<environments>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>x86</arch>
+						</environment>
+						<!-- 
+						<environment>
+							<os>macosx</os>
+							<ws>carbon</ws>
+							<arch>x86</arch>
+						</environment>
+						<environment>
+							<os>macosx</os>
+							<ws>cocoa</ws>
+							<arch>x86</arch>
+						</environment>
+						<environment>
+							<os>macosx</os>
+							<ws>cocoa</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>win32</os>
+							<ws>win32</ws>
+							<arch>x86</arch>
+						</environment>
+						<environment>
+							<os>win32</os>
+							<ws>win32</ws>
+							<arch>x86_64</arch>
+						</environment>
+						 -->
+					</environments>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

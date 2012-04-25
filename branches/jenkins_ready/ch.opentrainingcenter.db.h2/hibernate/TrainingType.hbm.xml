@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 21.10.2011 12:19:41 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="ch.opentrainingcenter.transfer.impl.TrainingType" table="TRAININGTYPE" schema="PUBLIC" catalog="OTC">
+        <id name="id" type="int">
+            <column name="ID" />
+            <generator class="assigned" />
+        </id>
+        <property name="title" type="string">
+            <column name="TITLE" />
+        </property>
+        <property name="description" type="string">
+            <column name="DESCRIPTION" />
+        </property>
+        <property name="imageicon" type="string">
+            <column name="IMAGEICON" />
+        </property>
+        <set name="importeds" table="IMPORTED" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="ID_FK_TRAININGTYPE" />
+            </key>
+            <one-to-many class="ch.opentrainingcenter.transfer.impl.Imported" />
+        </set>
+    </class>
+</hibernate-mapping>

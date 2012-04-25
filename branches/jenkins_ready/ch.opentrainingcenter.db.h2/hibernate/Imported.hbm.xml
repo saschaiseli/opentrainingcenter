@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 21.10.2011 12:19:41 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+ <class catalog="OTC"
+  name="ch.opentrainingcenter.transfer.impl.Imported" schema="PUBLIC" table="IMPORTED">
+  <id name="id" type="int">
+   <column name="ID"/>
+   <generator class="sequence">
+   <param name="sequence">import_id_sequence</param>
+   </generator>
+  </id>
+  <many-to-one class="ch.opentrainingcenter.transfer.impl.Weather"
+   fetch="select" name="weather">
+   <column name="ID_FK_WEATHER"/>
+  </many-to-one>
+  <many-to-one class="ch.opentrainingcenter.transfer.impl.TrainingType"
+   fetch="select" name="trainingType">
+   <column name="ID_FK_TRAININGTYPE"/>
+  </many-to-one>
+  <many-to-one class="ch.opentrainingcenter.transfer.impl.Athlete"
+   fetch="select" name="athlete" update="false" cascade="all">
+   <column name="ID_FK_ATHLETE"/>
+  </many-to-one>
+   <many-to-one class="ch.opentrainingcenter.transfer.impl.Training"
+   fetch="select" name="training" update="false" cascade="all">
+   <column name="ID_FK_TRAINING"/>
+  </many-to-one>
+  <property generated="never" lazy="false" name="importedDate" type="timestamp">
+   <column length="23" name="IMPORTED_DATE"/>
+  </property>
+  <property generated="never" lazy="false" name="activityId" type="timestamp">
+   <column length="23" name="ACTIVITY_ID"/>
+  </property>
+  <property generated="never" lazy="false" name="comments" type="string">
+   <column name="COMMENTS"/>
+  </property>
+ </class>
+</hibernate-mapping>

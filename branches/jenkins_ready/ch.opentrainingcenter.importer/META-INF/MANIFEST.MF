@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: importer
+Bundle-SymbolicName: ch.opentrainingcenter.importer;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: org.eclipse.core.runtime,
+ ch.opentrainingcenter.transfer,
+ ch.opentrainingcenter.client,
+ ch.opentrainingcenter.tcx,
+ logging
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: ch.opentrainingcenter.importer;uses:="ch.opentrainingcenter.tcx,ch.opentrainingcenter.importer"
+Bundle-ClassPath: resources/,.
+Eclipse-RegisterBuddy: logging

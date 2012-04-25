@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>ch.opentrainingcenter.product</name>
+	<comment></comment>
+	<projects>
+		<project>ch.opentrainingcenter.feature</project>
+	</projects>
+	<buildSpec>
+	</buildSpec>
+	<natures>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>parent.xml</name>
+			<type>1</type>
+			<locationURI>WORKSPACE_LOC/pom.xml</locationURI>
+		</link>
+	</linkedResources>
+</projectDescription>
