@@ -38,8 +38,7 @@ public class ImportActivityJobListener implements IJobChangeListener {
                     final ActivityT activityT = cache.get(imported.getActivityId());
                     final String hash = getSecondaryId(activityT);
                     try {
-                        PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-                                .showView(SingleActivityViewPart.ID, hash, IWorkbenchPage.VIEW_ACTIVATE);
+                        PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(SingleActivityViewPart.ID, hash, IWorkbenchPage.VIEW_ACTIVATE);
                     } catch (final PartInitException e) {
                         e.printStackTrace();
                     }
@@ -56,19 +55,15 @@ public class ImportActivityJobListener implements IJobChangeListener {
 
     @Override
     public void running(final IJobChangeEvent event) {
-        // TODO Auto-generated method stub
     }
 
     @Override
     public void scheduled(final IJobChangeEvent event) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void sleeping(final IJobChangeEvent event) {
-        // TODO Auto-generated method stub
-
     }
 
 }

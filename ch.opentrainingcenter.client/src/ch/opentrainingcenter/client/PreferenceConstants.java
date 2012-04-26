@@ -3,13 +3,13 @@ package ch.opentrainingcenter.client;
 /**
  * Constant definitions for plug-in preferences
  */
-public class PreferenceConstants {
+public final class PreferenceConstants {
 
     private static final String COLOR_POSTFIX = "_color"; //$NON-NLS-1$
     /**
      * Ort wo die Daten auf dem Compi gespeichert sind
      */
-    public final static String GPS_FILE_LOCATION = "gps_path"; //$NON-NLS-1$
+    public static final String GPS_FILE_LOCATION = "gps_path"; //$NON-NLS-1$
     /**
      * Ort, wo OTC die Daten absichert.
      */

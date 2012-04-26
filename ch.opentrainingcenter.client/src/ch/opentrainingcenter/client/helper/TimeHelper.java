@@ -9,20 +9,22 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 import ch.opentrainingcenter.client.Messages;
 
-public class TimeHelper {
+public final class TimeHelper {
 
     private static final int SEKUNDE_IN_MS = 1000;
-	private static final  String UNKNOWN_DATE = "--:--:--"; //$NON-NLS-1$
+    private static final String UNKNOWN_DATE = "--:--:--"; //$NON-NLS-1$
 
-    private TimeHelper(){
-    	
+    private TimeHelper() {
+
     }
+
     /**
      * Konvertiert Sekunden in H:MM:ss
      * 
      * @param sec
      *            sekunden
-     * @return Zeit im Format HH:MM:ss. Wenn Zeit negativ ist, wird --:--:-- zurückgegeben.
+     * @return Zeit im Format HH:MM:ss. Wenn Zeit negativ ist, wird --:--:--
+     *         zurückgegeben.
      */
     public static final String convertSecondsToHumanReadableZeit(final double sec) {
         if (sec < 0) {
@@ -48,13 +50,15 @@ public class TimeHelper {
     /**
      * konvertiere ein {@link XMLGregorianCalendar} in ein lesbareres format.
      * 
-     * wenn der parameter withDay true ist wird der wochentag noch mit ausgegeben
+     * wenn der parameter withDay true ist wird der wochentag noch mit
+     * ausgegeben
      * 
      * @param datum
      *            {@link XMLGregorianCalendar}
      * @param withDay
      *            flag ob der wochenag auch mitgegeben werden soll.
-     * @return das datum '2010.11.23 14:23' und wenn das flag with Day ist wird noch der ausgeschreibene wochentag vorangestellt.
+     * @return das datum '2010.11.23 14:23' und wenn das flag with Day ist wird
+     *         noch der ausgeschreibene wochentag vorangestellt.
      */
     public static final String convertGregorianDateToString(final XMLGregorianCalendar datum, final boolean withDay) {
         final Date time = datum.toGregorianCalendar().getTime();
@@ -72,13 +76,15 @@ public class TimeHelper {
     /**
      * konvertiere ein {@link Date} in ein lesbareres format.
      * 
-     * wenn der parameter withDay true ist wird der wochentag noch mit ausgegeben
+     * wenn der parameter withDay true ist wird der wochentag noch mit
+     * ausgegeben
      * 
      * @param datum
      *            {@link XMLGregorianCalendar}
      * @param withDay
      *            flag ob der wochenag auch mitgegeben werden soll.
-     * @return das datum '2010.11.23 14:23' und wenn das flag with Day ist wird noch der ausgeschreibene wochentag vorangestellt.
+     * @return das datum '2010.11.23 14:23' und wenn das flag with Day ist wird
+     *         noch der ausgeschreibene wochentag vorangestellt.
      */
     public static final String convertDateToString(final Date datum, final boolean withDay) {
         final Calendar calendar = Calendar.getInstance();

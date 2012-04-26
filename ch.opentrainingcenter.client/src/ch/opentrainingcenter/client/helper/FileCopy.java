@@ -9,16 +9,17 @@ import java.nio.channels.FileChannel;
 
 import org.apache.log4j.Logger;
 
-public class FileCopy {
-	
-	private static final Logger LOG = Logger.getLogger(FileCopy.class);
-	
-	private FileCopy(){
-		// do not create Instance of an Helper Methode.
-	}
-	
+public final class FileCopy {
+
+    private static final Logger LOG = Logger.getLogger(FileCopy.class);
+
+    private FileCopy() {
+        // do not create Instance of an Helper Methode.
+    }
+
     /**
-     * Kopiert ein file in ein anderes das destination file wird nie überschrieben werden.
+     * Kopiert ein file in ein anderes das destination file wird nie
+     * überschrieben werden.
      */
     public static void copyFile(final File sourceFile, final File destFile) throws IOException {
         if (sourceFile.getAbsolutePath().equals(destFile.getAbsolutePath())) {
@@ -36,8 +37,8 @@ public class FileCopy {
 
             long count = 0;
             final long size = source.size();
-            while ((count += destination.transferFrom(source, 0, size - count)) < size){
-            	LOG.info("do copy work...");
+            while ((count += destination.transferFrom(source, 0, size - count)) < size) {
+                LOG.info("do copy work...");
             }
         } finally {
             if (source != null) {

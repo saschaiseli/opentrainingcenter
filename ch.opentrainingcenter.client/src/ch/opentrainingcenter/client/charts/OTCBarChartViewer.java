@@ -68,14 +68,13 @@ public class OTCBarChartViewer implements ISelectionProvider {
 
     private static final int ALPHA = 255;
 
-	private static final int KILOMETER_IN_METER = 1000;
+    private static final int KILOMETER_IN_METER = 1000;
 
-	private static final Logger LOGGER = Logger.getLogger(OTCBarChartViewer.class);
+    private static final Logger LOGGER = Logger.getLogger(OTCBarChartViewer.class);
 
     private static final String DISTANZ = Messages.OTCBarChartViewer_0;
     private static final String HEART = Messages.OTCBarChartViewer_1;
     private final Composite composite;
-    private final IntervalXYDataset dataset;
     private final ChartComposite chartComposite;
     private final ListenerList selectionListeners = new ListenerList(ListenerList.IDENTITY);
     private final TimeSeries distanceSerie;
@@ -134,7 +133,8 @@ public class OTCBarChartViewer implements ISelectionProvider {
             createFilterButton(radioContainer, runType);
         }
 
-        // final Composite buttonsContainer = new Composite(composite, SWT.NONE);
+        // final Composite buttonsContainer = new Composite(composite,
+        // SWT.NONE);
         // final GridLayout buttonsLayout = new GridLayout(1, false);
         // buttonsContainer.setLayout(radioLayout);
 
@@ -218,7 +218,7 @@ public class OTCBarChartViewer implements ISelectionProvider {
 
         GridData gd = new GridData();
         b.setLayoutData(gd);
-        dataset = createOrUpdateDataSet(daten, DISTANZ, null);
+        final IntervalXYDataset dataset = createOrUpdateDataSet(daten, DISTANZ, null);
         createChart(dataset, type);
         chartComposite = new ChartComposite(composite, SWT.NONE, chart, true);
         gd = new GridData(SWT.FILL);
@@ -333,8 +333,8 @@ public class OTCBarChartViewer implements ISelectionProvider {
 
     private JFreeChart createChart(final IntervalXYDataset dataset, final ChartSerieType type) {
 
-        chart = ChartFactory.createXYBarChart(Messages.OTCBarChartViewer_6, Messages.OTCBarChartViewer_7, true, Messages.OTCBarChartViewer_8, dataset,
-                PlotOrientation.VERTICAL, false, true, false);
+        chart = ChartFactory.createXYBarChart(Messages.OTCBarChartViewer_6, Messages.OTCBarChartViewer_7, true, Messages.OTCBarChartViewer_8, dataset, PlotOrientation.VERTICAL,
+                false, true, false);
         chart.setAntiAlias(true);
         chart.setBorderVisible(false);
         final org.eclipse.swt.graphics.Color b = Display.getDefault().getActiveShell().getBackground();
@@ -365,12 +365,10 @@ public class OTCBarChartViewer implements ISelectionProvider {
 
         if (type.isLabelVisible()) {
             final String formatString = "{2}km (" + type.getLabel() + "{1})"; //$NON-NLS-1$//$NON-NLS-2$
-            final StandardXYToolTipGenerator generator = new StandardXYToolTipGenerator(formatString, new SimpleDateFormat(type.getFormatPattern()),
-                    new DecimalFormat("0.000")); //$NON-NLS-1$
+            final StandardXYToolTipGenerator generator = new StandardXYToolTipGenerator(formatString, new SimpleDateFormat(type.getFormatPattern()), new DecimalFormat("0.000")); //$NON-NLS-1$
             renderer.setBaseToolTipGenerator(generator);
 
-            final XYItemLabelGenerator labelGenerator = new StandardXYItemLabelGenerator(formatString, new SimpleDateFormat(type.getFormatPattern()),
-                    new DecimalFormat("0.000")); //$NON-NLS-1$
+            final XYItemLabelGenerator labelGenerator = new StandardXYItemLabelGenerator(formatString, new SimpleDateFormat(type.getFormatPattern()), new DecimalFormat("0.000")); //$NON-NLS-1$
             renderer.setBaseItemLabelGenerator(labelGenerator);
             renderer.setBaseItemLabelsVisible(true);
         }
@@ -404,7 +402,8 @@ public class OTCBarChartViewer implements ISelectionProvider {
 
     @Override
     public ISelection getSelection() {
-        // return selectedObject != null ? new StructuredSelection(selectedObject) : StructuredSelection.EMPTY;
+        // return selectedObject != null ? new
+        // StructuredSelection(selectedObject) : StructuredSelection.EMPTY;
         return null;
     }
 

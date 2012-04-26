@@ -27,17 +27,17 @@ public class GpsFileLoader implements IGpsFileLoader {
      * .File)
      */
     @Override
-    public List<ActivityT> convertActivity(final File file) throws Exception {
-	final ConvertContainer cc = new ConvertContainer(ExtensionHelper.getConverters());
-	final IConvert2Tcx converter = cc.getMatchingConverter(file);
-	final List<ActivityT> activities = new ArrayList<ActivityT>();
-	try {
-	    final List<ActivityT> convertActivity = converter.convertActivity(file);
-	    activities.addAll(convertActivity);
-	} catch (final Exception e1) {
-	    LOGGER.error("Fehler beim Importeren"); //$NON-NLS-1$
-	}
-	return Collections.unmodifiableList(activities);
+    public List<ActivityT> convertActivity(final File file) {
+        final ConvertContainer cc = new ConvertContainer(ExtensionHelper.getConverters());
+        final IConvert2Tcx converter = cc.getMatchingConverter(file);
+        final List<ActivityT> activities = new ArrayList<ActivityT>();
+        try {
+            final List<ActivityT> convertActivity = converter.convertActivity(file);
+            activities.addAll(convertActivity);
+        } catch (final Exception e1) {
+            LOGGER.error("Fehler beim Importeren"); //$NON-NLS-1$
+        }
+        return Collections.unmodifiableList(activities);
     }
 
     /*
@@ -47,9 +47,9 @@ public class GpsFileLoader implements IGpsFileLoader {
      * opentrainingcenter.transfer.IImported)
      */
     @Override
-    public ActivityT convertActivity(final IImported record) throws Exception {
-	final String fileName = record.getComments();
-	final File file = FindGarminFiles.loadAllGPSFilesFromAthlete(fileName);
-	return convertActivity(file).get(0);
+    public ActivityT convertActivity(final IImported record) {
+        final String fileName = record.getComments();
+        final File file = FindGarminFiles.loadAllGPSFilesFromAthlete(fileName);
+        return convertActivity(file).get(0);
     }
 }

@@ -11,14 +11,14 @@ import ch.opentrainingcenter.client.model.ISimpleTraining;
 import ch.opentrainingcenter.client.model.ModelFactory;
 import ch.opentrainingcenter.client.model.RunType;
 
-public class SimpleTrainingCalculator {
+public final class SimpleTrainingCalculator {
 
     private static final Logger LOGGER = Logger.getLogger(SimpleTrainingCalculator.class);
 
-    
-    private SimpleTrainingCalculator(){
-    	
+    private SimpleTrainingCalculator() {
+
     }
+
     /**
      * Erstellt eine neue Liste von Trainings. Der Input ist entweder nach dem
      * 
@@ -40,8 +40,7 @@ public class SimpleTrainingCalculator {
         return result;
     }
 
-    private static void compressTrainings(final List<ISimpleTraining> result, final Map.Entry<Integer, List<ISimpleTraining>> trainingsProWocheOderMonat,
-            final RunType filter) {
+    private static void compressTrainings(final List<ISimpleTraining> result, final Map.Entry<Integer, List<ISimpleTraining>> trainingsProWocheOderMonat, final RunType filter) {
         double distance = 0;
         double seconds = 0;
         int heartRate = 0;
@@ -83,7 +82,8 @@ public class SimpleTrainingCalculator {
     }
 
     /**
-     * @return true wenn filter passt oder nicht gefiltert werden soll, andernfalls false.
+     * @return true wenn filter passt oder nicht gefiltert werden soll,
+     *         andernfalls false.
      */
     private static boolean matchFilter(final RunType filter, final boolean filterResults, final ISimpleTraining training) {
         if (filterResults) {
@@ -94,12 +94,12 @@ public class SimpleTrainingCalculator {
         }
     }
 
-    private static int getMax(int maxSpeed, final String speed) {
-    	int result =maxSpeed;
+    private static int getMax(final int maxSpeed, final String speed) {
+        int result = maxSpeed;
         try {
             final int geschw = Integer.parseInt(speed);
             if (geschw > maxSpeed) {
-            	result = geschw;
+                result = geschw;
             }
         } catch (final NumberFormatException nfe) {
             // do nothing

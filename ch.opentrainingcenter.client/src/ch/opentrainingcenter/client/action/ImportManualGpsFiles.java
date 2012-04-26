@@ -1,7 +1,6 @@
 package ch.opentrainingcenter.client.action;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,7 +45,7 @@ import ch.opentrainingcenter.transfer.ITraining;
 public class ImportManualGpsFiles extends Action implements ISelectionListener, IWorkbenchAction {
     public static final String IMPORT_PATTERN = "_$_"; //$NON-NLS-1$
 
-    private static final Logger logger = Logger.getLogger(ImportManualGpsFiles.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ImportManualGpsFiles.class.getName());
 
     public static final String ID = "ch.opentrainingcenter.client.importManualFiles"; //$NON-NLS-1$
 
@@ -75,7 +74,7 @@ public class ImportManualGpsFiles extends Action implements ISelectionListener, 
             athlete = DatabaseAccessFactory.getDatabaseAccess().getAthlete(id);
         } else {
             athlete = null;
-            logger.error("Athlete ist nicht gesetzt...."); //$NON-NLS-1$
+            LOGGER.error("Athlete ist nicht gesetzt...."); //$NON-NLS-1$
         }
         defaultLocation = preferenceStore.getString(PreferenceConstants.GPS_FILE_LOCATION);
         locationForBackupFiles = preferenceStore.getString(PreferenceConstants.GPS_FILE_LOCATION_PROG);
@@ -104,7 +103,7 @@ public class ImportManualGpsFiles extends Action implements ISelectionListener, 
         readCurrentPreferences();
         final Shell sh = window.getShell();
         final IConfigurationElement[] extensions = Platform.getExtensionRegistry().getConfigurationElementsFor(Application.IMPORT_EXTENSION_POINT);
-        logger.info("Anzahl Extensions: " + extensions.length); //$NON-NLS-1$
+        LOGGER.info("Anzahl Extensions: " + extensions.length); //$NON-NLS-1$
         final FileDialog fileDialog = new FileDialog(window.getShell(), SWT.MULTI);
         fileDialog.setFilterPath(defaultLocation);
 
@@ -145,11 +144,11 @@ public class ImportManualGpsFiles extends Action implements ISelectionListener, 
                     }
 
                     private void importFile(final String filterPath, final IGpsFileModelWrapper modelWrapper, final IProgressMonitor monitor,
-                            final List<ActivityT> activitiesToImport, final List<Integer> ids) throws Exception, IOException {
+                            final List<ActivityT> activitiesToImport, final List<Integer> ids) throws Exception {
                         for (final IGpsFileModel model : modelWrapper.getGpsFileModels()) {
                             final File file = new File(filterPath, model.getFileName());
                             monitor.setTaskName(Messages.ImportManualGpsFiles_5 + file.getName());
-                            logger.info("importiere File: " + file.getName()); //$NON-NLS-1$
+                            LOGGER.info("importiere File: " + file.getName()); //$NON-NLS-1$
                             final List<ActivityT> activities = cc.getMatchingConverter(file).convertActivity(file);
 
                             importRecords(activitiesToImport, ids, model, file, activities);

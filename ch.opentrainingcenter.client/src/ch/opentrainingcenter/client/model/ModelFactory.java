@@ -8,12 +8,12 @@ import ch.opentrainingcenter.client.model.impl.GpsFileModelWrapper;
 import ch.opentrainingcenter.client.model.impl.SimpleTraining;
 import ch.opentrainingcenter.transfer.ITraining;
 
-public class ModelFactory {
+public final class ModelFactory {
 
-	
-	private ModelFactory(){
-		
-	}
+    private ModelFactory() {
+
+    }
+
     /**
      * Erstellt ein SimpleTraining mit dem Lauf Typ NONE
      */
@@ -22,8 +22,8 @@ public class ModelFactory {
                 overview.getMaxHeartBeat(), overview.getMaxSpeed(), RunType.NONE);
     }
 
-    public static ISimpleTraining createSimpleTraining(final double distanzInMeter, final double dauerInSekunden, final Date datum, final int avgHeartRate,
-            final int maxHeartRate, final int maxSpeed, final RunType type) {
+    public static ISimpleTraining createSimpleTraining(final double distanzInMeter, final double dauerInSekunden, final Date datum, final int avgHeartRate, final int maxHeartRate,
+            final int maxSpeed, final RunType type) {
         return new SimpleTraining(distanzInMeter, dauerInSekunden, datum, avgHeartRate, maxHeartRate, maxSpeed, type);
     }
 

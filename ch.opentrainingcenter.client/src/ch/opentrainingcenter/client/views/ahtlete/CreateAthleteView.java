@@ -359,9 +359,12 @@ public class CreateAthleteView extends ViewPart {
         modelValue = BeansObservables.observeValue(sportler, "gender"); //$NON-NLS-1$
         ctx.bindValue(widgetValue, modelValue);
 
-        // final IObservableValue errorObservable = WidgetProperties.text().observe(errorLabel);
+        // final IObservableValue errorObservable =
+        // WidgetProperties.text().observe(errorLabel);
         // // This one listenes to all changes
-        // ctx.bindValue(errorObservable, new AggregateValidationStatus(ctx.getBindings(), AggregateValidationStatus.MAX_SEVERITY), null, null);
+        // ctx.bindValue(errorObservable, new
+        // AggregateValidationStatus(ctx.getBindings(),
+        // AggregateValidationStatus.MAX_SEVERITY), null, null);
 
     }
 

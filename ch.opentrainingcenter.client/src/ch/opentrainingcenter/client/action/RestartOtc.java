@@ -12,7 +12,7 @@ public class RestartOtc extends Action implements ISelectionListener, IWorkbench
 
     public static final String ID = "ch.opentrainingcenter.client.RestartOtc"; //$NON-NLS-1$
 
-    private static final Logger logger = Logger.getLogger(RestartOtc.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(RestartOtc.class.getName());
 
     private final IWorkbenchWindow window;
 
@@ -24,7 +24,7 @@ public class RestartOtc extends Action implements ISelectionListener, IWorkbench
 
     @Override
     public void run() {
-        logger.info("OTC wird restarted"); //$NON-NLS-1$
+        LOGGER.info("OTC wird restarted"); //$NON-NLS-1$
         window.getWorkbench().restart();
     }
 

@@ -1,6 +1,7 @@
 package ch.opentrainingcenter.client.helper;
 
 import java.awt.Color;
+import java.awt.Paint;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -8,23 +9,24 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.PreferenceConstants;
 
-public class ColorFromPreferenceHelper {
+public final class ColorFromPreferenceHelper {
 
-	
-	
     private static final Logger LOGGER = Logger.getLogger(ColorFromPreferenceHelper.class);
 
-    private ColorFromPreferenceHelper(){
-    	
+    private ColorFromPreferenceHelper() {
+
     }
-    
+
     /**
-     * Gibt Farbe aus den Preferences zurück. Wird der Key nicht gefunden kommt schwarz zurück!
+     * Gibt Farbe aus den Preferences zurück. Wird der Key nicht gefunden kommt
+     * schwarz zurück!
      * 
      * @param preferenceKey
-     *            Key der auf die Preferences zugreift. {@link PreferenceConstants}.
+     *            Key der auf die Preferences zugreift.
+     *            {@link PreferenceConstants}.
      * @param alpha
-     *            alpha wert 0...255 Transparency (0 transparent, 255 maximale Farbe)
+     *            alpha wert 0...255 Transparency (0 transparent, 255 maximale
+     *            Farbe)
      * @return {@link Paint}
      */
     public static Color getColor(final String preferenceKey, final int alpha) {
@@ -38,4 +40,5 @@ public class ColorFromPreferenceHelper {
             return Color.black;
         }
     }
+
 }

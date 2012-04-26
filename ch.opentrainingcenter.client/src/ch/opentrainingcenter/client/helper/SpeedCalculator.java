@@ -1,14 +1,15 @@
 package ch.opentrainingcenter.client.helper;
 
-public class SpeedCalculator {
+public final class SpeedCalculator {
 
     private static final int KM_IN_METER = 1000;
 
     private static final int MINUTE_IN_SEKUNDEN = 60;
 
-    private SpeedCalculator(){
-    	
+    private SpeedCalculator() {
+
     }
+
     /**
      * @param d1
      *            position 1 in meter
@@ -27,7 +28,9 @@ public class SpeedCalculator {
     }
 
     /**
-     * berechnet die pace in minuten pro kilometer. die nachkommastellen verstehen sich als sekunden und nicht als dezimale angabe. das heisst 0.3 wäre 0 minuten und 30 sekunden.
+     * berechnet die pace in minuten pro kilometer. die nachkommastellen
+     * verstehen sich als sekunden und nicht als dezimale angabe. das heisst 0.3
+     * wäre 0 minuten und 30 sekunden.
      * 
      * @param d1
      *            position 1 in meter

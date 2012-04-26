@@ -20,13 +20,13 @@ public class DeleteImportedRecord extends Action implements ISelectionListener, 
 
     public static final String ID = "ch.opentrainingcenter.client.action.DeleteImportedRecord"; //$NON-NLS-1$
 
-    private static final Logger log = Logger.getLogger(DeleteImportedRecord.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(DeleteImportedRecord.class.getName());
 
     private final TrainingCenterDataCache cache = TrainingCenterDataCache.getInstance();
 
     public DeleteImportedRecord() {
-        setId(ID);
-        setText(Messages.DeleteImportedRecord_0);
+	setId(ID);
+	setText(Messages.DeleteImportedRecord_0);
     }
 
     @Override
@@ -34,20 +34,20 @@ public class DeleteImportedRecord extends Action implements ISelectionListener, 
     }
 
     @Override
-    public void selectionChanged(final IWorkbenchPart part, final ISelection selection) {
+    public void run() {
+	final List<?> selection = cache.getSelection();
+	final List<Date> deletedIds = new ArrayList<Date>();
+	for (final Object obj : selection) {
+	    final IImported record = (IImported) obj;
+	    final int dbId = record.getId();
+	    LOGGER.info("Lösche den Lauf mit der ID " + record.getActivityId() + " und der DB Id: " + dbId); //$NON-NLS-1$ //$NON-NLS-2$
+	    DatabaseAccessFactory.getDatabaseAccess().removeImportedRecord(record.getActivityId());
+	    deletedIds.add(record.getActivityId());
+	}
+	cache.remove(deletedIds);
     }
 
     @Override
-    public void run() {
-        final List<?> selection = cache.getSelection();
-        final List<Date> deletedIds = new ArrayList<Date>();
-        for (final Object obj : selection) {
-            final IImported record = (IImported) obj;
-            final int dbId = record.getId();
-            log.info("Lösche den Lauf mit der ID " + record.getActivityId() + " und der DB Id: " + dbId); //$NON-NLS-1$ //$NON-NLS-2$
-            DatabaseAccessFactory.getDatabaseAccess().removeImportedRecord(record.getActivityId());
-            deletedIds.add(record.getActivityId());
-        }
-        cache.remove(deletedIds);
+    public void selectionChanged(final IWorkbenchPart part, final ISelection selection) {
     }
 }

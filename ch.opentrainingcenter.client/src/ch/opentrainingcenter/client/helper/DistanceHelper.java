@@ -3,14 +3,15 @@ package ch.opentrainingcenter.client.helper;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
-public class DistanceHelper {
-	
-	private static final int MINUTE_IN_SEKUNDEN = 60;
-	private static final int KILOMETER_IN_METER = 1000;
+public final class DistanceHelper {
 
-	private DistanceHelper(){
-		
-	}
+    private static final int MINUTE_IN_SEKUNDEN = 60;
+    private static final int KILOMETER_IN_METER = 1000;
+
+    private DistanceHelper() {
+
+    }
+
     /**
      * z.B. aus 10123.234535 --> 10.123
      * 

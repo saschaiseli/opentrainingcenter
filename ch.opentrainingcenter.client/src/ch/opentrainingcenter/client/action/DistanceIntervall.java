@@ -12,7 +12,9 @@ import ch.opentrainingcenter.client.model.impl.GoldMedalModel.Intervall;
 
 public class DistanceIntervall {
 
-    private static final Logger logger = Logger.getLogger(DistanceIntervall.class);
+    private static final int KILOMETER_IN_METER = 1000;
+
+    private static final Logger LOGGER = Logger.getLogger(DistanceIntervall.class);
 
     private final Map<Intervall, List<Double>> paces = new HashMap<Intervall, List<Double>>();
 
@@ -25,7 +27,7 @@ public class DistanceIntervall {
     }
 
     public void addPace(final double pace, final double distanceInMeter) {
-        final int distanceInKilometer = (int) distanceInMeter / 1000;
+        final int distanceInKilometer = (int) distanceInMeter / KILOMETER_IN_METER;
         if (distanceInKilometer > Intervall.PLUS25.getVon()) {
             paces.get(Intervall.PLUS25).add(pace);
         } else if (distanceInKilometer > Intervall.VON20_BIS_25.getVon()) {
@@ -42,7 +44,7 @@ public class DistanceIntervall {
     public double getMax(final Intervall intervall) {
         final List<Double> list = paces.get(intervall);
         if (list == null || list.size() == 0) {
-            logger.info("Keine pace im intervall: " + intervall); //$NON-NLS-1$
+            LOGGER.info("Keine pace im intervall: " + intervall); //$NON-NLS-1$
             return -1d;
         } else {
             return Collections.min(list);
