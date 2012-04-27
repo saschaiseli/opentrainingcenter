@@ -44,19 +44,17 @@ public class GoldMedalAction {
         result.setHighestAveragePulse(!averageHeart.isEmpty() ? Collections.max(averageHeart) : -1);
         result.setLowestAveragePulse(!averageHeart.isEmpty() ? Collections.min(averageHeart) : -1);
 
-        final String paceKl10 = String.valueOf(di.getMax(Intervall.KLEINER_10) > 0 ? di.getMax(Intervall.KLEINER_10) : UNKNOWN);
-        final String pace10 = String.valueOf(di.getMax(Intervall.VON10_BIS_15) > 0 ? di.getMax(Intervall.VON10_BIS_15) : UNKNOWN);
-        final String pace15 = String.valueOf(di.getMax(Intervall.VON15_BIS_20) > 0 ? di.getMax(Intervall.VON15_BIS_20) : UNKNOWN);
-        final String pace20 = String.valueOf(di.getMax(Intervall.VON20_BIS_25) > 0 ? di.getMax(Intervall.VON20_BIS_25) : UNKNOWN);
-        final String pace25 = String.valueOf(di.getMax(Intervall.PLUS25) > 0 ? di.getMax(Intervall.PLUS25) : UNKNOWN);
-
-        result.setSchnellstePace(Intervall.KLEINER_10, paceKl10);
-        result.setSchnellstePace(Intervall.VON10_BIS_15, pace10);
-        result.setSchnellstePace(Intervall.VON15_BIS_20, pace15);
-        result.setSchnellstePace(Intervall.VON20_BIS_25, pace20);
-        result.setSchnellstePace(Intervall.PLUS25, pace25);
+        result.setSchnellstePace(Intervall.KLEINER_10, getPace(di, Intervall.KLEINER_10));
+        result.setSchnellstePace(Intervall.VON10_BIS_15, getPace(di, Intervall.VON10_BIS_15));
+        result.setSchnellstePace(Intervall.VON15_BIS_20, getPace(di, Intervall.VON15_BIS_20));
+        result.setSchnellstePace(Intervall.VON20_BIS_25, getPace(di, Intervall.VON20_BIS_25));
+        result.setSchnellstePace(Intervall.PLUS25, getPace(di, Intervall.PLUS25));
 
         return result;
+    }
+
+    private String getPace(final DistanceIntervall di, final GoldMedalModel.Intervall intervall) {
+        return String.valueOf(di.getMax(intervall) > 0 ? di.getMax(intervall) : UNKNOWN);
     }
 
     private String calculateBestePace(final List<Double> maxSpeed) {
