@@ -13,6 +13,7 @@ import ch.opentrainingcenter.client.charts.IStatistikCreator;
 import ch.opentrainingcenter.client.helper.SimpleTrainingCalculator;
 import ch.opentrainingcenter.client.model.ISimpleTraining;
 import ch.opentrainingcenter.client.model.RunType;
+import ch.opentrainingcenter.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.tcx.ActivityT;
 
 public class TrainingOverviewDatenAufbereiten {
@@ -30,7 +31,7 @@ public class TrainingOverviewDatenAufbereiten {
 
     public TrainingOverviewDatenAufbereiten(final IStatistikCreator statistik) {
         this.statistik = statistik;
-        cache = TrainingCenterDataCache.getInstance();
+        cache = TrainingCenterDataCache.getInstance(DatabaseAccessFactory.getDatabaseAccess());
         // wenn sich noch was im cache ändert...
         cache.addListener(new IRecordListener() {
 

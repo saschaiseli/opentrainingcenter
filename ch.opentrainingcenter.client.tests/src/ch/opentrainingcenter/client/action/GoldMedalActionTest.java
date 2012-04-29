@@ -30,7 +30,7 @@ public class GoldMedalActionTest {
         action = new GoldMedalAction();
         allImported = new ArrayList<IImported>();
         impA = CommonTransferFactory.createIImported();
-        trainingA = CommonTransferFactory.createTrainingDatabaseRecord(new Date(), 0, 0, 0, 0, 0);
+        trainingA = CommonTransferFactory.createTraining(new Date(), 0, 0, 0, 0, 0);
         impA.setTraining(trainingA);
         allImported.add(impA);
     }
@@ -72,7 +72,7 @@ public class GoldMedalActionTest {
     @Test
     public void testMaxHeartRate4() {
         impB = CommonTransferFactory.createIImported();
-        trainingB = CommonTransferFactory.createTrainingDatabaseRecord(new Date(), 0, 0, 0, 0, 0);
+        trainingB = CommonTransferFactory.createTraining(new Date(), 0, 0, 0, 0, 0);
         impB.setTraining(trainingB);
 
         trainingA.setMaxHeartBeat(2);
@@ -87,7 +87,7 @@ public class GoldMedalActionTest {
     @Test
     public void testMaxHeartRate5() {
         impB = CommonTransferFactory.createIImported();
-        trainingB = CommonTransferFactory.createTrainingDatabaseRecord(new Date(), 0, 0, 0, 0, 0);
+        trainingB = CommonTransferFactory.createTraining(new Date(), 0, 0, 0, 0, 0);
         impB.setTraining(trainingB);
 
         trainingA.setMaxHeartBeat(-1);
@@ -129,7 +129,7 @@ public class GoldMedalActionTest {
     @Test
     public void testAverageHeartRate4() {
         impB = CommonTransferFactory.createIImported();
-        trainingB = CommonTransferFactory.createTrainingDatabaseRecord(new Date(), 0, 0, 0, 0, 0);
+        trainingB = CommonTransferFactory.createTraining(new Date(), 0, 0, 0, 0, 0);
         impB.setTraining(trainingB);
 
         trainingA.setAverageHeartBeat(2);
@@ -144,7 +144,7 @@ public class GoldMedalActionTest {
     @Test
     public void testAverageHeartRate5() {
         impB = CommonTransferFactory.createIImported();
-        trainingB = CommonTransferFactory.createTrainingDatabaseRecord(new Date(), 0, 0, 0, 0, 0);
+        trainingB = CommonTransferFactory.createTraining(new Date(), 0, 0, 0, 0, 0);
         impB.setTraining(trainingB);
 
         trainingA.setAverageHeartBeat(-1);
@@ -186,7 +186,7 @@ public class GoldMedalActionTest {
     @Test
     public void testLowestLowestAverageHeartRate4() {
         impB = CommonTransferFactory.createIImported();
-        trainingB = CommonTransferFactory.createTrainingDatabaseRecord(new Date(), 0, 0, 0, 0, 0);
+        trainingB = CommonTransferFactory.createTraining(new Date(), 0, 0, 0, 0, 0);
         impB.setTraining(trainingB);
 
         trainingA.setAverageHeartBeat(2);
@@ -201,7 +201,7 @@ public class GoldMedalActionTest {
     @Test
     public void testLowestLowestAverageHeartRate5() {
         impB = CommonTransferFactory.createIImported();
-        trainingB = CommonTransferFactory.createTrainingDatabaseRecord(new Date(), 0, 0, 0, 0, 0);
+        trainingB = CommonTransferFactory.createTraining(new Date(), 0, 0, 0, 0, 0);
         impB.setTraining(trainingB);
 
         trainingA.setAverageHeartBeat(-1);
@@ -243,7 +243,7 @@ public class GoldMedalActionTest {
     @Test
     public void testDauer4() {
         impB = CommonTransferFactory.createIImported();
-        trainingB = CommonTransferFactory.createTrainingDatabaseRecord(new Date(), 0, 0, 0, 0, 0);
+        trainingB = CommonTransferFactory.createTraining(new Date(), 0, 0, 0, 0, 0);
         impB.setTraining(trainingB);
 
         trainingA.setDauerInSekunden(2);
@@ -258,7 +258,7 @@ public class GoldMedalActionTest {
     @Test
     public void testDauer5() {
         impB = CommonTransferFactory.createIImported();
-        trainingB = CommonTransferFactory.createTrainingDatabaseRecord(new Date(), 0, 0, 0, 0, 0);
+        trainingB = CommonTransferFactory.createTraining(new Date(), 0, 0, 0, 0, 0);
         impB.setTraining(trainingB);
 
         trainingA.setDauerInSekunden(-1);
@@ -301,7 +301,7 @@ public class GoldMedalActionTest {
     @Test
     public void testPace4() {
         impB = CommonTransferFactory.createIImported();
-        trainingB = CommonTransferFactory.createTrainingDatabaseRecord(new Date(), 120, 1000, 0, 0, 0);
+        trainingB = CommonTransferFactory.createTraining(new Date(), 120, 1000, 0, 0, 0);
         impB.setTraining(trainingB);
 
         trainingA.setDauerInSekunden(60);
@@ -316,7 +316,7 @@ public class GoldMedalActionTest {
     @Test
     public void testPace5() {
         impB = CommonTransferFactory.createIImported();
-        trainingB = CommonTransferFactory.createTrainingDatabaseRecord(new Date(), 30, 1000, 0, 0, 0);
+        trainingB = CommonTransferFactory.createTraining(new Date(), 30, 1000, 0, 0, 0);
         impB.setTraining(trainingB);
 
         trainingA.setDauerInSekunden(60);
@@ -358,7 +358,7 @@ public class GoldMedalActionTest {
     @Test
     public void testLongestDistance4() {
         impB = CommonTransferFactory.createIImported();
-        trainingB = CommonTransferFactory.createTrainingDatabaseRecord(new Date(), 0, 0, 0, 0, 0);
+        trainingB = CommonTransferFactory.createTraining(new Date(), 0, 0, 0, 0, 0);
         impB.setTraining(trainingB);
 
         trainingA.setLaengeInMeter(2);
@@ -373,7 +373,7 @@ public class GoldMedalActionTest {
     @Test
     public void testLongestDistance5() {
         impB = CommonTransferFactory.createIImported();
-        trainingB = CommonTransferFactory.createTrainingDatabaseRecord(new Date(), 0, 0, 0, 0, 0);
+        trainingB = CommonTransferFactory.createTraining(new Date(), 0, 0, 0, 0, 0);
         impB.setTraining(trainingB);
 
         trainingA.setLaengeInMeter(-1);

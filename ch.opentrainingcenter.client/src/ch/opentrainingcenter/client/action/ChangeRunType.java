@@ -43,7 +43,7 @@ public class ChangeRunType extends Action implements ISelectionListener, IWorkbe
             RunTypeActionContainer.update(record.getTrainingType().getId());
             changedTypes.add(record);
         }
-        cache.update(changedTypes, getType());
+        cache.changeType(changedTypes, getType());
         cache.update();
     }
 

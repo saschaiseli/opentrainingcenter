@@ -19,6 +19,7 @@ import ch.opentrainingcenter.client.model.ModelFactory;
 import ch.opentrainingcenter.client.model.RunType;
 import ch.opentrainingcenter.client.model.TrainingOverviewFactory;
 import ch.opentrainingcenter.db.DatabaseAccessFactory;
+import ch.opentrainingcenter.db.IDatabaseAccess;
 import ch.opentrainingcenter.importer.IGpsFileLoader;
 import ch.opentrainingcenter.importer.impl.GpsFileLoader;
 import ch.opentrainingcenter.tcx.ActivityListT;
@@ -53,27 +54,41 @@ public final class TrainingCenterDataCache {
 
     public static final Logger LOGGER = Logger.getLogger(TrainingCenterDataCache.class);
 
+    private final IDatabaseAccess delegate;
+
     private TrainingCenterDataCache() {
-        this(new GpsFileLoader());
+        this(new GpsFileLoader(), DatabaseAccessFactory.getDatabaseAccess());
     }
 
-    private TrainingCenterDataCache(final IGpsFileLoader loadGpsFile) {
+    private TrainingCenterDataCache(final IDatabaseAccess delegate) {
+        this(new GpsFileLoader(), delegate);
+    }
+
+    private TrainingCenterDataCache(final IGpsFileLoader loadGpsFile, final IDatabaseAccess delegate) {
+        this.delegate = delegate;
         database = new TrainingCenterDatabaseT();
         final ActivityListT activityList = new ActivityListT();
         database.setActivities(activityList);
         this.loadGpsFile = loadGpsFile;
     }
 
-    public static TrainingCenterDataCache getInstance() {
+    public static TrainingCenterDataCache getInstance(final IGpsFileLoader loadGpsFile, final IDatabaseAccess delegate) {
         if (instance == null) {
-            instance = new TrainingCenterDataCache();
+            instance = new TrainingCenterDataCache(loadGpsFile, delegate);
         }
         return instance;
     }
 
-    protected static TrainingCenterDataCache getInstance(final IGpsFileLoader loadGpsFile) {
+    public static TrainingCenterDataCache getInstance(final IDatabaseAccess delegate) {
         if (instance == null) {
-            instance = new TrainingCenterDataCache(loadGpsFile);
+            instance = new TrainingCenterDataCache(delegate);
+        }
+        return instance;
+    }
+
+    public static TrainingCenterDataCache getInstance() {
+        if (instance == null) {
+            instance = new TrainingCenterDataCache();
         }
         return instance;
     }
@@ -103,7 +118,7 @@ public final class TrainingCenterDataCache {
             final Date key = activity.getId().toGregorianCalendar().getTime();
             cache.put(key.getTime(), activity);
 
-            final IImported imported = DatabaseAccessFactory.getDatabaseAccess().getImportedRecord(key);
+            final IImported imported = delegate.getImportedRecord(key);
             allImported.put(key, imported);
         }
         fireRecordAdded(null);
@@ -121,18 +136,27 @@ public final class TrainingCenterDataCache {
     }
 
     public void setSelectedProfile(final IAthlete athlete) {
-        this.selectedProfile = athlete;
         resetCache();
-    }
-
-    private void resetCache() {
-        database.getActivities().getActivity().clear();
-        selectedImport = null;
-        selectedItems = null;
+        this.selectedProfile = athlete;
     }
 
     /**
-     * Ist noch keiner selektiert, wird der neuste, also derjenige mit dem jüngsten datum, zurückgegeben. Dieser wird dann auch als selektierten Lauf gesetzt.
+     * Methode für Testzwecke
+     */
+    protected void resetCache() {
+        database.getActivities().getActivity().clear();
+        allImported.clear();
+        simpleTrainings.clear();
+        cache.clear();
+        selectedImport = null;
+        selectedItems = null;
+        selectedProfile = null;
+    }
+
+    /**
+     * Ist noch keiner selektiert, wird der neuste, also derjenige mit dem
+     * jüngsten datum, zurückgegeben. Dieser wird dann auch als selektierten
+     * Lauf gesetzt.
      * 
      * @return den selektierten record oder den neusten record.
      */
@@ -201,14 +225,21 @@ public final class TrainingCenterDataCache {
         for (final Date key : deletedIds) {
             allImported.remove(key);
         }
+        final List<ISimpleTraining> simpleTrainingsToDelete = new ArrayList<ISimpleTraining>();
+        for (final ISimpleTraining st : simpleTrainings) {
+            if (deletedIds.contains(st.getDatum())) {
+                simpleTrainingsToDelete.add(st);
+            }
+        }
+        simpleTrainings.removeAll(simpleTrainingsToDelete);
         fireRecordDeleted(activitiesToDelete);
     }
 
-    public void update(final List<IImported> changedType, final RunType type) {
-        for (final IImported record : changedType) {
+    public void changeType(final List<IImported> changedRecords, final RunType type) {
+        for (final IImported record : changedRecords) {
             final IImported imp = allImported.get(record.getActivityId());
             for (final ISimpleTraining st : simpleTrainings) {
-                if (st.getDatum().equals(imp.getActivityId())) {
+                if (imp != null && st.getDatum().equals(imp.getActivityId())) {
                     st.setType(type);
                 }
             }
@@ -225,7 +256,7 @@ public final class TrainingCenterDataCache {
     }
 
     private void fireRecordAdded(final Collection<ActivityT> activitiesAdded) {
-        if (listeners == null){
+        if (listeners == null) {
             return;
         }
         final Object[] rls = listeners.getListeners();
@@ -237,7 +268,7 @@ public final class TrainingCenterDataCache {
     }
 
     private void fireRecordDeleted(final List<ActivityT> deletedActivities) {
-        if (listeners == null){
+        if (listeners == null) {
             return;
         }
         final Object[] rls = listeners.getListeners();
@@ -261,7 +292,6 @@ public final class TrainingCenterDataCache {
                 listeners = null;
             }
         }
-
     }
 
     public List<ISimpleTraining> getAllSimpleTrainings() {
@@ -280,8 +310,8 @@ public final class TrainingCenterDataCache {
         return selectedProfile;
     }
 
-    public void cacheLoaded() {
-        cacheLoaded = true;
+    public void setCacheLoaded(final boolean loaded) {
+        cacheLoaded = loaded;
     }
 
     public boolean isCacheLoaded() {
@@ -296,8 +326,12 @@ public final class TrainingCenterDataCache {
     }
 
     public boolean contains(final Date activityId) {
-        final long key = activityId.getTime();
-        return cache.containsKey(key);
+        if (activityId != null) {
+            final long key = activityId.getTime();
+            return cache.containsKey(key);
+        } else {
+            return false;
+        }
     }
 
     public ActivityT get(final Date activityId) {

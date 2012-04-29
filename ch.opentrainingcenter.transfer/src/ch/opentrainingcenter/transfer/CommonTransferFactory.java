@@ -20,11 +20,11 @@ public class CommonTransferFactory {
         return new Athlete(name, age, maxHeartBeat);
     }
 
-    public static ITrainingType createAthlete(final int id, final String title, final String description) {
+    public static ITrainingType createTrainingType(final int id, final String title, final String description) {
         return new TrainingType(id, title, description);
     }
 
-    public static ITraining createTrainingDatabaseRecord(final Date dateOfStart, final double timeInSeconds, final double distance, final int avgHeartRate,
+    public static ITraining createTraining(final Date dateOfStart, final double timeInSeconds, final double distance, final int avgHeartRate,
             final int maxHeartBeat, final double maximumSpeed) {
         return new Training(dateOfStart, timeInSeconds, distance, avgHeartRate, maxHeartBeat, maximumSpeed);
     }

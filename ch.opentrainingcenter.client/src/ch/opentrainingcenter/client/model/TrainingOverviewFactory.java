@@ -63,7 +63,7 @@ public final class TrainingOverviewFactory {
         } else {
             avgHeartRate = 0;
         }
-        return CommonTransferFactory.createTrainingDatabaseRecord(dateOfStart, timeInSeconds, distance, avgHeartRate, maxHeartBeat, maximumSpeed);
+        return CommonTransferFactory.createTraining(dateOfStart, timeInSeconds, distance, avgHeartRate, maxHeartBeat, maximumSpeed);
     }
 
     private static boolean hasCardio(final ActivityLapT lap) {
