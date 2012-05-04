@@ -1,6 +1,7 @@
 package ch.opentrainingcenter.client;
 
 import java.io.File;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.jobs.Job;
@@ -27,7 +28,12 @@ import ch.opentrainingcenter.client.action.BackupGpsFiles;
 import ch.opentrainingcenter.client.action.ImportManualGpsFiles;
 import ch.opentrainingcenter.client.action.RestartOtc;
 import ch.opentrainingcenter.client.action.job.BackupJob;
+import ch.opentrainingcenter.client.cache.Cache;
+import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
+import ch.opentrainingcenter.db.DatabaseAccessFactory;
+import ch.opentrainingcenter.db.IDatabaseAccess;
 import ch.opentrainingcenter.importer.ExtensionHelper;
+import ch.opentrainingcenter.importer.IConvert2Tcx;
 
 public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 
@@ -61,7 +67,10 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
         register(windowsAction);
 
         final IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-        importGpsFilesManual = new ImportManualGpsFiles(window, Messages.ApplicationActionBarAdvisor_ImportGpsFiles);
+        final IDatabaseAccess databaseAccess = DatabaseAccessFactory.getDatabaseAccess();
+        final Cache cache = TrainingCenterDataCache.getInstance();
+        final Map<String, IConvert2Tcx> converters = ExtensionHelper.getConverters();
+        importGpsFilesManual = new ImportManualGpsFiles(window, Messages.ApplicationActionBarAdvisor_ImportGpsFiles, databaseAccess, cache, store, converters);
         register(importGpsFilesManual);
 
         final String source = store.getString(PreferenceConstants.GPS_FILE_LOCATION_PROG);
