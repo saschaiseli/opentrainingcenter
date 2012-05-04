@@ -1,4 +1,4 @@
-package ch.opentrainingcenter.client.action;
+package ch.opentrainingcenter.client.views.dialoge;
 
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.CheckboxCellEditor;
@@ -8,7 +8,7 @@ import org.eclipse.swt.SWT;
 
 import ch.opentrainingcenter.client.model.IGpsFileModel;
 
-public class RunTypeImportEditingSupport extends EditingSupport {
+class RunTypeImportEditingSupport extends EditingSupport {
 
     private final TableViewer viewer;
 

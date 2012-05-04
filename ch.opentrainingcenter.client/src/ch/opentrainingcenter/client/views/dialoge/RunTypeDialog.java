@@ -1,4 +1,4 @@
-package ch.opentrainingcenter.client.action;
+package ch.opentrainingcenter.client.views.dialoge;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package ch.opentrainingcenter.client.action;
+package ch.opentrainingcenter.client.views.dialoge;
 
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ComboBoxCellEditor;
@@ -8,7 +8,7 @@ import org.eclipse.jface.viewers.TableViewer;
 import ch.opentrainingcenter.client.model.IGpsFileModel;
 import ch.opentrainingcenter.client.model.RunType;
 
-public class RunTypeEditingSupport extends EditingSupport {
+class RunTypeEditingSupport extends EditingSupport {
 
     private final TableViewer viewer;
 
