@@ -5,19 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.FileDialog;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -34,11 +29,12 @@ import ch.opentrainingcenter.client.model.IGpsFileModel;
 import ch.opentrainingcenter.client.model.IGpsFileModelWrapper;
 import ch.opentrainingcenter.client.model.TrainingOverviewFactory;
 import ch.opentrainingcenter.client.views.IImageKeys;
+import ch.opentrainingcenter.client.views.dialoge.IFilterDialog;
+import ch.opentrainingcenter.client.views.dialoge.ImportFileDialog;
 import ch.opentrainingcenter.client.views.dialoge.RunTypeDialog;
 import ch.opentrainingcenter.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.importer.ConvertContainer;
 import ch.opentrainingcenter.importer.ExtensionHelper;
-import ch.opentrainingcenter.importer.IConvert2Tcx;
 import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.ITraining;
@@ -58,15 +54,11 @@ public class ImportManualGpsFiles extends Action implements ISelectionListener, 
 
     private IAthlete athlete;
 
-    private final String defaultLocation;
-
     private final String locationForBackupFiles;
 
     private final IPreferenceStore preferenceStore;
 
     private final ConvertContainer cc;
-
-    private final List<String> filePrefixes = new ArrayList<String>();
 
     public ImportManualGpsFiles(final IWorkbenchWindow window, final String toolTipText) {
         this.window = window;
@@ -81,13 +73,10 @@ public class ImportManualGpsFiles extends Action implements ISelectionListener, 
             athlete = null;
             LOGGER.error("Athlete ist nicht gesetzt...."); //$NON-NLS-1$
         }
-        defaultLocation = preferenceStore.getString(PreferenceConstants.GPS_FILE_LOCATION);
         locationForBackupFiles = preferenceStore.getString(PreferenceConstants.GPS_FILE_LOCATION_PROG);
-
         cc = new ConvertContainer(ExtensionHelper.getConverters());
-
         setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(Application.ID, IImageKeys.IMPORT_GPS_KLEIN));
-        window.getSelectionService().addSelectionListener(this);
+        this.window.getSelectionService().addSelectionListener(this);
     }
 
     @Override
@@ -105,21 +94,13 @@ public class ImportManualGpsFiles extends Action implements ISelectionListener, 
 
     @Override
     public void run() {
-        readCurrentPreferences();
-        final Shell sh = window.getShell();
-        final IConfigurationElement[] extensions = Platform.getExtensionRegistry().getConfigurationElementsFor(Application.IMPORT_EXTENSION_POINT);
-        LOGGER.info("Anzahl Extensions: " + extensions.length); //$NON-NLS-1$
-        final FileDialog fileDialog = new FileDialog(window.getShell(), SWT.MULTI);
-        fileDialog.setFilterPath(defaultLocation);
-
-        fileDialog.setFilterExtensions(filePrefixes.toArray(new String[0]));
-        fileDialog.setText(Messages.ImportManualGpsFiles_FileDialog);
-        final String s = fileDialog.open();
+        final IFilterDialog importDialog = new ImportFileDialog(window.getShell());
+        final String s = importDialog.open();
         if (s != null) {
-            final String[] fileNames = fileDialog.getFileNames();
-            final String filterPath = fileDialog.getFilterPath();
+            final String[] fileNames = importDialog.getFileNames();
+            final String filterPath = importDialog.getFilterPath();
 
-            final RunTypeDialog dialog = new RunTypeDialog(sh, fileNames);
+            final RunTypeDialog dialog = new RunTypeDialog(window.getShell(), fileNames);
             final int open = dialog.open();
             if (open >= 0) {
                 final IGpsFileModelWrapper modelWrapper = dialog.getModelWrapper();
@@ -181,15 +162,5 @@ public class ImportManualGpsFiles extends Action implements ISelectionListener, 
 
         }
 
-    }
-
-    private void readCurrentPreferences() {
-
-        for (final IConvert2Tcx tcx : cc.getAllConverter()) {
-            if (preferenceStore.getBoolean(PreferenceConstants.FILE_SUFFIX_FOR_BACKUP + tcx.getFilePrefix())) {
-                filePrefixes.add("*." + tcx.getFilePrefix()); //$NON-NLS-1$
-                filePrefixes.add("*." + tcx.getFilePrefix().toUpperCase()); //$NON-NLS-1$
-            }
-        }
     }
 }
