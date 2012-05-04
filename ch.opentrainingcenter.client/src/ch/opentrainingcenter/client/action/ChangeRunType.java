@@ -9,20 +9,44 @@ import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 
-import ch.opentrainingcenter.client.cache.TrainingCenterDataCache;
+import ch.opentrainingcenter.client.cache.Cache;
 import ch.opentrainingcenter.client.model.RunType;
-import ch.opentrainingcenter.db.DatabaseAccessFactory;
+import ch.opentrainingcenter.db.IDatabaseAccess;
 import ch.opentrainingcenter.transfer.IImported;
 
 public class ChangeRunType extends Action implements ISelectionListener, IWorkbenchAction {
     public static final String ID = "ch.opentrainingcenter.client.action.ChangeRunType"; //$NON-NLS-1$
     private final RunType type;
-    private final TrainingCenterDataCache cache = TrainingCenterDataCache.getInstance();
+    private final Cache cache;
+    private final IDatabaseAccess databaseAccess;
 
-    public ChangeRunType(final RunType type) {
+    ChangeRunType(final RunType type, final IDatabaseAccess databaseAccess, final Cache cache) {
         this.type = type;
+        this.databaseAccess = databaseAccess;
+        this.cache = cache;
         setId(ID);
         setText(type.getTitle());
+    }
+
+    @Override
+    public void run() {
+        final List<?> selection = cache.getSelection();
+        if (selection == null) {
+            return;
+        }
+        final List<IImported> changedTypes = new ArrayList<IImported>();
+
+        for (final Object obj : selection) {
+            final IImported record = (IImported) obj;
+            databaseAccess.updateRecord(record, getType().getIndex());
+            changedTypes.add(record);
+        }
+        cache.changeType(changedTypes, getType());
+        cache.update();
+    }
+
+    RunType getType() {
+        return type;
     }
 
     @Override
@@ -31,23 +55,5 @@ public class ChangeRunType extends Action implements ISelectionListener, IWorkbe
 
     @Override
     public void selectionChanged(final IWorkbenchPart part, final ISelection selection) {
-    }
-
-    @Override
-    public void run() {
-        final List<?> selection = cache.getSelection();
-        final List<IImported> changedTypes = new ArrayList<IImported>();
-        for (final Object obj : selection) {
-            final IImported record = (IImported) obj;
-            DatabaseAccessFactory.getDatabaseAccess().updateRecord(record, getType().getIndex());
-            RunTypeActionContainer.update(record.getTrainingType().getId());
-            changedTypes.add(record);
-        }
-        cache.changeType(changedTypes, getType());
-        cache.update();
-    }
-
-    public RunType getType() {
-        return type;
     }
 }

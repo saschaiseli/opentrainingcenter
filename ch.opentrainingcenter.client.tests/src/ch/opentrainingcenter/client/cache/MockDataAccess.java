@@ -1,6 +1,7 @@
 package ch.opentrainingcenter.client.cache;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +14,7 @@ import ch.opentrainingcenter.transfer.ITraining;
 
 public class MockDataAccess implements IDatabaseAccess {
 
-    private IImported iimported;
+    private final Map<Date, IImported> mapOfImported = new HashMap<Date, IImported>();
 
     @Override
     public Object create() throws CoreException {
@@ -46,7 +47,7 @@ public class MockDataAccess implements IDatabaseAccess {
 
     @Override
     public IImported getImportedRecord(final Date key) {
-        return iimported;
+        return mapOfImported.get(key);
     }
 
     @Override
@@ -74,8 +75,7 @@ public class MockDataAccess implements IDatabaseAccess {
 
     }
 
-    public void setIimported(final IImported iimported) {
-        this.iimported = iimported;
+    public void addIimported(final Date date, final IImported iimported) {
+        mapOfImported.put(date, iimported);
     }
-
 }

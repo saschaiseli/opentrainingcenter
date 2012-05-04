@@ -28,7 +28,7 @@ import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.Application;
 import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.client.PreferenceConstants;
-import ch.opentrainingcenter.client.cache.TrainingCenterDataCache;
+import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
 import ch.opentrainingcenter.client.helper.FileCopy;
 import ch.opentrainingcenter.client.model.IGpsFileModel;
 import ch.opentrainingcenter.client.model.IGpsFileModelWrapper;
@@ -42,6 +42,10 @@ import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.ITraining;
 
+/**
+ * this class smells like hell!!!
+ * 
+ */
 public class ImportManualGpsFiles extends Action implements ISelectionListener, IWorkbenchAction {
     public static final String IMPORT_PATTERN = "_$_"; //$NON-NLS-1$
 

@@ -1,4 +1,4 @@
-package ch.opentrainingcenter.client.action;
+package ch.opentrainingcenter.client.action.job;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -18,6 +19,7 @@ import org.eclipse.core.runtime.jobs.Job;
 
 import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.client.helper.GpsFileNameFilter;
+import ch.opentrainingcenter.importer.IConvert2Tcx;
 
 public class BackupJob extends Job {
 
@@ -31,21 +33,19 @@ public class BackupJob extends Job {
 
     private final String source;
 
-    public BackupJob(final String name, final String source, final File destFolder) {
+    public BackupJob(final String name, final String source, final File destFolder, final Map<String, IConvert2Tcx> converters) {
         super(name);
         this.source = source;
         this.destFolder = destFolder;
-        final File f = new File(source);
-        fileToCopy = f.list(new GpsFileNameFilter());
+        final File f = new File(this.source);
+        fileToCopy = f.list(new GpsFileNameFilter(converters));
     }
 
     @Override
     protected IStatus run(final IProgressMonitor monitor) {
-        monitor.beginTask(Messages.BackupGpsFiles_1, fileToCopy.length);
+        monitor.beginTask(Messages.BackupGpsFiles_1, getFileToCopy().length);
 
-        final Date date = new Date();
-        final SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd"); //$NON-NLS-1$
-        final String zipFileName = df.format(date) + ".zip"; //$NON-NLS-1$
+        final String zipFileName = createZipFileName();
         final File zipFile = new File(destFolder, zipFileName);
 
         ZipOutputStream out = null;
@@ -55,7 +55,7 @@ public class BackupJob extends Job {
             LOG.error(e.getMessage());
         }
         final byte[] buf = new byte[BYTE];
-        for (final String fileName : fileToCopy) {
+        for (final String fileName : getFileToCopy()) {
             final File file = new File(source + File.separator + fileName);
             try {
                 addToZip(out, buf, file);
@@ -88,5 +88,16 @@ public class BackupJob extends Job {
         // Complete the entry
         out.closeEntry();
         in.close();
+    }
+
+    protected String createZipFileName() {
+        final Date date = new Date();
+        final SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd"); //$NON-NLS-1$
+        final String zipFileName = df.format(date) + ".zip"; //$NON-NLS-1$
+        return zipFileName;
+    }
+
+    public String[] getFileToCopy() {
+        return fileToCopy;
     }
 }

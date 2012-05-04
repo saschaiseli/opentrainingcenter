@@ -11,9 +11,11 @@ public class GpsFileModelWrapper implements IGpsFileModelWrapper {
     private final List<IGpsFileModel> fileModelsForImport = new ArrayList<IGpsFileModel>();
 
     public GpsFileModelWrapper(final List<IGpsFileModel> fileModels) {
-        for (final IGpsFileModel model : fileModels) {
-            if (model.isImportFile()) {
-                fileModelsForImport.add(model);
+        if (fileModels != null) {
+            for (final IGpsFileModel model : fileModels) {
+                if (model.isImportFile()) {
+                    fileModelsForImport.add(model);
+                }
             }
         }
 

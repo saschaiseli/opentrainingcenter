@@ -13,7 +13,7 @@ import ch.opentrainingcenter.transfer.ITraining;
 
 public interface IDatabaseAccess extends IExecutableExtensionFactory {
 
-    final String EXTENSION_POINT_NAME = "classImportedDao"; //$NON-NLS-1$
+    String EXTENSION_POINT_NAME = "classImportedDao"; //$NON-NLS-1$
 
     /**
      * Wenn die db nicht vorhanden ist, wird die ganze datenbank mit sql queries

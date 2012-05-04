@@ -28,12 +28,14 @@ import ch.opentrainingcenter.client.PreferenceConstants;
 import ch.opentrainingcenter.client.action.ChangeRunType;
 import ch.opentrainingcenter.client.action.DeleteImportedRecord;
 import ch.opentrainingcenter.client.action.RunTypeActionContainer;
+import ch.opentrainingcenter.client.cache.Cache;
 import ch.opentrainingcenter.client.cache.IRecordListener;
-import ch.opentrainingcenter.client.cache.TrainingCenterDataCache;
+import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
 import ch.opentrainingcenter.client.helper.DistanceHelper;
 import ch.opentrainingcenter.client.helper.TimeHelper;
 import ch.opentrainingcenter.client.views.overview.SingleActivityViewPart;
 import ch.opentrainingcenter.db.DatabaseAccessFactory;
+import ch.opentrainingcenter.db.IDatabaseAccess;
 import ch.opentrainingcenter.importer.ImportActivityJob;
 import ch.opentrainingcenter.importer.ImportJob;
 import ch.opentrainingcenter.tcx.ActivityT;
@@ -50,7 +52,11 @@ public class NavigationView extends ViewPart {
 
     public static final Logger LOGGER = Logger.getLogger(NavigationView.class);
 
-    private final TrainingCenterDataCache cache = TrainingCenterDataCache.getInstance();
+    private final Cache cache = TrainingCenterDataCache.getInstance();
+
+    private final RunTypeActionContainer container = new RunTypeActionContainer(DatabaseAccessFactory.getDatabaseAccess(), cache);
+
+    private final IDatabaseAccess databaseAccess = DatabaseAccessFactory.getDatabaseAccess();
 
     /**
      * This is a callback that will allow us to create the viewer and initialize
@@ -63,13 +69,13 @@ public class NavigationView extends ViewPart {
 
         final String athleteId = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.ATHLETE_ID);
         final int id = Integer.parseInt(athleteId);
-        final IAthlete athlete = DatabaseAccessFactory.getDatabaseAccess().getAthlete(id);
+        final IAthlete athlete = databaseAccess.getAthlete(id);
 
         viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
         viewer.setContentProvider(new ViewContentProvider());
         viewer.setLabelProvider(new ViewLabelProvider());
 
-        final DeleteImportedRecord deleteRecordAction = new DeleteImportedRecord();
+        final DeleteImportedRecord deleteRecordAction = new DeleteImportedRecord(cache, databaseAccess);
 
         final MenuManager menuMgr = new MenuManager("KontextMenu"); //$NON-NLS-1$
         menuMgr.setRemoveAllWhenShown(true);
@@ -77,7 +83,7 @@ public class NavigationView extends ViewPart {
             @Override
             public void menuAboutToShow(final IMenuManager manager) {
                 final MenuManager subMenu = new MenuManager(Messages.NavigationView_9);
-                for (final ChangeRunType crt : RunTypeActionContainer.getActions()) {
+                for (final ChangeRunType crt : container.getActions()) {
                     subMenu.add(crt);
                 }
                 manager.add(subMenu);
@@ -119,7 +125,7 @@ public class NavigationView extends ViewPart {
                     final IImported record = (IImported) first;
                     cache.setSelection(selection.toArray());
                     final ITrainingType trainingType = record.getTrainingType();
-                    RunTypeActionContainer.update(trainingType.getId());
+                    container.update(trainingType.getId());
                     writeToStatusLine(record);
                 } else {
                     writeToStatusLine(""); //$NON-NLS-1$
@@ -136,13 +142,12 @@ public class NavigationView extends ViewPart {
             }
         });
 
-        final TrainingCenterDataCache cache = TrainingCenterDataCache.getInstance();
         if (!cache.isCacheLoaded()) {
             final Job job = new ImportJob(Messages.NavigationView_1, athlete);
             job.schedule();
             job.addJobChangeListener(new ImportJobChangeListener(viewer));
         } else {
-            final Collection<IImported> allImported = cache.getAllActivities();
+            final Collection<IImported> allImported = cache.getAllImportedRecords();
             viewer.setInput(allImported);
             writeStatus(Messages.NavigationView_2 + allImported.size() + Messages.NavigationView_3);
         }
@@ -151,7 +156,7 @@ public class NavigationView extends ViewPart {
 
             @Override
             public void deleteRecord(final Collection<ActivityT> entry) {
-                viewer.setInput(cache.getAllActivities());
+                viewer.setInput(cache.getAllImportedRecords());
                 viewer.refresh();
                 final IWorkbenchPage wbp = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
                 for (final ActivityT record : entry) {
@@ -162,7 +167,7 @@ public class NavigationView extends ViewPart {
 
             @Override
             public void recordChanged(final Collection<ActivityT> entry) {
-                final Collection<IImported> allImported = cache.getAllActivities();
+                final Collection<IImported> allImported = cache.getAllImportedRecords();
                 Display.getDefault().asyncExec(new Runnable() {
 
                     @Override

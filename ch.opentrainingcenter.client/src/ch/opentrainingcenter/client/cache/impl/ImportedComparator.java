@@ -1,4 +1,4 @@
-package ch.opentrainingcenter.client.cache;
+package ch.opentrainingcenter.client.cache.impl;
 
 import java.util.Comparator;
 import java.util.Date;

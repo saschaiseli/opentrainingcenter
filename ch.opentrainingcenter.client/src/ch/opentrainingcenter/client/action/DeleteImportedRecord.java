@@ -12,8 +12,8 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 
 import ch.opentrainingcenter.client.Messages;
-import ch.opentrainingcenter.client.cache.TrainingCenterDataCache;
-import ch.opentrainingcenter.db.DatabaseAccessFactory;
+import ch.opentrainingcenter.client.cache.Cache;
+import ch.opentrainingcenter.db.IDatabaseAccess;
 import ch.opentrainingcenter.transfer.IImported;
 
 public class DeleteImportedRecord extends Action implements ISelectionListener, IWorkbenchAction {
@@ -22,11 +22,15 @@ public class DeleteImportedRecord extends Action implements ISelectionListener, 
 
     private static final Logger LOGGER = Logger.getLogger(DeleteImportedRecord.class.getName());
 
-    private final TrainingCenterDataCache cache = TrainingCenterDataCache.getInstance();
+    private final Cache cache;
 
-    public DeleteImportedRecord() {
-	setId(ID);
-	setText(Messages.DeleteImportedRecord_0);
+    private final IDatabaseAccess database;
+
+    public DeleteImportedRecord(final Cache cache, final IDatabaseAccess database) {
+        this.cache = cache;
+        this.database = database;
+        setId(ID);
+        setText(Messages.DeleteImportedRecord_0);
     }
 
     @Override
@@ -35,16 +39,16 @@ public class DeleteImportedRecord extends Action implements ISelectionListener, 
 
     @Override
     public void run() {
-	final List<?> selection = cache.getSelection();
-	final List<Date> deletedIds = new ArrayList<Date>();
-	for (final Object obj : selection) {
-	    final IImported record = (IImported) obj;
-	    final int dbId = record.getId();
-	    LOGGER.info("Lösche den Lauf mit der ID " + record.getActivityId() + " und der DB Id: " + dbId); //$NON-NLS-1$ //$NON-NLS-2$
-	    DatabaseAccessFactory.getDatabaseAccess().removeImportedRecord(record.getActivityId());
-	    deletedIds.add(record.getActivityId());
-	}
-	cache.remove(deletedIds);
+        final List<?> selection = cache.getSelection();
+        final List<Date> deletedIds = new ArrayList<Date>();
+        for (final Object obj : selection) {
+            final IImported record = (IImported) obj;
+            final int dbId = record.getId();
+            LOGGER.info("Lösche den Lauf mit der ID " + record.getActivityId() + " und der DB Id: " + dbId); //$NON-NLS-1$ //$NON-NLS-2$
+            database.removeImportedRecord(record.getActivityId());
+            deletedIds.add(record.getActivityId());
+        }
+        cache.remove(deletedIds);
     }
 
     @Override

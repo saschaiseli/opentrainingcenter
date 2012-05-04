@@ -9,11 +9,12 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
 import ch.opentrainingcenter.client.charts.IStatistikCreator;
 import ch.opentrainingcenter.client.helper.SimpleTrainingCalculator;
 import ch.opentrainingcenter.client.model.ISimpleTraining;
 import ch.opentrainingcenter.client.model.RunType;
-import ch.opentrainingcenter.db.DatabaseAccessFactory;
+import ch.opentrainingcenter.db.IDatabaseAccess;
 import ch.opentrainingcenter.tcx.ActivityT;
 
 public class TrainingOverviewDatenAufbereiten {
@@ -25,13 +26,13 @@ public class TrainingOverviewDatenAufbereiten {
     private final List<ISimpleTraining> trainingsPerMonth = new ArrayList<ISimpleTraining>();
     private final List<ISimpleTraining> trainingsPerYear = new ArrayList<ISimpleTraining>();
 
-    private final TrainingCenterDataCache cache;
+    private final Cache cache;
 
     private final IStatistikCreator statistik;
 
-    public TrainingOverviewDatenAufbereiten(final IStatistikCreator statistik) {
+    public TrainingOverviewDatenAufbereiten(final IStatistikCreator statistik, final IDatabaseAccess databaseAccess) {
         this.statistik = statistik;
-        cache = TrainingCenterDataCache.getInstance(DatabaseAccessFactory.getDatabaseAccess());
+        cache = TrainingCenterDataCache.getInstance(databaseAccess);
         // wenn sich noch was im cache ändert...
         cache.addListener(new IRecordListener() {
 

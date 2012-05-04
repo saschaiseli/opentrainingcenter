@@ -2,16 +2,17 @@ package ch.opentrainingcenter.client.helper;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.util.Map;
 
 import ch.opentrainingcenter.importer.ConvertContainer;
-import ch.opentrainingcenter.importer.ExtensionHelper;
+import ch.opentrainingcenter.importer.IConvert2Tcx;
 
 public class GpsFileNameFilter implements FilenameFilter {
 
     private final ConvertContainer cc;
 
-    public GpsFileNameFilter() {
-        cc = new ConvertContainer(ExtensionHelper.getConverters());
+    public GpsFileNameFilter(final Map<String, IConvert2Tcx> converters) {
+        cc = new ConvertContainer(converters);
 
     }
 

@@ -5,7 +5,7 @@ import org.eclipse.core.runtime.jobs.IJobChangeListener;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.widgets.Display;
 
-import ch.opentrainingcenter.client.cache.TrainingCenterDataCache;
+import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
 
 public class ImportJobChangeListener implements IJobChangeListener {
 
@@ -31,7 +31,7 @@ public class ImportJobChangeListener implements IJobChangeListener {
             @Override
             public void run() {
                 try {
-                    viewer.setInput(TrainingCenterDataCache.getInstance().getAllActivities());
+                    viewer.setInput(TrainingCenterDataCache.getInstance().getAllImportedRecords());
                 } catch (final Exception e) {
                     e.printStackTrace();
                 }

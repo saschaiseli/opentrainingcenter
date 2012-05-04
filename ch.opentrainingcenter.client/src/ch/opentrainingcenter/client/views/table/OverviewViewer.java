@@ -16,8 +16,9 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.part.ViewPart;
 
 import ch.opentrainingcenter.client.Messages;
+import ch.opentrainingcenter.client.cache.Cache;
 import ch.opentrainingcenter.client.cache.IRecordListener;
-import ch.opentrainingcenter.client.cache.TrainingCenterDataCache;
+import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
 import ch.opentrainingcenter.client.helper.DistanceHelper;
 import ch.opentrainingcenter.client.helper.TimeHelper;
 import ch.opentrainingcenter.tcx.ActivityT;
@@ -52,7 +53,7 @@ public class OverviewViewer extends ViewPart {
         viewer.setContentProvider(new ArrayContentProvider());
         // Get the content for the viewer, setInput will call getElements in the
         // contentProvider
-        viewer.setInput(TrainingCenterDataCache.getInstance().getAllActivities());
+        viewer.setInput(TrainingCenterDataCache.getInstance().getAllImportedRecords());
         // Make the selection available to other views
         getSite().setSelectionProvider(viewer);
         // Set the sorter for the table
@@ -66,7 +67,7 @@ public class OverviewViewer extends ViewPart {
         gridData.horizontalAlignment = GridData.FILL;
         viewer.getControl().setLayoutData(gridData);
 
-        final TrainingCenterDataCache cache = TrainingCenterDataCache.getInstance();
+        final Cache cache = TrainingCenterDataCache.getInstance();
         cache.addListener(new IRecordListener() {
 
             @Override
@@ -80,7 +81,7 @@ public class OverviewViewer extends ViewPart {
             }
 
             private void update() {
-                viewer.setInput(TrainingCenterDataCache.getInstance().getAllActivities());
+                viewer.setInput(TrainingCenterDataCache.getInstance().getAllImportedRecords());
                 viewer.refresh();
             }
         });

@@ -1,5 +1,9 @@
 package ch.opentrainingcenter.client;
 
+import java.io.File;
+
+import org.apache.log4j.Logger;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IContributionItem;
@@ -9,6 +13,7 @@ import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.ToolBarContributionItem;
 import org.eclipse.jface.action.ToolBarManager;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.SWT;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -21,8 +26,12 @@ import org.eclipse.ui.application.IActionBarConfigurer;
 import ch.opentrainingcenter.client.action.BackupGpsFiles;
 import ch.opentrainingcenter.client.action.ImportManualGpsFiles;
 import ch.opentrainingcenter.client.action.RestartOtc;
+import ch.opentrainingcenter.client.action.job.BackupJob;
+import ch.opentrainingcenter.importer.ExtensionHelper;
 
 public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
+
+    private static final Logger LOG = Logger.getLogger(ApplicationActionBarAdvisor.class);
 
     private IWorkbenchAction restart;
     private IWorkbenchAction exitAction;
@@ -51,10 +60,21 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
         windowsAction = ActionFactory.PREFERENCES.create(window);
         register(windowsAction);
 
+        final IPreferenceStore store = Activator.getDefault().getPreferenceStore();
         importGpsFilesManual = new ImportManualGpsFiles(window, Messages.ApplicationActionBarAdvisor_ImportGpsFiles);
         register(importGpsFilesManual);
 
-        backupGpsFiles = new BackupGpsFiles(Messages.ApplicationActionBarAdvisor_0);
+        final String source = store.getString(PreferenceConstants.GPS_FILE_LOCATION_PROG);
+        final String destination = store.getString(PreferenceConstants.BACKUP_FILE_LOCATION);
+
+        final File destFolder = new File(destination);
+        if (!destFolder.exists()) {
+            destFolder.mkdir();
+            LOG.info("Pfad zu Backupfolder erstellt"); //$NON-NLS-1$
+        }
+
+        final Job job = new BackupJob(Messages.BackupGpsFiles_0, source, destFolder, ExtensionHelper.getConverters());
+        backupGpsFiles = new BackupGpsFiles(Messages.ApplicationActionBarAdvisor_0, job);
         register(backupGpsFiles);
 
         perspectiveShortList = ContributionItemFactory.PERSPECTIVES_SHORTLIST.create(window);

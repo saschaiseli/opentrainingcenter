@@ -4,7 +4,7 @@ import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 
-import ch.opentrainingcenter.client.cache.TrainingCenterDataCache;
+import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
 import ch.opentrainingcenter.client.views.best.BestRunsView;
 import ch.opentrainingcenter.client.views.navigation.NavigationView;
 import ch.opentrainingcenter.client.views.overview.SingleActivityViewPart;

@@ -56,12 +56,13 @@ import org.jfree.experimental.chart.swt.ChartComposite;
 import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.client.PreferenceConstants;
 import ch.opentrainingcenter.client.cache.IRecordListener;
-import ch.opentrainingcenter.client.cache.TrainingCenterDataCache;
 import ch.opentrainingcenter.client.cache.TrainingOverviewDatenAufbereiten;
+import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
 import ch.opentrainingcenter.client.charts.internal.StatistikCreator;
 import ch.opentrainingcenter.client.helper.ColorFromPreferenceHelper;
 import ch.opentrainingcenter.client.model.ISimpleTraining;
 import ch.opentrainingcenter.client.model.RunType;
+import ch.opentrainingcenter.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.tcx.ActivityT;
 
 public class OTCBarChartViewer implements ISelectionProvider {
@@ -95,7 +96,7 @@ public class OTCBarChartViewer implements ISelectionProvider {
         this.type = type;
         clazz = getSeriesType(type);
         statistik = new StatistikCreator();
-        daten = new TrainingOverviewDatenAufbereiten(statistik);
+        daten = new TrainingOverviewDatenAufbereiten(statistik, DatabaseAccessFactory.getDatabaseAccess());
 
         distanceSerie = new TimeSeries(DISTANZ);
         heartSerie = new TimeSeries(HEART);

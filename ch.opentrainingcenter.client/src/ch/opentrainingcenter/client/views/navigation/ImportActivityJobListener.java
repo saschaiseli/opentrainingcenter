@@ -7,7 +7,8 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
-import ch.opentrainingcenter.client.cache.TrainingCenterDataCache;
+import ch.opentrainingcenter.client.cache.Cache;
+import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
 import ch.opentrainingcenter.client.views.overview.SingleActivityViewPart;
 import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.transfer.IImported;
@@ -33,7 +34,7 @@ public class ImportActivityJobListener implements IJobChangeListener {
             @Override
             public void run() {
                 try {
-                    final TrainingCenterDataCache cache = TrainingCenterDataCache.getInstance();
+                    final Cache cache = TrainingCenterDataCache.getInstance();
                     final IImported imported = cache.getSelected();
                     final ActivityT activityT = cache.get(imported.getActivityId());
                     final String hash = getSecondaryId(activityT);

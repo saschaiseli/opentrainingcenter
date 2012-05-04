@@ -51,7 +51,7 @@ public class TrainingOverViewDatenAufbereitenTest {
             public List<ISimpleTraining> getTrainingsProTag(final List<ISimpleTraining> allTrainings) {
                 return trainingsProTag;
             }
-        });
+        }, new MockDataAccess());
     }
 
     @Test

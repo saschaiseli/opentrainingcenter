@@ -6,7 +6,8 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
-import ch.opentrainingcenter.client.cache.TrainingCenterDataCache;
+import ch.opentrainingcenter.client.cache.Cache;
+import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
 import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.transfer.IImported;
 
@@ -16,7 +17,7 @@ public class ImportActivityJob extends Job {
 
     private final IImported record;
     private final IGpsFileLoader loadGpsFile;
-    private final TrainingCenterDataCache cache;
+    private final Cache cache;
     private ActivityT selected;
 
     public ImportActivityJob(final String name, final IImported record) {

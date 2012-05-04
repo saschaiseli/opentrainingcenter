@@ -33,7 +33,8 @@ import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.experimental.chart.swt.ChartComposite;
 
 import ch.opentrainingcenter.client.Messages;
-import ch.opentrainingcenter.client.cache.TrainingCenterDataCache;
+import ch.opentrainingcenter.client.cache.Cache;
+import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
 import ch.opentrainingcenter.client.charts.HeartIntervallCreator;
 import ch.opentrainingcenter.client.helper.SpeedCalculator;
 import ch.opentrainingcenter.client.helper.ZoneHelper;
@@ -50,7 +51,7 @@ public class SingleActivityViewPart extends ViewPart {
 
     public static final String ID = "ch.opentrainingcenter.client.views.singlerun"; //$NON-NLS-1$
     private static final Logger LOGGER = Logger.getLogger(SingleActivityViewPart.class);
-    private final TrainingCenterDataCache cache = TrainingCenterDataCache.getInstance();
+    private final Cache cache = TrainingCenterDataCache.getInstance();
     private final ISimpleTraining simpleTraining;
     private final ActivityT selected;
     private FormToolkit toolkit;

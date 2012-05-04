@@ -28,13 +28,13 @@ public class DistanceIntervall {
 
     public void addPace(final double pace, final double distanceInMeter) {
         final int distanceInKilometer = (int) distanceInMeter / KILOMETER_IN_METER;
-        if (distanceInKilometer > Intervall.PLUS25.getVon()) {
+        if (distanceInKilometer >= Intervall.PLUS25.getVon()) {
             paces.get(Intervall.PLUS25).add(pace);
-        } else if (distanceInKilometer > Intervall.VON20_BIS_25.getVon()) {
+        } else if (distanceInKilometer >= Intervall.VON20_BIS_25.getVon()) {
             paces.get(Intervall.VON20_BIS_25).add(pace);
-        } else if (distanceInKilometer > Intervall.VON15_BIS_20.getVon()) {
+        } else if (distanceInKilometer >= Intervall.VON15_BIS_20.getVon()) {
             paces.get(Intervall.VON15_BIS_20).add(pace);
-        } else if (distanceInKilometer > Intervall.VON10_BIS_15.getVon()) {
+        } else if (distanceInKilometer >= Intervall.VON10_BIS_15.getVon()) {
             paces.get(Intervall.VON10_BIS_15).add(pace);
         } else {
             paces.get(Intervall.KLEINER_10).add(pace);
