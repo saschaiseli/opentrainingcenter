@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
 import ch.opentrainingcenter.client.charts.IStatistikCreator;
 import ch.opentrainingcenter.client.helper.SimpleTrainingCalculator;
+import ch.opentrainingcenter.client.helper.TimeHelper;
 import ch.opentrainingcenter.client.model.ISimpleTraining;
 import ch.opentrainingcenter.client.model.RunType;
 import ch.opentrainingcenter.db.IDatabaseAccess;
@@ -120,7 +121,10 @@ public class TrainingOverviewDatenAufbereiten {
 
     private void printTraining(final StringBuffer str, final List<ISimpleTraining> trainings) {
         for (final ISimpleTraining training : trainings) {
-            str.append(training.getDatum()).append(' ').append(training.getDistanzInMeter()).append("[m]").append(" ").append(training.getType()).append('\n'); //$NON-NLS-1$ //$NON-NLS-2$
+            final String date = TimeHelper.convertDateToString(training.getDatum(), false);
+            final double distanzInMeter = training.getDistanzInMeter();
+            final RunType type = training.getType();
+            str.append(date).append(' ').append(distanzInMeter).append("[m]").append(" ").append(type).append('\n'); //$NON-NLS-1$ //$NON-NLS-2$
         }
     }
 }

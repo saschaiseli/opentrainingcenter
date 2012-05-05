@@ -19,8 +19,8 @@ public class SimpleTraining implements ISimpleTraining {
     private final String speed;
     private RunType type;
 
-    public SimpleTraining(final double distanzInMeter, final double dauerInSekunden, final Date datum, final int avgHeartRate, final int maxHeartRate,
-            final double speed, final RunType type) {
+    public SimpleTraining(final double distanzInMeter, final double dauerInSekunden, final Date datum, final int avgHeartRate,
+            final int maxHeartRate, final double speed, final RunType type) {
         this.distanzInMeter = distanzInMeter;
         this.avgHeartRate = avgHeartRate;
         this.maxHeartRate = maxHeartRate;
@@ -36,7 +36,8 @@ public class SimpleTraining implements ISimpleTraining {
     /*
      * (non-Javadoc)
      * 
-     * @see ch.opentrainingcenter.client.model.ISimpleTraining#getDistanzInMeter()
+     * @see
+     * ch.opentrainingcenter.client.model.ISimpleTraining#getDistanzInMeter()
      */
     @Override
     public double getDistanzInMeter() {
@@ -46,7 +47,8 @@ public class SimpleTraining implements ISimpleTraining {
     /*
      * (non-Javadoc)
      * 
-     * @see ch.opentrainingcenter.client.model.ISimpleTraining#getDauerInSekunden()
+     * @see
+     * ch.opentrainingcenter.client.model.ISimpleTraining#getDauerInSekunden()
      */
     @Override
     public double getDauerInSekunden() {

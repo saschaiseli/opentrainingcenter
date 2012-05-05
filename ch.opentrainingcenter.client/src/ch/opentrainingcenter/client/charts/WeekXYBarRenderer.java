@@ -10,17 +10,16 @@ import org.jfree.chart.renderer.xy.XYBarRenderer;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.data.xy.IntervalXYDataset;
 
-import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.PreferenceConstants;
 import ch.opentrainingcenter.client.helper.ColorFromPreferenceHelper;
 
 public class WeekXYBarRenderer extends XYBarRenderer implements XYItemRenderer {
 
-	private static final double INTERVALL_MARKER_BREITE= 0.01;
-	
+    private static final double INTERVALL_MARKER_BREITE = 0.01;
+
     private static final int ALPHA = 255;
 
-	private static final long serialVersionUID = -7407945301726330129L;
+    private static final long serialVersionUID = -7407945301726330129L;
 
     private final IntervalXYDataset dataset;
 
@@ -30,16 +29,15 @@ public class WeekXYBarRenderer extends XYBarRenderer implements XYItemRenderer {
 
     private final Color colorAbove;
 
-    public WeekXYBarRenderer(final IntervalXYDataset dataset, final XYPlot plot) {
+    public WeekXYBarRenderer(final IntervalXYDataset dataset, final XYPlot plot, final IPreferenceStore store) {
         this.dataset = dataset;
-        final IPreferenceStore preferenceStore = Activator.getDefault().getPreferenceStore();
-        targetKmPerWeek = preferenceStore.getInt(PreferenceConstants.KM_PER_WEEK);
+        targetKmPerWeek = store.getInt(PreferenceConstants.KM_PER_WEEK);
 
-        colorBelow = ColorFromPreferenceHelper.getColor(PreferenceConstants.KM_PER_WEEK_COLOR_BELOW, ALPHA);
-        colorAbove = ColorFromPreferenceHelper.getColor(PreferenceConstants.KM_PER_WEEK_COLOR_ABOVE, ALPHA);
+        colorBelow = ColorFromPreferenceHelper.getColor(store, PreferenceConstants.KM_PER_WEEK_COLOR_BELOW, ALPHA);
+        colorAbove = ColorFromPreferenceHelper.getColor(store, PreferenceConstants.KM_PER_WEEK_COLOR_ABOVE, ALPHA);
 
-        
-		final IntervalMarker below = new IntervalMarker(targetKmPerWeek - INTERVALL_MARKER_BREITE, targetKmPerWeek +INTERVALL_MARKER_BREITE);
+        final IntervalMarker below = new IntervalMarker(targetKmPerWeek - INTERVALL_MARKER_BREITE, targetKmPerWeek
+                + INTERVALL_MARKER_BREITE);
         below.setPaint(colorBelow);
         below.setAlpha(1f);
 

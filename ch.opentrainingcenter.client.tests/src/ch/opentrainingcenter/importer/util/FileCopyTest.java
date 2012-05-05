@@ -1,21 +1,26 @@
 package ch.opentrainingcenter.importer.util;
 
-import static org.junit.Assert.assertEquals;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.FilenameFilter;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import ch.opentrainingcenter.client.helper.FileCopy;
+import ch.opentrainingcenter.client.helper.GpsFileNameFilter;
+import ch.opentrainingcenter.importer.IConvert2Tcx;
+import static org.junit.Assert.assertEquals;
 
 public class FileCopyTest {
-    private static final String HELLO_FROM_JUNIT = "Hello from junit";//$NON-NLS-1$
+    private static final String HELLO_FROM_JUNIT = "Hello from junit";
     private File source;
     private File destination;
 
@@ -35,11 +40,11 @@ public class FileCopyTest {
     @Test
     public void simpleCopy() throws IOException {
         // prepare
-        source = File.createTempFile("testa", "testa");//$NON-NLS-1$//$NON-NLS-2$
+        source = File.createTempFile("testa", "testa");
         final FileWriter writer = new FileWriter(source);
         writer.write(HELLO_FROM_JUNIT);
         writer.close();
-        destination = File.createTempFile("testb", "testb");//$NON-NLS-1$//$NON-NLS-2$
+        destination = File.createTempFile("testb", "testb");
 
         // action
         FileCopy.copyFile(source, destination);
@@ -50,7 +55,7 @@ public class FileCopyTest {
     @Test
     public void doNotOverwriterFile() throws IOException {
         // prepare
-        source = File.createTempFile("testa", "testa");//$NON-NLS-1$//$NON-NLS-2$
+        source = File.createTempFile("testa", "testa");
         final FileWriter writer = new FileWriter(source);
         writer.write(HELLO_FROM_JUNIT);
         writer.close();
@@ -58,6 +63,25 @@ public class FileCopyTest {
         // action
         FileCopy.copyFile(source, source);
         assertFileCopy(source);
+    }
+
+    @Test
+    public void copyFiles() throws IOException {
+        source = File.createTempFile("testa", "testa.txt");
+        final FileWriter writer = new FileWriter(source);
+        writer.write(HELLO_FROM_JUNIT);
+        writer.close();
+        final String absolutePath = source.getAbsolutePath();
+        final String sourceFolder = absolutePath.substring(0, absolutePath.lastIndexOf(File.separator));
+
+        final Map<String, IConvert2Tcx> converters = new HashMap<String, IConvert2Tcx>();
+        final IConvert2Tcx converter = Mockito.mock(IConvert2Tcx.class);
+        converters.put("txt", converter);
+        final FilenameFilter filter = new GpsFileNameFilter(converters);
+        final String destinationFolder = sourceFolder + File.separator + "junit";
+        FileCopy.copyFiles(sourceFolder, destinationFolder, filter);
+
+        assertFileCopy(new File(destinationFolder, source.getName()));
     }
 
     private void assertFileCopy(final File file) throws FileNotFoundException, IOException {

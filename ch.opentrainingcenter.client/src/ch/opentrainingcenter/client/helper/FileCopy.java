@@ -26,7 +26,14 @@ public final class FileCopy {
             return;
         }
         if (!destFile.exists()) {
-            destFile.createNewFile();
+            LOG.debug("Destination File existiert nicht");
+            final File dir = new File(getFolder(destFile.getAbsolutePath()));
+            if (dir.mkdir()) {
+                LOG.debug("Folder erstellt");
+                destFile.createNewFile();
+            } else {
+                LOG.debug("Folder nicht erstellt");
+            }
         }
 
         FileChannel source = null;
@@ -48,6 +55,10 @@ public final class FileCopy {
                 destination.close();
             }
         }
+    }
+
+    private static String getFolder(final String absolutePath) {
+        return absolutePath.substring(0, absolutePath.lastIndexOf(File.separator));
     }
 
     public static void copyFiles(final String sourceFolder, final String destinationFolder, final FilenameFilter filter) throws IOException {

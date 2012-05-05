@@ -1,8 +1,7 @@
 package ch.opentrainingcenter.client.cache;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,10 +11,16 @@ import org.junit.Test;
 
 import ch.opentrainingcenter.client.SimpleTrainingDescriptor;
 import ch.opentrainingcenter.client.charts.IStatistikCreator;
+import ch.opentrainingcenter.client.helper.TimeHelper;
 import ch.opentrainingcenter.client.model.ISimpleTraining;
 import ch.opentrainingcenter.client.model.RunType;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class TrainingOverViewDatenAufbereitenTest {
+
+    private static final String EXPECTED = "Übersicht auf die aufbereiteten Daten:\n" + "Trainings pro Monat:\n" + "Trainings pro Woche:\n"
+            + "Trainings pro Tag:\n";
 
     private TrainingOverviewDatenAufbereiten auf;
 
@@ -178,5 +183,57 @@ public class TrainingOverViewDatenAufbereitenTest {
         // assert
         final List<ISimpleTraining> trainingsPerDay = auf.getTrainingsPerDay();
         assertEquals("2 Trainings mit dem Type TEMPO_JOG: ", 2, trainingsPerDay.size()); //$NON-NLS-1$
+    }
+
+    @Test
+    public void testTrainingPerDayNotNull() {
+        assertNotNull(auf.getTrainingsPerDay());
+    }
+
+    @Test
+    public void testTrainingPerDayValues() {
+        // prepare
+        final SimpleTrainingDescriptor desc = SimpleTrainingDescriptor.createSimpleTraining(2012, 1, 2);
+        desc.setRunType(RunType.LONG_JOG);
+        trainingsProTag.add(desc.build());
+        // execute
+        auf.update(RunType.LONG_JOG);
+        // assert
+        assertEquals(1, auf.getTrainingsPerDay().size());
+    }
+
+    @Test
+    public void testTrainingPerWeekNotNull() {
+        assertNotNull(auf.getTrainingsPerWeek());
+    }
+
+    @Test
+    public void testTrainingPerMonthNotNull() {
+        assertNotNull(auf.getTrainingsPerMonth());
+    }
+
+    @Test
+    public void testTrainingPerYearNotNull() {
+        assertNotNull(auf.getTrainingsPerYear());
+    }
+
+    @Test
+    public void testToString() {
+        assertEquals(EXPECTED, auf.toString());
+    }
+
+    @Test
+    public void testToStringMitWerten() {
+        // prepare
+        final SimpleTrainingDescriptor desc = SimpleTrainingDescriptor.createSimpleTraining(2012, 1, 2);
+        desc.setRunType(RunType.LONG_JOG);
+        desc.setDistanz(1042);
+        final Date date = new Date();
+        desc.setDate(date);
+        trainingsProTag.add(desc.build());
+        // execute
+        auf.update(RunType.LONG_JOG);
+        // assert
+        assertEquals(EXPECTED + TimeHelper.convertDateToString(date, false) + " " + "1042.0[m] LONG_JOG\n", auf.toString());
     }
 }

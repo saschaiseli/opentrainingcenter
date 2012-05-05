@@ -19,6 +19,7 @@ public class SimpleTrainingDescriptor {
     private int maxHeartRate = 0;
     private double speed = 0;
     private RunType type = RunType.NONE;
+    private Date date;
 
     private SimpleTrainingDescriptor(final int year, final int monat, final int day) {
         this.year = year;
@@ -42,6 +43,11 @@ public class SimpleTrainingDescriptor {
 
     public SimpleTrainingDescriptor setTag(final int day) {
         this.day = day;
+        return this;
+    }
+
+    public SimpleTrainingDescriptor setDate(final Date date) {
+        this.date = date;
         return this;
     }
 
@@ -77,10 +83,15 @@ public class SimpleTrainingDescriptor {
 
     public ISimpleTraining build() {
         final Calendar cal = Calendar.getInstance(Locale.GERMAN);
-        cal.set(Calendar.DAY_OF_MONTH, day);
-        cal.set(Calendar.MONTH, monat - 1);
-        cal.set(Calendar.YEAR, year);
-        final Date datum = cal.getTime();
+        final Date datum;
+        if (date == null) {
+            cal.set(Calendar.DAY_OF_MONTH, day);
+            cal.set(Calendar.MONTH, monat - 1);
+            cal.set(Calendar.YEAR, year);
+            datum = cal.getTime();
+        } else {
+            datum = date;
+        }
         return new SimpleTraining(distanzInMeter, dauerInSekunden, datum, avgHeartRate, maxHeartRate, speed, type);
     }
 }
