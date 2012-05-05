@@ -1,11 +1,5 @@
 package ch.opentrainingcenter.client.action;
 
-import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,6 +13,13 @@ import ch.opentrainingcenter.client.PreferenceConstants;
 import ch.opentrainingcenter.client.cache.Cache;
 import ch.opentrainingcenter.db.IDatabaseAccess;
 import ch.opentrainingcenter.importer.IConvert2Tcx;
+import ch.opentrainingcenter.transfer.IAthlete;
+import static org.junit.Assert.assertNotNull;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class ImportManualGpsFileTest {
     private ImportManualGpsFiles files;
@@ -28,6 +29,7 @@ public class ImportManualGpsFileTest {
     private IPreferenceStore preferenceStore;
     private Map<String, IConvert2Tcx> converters;
     private ISelectionService service;
+    private IAthlete athlete;
 
     @Before
     public void before() {
@@ -37,19 +39,14 @@ public class ImportManualGpsFileTest {
         cache = mock(Cache.class);
         preferenceStore = mock(IPreferenceStore.class);
         converters = new HashMap<String, IConvert2Tcx>();
-
+        athlete = mock(IAthlete.class);
         when(window.getSelectionService()).thenReturn(service);
 
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testConstructor() {
-
         files = new ImportManualGpsFiles(window, "junit", databaseAccess, cache, preferenceStore, converters);
-
-        verify(service, times(1)).addSelectionListener(files);
-
-        assertNotNull(files);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -60,17 +57,23 @@ public class ImportManualGpsFileTest {
         assertNotNull(files);
     }
 
-    @Test
-    public void testConstructorMitAthlete() {
+    @Test(expected = IllegalArgumentException.class)
+    public void testConstructorMitAthleteIdAberOhneInDb() {
         when(preferenceStore.getString(PreferenceConstants.ATHLETE_ID)).thenReturn("1");
         files = new ImportManualGpsFiles(window, "junit", databaseAccess, cache, preferenceStore, converters);
+    }
 
-        assertNotNull(files);
+    @Test
+    public void testConstructorMitAthleteIdUndInDb() {
+        when(preferenceStore.getString(PreferenceConstants.ATHLETE_ID)).thenReturn("1");
+        when(databaseAccess.getAthlete(1)).thenReturn(athlete);
+        files = new ImportManualGpsFiles(window, "junit", databaseAccess, cache, preferenceStore, converters);
     }
 
     @Test
     public void disposeTest() {
         when(preferenceStore.getString(PreferenceConstants.ATHLETE_ID)).thenReturn("1");
+        when(databaseAccess.getAthlete(1)).thenReturn(athlete);
         files = new ImportManualGpsFiles(window, "junit", databaseAccess, cache, preferenceStore, converters);
         when(window.getSelectionService()).thenReturn(service);
         files.dispose();
