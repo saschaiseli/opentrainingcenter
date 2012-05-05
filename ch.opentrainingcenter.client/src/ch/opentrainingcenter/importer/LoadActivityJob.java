@@ -11,16 +11,16 @@ import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
 import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.transfer.IImported;
 
-public class ImportActivityJob extends Job {
+public class LoadActivityJob extends Job {
 
-    public static final Logger LOGGER = Logger.getLogger(ImportActivityJob.class);
+    public static final Logger LOGGER = Logger.getLogger(LoadActivityJob.class);
 
     private final IImported record;
     private final IGpsFileLoader loadGpsFile;
     private final Cache cache;
     private ActivityT selected;
 
-    public ImportActivityJob(final String name, final IImported record) {
+    public LoadActivityJob(final String name, final IImported record) {
 	super(name);
 	this.record = record;
 	this.loadGpsFile = GpsFileLoaderFactory.createGpsFileLoader();

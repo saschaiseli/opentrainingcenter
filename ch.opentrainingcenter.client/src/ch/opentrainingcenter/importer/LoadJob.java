@@ -13,13 +13,13 @@ import ch.opentrainingcenter.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IImported;
 
-public class ImportJob extends Job {
+public class LoadJob extends Job {
 
     private final IAthlete athlete;
 
     private final Cache cache = TrainingCenterDataCache.getInstance();
 
-    public ImportJob(final String name, final IAthlete athlete) {
+    public LoadJob(final String name, final IAthlete athlete) {
         super(name);
         this.athlete = athlete;
     }

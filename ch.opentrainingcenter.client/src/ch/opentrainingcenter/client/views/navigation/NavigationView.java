@@ -36,8 +36,8 @@ import ch.opentrainingcenter.client.helper.TimeHelper;
 import ch.opentrainingcenter.client.views.overview.SingleActivityViewPart;
 import ch.opentrainingcenter.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.db.IDatabaseAccess;
-import ch.opentrainingcenter.importer.ImportActivityJob;
-import ch.opentrainingcenter.importer.ImportJob;
+import ch.opentrainingcenter.importer.LoadActivityJob;
+import ch.opentrainingcenter.importer.LoadJob;
 import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IImported;
@@ -108,7 +108,7 @@ public class NavigationView extends ViewPart {
             }
 
             private void openSingleRunView(final IImported record) {
-                final ImportActivityJob job = new ImportActivityJob(Messages.NavigationView_1, record);
+                final LoadActivityJob job = new LoadActivityJob(Messages.NavigationView_1, record);
                 job.schedule();
                 job.addJobChangeListener(new ImportActivityJobListener());
             }
@@ -143,7 +143,7 @@ public class NavigationView extends ViewPart {
         });
 
         if (!cache.isCacheLoaded()) {
-            final Job job = new ImportJob(Messages.NavigationView_1, athlete);
+            final Job job = new LoadJob(Messages.NavigationView_1, athlete);
             job.schedule();
             job.addJobChangeListener(new ImportJobChangeListener(viewer));
         } else {

@@ -15,7 +15,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import ch.opentrainingcenter.client.Application;
 import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.client.PreferenceConstants;
-import ch.opentrainingcenter.client.action.job.ManualImportJob;
+import ch.opentrainingcenter.client.action.job.ImportManualJob;
 import ch.opentrainingcenter.client.cache.Cache;
 import ch.opentrainingcenter.client.model.IGpsFileModelWrapper;
 import ch.opentrainingcenter.client.views.IImageKeys;
@@ -24,7 +24,9 @@ import ch.opentrainingcenter.client.views.dialoge.ImportFileDialog;
 import ch.opentrainingcenter.client.views.dialoge.RunTypeDialog;
 import ch.opentrainingcenter.db.IDatabaseAccess;
 import ch.opentrainingcenter.importer.ConvertContainer;
+import ch.opentrainingcenter.importer.GpsFileLoaderFactory;
 import ch.opentrainingcenter.importer.IConvert2Tcx;
+import ch.opentrainingcenter.importer.IFileImport;
 import ch.opentrainingcenter.transfer.IAthlete;
 
 public class ImportManualGpsFiles extends Action implements ISelectionListener, IWorkbenchAction {
@@ -42,9 +44,12 @@ public class ImportManualGpsFiles extends Action implements ISelectionListener, 
 
     private final Cache cache;
 
-    public ImportManualGpsFiles(final IWorkbenchWindow window, final String toolTipText, final IDatabaseAccess databaseAccess, final Cache cache,
-            final IPreferenceStore preferenceStore, final Map<String, IConvert2Tcx> converters) {
+    private final IDatabaseAccess databaseAccess;
+
+    public ImportManualGpsFiles(final IWorkbenchWindow window, final String toolTipText, final IDatabaseAccess databaseAccess,
+            final Cache cache, final IPreferenceStore preferenceStore, final Map<String, IConvert2Tcx> converters) {
         this.window = window;
+        this.databaseAccess = databaseAccess;
         this.cache = cache;
         setId(ID);
         setToolTipText(toolTipText);
@@ -52,8 +57,9 @@ public class ImportManualGpsFiles extends Action implements ISelectionListener, 
         if (validId(athleteId)) {
             final int id = Integer.parseInt(athleteId);
             athlete = databaseAccess.getAthlete(id);
-        } else {
-            throw new IllegalArgumentException("Athlete ist nicht gesetzt....");
+        }
+        if (athlete == null) {
+            throw new IllegalArgumentException("Athlete ist nicht gesetzt");
         }
         locationForBackupFiles = preferenceStore.getString(PreferenceConstants.GPS_FILE_LOCATION_PROG);
 
@@ -79,12 +85,14 @@ public class ImportManualGpsFiles extends Action implements ISelectionListener, 
             final int open = dialog.open();
             if (open >= 0) {
                 final IGpsFileModelWrapper modelWrapper = dialog.getModelWrapper();
-                final Job job = new ManualImportJob(Messages.ImportManualGpsFiles_LadeGpsFiles, cc, locationForBackupFiles, athlete, modelWrapper, filterPath, cache);
+                final IFileImport fileImporter = GpsFileLoaderFactory.createFileImporter(cc, athlete, databaseAccess,
+                        locationForBackupFiles);
+
+                final Job job = new ImportManualJob(Messages.ImportManualGpsFiles_LadeGpsFiles, modelWrapper, filterPath, fileImporter,
+                        cache);
                 job.schedule();
             }
-
         }
-
     }
 
     @Override
