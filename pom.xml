@@ -40,11 +40,11 @@
 		<module>com.eclipsesource.widgets.gmaps</module>
 		<module>h2</module>
 		<module>jfreechart</module>
-		<module>junit</module>
-		<module>mockito</module>
 		<module>logging</module>
 		<module>org.hibernate</module>
 		<!-- Tests -->
+		<module>junit</module>
+		<module>mockito</module>
 		<module>ch.opentrainingcenter.client.tests</module>
 		<module>ch.opentrainingcenter.importer.tests</module>
 		<module>ch.opentrainingcenter.importer.fitnesslog.tests</module>
@@ -66,6 +66,13 @@
 				<artifactId>tycho-maven-plugin</artifactId>
 				<version>${tycho.version}</version>
 				<extensions>true</extensions>
+				<configuration>
+					<useUIHarness>false</useUIHarness>
+					<argLine>-Xms256m -Xmx512m -XX:MaxPermSize=256M</argLine>
+					<includes>
+						<include>**/*Tests.*</include>
+					</includes>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
