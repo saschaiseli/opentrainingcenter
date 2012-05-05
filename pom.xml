@@ -41,6 +41,7 @@
 		<module>h2</module>
 		<module>jfreechart</module>
 		<module>junit</module>
+		<module>mockito</module>
 		<module>logging</module>
 		<module>org.hibernate</module>
 		<!-- Tests -->
@@ -83,37 +84,15 @@
 							<ws>gtk</ws>
 							<arch>x86</arch>
 						</environment>
-						<!-- 
-						<environment>
-							<os>macosx</os>
-							<ws>carbon</ws>
-							<arch>x86</arch>
-						</environment>
-						<environment>
-							<os>macosx</os>
-							<ws>cocoa</ws>
-							<arch>x86</arch>
-						</environment>
-						<environment>
-							<os>macosx</os>
-							<ws>cocoa</ws>
-							<arch>x86_64</arch>
-						</environment>
-						<environment>
-							<os>win32</os>
-							<ws>win32</ws>
-							<arch>x86</arch>
-						</environment>
-						<environment>
-							<os>win32</os>
-							<ws>win32</ws>
-							<arch>x86_64</arch>
-						</environment>
-						 -->
+						<!-- <environment> <os>macosx</os> <ws>carbon</ws> <arch>x86</arch> 
+							</environment> <environment> <os>macosx</os> <ws>cocoa</ws> <arch>x86</arch> 
+							</environment> <environment> <os>macosx</os> <ws>cocoa</ws> <arch>x86_64</arch> 
+							</environment> <environment> <os>win32</os> <ws>win32</ws> <arch>x86</arch> 
+							</environment> <environment> <os>win32</os> <ws>win32</ws> <arch>x86_64</arch> 
+							</environment> -->
 					</environments>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
-
 </project>
