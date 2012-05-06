@@ -16,6 +16,8 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MenuEvent;
+import org.eclipse.swt.events.MenuListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
@@ -101,6 +103,18 @@ public class NavigationView extends ViewPart {
         });
 
         final Menu menu = menuMgr.createContextMenu(viewer.getTree());
+        menu.addMenuListener(new MenuListener() {
+
+            @Override
+            public void menuShown(final MenuEvent e) {
+                final IImported reco = (IImported) cache.getSelection().get(0);
+                container.update(reco.getTrainingType().getId());
+            }
+
+            @Override
+            public void menuHidden(final MenuEvent e) {
+            }
+        });
         viewer.getTree().setMenu(menu);
         getSite().registerContextMenu(menuMgr, viewer);
 

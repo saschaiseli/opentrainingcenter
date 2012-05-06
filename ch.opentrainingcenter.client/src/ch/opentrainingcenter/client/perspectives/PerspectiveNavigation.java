@@ -4,6 +4,7 @@ import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 
+import ch.opentrainingcenter.client.cache.Cache;
 import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
 import ch.opentrainingcenter.client.views.best.BestRunsView;
 import ch.opentrainingcenter.client.views.navigation.NavigationView;
@@ -16,7 +17,20 @@ public class PerspectiveNavigation implements IPerspectiveFactory {
 
     public static final String ID = "ch.opentrainingcenter.client.perspective"; //$NON-NLS-1$
 
-    private static final String MULTI_VIEW = ":*"; //$NON-NLS-1$
+    static final String MULTI_VIEW = ":*"; //$NON-NLS-1$
+
+    private final Cache cache;
+
+    public PerspectiveNavigation() {
+        cache = TrainingCenterDataCache.getInstance();
+    }
+
+    /**
+     * Nur für tests
+     */
+    PerspectiveNavigation(final Cache cache) {
+        this.cache = cache;
+    }
 
     @Override
     public void createInitialLayout(final IPageLayout layout) {
@@ -28,7 +42,8 @@ public class PerspectiveNavigation implements IPerspectiveFactory {
         layout.getViewLayout(NavigationView.ID).setCloseable(false);
 
         final IFolderLayout folderMiddle = layout.createFolder(RIGHT_PART, IPageLayout.LEFT, 0.70f, editorArea);
-        if (TrainingCenterDataCache.getInstance().getSelectedOverview() != null) {
+
+        if (cache.getSelectedOverview() != null) {
             folderMiddle.addView(SingleActivityViewPart.ID + MULTI_VIEW);
         } else {
             folderMiddle.addPlaceholder(SingleActivityViewPart.ID + MULTI_VIEW);

@@ -28,9 +28,11 @@ import ch.opentrainingcenter.transfer.ITraining;
 public class OverviewViewer extends ViewPart {
 
     public static final String ID = "ch.opentrainingcenter.client.table.overview"; //$NON-NLS-1$
+    private final Cache cache;
     private TableViewer viewer;
 
     public OverviewViewer() {
+        cache = TrainingCenterDataCache.getInstance();
     }
 
     @Override
@@ -53,7 +55,7 @@ public class OverviewViewer extends ViewPart {
         viewer.setContentProvider(new ArrayContentProvider());
         // Get the content for the viewer, setInput will call getElements in the
         // contentProvider
-        viewer.setInput(TrainingCenterDataCache.getInstance().getAllImportedRecords());
+        viewer.setInput(cache.getAllImportedRecords());
         // Make the selection available to other views
         getSite().setSelectionProvider(viewer);
         // Set the sorter for the table
@@ -67,7 +69,6 @@ public class OverviewViewer extends ViewPart {
         gridData.horizontalAlignment = GridData.FILL;
         viewer.getControl().setLayoutData(gridData);
 
-        final Cache cache = TrainingCenterDataCache.getInstance();
         cache.addListener(new IRecordListener() {
 
             @Override
@@ -81,7 +82,7 @@ public class OverviewViewer extends ViewPart {
             }
 
             private void update() {
-                viewer.setInput(TrainingCenterDataCache.getInstance().getAllImportedRecords());
+                viewer.setInput(cache.getAllImportedRecords());
                 viewer.refresh();
             }
         });
@@ -90,7 +91,8 @@ public class OverviewViewer extends ViewPart {
 
     // This will create the columns for the table
     private void createColumns() {
-        final String[] titles = { Messages.OverviewViewer_1, Messages.OverviewViewer_2, Messages.OverviewViewer_3, Messages.OverviewViewer_4, Messages.OverviewViewer_5 };
+        final String[] titles = { Messages.OverviewViewer_1, Messages.OverviewViewer_2, Messages.OverviewViewer_3,
+                Messages.OverviewViewer_4, Messages.OverviewViewer_5 };
         final int[] bounds = { 220, 100, 150, 120, 180 };
 
         // Datum
