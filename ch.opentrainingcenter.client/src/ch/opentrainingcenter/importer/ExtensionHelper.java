@@ -17,7 +17,8 @@ public final class ExtensionHelper {
     private static final Map<String, IConvert2Tcx> CONVERTERS = new HashMap<String, IConvert2Tcx>();
 
     static {
-        final IConfigurationElement[] extensions = Platform.getExtensionRegistry().getConfigurationElementsFor(Application.IMPORT_EXTENSION_POINT);
+        final IConfigurationElement[] extensions = Platform.getExtensionRegistry().getConfigurationElementsFor(
+                Application.IMPORT_EXTENSION_POINT);
         LOGGER.info("Beginne mit Extensions einzulesen......."); //$NON-NLS-1$
         for (final IConfigurationElement element : extensions) {
             try {
@@ -36,5 +37,4 @@ public final class ExtensionHelper {
     public static Map<String, IConvert2Tcx> getConverters() {
         return CONVERTERS;
     }
-
 }

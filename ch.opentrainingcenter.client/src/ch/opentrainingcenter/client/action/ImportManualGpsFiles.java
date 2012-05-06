@@ -24,9 +24,9 @@ import ch.opentrainingcenter.client.views.dialoge.ImportFileDialog;
 import ch.opentrainingcenter.client.views.dialoge.RunTypeDialog;
 import ch.opentrainingcenter.db.IDatabaseAccess;
 import ch.opentrainingcenter.importer.ConvertContainer;
-import ch.opentrainingcenter.importer.GpsFileLoaderFactory;
 import ch.opentrainingcenter.importer.IConvert2Tcx;
 import ch.opentrainingcenter.importer.IFileImport;
+import ch.opentrainingcenter.importer.ImporterFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
 
 public class ImportManualGpsFiles extends Action implements ISelectionListener, IWorkbenchAction {
@@ -85,8 +85,7 @@ public class ImportManualGpsFiles extends Action implements ISelectionListener, 
             final int open = dialog.open();
             if (open >= 0) {
                 final IGpsFileModelWrapper modelWrapper = dialog.getModelWrapper();
-                final IFileImport fileImporter = GpsFileLoaderFactory.createFileImporter(cc, athlete, databaseAccess,
-                        locationForBackupFiles);
+                final IFileImport fileImporter = ImporterFactory.createFileImporter(cc, athlete, databaseAccess, locationForBackupFiles);
 
                 final Job job = new ImportManualJob(Messages.ImportManualGpsFiles_LadeGpsFiles, modelWrapper, filterPath, fileImporter,
                         cache);

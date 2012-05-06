@@ -6,14 +6,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import ch.opentrainingcenter.client.SimpleTrainingDescriptor;
 import ch.opentrainingcenter.client.charts.IStatistikCreator;
 import ch.opentrainingcenter.client.helper.TimeHelper;
 import ch.opentrainingcenter.client.model.ISimpleTraining;
 import ch.opentrainingcenter.client.model.RunType;
+import ch.opentrainingcenter.importer.IConvert2Tcx;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -32,8 +35,12 @@ public class TrainingOverViewDatenAufbereitenTest {
 
     private final Map<Integer, List<ISimpleTraining>> trainingsProJahr = new HashMap<Integer, List<ISimpleTraining>>();
 
+    private final Map<String, IConvert2Tcx> converters = new HashMap<String, IConvert2Tcx>();
+
     @Before
     public void setUp() {
+
+        final IPreferenceStore store = Mockito.mock(IPreferenceStore.class);
 
         auf = new TrainingOverviewDatenAufbereiten(new IStatistikCreator() {
 
@@ -56,7 +63,7 @@ public class TrainingOverViewDatenAufbereitenTest {
             public List<ISimpleTraining> getTrainingsProTag(final List<ISimpleTraining> allTrainings) {
                 return trainingsProTag;
             }
-        }, new MockDataAccess());
+        }, new MockDataAccess(), store, converters);
     }
 
     @Test

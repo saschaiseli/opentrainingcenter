@@ -8,8 +8,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
 import ch.opentrainingcenter.client.cache.Cache;
-import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
-import ch.opentrainingcenter.db.DatabaseAccessFactory;
+import ch.opentrainingcenter.db.IDatabaseAccess;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IImported;
 
@@ -17,16 +16,20 @@ public class LoadJob extends Job {
 
     private final IAthlete athlete;
 
-    private final Cache cache = TrainingCenterDataCache.getInstance();
+    private final Cache cache;
 
-    public LoadJob(final String name, final IAthlete athlete) {
+    private final IDatabaseAccess databaseAccess;
+
+    public LoadJob(final String name, final IAthlete athlete, final IDatabaseAccess databaseAccess, final Cache cache) {
         super(name);
         this.athlete = athlete;
+        this.databaseAccess = databaseAccess;
+        this.cache = cache;
     }
 
     @Override
     protected IStatus run(final IProgressMonitor monitor) {
-        final List<IImported> allImported = DatabaseAccessFactory.getDatabaseAccess().getAllImported(athlete);
+        final List<IImported> allImported = databaseAccess.getAllImported(athlete);
         cache.setSelectedProfile(athlete);
         cache.addAllImported(allImported);
         return Status.OK_STATUS;

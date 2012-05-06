@@ -13,7 +13,9 @@ import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.ListenerList;
+import org.eclipse.jface.preference.IPreferenceStore;
 
+import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.cache.Cache;
 import ch.opentrainingcenter.client.cache.IRecordListener;
 import ch.opentrainingcenter.client.model.ISimpleTraining;
@@ -22,8 +24,11 @@ import ch.opentrainingcenter.client.model.RunType;
 import ch.opentrainingcenter.client.model.TrainingOverviewFactory;
 import ch.opentrainingcenter.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.db.IDatabaseAccess;
-import ch.opentrainingcenter.importer.IGpsFileLoader;
-import ch.opentrainingcenter.importer.impl.GpsFileLoader;
+import ch.opentrainingcenter.importer.ConvertContainer;
+import ch.opentrainingcenter.importer.ExtensionHelper;
+import ch.opentrainingcenter.importer.IConvert2Tcx;
+import ch.opentrainingcenter.importer.IImportedConverter;
+import ch.opentrainingcenter.importer.impl.ImportedConverter;
 import ch.opentrainingcenter.tcx.ActivityListT;
 import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.tcx.TrainingCenterDatabaseT;
@@ -52,21 +57,22 @@ public final class TrainingCenterDataCache implements Cache {
 
     private final Map<Long, ActivityT> cache = new HashMap<Long, ActivityT>();
 
-    private final IGpsFileLoader loadGpsFile;
+    private final IImportedConverter loadGpsFile;
 
     public static final Logger LOGGER = Logger.getLogger(TrainingCenterDataCache.class);
 
     private final IDatabaseAccess dataAccess;
 
     private TrainingCenterDataCache() {
-        this(new GpsFileLoader(), DatabaseAccessFactory.getDatabaseAccess());
+        this(new ImportedConverter(Activator.getDefault().getPreferenceStore(), new ConvertContainer(ExtensionHelper.getConverters())),
+                DatabaseAccessFactory.getDatabaseAccess());
     }
 
-    private TrainingCenterDataCache(final IDatabaseAccess delegate) {
-        this(new GpsFileLoader(), delegate);
+    private TrainingCenterDataCache(final IDatabaseAccess delegate, final IPreferenceStore store, final Map<String, IConvert2Tcx> converters) {
+        this(new ImportedConverter(store, new ConvertContainer(converters)), delegate);
     }
 
-    private TrainingCenterDataCache(final IGpsFileLoader loadGpsFile, final IDatabaseAccess dataAccess) {
+    private TrainingCenterDataCache(final IImportedConverter loadGpsFile, final IDatabaseAccess dataAccess) {
         this.loadGpsFile = loadGpsFile;
         this.dataAccess = dataAccess;
 
@@ -75,13 +81,13 @@ public final class TrainingCenterDataCache implements Cache {
         database.setActivities(activityList);
     }
 
-    public static TrainingCenterDataCache getInstanceForTests(final IGpsFileLoader loadGpsFile, final IDatabaseAccess dataAccess) {
+    public static TrainingCenterDataCache getInstanceForTests(final IImportedConverter loadGpsFile, final IDatabaseAccess dataAccess) {
         return new TrainingCenterDataCache(loadGpsFile, dataAccess);
     }
 
-    public static Cache getInstance(final IDatabaseAccess delegate) {
+    public static Cache getInstance(final IDatabaseAccess delegate, final IPreferenceStore store, final Map<String, IConvert2Tcx> converters) {
         if (instance == null) {
-            instance = new TrainingCenterDataCache(delegate);
+            instance = new TrainingCenterDataCache(delegate, store, converters);
         }
         return instance;
     }
@@ -206,7 +212,7 @@ public final class TrainingCenterDataCache implements Cache {
             activity = cache.get(key);
         } else {
             try {
-                activity = loadGpsFile.convertActivity(selectedImport);
+                activity = loadGpsFile.convertImportedToActivity(selectedImport);
             } catch (final Exception e) {
                 LOGGER.error(e.getMessage());
                 return null;
@@ -424,7 +430,8 @@ public final class TrainingCenterDataCache implements Cache {
     @Override
     public void addAllImported(final List<IImported> records) {
         for (final IImported record : records) {
-            simpleTrainings.add(ModelFactory.createSimpleTraining(record.getTraining(), RunType.getRunType(record.getTrainingType().getId())));
+            simpleTrainings.add(ModelFactory.createSimpleTraining(record.getTraining(), RunType
+                    .getRunType(record.getTrainingType().getId())));
             allImported.put(record.getActivityId(), record);
         }
     }

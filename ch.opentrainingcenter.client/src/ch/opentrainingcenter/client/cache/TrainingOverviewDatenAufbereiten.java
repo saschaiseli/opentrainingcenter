@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.eclipse.jface.preference.IPreferenceStore;
 
 import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
 import ch.opentrainingcenter.client.charts.IStatistikCreator;
@@ -16,6 +17,7 @@ import ch.opentrainingcenter.client.helper.TimeHelper;
 import ch.opentrainingcenter.client.model.ISimpleTraining;
 import ch.opentrainingcenter.client.model.RunType;
 import ch.opentrainingcenter.db.IDatabaseAccess;
+import ch.opentrainingcenter.importer.IConvert2Tcx;
 import ch.opentrainingcenter.tcx.ActivityT;
 
 public class TrainingOverviewDatenAufbereiten {
@@ -31,9 +33,10 @@ public class TrainingOverviewDatenAufbereiten {
 
     private final IStatistikCreator statistik;
 
-    public TrainingOverviewDatenAufbereiten(final IStatistikCreator statistik, final IDatabaseAccess databaseAccess) {
+    public TrainingOverviewDatenAufbereiten(final IStatistikCreator statistik, final IDatabaseAccess databaseAccess,
+            final IPreferenceStore store, final Map<String, IConvert2Tcx> converters) {
         this.statistik = statistik;
-        cache = TrainingCenterDataCache.getInstance(databaseAccess);
+        cache = TrainingCenterDataCache.getInstance(databaseAccess, store, converters);
         // wenn sich noch was im cache ändert...
         cache.addListener(new IRecordListener() {
 

@@ -17,6 +17,6 @@ public interface IFileImport {
      * @return
      * @throws Exception
      */
-    List<ActivityT> importFile(final String filterPath, final IGpsFileModelWrapper modelWrapper, final IProgressMonitor monitor) throws Exception;
-
+    List<ActivityT> importFile(final String filterPath, final IGpsFileModelWrapper modelWrapper, final IProgressMonitor monitor)
+            throws Exception;
 }

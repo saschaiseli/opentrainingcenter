@@ -7,6 +7,7 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -36,6 +37,10 @@ import ch.opentrainingcenter.client.helper.TimeHelper;
 import ch.opentrainingcenter.client.views.overview.SingleActivityViewPart;
 import ch.opentrainingcenter.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.db.IDatabaseAccess;
+import ch.opentrainingcenter.importer.ConvertContainer;
+import ch.opentrainingcenter.importer.ExtensionHelper;
+import ch.opentrainingcenter.importer.IImportedConverter;
+import ch.opentrainingcenter.importer.ImporterFactory;
 import ch.opentrainingcenter.importer.LoadActivityJob;
 import ch.opentrainingcenter.importer.LoadJob;
 import ch.opentrainingcenter.tcx.ActivityT;
@@ -58,6 +63,10 @@ public class NavigationView extends ViewPart {
 
     private final IDatabaseAccess databaseAccess = DatabaseAccessFactory.getDatabaseAccess();
 
+    private final ConvertContainer cc = new ConvertContainer(ExtensionHelper.getConverters());
+
+    private final IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+
     /**
      * This is a callback that will allow us to create the viewer and initialize
      * it.
@@ -67,7 +76,7 @@ public class NavigationView extends ViewPart {
 
         parent.getShell().setMaximized(true);
 
-        final String athleteId = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.ATHLETE_ID);
+        final String athleteId = store.getString(PreferenceConstants.ATHLETE_ID);
         final int id = Integer.parseInt(athleteId);
         final IAthlete athlete = databaseAccess.getAthlete(id);
 
@@ -108,7 +117,8 @@ public class NavigationView extends ViewPart {
             }
 
             private void openSingleRunView(final IImported record) {
-                final LoadActivityJob job = new LoadActivityJob(Messages.NavigationView_1, record);
+                final IImportedConverter loader = ImporterFactory.createGpsFileLoader(store, cc);
+                final LoadActivityJob job = new LoadActivityJob(Messages.NavigationView_1, record, cache, loader);
                 job.schedule();
                 job.addJobChangeListener(new ImportActivityJobListener());
             }
@@ -134,7 +144,8 @@ public class NavigationView extends ViewPart {
             }
 
             private void writeToStatusLine(final IImported record) {
-                writeToStatusLine(Messages.NavigationView_0 + TimeHelper.convertDateToString(record.getActivityId(), false) + " " + getOverview(record)); //$NON-NLS-1$
+                writeToStatusLine(Messages.NavigationView_0 + TimeHelper.convertDateToString(record.getActivityId(), false)
+                        + " " + getOverview(record)); //$NON-NLS-1$
             }
 
             private void writeToStatusLine(final String message) {
@@ -143,7 +154,7 @@ public class NavigationView extends ViewPart {
         });
 
         if (!cache.isCacheLoaded()) {
-            final Job job = new LoadJob(Messages.NavigationView_1, athlete);
+            final Job job = new LoadJob(Messages.NavigationView_1, athlete, databaseAccess, cache);
             job.schedule();
             job.addJobChangeListener(new ImportJobChangeListener(viewer));
         } else {

@@ -14,6 +14,7 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
@@ -40,9 +41,11 @@ import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.Application;
 import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.client.PreferenceConstants;
+import ch.opentrainingcenter.client.cache.Cache;
 import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
 import ch.opentrainingcenter.client.model.sportler.Sportler;
 import ch.opentrainingcenter.db.DatabaseAccessFactory;
+import ch.opentrainingcenter.db.IDatabaseAccess;
 import ch.opentrainingcenter.importer.LoadJob;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
@@ -52,6 +55,9 @@ public class CreateAthleteView extends ViewPart {
     private static final Logger LOGGER = Logger.getLogger(CreateAthleteView.class);
     public static final String IMAGE = "icons/create.png"; //$NON-NLS-1$
     private final Sportler sportler = new Sportler();
+    private final IDatabaseAccess databaseAccess = DatabaseAccessFactory.getDatabaseAccess();
+    private final Cache cache = TrainingCenterDataCache.getInstance();
+    private final IPreferenceStore store = Activator.getDefault().getPreferenceStore();
     private Text nameTf;
     private Text ageTf;
     private Text pulseTf;
@@ -146,13 +152,15 @@ public class CreateAthleteView extends ViewPart {
             public void widgetSelected(final SelectionEvent e) {
                 final int selectionIndex = user.getSelectionIndex();
                 final int dbId = indexOfSelectBoxMappedToDatabaseId.get(selectionIndex);
-                Activator.getDefault().getPreferenceStore().setValue(PreferenceConstants.ATHLETE_ID, String.valueOf(dbId));
-                final IAthlete athlete = DatabaseAccessFactory.getDatabaseAccess().getAthlete(dbId);
+                store.setValue(PreferenceConstants.ATHLETE_ID, String.valueOf(dbId));
+
+                final IAthlete athlete = databaseAccess.getAthlete(dbId);
                 LOGGER.info(Messages.CreateAthleteView_5 + athlete + " wird im Cache gesetzt."); //$NON-NLS-1$
-                TrainingCenterDataCache.getInstance().setSelectedProfile(athlete);
-                final Job job = new LoadJob(Messages.CreateAthleteView_6, athlete);
+                cache.setSelectedProfile(athlete);
+                final Job job = new LoadJob(Messages.CreateAthleteView_6, athlete, databaseAccess, cache);
                 job.schedule();
-                getViewSite().getWorkbenchWindow().getShell().setText(Application.WINDOW_TITLE + Messages.CreateAthleteView_7 + athlete.getName());
+                getViewSite().getWorkbenchWindow().getShell().setText(
+                        Application.WINDOW_TITLE + Messages.CreateAthleteView_7 + athlete.getName());
             }
         });
 
@@ -283,7 +291,8 @@ public class CreateAthleteView extends ViewPart {
             @Override
             public void widgetSelected(final SelectionEvent e) {
                 LOGGER.info("save " + sportler); //$NON-NLS-1$
-                final IAthlete athlete = CommonTransferFactory.createAthlete(sportler.getName(), sportler.getAge(), sportler.getMaxHeartBeat());
+                final IAthlete athlete = CommonTransferFactory.createAthlete(sportler.getName(), sportler.getAge(), sportler
+                        .getMaxHeartBeat());
                 try {
                     DatabaseAccessFactory.getDatabaseAccess().save(athlete);
                     errorLabel.setText(""); //$NON-NLS-1$

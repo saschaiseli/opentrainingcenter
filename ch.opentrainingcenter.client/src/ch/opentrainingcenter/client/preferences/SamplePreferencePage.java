@@ -18,10 +18,10 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.client.PreferenceConstants;
-import ch.opentrainingcenter.client.helper.FileCopy;
 import ch.opentrainingcenter.client.helper.GpsFileNameFilter;
 import ch.opentrainingcenter.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.importer.ExtensionHelper;
+import ch.opentrainingcenter.importer.ImporterFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
 
 /**
@@ -64,7 +64,8 @@ public class SamplePreferencePage extends FieldEditorPreferencePage implements I
         for (final IAthlete ath : allAthletes) {
             vals.add(new String[] { ath.getName(), String.valueOf(ath.getId()) });
         }
-        final ComboFieldEditor comboField = new ComboFieldEditor(PreferenceConstants.ATHLETE_ID, Messages.SamplePreferencePage_3, vals.toArray(new String[0][0]), fieldEditorParent);
+        final ComboFieldEditor comboField = new ComboFieldEditor(PreferenceConstants.ATHLETE_ID, Messages.SamplePreferencePage_3, vals
+                .toArray(new String[0][0]), fieldEditorParent);
         addField(comboField);
         comboField.setEnabled(false, fieldEditorParent);
 
@@ -75,28 +76,32 @@ public class SamplePreferencePage extends FieldEditorPreferencePage implements I
         sb.setTextLimit(2);
         addField(sb);
 
-        final IntegerFieldEditor extIntervall = new IntegerFieldEditor(PreferenceConstants.EXTINTERVALL, Messages.SamplePreferencePage_7, fieldEditorParent);
+        final IntegerFieldEditor extIntervall = new IntegerFieldEditor(PreferenceConstants.EXTINTERVALL, Messages.SamplePreferencePage_7,
+                fieldEditorParent);
         extIntervall.setLabelText(Messages.SamplePreferencePage_8);
         extIntervall.setValidRange(85, 89);
         extIntervall.setErrorMessage(Messages.SamplePreferencePage_9);
         extIntervall.setTextLimit(2);
         addField(extIntervall);
 
-        final IntegerFieldEditor intDl = new IntegerFieldEditor(PreferenceConstants.INTDL, Messages.SamplePreferencePage_10, fieldEditorParent);
+        final IntegerFieldEditor intDl = new IntegerFieldEditor(PreferenceConstants.INTDL, Messages.SamplePreferencePage_10,
+                fieldEditorParent);
         intDl.setLabelText(Messages.SamplePreferencePage_11);
         intDl.setValidRange(75, 80);
         intDl.setErrorMessage(Messages.SamplePreferencePage_12);
         intDl.setTextLimit(2);
         addField(intDl);
 
-        final IntegerFieldEditor extDl = new IntegerFieldEditor(PreferenceConstants.EXTDL, Messages.SamplePreferencePage_13, fieldEditorParent);
+        final IntegerFieldEditor extDl = new IntegerFieldEditor(PreferenceConstants.EXTDL, Messages.SamplePreferencePage_13,
+                fieldEditorParent);
         extDl.setLabelText(Messages.SamplePreferencePage_14);
         extDl.setValidRange(70, 75);
         extDl.setErrorMessage(Messages.SamplePreferencePage_15);
         extDl.setTextLimit(2);
         addField(extDl);
 
-        final IntegerFieldEditor anaerobe = new IntegerFieldEditor(PreferenceConstants.ANAEROBE, Messages.SamplePreferencePage_16, fieldEditorParent);
+        final IntegerFieldEditor anaerobe = new IntegerFieldEditor(PreferenceConstants.ANAEROBE, Messages.SamplePreferencePage_16,
+                fieldEditorParent);
         anaerobe.setValidRange(90, 100);
         anaerobe.setErrorMessage(Messages.SamplePreferencePage_17);
         anaerobe.setTextLimit(2);
@@ -104,7 +109,8 @@ public class SamplePreferencePage extends FieldEditorPreferencePage implements I
 
         addField(new ColorFieldEditor(PreferenceConstants.ANAEROBE_COLOR, Messages.SamplePreferencePage_18, getFieldEditorParent()));
 
-        final IntegerFieldEditor schwellenzone = new IntegerFieldEditor(PreferenceConstants.SCHWELLENZONE, Messages.SamplePreferencePage_19, fieldEditorParent);
+        final IntegerFieldEditor schwellenzone = new IntegerFieldEditor(PreferenceConstants.SCHWELLENZONE,
+                Messages.SamplePreferencePage_19, fieldEditorParent);
         schwellenzone.setValidRange(80, 90);
         schwellenzone.setErrorMessage(Messages.SamplePreferencePage_20);
         schwellenzone.setTextLimit(2);
@@ -112,7 +118,8 @@ public class SamplePreferencePage extends FieldEditorPreferencePage implements I
 
         addField(new ColorFieldEditor(PreferenceConstants.SCHWELLENZONE_COLOR, Messages.SamplePreferencePage_21, getFieldEditorParent()));
 
-        final IntegerFieldEditor aerobe = new IntegerFieldEditor(PreferenceConstants.AEROBE, Messages.SamplePreferencePage_22, fieldEditorParent);
+        final IntegerFieldEditor aerobe = new IntegerFieldEditor(PreferenceConstants.AEROBE, Messages.SamplePreferencePage_22,
+                fieldEditorParent);
         aerobe.setErrorMessage(Messages.SamplePreferencePage_23);
         aerobe.setValidRange(50, 80);
         aerobe.setTextLimit(2);
@@ -144,7 +151,8 @@ public class SamplePreferencePage extends FieldEditorPreferencePage implements I
                 LOGGER.debug("Neuer Ort für GPS files ausgewählt. Files von: " + event.getOldValue() + " nach: " + event.getNewValue() + " kopieren"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
                 try {
-                    FileCopy.copyFiles(event.getOldValue().toString(), event.getNewValue().toString(), new GpsFileNameFilter(ExtensionHelper.getConverters()));
+                    ImporterFactory.createFileCopy().copyFiles(event.getOldValue().toString(), event.getNewValue().toString(),
+                            new GpsFileNameFilter(ExtensionHelper.getConverters()));
                 } catch (final IOException e) {
                     LOGGER.error(e.getMessage(), e.fillInStackTrace());
                 }

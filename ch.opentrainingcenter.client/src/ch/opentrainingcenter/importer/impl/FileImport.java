@@ -8,12 +8,12 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import ch.opentrainingcenter.client.Messages;
-import ch.opentrainingcenter.client.helper.FileCopy;
 import ch.opentrainingcenter.client.model.IGpsFileModel;
 import ch.opentrainingcenter.client.model.IGpsFileModelWrapper;
 import ch.opentrainingcenter.client.model.TrainingOverviewFactory;
 import ch.opentrainingcenter.db.IDatabaseAccess;
 import ch.opentrainingcenter.importer.ConvertContainer;
+import ch.opentrainingcenter.importer.IFileCopy;
 import ch.opentrainingcenter.importer.IFileImport;
 import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.transfer.IAthlete;
@@ -31,6 +31,8 @@ public class FileImport implements IFileImport {
 
     private final IDatabaseAccess dbAccess;
 
+    private final IFileCopy fileCopy;
+
     /**
      * @param cc
      *            {@link ConvertContainer}
@@ -41,11 +43,13 @@ public class FileImport implements IFileImport {
      * @param backup
      *            Ort, wo die importieren Files hinkopiert werden
      */
-    public FileImport(final ConvertContainer cc, final IAthlete athlete, final IDatabaseAccess dbAccess, final String backup) {
+    public FileImport(final ConvertContainer cc, final IAthlete athlete, final IDatabaseAccess dbAccess, final String backup,
+            final IFileCopy fileCopy) {
         this.cc = cc;
         this.athlete = athlete;
         this.dbAccess = dbAccess;
         this.locationBackupFiles = backup;
+        this.fileCopy = fileCopy;
     }
 
     @Override
@@ -60,7 +64,7 @@ public class FileImport implements IFileImport {
 
             activitiesToImport.addAll(importRecords(model, file, activities));
 
-            FileCopy.copyFile(file, new File(locationBackupFiles, file.getName()));
+            fileCopy.copyFile(file, new File(locationBackupFiles, file.getName()));
             monitor.worked(1);
         }
         return activitiesToImport;
@@ -80,4 +84,5 @@ public class FileImport implements IFileImport {
         }
         return result;
     }
+
 }

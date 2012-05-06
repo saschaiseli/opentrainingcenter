@@ -71,6 +71,7 @@ import ch.opentrainingcenter.client.helper.ColorFromPreferenceHelper;
 import ch.opentrainingcenter.client.model.ISimpleTraining;
 import ch.opentrainingcenter.client.model.RunType;
 import ch.opentrainingcenter.db.DatabaseAccessFactory;
+import ch.opentrainingcenter.importer.IConvert2Tcx;
 import ch.opentrainingcenter.tcx.ActivityT;
 
 public class OTCBarChartViewer implements ISelectionProvider {
@@ -100,16 +101,16 @@ public class OTCBarChartViewer implements ISelectionProvider {
     private final TrainingOverviewDatenAufbereiten daten;
     private RunType filter = RunType.NONE;
 
-    private final IPreferenceStore store;
+    private final IPreferenceStore store = Activator.getDefault().getPreferenceStore();;
 
     private final Cache cache;
 
-    public OTCBarChartViewer(final Composite parent, final ChartSerieType type) {
+    public OTCBarChartViewer(final Composite parent, final ChartSerieType type, final Map<String, IConvert2Tcx> converters) {
         this.type = type;
         clazz = getSeriesType(type);
         statistik = new StatistikCreator();
-        daten = new TrainingOverviewDatenAufbereiten(statistik, DatabaseAccessFactory.getDatabaseAccess());
-        store = Activator.getDefault().getPreferenceStore();
+
+        daten = new TrainingOverviewDatenAufbereiten(statistik, DatabaseAccessFactory.getDatabaseAccess(), store, converters);
         distanceSerie = new TimeSeries(DISTANZ);
         heartSerie = new TimeSeries(HEART);
         cache = TrainingCenterDataCache.getInstance();

@@ -8,6 +8,7 @@ import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.ui.part.ViewPart;
 
 import ch.opentrainingcenter.client.charts.ChartSerieType;
+import ch.opentrainingcenter.importer.ExtensionHelper;
 
 public class StatisticView extends ViewPart {
 
@@ -30,7 +31,7 @@ public class StatisticView extends ViewPart {
         final TabItem item = new TabItem(tabs, SWT.PUSH);
         item.setText(type.getName());
 
-        final OTCBarChartViewer viewer = new OTCBarChartViewer(tabs, type);
+        final OTCBarChartViewer viewer = new OTCBarChartViewer(tabs, type, ExtensionHelper.getConverters());
         item.setControl(viewer.getControl());
     }
 

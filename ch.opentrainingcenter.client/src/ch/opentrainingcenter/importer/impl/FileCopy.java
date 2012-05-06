@@ -1,4 +1,4 @@
-package ch.opentrainingcenter.client.helper;
+package ch.opentrainingcenter.importer.impl;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,19 +9,13 @@ import java.nio.channels.FileChannel;
 
 import org.apache.log4j.Logger;
 
-public final class FileCopy {
+import ch.opentrainingcenter.importer.IFileCopy;
 
+public class FileCopy implements IFileCopy {
     private static final Logger LOG = Logger.getLogger(FileCopy.class);
 
-    private FileCopy() {
-        // do not create Instance of an Helper Methode.
-    }
-
-    /**
-     * Kopiert ein file in ein anderes das destination file wird nie
-     * überschrieben werden.
-     */
-    public static void copyFile(final File sourceFile, final File destFile) throws IOException {
+    @Override
+    public void copyFile(final File sourceFile, final File destFile) throws IOException {
         if (sourceFile.getAbsolutePath().equals(destFile.getAbsolutePath())) {
             return;
         }
@@ -57,15 +51,15 @@ public final class FileCopy {
         }
     }
 
-    private static String getFolder(final String absolutePath) {
-        return absolutePath.substring(0, absolutePath.lastIndexOf(File.separator));
-    }
-
-    public static void copyFiles(final String sourceFolder, final String destinationFolder, final FilenameFilter filter) throws IOException {
+    public void copyFiles(final String sourceFolder, final String destinationFolder, final FilenameFilter filter) throws IOException {
         final File file = new File(sourceFolder);
         final String[] filteredFileNames = file.list(filter);
         for (final String fileName : filteredFileNames) {
             copyFile(new File(sourceFolder, fileName), new File(destinationFolder, fileName));
         }
+    }
+
+    private String getFolder(final String absolutePath) {
+        return absolutePath.substring(0, absolutePath.lastIndexOf(File.separator));
     }
 }
