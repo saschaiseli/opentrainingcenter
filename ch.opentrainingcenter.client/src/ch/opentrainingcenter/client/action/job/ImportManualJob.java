@@ -18,7 +18,7 @@ import ch.opentrainingcenter.tcx.ActivityT;
 
 public class ImportManualJob extends Job {
 
-    private final static Logger LOGGER = Logger.getLogger(ImportManualJob.class);
+    private static final Logger LOGGER = Logger.getLogger(ImportManualJob.class);
     private final IGpsFileModelWrapper modelWrapper;
     private final String filterPath;
     private final Cache cache;

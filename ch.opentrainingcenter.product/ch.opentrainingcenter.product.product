@@ -4,7 +4,6 @@
 <product name="Open Training Center" uid="ch.opentrainingcenter.product" id="ch.opentrainingcenter.client.opentrainingcenter" application="ch.opentrainingcenter.client.application" version="1.0.0" useFeatures="false" includeLaunchers="true">
 
    <aboutInfo>
-      <image path="/ch.opentrainingcenter.client/icons/simpsons-icon.png"/>
       <text>
          Hello, hello...
       </text>

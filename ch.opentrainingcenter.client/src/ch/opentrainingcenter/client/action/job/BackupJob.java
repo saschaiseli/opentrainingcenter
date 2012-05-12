@@ -93,8 +93,7 @@ public class BackupJob extends Job {
     protected String createZipFileName() {
         final Date date = new Date();
         final SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd"); //$NON-NLS-1$
-        final String zipFileName = df.format(date) + ".zip"; //$NON-NLS-1$
-        return zipFileName;
+        return df.format(date) + ".zip";
     }
 
     public String[] getFileToCopy() {

@@ -67,7 +67,8 @@ public final class TimeHelper {
         calendar.get(Calendar.DAY_OF_WEEK);
         final SimpleDateFormat format = new SimpleDateFormat(Messages.TimeHelper_0);
         if (withDay) {
-            return calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()) + Messages.TimeHelper_1 + format.format(time);
+            return calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()) + Messages.TimeHelper_1
+                    + format.format(time);
         } else {
             return format.format(time);
         }
@@ -91,7 +92,8 @@ public final class TimeHelper {
         calendar.setTime(datum);
         final SimpleDateFormat format = new SimpleDateFormat(Messages.TimeHelper_0);
         if (withDay) {
-            return calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()) + Messages.TimeHelper_1 + format.format(datum);
+            return calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()) + Messages.TimeHelper_1
+                    + format.format(datum);
         } else {
             return format.format(datum);
         }

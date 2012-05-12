@@ -26,8 +26,14 @@ public class LoadActivityJob extends Job {
         this.cache = cache;
     }
 
-    public ActivityT getLoaded() {
-        return selected;
+    @Override
+    protected IStatus run(final IProgressMonitor monitor) {
+        try {
+            selected = loadActivity(record);
+            return Status.OK_STATUS;
+        } catch (final LoadImportedException e) {
+            return Status.CANCEL_STATUS;
+        }
     }
 
     private ActivityT loadActivity(final IImported selectedRecord) throws LoadImportedException {
@@ -48,13 +54,11 @@ public class LoadActivityJob extends Job {
         return result;
     }
 
-    @Override
-    protected IStatus run(final IProgressMonitor monitor) {
-        try {
-            selected = loadActivity(record);
-            return Status.OK_STATUS;
-        } catch (final LoadImportedException e) {
-            return Status.CANCEL_STATUS;
-        }
+    /**
+     * Für Testzwecke..
+     */
+    protected ActivityT getLoaded() {
+        return selected;
     }
+
 }

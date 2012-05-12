@@ -6,6 +6,7 @@ import java.io.IOException;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -59,6 +60,7 @@ public class FindGarminFilesTest {
     }
 
     @Test
+    @Ignore
     public void testPatternRecord() throws IOException {
         Mockito.when(store.getString(PreferenceConstants.GPS_FILE_LOCATION_PROG)).thenReturn(dir);
         final File file = FindGarminFiles.loadAllGPSFile(patternFile.getName(), store);

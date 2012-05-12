@@ -62,7 +62,7 @@ public final class DistanceHelper {
         } else {
             s = String.valueOf((int) sekunden);
         }
-        return String.valueOf((int) floor) + ":" + s; //$NON-NLS-1$
+        return (int) floor + ":" + s; //$NON-NLS-1$
     }
 
     /**

@@ -41,11 +41,14 @@ public final class FindGarminFiles {
         return null;
     }
 
-    private static String removeImportPattern(String fileName) {
+    private static String removeImportPattern(final String fileName) {
+        final String result;
         if (fileName.contains(ImportManualGpsFiles.IMPORT_PATTERN)) {
-            fileName = fileName.substring(0, fileName.indexOf(ImportManualGpsFiles.IMPORT_PATTERN));
+            result = fileName.substring(0, fileName.indexOf(ImportManualGpsFiles.IMPORT_PATTERN));
+        } else {
+            result = fileName;
         }
-        return fileName;
+        return result;
     }
 
     /**

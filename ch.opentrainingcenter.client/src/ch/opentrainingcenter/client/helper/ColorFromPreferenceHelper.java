@@ -6,8 +6,6 @@ import java.awt.Paint;
 import org.apache.log4j.Logger;
 import org.eclipse.jface.preference.IPreferenceStore;
 
-import ch.opentrainingcenter.client.PreferenceConstants;
-
 public final class ColorFromPreferenceHelper {
 
     private static final Logger LOGGER = Logger.getLogger(ColorFromPreferenceHelper.class);
@@ -24,7 +22,6 @@ public final class ColorFromPreferenceHelper {
      *            TODO
      * @param preferenceKey
      *            Key der auf die Preferences zugreift.
-     *            {@link PreferenceConstants}.
      * @param alpha
      *            alpha wert 0...255 Transparency (0 transparent, 255 maximale
      *            Farbe)
