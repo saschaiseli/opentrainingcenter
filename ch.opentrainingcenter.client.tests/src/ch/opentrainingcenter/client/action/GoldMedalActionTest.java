@@ -1,8 +1,5 @@
 package ch.opentrainingcenter.client.action;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -14,6 +11,8 @@ import ch.opentrainingcenter.client.model.IGoldMedalModel;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IImported;
 import ch.opentrainingcenter.transfer.ITraining;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 @SuppressWarnings("nls")
 public class GoldMedalActionTest {
@@ -30,7 +29,7 @@ public class GoldMedalActionTest {
         action = new GoldMedalAction();
         allImported = new ArrayList<IImported>();
         impA = CommonTransferFactory.createIImported();
-        trainingA = CommonTransferFactory.createTraining(new Date(), 0, 0, 0, 0, 0);
+        trainingA = CommonTransferFactory.createTraining(new Date(), 0, 0, 0, 0, 0, null);
         impA.setTraining(trainingA);
         allImported.add(impA);
     }
@@ -72,7 +71,7 @@ public class GoldMedalActionTest {
     @Test
     public void testMaxHeartRate4() {
         impB = CommonTransferFactory.createIImported();
-        trainingB = CommonTransferFactory.createTraining(new Date(), 0, 0, 0, 0, 0);
+        trainingB = CommonTransferFactory.createTraining(new Date(), 0, 0, 0, 0, 0, null);
         impB.setTraining(trainingB);
 
         trainingA.setMaxHeartBeat(2);
@@ -87,7 +86,7 @@ public class GoldMedalActionTest {
     @Test
     public void testMaxHeartRate5() {
         impB = CommonTransferFactory.createIImported();
-        trainingB = CommonTransferFactory.createTraining(new Date(), 0, 0, 0, 0, 0);
+        trainingB = CommonTransferFactory.createTraining(new Date(), 0, 0, 0, 0, 0, null);
         impB.setTraining(trainingB);
 
         trainingA.setMaxHeartBeat(-1);
@@ -129,7 +128,7 @@ public class GoldMedalActionTest {
     @Test
     public void testAverageHeartRate4() {
         impB = CommonTransferFactory.createIImported();
-        trainingB = CommonTransferFactory.createTraining(new Date(), 0, 0, 0, 0, 0);
+        trainingB = CommonTransferFactory.createTraining(new Date(), 0, 0, 0, 0, 0, null);
         impB.setTraining(trainingB);
 
         trainingA.setAverageHeartBeat(2);
@@ -144,7 +143,7 @@ public class GoldMedalActionTest {
     @Test
     public void testAverageHeartRate5() {
         impB = CommonTransferFactory.createIImported();
-        trainingB = CommonTransferFactory.createTraining(new Date(), 0, 0, 0, 0, 0);
+        trainingB = CommonTransferFactory.createTraining(new Date(), 0, 0, 0, 0, 0, null);
         impB.setTraining(trainingB);
 
         trainingA.setAverageHeartBeat(-1);
@@ -186,7 +185,7 @@ public class GoldMedalActionTest {
     @Test
     public void testLowestLowestAverageHeartRate4() {
         impB = CommonTransferFactory.createIImported();
-        trainingB = CommonTransferFactory.createTraining(new Date(), 0, 0, 0, 0, 0);
+        trainingB = CommonTransferFactory.createTraining(new Date(), 0, 0, 0, 0, 0, null);
         impB.setTraining(trainingB);
 
         trainingA.setAverageHeartBeat(2);
@@ -201,7 +200,7 @@ public class GoldMedalActionTest {
     @Test
     public void testLowestLowestAverageHeartRate5() {
         impB = CommonTransferFactory.createIImported();
-        trainingB = CommonTransferFactory.createTraining(new Date(), 0, 0, 0, 0, 0);
+        trainingB = CommonTransferFactory.createTraining(new Date(), 0, 0, 0, 0, 0, null);
         impB.setTraining(trainingB);
 
         trainingA.setAverageHeartBeat(-1);
@@ -243,7 +242,7 @@ public class GoldMedalActionTest {
     @Test
     public void testDauer4() {
         impB = CommonTransferFactory.createIImported();
-        trainingB = CommonTransferFactory.createTraining(new Date(), 0, 0, 0, 0, 0);
+        trainingB = CommonTransferFactory.createTraining(new Date(), 0, 0, 0, 0, 0, null);
         impB.setTraining(trainingB);
 
         trainingA.setDauerInSekunden(2);
@@ -258,7 +257,7 @@ public class GoldMedalActionTest {
     @Test
     public void testDauer5() {
         impB = CommonTransferFactory.createIImported();
-        trainingB = CommonTransferFactory.createTraining(new Date(), 0, 0, 0, 0, 0);
+        trainingB = CommonTransferFactory.createTraining(new Date(), 0, 0, 0, 0, 0, null);
         impB.setTraining(trainingB);
 
         trainingA.setDauerInSekunden(-1);
@@ -301,7 +300,7 @@ public class GoldMedalActionTest {
     @Test
     public void testPace4() {
         impB = CommonTransferFactory.createIImported();
-        trainingB = CommonTransferFactory.createTraining(new Date(), 120, 1000, 0, 0, 0);
+        trainingB = CommonTransferFactory.createTraining(new Date(), 120, 1000, 0, 0, 0, null);
         impB.setTraining(trainingB);
 
         trainingA.setDauerInSekunden(60);
@@ -316,7 +315,7 @@ public class GoldMedalActionTest {
     @Test
     public void testPace5() {
         impB = CommonTransferFactory.createIImported();
-        trainingB = CommonTransferFactory.createTraining(new Date(), 30, 1000, 0, 0, 0);
+        trainingB = CommonTransferFactory.createTraining(new Date(), 30, 1000, 0, 0, 0, null);
         impB.setTraining(trainingB);
 
         trainingA.setDauerInSekunden(60);
@@ -358,7 +357,7 @@ public class GoldMedalActionTest {
     @Test
     public void testLongestDistance4() {
         impB = CommonTransferFactory.createIImported();
-        trainingB = CommonTransferFactory.createTraining(new Date(), 0, 0, 0, 0, 0);
+        trainingB = CommonTransferFactory.createTraining(new Date(), 0, 0, 0, 0, 0, null);
         impB.setTraining(trainingB);
 
         trainingA.setLaengeInMeter(2);
@@ -373,7 +372,7 @@ public class GoldMedalActionTest {
     @Test
     public void testLongestDistance5() {
         impB = CommonTransferFactory.createIImported();
-        trainingB = CommonTransferFactory.createTraining(new Date(), 0, 0, 0, 0, 0);
+        trainingB = CommonTransferFactory.createTraining(new Date(), 0, 0, 0, 0, 0, null);
         impB.setTraining(trainingB);
 
         trainingA.setLaengeInMeter(-1);

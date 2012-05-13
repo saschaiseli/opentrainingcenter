@@ -64,6 +64,11 @@ public class DatabaseAccess implements IDatabaseAccess {
     }
 
     @Override
+    public void updateRecord(final IImported record) {
+        importDao.updateRecord(record);
+    }
+
+    @Override
     public List<IAthlete> getAllAthletes() {
         return athleteDao.getAllAthletes();
     }

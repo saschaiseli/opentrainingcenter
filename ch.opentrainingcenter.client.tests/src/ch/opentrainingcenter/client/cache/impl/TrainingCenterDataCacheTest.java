@@ -1,11 +1,5 @@
 package ch.opentrainingcenter.client.cache.impl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -22,7 +16,6 @@ import ch.opentrainingcenter.client.cache.ActivityTTestHelper;
 import ch.opentrainingcenter.client.cache.MockDataAccess;
 import ch.opentrainingcenter.client.cache.MockGpsFileLoader;
 import ch.opentrainingcenter.client.cache.MockRecordListener;
-import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
 import ch.opentrainingcenter.client.model.ISimpleTraining;
 import ch.opentrainingcenter.client.model.RunType;
 import ch.opentrainingcenter.tcx.ActivityT;
@@ -31,6 +24,11 @@ import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IImported;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.ITrainingType;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 public class TrainingCenterDataCacheTest {
 
@@ -294,7 +292,8 @@ public class TrainingCenterDataCacheTest {
 
         // assert
         assertEquals("Nur ein Imported aus dem Cache entfernt. Im Cache ist noch ein Element", 1, cache.getAllImportedRecords().size());
-        assertEquals("Nur ein Simpletrainings aus dem Cache entfernt. Im Cache ist noch ein Element", 1, cache.getAllSimpleTrainings().size());
+        assertEquals("Nur ein Simpletrainings aus dem Cache entfernt. Im Cache ist noch ein Element", 1, cache.getAllSimpleTrainings()
+                .size());
         assertNotNull("Eines muss noch selektiert sein", cache.getSelected());
     }
 
@@ -465,7 +464,7 @@ public class TrainingCenterDataCacheTest {
         result.setActivityId(date);
         final ITrainingType type = CommonTransferFactory.createTrainingType(1, "junit", "description");
         result.setTrainingType(type);
-        final ITraining overview = CommonTransferFactory.createTraining(date, 1, 1, 1, 1, 1);
+        final ITraining overview = CommonTransferFactory.createTraining(date, 1, 1, 1, 1, 1, null);
         result.setTraining(overview);
         return result;
     }

@@ -17,14 +17,16 @@ public class SimpleTraining implements ISimpleTraining {
     private final String laengeInKilometer;
     private final String pace;
     private final String speed;
+    private final String note;
     private RunType type;
 
     public SimpleTraining(final double distanzInMeter, final double dauerInSekunden, final Date datum, final int avgHeartRate,
-            final int maxHeartRate, final double speed, final RunType type) {
+            final int maxHeartRate, final double speed, final RunType type, final String note) {
         this.distanzInMeter = distanzInMeter;
         this.avgHeartRate = avgHeartRate;
         this.maxHeartRate = maxHeartRate;
         this.type = type;
+        this.note = note;
         laengeInKilometer = DistanceHelper.roundDistanceFromMeterToKm(distanzInMeter);
         this.dauerInSekunden = dauerInSekunden;
         readableZeit = TimeHelper.convertSecondsToHumanReadableZeit(dauerInSekunden);
@@ -122,6 +124,11 @@ public class SimpleTraining implements ISimpleTraining {
     @Override
     public String toString() {
         return "SimpleTraining [distanzInMeter=" + distanzInMeter + ", dauerInSekunden=" + dauerInSekunden + ", datum=" + datum + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+    }
+
+    @Override
+    public String getNote() {
+        return note;
     }
 
 }

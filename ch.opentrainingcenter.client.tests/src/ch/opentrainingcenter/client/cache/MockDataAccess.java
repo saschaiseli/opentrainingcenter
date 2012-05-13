@@ -78,4 +78,10 @@ public class MockDataAccess implements IDatabaseAccess {
     public void addIimported(final Date date, final IImported iimported) {
         mapOfImported.put(date, iimported);
     }
+
+    @Override
+    public void updateRecord(final IImported record) {
+        // TODO Auto-generated method stub
+
+    }
 }

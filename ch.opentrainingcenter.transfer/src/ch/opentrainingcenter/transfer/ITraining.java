@@ -31,4 +31,6 @@ public interface ITraining {
     double getDauerInSekunden();
 
     void setDauerInSekunden(double dauerInSekunden);
+
+    String getNote();
 }

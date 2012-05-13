@@ -42,13 +42,13 @@ public class ModelFactoryTest {
     @Test
     public void testFullTraining() {
         final RunType type = RunType.INT_INTERVALL;
-        final ISimpleTraining training = ModelFactory.createSimpleTraining(distanz, dauer, date, avgHeart, maxHeart, maxSpeed, type);
+        final ISimpleTraining training = ModelFactory.createSimpleTraining(distanz, dauer, date, avgHeart, maxHeart, maxSpeed, type, null);
         assertTraining(training);
     }
 
     @Test
     public void testSimpleTrainingMitTyp() {
-        final ISimpleTraining training = ModelFactory.createSimpleTraining(overview, RunType.EXT_INTERVALL);
+        final ISimpleTraining training = ModelFactory.createSimpleTraining(overview, RunType.EXT_INTERVALL, "");
         assertTraining(training);
     }
 

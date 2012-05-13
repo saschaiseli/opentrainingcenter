@@ -92,6 +92,6 @@ public class SimpleTrainingDescriptor {
         } else {
             datum = date;
         }
-        return new SimpleTraining(distanzInMeter, dauerInSekunden, datum, avgHeartRate, maxHeartRate, speed, type);
+        return new SimpleTraining(distanzInMeter, dauerInSekunden, datum, avgHeartRate, maxHeartRate, speed, type, null);
     }
 }

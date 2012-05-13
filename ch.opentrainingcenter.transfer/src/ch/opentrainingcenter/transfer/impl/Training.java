@@ -13,19 +13,21 @@ public class Training implements ITraining {
     private int avgHeartBeat;
     private int maxHeartRate;
     private double maxSpeed;
+    private String note;
 
     public Training() {
         // maybe for hibernate
     }
 
-    public Training(final Date dateOfStart, final double timeInSeconds, final double distance, final int avgHeartRate, final int maxHeartBeat,
-            final double maximumSpeed) {
+    public Training(final Date dateOfStart, final double timeInSeconds, final double distance, final int avgHeartRate,
+            final int maxHeartBeat, final double maximumSpeed, final String note) {
         date = dateOfStart;
         dauerInSekunden = timeInSeconds;
         laengeInMeter = distance;
         avgHeartBeat = avgHeartRate;
         maxHeartRate = maxHeartBeat;
         maxSpeed = maximumSpeed;
+        this.note = note;
     }
 
     @Override
@@ -102,6 +104,11 @@ public class Training implements ITraining {
     public String toString() {
         return "Training [id=" + id + ", date=" + date + ", dauerInSekunden=" + dauerInSekunden + ", laengeInMeter=" + laengeInMeter + ", avgHeartBeat=" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
                 + avgHeartBeat + ", maxHeartRate=" + maxHeartRate + ", maxSpeed=" + maxSpeed + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    }
+
+    @Override
+    public String getNote() {
+        return note;
     }
 
 }

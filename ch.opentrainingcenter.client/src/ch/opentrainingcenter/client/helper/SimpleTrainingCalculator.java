@@ -78,7 +78,7 @@ public final class SimpleTrainingCalculator {
             avgHeartRate = 0;
         }
         if (count > 0) {
-            result.add(ModelFactory.createSimpleTraining(distance, seconds, date, avgHeartRate, maxHeart, 0.0, filter));
+            result.add(ModelFactory.createSimpleTraining(distance, seconds, date, avgHeartRate, maxHeart, 0.0, filter, null));
         }
     }
 

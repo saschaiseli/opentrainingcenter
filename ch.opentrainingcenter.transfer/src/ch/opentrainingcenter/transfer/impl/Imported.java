@@ -22,6 +22,7 @@ public class Imported implements java.io.Serializable, IImported {
     private IAthlete athlete;
     private Date importedDate;
     private String comments;
+    private String note;
     private Date activityId;
     private ITraining overview;
     private ITrainingType type;
@@ -62,7 +63,8 @@ public class Imported implements java.io.Serializable, IImported {
     /*
      * (non-Javadoc)
      * 
-     * @see ch.opentrainingcenter.transfer.internal.IImported#setWeather(ch.opentrainingcenter.transfer.internal.Weather)
+     * @see ch.opentrainingcenter.transfer.internal.IImported#setWeather(ch.
+     * opentrainingcenter.transfer.internal.Weather)
      */
     @Override
     public void setWeather(final IWeather weather) {
@@ -82,7 +84,8 @@ public class Imported implements java.io.Serializable, IImported {
     /*
      * (non-Javadoc)
      * 
-     * @see ch.opentrainingcenter.transfer.internal.IImported#setAthlete(ch.opentrainingcenter.transfer.IAthlete)
+     * @see ch.opentrainingcenter.transfer.internal.IImported#setAthlete(ch.
+     * opentrainingcenter.transfer.IAthlete)
      */
     @Override
     public void setAthlete(final IAthlete athlete) {
@@ -102,7 +105,9 @@ public class Imported implements java.io.Serializable, IImported {
     /*
      * (non-Javadoc)
      * 
-     * @see ch.opentrainingcenter.transfer.internal.IImported#setImportedDate(java.util.Date)
+     * @see
+     * ch.opentrainingcenter.transfer.internal.IImported#setImportedDate(java
+     * .util.Date)
      */
     @Override
     public void setImportedDate(final Date importedDate) {
@@ -122,7 +127,9 @@ public class Imported implements java.io.Serializable, IImported {
     /*
      * (non-Javadoc)
      * 
-     * @see ch.opentrainingcenter.transfer.internal.IImported#setComments(java.lang.String)
+     * @see
+     * ch.opentrainingcenter.transfer.internal.IImported#setComments(java.lang
+     * .String)
      */
     @Override
     public void setComments(final String comments) {
@@ -162,7 +169,17 @@ public class Imported implements java.io.Serializable, IImported {
     @Override
     public String toString() {
         return "Imported [id=" + id + ", weather=" + weather + ", athlete=" + athlete + ", importedDate=" + importedDate + ", comments=" + comments //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-                + ", activityId=" + activityId + ", overview=" + overview + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                + ", activityId=" + activityId + ", overview=" + overview + " note=" + note + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    }
+
+    @Override
+    public String getNote() {
+        return note;
+    }
+
+    @Override
+    public void setNote(final String note) {
+        this.note = note;
     }
 
 }

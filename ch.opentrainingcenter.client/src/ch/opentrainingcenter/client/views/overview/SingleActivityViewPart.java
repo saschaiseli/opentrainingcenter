@@ -115,6 +115,7 @@ public class SingleActivityViewPart extends ViewPart {
         addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_6, simpleTraining.getMaxHeartBeat(), Units.BEATS_PER_MINUTE);
         addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_7, simpleTraining.getPace(), Units.PACE);
         addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_8, simpleTraining.getMaxSpeed(), Units.PACE);
+        addLabelAndValue(overViewComposite, "Notiz", simpleTraining.getNote(), Units.NONE);
         overviewSection.setClient(overViewComposite);
     }
 

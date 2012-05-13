@@ -124,10 +124,14 @@ public final class TrainingCenterDataCache implements Cache {
         for (final ActivityT activity : activities) {
             simpleTrainings.add(TrainingOverviewFactory.creatSimpleTraining(activity));
             final Date key = activity.getId().toGregorianCalendar().getTime();
-            cache.put(key.getTime(), activity);
 
             final IImported imported = dataAccess.getImportedRecord(key);
+            if (imported != null) {
+                activity.setNotes(imported.getNote());
+            }
+
             allImported.put(key, imported);
+            cache.put(key.getTime(), activity);
         }
         fireRecordAdded(null);
     }
@@ -431,7 +435,7 @@ public final class TrainingCenterDataCache implements Cache {
     public void addAllImported(final List<IImported> records) {
         for (final IImported record : records) {
             simpleTrainings.add(ModelFactory.createSimpleTraining(record.getTraining(), RunType
-                    .getRunType(record.getTrainingType().getId())));
+                    .getRunType(record.getTrainingType().getId()), record.getNote()));
             allImported.put(record.getActivityId(), record);
         }
     }
@@ -459,7 +463,12 @@ public final class TrainingCenterDataCache implements Cache {
     @Override
     public ActivityT get(final Date activityId) {
         final long key = activityId.getTime();
-        return cache.get(key);
+        final IImported imported = allImported.get(activityId);
+        final ActivityT activity = cache.get(key);
+        if (imported != null) {
+            activity.setNotes(imported.getNote());
+        }
+        return activity;
     }
 
     /*

@@ -36,5 +36,8 @@
   <property generated="never" lazy="false" name="comments" type="string">
    <column name="COMMENTS"/>
   </property>
+  <property generated="never" lazy="false" name="note" type="string">
+   <column name="NOTE"/>
+  </property>
  </class>
 </hibernate-mapping>

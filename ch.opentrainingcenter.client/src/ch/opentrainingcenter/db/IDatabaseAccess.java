@@ -102,6 +102,13 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
      */
     int save(IAthlete athlete);
 
+    /**
+     * updated training type
+     */
     void updateRecord(IImported record, int index);
 
+    /**
+     * updated ganzer record
+     */
+    void updateRecord(IImported record);
 }

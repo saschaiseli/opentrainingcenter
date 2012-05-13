@@ -19,17 +19,17 @@ public final class ModelFactory {
      */
     public static ISimpleTraining createSimpleTraining(final ITraining overview) {
         return new SimpleTraining(overview.getLaengeInMeter(), overview.getDauerInSekunden(), overview.getDateOfStart(), overview
-                .getAverageHeartBeat(), overview.getMaxHeartBeat(), overview.getMaxSpeed(), RunType.NONE);
+                .getAverageHeartBeat(), overview.getMaxHeartBeat(), overview.getMaxSpeed(), RunType.NONE, overview.getNote());
     }
 
     public static ISimpleTraining createSimpleTraining(final double distanzInMeter, final double dauerInSekunden, final Date datum,
-            final int avgHeartRate, final int maxHeartRate, final double maxSpeed, final RunType type) {
-        return new SimpleTraining(distanzInMeter, dauerInSekunden, datum, avgHeartRate, maxHeartRate, maxSpeed, type);
+            final int avgHeartRate, final int maxHeartRate, final double maxSpeed, final RunType type, final String note) {
+        return new SimpleTraining(distanzInMeter, dauerInSekunden, datum, avgHeartRate, maxHeartRate, maxSpeed, type, note);
     }
 
-    public static ISimpleTraining createSimpleTraining(final ITraining overview, final RunType runType) {
+    public static ISimpleTraining createSimpleTraining(final ITraining overview, final RunType runType, final String note) {
         return new SimpleTraining(overview.getLaengeInMeter(), overview.getDauerInSekunden(), overview.getDateOfStart(), overview
-                .getAverageHeartBeat(), overview.getMaxHeartBeat(), overview.getMaxSpeed(), runType);
+                .getAverageHeartBeat(), overview.getMaxHeartBeat(), overview.getMaxSpeed(), runType, note);
     }
 
     public static IGpsFileModel createGpsFileModel(final String fileName) {

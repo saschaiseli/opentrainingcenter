@@ -30,7 +30,8 @@ public interface IImported {
 
     /**
      * @param time
-     *            die startzeit der aktivität. dies ist gleichzeitig auch die id des records.
+     *            die startzeit der aktivität. dies ist gleichzeitig auch die id
+     *            des records.
      */
     void setActivityId(Date time);
 
@@ -42,5 +43,15 @@ public interface IImported {
     void setTraining(ITraining overview);
 
     ITraining getTraining();
+
+    /**
+     * @return eine Notiz zu dem Record.
+     */
+    String getNote();
+
+    /**
+     * setzt eine notiz zu einem Lauf.
+     */
+    void setNote(String note);
 
 }

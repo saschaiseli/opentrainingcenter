@@ -73,6 +73,14 @@ public class ImportDao {
         session.flush();
     }
 
+    public void updateRecord(final IImported record) {
+        final Session session = dao.getSession();
+        final Transaction tx = session.beginTransaction();
+        session.update(record);
+        tx.commit();
+        session.flush();
+    }
+
     @SuppressWarnings("unchecked")
     private ITrainingType getTrainingType(final int id) {
         final Query query = dao.getSession().createQuery("from TrainingType where id=:idType");//$NON-NLS-1$
@@ -82,7 +90,9 @@ public class ImportDao {
     }
 
     /**
-     * sucht ob es bereits einen importierten datensatz mit diesem namen gibt. Damit soll geschaut werden, ob der Record bereits einmal importiert wurde.
+     * sucht ob es bereits einen importierten datensatz mit diesem namen gibt.
+     * Damit soll geschaut werden, ob der Record bereits einmal importiert
+     * wurde.
      */
     private int searchRecord(final Date activityId) {
         final Session session = dao.getSession();

@@ -24,8 +24,8 @@ public class CommonTransferFactory {
         return new TrainingType(id, title, description);
     }
 
-    public static ITraining createTraining(final Date dateOfStart, final double timeInSeconds, final double distance, final int avgHeartRate,
-            final int maxHeartBeat, final double maximumSpeed) {
-        return new Training(dateOfStart, timeInSeconds, distance, avgHeartRate, maxHeartBeat, maximumSpeed);
+    public static ITraining createTraining(final Date dateOfStart, final double timeInSeconds, final double distance,
+            final int avgHeartRate, final int maxHeartBeat, final double maximumSpeed, final String note) {
+        return new Training(dateOfStart, timeInSeconds, distance, avgHeartRate, maxHeartBeat, maximumSpeed, note);
     }
 }

@@ -1,11 +1,5 @@
 package ch.opentrainingcenter.client.charts;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -20,6 +14,11 @@ import org.junit.Test;
 import ch.opentrainingcenter.client.charts.internal.StatistikCreator;
 import ch.opentrainingcenter.client.model.ISimpleTraining;
 import ch.opentrainingcenter.client.model.impl.SimpleTraining;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 public class IStatistikCreatorTest {
 
@@ -118,21 +117,20 @@ public class IStatistikCreatorTest {
 
     @Test
     public void testGetTrainingsProWoche_1() {
-    	System.out.println("--------------------------------------");
+        System.out.println("--------------------------------------");
         trainings.add(createTraining(2012, 2, 19));
-        System.out.println("--------------------------------------:"+trainings.size());
+        System.out.println("--------------------------------------:" + trainings.size());
         final Map<Integer, Map<Integer, List<ISimpleTraining>>> trainingsProMonat = stats.getTrainingsProWoche(trainings);
-        for(Map.Entry<Integer, Map<Integer, List<ISimpleTraining>>> entry : trainingsProMonat.entrySet()){
-        	Map<Integer, List<ISimpleTraining>> value = entry.getValue();
-        	for(Map.Entry<Integer, List<ISimpleTraining>> em : value.entrySet()){
-        		List<ISimpleTraining> simpletra = em.getValue();
-        		for (ISimpleTraining t : simpletra) {
-					System.out.println("Simple Training: "+t);
-				}
-        	}
+        for (final Map.Entry<Integer, Map<Integer, List<ISimpleTraining>>> entry : trainingsProMonat.entrySet()) {
+            final Map<Integer, List<ISimpleTraining>> value = entry.getValue();
+            for (final Map.Entry<Integer, List<ISimpleTraining>> em : value.entrySet()) {
+                final List<ISimpleTraining> simpletra = em.getValue();
+                for (final ISimpleTraining t : simpletra) {
+                    System.out.println("Simple Training: " + t);
+                }
+            }
         }
-        
-        
+
         assertNotNull("Resultat darf nie null sein", trainingsProMonat); //$NON-NLS-1$
         final Map<Integer, List<ISimpleTraining>> jahr = trainingsProMonat.get(2012);
         assertNotNull("Resultat darf nie null sein", jahr.get(7)); //$NON-NLS-1$
@@ -196,6 +194,6 @@ public class IStatistikCreatorTest {
         final int avgHeartRate = 0;
         final int maxHeartRate = 1;
         final double speed = 0;
-        return new SimpleTraining(distanzInMeter, dauerInSekunden, datum, avgHeartRate, maxHeartRate, speed, null);
+        return new SimpleTraining(distanzInMeter, dauerInSekunden, datum, avgHeartRate, maxHeartRate, speed, null, null);
     }
 }
