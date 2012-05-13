@@ -1,10 +1,5 @@
 package ch.opentrainingcenter.client.views.overview;
 
-import java.awt.Color;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -19,39 +14,20 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.forms.widgets.TableWrapData;
 import org.eclipse.ui.forms.widgets.TableWrapLayout;
 import org.eclipse.ui.part.ViewPart;
-import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.axis.ValueAxis;
-import org.jfree.chart.plot.IntervalMarker;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
-import org.jfree.chart.renderer.xy.XYSplineRenderer;
-import org.jfree.data.Range;
-import org.jfree.data.xy.XYDataset;
-import org.jfree.data.xy.XYSeries;
-import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.experimental.chart.swt.ChartComposite;
 
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.client.cache.Cache;
 import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
-import ch.opentrainingcenter.client.charts.HeartIntervallCreator;
-import ch.opentrainingcenter.client.charts.PositionPace;
-import ch.opentrainingcenter.client.charts.SpeedChartSupport;
-import ch.opentrainingcenter.client.charts.SpeedCompressor;
-import ch.opentrainingcenter.client.helper.SpeedCalculator;
-import ch.opentrainingcenter.client.helper.ZoneHelper;
-import ch.opentrainingcenter.client.helper.ZoneHelper.Zone;
+import ch.opentrainingcenter.client.charts.ChartCreator;
+import ch.opentrainingcenter.client.charts.DataSetCreator;
+import ch.opentrainingcenter.client.charts.internal.ChartCreatorImpl;
+import ch.opentrainingcenter.client.charts.internal.DataSetCreatorImpl;
 import ch.opentrainingcenter.client.model.ISimpleTraining;
 import ch.opentrainingcenter.client.model.Units;
-import ch.opentrainingcenter.tcx.ActivityLapT;
 import ch.opentrainingcenter.tcx.ActivityT;
-import ch.opentrainingcenter.tcx.HeartRateInBeatsPerMinuteT;
-import ch.opentrainingcenter.tcx.TrackT;
-import ch.opentrainingcenter.tcx.TrackpointT;
 
 public class SingleActivityViewPart extends ViewPart {
 
@@ -63,126 +39,83 @@ public class SingleActivityViewPart extends ViewPart {
     private FormToolkit toolkit;
     private ScrolledForm form;
     private TableWrapData td;
-    private final HeartIntervallCreator heartIntervall;
+    private final DataSetCreator dataSetCreator;
+    private final ChartCreator chartCreator;
 
     public SingleActivityViewPart() {
         simpleTraining = cache.getSelectedOverview();
         selected = cache.get(simpleTraining.getDatum());
+        dataSetCreator = new DataSetCreatorImpl(selected);
+        chartCreator = new ChartCreatorImpl(cache, Activator.getDefault().getPreferenceStore());
         setPartName(simpleTraining.getFormattedDate());
-        heartIntervall = new HeartIntervallCreator(Activator.getDefault().getPreferenceStore());
     }
 
-    /**
-     * Verlauf der höhe
-     */
-    private void addAltitudeSection(final Composite body) {
-        final Section altitude = toolkit.createSection(body, Section.DESCRIPTION | Section.TITLE_BAR | Section.TWISTIE | Section.EXPANDED);
-        altitude.setExpanded(false);
-        altitude.addExpansionListener(new ExpansionAdapter() {
-            @Override
-            public void expansionStateChanged(final ExpansionEvent e) {
-                form.reflow(true);
-            }
-        });
-        td = new TableWrapData(TableWrapData.FILL_GRAB);
-        td.colspan = 1;
-        td.grabHorizontal = true;
-        td.grabVertical = true;
-        altitude.setLayoutData(td);
-        altitude.setText(Messages.SingleActivityViewPart_13);
-        altitude.setDescription(Messages.SingleActivityViewPart_14);
-
-        final Composite client = toolkit.createComposite(altitude);
+    @Override
+    public void createPartControl(final Composite parent) {
+        LOGGER.debug("create single activity view"); //$NON-NLS-1$
+        toolkit = new FormToolkit(parent.getDisplay());
+        form = toolkit.createScrolledForm(parent);
 
         final TableWrapLayout layout = new TableWrapLayout();
-        layout.numColumns = 2;
+        layout.numColumns = 1;
         layout.makeColumnsEqualWidth = false;
-        client.setLayout(layout);
 
-        final Label dauerLabel = toolkit.createLabel(client, Messages.SingleActivityViewPart_15);
-        td = new TableWrapData();
-        dauerLabel.setLayoutData(td);
+        final Composite body = form.getBody();
+        body.setLayout(layout);
 
-        final JFreeChart chart = createChart(createDataset(ChartType.ALTITUDE_DISTANCE), ChartType.ALTITUDE_DISTANCE);
-        final ChartComposite chartComposite = new ChartComposite(client, SWT.NONE, chart, true);
         td = new TableWrapData(TableWrapData.FILL_GRAB);
-        td.heightHint = 400;
-        chartComposite.setLayoutData(td);
+        body.setLayoutData(td);
+        form.setText(Messages.SingleActivityViewPart_0 + simpleTraining.getDatum());
 
-        altitude.setClient(client);
+        addOverviewSection(body);
+        addMapSection(body);
+        addHeartSection(body);
+        addSpeedSection(body);
+        addAltitudeSection(body);
     }
 
-    /**
-     * Herz frequenz
-     */
-    private void addHeartSection(final Composite body) {
-        final Section heartSection = toolkit.createSection(body, Section.DESCRIPTION | Section.TITLE_BAR | Section.TWISTIE
+    @Override
+    public void dispose() {
+        toolkit.dispose();
+        super.dispose();
+    }
+
+    @Override
+    public void setFocus() {
+        form.setFocus();
+    }
+
+    private void addOverviewSection(final Composite body) {
+        final Section overviewSection = toolkit.createSection(body, Section.DESCRIPTION | Section.TITLE_BAR | Section.TWISTIE
                 | Section.EXPANDED);
-        heartSection.addExpansionListener(new ExpansionAdapter() {
+        overviewSection.addExpansionListener(new ExpansionAdapter() {
             @Override
             public void expansionStateChanged(final ExpansionEvent e) {
                 form.reflow(true);
             }
         });
-        heartSection.setExpanded(false);
-        td = new TableWrapData(TableWrapData.FILL_GRAB);
-        td.colspan = 1;
-        td.grabHorizontal = true;
-        td.grabVertical = true;
-        heartSection.setLayoutData(td);
-        heartSection.setText(Messages.SingleActivityViewPart_9);
-        heartSection.setDescription(Messages.SingleActivityViewPart_10);
-        //
-        final Composite client = toolkit.createComposite(heartSection);
-
-        final TableWrapLayout layout = new TableWrapLayout();
-        layout.numColumns = 2;
-        layout.makeColumnsEqualWidth = false;
-
-        client.setLayout(layout);
-
-        final Label dauerLabel = toolkit.createLabel(client, ""); //$NON-NLS-1$
         td = new TableWrapData();
-        dauerLabel.setLayoutData(td);
+        td.colspan = 1;
+        overviewSection.setLayoutData(td);
+        overviewSection.setText(Messages.SingleActivityViewPart_1);
+        overviewSection.setDescription(Messages.SingleActivityViewPart_2);
 
-        final JFreeChart chart = createChart(createDataset(ChartType.HEART_DISTANCE), ChartType.HEART_DISTANCE);
-        final ChartComposite chartComposite = new ChartComposite(client, SWT.NONE, chart, true);
-        td = new TableWrapData(TableWrapData.FILL_GRAB);
-        td.heightHint = 400;
-        chartComposite.setLayoutData(td);
+        final Composite overViewComposite = toolkit.createComposite(overviewSection);
+        final GridLayout layoutClient = new GridLayout(3, false);
+        overViewComposite.setLayout(layoutClient);
 
-        heartSection.setClient(client);
-    }
-
-    private void addIntervallMarker(final XYPlot plot) {
-        final Map<Zone, IntervalMarker> markers = heartIntervall.createMarker(cache.getSelectedProfile());
-        plot.addRangeMarker(markers.get(ZoneHelper.Zone.AEROBE));
-        plot.addRangeMarker(markers.get(ZoneHelper.Zone.SCHWELLE));
-        plot.addRangeMarker(markers.get(ZoneHelper.Zone.ANAEROBE));
-    }
-
-    private void addLabelAndValue(final Composite parent, final String label, final String value, final Units unit) {
-        // Label
-        final Label dauerLabel = toolkit.createLabel(parent, label + ": "); //$NON-NLS-1$
-        GridData gd = new GridData();
-        gd.verticalIndent = 4;
-        dauerLabel.setLayoutData(gd);
-
-        // value
-        final Label dauer = toolkit.createLabel(parent, value);
-        gd = new GridData();
-        gd.horizontalAlignment = SWT.RIGHT;
-        gd.horizontalIndent = 10;
-        gd.verticalIndent = 4;
-        dauer.setLayoutData(gd);
-
-        // einheit
-        final Label einheit = toolkit.createLabel(parent, unit.getName());
-        gd = new GridData();
-        gd.horizontalAlignment = SWT.LEFT;
-        gd.horizontalIndent = 10;
-        gd.verticalIndent = 4;
-        einheit.setLayoutData(gd);
+        addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_3, simpleTraining.getZeit(), Units.HOUR_MINUTE_SEC);
+        addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_4, simpleTraining.getLaengeInKilometer(), Units.KM);
+        final int avgHeartRate = simpleTraining.getAvgHeartRate();
+        if (avgHeartRate > 0) {
+            addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_5, String.valueOf(avgHeartRate), Units.BEATS_PER_MINUTE);
+        } else {
+            addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_5, "-", Units.BEATS_PER_MINUTE); //$NON-NLS-1$
+        }
+        addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_6, simpleTraining.getMaxHeartBeat(), Units.BEATS_PER_MINUTE);
+        addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_7, simpleTraining.getPace(), Units.PACE);
+        addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_8, simpleTraining.getMaxSpeed(), Units.PACE);
+        overviewSection.setClient(overViewComposite);
     }
 
     private void addMapSection(final Composite body) {
@@ -224,70 +157,46 @@ public class SingleActivityViewPart extends ViewPart {
         mapSection.setClient(client);
     }
 
-    private void addOverviewSection(final Composite body) {
-        final Section overviewSection = toolkit.createSection(body, Section.DESCRIPTION | Section.TITLE_BAR | Section.TWISTIE
+    /**
+     * Herz frequenz
+     */
+    private void addHeartSection(final Composite body) {
+        final Section heartSection = toolkit.createSection(body, Section.DESCRIPTION | Section.TITLE_BAR | Section.TWISTIE
                 | Section.EXPANDED);
-        overviewSection.addExpansionListener(new ExpansionAdapter() {
+        heartSection.addExpansionListener(new ExpansionAdapter() {
             @Override
             public void expansionStateChanged(final ExpansionEvent e) {
                 form.reflow(true);
             }
         });
-        td = new TableWrapData();
+        heartSection.setExpanded(true);
+        td = new TableWrapData(TableWrapData.FILL_GRAB);
         td.colspan = 1;
-        overviewSection.setLayoutData(td);
-        overviewSection.setText(Messages.SingleActivityViewPart_1);
-        overviewSection.setDescription(Messages.SingleActivityViewPart_2);
+        td.grabHorizontal = true;
+        td.grabVertical = true;
+        heartSection.setLayoutData(td);
+        heartSection.setText(Messages.SingleActivityViewPart_9);
+        heartSection.setDescription(Messages.SingleActivityViewPart_10);
+        //
+        final Composite client = toolkit.createComposite(heartSection);
 
-        final Composite overViewComposite = toolkit.createComposite(overviewSection);
-        final GridLayout layoutClient = new GridLayout(3, false);
-        overViewComposite.setLayout(layoutClient);
+        final TableWrapLayout layout = new TableWrapLayout();
+        layout.numColumns = 2;
+        layout.makeColumnsEqualWidth = false;
 
-        addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_3, simpleTraining.getZeit(), Units.HOUR_MINUTE_SEC);
-        addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_4, simpleTraining.getLaengeInKilometer(), Units.KM);
-        final int avgHeartRate = simpleTraining.getAvgHeartRate();
-        if (avgHeartRate > 0) {
-            addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_5, String.valueOf(avgHeartRate), Units.BEATS_PER_MINUTE);
-        } else {
-            addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_5, "-", Units.BEATS_PER_MINUTE); //$NON-NLS-1$
-        }
-        addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_6, simpleTraining.getMaxHeartBeat(), Units.BEATS_PER_MINUTE);
-        addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_7, simpleTraining.getPace(), Units.PACE);
-        addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_8, simpleTraining.getMaxSpeed(), Units.PACE);
-        overviewSection.setClient(overViewComposite);
-    }
+        client.setLayout(layout);
 
-    private void addPoint(final ChartType type, final XYSeries serie, final TrackpointT point, final TrackpointT previousPoint) {
-        switch (type) {
-        case HEART_DISTANCE: {
-            final Double m = point.getDistanceMeters();
-            final HeartRateInBeatsPerMinuteT bpm = point.getHeartRateBpm();
-            if (m != null && bpm != null) {
-                serie.add(point.getDistanceMeters().doubleValue(), point.getHeartRateBpm().getValue());
-            }
-            break;
-        }
-        case ALTITUDE_DISTANCE: {
-            final Double m = point.getDistanceMeters();
-            final Double alti = point.getAltitudeMeters();
-            if (m != null && alti != null) {
-                serie.add(point.getDistanceMeters().doubleValue(), alti.doubleValue());
-            }
-            break;
-        }
-        case SPEED_DISTANCE: {
-            if (previousPoint != null && validateTrackPointVorSpeed(point) && validateTrackPointVorSpeed(previousPoint)) {
-                final double d2 = point.getDistanceMeters();
-                final double d1 = previousPoint.getDistanceMeters();
-                final double t2 = point.getTime().toGregorianCalendar().getTimeInMillis() / 1000;
-                final double t1 = previousPoint.getTime().toGregorianCalendar().getTimeInMillis() / 1000;
-                final double pace = SpeedCalculator.calculatePace(d1, d2, t1, t2);
-                if (0 < pace && pace < 10) {
-                    serie.add(point.getDistanceMeters().doubleValue(), pace);
-                }
-            }
-        }
-        }
+        final Label dauerLabel = toolkit.createLabel(client, ""); //$NON-NLS-1$
+        td = new TableWrapData();
+        dauerLabel.setLayoutData(td);
+
+        final JFreeChart chart = chartCreator.createChart(dataSetCreator.createDatasetHeart(), ChartType.HEART_DISTANCE);
+        final ChartComposite chartComposite = new ChartComposite(client, SWT.NONE, chart, true);
+        td = new TableWrapData(TableWrapData.FILL_GRAB);
+        td.heightHint = 400;
+        chartComposite.setLayoutData(td);
+
+        heartSection.setClient(client);
     }
 
     private void addSpeedSection(final Composite body) {
@@ -320,7 +229,7 @@ public class SingleActivityViewPart extends ViewPart {
         td = new TableWrapData();
         dauerLabel.setLayoutData(td);
 
-        final JFreeChart chart = createChart(createDatasetSpeed(), ChartType.SPEED_DISTANCE);
+        final JFreeChart chart = chartCreator.createChart(dataSetCreator.createDatasetSpeed(), ChartType.SPEED_DISTANCE);
         final ChartComposite chartComposite = new ChartComposite(client, SWT.NONE, chart, true);
         td = new TableWrapData(TableWrapData.FILL_GRAB);
         td.heightHint = 400;
@@ -329,159 +238,68 @@ public class SingleActivityViewPart extends ViewPart {
         speedSection.setClient(client);
     }
 
-    private JFreeChart createChart(final XYDataset dataset, final ChartType type) {
-
-        final JFreeChart chart = ChartFactory.createXYLineChart(type.getTitel(), // chart
-                // title
-                type.getxAchse(), // x axis label
-                type.getyAchse(), // y axis label
-                dataset, // data
-                PlotOrientation.VERTICAL, false, // include legend
-                true, // tooltips
-                false // urls
-                );
-
-        // NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
-        chart.setBackgroundPaint(Color.white);
-        // get a reference to the plot for further customisation...
-        final XYPlot plot = chart.getXYPlot();
-        plot.setBackgroundPaint(Color.white);
-        plot.setDomainGridlinePaint(Color.lightGray);
-        plot.setRangeGridlinePaint(Color.lightGray);
-
-        final XYLineAndShapeRenderer renderer = new XYSplineRenderer();
-        renderer.setSeriesLinesVisible(0, true);
-        renderer.setSeriesShapesVisible(0, false);
-        setLowerAndUpperBounds(plot);
-        if (ChartType.HEART_DISTANCE.equals(type)) {
-            addIntervallMarker(plot);
-        }
-        plot.setRenderer(renderer);
-
-        // change the auto tick unit selection to integer units only...
-        final NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
-        rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-
-        return chart;
-    }
-
-    private XYDataset createDataset(final ChartType type) {
-        final List<ActivityLapT> laps = selected.getLap();
-        final XYSeries series = new XYSeries(Messages.SingleActivityViewPart_18);
-        for (final ActivityLapT activityLapT : laps) {
-            final List<TrackT> tracks = activityLapT.getTrack();
-            for (final TrackT track : tracks) {
-                final List<TrackpointT> trackpoints = track.getTrackpoint();
-                TrackpointT previousTrackPoint = null;
-                for (final TrackpointT trackpoint : trackpoints) {
-                    addPoint(type, series, trackpoint, previousTrackPoint);
-                    previousTrackPoint = trackpoint;
-                }
+    /**
+     * Verlauf der höhe
+     */
+    private void addAltitudeSection(final Composite body) {
+        final Section altitude = toolkit.createSection(body, Section.DESCRIPTION | Section.TITLE_BAR | Section.TWISTIE | Section.EXPANDED);
+        altitude.setExpanded(false);
+        altitude.addExpansionListener(new ExpansionAdapter() {
+            @Override
+            public void expansionStateChanged(final ExpansionEvent e) {
+                form.reflow(true);
             }
-        }
-        final XYSeriesCollection dataset = new XYSeriesCollection();
-        dataset.addSeries(series);
+        });
+        td = new TableWrapData(TableWrapData.FILL_GRAB);
+        td.colspan = 1;
+        td.grabHorizontal = true;
+        td.grabVertical = true;
+        altitude.setLayoutData(td);
+        altitude.setText(Messages.SingleActivityViewPart_13);
+        altitude.setDescription(Messages.SingleActivityViewPart_14);
 
-        return dataset;
-    }
-
-    private XYDataset createDatasetSpeed() {
-        final List<ActivityLapT> laps = selected.getLap();
-        final List<PositionPace> positionPaces = new ArrayList<PositionPace>();
-        for (final ActivityLapT activityLapT : laps) {
-            final List<TrackT> tracks = activityLapT.getTrack();
-            for (final TrackT track : tracks) {
-                final List<TrackpointT> trackpoints = track.getTrackpoint();
-                TrackpointT previousTrackPoint = null;
-                for (final TrackpointT trackpoint : trackpoints) {
-                    // addSpeedPoint(type, series, trackpoint,
-                    // previousTrackPoint);
-                    final PositionPace speedPoint = getSpeedPoint(trackpoint, previousTrackPoint);
-                    if (speedPoint != null) {
-                        positionPaces.add(speedPoint);
-                    }
-                    previousTrackPoint = trackpoint;
-                }
-            }
-        }
-        final SpeedCompressor compressor = new SpeedCompressor(8);
-        final List<PositionPace> compressSpeedDataPoints = compressor.compressSpeedDataPoints(positionPaces);
-        final XYSeriesCollection dataset = new XYSeriesCollection();
-        dataset.addSeries(SpeedChartSupport.putPointsInSerie(new XYSeries(Messages.SingleActivityViewPart_18), compressSpeedDataPoints));
-
-        return dataset;
-    }
-
-    private PositionPace getSpeedPoint(final TrackpointT point, final TrackpointT previousPoint) {
-        PositionPace positionPace = null;
-        if (previousPoint != null && validateTrackPointVorSpeed(point) && validateTrackPointVorSpeed(previousPoint)) {
-            final double d2 = point.getDistanceMeters();
-            final double d1 = previousPoint.getDistanceMeters();
-            final double t2 = point.getTime().toGregorianCalendar().getTimeInMillis() / 1000;
-            final double t1 = previousPoint.getTime().toGregorianCalendar().getTimeInMillis() / 1000;
-            final double pace = SpeedCalculator.calculatePace(d1, d2, t1, t2);
-            if (0 < pace && pace < 10) {
-                positionPace = new PositionPace(point.getDistanceMeters().doubleValue(), pace);
-            }
-        }
-        return positionPace;
-    }
-
-    @Override
-    public void createPartControl(final Composite parent) {
-        LOGGER.debug("create single activity view"); //$NON-NLS-1$
-        toolkit = new FormToolkit(parent.getDisplay());
-        form = toolkit.createScrolledForm(parent);
+        final Composite client = toolkit.createComposite(altitude);
 
         final TableWrapLayout layout = new TableWrapLayout();
-        layout.numColumns = 1;
+        layout.numColumns = 2;
         layout.makeColumnsEqualWidth = false;
+        client.setLayout(layout);
 
-        final Composite body = form.getBody();
-        body.setLayout(layout);
+        final Label dauerLabel = toolkit.createLabel(client, Messages.SingleActivityViewPart_15);
+        td = new TableWrapData();
+        dauerLabel.setLayoutData(td);
 
+        final JFreeChart chart = chartCreator.createChart(dataSetCreator.createDatasetAltitude(), ChartType.ALTITUDE_DISTANCE);
+        final ChartComposite chartComposite = new ChartComposite(client, SWT.NONE, chart, true);
         td = new TableWrapData(TableWrapData.FILL_GRAB);
-        body.setLayoutData(td);
-        form.setText(Messages.SingleActivityViewPart_0 + simpleTraining.getDatum());
+        td.heightHint = 400;
+        chartComposite.setLayoutData(td);
 
-        addOverviewSection(body);
-        addMapSection(body);
-        addHeartSection(body);
-        addSpeedSection(body);
-        addAltitudeSection(body);
-
+        altitude.setClient(client);
     }
 
-    @Override
-    public void dispose() {
-        toolkit.dispose();
-        super.dispose();
-    }
+    private void addLabelAndValue(final Composite parent, final String label, final String value, final Units unit) {
+        // Label
+        final Label dauerLabel = toolkit.createLabel(parent, label + ": "); //$NON-NLS-1$
+        GridData gd = new GridData();
+        gd.verticalIndent = 4;
+        dauerLabel.setLayoutData(gd);
 
-    @Override
-    public void setFocus() {
-        form.setFocus();
-    }
+        // value
+        final Label dauer = toolkit.createLabel(parent, value);
+        gd = new GridData();
+        gd.horizontalAlignment = SWT.RIGHT;
+        gd.horizontalIndent = 10;
+        gd.verticalIndent = 4;
+        dauer.setLayoutData(gd);
 
-    private void setLowerAndUpperBounds(final XYPlot plot) {
-        final ValueAxis axis = plot.getRangeAxis();
-        final Range dataRange = plot.getDataRange(axis);
-        if (dataRange != null) {
-            axis.setLowerBound(dataRange.getLowerBound() * 0.95);
-            axis.setUpperBound(dataRange.getUpperBound() * 1.05);
-        }
-        plot.setRangeAxis(axis);
-    }
-
-    private void setLowerAndUpperBounds(final XYPlot plot, final double min, final double max) {
-        final ValueAxis axis = plot.getRangeAxis();
-        axis.setLowerBound(min);
-        axis.setUpperBound(max);
-        plot.setRangeAxis(axis);
-    }
-
-    private boolean validateTrackPointVorSpeed(final TrackpointT point) {
-        return point.getDistanceMeters() != null && point.getTime() != null;
+        // einheit
+        final Label einheit = toolkit.createLabel(parent, unit.getName());
+        gd = new GridData();
+        gd.horizontalAlignment = SWT.LEFT;
+        gd.horizontalIndent = 10;
+        gd.verticalIndent = 4;
+        einheit.setLayoutData(gd);
     }
 
 }
