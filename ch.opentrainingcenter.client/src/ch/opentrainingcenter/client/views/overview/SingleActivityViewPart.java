@@ -1,6 +1,7 @@
 package ch.opentrainingcenter.client.views.overview;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +27,7 @@ import org.jfree.chart.plot.IntervalMarker;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.chart.renderer.xy.XYSplineRenderer;
 import org.jfree.data.Range;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
@@ -37,6 +39,9 @@ import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.client.cache.Cache;
 import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
 import ch.opentrainingcenter.client.charts.HeartIntervallCreator;
+import ch.opentrainingcenter.client.charts.PositionPace;
+import ch.opentrainingcenter.client.charts.SpeedChartSupport;
+import ch.opentrainingcenter.client.charts.SpeedCompressor;
 import ch.opentrainingcenter.client.helper.SpeedCalculator;
 import ch.opentrainingcenter.client.helper.ZoneHelper;
 import ch.opentrainingcenter.client.helper.ZoneHelper.Zone;
@@ -315,7 +320,7 @@ public class SingleActivityViewPart extends ViewPart {
         td = new TableWrapData();
         dauerLabel.setLayoutData(td);
 
-        final JFreeChart chart = createChart(createDataset(ChartType.SPEED_DISTANCE), ChartType.SPEED_DISTANCE);
+        final JFreeChart chart = createChart(createDatasetSpeed(), ChartType.SPEED_DISTANCE);
         final ChartComposite chartComposite = new ChartComposite(client, SWT.NONE, chart, true);
         td = new TableWrapData(TableWrapData.FILL_GRAB);
         td.heightHint = 400;
@@ -344,15 +349,12 @@ public class SingleActivityViewPart extends ViewPart {
         plot.setDomainGridlinePaint(Color.lightGray);
         plot.setRangeGridlinePaint(Color.lightGray);
 
-        final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
+        final XYLineAndShapeRenderer renderer = new XYSplineRenderer();
         renderer.setSeriesLinesVisible(0, true);
         renderer.setSeriesShapesVisible(0, false);
         setLowerAndUpperBounds(plot);
         if (ChartType.HEART_DISTANCE.equals(type)) {
             addIntervallMarker(plot);
-        }
-        if (ChartType.SPEED_DISTANCE.equals(type)) {
-            setLowerAndUpperBounds(plot, 2.5, 10);
         }
         plot.setRenderer(renderer);
 
@@ -365,23 +367,64 @@ public class SingleActivityViewPart extends ViewPart {
 
     private XYDataset createDataset(final ChartType type) {
         final List<ActivityLapT> laps = selected.getLap();
-        final XYSeries series1 = new XYSeries(Messages.SingleActivityViewPart_18);
+        final XYSeries series = new XYSeries(Messages.SingleActivityViewPart_18);
         for (final ActivityLapT activityLapT : laps) {
             final List<TrackT> tracks = activityLapT.getTrack();
             for (final TrackT track : tracks) {
                 final List<TrackpointT> trackpoints = track.getTrackpoint();
                 TrackpointT previousTrackPoint = null;
                 for (final TrackpointT trackpoint : trackpoints) {
-                    addPoint(type, series1, trackpoint, previousTrackPoint);
+                    addPoint(type, series, trackpoint, previousTrackPoint);
                     previousTrackPoint = trackpoint;
                 }
             }
         }
-
         final XYSeriesCollection dataset = new XYSeriesCollection();
-        dataset.addSeries(series1);
+        dataset.addSeries(series);
 
         return dataset;
+    }
+
+    private XYDataset createDatasetSpeed() {
+        final List<ActivityLapT> laps = selected.getLap();
+        final List<PositionPace> positionPaces = new ArrayList<PositionPace>();
+        for (final ActivityLapT activityLapT : laps) {
+            final List<TrackT> tracks = activityLapT.getTrack();
+            for (final TrackT track : tracks) {
+                final List<TrackpointT> trackpoints = track.getTrackpoint();
+                TrackpointT previousTrackPoint = null;
+                for (final TrackpointT trackpoint : trackpoints) {
+                    // addSpeedPoint(type, series, trackpoint,
+                    // previousTrackPoint);
+                    final PositionPace speedPoint = getSpeedPoint(trackpoint, previousTrackPoint);
+                    if (speedPoint != null) {
+                        positionPaces.add(speedPoint);
+                    }
+                    previousTrackPoint = trackpoint;
+                }
+            }
+        }
+        final SpeedCompressor compressor = new SpeedCompressor(8);
+        final List<PositionPace> compressSpeedDataPoints = compressor.compressSpeedDataPoints(positionPaces);
+        final XYSeriesCollection dataset = new XYSeriesCollection();
+        dataset.addSeries(SpeedChartSupport.putPointsInSerie(new XYSeries(Messages.SingleActivityViewPart_18), compressSpeedDataPoints));
+
+        return dataset;
+    }
+
+    private PositionPace getSpeedPoint(final TrackpointT point, final TrackpointT previousPoint) {
+        PositionPace positionPace = null;
+        if (previousPoint != null && validateTrackPointVorSpeed(point) && validateTrackPointVorSpeed(previousPoint)) {
+            final double d2 = point.getDistanceMeters();
+            final double d1 = previousPoint.getDistanceMeters();
+            final double t2 = point.getTime().toGregorianCalendar().getTimeInMillis() / 1000;
+            final double t1 = previousPoint.getTime().toGregorianCalendar().getTimeInMillis() / 1000;
+            final double pace = SpeedCalculator.calculatePace(d1, d2, t1, t2);
+            if (0 < pace && pace < 10) {
+                positionPace = new PositionPace(point.getDistanceMeters().doubleValue(), pace);
+            }
+        }
+        return positionPace;
     }
 
     @Override

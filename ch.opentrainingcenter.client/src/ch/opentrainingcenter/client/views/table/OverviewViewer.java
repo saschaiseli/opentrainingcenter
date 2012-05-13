@@ -2,6 +2,7 @@ package ch.opentrainingcenter.client.views.table;
 
 import java.util.Collection;
 
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
@@ -53,6 +54,15 @@ public class OverviewViewer extends ViewPart {
         table.setLinesVisible(true);
 
         viewer.setContentProvider(new ArrayContentProvider());
+
+        final MenuManager menuManager = new MenuManager("KontextMenu"); //$NON-NLS-1$
+        table.setMenu(menuManager.createContextMenu(table));
+
+        getSite().registerContextMenu("ch.opentrainingcenter.client.somepopup", menuManager, viewer);
+        getSite().setSelectionProvider(viewer);
+
+        getSite().registerContextMenu(menuManager, viewer);
+
         // Get the content for the viewer, setInput will call getElements in the
         // contentProvider
         viewer.setInput(cache.getAllImportedRecords());

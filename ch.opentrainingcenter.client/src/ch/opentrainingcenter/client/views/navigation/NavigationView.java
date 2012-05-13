@@ -87,10 +87,14 @@ public class NavigationView extends ViewPart {
         viewer.setLabelProvider(new ViewLabelProvider());
 
         final DeleteImportedRecord deleteRecordAction = new DeleteImportedRecord(cache, databaseAccess);
+        // final AddEditNote addEditNote = new AddEditNote(cache,
+        // databaseAccess);
+        final MenuManager menuManager = new MenuManager("KontextMenu"); //$NON-NLS-1$
+        getSite().registerContextMenu("ch.opentrainingcenter.client.somepopup", menuManager, viewer);
+        getSite().setSelectionProvider(viewer);
 
-        final MenuManager menuMgr = new MenuManager("KontextMenu"); //$NON-NLS-1$
-        menuMgr.setRemoveAllWhenShown(true);
-        menuMgr.addMenuListener(new IMenuListener() {
+        menuManager.setRemoveAllWhenShown(true);
+        menuManager.addMenuListener(new IMenuListener() {
             @Override
             public void menuAboutToShow(final IMenuManager manager) {
                 final MenuManager subMenu = new MenuManager(Messages.NavigationView_9);
@@ -98,11 +102,12 @@ public class NavigationView extends ViewPart {
                     subMenu.add(crt);
                 }
                 manager.add(subMenu);
+                // manager.add(addEditNote);
                 manager.add(deleteRecordAction);
             }
         });
 
-        final Menu menu = menuMgr.createContextMenu(viewer.getTree());
+        final Menu menu = menuManager.createContextMenu(viewer.getTree());
         menu.addMenuListener(new MenuListener() {
 
             @Override
@@ -116,7 +121,7 @@ public class NavigationView extends ViewPart {
             }
         });
         viewer.getTree().setMenu(menu);
-        getSite().registerContextMenu(menuMgr, viewer);
+        getSite().registerContextMenu(menuManager, viewer);
 
         viewer.addDoubleClickListener(new IDoubleClickListener() {
 

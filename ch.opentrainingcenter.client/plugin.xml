@@ -128,6 +128,11 @@
             id="ch.opentrainingcenter.client.importManualFilesWizard"
             name="importFilesManualWizard">
       </command>
+      <command
+            description="Editieren oder Hinzufügen einer Notiz zu einem Record"
+            id="ch.opentrainingcenter.client.action.AddEditHandler"
+            name="AddEditNote">
+      </command>
    </extension>
    <extension
          id="opentrainingcenter"
@@ -193,11 +198,13 @@
    <extension
          point="org.eclipse.ui.menus">
       <menuContribution
-            allPopups="false"
-            locationURI="ch.opentrainingcenter.client.menuContribution2">
-         <menu
-               label="label">
-         </menu>
+            allPopups="true"
+            locationURI="popup:ch.opentrainingcenter.client.somepopup">
+         <command
+               commandId="ch.opentrainingcenter.client.action.AddEditHandler"
+               label="Add/Edit Note"
+               style="push">
+         </command>
       </menuContribution>
    </extension>
    <extension
@@ -268,5 +275,12 @@
                value="OpenTrainingCenter">
          </property>
       </product>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="ch.opentrainingcenter.client.action.AddEditHandler"
+            commandId="ch.opentrainingcenter.client.action.AddEditHandler">
+      </handler>
    </extension>
 </plugin>
