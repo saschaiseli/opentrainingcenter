@@ -1,5 +1,7 @@
 package ch.opentrainingcenter.client.views.overview;
 
+import java.util.Collection;
+
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -20,6 +22,7 @@ import org.jfree.experimental.chart.swt.ChartComposite;
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.client.cache.Cache;
+import ch.opentrainingcenter.client.cache.IRecordListener;
 import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
 import ch.opentrainingcenter.client.charts.ChartCreator;
 import ch.opentrainingcenter.client.charts.DataSetCreator;
@@ -115,8 +118,22 @@ public class SingleActivityViewPart extends ViewPart {
         addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_6, simpleTraining.getMaxHeartBeat(), Units.BEATS_PER_MINUTE);
         addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_7, simpleTraining.getPace(), Units.PACE);
         addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_8, simpleTraining.getMaxSpeed(), Units.PACE);
-        addLabelAndValue(overViewComposite, "Notiz", simpleTraining.getNote(), Units.NONE);
+        final Label remarks = addLabelAndValue(overViewComposite, "Bemerkungen:", simpleTraining.getNote(), Units.NONE);
         overviewSection.setClient(overViewComposite);
+
+        cache.addListener(new IRecordListener() {
+
+            @Override
+            public void recordChanged(final Collection<ActivityT> entry) {
+                final ActivityT act = entry.iterator().next();
+                remarks.setText(act.getNotes());
+                remarks.update();
+            }
+
+            @Override
+            public void deleteRecord(final Collection<ActivityT> entry) {
+            }
+        });
     }
 
     private void addMapSection(final Composite body) {
@@ -279,7 +296,7 @@ public class SingleActivityViewPart extends ViewPart {
         altitude.setClient(client);
     }
 
-    private void addLabelAndValue(final Composite parent, final String label, final String value, final Units unit) {
+    private Label addLabelAndValue(final Composite parent, final String label, final String value, final Units unit) {
         // Label
         final Label dauerLabel = toolkit.createLabel(parent, label + ": "); //$NON-NLS-1$
         GridData gd = new GridData();
@@ -301,6 +318,8 @@ public class SingleActivityViewPart extends ViewPart {
         gd.horizontalIndent = 10;
         gd.verticalIndent = 4;
         einheit.setLayoutData(gd);
+
+        return dauer;
     }
 
 }

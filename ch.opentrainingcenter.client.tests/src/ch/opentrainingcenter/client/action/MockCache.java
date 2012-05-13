@@ -146,4 +146,9 @@ public class MockCache implements Cache {
     public List<Date> getDeletedIds() {
         return deletedIds;
     }
+
+    @Override
+    public void update(final IImported record) {
+
+    }
 }

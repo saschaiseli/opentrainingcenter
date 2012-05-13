@@ -57,6 +57,8 @@ public interface Cache {
 
     void update();
 
+    void update(IImported record);
+
     void addListener(final IRecordListener listener);
 
     void removeListener(final IRecordListener listener);

@@ -292,11 +292,6 @@ public final class TrainingCenterDataCache implements Cache {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see ch.opentrainingcenter.client.cache.Cache#update()
-     */
     @Override
     public void update() {
         if (listeners == null) {
@@ -306,6 +301,27 @@ public final class TrainingCenterDataCache implements Cache {
         for (int i = 0; i < rls.length; i++) {
             final IRecordListener listener = (IRecordListener) rls[i];
             listener.recordChanged(null);
+        }
+    }
+
+    @Override
+    public void update(final IImported record) {
+        allImported.put(record.getActivityId(), record);
+        final long time = record.getActivityId().getTime();
+        final ActivityT activityT = cache.get(time);
+        if (record != null) {
+            activityT.setNotes(record.getNote());
+        }
+        cache.put(time, activityT);
+        if (listeners == null) {
+            return;
+        }
+        final Object[] rls = listeners.getListeners();
+        final List<ActivityT> changed = new ArrayList<ActivityT>();
+        changed.add(activityT);
+        for (int i = 0; i < rls.length; i++) {
+            final IRecordListener listener = (IRecordListener) rls[i];
+            listener.recordChanged(changed);
         }
     }
 

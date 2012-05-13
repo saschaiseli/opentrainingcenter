@@ -8,6 +8,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
 import ch.opentrainingcenter.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.transfer.IImported;
 
@@ -32,5 +33,6 @@ public class AddEditHandler extends AbstractHandler {
 
     private void updateNote(final IImported record) {
         DatabaseAccessFactory.getDatabaseAccess().updateRecord(record);
+        TrainingCenterDataCache.getInstance().update(record);
     }
 }
