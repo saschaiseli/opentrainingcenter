@@ -44,6 +44,7 @@ import ch.opentrainingcenter.client.PreferenceConstants;
 import ch.opentrainingcenter.client.cache.Cache;
 import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
 import ch.opentrainingcenter.client.model.sportler.Sportler;
+import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.db.IDatabaseAccess;
 import ch.opentrainingcenter.importer.LoadJob;
@@ -156,7 +157,7 @@ public class CreateAthleteView extends ViewPart {
 
                 final IAthlete athlete = databaseAccess.getAthlete(dbId);
                 LOGGER.info(Messages.CreateAthleteView_5 + athlete + " wird im Cache gesetzt."); //$NON-NLS-1$
-                cache.setSelectedProfile(athlete);
+                ApplicationContext.getApplicationContext().setAthlete(athlete);
                 final Job job = new LoadJob(Messages.CreateAthleteView_6, athlete, databaseAccess, cache);
                 job.schedule();
                 getViewSite().getWorkbenchWindow().getShell().setText(

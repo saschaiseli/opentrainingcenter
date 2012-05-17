@@ -9,6 +9,7 @@ import ch.opentrainingcenter.client.cache.Cache;
 import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
 import ch.opentrainingcenter.client.perspectives.AthletePerspective;
 import ch.opentrainingcenter.client.perspectives.PerspectiveNavigation;
+import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
 
@@ -36,7 +37,7 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
             } else {
                 LOGGER.info(Messages.ApplicationWorkbenchAdvisor_AthleteFound);
 
-                initCache(athlete);
+                init(athlete);
 
                 return PerspectiveNavigation.ID;
             }
@@ -46,9 +47,9 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
         }
     }
 
-    private void initCache(final IAthlete athlete) {
+    private void init(final IAthlete athlete) {
+        ApplicationContext.getApplicationContext().setAthlete(athlete);
         final Cache cache = TrainingCenterDataCache.getInstance();
-        cache.setSelectedProfile(athlete);
         cache.addAllImported(DatabaseAccessFactory.getDatabaseAccess().getAllImported(athlete));
         cache.setCacheLoaded(true);
     }

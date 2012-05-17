@@ -10,7 +10,6 @@ import ch.opentrainingcenter.client.cache.IRecordListener;
 import ch.opentrainingcenter.client.model.ISimpleTraining;
 import ch.opentrainingcenter.client.model.RunType;
 import ch.opentrainingcenter.tcx.ActivityT;
-import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IImported;
 
 public class MockCache implements Cache {
@@ -27,11 +26,6 @@ public class MockCache implements Cache {
 
     @Override
     public void addAll(final List<ActivityT> activities) {
-
-    }
-
-    @Override
-    public void setSelectedProfile(final IAthlete athlete) {
 
     }
 
@@ -78,12 +72,6 @@ public class MockCache implements Cache {
     }
 
     @Override
-    public IAthlete getSelectedProfile() {
-
-        return null;
-    }
-
-    @Override
     public void setCacheLoaded(final boolean loaded) {
 
     }
@@ -126,11 +114,5 @@ public class MockCache implements Cache {
     @Override
     public void update(final IImported record) {
 
-    }
-
-    @Override
-    public IAthlete getProfile() {
-        // TODO Auto-generated method stub
-        return null;
     }
 }

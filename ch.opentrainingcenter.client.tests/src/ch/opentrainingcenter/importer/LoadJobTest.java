@@ -44,7 +44,6 @@ public class LoadJobTest {
         // execute
         job.run(monitor);
         // assert
-        Mockito.verify(cache, Mockito.times(1)).setSelectedProfile(athlete);
         Mockito.verify(cache, Mockito.times(1)).addAllImported(values);
     }
 }

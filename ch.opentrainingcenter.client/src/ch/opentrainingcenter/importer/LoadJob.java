@@ -30,7 +30,6 @@ public class LoadJob extends Job {
     @Override
     protected IStatus run(final IProgressMonitor monitor) {
         final List<IImported> allImported = databaseAccess.getAllImported(athlete);
-        cache.setSelectedProfile(athlete);
         cache.addAllImported(allImported);
         return Status.OK_STATUS;
     }

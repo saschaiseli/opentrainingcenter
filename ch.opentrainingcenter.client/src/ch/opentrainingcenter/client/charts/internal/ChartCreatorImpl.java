@@ -21,6 +21,7 @@ import ch.opentrainingcenter.client.charts.ChartCreator;
 import ch.opentrainingcenter.client.charts.HeartIntervallCreator;
 import ch.opentrainingcenter.client.helper.ZoneHelper;
 import ch.opentrainingcenter.client.helper.ZoneHelper.Zone;
+import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.client.views.overview.ChartType;
 
 public class ChartCreatorImpl implements ChartCreator {
@@ -80,7 +81,7 @@ public class ChartCreatorImpl implements ChartCreator {
     }
 
     private void addIntervallMarker(final XYPlot plot) {
-        final Map<Zone, IntervalMarker> markers = heartIntervall.createMarker(cache.getSelectedProfile());
+        final Map<Zone, IntervalMarker> markers = heartIntervall.createMarker(ApplicationContext.getApplicationContext().getAthlete());
         plot.addRangeMarker(markers.get(ZoneHelper.Zone.AEROBE));
         plot.addRangeMarker(markers.get(ZoneHelper.Zone.SCHWELLE));
         plot.addRangeMarker(markers.get(ZoneHelper.Zone.ANAEROBE));

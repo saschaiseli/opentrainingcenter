@@ -16,6 +16,7 @@ import ch.opentrainingcenter.client.cache.ActivityTTestHelper;
 import ch.opentrainingcenter.client.cache.MockGpsFileLoader;
 import ch.opentrainingcenter.client.cache.MockRecordListener;
 import ch.opentrainingcenter.client.model.RunType;
+import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.db.IDatabaseAccess;
 import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
@@ -273,23 +274,18 @@ public class TrainingCenterDataCacheTest {
 
     @Test
     public void testAthleteInitial() {
-        // prepare
-
-        // execute
-        final IAthlete selectedProfile = cache.getSelectedProfile();
-
         // assert
-        assertNull("Athlete ist initial null", selectedProfile);
+        assertNull("Athlete ist initial null", ApplicationContext.getApplicationContext().getAthlete());
     }
 
     @Test
     public void testAthlete() {
         // prepare
         final IAthlete athlete = CommonTransferFactory.createAthlete("Junit", 37, Integer.valueOf(200));
-        cache.setSelectedProfile(athlete);
+        ApplicationContext.getApplicationContext().setAthlete(athlete);
 
         // execute
-        final IAthlete selectedProfile = cache.getSelectedProfile();
+        final IAthlete selectedProfile = ApplicationContext.getApplicationContext().getAthlete();
 
         // assert
         assertEquals("Athlete korrekt gesetzt", athlete, selectedProfile);
