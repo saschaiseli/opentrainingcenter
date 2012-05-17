@@ -9,9 +9,11 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 import org.jfree.util.Log;
 
+import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.db.DatabaseHelper;
 import ch.opentrainingcenter.db.IDatabaseAccess;
+import ch.opentrainingcenter.transfer.IAthlete;
 
 /**
  * This class controls all aspects of the application's execution
@@ -56,10 +58,19 @@ public class Application implements IApplication {
                     databaseAccess.createDatabase();
                 }
             }
+            final String athleteId = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.ATHLETE_ID);
+            if (athleteId != null && athleteId.length() > 0) {
+                final IAthlete athlete = DatabaseAccessFactory.getDatabaseAccess().getAthlete(Integer.parseInt(athleteId));
+                if (athlete != null) {
+                    ApplicationContext.getApplicationContext().setAthlete(athlete);
+                }
+            }
+
             final int returnCode = PlatformUI.createAndRunWorkbench(display, new ApplicationWorkbenchAdvisor());
             if (returnCode == PlatformUI.RETURN_RESTART) {
                 return IApplication.EXIT_RESTART;
             }
+
             return IApplication.EXIT_OK;
         } finally {
             display.dispose();

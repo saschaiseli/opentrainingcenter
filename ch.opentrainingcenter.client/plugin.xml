@@ -145,10 +145,6 @@
                value="icons/16_16/icon_16_16.png,icons/32_32/icon_32_32.png,icons/48_48/icon_48_48.png,icons/64_64/icon_64_64.png,icons/128_128/icon_128_128.png">
          </property>
          <property
-               name="aboutImage"
-               value="icons/simpsons-icon.png">
-         </property>
-         <property
                name="appName"
                value="Open Training Center">
          </property>
@@ -209,9 +205,13 @@
    </extension>
    <extension
          point="org.eclipse.ui.splashHandlers">
+      <splashHandler
+            class="ch.opentrainingcenter.client.splash.OtcSplashHandler"
+            id="ch.opentrainingcenter.client.splash">
+      </splashHandler>
       <splashHandlerProductBinding
             productId="ch.opentrainingcenter.client.opentrainingcenter"
-            splashId="ch.opentrainingcenter.client.splashHandlers.mySplash">
+            splashId="ch.opentrainingcenter.client.splash">
       </splashHandlerProductBinding>
    </extension>
    <extension
@@ -282,5 +282,33 @@
             class="ch.opentrainingcenter.client.action.AddEditHandler"
             commandId="ch.opentrainingcenter.client.action.AddEditHandler">
       </handler>
+   </extension>
+   <extension
+         point="ch.opentrainingcenter.client.splashExtension">
+      <splashExtension
+            icon="icons/af.png"
+            id="af"
+            tooltip="Application Framework">
+      </splashExtension>
+      <splashExtension
+            icon="icons/embedded.png"
+            id="embedded"
+            tooltip="Embedded">
+      </splashExtension>
+      <splashExtension
+            icon="icons/enterprise.png"
+            id="enterprise"
+            tooltip="Enterprise">
+      </splashExtension>
+      <splashExtension
+            icon="icons/languages.png"
+            id="languages"
+            tooltip="Languages">
+      </splashExtension>
+      <splashExtension
+            icon="icons/rcp.png"
+            id="rcp"
+            tooltip="RCP">
+      </splashExtension>
    </extension>
 </plugin>
