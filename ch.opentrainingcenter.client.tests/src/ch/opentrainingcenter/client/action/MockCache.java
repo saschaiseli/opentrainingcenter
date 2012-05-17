@@ -59,11 +59,6 @@ public class MockCache implements Cache {
     }
 
     @Override
-    public void addAllImported(final List<IImported> records) {
-
-    }
-
-    @Override
     public boolean contains(final Date activityId) {
 
         return false;

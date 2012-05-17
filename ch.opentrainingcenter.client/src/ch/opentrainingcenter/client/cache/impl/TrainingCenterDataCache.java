@@ -17,8 +17,6 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import ch.opentrainingcenter.client.cache.Cache;
 import ch.opentrainingcenter.client.cache.IRecordListener;
 import ch.opentrainingcenter.client.model.ISimpleTraining;
-import ch.opentrainingcenter.client.model.ModelFactory;
-import ch.opentrainingcenter.client.model.RunType;
 import ch.opentrainingcenter.client.model.TrainingOverviewFactory;
 import ch.opentrainingcenter.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.db.IDatabaseAccess;
@@ -238,16 +236,6 @@ public final class TrainingCenterDataCache implements Cache {
     @Override
     public List<?> getSelection() {
         return Collections.unmodifiableList(Arrays.asList(selectedItems));
-    }
-
-    @Override
-    public void addAllImported(final List<IImported> records) {
-        for (final IImported record : records) {
-            final ITraining training = record.getTraining();
-            simpleTrainings.add(ModelFactory.createSimpleTraining(training, RunType.getRunType(record.getTrainingType().getId()), training
-                    .getNote()));
-            allImported.put(record.getActivityId(), record);
-        }
     }
 
     @Override

@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 
 import ch.opentrainingcenter.tcx.ActivityT;
-import ch.opentrainingcenter.transfer.IImported;
 
 public interface Cache {
 
@@ -50,8 +49,6 @@ public interface Cache {
     void setSelection(final Object[] selectedItems);
 
     List<?> getSelection();
-
-    void addAllImported(final List<IImported> records);
 
     boolean contains(final Date activityId);
 

@@ -5,8 +5,6 @@ import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchAdvisor;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 
-import ch.opentrainingcenter.client.cache.Cache;
-import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
 import ch.opentrainingcenter.client.perspectives.AthletePerspective;
 import ch.opentrainingcenter.client.perspectives.PerspectiveNavigation;
 import ch.opentrainingcenter.client.views.ApplicationContext;
@@ -49,7 +47,6 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 
     private void init(final IAthlete athlete) {
         ApplicationContext.getApplicationContext().setAthlete(athlete);
-        final Cache cache = TrainingCenterDataCache.getInstance();
-        cache.addAllImported(DatabaseAccessFactory.getDatabaseAccess().getAllImported(athlete));
+        // do some cache initial load
     }
 }

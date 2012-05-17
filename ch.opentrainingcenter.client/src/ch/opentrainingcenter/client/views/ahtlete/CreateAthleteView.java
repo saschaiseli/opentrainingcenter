@@ -11,7 +11,6 @@ import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeanProperties;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -41,13 +40,10 @@ import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.Application;
 import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.client.PreferenceConstants;
-import ch.opentrainingcenter.client.cache.Cache;
-import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
 import ch.opentrainingcenter.client.model.sportler.Sportler;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.db.IDatabaseAccess;
-import ch.opentrainingcenter.importer.LoadJob;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
 
@@ -57,7 +53,6 @@ public class CreateAthleteView extends ViewPart {
     public static final String IMAGE = "icons/create.png"; //$NON-NLS-1$
     private final Sportler sportler = new Sportler();
     private final IDatabaseAccess databaseAccess = DatabaseAccessFactory.getDatabaseAccess();
-    private final Cache cache = TrainingCenterDataCache.getInstance();
     private final IPreferenceStore store = Activator.getDefault().getPreferenceStore();
     private Text nameTf;
     private Text ageTf;
@@ -158,8 +153,6 @@ public class CreateAthleteView extends ViewPart {
                 final IAthlete athlete = databaseAccess.getAthlete(dbId);
                 LOGGER.info(Messages.CreateAthleteView_5 + athlete + " wird im Cache gesetzt."); //$NON-NLS-1$
                 ApplicationContext.getApplicationContext().setAthlete(athlete);
-                final Job job = new LoadJob(Messages.CreateAthleteView_6, athlete, databaseAccess, cache);
-                job.schedule();
                 getViewSite().getWorkbenchWindow().getShell().setText(
                         Application.WINDOW_TITLE + Messages.CreateAthleteView_7 + athlete.getName());
             }
