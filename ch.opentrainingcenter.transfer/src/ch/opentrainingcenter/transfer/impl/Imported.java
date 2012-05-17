@@ -30,107 +30,51 @@ public class Imported implements java.io.Serializable, IImported {
     public Imported() {
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see ch.opentrainingcenter.transfer.internal.IImported#getId()
-     */
     @Override
     public int getId() {
         return this.id;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see ch.opentrainingcenter.transfer.internal.IImported#setId(int)
-     */
     @Override
     public void setId(final int id) {
         this.id = id;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see ch.opentrainingcenter.transfer.internal.IImported#getWeather()
-     */
     @Override
     public IWeather getWeather() {
         return this.weather;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see ch.opentrainingcenter.transfer.internal.IImported#setWeather(ch.
-     * opentrainingcenter.transfer.internal.Weather)
-     */
     @Override
     public void setWeather(final IWeather weather) {
         this.weather = weather;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see ch.opentrainingcenter.transfer.internal.IImported#getAthlete()
-     */
     @Override
     public IAthlete getAthlete() {
         return this.athlete;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see ch.opentrainingcenter.transfer.internal.IImported#setAthlete(ch.
-     * opentrainingcenter.transfer.IAthlete)
-     */
     @Override
     public void setAthlete(final IAthlete athlete) {
         this.athlete = athlete;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see ch.opentrainingcenter.transfer.internal.IImported#getImportedDate()
-     */
     @Override
     public Date getImportedDate() {
         return this.importedDate;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * ch.opentrainingcenter.transfer.internal.IImported#setImportedDate(java
-     * .util.Date)
-     */
     @Override
     public void setImportedDate(final Date importedDate) {
         this.importedDate = importedDate;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see ch.opentrainingcenter.transfer.internal.IImported#getComments()
-     */
     @Override
     public String getComments() {
         return this.comments;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * ch.opentrainingcenter.transfer.internal.IImported#setComments(java.lang
-     * .String)
-     */
     @Override
     public void setComments(final String comments) {
         this.comments = comments;
@@ -171,15 +115,4 @@ public class Imported implements java.io.Serializable, IImported {
         return "Imported [id=" + id + ", weather=" + weather + ", athlete=" + athlete + ", importedDate=" + importedDate + ", comments=" + comments //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
                 + ", activityId=" + activityId + ", overview=" + overview + " note=" + note + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
-
-    @Override
-    public String getNote() {
-        return note;
-    }
-
-    @Override
-    public void setNote(final String note) {
-        this.note = note;
-    }
-
 }

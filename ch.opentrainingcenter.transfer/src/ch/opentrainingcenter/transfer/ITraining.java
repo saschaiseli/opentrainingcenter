@@ -32,5 +32,13 @@ public interface ITraining {
 
     void setDauerInSekunden(double dauerInSekunden);
 
+    /**
+     * @return eine Notiz zu dem Record.
+     */
     String getNote();
+
+    /**
+     * setzt eine notiz zu einem Lauf.
+     */
+    void setNote(String note);
 }

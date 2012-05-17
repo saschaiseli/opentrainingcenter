@@ -11,6 +11,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
 import ch.opentrainingcenter.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.transfer.IImported;
+import ch.opentrainingcenter.transfer.ITraining;
 
 public class AddEditHandler extends AbstractHandler {
 
@@ -22,10 +23,11 @@ public class AddEditHandler extends AbstractHandler {
         final TreeSelection tree = (TreeSelection) selection;
 
         final IImported record = (IImported) tree.getFirstElement();
-        final String initialValue = record.getNote();
+        final ITraining training = record.getTraining();
+        final String initialValue = training.getNote();
         final InputDialog dialog = new InputDialog(null, "Notiz hinzufügen / bearbeiten", "Notiz bearbeiten", initialValue, null);
         if (dialog.open() == InputDialog.OK) {
-            record.setNote(dialog.getValue());
+            training.setNote(dialog.getValue());
             updateNote(record);
         }
         return null;

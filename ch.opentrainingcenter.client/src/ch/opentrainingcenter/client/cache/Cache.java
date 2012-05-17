@@ -20,6 +20,8 @@ public interface Cache {
      */
     void add(final ActivityT activity);
 
+    ActivityT get(final Date activityId);
+
     /**
      * Methode um importierte Runs im cache abzulegen.
      * 
@@ -79,5 +81,4 @@ public interface Cache {
 
     boolean contains(final Date activityId);
 
-    ActivityT get(final Date activityId);
 }

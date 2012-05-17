@@ -8,6 +8,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.events.ExpansionAdapter;
 import org.eclipse.ui.forms.events.ExpansionEvent;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -44,6 +45,7 @@ public class SingleActivityViewPart extends ViewPart {
     private TableWrapData td;
     private final DataSetCreator dataSetCreator;
     private final ChartCreator chartCreator;
+    private IRecordListener listener;
 
     public SingleActivityViewPart() {
         simpleTraining = cache.getSelectedOverview();
@@ -58,19 +60,16 @@ public class SingleActivityViewPart extends ViewPart {
         LOGGER.debug("create single activity view"); //$NON-NLS-1$
         toolkit = new FormToolkit(parent.getDisplay());
         form = toolkit.createScrolledForm(parent);
+        form.setText(Messages.SingleActivityViewPart_0 + simpleTraining.getDatum());
+        final Composite body = form.getBody();
 
         final TableWrapLayout layout = new TableWrapLayout();
-        layout.numColumns = 1;
-        layout.makeColumnsEqualWidth = false;
-
-        final Composite body = form.getBody();
+        layout.numColumns = 2;
         body.setLayout(layout);
 
-        td = new TableWrapData(TableWrapData.FILL_GRAB);
-        body.setLayoutData(td);
-        form.setText(Messages.SingleActivityViewPart_0 + simpleTraining.getDatum());
-
         addOverviewSection(body);
+        addNoteSection(body);
+
         addMapSection(body);
         addHeartSection(body);
         addSpeedSection(body);
@@ -79,8 +78,9 @@ public class SingleActivityViewPart extends ViewPart {
 
     @Override
     public void dispose() {
-        toolkit.dispose();
+        cache.removeListener(listener);
         super.dispose();
+        toolkit.dispose();
     }
 
     @Override
@@ -97,7 +97,7 @@ public class SingleActivityViewPart extends ViewPart {
                 form.reflow(true);
             }
         });
-        td = new TableWrapData();
+        td = new TableWrapData(TableWrapData.FILL_GRAB);
         td.colspan = 1;
         overviewSection.setLayoutData(td);
         overviewSection.setText(Messages.SingleActivityViewPart_1);
@@ -118,22 +118,78 @@ public class SingleActivityViewPart extends ViewPart {
         addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_6, simpleTraining.getMaxHeartBeat(), Units.BEATS_PER_MINUTE);
         addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_7, simpleTraining.getPace(), Units.PACE);
         addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_8, simpleTraining.getMaxSpeed(), Units.PACE);
-        final Label remarks = addLabelAndValue(overViewComposite, "Bemerkungen:", simpleTraining.getNote(), Units.NONE);
         overviewSection.setClient(overViewComposite);
+    }
 
-        cache.addListener(new IRecordListener() {
+    private void addNoteSection(final Composite body) {
+        final Section section = toolkit.createSection(body, Section.DESCRIPTION | Section.TITLE_BAR | Section.TWISTIE | Section.EXPANDED);
+        section.addExpansionListener(new ExpansionAdapter() {
+            @Override
+            public void expansionStateChanged(final ExpansionEvent e) {
+                form.reflow(true);
+            }
+        });
+        //
+        // final GridData sectionLayoutData = new GridData(SWT.FILL, SWT.FILL,
+        // true, true);
+        // sectionLayoutData.horizontalSpan = 2;
+        // sectionLayoutData.verticalIndent = 6;
+        // section.setLayoutData(sectionLayoutData);
+        section.setRedraw(true);
+        section.setText("Bemerkungen");
+        section.setDescription("Beschreibung von Zustand der Gesundheit, wie der Lauf erlebt wurde. Usw..");
+
+        // td = new TableWrapData(TableWrapData.FILL_GRAB);
+        // td.colspan = 1;
+        // td.grabVertical = true;
+        // overviewSection.setLayoutData(td);
+        // overviewSection.setText("Bemerkungen");
+
+        // final Color bodyColor =
+        // Display.getDefault().getSystemColor(SWT.COLOR_YELLOW);
+        // body.setBackground(bodyColor);
+        //
+        // final Color section =
+        // Display.getDefault().getSystemColor(SWT.COLOR_RED);
+        // overviewSection.setBackground(section);
+        // final Color background =
+        // Display.getDefault().getSystemColor(SWT.COLOR_GREEN);
+
+        final Composite sectionClient = toolkit.createComposite(section);
+        final GridLayout sectionClientLayout = new GridLayout(2, false);
+        sectionClientLayout.verticalSpacing = 2;
+        sectionClientLayout.horizontalSpacing = 10;
+        sectionClient.setLayout(sectionClientLayout);
+        section.setClient(sectionClient);
+
+        // GridLayoutFactory.swtDefaults().numColumns(1).margins(10,
+        // 10).applyTo(overViewComposite);
+
+        final Label label = toolkit.createLabel(sectionClient, "Description : ");
+
+        final Text note = toolkit.createText(sectionClient, "", SWT.V_SCROLL | SWT.MULTI);
+        toolkit.adapt(note, true, true);
+        note.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        final String notiz = simpleTraining.getNote();
+        if (notiz != null) {
+            note.setText(notiz);
+        }
+
+        listener = new IRecordListener() {
 
             @Override
             public void recordChanged(final Collection<ActivityT> entry) {
                 final ActivityT act = entry.iterator().next();
-                remarks.setText(act.getNotes());
-                remarks.update();
+                note.setText(act.getNotes());
+                section.update();
             }
 
             @Override
             public void deleteRecord(final Collection<ActivityT> entry) {
             }
-        });
+        };
+        cache.addListener(listener);
+        // overviewSection.setClient(overViewComposite);
     }
 
     private void addMapSection(final Composite body) {
@@ -148,7 +204,7 @@ public class SingleActivityViewPart extends ViewPart {
         mapSection.setExpanded(false);
 
         td = new TableWrapData(TableWrapData.FILL_GRAB);
-        td.colspan = 1;
+        td.colspan = 2;
         td.grabHorizontal = true;
         td.grabVertical = true;
 
@@ -189,7 +245,7 @@ public class SingleActivityViewPart extends ViewPart {
         });
         heartSection.setExpanded(true);
         td = new TableWrapData(TableWrapData.FILL_GRAB);
-        td.colspan = 1;
+        td.colspan = 2;
         td.grabHorizontal = true;
         td.grabVertical = true;
         heartSection.setLayoutData(td);
@@ -204,9 +260,7 @@ public class SingleActivityViewPart extends ViewPart {
 
         client.setLayout(layout);
 
-        final Label dauerLabel = toolkit.createLabel(client, ""); //$NON-NLS-1$
-        td = new TableWrapData();
-        dauerLabel.setLayoutData(td);
+        final Label dauerLabel = toolkit.createLabel(client, "");
 
         final JFreeChart chart = chartCreator.createChart(dataSetCreator.createDatasetHeart(), ChartType.HEART_DISTANCE);
         final ChartComposite chartComposite = new ChartComposite(client, SWT.NONE, chart, true);
@@ -228,7 +282,7 @@ public class SingleActivityViewPart extends ViewPart {
         });
         speedSection.setExpanded(false);
         td = new TableWrapData(TableWrapData.FILL_GRAB);
-        td.colspan = 1;
+        td.colspan = 2;
         td.grabHorizontal = true;
         td.grabVertical = true;
         speedSection.setLayoutData(td);
@@ -243,9 +297,7 @@ public class SingleActivityViewPart extends ViewPart {
 
         client.setLayout(layout);
 
-        final Label dauerLabel = toolkit.createLabel(client, ""); //$NON-NLS-1$
-        td = new TableWrapData();
-        dauerLabel.setLayoutData(td);
+        final Label dauerLabel = toolkit.createLabel(client, "");
 
         final JFreeChart chart = chartCreator.createChart(dataSetCreator.createDatasetSpeed(), ChartType.SPEED_DISTANCE);
         final ChartComposite chartComposite = new ChartComposite(client, SWT.NONE, chart, true);
@@ -269,7 +321,7 @@ public class SingleActivityViewPart extends ViewPart {
             }
         });
         td = new TableWrapData(TableWrapData.FILL_GRAB);
-        td.colspan = 1;
+        td.colspan = 2;
         td.grabHorizontal = true;
         td.grabVertical = true;
         altitude.setLayoutData(td);
@@ -284,8 +336,6 @@ public class SingleActivityViewPart extends ViewPart {
         client.setLayout(layout);
 
         final Label dauerLabel = toolkit.createLabel(client, Messages.SingleActivityViewPart_15);
-        td = new TableWrapData();
-        dauerLabel.setLayoutData(td);
 
         final JFreeChart chart = chartCreator.createChart(dataSetCreator.createDatasetAltitude(), ChartType.ALTITUDE_DISTANCE);
         final ChartComposite chartComposite = new ChartComposite(client, SWT.NONE, chart, true);

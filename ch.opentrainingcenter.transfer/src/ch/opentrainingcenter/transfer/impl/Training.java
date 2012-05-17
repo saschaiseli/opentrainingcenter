@@ -111,4 +111,9 @@ public class Training implements ITraining {
         return note;
     }
 
+    @Override
+    public void setNote(final String note) {
+        this.note = note;
+    }
+
 }

@@ -34,6 +34,7 @@ import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.tcx.TrainingCenterDatabaseT;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IImported;
+import ch.opentrainingcenter.transfer.ITraining;
 
 public final class TrainingCenterDataCache implements Cache {
 
@@ -99,13 +100,6 @@ public final class TrainingCenterDataCache implements Cache {
         return instance;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * ch.opentrainingcenter.client.cache.Cache#add(ch.opentrainingcenter.tcx
-     * .ActivityT)
-     */
     @Override
     public void add(final ActivityT activity) {
         final List<ActivityT> tmp = new ArrayList<ActivityT>();
@@ -113,11 +107,6 @@ public final class TrainingCenterDataCache implements Cache {
         addAll(tmp);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see ch.opentrainingcenter.client.cache.Cache#addAll(java.util.List)
-     */
     @Override
     public void addAll(final List<ActivityT> activities) {
         database.getActivities().getActivity().addAll(activities);
@@ -127,13 +116,26 @@ public final class TrainingCenterDataCache implements Cache {
 
             final IImported imported = dataAccess.getImportedRecord(key);
             if (imported != null) {
-                activity.setNotes(imported.getNote());
+                final ITraining training = imported.getTraining();
+                activity.setNotes(training.getNote());
             }
 
             allImported.put(key, imported);
             cache.put(key.getTime(), activity);
         }
         fireRecordAdded(null);
+    }
+
+    @Override
+    public ActivityT get(final Date activityId) {
+        final long key = activityId.getTime();
+        final IImported imported = allImported.get(activityId);
+        final ActivityT activity = cache.get(key);
+        if (imported != null) {
+            final ITraining training = imported.getTraining();
+            activity.setNotes(training.getNote());
+        }
+        return activity;
     }
 
     /*
@@ -244,11 +246,6 @@ public final class TrainingCenterDataCache implements Cache {
         return allImported.get(iImportedId);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see ch.opentrainingcenter.client.cache.Cache#remove(java.util.List)
-     */
     @Override
     public void remove(final List<Date> deletedIds) {
         final List<ActivityT> activities = database.getActivities().getActivity();
@@ -310,7 +307,8 @@ public final class TrainingCenterDataCache implements Cache {
         final long time = record.getActivityId().getTime();
         final ActivityT activityT = cache.get(time);
         if (record != null) {
-            activityT.setNotes(record.getNote());
+            final ITraining training = record.getTraining();
+            activityT.setNotes(training.getNote());
         }
         cache.put(time, activityT);
         if (listeners == null) {
@@ -450,8 +448,9 @@ public final class TrainingCenterDataCache implements Cache {
     @Override
     public void addAllImported(final List<IImported> records) {
         for (final IImported record : records) {
-            simpleTrainings.add(ModelFactory.createSimpleTraining(record.getTraining(), RunType
-                    .getRunType(record.getTrainingType().getId()), record.getNote()));
+            final ITraining training = record.getTraining();
+            simpleTrainings.add(ModelFactory.createSimpleTraining(training, RunType.getRunType(record.getTrainingType().getId()), training
+                    .getNote()));
             allImported.put(record.getActivityId(), record);
         }
     }
@@ -469,22 +468,6 @@ public final class TrainingCenterDataCache implements Cache {
         } else {
             return false;
         }
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see ch.opentrainingcenter.client.cache.Cache#get(java.util.Date)
-     */
-    @Override
-    public ActivityT get(final Date activityId) {
-        final long key = activityId.getTime();
-        final IImported imported = allImported.get(activityId);
-        final ActivityT activity = cache.get(key);
-        if (imported != null) {
-            activity.setNotes(imported.getNote());
-        }
-        return activity;
     }
 
     /*
