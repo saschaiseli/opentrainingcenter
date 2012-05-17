@@ -72,17 +72,6 @@ public class MockCache implements Cache {
     }
 
     @Override
-    public void setCacheLoaded(final boolean loaded) {
-
-    }
-
-    @Override
-    public boolean isCacheLoaded() {
-
-        return false;
-    }
-
-    @Override
     public void addAllImported(final List<IImported> records) {
 
     }

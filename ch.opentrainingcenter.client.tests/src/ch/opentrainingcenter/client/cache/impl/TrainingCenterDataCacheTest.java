@@ -292,17 +292,6 @@ public class TrainingCenterDataCacheTest {
     }
 
     @Test
-    public void cacheLoadedInit() {
-        assertFalse("cache ist anfangs nicht geladen", cache.isCacheLoaded());
-    }
-
-    @Test
-    public void isCacheLoadedAfterSetting() {
-        cache.setCacheLoaded(true);
-        assertTrue("cache wurde geladen", cache.isCacheLoaded());
-    }
-
-    @Test
     public void containsMitNull() {
         assertFalse("Nichts im cache", cache.contains(null));
     }

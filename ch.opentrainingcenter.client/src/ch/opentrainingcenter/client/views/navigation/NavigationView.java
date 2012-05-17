@@ -3,7 +3,6 @@ package ch.opentrainingcenter.client.views.navigation;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
@@ -45,7 +44,6 @@ import ch.opentrainingcenter.importer.ExtensionHelper;
 import ch.opentrainingcenter.importer.IImportedConverter;
 import ch.opentrainingcenter.importer.ImporterFactory;
 import ch.opentrainingcenter.importer.LoadActivityJob;
-import ch.opentrainingcenter.importer.LoadJob;
 import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IImported;
@@ -165,15 +163,16 @@ public class NavigationView extends ViewPart {
                 getViewSite().getActionBars().getStatusLineManager().setMessage(message);
             }
         });
-        if (!cache.isCacheLoaded()) {
-            final Job job = new LoadJob(Messages.NavigationView_1, athlete, databaseAccess, cache);
-            job.schedule();
-            job.addJobChangeListener(new ImportJobChangeListener(viewer));
-        } else {
-            final Collection<IImported> allImported = DatabaseAccessFactory.getDatabaseAccess().getAllImported(athlete);
-            viewer.setInput(allImported);
-            writeStatus(Messages.NavigationView_2 + allImported.size() + Messages.NavigationView_3);
-        }
+        // if (!cache.isCacheLoaded()) {
+        // final Job job = new LoadJob(Messages.NavigationView_1, athlete,
+        // databaseAccess, cache);
+        // job.schedule();
+        // job.addJobChangeListener(new ImportJobChangeListener(viewer));
+        // } else {
+        final Collection<IImported> allImported = DatabaseAccessFactory.getDatabaseAccess().getAllImported(athlete);
+        viewer.setInput(allImported);
+        writeStatus(Messages.NavigationView_2 + allImported.size() + Messages.NavigationView_3);
+        // }
 
         cache.addListener(new IRecordListener() {
 

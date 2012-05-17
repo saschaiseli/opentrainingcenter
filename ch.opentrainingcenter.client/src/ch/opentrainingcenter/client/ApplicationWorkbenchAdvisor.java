@@ -51,6 +51,5 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
         ApplicationContext.getApplicationContext().setAthlete(athlete);
         final Cache cache = TrainingCenterDataCache.getInstance();
         cache.addAllImported(DatabaseAccessFactory.getDatabaseAccess().getAllImported(athlete));
-        cache.setCacheLoaded(true);
     }
 }

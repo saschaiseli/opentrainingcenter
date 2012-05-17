@@ -38,8 +38,6 @@ public final class TrainingCenterDataCache implements Cache {
 
     private Object[] selectedItems;
 
-    private boolean cacheLoaded;
-
     private final TrainingCenterDatabaseT database;
 
     private final Map<Date, IImported> allImported = new TreeMap<Date, IImported>(new ImportedComparator());
@@ -266,16 +264,6 @@ public final class TrainingCenterDataCache implements Cache {
     @Override
     public List<?> getSelection() {
         return Collections.unmodifiableList(Arrays.asList(selectedItems));
-    }
-
-    @Override
-    public void setCacheLoaded(final boolean loaded) {
-        cacheLoaded = loaded;
-    }
-
-    @Override
-    public boolean isCacheLoaded() {
-        return cacheLoaded;
     }
 
     @Override

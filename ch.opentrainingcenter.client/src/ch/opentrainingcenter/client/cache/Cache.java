@@ -46,10 +46,6 @@ public interface Cache {
 
     List<?> getSelection();
 
-    void setCacheLoaded(final boolean loaded);
-
-    boolean isCacheLoaded();
-
     void addAllImported(final List<IImported> records);
 
     boolean contains(final Date activityId);
