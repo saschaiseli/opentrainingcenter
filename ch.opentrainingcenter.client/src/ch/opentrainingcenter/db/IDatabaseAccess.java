@@ -34,6 +34,16 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
     List<IImported> getAllImported(IAthlete athlete);
 
     /**
+     * Gibt eine nach datum sortierte Liste von allen importierted Records
+     * zurück.
+     * 
+     * @param athlete
+     *            der Athlete der die Records importierte
+     * @return eine Liste von {@link IImported}
+     */
+    List<IImported> getAllImported(IAthlete athlete, int limit);
+
+    /**
      * @return den neusten Lauf. Nicht der Lauf der zuletzt importiert wurde,
      *         sondern der Lauf, der zuletzt gemacht wurde.
      */

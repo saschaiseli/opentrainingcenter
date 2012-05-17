@@ -93,7 +93,7 @@ public class OtcSplashHandler extends AbstractSplashHandler {
                         final IAthlete athlete = ApplicationContext.getApplicationContext().getAthlete();
                         if (athlete != null) {
                             final IDatabaseAccess databaseAccess = DatabaseAccessFactory.getDatabaseAccess();
-                            final List<IImported> allImported = databaseAccess.getAllImported(athlete);
+                            final List<IImported> allImported = databaseAccess.getAllImported(athlete, 10);
                             final ConvertContainer cc = new ConvertContainer(ExtensionHelper.getConverters());
                             final IImportedConverter fileLoader = ImporterFactory.createGpsFileLoader(store, cc);
                             final InitialLoad load = new InitialLoad(TrainingCenterDataCache.getInstance(), fileLoader);

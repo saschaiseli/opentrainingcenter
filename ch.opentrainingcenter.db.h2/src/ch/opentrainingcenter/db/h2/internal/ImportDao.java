@@ -156,7 +156,25 @@ public class ImportDao {
         session.flush();
 
         return list;
+    }
 
+    @SuppressWarnings("unchecked")
+    public List<IImported> getAllImported(final IAthlete athlete, final int limit) {
+        final Session session = dao.getSession();
+        dao.begin();
+
+        final Criteria criteria = session.createCriteria(IImported.class);
+
+        criteria.add(Restrictions.eq("athlete", athlete));
+        criteria.addOrder(Order.desc("activityId"));
+        criteria.setMaxResults(limit);
+
+        final List<IImported> list = criteria.list();
+
+        dao.commit();
+        session.flush();
+
+        return list;
     }
 
     public IImported getNewestRun(final IAthlete athlete) {

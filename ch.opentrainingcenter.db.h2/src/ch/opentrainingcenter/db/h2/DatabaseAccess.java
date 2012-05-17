@@ -44,6 +44,11 @@ public class DatabaseAccess implements IDatabaseAccess {
     }
 
     @Override
+    public List<IImported> getAllImported(final IAthlete athlete, final int limit) {
+        return importDao.getAllImported(athlete, limit);
+    }
+
+    @Override
     public int importRecord(final int athleteId, final String fileName, final Date activityId, final ITraining overview, final int type) {
         return importDao.importRecord(athleteId, fileName, activityId, overview, type);
     }
