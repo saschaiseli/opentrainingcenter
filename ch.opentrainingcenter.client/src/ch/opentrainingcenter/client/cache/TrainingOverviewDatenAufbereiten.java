@@ -1,7 +1,6 @@
 package ch.opentrainingcenter.client.cache;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -10,15 +9,15 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.eclipse.jface.preference.IPreferenceStore;
 
-import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
 import ch.opentrainingcenter.client.charts.IStatistikCreator;
 import ch.opentrainingcenter.client.helper.SimpleTrainingCalculator;
 import ch.opentrainingcenter.client.helper.TimeHelper;
 import ch.opentrainingcenter.client.model.ISimpleTraining;
+import ch.opentrainingcenter.client.model.ModelFactory;
 import ch.opentrainingcenter.client.model.RunType;
+import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.db.IDatabaseAccess;
-import ch.opentrainingcenter.importer.IConvert2Tcx;
-import ch.opentrainingcenter.tcx.ActivityT;
+import ch.opentrainingcenter.transfer.IImported;
 
 public class TrainingOverviewDatenAufbereiten {
 
@@ -29,28 +28,14 @@ public class TrainingOverviewDatenAufbereiten {
     private final List<ISimpleTraining> trainingsPerMonth = new ArrayList<ISimpleTraining>();
     private final List<ISimpleTraining> trainingsPerYear = new ArrayList<ISimpleTraining>();
 
-    private final Cache cache;
-
     private final IStatistikCreator statistik;
 
+    private final IDatabaseAccess databaseAccess;
+
     public TrainingOverviewDatenAufbereiten(final IStatistikCreator statistik, final IDatabaseAccess databaseAccess,
-            final IPreferenceStore store, final Map<String, IConvert2Tcx> converters) {
+            final IPreferenceStore store) {
         this.statistik = statistik;
-        cache = TrainingCenterDataCache.getInstance(databaseAccess, store, converters);
-        // wenn sich noch was im cache ändert...
-        cache.addListener(new IRecordListener() {
-
-            @Override
-            public void recordChanged(final Collection<ActivityT> entry) {
-                update(null);
-            }
-
-            @Override
-            public void deleteRecord(final Collection<ActivityT> entry) {
-                update(null);
-            }
-
-        });
+        this.databaseAccess = databaseAccess;
         update(null);
     }
 
@@ -60,7 +45,15 @@ public class TrainingOverviewDatenAufbereiten {
     public final void update(final RunType type) {
         LOGGER.debug("update/filter daten vom cache: " + type); //$NON-NLS-1$
         trainingsPerDay.clear();
-        final List<ISimpleTraining> allTrainings = statistik.getTrainingsProTag(cache.getAllSimpleTrainings());
+
+        final List<ISimpleTraining> allTrainings = new ArrayList<ISimpleTraining>();
+        final List<IImported> allImported = databaseAccess.getAllImported(ApplicationContext.getApplicationContext().getAthlete());
+        for (final IImported imp : allImported) {
+            final ISimpleTraining simpleTraining = ModelFactory.createSimpleTraining(imp.getTraining());
+            simpleTraining.setType(RunType.getRunType(imp.getTrainingType().getId()));
+            allTrainings.add(simpleTraining);
+        }
+
         for (final ISimpleTraining training : allTrainings) {
             if (isTypeMatching(type, training.getType())) {
                 trainingsPerDay.add(training);

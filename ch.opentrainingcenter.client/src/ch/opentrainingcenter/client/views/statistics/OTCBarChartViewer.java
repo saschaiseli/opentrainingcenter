@@ -110,7 +110,7 @@ public class OTCBarChartViewer implements ISelectionProvider {
         clazz = getSeriesType(type);
         statistik = new StatistikCreator();
 
-        daten = new TrainingOverviewDatenAufbereiten(statistik, DatabaseAccessFactory.getDatabaseAccess(), store, converters);
+        daten = new TrainingOverviewDatenAufbereiten(statistik, DatabaseAccessFactory.getDatabaseAccess(), store);
         distanceSerie = new TimeSeries(DISTANZ);
         heartSerie = new TimeSeries(HEART);
         cache = TrainingCenterDataCache.getInstance();

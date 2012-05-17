@@ -1,7 +1,7 @@
 package ch.opentrainingcenter.client.action;
 
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.xml.datatype.DatatypeConfigurationException;
@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import ch.opentrainingcenter.client.cache.Cache;
 import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
 import ch.opentrainingcenter.client.model.RunType;
 import ch.opentrainingcenter.db.IDatabaseAccess;
@@ -48,19 +49,16 @@ public class ChangeRunTypeTest {
         assertEquals(type, changeRunType.getType());
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void testRunNoSelection() throws DatatypeConfigurationException {
-        final MockCache cache = new MockCache();
-        cache.setSelection(new Object[] {});
+        final Cache cache = Mockito.mock(Cache.class);
+        Mockito.when(cache.getSelection()).thenReturn(Collections.EMPTY_LIST);
 
         changeRunType = new ChangeRunType(type, databaseAccess, cache);
         changeRunType.run();
 
-        final RunType typeResult = cache.getType();
-        final List<IImported> changedRecords = cache.getChangedRecords();
-
-        assertEquals("Kein Type wurde geändert", type, typeResult);
-        assertEquals("Nichts wurde geändert", 0, changedRecords.size());
+        Mockito.verify(databaseAccess, Mockito.times(0)).updateRecord((IImported) Mockito.any(), Mockito.anyInt());
     }
 
     @Test
@@ -86,10 +84,7 @@ public class ChangeRunTypeTest {
         changeRunType = new ChangeRunType(RunType.EXT_INTERVALL, databaseAccess, cache);
         changeRunType.run();
 
-        final RunType typeResult = cache.getType();
-        final List<IImported> changedRecords = cache.getChangedRecords();
+        Mockito.verify(databaseAccess, Mockito.times(1)).updateRecord((IImported) Mockito.any(), Mockito.anyInt());
 
-        assertEquals("Type muss im cache gesetzt worden sein", RunType.EXT_INTERVALL, typeResult);
-        assertEquals("Ein Imported muss geändert worden sein", 1, changedRecords.size());
     }
 }

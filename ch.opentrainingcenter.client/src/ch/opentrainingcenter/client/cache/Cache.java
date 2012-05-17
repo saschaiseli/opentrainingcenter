@@ -3,8 +3,6 @@ package ch.opentrainingcenter.client.cache;
 import java.util.Date;
 import java.util.List;
 
-import ch.opentrainingcenter.client.model.ISimpleTraining;
-import ch.opentrainingcenter.client.model.RunType;
 import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.transfer.IImported;
 
@@ -18,8 +16,6 @@ public interface Cache {
      */
     void add(final ActivityT activity);
 
-    ActivityT get(final Date activityId);
-
     /**
      * Methode um importierte Runs im cache abzulegen.
      * 
@@ -28,19 +24,28 @@ public interface Cache {
      */
     void addAll(final List<ActivityT> activities);
 
-    void remove(final List<Date> deletedIds);
+    ActivityT get(final Date activityId);
 
-    void changeType(final List<IImported> changedRecords, final RunType type);
+    /**
+     * Entfernt alle Records mit den angegebenen Ids.
+     * 
+     * @param ids
+     */
+    void remove(final List<Date> ids);
 
+    /**
+     * Alle Listener notifizieren
+     */
     void update();
-
-    void update(IImported record);
 
     void addListener(final IRecordListener listener);
 
     void removeListener(final IRecordListener listener);
 
-    List<ISimpleTraining> getAllSimpleTrainings();
+    /**
+     * Aktualisiert den Cache Eintrag mit der neuen Notiz.
+     */
+    void updateNote(final Date activityId, String note);
 
     void setSelection(final Object[] selectedItems);
 

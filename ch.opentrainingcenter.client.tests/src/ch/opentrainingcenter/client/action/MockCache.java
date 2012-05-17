@@ -7,7 +7,6 @@ import java.util.List;
 
 import ch.opentrainingcenter.client.cache.Cache;
 import ch.opentrainingcenter.client.cache.IRecordListener;
-import ch.opentrainingcenter.client.model.ISimpleTraining;
 import ch.opentrainingcenter.client.model.RunType;
 import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.transfer.IImported;
@@ -35,12 +34,6 @@ public class MockCache implements Cache {
     }
 
     @Override
-    public void changeType(final List<IImported> changedRecords, final RunType type) {
-        this.changedRecords = changedRecords;
-        this.type = type;
-    }
-
-    @Override
     public void update() {
 
     }
@@ -53,12 +46,6 @@ public class MockCache implements Cache {
     @Override
     public void removeListener(final IRecordListener listener) {
 
-    }
-
-    @Override
-    public List<ISimpleTraining> getAllSimpleTrainings() {
-
-        return null;
     }
 
     @Override
@@ -101,7 +88,8 @@ public class MockCache implements Cache {
     }
 
     @Override
-    public void update(final IImported record) {
+    public void updateNote(final Date activityId, final String note) {
+        // TODO Auto-generated method stub
 
     }
 }

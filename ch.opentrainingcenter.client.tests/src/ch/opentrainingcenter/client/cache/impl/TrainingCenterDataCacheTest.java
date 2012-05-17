@@ -15,7 +15,6 @@ import org.mockito.Mockito;
 import ch.opentrainingcenter.client.cache.ActivityTTestHelper;
 import ch.opentrainingcenter.client.cache.MockGpsFileLoader;
 import ch.opentrainingcenter.client.cache.MockRecordListener;
-import ch.opentrainingcenter.client.model.RunType;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.db.IDatabaseAccess;
 import ch.opentrainingcenter.tcx.ActivityT;
@@ -153,15 +152,13 @@ public class TrainingCenterDataCacheTest {
         cache.remove(deletedIds);
 
         // assert
-        assertEquals("Alle Simpletrainings aus dem Cache entfernt. Cache muss leer sein", 0, cache.getAllSimpleTrainings().size());
-
         assertEquals("Beide Record-Deleted müssen an Listener propagiert werden", 2, listener.getDeletedEntry().size());
     }
 
     @Test
     public void testRemoveOne() throws DatatypeConfigurationException {
         // prepare
-        // prepare
+        cache.addListener(listener);
         final ActivityT activityA = ActivityTTestHelper.createActivity(2012);
         final ActivityT activityB = ActivityTTestHelper.createActivity(2013);
 
@@ -183,8 +180,7 @@ public class TrainingCenterDataCacheTest {
         cache.remove(deletedIds);
 
         // assert
-        assertEquals("Nur ein Simpletrainings aus dem Cache entfernt. Im Cache ist noch ein Element", 1, cache.getAllSimpleTrainings()
-                .size());
+        assertEquals("Ein Record-Deleted müssen an Listener propagiert werden", 1, listener.getDeletedEntry().size());
     }
 
     @Test
@@ -196,69 +192,6 @@ public class TrainingCenterDataCacheTest {
         // assert
         assertNull("Nichts wurde upgedated", listener.getChangedEntry());
         assertNull("Nichts wurde upgedated", listener.getDeletedEntry());
-    }
-
-    @Test
-    public void testUpdateTypeEmptyList() {
-        // prepare
-        cache.addListener(listener);
-        final List<IImported> changedRecords = new ArrayList<IImported>();
-        final RunType type = RunType.LONG_JOG;
-        // execute
-        cache.changeType(changedRecords, type);
-        // assert
-        assertNull("Nichts wurde upgedated", listener.getChangedEntry());
-        assertNull("Nichts wurde upgedated", listener.getDeletedEntry());
-    }
-
-    @Test
-    public void testUpdateType() throws DatatypeConfigurationException {
-        // prepare
-        cache.addListener(listener);
-
-        final ActivityT activityA = ActivityTTestHelper.createActivity(2012);
-
-        final Date dateA = activityA.getId().toGregorianCalendar().getTime();
-        final List<IImported> changedRecords = new ArrayList<IImported>();
-        final IImported imported = createImported(dateA);
-        changedRecords.add(imported);
-
-        Mockito.when(mockDataAccess.getImportedRecord(activityA.getId().toGregorianCalendar().getTime())).thenReturn(imported);
-        cache.add(activityA);
-
-        // changedRecords.add(createImported(dateB));
-
-        final RunType type = RunType.LONG_JOG;
-        // execute
-        assertEquals("Vor dem change Type ist der Lauftyp noch unbekannt", RunType.NONE, cache.getAllSimpleTrainings().get(0).getType());
-        cache.changeType(changedRecords, type);
-        // assert
-        assertEquals("Korrekter Lauftyp gesetzt", type, cache.getAllSimpleTrainings().get(0).getType());
-    }
-
-    @Test
-    public void testUpdateTypeWennNichtgefunden() throws DatatypeConfigurationException {
-        // prepare
-        cache.addListener(listener);
-
-        final ActivityT activityA = ActivityTTestHelper.createActivity(2012);
-
-        // final Date dateA = activityA.getId().toGregorianCalendar().getTime();
-        final List<IImported> changedRecords = new ArrayList<IImported>();
-        final IImported imported = createImported(new Date());
-        changedRecords.add(imported);
-
-        Mockito.when(mockDataAccess.getImportedRecord(activityA.getId().toGregorianCalendar().getTime())).thenReturn(imported);
-        cache.add(activityA);
-
-        // changedRecords.add(createImported(dateB));
-
-        final RunType type = RunType.LONG_JOG;
-        // execute
-        assertEquals("Vor dem change Type ist der Lauftyp noch unbekannt", RunType.NONE, cache.getAllSimpleTrainings().get(0).getType());
-        cache.changeType(changedRecords, type);
-        // assert
-        assertEquals("Lauftyp immer noch unbekannt", RunType.NONE, cache.getAllSimpleTrainings().get(0).getType());
     }
 
     @Test

@@ -11,13 +11,15 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import ch.opentrainingcenter.client.SimpleTrainingDescriptor;
 import ch.opentrainingcenter.client.charts.IStatistikCreator;
 import ch.opentrainingcenter.client.helper.TimeHelper;
 import ch.opentrainingcenter.client.model.ISimpleTraining;
 import ch.opentrainingcenter.client.model.RunType;
 import ch.opentrainingcenter.db.IDatabaseAccess;
-import ch.opentrainingcenter.importer.IConvert2Tcx;
+import ch.opentrainingcenter.transfer.IAthlete;
+import ch.opentrainingcenter.transfer.IImported;
+import ch.opentrainingcenter.transfer.ITraining;
+import ch.opentrainingcenter.transfer.ITrainingType;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -36,13 +38,13 @@ public class TrainingOverViewDatenAufbereitenTest {
 
     private final Map<Integer, List<ISimpleTraining>> trainingsProJahr = new HashMap<Integer, List<ISimpleTraining>>();
 
-    private final Map<String, IConvert2Tcx> converters = new HashMap<String, IConvert2Tcx>();
+    private IDatabaseAccess databaseAccess;
 
     @Before
     public void setUp() {
 
         final IPreferenceStore store = Mockito.mock(IPreferenceStore.class);
-
+        databaseAccess = Mockito.mock(IDatabaseAccess.class);
         auf = new TrainingOverviewDatenAufbereiten(new IStatistikCreator() {
 
             @Override
@@ -64,21 +66,26 @@ public class TrainingOverViewDatenAufbereitenTest {
             public List<ISimpleTraining> getTrainingsProTag(final List<ISimpleTraining> allTrainings) {
                 return trainingsProTag;
             }
-        }, Mockito.mock(IDatabaseAccess.class), store, converters);
+        }, databaseAccess, store);
     }
 
     @Test
     public void testNONE() {
         // prepare
-        final SimpleTrainingDescriptor desc = SimpleTrainingDescriptor.createSimpleTraining(2012, 1, 2);
-        desc.setRunType(RunType.NONE);
-        trainingsProTag.add(desc.build());
+        final List<IImported> values = new ArrayList<IImported>();
+        final IImported mockA = Mockito.mock(IImported.class);
+        final ITraining training = Mockito.mock(ITraining.class);
+        Mockito.when(mockA.getTraining()).thenReturn(training);
+        final ITrainingType type = Mockito.mock(ITrainingType.class);
+        Mockito.when(type.getId()).thenReturn(RunType.NONE.getIndex());
+        Mockito.when(mockA.getTrainingType()).thenReturn(type);
+        values.add(mockA);
 
-        desc.setRunType(RunType.NONE);
-        trainingsProTag.add(desc.build());
-
-        desc.setRunType(RunType.EXT_INTERVALL);
-        trainingsProTag.add(desc.build());
+        final IImported mockB = Mockito.mock(IImported.class);
+        Mockito.when(mockB.getTraining()).thenReturn(training);
+        Mockito.when(mockB.getTrainingType()).thenReturn(type);
+        values.add(mockB);
+        Mockito.when(databaseAccess.getAllImported((IAthlete) Mockito.any())).thenReturn(values);
 
         // execute
         auf.update(RunType.NONE);
@@ -91,16 +98,16 @@ public class TrainingOverViewDatenAufbereitenTest {
     @Test
     public void testEXT() {
         // prepare
-        final SimpleTrainingDescriptor desc = SimpleTrainingDescriptor.createSimpleTraining(2012, 1, 2);
-        desc.setRunType(RunType.NONE);
-        trainingsProTag.add(desc.build());
+        final List<IImported> values = new ArrayList<IImported>();
+        final IImported mockA = Mockito.mock(IImported.class);
+        final ITraining training = Mockito.mock(ITraining.class);
+        Mockito.when(mockA.getTraining()).thenReturn(training);
+        final ITrainingType type = Mockito.mock(ITrainingType.class);
+        Mockito.when(type.getId()).thenReturn(RunType.EXT_INTERVALL.getIndex());
+        Mockito.when(mockA.getTrainingType()).thenReturn(type);
 
-        desc.setRunType(RunType.NONE);
-        trainingsProTag.add(desc.build());
-
-        desc.setRunType(RunType.EXT_INTERVALL);
-        trainingsProTag.add(desc.build());
-
+        values.add(mockA);
+        Mockito.when(databaseAccess.getAllImported((IAthlete) Mockito.any())).thenReturn(values);
         // execute
         auf.update(RunType.EXT_INTERVALL);
 
@@ -112,15 +119,17 @@ public class TrainingOverViewDatenAufbereitenTest {
     @Test
     public void testINT_INTERVALL() {
         // prepare
-        final SimpleTrainingDescriptor desc = SimpleTrainingDescriptor.createSimpleTraining(2012, 1, 2);
-        desc.setRunType(RunType.NONE);
-        trainingsProTag.add(desc.build());
 
-        desc.setRunType(RunType.NONE);
-        trainingsProTag.add(desc.build());
+        final List<IImported> values = new ArrayList<IImported>();
+        final IImported mockA = Mockito.mock(IImported.class);
+        final ITraining training = Mockito.mock(ITraining.class);
+        Mockito.when(mockA.getTraining()).thenReturn(training);
+        final ITrainingType type = Mockito.mock(ITrainingType.class);
+        Mockito.when(type.getId()).thenReturn(RunType.INT_INTERVALL.getIndex());
+        Mockito.when(mockA.getTrainingType()).thenReturn(type);
 
-        desc.setRunType(RunType.INT_INTERVALL);
-        trainingsProTag.add(desc.build());
+        values.add(mockA);
+        Mockito.when(databaseAccess.getAllImported((IAthlete) Mockito.any())).thenReturn(values);
 
         // execute
         auf.update(RunType.INT_INTERVALL);
@@ -133,64 +142,67 @@ public class TrainingOverViewDatenAufbereitenTest {
     @Test
     public void testLONG_JOG() {
         // prepare
-        final SimpleTrainingDescriptor desc = SimpleTrainingDescriptor.createSimpleTraining(2012, 1, 2);
-        desc.setRunType(RunType.LONG_JOG);
-        trainingsProTag.add(desc.build());
+        final List<IImported> values = new ArrayList<IImported>();
+        final IImported mockA = Mockito.mock(IImported.class);
+        final ITraining training = Mockito.mock(ITraining.class);
+        Mockito.when(mockA.getTraining()).thenReturn(training);
+        final ITrainingType type = Mockito.mock(ITrainingType.class);
+        Mockito.when(type.getId()).thenReturn(RunType.LONG_JOG.getIndex());
+        Mockito.when(mockA.getTrainingType()).thenReturn(type);
 
-        desc.setRunType(RunType.NONE);
-        trainingsProTag.add(desc.build());
-
-        desc.setRunType(RunType.LONG_JOG);
-        trainingsProTag.add(desc.build());
+        values.add(mockA);
+        Mockito.when(databaseAccess.getAllImported((IAthlete) Mockito.any())).thenReturn(values);
 
         // execute
         auf.update(RunType.LONG_JOG);
 
         // assert
         final List<ISimpleTraining> trainingsPerDay = auf.getTrainingsPerDay();
-        assertEquals("2 Trainings mit dem Type LONG_JOG: ", 2, trainingsPerDay.size()); //$NON-NLS-1$
+        assertEquals("2 Trainings mit dem Type LONG_JOG: ", 1, trainingsPerDay.size()); //$NON-NLS-1$
     }
 
     @Test
     public void testPOWER_LONG_JOG() {
         // prepare
-        final SimpleTrainingDescriptor desc = SimpleTrainingDescriptor.createSimpleTraining(2012, 1, 2);
-        desc.setRunType(RunType.LONG_JOG);
-        trainingsProTag.add(desc.build());
+        final List<IImported> values = new ArrayList<IImported>();
+        final IImported mockA = Mockito.mock(IImported.class);
+        final ITraining training = Mockito.mock(ITraining.class);
+        Mockito.when(mockA.getTraining()).thenReturn(training);
+        final ITrainingType type = Mockito.mock(ITrainingType.class);
+        Mockito.when(type.getId()).thenReturn(RunType.POWER_LONG_JOG.getIndex());
+        Mockito.when(mockA.getTrainingType()).thenReturn(type);
 
-        desc.setRunType(RunType.POWER_LONG_JOG);
-        trainingsProTag.add(desc.build());
-
-        desc.setRunType(RunType.POWER_LONG_JOG);
-        trainingsProTag.add(desc.build());
+        values.add(mockA);
+        Mockito.when(databaseAccess.getAllImported((IAthlete) Mockito.any())).thenReturn(values);
 
         // execute
         auf.update(RunType.POWER_LONG_JOG);
 
         // assert
         final List<ISimpleTraining> trainingsPerDay = auf.getTrainingsPerDay();
-        assertEquals("2 Trainings mit dem Type POWER_LONG_JOG: ", 2, trainingsPerDay.size()); //$NON-NLS-1$
+        assertEquals("2 Trainings mit dem Type POWER_LONG_JOG: ", 1, trainingsPerDay.size()); //$NON-NLS-1$
     }
 
     @Test
     public void testTEMPO() {
         // prepare
-        final SimpleTrainingDescriptor desc = SimpleTrainingDescriptor.createSimpleTraining(2012, 1, 2);
-        desc.setRunType(RunType.LONG_JOG);
-        trainingsProTag.add(desc.build());
+        final List<IImported> values = new ArrayList<IImported>();
+        final IImported mockA = Mockito.mock(IImported.class);
+        final ITraining training = Mockito.mock(ITraining.class);
+        Mockito.when(mockA.getTraining()).thenReturn(training);
+        final ITrainingType type = Mockito.mock(ITrainingType.class);
+        Mockito.when(type.getId()).thenReturn(RunType.TEMPO_JOG.getIndex());
+        Mockito.when(mockA.getTrainingType()).thenReturn(type);
 
-        desc.setRunType(RunType.TEMPO_JOG);
-        trainingsProTag.add(desc.build());
-
-        desc.setRunType(RunType.TEMPO_JOG);
-        trainingsProTag.add(desc.build());
+        values.add(mockA);
+        Mockito.when(databaseAccess.getAllImported((IAthlete) Mockito.any())).thenReturn(values);
 
         // execute
         auf.update(RunType.TEMPO_JOG);
 
         // assert
         final List<ISimpleTraining> trainingsPerDay = auf.getTrainingsPerDay();
-        assertEquals("2 Trainings mit dem Type TEMPO_JOG: ", 2, trainingsPerDay.size()); //$NON-NLS-1$
+        assertEquals("2 Trainings mit dem Type TEMPO_JOG: ", 1, trainingsPerDay.size()); //$NON-NLS-1$
     }
 
     @Test
@@ -201,9 +213,16 @@ public class TrainingOverViewDatenAufbereitenTest {
     @Test
     public void testTrainingPerDayValues() {
         // prepare
-        final SimpleTrainingDescriptor desc = SimpleTrainingDescriptor.createSimpleTraining(2012, 1, 2);
-        desc.setRunType(RunType.LONG_JOG);
-        trainingsProTag.add(desc.build());
+        final List<IImported> values = new ArrayList<IImported>();
+        final IImported mockA = Mockito.mock(IImported.class);
+        final ITraining training = Mockito.mock(ITraining.class);
+        Mockito.when(mockA.getTraining()).thenReturn(training);
+        final ITrainingType type = Mockito.mock(ITrainingType.class);
+        Mockito.when(type.getId()).thenReturn(RunType.LONG_JOG.getIndex());
+        Mockito.when(mockA.getTrainingType()).thenReturn(type);
+
+        values.add(mockA);
+        Mockito.when(databaseAccess.getAllImported((IAthlete) Mockito.any())).thenReturn(values);
         // execute
         auf.update(RunType.LONG_JOG);
         // assert
@@ -233,12 +252,19 @@ public class TrainingOverViewDatenAufbereitenTest {
     @Test
     public void testToStringMitWerten() {
         // prepare
-        final SimpleTrainingDescriptor desc = SimpleTrainingDescriptor.createSimpleTraining(2012, 1, 2);
-        desc.setRunType(RunType.LONG_JOG);
-        desc.setDistanz(1042);
         final Date date = new Date();
-        desc.setDate(date);
-        trainingsProTag.add(desc.build());
+        final List<IImported> values = new ArrayList<IImported>();
+        final IImported mockA = Mockito.mock(IImported.class);
+        final ITraining training = Mockito.mock(ITraining.class);
+        Mockito.when(training.getDateOfStart()).thenReturn(date);
+        Mockito.when(training.getLaengeInMeter()).thenReturn(1042.0);
+        Mockito.when(mockA.getTraining()).thenReturn(training);
+        final ITrainingType type = Mockito.mock(ITrainingType.class);
+        Mockito.when(type.getId()).thenReturn(RunType.LONG_JOG.getIndex());
+        Mockito.when(mockA.getTrainingType()).thenReturn(type);
+        Mockito.when(mockA.getActivityId()).thenReturn(date);
+        values.add(mockA);
+        Mockito.when(databaseAccess.getAllImported((IAthlete) Mockito.any())).thenReturn(values);
         // execute
         auf.update(RunType.LONG_JOG);
         // assert

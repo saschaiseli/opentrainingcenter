@@ -35,6 +35,6 @@ public class AddEditHandler extends AbstractHandler {
 
     private void updateNote(final IImported record) {
         DatabaseAccessFactory.getDatabaseAccess().updateRecord(record);
-        TrainingCenterDataCache.getInstance().update(record);
+        TrainingCenterDataCache.getInstance().updateNote(record.getActivityId(), record.getTraining().getNote());
     }
 }

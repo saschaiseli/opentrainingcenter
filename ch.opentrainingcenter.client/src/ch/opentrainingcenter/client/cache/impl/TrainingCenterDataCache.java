@@ -157,25 +157,6 @@ public final class TrainingCenterDataCache implements Cache {
         fireRecordDeleted(activitiesToDelete);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see ch.opentrainingcenter.client.cache.Cache#changeType(java.util.List,
-     * ch.opentrainingcenter.client.model.RunType)
-     */
-    @Override
-    public void changeType(final List<IImported> changedRecords, final RunType type) {
-        for (final IImported record : changedRecords) {
-            final IImported imp = allImported.get(record.getActivityId());
-            for (final ISimpleTraining st : simpleTrainings) {
-                if (imp != null && st.getDatum().equals(imp.getActivityId())) {
-                    st.setType(type);
-                }
-            }
-        }
-
-    }
-
     @Override
     public void update() {
         if (listeners == null) {
@@ -189,13 +170,11 @@ public final class TrainingCenterDataCache implements Cache {
     }
 
     @Override
-    public void update(final IImported record) {
-        allImported.put(record.getActivityId(), record);
-        final long time = record.getActivityId().getTime();
+    public void updateNote(final Date activityId, final String note) {
+        final long time = activityId.getTime();
         final ActivityT activityT = cache.get(time);
-        if (record != null) {
-            final ITraining training = record.getTraining();
-            activityT.setNotes(training.getNote());
+        if (activityT != null) {
+            activityT.setNotes(note);
         }
         cache.put(time, activityT);
         if (listeners == null) {
@@ -249,11 +228,6 @@ public final class TrainingCenterDataCache implements Cache {
                 listeners = null;
             }
         }
-    }
-
-    @Override
-    public List<ISimpleTraining> getAllSimpleTrainings() {
-        return Collections.unmodifiableList(simpleTrainings);
     }
 
     @Override
