@@ -139,14 +139,9 @@ public final class TrainingCenterDataCache implements Cache {
     }
 
     @Override
-    public Collection<IImported> getAllImportedRecords() {
-        return allImported.values();
+    public IAthlete getProfile() {
+        return selectedProfile;
     }
-
-    // @Override
-    // public void setSelectedRun(final IImported selected) {
-    // selectedImport = selected;
-    // }
 
     @Override
     public void setSelectedProfile(final IAthlete athlete) {
@@ -168,42 +163,37 @@ public final class TrainingCenterDataCache implements Cache {
     }
 
     // @Override
-    // public IImported getSelected() {
+    // public ISimpleTraining getSelectedOverview() {
     // setIfNothingSelectedTheNewestAsSelected();
-    // return selectedImport;
+    // if (selectedImport == null) {
+    // return null;
+    // } else {
+    // return createSimpleTraining();
+    // }
     // }
 
-    @Override
-    public ISimpleTraining getSelectedOverview() {
-        setIfNothingSelectedTheNewestAsSelected();
-        if (selectedImport == null) {
-            return null;
-        } else {
-            return createSimpleTraining();
-        }
-    }
-
-    private ISimpleTraining createSimpleTraining() {
-        final ActivityT activity;
-        final long key = selectedImport.getActivityId().getTime();
-        if (cache.containsKey(key)) {
-            activity = cache.get(key);
-        } else {
-            try {
-                activity = loadGpsFile.convertImportedToActivity(selectedImport);
-            } catch (final Exception e) {
-                LOGGER.error(e.getMessage());
-                return null;
-            }
-        }
-        return TrainingOverviewFactory.creatSimpleTraining(activity);
-    }
-
-    private void setIfNothingSelectedTheNewestAsSelected() {
-        if (selectedImport == null && !database.getActivities().getActivity().isEmpty()) {
-            selectedImport = getLatestRun();
-        }
-    }
+    // private ISimpleTraining createSimpleTraining() {
+    // final ActivityT activity;
+    // final long key = selectedImport.getActivityId().getTime();
+    // if (cache.containsKey(key)) {
+    // activity = cache.get(key);
+    // } else {
+    // try {
+    // activity = loadGpsFile.convertImportedToActivity(selectedImport);
+    // } catch (final Exception e) {
+    // LOGGER.error(e.getMessage());
+    // return null;
+    // }
+    // }
+    // return TrainingOverviewFactory.creatSimpleTraining(activity);
+    // }
+    //
+    // private void setIfNothingSelectedTheNewestAsSelected() {
+    // if (selectedImport == null &&
+    // !database.getActivities().getActivity().isEmpty()) {
+    // selectedImport = getLatestRun();
+    // }
+    // }
 
     private IImported getLatestRun() {
         final List<ActivityT> activities = database.getActivities().getActivity();

@@ -36,6 +36,7 @@ import ch.opentrainingcenter.client.cache.IRecordListener;
 import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
 import ch.opentrainingcenter.client.helper.DistanceHelper;
 import ch.opentrainingcenter.client.helper.TimeHelper;
+import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.client.views.overview.SingleActivityViewPart;
 import ch.opentrainingcenter.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.db.IDatabaseAccess;
@@ -134,6 +135,7 @@ public class NavigationView extends ViewPart {
                     openSingleRunView((IImported) selectedRecord);
                 }
             }
+
         });
 
         viewer.addSelectionChangedListener(new ISelectionChangedListener() {
@@ -163,13 +165,12 @@ public class NavigationView extends ViewPart {
                 getViewSite().getActionBars().getStatusLineManager().setMessage(message);
             }
         });
-
         if (!cache.isCacheLoaded()) {
             final Job job = new LoadJob(Messages.NavigationView_1, athlete, databaseAccess, cache);
             job.schedule();
             job.addJobChangeListener(new ImportJobChangeListener(viewer));
         } else {
-            final Collection<IImported> allImported = cache.getAllImportedRecords();
+            final Collection<IImported> allImported = DatabaseAccessFactory.getDatabaseAccess().getAllImported(athlete);
             viewer.setInput(allImported);
             writeStatus(Messages.NavigationView_2 + allImported.size() + Messages.NavigationView_3);
         }
@@ -178,7 +179,7 @@ public class NavigationView extends ViewPart {
 
             @Override
             public void deleteRecord(final Collection<ActivityT> entry) {
-                viewer.setInput(cache.getAllImportedRecords());
+                viewer.setInput(DatabaseAccessFactory.getDatabaseAccess().getAllImported(athlete));
                 viewer.refresh();
                 final IWorkbenchPage wbp = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
                 for (final ActivityT record : entry) {
@@ -189,7 +190,7 @@ public class NavigationView extends ViewPart {
 
             @Override
             public void recordChanged(final Collection<ActivityT> entry) {
-                final Collection<IImported> allImported = cache.getAllImportedRecords();
+                final Collection<IImported> allImported = DatabaseAccessFactory.getDatabaseAccess().getAllImported(athlete);
                 Display.getDefault().asyncExec(new Runnable() {
 
                     @Override
@@ -215,6 +216,9 @@ public class NavigationView extends ViewPart {
     }
 
     private void openSingleRunView(final IImported record) {
+
+        ApplicationContext.getApplicationContext().setSelectedId(record.getActivityId());
+
         final IImportedConverter loader = ImporterFactory.createGpsFileLoader(store, cc);
         final LoadActivityJob job = new LoadActivityJob(Messages.NavigationView_1, record, cache, loader);
         job.schedule();

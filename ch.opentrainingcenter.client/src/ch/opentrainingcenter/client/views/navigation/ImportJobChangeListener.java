@@ -6,13 +6,18 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.widgets.Display;
 
 import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
+import ch.opentrainingcenter.db.DatabaseAccessFactory;
+import ch.opentrainingcenter.db.IDatabaseAccess;
+import ch.opentrainingcenter.transfer.IAthlete;
 
 public class ImportJobChangeListener implements IJobChangeListener {
 
     private final TreeViewer viewer;
+    private final IDatabaseAccess databaseAccess;
 
     ImportJobChangeListener(final TreeViewer viewer) {
         this.viewer = viewer;
+        databaseAccess = DatabaseAccessFactory.getDatabaseAccess();
     }
 
     @Override
@@ -31,7 +36,10 @@ public class ImportJobChangeListener implements IJobChangeListener {
             @Override
             public void run() {
                 try {
-                    viewer.setInput(TrainingCenterDataCache.getInstance().getAllImportedRecords());
+                    final IAthlete profile = TrainingCenterDataCache.getInstance().getProfile();
+
+                    viewer.setInput(databaseAccess.getAllImported(profile));
+
                 } catch (final Exception e) {
                     e.printStackTrace();
                 }

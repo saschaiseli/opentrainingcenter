@@ -1,7 +1,6 @@
 package ch.opentrainingcenter.client.action;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -32,20 +31,8 @@ public class MockCache implements Cache {
     }
 
     @Override
-    public Collection<IImported> getAllImportedRecords() {
-
-        return null;
-    }
-
-    @Override
     public void setSelectedProfile(final IAthlete athlete) {
 
-    }
-
-    @Override
-    public ISimpleTraining getSelectedOverview() {
-
-        return null;
     }
 
     @Override
@@ -139,5 +126,11 @@ public class MockCache implements Cache {
     @Override
     public void update(final IImported record) {
 
+    }
+
+    @Override
+    public IAthlete getProfile() {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

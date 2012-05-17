@@ -1,7 +1,6 @@
 package ch.opentrainingcenter.client.cache.impl;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -16,7 +15,6 @@ import org.mockito.Mockito;
 import ch.opentrainingcenter.client.cache.ActivityTTestHelper;
 import ch.opentrainingcenter.client.cache.MockGpsFileLoader;
 import ch.opentrainingcenter.client.cache.MockRecordListener;
-import ch.opentrainingcenter.client.model.ISimpleTraining;
 import ch.opentrainingcenter.client.model.RunType;
 import ch.opentrainingcenter.db.IDatabaseAccess;
 import ch.opentrainingcenter.tcx.ActivityT;
@@ -76,110 +74,61 @@ public class TrainingCenterDataCacheTest {
         assertNotNull("Activity muss im Cache gefunden werden: ", activityFromCache);
     }
 
-    @Test
-    public void getAllImportedRecordsTestNotNull() throws DatatypeConfigurationException {
-        assertNotNull(cache.getAllImportedRecords());
-        assertEquals("Es sind noch keine Elemente im Cache", 0, cache.getAllImportedRecords().size());
-    }
+    // @Test
+    // public void getAllImportedRecordsTestNotNull() throws
+    // DatatypeConfigurationException {
+    // assertNotNull(cache.getAllImportedRecords());
+    // assertEquals("Es sind noch keine Elemente im Cache", 0,
+    // cache.getAllImportedRecords().size());
+    // }
+    //
+    // @Test
+    // public void getAllImportedRecords() throws DatatypeConfigurationException
+    // {
+    // final ActivityT activity = ActivityTTestHelper.createActivity(2012);
+    // final IImported iimported = CommonTransferFactory.createIImported();
+    // final ITraining training = Mockito.mock(ITraining.class);
+    // Mockito.when(training.getNote()).thenReturn("Note");
+    // iimported.setTraining(training);
+    //
+    // Mockito.when(mockDataAccess.getImportedRecord(activity.getId().toGregorianCalendar().getTime())).thenReturn(iimported);
+    // cache.add(activity);
+    //
+    // // execute
+    // final Collection<IImported> all = cache.getAllImportedRecords();
+    //
+    // // Asserts
+    // assertEquals("Es hat eine Elemente im Cache", 1, all.size());
+    // final IImported element = all.iterator().next();
+    //
+    // assertNotNull("Element im Cache darf nicht null sein", element);
+    // }
+    //
+    // @Test
+    // public void resetCacheWennNeuerAthlete() throws
+    // DatatypeConfigurationException {
+    // final ActivityT activity = ActivityTTestHelper.createActivity(2012);
+    //
+    // cache.add(activity);
+    //
+    // // execute
+    // final IAthlete athlete = CommonTransferFactory.createAthlete("Junit", 37,
+    // Integer.valueOf(200));
+    // cache.setSelectedProfile(athlete);
+    //
+    // assertEquals("Keine IImporteds mehr:", 0,
+    // cache.getAllImportedRecords().size());
+    // assertEquals("Keine Activities mehr:", 0,
+    // cache.getAllSimpleTrainings().size());
+    // }
+    //
+    // @Test
+    // public void getSelectedOverviewNull() {
+    // assertNull("Wenn nix im cache, kann es auch keine Overview geben",
+    // cache.getSelectedOverview());
+    // }
 
-    @Test
-    public void getAllImportedRecords() throws DatatypeConfigurationException {
-        final ActivityT activity = ActivityTTestHelper.createActivity(2012);
-        final IImported iimported = CommonTransferFactory.createIImported();
-        final ITraining training = Mockito.mock(ITraining.class);
-        Mockito.when(training.getNote()).thenReturn("Note");
-        iimported.setTraining(training);
-
-        Mockito.when(mockDataAccess.getImportedRecord(activity.getId().toGregorianCalendar().getTime())).thenReturn(iimported);
-        cache.add(activity);
-
-        // execute
-        final Collection<IImported> all = cache.getAllImportedRecords();
-
-        // Asserts
-        assertEquals("Es hat eine Elemente im Cache", 1, all.size());
-        final IImported element = all.iterator().next();
-
-        assertNotNull("Element im Cache darf nicht null sein", element);
-    }
-
-    @Test
-    public void resetCacheWennNeuerAthlete() throws DatatypeConfigurationException {
-        final ActivityT activity = ActivityTTestHelper.createActivity(2012);
-
-        cache.add(activity);
-
-        // execute
-        final IAthlete athlete = CommonTransferFactory.createAthlete("Junit", 37, Integer.valueOf(200));
-        cache.setSelectedProfile(athlete);
-
-        assertEquals("Keine IImporteds mehr:", 0, cache.getAllImportedRecords().size());
-        assertEquals("Keine Activities mehr:", 0, cache.getAllSimpleTrainings().size());
-    }
-
-    @Test
-    public void getSelectedOverviewNull() {
-        assertNull("Wenn nix im cache, kann es auch keine Overview geben", cache.getSelectedOverview());
-    }
-
-    @Test
-    public void getSelectedOverview() throws DatatypeConfigurationException {
-        assertNull("Wenn nix im cache, kann es auch keine Overview geben", cache.getSelectedOverview());
-
-        // prepare
-        final ActivityT activityA = ActivityTTestHelper.createActivity(2012);
-        final ActivityT activityB = ActivityTTestHelper.createActivity(2013);
-
-        final Date dateA = activityA.getId().toGregorianCalendar().getTime();
-        final Date dateB = activityB.getId().toGregorianCalendar().getTime();
-
-        cache.add(activityA);
-        cache.add(activityB);
-
-        final List<IImported> records = new ArrayList<IImported>();
-
-        final IImported impA = createImported(dateA);
-        records.add(impA);
-        final IImported impB = createImported(dateB);
-        records.add(impB);
-
-        cache.addAllImported(records);
-
-        // execute
-        final ISimpleTraining overview = cache.getSelectedOverview();
-
-        assertNotNull("Da Elemente im cache sind, darf die Overview nicht null sein", overview);
-    }
-
-    @Test
-    public void getSelectedOverviewReload() throws DatatypeConfigurationException {
-        assertNull("Wenn nix im cache, kann es auch keine Overview geben", cache.getSelectedOverview());
-
-        // prepare
-        final ActivityT activityA = ActivityTTestHelper.createActivity(2012);
-        final ActivityT activityB = ActivityTTestHelper.createActivity(2013);
-
-        final Date dateA = activityA.getId().toGregorianCalendar().getTime();
-        final Date dateB = activityB.getId().toGregorianCalendar().getTime();
-
-        cache.add(activityA);
-        cache.add(activityB);
-
-        final List<IImported> records = new ArrayList<IImported>();
-
-        final IImported impA = createImported(dateA);
-        records.add(impA);
-        final IImported impB = createImported(dateB);
-        records.add(impB);
-
-        cache.addAllImported(records);
-
-        mockGps.setActivity(activityA);
-        // execute
-        final ISimpleTraining overview = cache.getSelectedOverview();
-
-        assertNotNull("Da Elemente im cache sind, darf die Overview nicht null sein", overview);
-    }
+    //
 
     @Test
     public void testRemove() throws DatatypeConfigurationException {
@@ -203,7 +152,6 @@ public class TrainingCenterDataCacheTest {
         cache.remove(deletedIds);
 
         // assert
-        assertEquals("Alle Imported aus dem Cache entfernt. Cache muss leer sein", 0, cache.getAllImportedRecords().size());
         assertEquals("Alle Simpletrainings aus dem Cache entfernt. Cache muss leer sein", 0, cache.getAllSimpleTrainings().size());
 
         assertEquals("Beide Record-Deleted müssen an Listener propagiert werden", 2, listener.getDeletedEntry().size());
@@ -234,7 +182,6 @@ public class TrainingCenterDataCacheTest {
         cache.remove(deletedIds);
 
         // assert
-        assertEquals("Nur ein Imported aus dem Cache entfernt. Im Cache ist noch ein Element", 1, cache.getAllImportedRecords().size());
         assertEquals("Nur ein Simpletrainings aus dem Cache entfernt. Im Cache ist noch ein Element", 1, cache.getAllSimpleTrainings()
                 .size());
     }

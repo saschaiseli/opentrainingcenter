@@ -44,7 +44,7 @@ public class LoadActivityJob extends Job {
                 result = loader.convertImportedToActivity(imported);
                 cache.add(result);
             } catch (final Exception e) {
-                LOGGER.error("Konnte File nicht einlesen"); //$NON-NLS-1$
+                LOGGER.error("Konnte File nicht einlesen: " + e); //$NON-NLS-1$
                 throw new LoadImportedException("Konnte File nicht einlesen");
             }
         } else {

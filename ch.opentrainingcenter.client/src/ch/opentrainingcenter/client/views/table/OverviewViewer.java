@@ -22,6 +22,7 @@ import ch.opentrainingcenter.client.cache.IRecordListener;
 import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
 import ch.opentrainingcenter.client.helper.DistanceHelper;
 import ch.opentrainingcenter.client.helper.TimeHelper;
+import ch.opentrainingcenter.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.transfer.IImported;
 import ch.opentrainingcenter.transfer.ITraining;
@@ -65,7 +66,7 @@ public class OverviewViewer extends ViewPart {
 
         // Get the content for the viewer, setInput will call getElements in the
         // contentProvider
-        viewer.setInput(cache.getAllImportedRecords());
+        viewer.setInput(DatabaseAccessFactory.getDatabaseAccess().getAllImported(cache.getProfile()));
         // Make the selection available to other views
         getSite().setSelectionProvider(viewer);
         // Set the sorter for the table
@@ -92,7 +93,7 @@ public class OverviewViewer extends ViewPart {
             }
 
             private void update() {
-                viewer.setInput(cache.getAllImportedRecords());
+                viewer.setInput(DatabaseAccessFactory.getDatabaseAccess().getAllImported(cache.getProfile()));
                 viewer.refresh();
             }
         });

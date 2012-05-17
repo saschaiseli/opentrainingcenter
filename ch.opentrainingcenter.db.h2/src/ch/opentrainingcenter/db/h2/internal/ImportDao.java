@@ -125,21 +125,6 @@ public class ImportDao {
     }
 
     @SuppressWarnings("unchecked")
-    public List<IImported> getAllImported(final IAthlete athlete) {
-        final Session session = dao.getSession();
-        dao.begin();
-        if (athlete == null) {
-            return null;
-        }
-        final Query query = dao.getSession().createQuery("from Imported where id_fk_athlete=:idAthlete");//$NON-NLS-1$
-        query.setParameter("idAthlete", athlete.getId());//$NON-NLS-1$
-        final List<IImported> all = query.list();
-        dao.commit();
-        session.flush();
-        return all;
-    }
-
-    @SuppressWarnings("unchecked")
     public IImported getImportedRecord(final Date key) {
         final Session session = dao.getSession();
         dao.begin();
@@ -155,7 +140,8 @@ public class ImportDao {
         }
     }
 
-    public IImported getNewestRun(final IAthlete athlete) {
+    @SuppressWarnings("unchecked")
+    public List<IImported> getAllImported(final IAthlete athlete) {
         final Session session = dao.getSession();
         dao.begin();
 
@@ -164,14 +150,23 @@ public class ImportDao {
         criteria.add(Restrictions.eq("athlete", athlete));
         criteria.addOrder(Order.desc("activityId"));
 
-        final List<?> list = criteria.list();
+        final List<IImported> list = criteria.list();
 
         dao.commit();
         session.flush();
-        if (list.isEmpty()) {
-            return null;
+
+        return list;
+
+    }
+
+    public IImported getNewestRun(final IAthlete athlete) {
+        final List<IImported> list = getAllImported(athlete);
+        IImported result;
+        if (!list.isEmpty()) {
+            result = list.get(0);
         } else {
-            return (IImported) list.get(0);
+            result = null;
         }
+        return result;
     }
 }

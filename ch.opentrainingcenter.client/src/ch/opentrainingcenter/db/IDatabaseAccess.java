@@ -24,7 +24,8 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
     List<IAthlete> getAllAthletes();
 
     /**
-     * Gibt eine Liste von allen importierted Records zurück.
+     * Gibt eine nach datum sortierte Liste von allen importierted Records
+     * zurück.
      * 
      * @param athlete
      *            der Athlete der die Records importierte

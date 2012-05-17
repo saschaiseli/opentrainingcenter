@@ -1,6 +1,7 @@
 package ch.opentrainingcenter.client.views.overview;
 
 import java.util.Collection;
+import java.util.Date;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
@@ -29,8 +30,11 @@ import ch.opentrainingcenter.client.charts.ChartCreator;
 import ch.opentrainingcenter.client.charts.DataSetCreator;
 import ch.opentrainingcenter.client.charts.internal.ChartCreatorImpl;
 import ch.opentrainingcenter.client.charts.internal.DataSetCreatorImpl;
+import ch.opentrainingcenter.client.helper.TimeHelper;
 import ch.opentrainingcenter.client.model.ISimpleTraining;
+import ch.opentrainingcenter.client.model.TrainingOverviewFactory;
 import ch.opentrainingcenter.client.model.Units;
+import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.tcx.ActivityT;
 
 public class SingleActivityViewPart extends ViewPart {
@@ -39,7 +43,7 @@ public class SingleActivityViewPart extends ViewPart {
     private static final Logger LOGGER = Logger.getLogger(SingleActivityViewPart.class);
     private final Cache cache = TrainingCenterDataCache.getInstance();
     private final ISimpleTraining simpleTraining;
-    private final ActivityT selected;
+    private final ActivityT activity;
     private FormToolkit toolkit;
     private ScrolledForm form;
     private TableWrapData td;
@@ -48,9 +52,10 @@ public class SingleActivityViewPart extends ViewPart {
     private IRecordListener listener;
 
     public SingleActivityViewPart() {
-        simpleTraining = cache.getSelectedOverview();
-        selected = cache.get(simpleTraining.getDatum());
-        dataSetCreator = new DataSetCreatorImpl(selected);
+        final Date selectedId = ApplicationContext.getApplicationContext().getSelectedId();
+        activity = cache.get(selectedId);
+        simpleTraining = TrainingOverviewFactory.creatSimpleTraining(activity);
+        dataSetCreator = new DataSetCreatorImpl(activity);
         chartCreator = new ChartCreatorImpl(cache, Activator.getDefault().getPreferenceStore());
         setPartName(simpleTraining.getFormattedDate());
     }
@@ -60,7 +65,7 @@ public class SingleActivityViewPart extends ViewPart {
         LOGGER.debug("create single activity view"); //$NON-NLS-1$
         toolkit = new FormToolkit(parent.getDisplay());
         form = toolkit.createScrolledForm(parent);
-        form.setText(Messages.SingleActivityViewPart_0 + simpleTraining.getDatum());
+        form.setText(Messages.SingleActivityViewPart_0 + TimeHelper.convertDateToString(simpleTraining.getDatum(), true));
         final Composite body = form.getBody();
 
         final TableWrapLayout layout = new TableWrapLayout();
@@ -79,6 +84,7 @@ public class SingleActivityViewPart extends ViewPart {
     @Override
     public void dispose() {
         cache.removeListener(listener);
+        ApplicationContext.getApplicationContext().setSelectedId(null);
         super.dispose();
         toolkit.dispose();
     }
@@ -220,7 +226,7 @@ public class SingleActivityViewPart extends ViewPart {
         layout.bottomMargin = 5;
         client.setLayout(layout);
 
-        final String convertTrackpoints = MapConverter.convertTrackpoints(selected);
+        final String convertTrackpoints = MapConverter.convertTrackpoints(activity);
         final String firstPointToPan = MapConverter.getFirstPointToPan(convertTrackpoints);
         final MapViewer mapViewer = new MapViewer(client, SWT.NONE, convertTrackpoints, firstPointToPan);
         td = new TableWrapData(TableWrapData.FILL_GRAB);

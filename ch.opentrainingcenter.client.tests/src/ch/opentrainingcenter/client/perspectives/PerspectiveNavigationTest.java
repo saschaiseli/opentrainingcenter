@@ -1,5 +1,7 @@
 package ch.opentrainingcenter.client.perspectives;
 
+import java.util.Date;
+
 import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IViewLayout;
@@ -7,8 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import ch.opentrainingcenter.client.cache.Cache;
-import ch.opentrainingcenter.client.model.ISimpleTraining;
+import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.client.views.best.BestRunsView;
 import ch.opentrainingcenter.client.views.navigation.NavigationView;
 import ch.opentrainingcenter.client.views.overview.SingleActivityViewPart;
@@ -17,18 +18,16 @@ import ch.opentrainingcenter.client.views.weeks.WeeklyOverview;
 public class PerspectiveNavigationTest {
     private PerspectiveNavigation perspective;
     private IPageLayout layout;
-    private Cache cache;
 
     @Before
     public void before() {
         layout = Mockito.mock(IPageLayout.class);
-        cache = Mockito.mock(Cache.class);
     }
 
     @Test
     public void testInitialLayoutCacheNichtsSelektiert() {
         // prepare
-        perspective = new PerspectiveNavigation(cache);
+        perspective = new PerspectiveNavigation();
         final IViewLayout viewLayout = Mockito.mock(IViewLayout.class);
         Mockito.when(layout.getViewLayout(NavigationView.ID)).thenReturn(viewLayout);
         final IViewLayout viewLayoutWeek = Mockito.mock(IViewLayout.class);
@@ -62,7 +61,7 @@ public class PerspectiveNavigationTest {
     @Test
     public void testInitialLayoutCacheSelektiert() {
         // prepare
-        perspective = new PerspectiveNavigation(cache);
+        perspective = new PerspectiveNavigation();
         final IViewLayout viewLayout = Mockito.mock(IViewLayout.class);
         Mockito.when(layout.getViewLayout(NavigationView.ID)).thenReturn(viewLayout);
         final IViewLayout viewLayoutWeek = Mockito.mock(IViewLayout.class);
@@ -76,8 +75,7 @@ public class PerspectiveNavigationTest {
         final IFolderLayout folder = Mockito.mock(IFolderLayout.class);
         Mockito.when(layout.createFolder(PerspectiveNavigation.RIGHT_PART, IPageLayout.LEFT, 0.70f, "editorArea")).thenReturn(folder);
 
-        final ISimpleTraining simpleTraining = Mockito.mock(ISimpleTraining.class);
-        Mockito.when(cache.getSelectedOverview()).thenReturn(simpleTraining);
+        ApplicationContext.getApplicationContext().setSelectedId(new Date());
 
         // execute
         perspective.createInitialLayout(layout);

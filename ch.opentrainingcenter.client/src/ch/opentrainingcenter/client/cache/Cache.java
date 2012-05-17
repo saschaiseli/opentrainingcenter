@@ -1,6 +1,5 @@
 package ch.opentrainingcenter.client.cache;
 
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -30,17 +29,17 @@ public interface Cache {
      */
     void addAll(final List<ActivityT> activities);
 
-    /**
-     * @return eine nach Datum sortierte Liste von {@link IImported}
-     */
-    Collection<IImported> getAllImportedRecords();
-
     void setSelectedProfile(final IAthlete athlete);
 
     /**
-     * @return eine Übersicht auf das selektierte Training.
+     * @return den aktiven {@link IAthlete}
      */
-    ISimpleTraining getSelectedOverview();
+    IAthlete getProfile();
+
+    // /**
+    // * @return eine Übersicht auf das selektierte Training.
+    // */
+    // ISimpleTraining getSelectedOverview();
 
     void remove(final List<Date> deletedIds);
 
