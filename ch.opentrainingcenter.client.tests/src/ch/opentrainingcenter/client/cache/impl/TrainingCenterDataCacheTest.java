@@ -11,13 +11,14 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import ch.opentrainingcenter.client.cache.ActivityTTestHelper;
-import ch.opentrainingcenter.client.cache.MockDataAccess;
 import ch.opentrainingcenter.client.cache.MockGpsFileLoader;
 import ch.opentrainingcenter.client.cache.MockRecordListener;
 import ch.opentrainingcenter.client.model.ISimpleTraining;
 import ch.opentrainingcenter.client.model.RunType;
+import ch.opentrainingcenter.db.IDatabaseAccess;
 import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
@@ -32,7 +33,7 @@ import static org.junit.Assert.assertTrue;
 
 public class TrainingCenterDataCacheTest {
 
-    private static MockDataAccess mockDataAccess;
+    private static IDatabaseAccess mockDataAccess;
     private static MockGpsFileLoader mockGps;
     private static TrainingCenterDataCache cache;
 
@@ -40,7 +41,7 @@ public class TrainingCenterDataCacheTest {
 
     @Before
     public void before() {
-        mockDataAccess = new MockDataAccess();
+        mockDataAccess = Mockito.mock(IDatabaseAccess.class);
         mockGps = new MockGpsFileLoader();
         cache = TrainingCenterDataCache.getInstanceForTests(mockGps, mockDataAccess);
     }
@@ -85,9 +86,11 @@ public class TrainingCenterDataCacheTest {
     public void getAllImportedRecords() throws DatatypeConfigurationException {
         final ActivityT activity = ActivityTTestHelper.createActivity(2012);
         final IImported iimported = CommonTransferFactory.createIImported();
+        final ITraining training = Mockito.mock(ITraining.class);
+        Mockito.when(training.getNote()).thenReturn("Note");
+        iimported.setTraining(training);
 
-        mockDataAccess.addIimported(activity.getId().toGregorianCalendar().getTime(), iimported);
-
+        Mockito.when(mockDataAccess.getImportedRecord(activity.getId().toGregorianCalendar().getTime())).thenReturn(iimported);
         cache.add(activity);
 
         // execute
@@ -98,63 +101,6 @@ public class TrainingCenterDataCacheTest {
         final IImported element = all.iterator().next();
 
         assertNotNull("Element im Cache darf nicht null sein", element);
-    }
-
-    @Test
-    public void testSetSelected() {
-        // prepare
-        final IImported selected = CommonTransferFactory.createIImported();
-
-        // execute
-        cache.setSelectedRun(selected);
-
-        // assert
-
-        assertEquals("Richtiger Record ist als selektiert markiert", selected, cache.getSelected());
-    }
-
-    @Test
-    public void testGetSelectedWennNochkeinerSelektiertist() throws DatatypeConfigurationException {
-        final ActivityT activity = ActivityTTestHelper.createActivity(2012);
-
-        final IImported iimported = CommonTransferFactory.createIImported();
-        mockDataAccess.addIimported(activity.getId().toGregorianCalendar().getTime(), iimported);
-
-        cache.add(activity);
-
-        // execute
-        final IImported selected = cache.getSelected();
-
-        // assert
-        assertEquals("Wenn noch keiner selektiert ist, muss neuster selektiert sein", iimported, selected);
-    }
-
-    @Test
-    public void testGetSelectedWennNochkeinerSelektiertistBeiMehreren() throws DatatypeConfigurationException {
-        // prepare
-        final ActivityT activityA = ActivityTTestHelper.createActivity(2012);
-        final ActivityT activityB = ActivityTTestHelper.createActivity(2013);
-
-        final Date dateA = activityA.getId().toGregorianCalendar().getTime();
-        final Date dateB = activityB.getId().toGregorianCalendar().getTime();
-
-        cache.add(activityA);
-        cache.add(activityB);
-
-        final List<IImported> records = new ArrayList<IImported>();
-
-        final IImported impA = createImported(dateA);
-        records.add(impA);
-        final IImported impB = createImported(dateB);
-        records.add(impB);
-
-        cache.addAllImported(records);
-
-        // execute
-        final IImported selected = cache.getSelected();
-
-        // assert
-        assertEquals("Wenn noch keiner selektiert ist, muss neuster selektiert sein", dateB, selected.getActivityId());
     }
 
     @Test
@@ -226,8 +172,6 @@ public class TrainingCenterDataCacheTest {
         final IImported impB = createImported(dateB);
         records.add(impB);
 
-        cache.setSelectedRun(createImported(new Date()));
-
         cache.addAllImported(records);
 
         mockGps.setActivity(activityA);
@@ -261,7 +205,6 @@ public class TrainingCenterDataCacheTest {
         // assert
         assertEquals("Alle Imported aus dem Cache entfernt. Cache muss leer sein", 0, cache.getAllImportedRecords().size());
         assertEquals("Alle Simpletrainings aus dem Cache entfernt. Cache muss leer sein", 0, cache.getAllSimpleTrainings().size());
-        assertNull("Keines mehr selektiert", cache.getSelected());
 
         assertEquals("Beide Record-Deleted müssen an Listener propagiert werden", 2, listener.getDeletedEntry().size());
     }
@@ -278,8 +221,8 @@ public class TrainingCenterDataCacheTest {
         final IImported impA = createImported(dateA);
         final IImported impB = createImported(dateB);
 
-        mockDataAccess.addIimported(dateA, impA);
-        mockDataAccess.addIimported(dateB, impB);
+        Mockito.when(mockDataAccess.getImportedRecord(dateA)).thenReturn(impA);
+        Mockito.when(mockDataAccess.getImportedRecord(dateB)).thenReturn(impB);
 
         cache.add(activityA);
         cache.add(activityB);
@@ -294,7 +237,6 @@ public class TrainingCenterDataCacheTest {
         assertEquals("Nur ein Imported aus dem Cache entfernt. Im Cache ist noch ein Element", 1, cache.getAllImportedRecords().size());
         assertEquals("Nur ein Simpletrainings aus dem Cache entfernt. Im Cache ist noch ein Element", 1, cache.getAllSimpleTrainings()
                 .size());
-        assertNotNull("Eines muss noch selektiert sein", cache.getSelected());
     }
 
     @Test
@@ -333,8 +275,7 @@ public class TrainingCenterDataCacheTest {
         final IImported imported = createImported(dateA);
         changedRecords.add(imported);
 
-        mockDataAccess.addIimported(activityA.getId().toGregorianCalendar().getTime(), imported);
-
+        Mockito.when(mockDataAccess.getImportedRecord(activityA.getId().toGregorianCalendar().getTime())).thenReturn(imported);
         cache.add(activityA);
 
         // changedRecords.add(createImported(dateB));
@@ -359,8 +300,7 @@ public class TrainingCenterDataCacheTest {
         final IImported imported = createImported(new Date());
         changedRecords.add(imported);
 
-        mockDataAccess.addIimported(activityA.getId().toGregorianCalendar().getTime(), imported);
-
+        Mockito.when(mockDataAccess.getImportedRecord(activityA.getId().toGregorianCalendar().getTime())).thenReturn(imported);
         cache.add(activityA);
 
         // changedRecords.add(createImported(dateB));

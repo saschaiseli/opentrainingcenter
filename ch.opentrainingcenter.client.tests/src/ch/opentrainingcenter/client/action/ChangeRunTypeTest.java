@@ -11,9 +11,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import ch.opentrainingcenter.client.cache.MockDataAccess;
 import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
 import ch.opentrainingcenter.client.model.RunType;
+import ch.opentrainingcenter.db.IDatabaseAccess;
 import ch.opentrainingcenter.importer.IConvert2Tcx;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IImported;
@@ -24,13 +24,13 @@ import static org.junit.Assert.assertNotNull;
 public class ChangeRunTypeTest {
     private ChangeRunType changeRunType;
     private RunType type;
-    private MockDataAccess databaseAccess;
+    private IDatabaseAccess databaseAccess;
     private IPreferenceStore store;
     private final Map<String, IConvert2Tcx> converters = new HashMap<String, IConvert2Tcx>();
 
     @Before
     public void before() {
-        databaseAccess = new MockDataAccess();
+        databaseAccess = Mockito.mock(IDatabaseAccess.class);
         type = RunType.LONG_JOG;
         store = Mockito.mock(IPreferenceStore.class);
 

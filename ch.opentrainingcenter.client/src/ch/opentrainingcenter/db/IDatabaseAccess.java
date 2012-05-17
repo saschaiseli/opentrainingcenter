@@ -33,6 +33,12 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
     List<IImported> getAllImported(IAthlete athlete);
 
     /**
+     * @return den neusten Lauf. Nicht der Lauf der zuletzt importiert wurde,
+     *         sondern der Lauf, der zuletzt gemacht wurde.
+     */
+    IImported getNewestRun(IAthlete athlete);
+
+    /**
      * Gibt den sportler mit
      * 
      * @param id

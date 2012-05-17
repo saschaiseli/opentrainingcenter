@@ -1,26 +1,26 @@
 package ch.opentrainingcenter.client.action;
 
+import java.util.List;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mockito;
+
+import ch.opentrainingcenter.client.model.RunType;
+import ch.opentrainingcenter.db.IDatabaseAccess;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.List;
-
-import org.junit.Before;
-import org.junit.Test;
-
-import ch.opentrainingcenter.client.cache.MockDataAccess;
-import ch.opentrainingcenter.client.model.RunType;
-
 public class RunTypeActionContainerTest {
-    private MockDataAccess databaseAccess;
+    private IDatabaseAccess databaseAccess;
     private MockCache cache;
     private RunTypeActionContainer container;
 
     @Before
     public void before() {
-        databaseAccess = new MockDataAccess();
+        databaseAccess = Mockito.mock(IDatabaseAccess.class);
         cache = new MockCache();
         container = new RunTypeActionContainer(databaseAccess, cache);
     }

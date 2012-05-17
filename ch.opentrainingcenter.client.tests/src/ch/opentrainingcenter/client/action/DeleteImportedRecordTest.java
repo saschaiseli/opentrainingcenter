@@ -1,28 +1,28 @@
 package ch.opentrainingcenter.client.action;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 import java.util.Date;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
-import ch.opentrainingcenter.client.cache.MockDataAccess;
+import ch.opentrainingcenter.db.IDatabaseAccess;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IImported;
 import ch.opentrainingcenter.transfer.ITrainingType;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class DeleteImportedRecordTest {
     private DeleteImportedRecord delete;
     private MockCache cache;
-    private MockDataAccess dataAccess;
+    private IDatabaseAccess dataAccess;
 
     @Before
     public void before() {
         cache = new MockCache();
-        dataAccess = new MockDataAccess();
+        dataAccess = Mockito.mock(IDatabaseAccess.class);
     }
 
     @Test

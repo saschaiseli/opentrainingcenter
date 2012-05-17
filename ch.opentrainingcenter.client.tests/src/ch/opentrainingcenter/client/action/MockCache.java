@@ -38,19 +38,8 @@ public class MockCache implements Cache {
     }
 
     @Override
-    public void setSelectedRun(final IImported selected) {
-
-    }
-
-    @Override
     public void setSelectedProfile(final IAthlete athlete) {
 
-    }
-
-    @Override
-    public IImported getSelected() {
-
-        return null;
     }
 
     @Override

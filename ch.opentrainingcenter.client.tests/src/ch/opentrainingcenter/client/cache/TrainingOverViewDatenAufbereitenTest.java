@@ -16,6 +16,7 @@ import ch.opentrainingcenter.client.charts.IStatistikCreator;
 import ch.opentrainingcenter.client.helper.TimeHelper;
 import ch.opentrainingcenter.client.model.ISimpleTraining;
 import ch.opentrainingcenter.client.model.RunType;
+import ch.opentrainingcenter.db.IDatabaseAccess;
 import ch.opentrainingcenter.importer.IConvert2Tcx;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -63,7 +64,7 @@ public class TrainingOverViewDatenAufbereitenTest {
             public List<ISimpleTraining> getTrainingsProTag(final List<ISimpleTraining> allTrainings) {
                 return trainingsProTag;
             }
-        }, new MockDataAccess(), store, converters);
+        }, Mockito.mock(IDatabaseAccess.class), store, converters);
     }
 
     @Test

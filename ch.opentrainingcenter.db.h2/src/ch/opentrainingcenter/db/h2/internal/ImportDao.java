@@ -5,9 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 
 import ch.opentrainingcenter.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
@@ -152,4 +155,23 @@ public class ImportDao {
         }
     }
 
+    public IImported getNewestRun(final IAthlete athlete) {
+        final Session session = dao.getSession();
+        dao.begin();
+
+        final Criteria criteria = session.createCriteria(IImported.class);//
+
+        criteria.add(Restrictions.eq("athlete", athlete));
+        criteria.addOrder(Order.desc("activityId"));
+
+        final List<?> list = criteria.list();
+
+        dao.commit();
+        session.flush();
+        if (list.isEmpty()) {
+            return null;
+        } else {
+            return (IImported) list.get(0);
+        }
+    }
 }

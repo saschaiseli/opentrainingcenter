@@ -15,16 +15,18 @@ import ch.opentrainingcenter.transfer.IImported;
 
 public class ImportActivityJobListener implements IJobChangeListener {
 
+    private final IImported record;
+
+    public ImportActivityJobListener(final IImported record) {
+        this.record = record;
+    }
+
     @Override
     public void aboutToRun(final IJobChangeEvent event) {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     public void awake(final IJobChangeEvent event) {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
@@ -35,11 +37,11 @@ public class ImportActivityJobListener implements IJobChangeListener {
             public void run() {
                 try {
                     final Cache cache = TrainingCenterDataCache.getInstance();
-                    final IImported imported = cache.getSelected();
-                    final ActivityT activityT = cache.get(imported.getActivityId());
+                    final ActivityT activityT = cache.get(record.getActivityId());
                     final String hash = getSecondaryId(activityT);
                     try {
-                        PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(SingleActivityViewPart.ID, hash, IWorkbenchPage.VIEW_ACTIVATE);
+                        PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(SingleActivityViewPart.ID, hash,
+                                IWorkbenchPage.VIEW_ACTIVATE);
                     } catch (final PartInitException e) {
                         e.printStackTrace();
                     }

@@ -138,34 +138,16 @@ public final class TrainingCenterDataCache implements Cache {
         return activity;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see ch.opentrainingcenter.client.cache.Cache#getAllImportedRecords()
-     */
     @Override
     public Collection<IImported> getAllImportedRecords() {
         return allImported.values();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * ch.opentrainingcenter.client.cache.Cache#setSelectedRun(ch.opentrainingcenter
-     * .transfer.IImported)
-     */
-    @Override
-    public void setSelectedRun(final IImported selected) {
-        selectedImport = selected;
-    }
+    // @Override
+    // public void setSelectedRun(final IImported selected) {
+    // selectedImport = selected;
+    // }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see ch.opentrainingcenter.client.cache.Cache#setSelectedProfile(ch.
-     * opentrainingcenter.transfer.IAthlete)
-     */
     @Override
     public void setSelectedProfile(final IAthlete athlete) {
         resetCache();
@@ -185,22 +167,12 @@ public final class TrainingCenterDataCache implements Cache {
         selectedProfile = null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see ch.opentrainingcenter.client.cache.Cache#getSelected()
-     */
-    @Override
-    public IImported getSelected() {
-        setIfNothingSelectedTheNewestAsSelected();
-        return selectedImport;
-    }
+    // @Override
+    // public IImported getSelected() {
+    // setIfNothingSelectedTheNewestAsSelected();
+    // return selectedImport;
+    // }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see ch.opentrainingcenter.client.cache.Cache#getSelectedOverview()
-     */
     @Override
     public ISimpleTraining getSelectedOverview() {
         setIfNothingSelectedTheNewestAsSelected();

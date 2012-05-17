@@ -35,18 +35,7 @@ public interface Cache {
      */
     Collection<IImported> getAllImportedRecords();
 
-    void setSelectedRun(final IImported selected);
-
     void setSelectedProfile(final IAthlete athlete);
-
-    /**
-     * Ist noch keiner selektiert, wird der neuste, also derjenige mit dem
-     * jüngsten datum, zurückgegeben. Dieser wird dann auch als selektierten
-     * Lauf gesetzt.
-     * 
-     * @return den selektierten record oder den neusten record.
-     */
-    IImported getSelected();
 
     /**
      * @return eine Übersicht auf das selektierte Training.

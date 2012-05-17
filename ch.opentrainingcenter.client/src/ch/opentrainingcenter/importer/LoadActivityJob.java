@@ -17,7 +17,7 @@ public class LoadActivityJob extends Job {
     private final IImported record;
     private final IImportedConverter loader;
     private final Cache cache;
-    private ActivityT selected;
+    private ActivityT activity;
 
     public LoadActivityJob(final String name, final IImported record, final Cache cache, final IImportedConverter loader) {
         super(name);
@@ -29,19 +29,19 @@ public class LoadActivityJob extends Job {
     @Override
     protected IStatus run(final IProgressMonitor monitor) {
         try {
-            selected = loadActivity(record);
+            activity = loadActivity(record);
             return Status.OK_STATUS;
         } catch (final LoadImportedException e) {
             return Status.CANCEL_STATUS;
         }
     }
 
-    private ActivityT loadActivity(final IImported selectedRecord) throws LoadImportedException {
-        cache.setSelectedRun(selectedRecord);
+    private ActivityT loadActivity(final IImported imported) throws LoadImportedException {
+        // cache.setSelectedRun(imported);
         ActivityT result = null;
-        if (!cache.contains(selectedRecord.getActivityId())) {
+        if (!cache.contains(imported.getActivityId())) {
             try {
-                result = loader.convertImportedToActivity(selectedRecord);
+                result = loader.convertImportedToActivity(imported);
                 cache.add(result);
             } catch (final Exception e) {
                 LOGGER.error("Konnte File nicht einlesen"); //$NON-NLS-1$
@@ -49,7 +49,7 @@ public class LoadActivityJob extends Job {
             }
         } else {
             // read from cache
-            result = cache.get(selectedRecord.getActivityId());
+            result = cache.get(imported.getActivityId());
         }
         return result;
     }
@@ -58,7 +58,7 @@ public class LoadActivityJob extends Job {
      * Für Testzwecke..
      */
     protected ActivityT getLoaded() {
-        return selected;
+        return activity;
     }
 
 }

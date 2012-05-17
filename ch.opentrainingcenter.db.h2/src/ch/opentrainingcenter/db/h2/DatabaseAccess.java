@@ -54,6 +54,11 @@ public class DatabaseAccess implements IDatabaseAccess {
     }
 
     @Override
+    public IImported getNewestRun(final IAthlete athlete) {
+        return importDao.getNewestRun(athlete);
+    }
+
+    @Override
     public void removeImportedRecord(final Date activityId) {
         importDao.removeImportedRecord(activityId);
     }

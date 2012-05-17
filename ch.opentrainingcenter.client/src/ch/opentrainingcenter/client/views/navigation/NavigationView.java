@@ -139,7 +139,7 @@ public class NavigationView extends ViewPart {
                 final IImportedConverter loader = ImporterFactory.createGpsFileLoader(store, cc);
                 final LoadActivityJob job = new LoadActivityJob(Messages.NavigationView_1, record, cache, loader);
                 job.schedule();
-                job.addJobChangeListener(new ImportActivityJobListener());
+                job.addJobChangeListener(new ImportActivityJobListener(record));
             }
 
         });
@@ -158,7 +158,7 @@ public class NavigationView extends ViewPart {
                     writeToStatusLine(record);
                 } else {
                     writeToStatusLine(""); //$NON-NLS-1$
-                    cache.setSelectedRun(null);
+                    // cache.setSelectedRun(null);
                 }
             }
 
@@ -215,8 +215,9 @@ public class NavigationView extends ViewPart {
                 });
             }
         });
-        if (cache.getSelected() != null) {
-            viewer.setSelection(new StructuredSelection(cache.getSelected()), true);
+        final IImported newestRun = databaseAccess.getNewestRun(athlete);
+        if (newestRun != null) {
+            viewer.setSelection(new StructuredSelection(newestRun), true);
         }
     }
 
