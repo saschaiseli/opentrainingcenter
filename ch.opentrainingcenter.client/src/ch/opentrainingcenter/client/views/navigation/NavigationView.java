@@ -134,14 +134,6 @@ public class NavigationView extends ViewPart {
                     openSingleRunView((IImported) selectedRecord);
                 }
             }
-
-            private void openSingleRunView(final IImported record) {
-                final IImportedConverter loader = ImporterFactory.createGpsFileLoader(store, cc);
-                final LoadActivityJob job = new LoadActivityJob(Messages.NavigationView_1, record, cache, loader);
-                job.schedule();
-                job.addJobChangeListener(new ImportActivityJobListener(record));
-            }
-
         });
 
         viewer.addSelectionChangedListener(new ISelectionChangedListener() {
@@ -218,7 +210,15 @@ public class NavigationView extends ViewPart {
         final IImported newestRun = databaseAccess.getNewestRun(athlete);
         if (newestRun != null) {
             viewer.setSelection(new StructuredSelection(newestRun), true);
+            openSingleRunView(newestRun);
         }
+    }
+
+    private void openSingleRunView(final IImported record) {
+        final IImportedConverter loader = ImporterFactory.createGpsFileLoader(store, cc);
+        final LoadActivityJob job = new LoadActivityJob(Messages.NavigationView_1, record, cache, loader);
+        job.schedule();
+        job.addJobChangeListener(new ImportActivityJobListener(record));
     }
 
     private String getOverview(final IImported record) {
