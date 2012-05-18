@@ -11,20 +11,24 @@ import ch.opentrainingcenter.db.h2.internal.AthleteDao;
 import ch.opentrainingcenter.db.h2.internal.Dao;
 import ch.opentrainingcenter.db.h2.internal.DatabaseCreator;
 import ch.opentrainingcenter.db.h2.internal.ImportDao;
+import ch.opentrainingcenter.db.h2.internal.WeatherDao;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IImported;
 import ch.opentrainingcenter.transfer.ITraining;
+import ch.opentrainingcenter.transfer.IWeather;
 
 public class DatabaseAccess implements IDatabaseAccess {
 
     private final AthleteDao athleteDao;
     private final ImportDao importDao;
+    private final WeatherDao wetterDao;
     private final DatabaseCreator databaseCreator;
 
     public DatabaseAccess() {
         final Dao dao = new Dao();
         athleteDao = new AthleteDao(dao);
         importDao = new ImportDao(dao);
+        wetterDao = new WeatherDao(dao);
         databaseCreator = new DatabaseCreator();
     }
 
@@ -101,6 +105,11 @@ public class DatabaseAccess implements IDatabaseAccess {
     @Override
     public void createDatabase() {
         databaseCreator.createDatabase();
+    }
+
+    @Override
+    public List<IWeather> getWeather() {
+        return wetterDao.getAllWeather();
     }
 
 }

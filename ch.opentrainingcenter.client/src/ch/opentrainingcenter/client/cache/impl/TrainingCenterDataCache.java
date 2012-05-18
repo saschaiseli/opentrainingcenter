@@ -16,17 +16,17 @@ import org.eclipse.jface.preference.IPreferenceStore;
 
 import ch.opentrainingcenter.client.cache.Cache;
 import ch.opentrainingcenter.client.cache.IRecordListener;
-import ch.opentrainingcenter.client.model.ISimpleTraining;
-import ch.opentrainingcenter.client.model.TrainingOverviewFactory;
 import ch.opentrainingcenter.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.db.IDatabaseAccess;
 import ch.opentrainingcenter.importer.IConvert2Tcx;
 import ch.opentrainingcenter.importer.IImportedConverter;
 import ch.opentrainingcenter.tcx.ActivityListT;
 import ch.opentrainingcenter.tcx.ActivityT;
+import ch.opentrainingcenter.tcx.ExtensionsT;
 import ch.opentrainingcenter.tcx.TrainingCenterDatabaseT;
 import ch.opentrainingcenter.transfer.IImported;
 import ch.opentrainingcenter.transfer.ITraining;
+import ch.opentrainingcenter.transfer.IWeather;
 
 public final class TrainingCenterDataCache implements Cache {
 
@@ -39,8 +39,6 @@ public final class TrainingCenterDataCache implements Cache {
     private final TrainingCenterDatabaseT database;
 
     private final Map<Date, IImported> allImported = new TreeMap<Date, IImported>(new ImportedComparator());
-
-    private final List<ISimpleTraining> simpleTrainings = new ArrayList<ISimpleTraining>();
 
     private final Map<Long, ActivityT> cache = new HashMap<Long, ActivityT>();
 
@@ -93,13 +91,15 @@ public final class TrainingCenterDataCache implements Cache {
     public void addAll(final List<ActivityT> activities) {
         database.getActivities().getActivity().addAll(activities);
         for (final ActivityT activity : activities) {
-            simpleTrainings.add(TrainingOverviewFactory.creatSimpleTraining(activity));
             final Date key = activity.getId().toGregorianCalendar().getTime();
 
             final IImported imported = dataAccess.getImportedRecord(key);
             if (imported != null) {
                 final ITraining training = imported.getTraining();
                 activity.setNotes(training.getNote());
+                final ExtensionsT ext = new ExtensionsT();
+                ext.getAny().add(training.getWeather());
+                activity.setExtensions(ext);
             }
 
             allImported.put(key, imported);
@@ -126,7 +126,6 @@ public final class TrainingCenterDataCache implements Cache {
     public void resetCache() {
         database.getActivities().getActivity().clear();
         allImported.clear();
-        simpleTrainings.clear();
         cache.clear();
         selectedItems = null;
     }
@@ -145,13 +144,6 @@ public final class TrainingCenterDataCache implements Cache {
         for (final Date key : deletedIds) {
             allImported.remove(key);
         }
-        final List<ISimpleTraining> simpleTrainingsToDelete = new ArrayList<ISimpleTraining>();
-        for (final ISimpleTraining st : simpleTrainings) {
-            if (deletedIds.contains(st.getDatum())) {
-                simpleTrainingsToDelete.add(st);
-            }
-        }
-        simpleTrainings.removeAll(simpleTrainingsToDelete);
         fireRecordDeleted(activitiesToDelete);
     }
 
@@ -175,6 +167,10 @@ public final class TrainingCenterDataCache implements Cache {
             activityT.setNotes(note);
             cache.put(time, activityT);
         }
+        notifyListeners(activityT);
+    }
+
+    private void notifyListeners(final ActivityT activityT) {
         if (listeners == null) {
             return;
         }
@@ -185,6 +181,19 @@ public final class TrainingCenterDataCache implements Cache {
             final IRecordListener listener = (IRecordListener) rls[i];
             listener.recordChanged(changed);
         }
+    }
+
+    @Override
+    public void updateWetter(final Date activityId, final IWeather wetter) {
+        final long time = activityId.getTime();
+        final ActivityT activityT = cache.get(time);
+        if (activityT != null) {
+            final ExtensionsT ext = new ExtensionsT();
+            ext.getAny().add(wetter);
+            activityT.setExtensions(ext);
+            cache.put(time, activityT);
+        }
+        notifyListeners(activityT);
     }
 
     private void fireRecordAdded(final Collection<ActivityT> activitiesAdded) {

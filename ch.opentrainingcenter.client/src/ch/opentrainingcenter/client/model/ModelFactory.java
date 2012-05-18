@@ -18,8 +18,13 @@ public final class ModelFactory {
      * Erstellt ein SimpleTraining mit dem Lauf Typ NONE
      */
     public static ISimpleTraining createSimpleTraining(final ITraining overview) {
-        return new SimpleTraining(overview.getLaengeInMeter(), overview.getDauerInSekunden(), overview.getDateOfStart(), overview
-                .getAverageHeartBeat(), overview.getMaxHeartBeat(), overview.getMaxSpeed(), RunType.NONE, overview.getNote());
+        final SimpleTraining training = new SimpleTraining(overview.getLaengeInMeter(), overview.getDauerInSekunden(), overview
+                .getDateOfStart(), overview.getAverageHeartBeat(), overview.getMaxHeartBeat(), overview.getMaxSpeed(), RunType.NONE,
+                overview.getNote());
+        if (overview.getWeather() != null) {
+            training.setWetter(Wetter.getRunType(overview.getWeather().getId()));
+        }
+        return training;
     }
 
     public static ISimpleTraining createSimpleTraining(final double distanzInMeter, final double dauerInSekunden, final Date datum,

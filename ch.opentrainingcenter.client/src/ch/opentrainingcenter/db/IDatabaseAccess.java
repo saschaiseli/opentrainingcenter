@@ -10,6 +10,7 @@ import ch.opentrainingcenter.client.model.RunType;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IImported;
 import ch.opentrainingcenter.transfer.ITraining;
+import ch.opentrainingcenter.transfer.IWeather;
 
 public interface IDatabaseAccess extends IExecutableExtensionFactory {
 
@@ -128,4 +129,9 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
      * updated ganzer record
      */
     void updateRecord(IImported record);
+
+    /**
+     * @return alle in der Datenbank verfügbaren wetter
+     */
+    List<IWeather> getWeather();
 }

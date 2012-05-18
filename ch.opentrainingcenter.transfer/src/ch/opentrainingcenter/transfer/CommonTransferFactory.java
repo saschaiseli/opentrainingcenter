@@ -6,6 +6,7 @@ import ch.opentrainingcenter.transfer.impl.Athlete;
 import ch.opentrainingcenter.transfer.impl.Imported;
 import ch.opentrainingcenter.transfer.impl.Training;
 import ch.opentrainingcenter.transfer.impl.TrainingType;
+import ch.opentrainingcenter.transfer.impl.Weather;
 
 public class CommonTransferFactory {
     private CommonTransferFactory() {
@@ -24,8 +25,17 @@ public class CommonTransferFactory {
         return new TrainingType(id, title, description);
     }
 
-    public static ITraining createTraining(final Date dateOfStart, final double timeInSeconds, final double distance,
-            final int avgHeartRate, final int maxHeartBeat, final double maximumSpeed, final String note) {
-        return new Training(dateOfStart, timeInSeconds, distance, avgHeartRate, maxHeartBeat, maximumSpeed, note);
+    public static IWeather createDefaultWeather() {
+        return createWeather(9);
     }
+
+    public static IWeather createWeather(final int id) {
+        return new Weather(id);
+    }
+
+    public static ITraining createTraining(final Date dateOfStart, final double timeInSeconds, final double distance,
+            final int avgHeartRate, final int maxHeartBeat, final double maximumSpeed, final String note, final IWeather wetter) {
+        return new Training(dateOfStart, timeInSeconds, distance, avgHeartRate, maxHeartBeat, maximumSpeed, note, wetter);
+    }
+
 }

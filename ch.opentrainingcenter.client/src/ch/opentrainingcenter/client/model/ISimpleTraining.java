@@ -31,4 +31,8 @@ public interface ISimpleTraining {
     String getNote();
 
     void setNote(String note);
+
+    Wetter getWetter();
+
+    void setWetter(Wetter type);
 }

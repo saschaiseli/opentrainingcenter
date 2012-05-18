@@ -59,13 +59,13 @@ public class Application implements IApplication {
                 }
             }
             final String athleteId = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.ATHLETE_ID);
+            final ApplicationContext appContext = ApplicationContext.getApplicationContext();
             if (athleteId != null && athleteId.length() > 0) {
-                final IAthlete athlete = DatabaseAccessFactory.getDatabaseAccess().getAthlete(Integer.parseInt(athleteId));
+                final IAthlete athlete = databaseAccess.getAthlete(Integer.parseInt(athleteId));
                 if (athlete != null) {
-                    ApplicationContext.getApplicationContext().setAthlete(athlete);
+                    appContext.setAthlete(athlete);
                 }
             }
-
             final int returnCode = PlatformUI.createAndRunWorkbench(display, new ApplicationWorkbenchAdvisor());
             if (returnCode == PlatformUI.RETURN_RESTART) {
                 return IApplication.EXIT_RESTART;

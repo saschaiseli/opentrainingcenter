@@ -27,6 +27,11 @@ public class Weather implements java.io.Serializable, IWeather {
         this.id = id;
     }
 
+    public Weather(final int id, final String wetter) {
+        this.id = id;
+        this.wetter = wetter;
+    }
+
     public Weather(final int id, final String wetter, final Set<ITraining> trainings) {
         this.id = id;
         this.wetter = wetter;
@@ -71,5 +76,10 @@ public class Weather implements java.io.Serializable, IWeather {
 
     public void setImageIcon(final String imageIcon) {
         this.imageIcon = imageIcon;
+    }
+
+    @Override
+    public String toString() {
+        return "Weather [id=" + id + ", wetter=" + wetter + "]";
     }
 }

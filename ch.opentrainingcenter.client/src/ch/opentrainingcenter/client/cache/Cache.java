@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import ch.opentrainingcenter.tcx.ActivityT;
+import ch.opentrainingcenter.transfer.IWeather;
 
 public interface Cache {
 
@@ -45,6 +46,8 @@ public interface Cache {
      * Aktualisiert den Cache Eintrag mit der neuen Notiz.
      */
     void updateNote(final Date activityId, String note);
+
+    void updateWetter(Date activityId, IWeather weather);
 
     void setSelection(final Object[] selectedItems);
 

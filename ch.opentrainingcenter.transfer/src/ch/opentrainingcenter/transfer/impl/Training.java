@@ -2,6 +2,7 @@ package ch.opentrainingcenter.transfer.impl;
 
 import java.util.Date;
 
+import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.IWeather;
 
@@ -15,14 +16,14 @@ public class Training implements ITraining {
     private int maxHeartRate;
     private double maxSpeed;
     private String note;
-    private IWeather weather;
+    private IWeather weather = CommonTransferFactory.createDefaultWeather();
 
     public Training() {
         // maybe for hibernate
     }
 
     public Training(final Date dateOfStart, final double timeInSeconds, final double distance, final int avgHeartRate,
-            final int maxHeartBeat, final double maximumSpeed, final String note) {
+            final int maxHeartBeat, final double maximumSpeed, final String note, final IWeather wetter) {
         date = dateOfStart;
         dauerInSekunden = timeInSeconds;
         laengeInMeter = distance;
@@ -30,6 +31,7 @@ public class Training implements ITraining {
         maxHeartRate = maxHeartBeat;
         maxSpeed = maximumSpeed;
         this.note = note;
+        weather = wetter;
     }
 
     @Override

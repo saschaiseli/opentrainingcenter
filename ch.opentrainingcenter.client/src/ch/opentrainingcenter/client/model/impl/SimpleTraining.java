@@ -6,6 +6,7 @@ import ch.opentrainingcenter.client.helper.DistanceHelper;
 import ch.opentrainingcenter.client.helper.TimeHelper;
 import ch.opentrainingcenter.client.model.ISimpleTraining;
 import ch.opentrainingcenter.client.model.RunType;
+import ch.opentrainingcenter.client.model.Wetter;
 
 public class SimpleTraining implements ISimpleTraining {
     private final double distanzInMeter;
@@ -19,6 +20,7 @@ public class SimpleTraining implements ISimpleTraining {
     private final String speed;
     private String note;
     private RunType type;
+    private Wetter wetter;
 
     public SimpleTraining(final double distanzInMeter, final double dauerInSekunden, final Date datum, final int avgHeartRate,
             final int maxHeartRate, final double speed, final RunType type, final String note) {
@@ -33,6 +35,7 @@ public class SimpleTraining implements ISimpleTraining {
         this.datum = datum;
         pace = DistanceHelper.calculatePace(distanzInMeter, dauerInSekunden);
         this.speed = DistanceHelper.calculatePace(speed);
+        wetter = Wetter.UNBEKANNT;
     }
 
     /*
@@ -134,5 +137,15 @@ public class SimpleTraining implements ISimpleTraining {
     @Override
     public void setNote(final String note) {
         this.note = note;
+    }
+
+    @Override
+    public Wetter getWetter() {
+        return wetter;
+    }
+
+    @Override
+    public void setWetter(final Wetter wetter) {
+        this.wetter = wetter;
     }
 }

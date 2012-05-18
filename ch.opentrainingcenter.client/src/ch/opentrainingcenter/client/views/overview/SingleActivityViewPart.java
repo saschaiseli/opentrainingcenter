@@ -9,6 +9,8 @@ import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseTrackListener;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
@@ -25,6 +27,7 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
 import org.eclipse.ui.part.ViewPart;
 import org.jfree.chart.JFreeChart;
 import org.jfree.experimental.chart.swt.ChartComposite;
+import org.jfree.util.Log;
 
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.Messages;
@@ -39,11 +42,14 @@ import ch.opentrainingcenter.client.helper.TimeHelper;
 import ch.opentrainingcenter.client.model.ISimpleTraining;
 import ch.opentrainingcenter.client.model.TrainingOverviewFactory;
 import ch.opentrainingcenter.client.model.Units;
+import ch.opentrainingcenter.client.model.Wetter;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.db.IDatabaseAccess;
 import ch.opentrainingcenter.tcx.ActivityT;
+import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IImported;
+import ch.opentrainingcenter.transfer.ITraining;
 
 public class SingleActivityViewPart extends ViewPart {
 
@@ -179,7 +185,7 @@ public class SingleActivityViewPart extends ViewPart {
 
             @Override
             public void mouseExit(final MouseEvent e) {
-                safeChanges(note.getText());
+                safeNote(note.getText());
             }
 
             @Override
@@ -194,7 +200,7 @@ public class SingleActivityViewPart extends ViewPart {
             public void focusLost(final FocusEvent e) {
                 // speichern
                 final String text = note.getText();
-                safeChanges(text);
+                safeNote(text);
             }
 
             @Override
@@ -210,9 +216,20 @@ public class SingleActivityViewPart extends ViewPart {
 
         final Combo weatherCombo = new Combo(container, SWT.READ_ONLY);
         weatherCombo.setBounds(50, 50, 150, 65);
-        final String items[] = { "Item One", "Item Two", "Item Three", "Item Four", "Item Five" };
-        weatherCombo.setItems(items);
-        // weatherCombo.setLayoutData(gd);
+
+        weatherCombo.setItems(Wetter.getItems());
+        weatherCombo.select(simpleTraining.getWetter().getIndex());
+        weatherCombo.addSelectionListener(new SelectionListener() {
+
+            @Override
+            public void widgetSelected(final SelectionEvent e) {
+                safeWeather(weatherCombo.getSelectionIndex());
+            }
+
+            @Override
+            public void widgetDefaultSelected(final SelectionEvent e) {
+            }
+        });
 
         listener = new IRecordListener() {
 
@@ -236,7 +253,23 @@ public class SingleActivityViewPart extends ViewPart {
         section.setClient(container);
     }
 
-    private void safeChanges(final String text) {
+    private void safeWeather(final int index) {
+        final Wetter wetter = simpleTraining.getWetter();
+        if (index != wetter.getIndex()) {
+            // änderungen
+            final IImported record = databaseAccess.getImportedRecord(activity.getId().toGregorianCalendar().getTime());
+            if (record != null) {
+                final Wetter currentWeather = Wetter.getRunType(index);
+                final ITraining training = record.getTraining();
+                training.setWeather(CommonTransferFactory.createWeather(currentWeather.getIndex()));
+                Log.info("Das Wetter wurde geändert: " + training.getWeather());
+                simpleTraining.setWetter(wetter);
+            }
+            update(record);
+        }
+    }
+
+    private void safeNote(final String text) {
         if (!text.equals(simpleTraining.getNote())) {
             // änderungen
             final IImported record = databaseAccess.getImportedRecord(activity.getId().toGregorianCalendar().getTime());
@@ -244,9 +277,13 @@ public class SingleActivityViewPart extends ViewPart {
                 record.getTraining().setNote(text);
                 simpleTraining.setNote(text);
             }
-            databaseAccess.updateRecord(record);
-            TrainingCenterDataCache.getInstance().updateNote(record.getActivityId(), record.getTraining().getNote());
+            update(record);
         }
+    }
+
+    private void update(final IImported record) {
+        databaseAccess.updateRecord(record);
+        TrainingCenterDataCache.getInstance().updateWetter(record.getActivityId(), record.getTraining().getWeather());
     }
 
     private void addMapSection(final Composite body) {
@@ -317,8 +354,6 @@ public class SingleActivityViewPart extends ViewPart {
 
         client.setLayout(layout);
 
-        final Label dauerLabel = toolkit.createLabel(client, "");
-
         final JFreeChart chart = chartCreator.createChart(dataSetCreator.createDatasetHeart(), ChartType.HEART_DISTANCE);
         final ChartComposite chartComposite = new ChartComposite(client, SWT.NONE, chart, true);
         td = new TableWrapData(TableWrapData.FILL_GRAB);
@@ -353,8 +388,6 @@ public class SingleActivityViewPart extends ViewPart {
         layout.makeColumnsEqualWidth = false;
 
         client.setLayout(layout);
-
-        final Label dauerLabel = toolkit.createLabel(client, "");
 
         final JFreeChart chart = chartCreator.createChart(dataSetCreator.createDatasetSpeed(), ChartType.SPEED_DISTANCE);
         final ChartComposite chartComposite = new ChartComposite(client, SWT.NONE, chart, true);
@@ -391,8 +424,6 @@ public class SingleActivityViewPart extends ViewPart {
         layout.numColumns = 2;
         layout.makeColumnsEqualWidth = false;
         client.setLayout(layout);
-
-        final Label dauerLabel = toolkit.createLabel(client, Messages.SingleActivityViewPart_15);
 
         final JFreeChart chart = chartCreator.createChart(dataSetCreator.createDatasetAltitude(), ChartType.ALTITUDE_DISTANCE);
         final ChartComposite chartComposite = new ChartComposite(client, SWT.NONE, chart, true);

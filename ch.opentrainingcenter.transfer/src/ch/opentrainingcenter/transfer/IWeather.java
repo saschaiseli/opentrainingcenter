@@ -4,10 +4,10 @@ import java.util.Set;
 
 public interface IWeather {
 
-    public abstract int getId();
+    int getId();
 
-    public abstract String getWetter();
+    String getWetter();
 
-    public abstract Set<ITraining> getTrainings();
+    Set<ITraining> getTrainings();
 
 }

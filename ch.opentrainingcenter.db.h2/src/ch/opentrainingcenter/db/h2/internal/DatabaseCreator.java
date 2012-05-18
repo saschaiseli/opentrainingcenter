@@ -52,6 +52,17 @@ public class DatabaseCreator extends Dao {
         queries.add("INSERT INTO PUBLIC.TRAININGTYPE (ID,TITLE,DESCRIPTION, IMAGEICON) values(3,'LONG_JOG','Langer Dauerlauf 70-75% maximalen Herzfrequenz.','icons/man_lj_32_32.png');");//$NON-NLS-1$
         queries.add("INSERT INTO PUBLIC.TRAININGTYPE (ID,TITLE,DESCRIPTION, IMAGEICON) values(4,'POWER_LONG_JOG','letztes drittel 80-85% der maximalen Herzfrequenz, die ersten zwei drittel wie {@link RunType#LONG_JOG}','icons/man_plj_32_32.png');");//$NON-NLS-1$
         queries.add("INSERT INTO PUBLIC.TRAININGTYPE (ID,TITLE,DESCRIPTION, IMAGEICON) values(5,'TEMPO_JOG','UNBEKANNT','icons/man_tj_32_32.png');");//$NON-NLS-1$
+
+        queries.add("INSERT INTO PUBLIC.WEATHER (ID,WETTER, IMAGEICON) values(0,'SONNE','icons/man_u_32_32.png');");//$NON-NLS-1$
+        queries.add("INSERT INTO PUBLIC.WEATHER (ID,WETTER, IMAGEICON) values(1,'LEICHT_BEWOELCKT','icons/man_u_32_32.png');");//$NON-NLS-1$
+        queries.add("INSERT INTO PUBLIC.WEATHER (ID,WETTER, IMAGEICON) values(2,'BEWOELCKT','icons/man_u_32_32.png');");//$NON-NLS-1$
+        queries.add("INSERT INTO PUBLIC.WEATHER (ID,WETTER, IMAGEICON) values(3,'STARK_BEWOELCKT','icons/man_u_32_32.png');");//$NON-NLS-1$
+        queries.add("INSERT INTO PUBLIC.WEATHER (ID,WETTER, IMAGEICON) values(4,'LEICHTER_REGEN','icons/man_u_32_32.png');");//$NON-NLS-1$
+        queries.add("INSERT INTO PUBLIC.WEATHER (ID,WETTER, IMAGEICON) values(5,'REGEN','icons/man_u_32_32.png');");//$NON-NLS-1$
+        queries.add("INSERT INTO PUBLIC.WEATHER (ID,WETTER, IMAGEICON) values(6,'STARKER_REGEN','icons/man_u_32_32.png');");//$NON-NLS-1$
+        queries.add("INSERT INTO PUBLIC.WEATHER (ID,WETTER, IMAGEICON) values(7,'LEICHTER_SCHNEE','icons/man_u_32_32.png');");//$NON-NLS-1$
+        queries.add("INSERT INTO PUBLIC.WEATHER (ID,WETTER, IMAGEICON) values(8,'SCHNEE','icons/man_u_32_32.png');");//$NON-NLS-1$
+        queries.add("INSERT INTO PUBLIC.WEATHER (ID,WETTER, IMAGEICON) values(9,'UNBEKANNT','icons/man_u_32_32.png');");//$NON-NLS-1$
         return queries;
     }
 

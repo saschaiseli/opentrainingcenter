@@ -10,6 +10,7 @@ import ch.opentrainingcenter.client.cache.IRecordListener;
 import ch.opentrainingcenter.client.model.RunType;
 import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.transfer.IImported;
+import ch.opentrainingcenter.transfer.IWeather;
 
 public class MockCache implements Cache {
 
@@ -84,6 +85,12 @@ public class MockCache implements Cache {
 
     @Override
     public void updateNote(final Date activityId, final String note) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void updateWetter(final Date activityId, final IWeather weather) {
         // TODO Auto-generated method stub
 
     }

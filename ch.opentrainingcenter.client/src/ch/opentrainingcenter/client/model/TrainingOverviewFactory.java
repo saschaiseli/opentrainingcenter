@@ -9,9 +9,11 @@ import org.apache.log4j.Logger;
 
 import ch.opentrainingcenter.tcx.ActivityLapT;
 import ch.opentrainingcenter.tcx.ActivityT;
+import ch.opentrainingcenter.tcx.ExtensionsT;
 import ch.opentrainingcenter.tcx.IntensityT;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.ITraining;
+import ch.opentrainingcenter.transfer.IWeather;
 
 public final class TrainingOverviewFactory {
 
@@ -63,8 +65,16 @@ public final class TrainingOverviewFactory {
         } else {
             avgHeartRate = 0;
         }
+        final ExtensionsT extensions = activity.getExtensions();
+        IWeather wetter = CommonTransferFactory.createDefaultWeather();
+        if (extensions != null) {
+            final List<Object> any = extensions.getAny();
+            if (any != null && !any.isEmpty() && any.get(0) != null) {
+                wetter = (IWeather) any.get(0);
+            }
+        }
         return CommonTransferFactory.createTraining(dateOfStart, timeInSeconds, distance, avgHeartRate, maxHeartBeat, maximumSpeed,
-                activity.getNotes());
+                activity.getNotes(), wetter);
     }
 
     private static boolean hasCardio(final ActivityLapT lap) {

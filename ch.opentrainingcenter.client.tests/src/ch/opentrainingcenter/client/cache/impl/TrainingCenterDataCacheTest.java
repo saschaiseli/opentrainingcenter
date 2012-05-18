@@ -271,7 +271,7 @@ public class TrainingCenterDataCacheTest {
         result.setActivityId(date);
         final ITrainingType type = CommonTransferFactory.createTrainingType(1, "junit", "description");
         result.setTrainingType(type);
-        final ITraining overview = CommonTransferFactory.createTraining(date, 1, 1, 1, 1, 1, null);
+        final ITraining overview = CommonTransferFactory.createTraining(date, 1, 1, 1, 1, 1, null, null);
         result.setTraining(overview);
         return result;
     }

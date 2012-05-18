@@ -4,6 +4,7 @@ import org.eclipse.osgi.util.NLS;
 
 public final class Messages extends NLS {
     private static final String BUNDLE_NAME = "ch.opentrainingcenter.client.messages"; //$NON-NLS-1$
+
     public static String Application_0;
     public static String Application_1;
     public static String Application_2;
@@ -209,9 +210,19 @@ public final class Messages extends NLS {
     public static String RunTypeDialog_3;
     public static String RunTypeDialog_4;
     public static String WeeklyOverview_0;
+    public static String SUN;
+    public static String LIGHT_CLOUDY;
+    public static String CLOUDY;
+    public static String HEAVY_CLOUDY;
+    public static String LIGHT_RAIN;
+    public static String RAIN;
+    public static String HEAVY_RAIN;
+    public static String LIGHT_SNOW;
+    public static String SNOW;
+    public static String UNKNOWN;
     static {
-	// initialize resource bundle
-	NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+        // initialize resource bundle
+        NLS.initializeMessages(BUNDLE_NAME, Messages.class);
     }
 
     private Messages() {
