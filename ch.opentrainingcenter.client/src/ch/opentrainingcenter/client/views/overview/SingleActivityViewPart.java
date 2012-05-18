@@ -5,8 +5,13 @@ import java.util.Date;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
@@ -35,13 +40,17 @@ import ch.opentrainingcenter.client.model.ISimpleTraining;
 import ch.opentrainingcenter.client.model.TrainingOverviewFactory;
 import ch.opentrainingcenter.client.model.Units;
 import ch.opentrainingcenter.client.views.ApplicationContext;
+import ch.opentrainingcenter.db.DatabaseAccessFactory;
+import ch.opentrainingcenter.db.IDatabaseAccess;
 import ch.opentrainingcenter.tcx.ActivityT;
+import ch.opentrainingcenter.transfer.IImported;
 
 public class SingleActivityViewPart extends ViewPart {
 
     public static final String ID = "ch.opentrainingcenter.client.views.singlerun"; //$NON-NLS-1$
     private static final Logger LOGGER = Logger.getLogger(SingleActivityViewPart.class);
     private final Cache cache = TrainingCenterDataCache.getInstance();
+    private final IDatabaseAccess databaseAccess = DatabaseAccessFactory.getDatabaseAccess();
     private final ISimpleTraining simpleTraining;
     private final ActivityT activity;
     private FormToolkit toolkit;
@@ -135,51 +144,75 @@ public class SingleActivityViewPart extends ViewPart {
                 form.reflow(true);
             }
         });
-        //
-        // final GridData sectionLayoutData = new GridData(SWT.FILL, SWT.FILL,
-        // true, true);
-        // sectionLayoutData.horizontalSpan = 2;
-        // sectionLayoutData.verticalIndent = 6;
-        // section.setLayoutData(sectionLayoutData);
         section.setRedraw(true);
         section.setText("Bemerkungen");
         section.setDescription("Beschreibung von Zustand der Gesundheit, wie der Lauf erlebt wurde. Usw..");
 
-        // td = new TableWrapData(TableWrapData.FILL_GRAB);
-        // td.colspan = 1;
-        // td.grabVertical = true;
-        // overviewSection.setLayoutData(td);
-        // overviewSection.setText("Bemerkungen");
+        final Composite container = toolkit.createComposite(section);
+        final GridLayout layout = new GridLayout(2, false);
+        layout.verticalSpacing = 2;
+        layout.horizontalSpacing = 10;
+        container.setLayout(layout);
 
-        // final Color bodyColor =
-        // Display.getDefault().getSystemColor(SWT.COLOR_YELLOW);
-        // body.setBackground(bodyColor);
-        //
-        // final Color section =
-        // Display.getDefault().getSystemColor(SWT.COLOR_RED);
-        // overviewSection.setBackground(section);
-        // final Color background =
-        // Display.getDefault().getSystemColor(SWT.COLOR_GREEN);
+        final Label label = toolkit.createLabel(container, "");
+        label.setText("Beschreibung : ");
+        // label.setLayoutData(gd);
 
-        final Composite sectionClient = toolkit.createComposite(section);
-        final GridLayout sectionClientLayout = new GridLayout(2, false);
-        sectionClientLayout.verticalSpacing = 2;
-        sectionClientLayout.horizontalSpacing = 10;
-        sectionClient.setLayout(sectionClientLayout);
-        section.setClient(sectionClient);
-
-        // GridLayoutFactory.swtDefaults().numColumns(1).margins(10,
-        // 10).applyTo(overViewComposite);
-
-        final Label label = toolkit.createLabel(sectionClient, "Description : ");
-
-        final Text note = toolkit.createText(sectionClient, "", SWT.V_SCROLL | SWT.MULTI);
-        toolkit.adapt(note, true, true);
-        note.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        final Text note = toolkit.createText(container, "", SWT.V_SCROLL | SWT.MULTI | SWT.BORDER);
+        final GridData noteGd = new GridData();
+        noteGd.grabExcessHorizontalSpace = true;
+        noteGd.grabExcessVerticalSpace = true;
+        noteGd.minimumHeight = 80;
+        noteGd.minimumWidth = 400;
+        note.setLayoutData(noteGd);
         final String notiz = simpleTraining.getNote();
         if (notiz != null) {
             note.setText(notiz);
         }
+
+        note.addMouseTrackListener(new MouseTrackListener() {
+
+            @Override
+            public void mouseHover(final MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExit(final MouseEvent e) {
+                safeChanges(note.getText());
+            }
+
+            @Override
+            public void mouseEnter(final MouseEvent e) {
+
+            }
+        });
+
+        note.addFocusListener(new FocusListener() {
+
+            @Override
+            public void focusLost(final FocusEvent e) {
+                // speichern
+                final String text = note.getText();
+                safeChanges(text);
+            }
+
+            @Override
+            public void focusGained(final FocusEvent e) {
+
+            }
+        });
+
+        final Label labelWetter = toolkit.createLabel(container, "");
+        labelWetter.setText("Wetter : ");
+        // gd.minimumWidth = 10;
+        // labelWetter.setLayoutData(gd);
+
+        final Combo weatherCombo = new Combo(container, SWT.READ_ONLY);
+        weatherCombo.setBounds(50, 50, 150, 65);
+        final String items[] = { "Item One", "Item Two", "Item Three", "Item Four", "Item Five" };
+        weatherCombo.setItems(items);
+        // weatherCombo.setLayoutData(gd);
 
         listener = new IRecordListener() {
 
@@ -187,7 +220,10 @@ public class SingleActivityViewPart extends ViewPart {
             public void recordChanged(final Collection<ActivityT> entry) {
                 if (entry != null) {
                     final ActivityT act = entry.iterator().next();
-                    note.setText(act.getNotes());
+                    if (act.getId().toGregorianCalendar().getTime().equals(simpleTraining.getDatum())) {
+                        // nur wenn es dieser record ist!
+                        note.setText(act.getNotes());
+                    }
                 }
                 section.update();
             }
@@ -197,7 +233,20 @@ public class SingleActivityViewPart extends ViewPart {
             }
         };
         cache.addListener(listener);
-        // overviewSection.setClient(overViewComposite);
+        section.setClient(container);
+    }
+
+    private void safeChanges(final String text) {
+        if (!text.equals(simpleTraining.getNote())) {
+            // änderungen
+            final IImported record = databaseAccess.getImportedRecord(activity.getId().toGregorianCalendar().getTime());
+            if (record != null) {
+                record.getTraining().setNote(text);
+                simpleTraining.setNote(text);
+            }
+            databaseAccess.updateRecord(record);
+            TrainingCenterDataCache.getInstance().updateNote(record.getActivityId(), record.getTraining().getNote());
+        }
     }
 
     private void addMapSection(final Composite body) {

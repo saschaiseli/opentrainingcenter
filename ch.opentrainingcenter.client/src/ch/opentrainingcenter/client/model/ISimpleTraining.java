@@ -29,4 +29,6 @@ public interface ISimpleTraining {
     void setType(RunType type);
 
     String getNote();
+
+    void setNote(String note);
 }

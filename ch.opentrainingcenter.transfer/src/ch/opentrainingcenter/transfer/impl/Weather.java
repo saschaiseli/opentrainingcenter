@@ -6,7 +6,7 @@ package ch.opentrainingcenter.transfer.impl;
 import java.util.HashSet;
 import java.util.Set;
 
-import ch.opentrainingcenter.transfer.IImported;
+import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.IWeather;
 
 /**
@@ -17,22 +17,25 @@ public class Weather implements java.io.Serializable, IWeather {
     private static final long serialVersionUID = 1L;
     private int id;
     private String wetter;
-    private Set<IImported> importeds = new HashSet<IImported>(0);
+    private String imageIcon;
+    private Set<ITraining> trainings = new HashSet<ITraining>(0);
 
     public Weather() {
     }
 
-    public Weather(int id) {
+    public Weather(final int id) {
         this.id = id;
     }
 
-    public Weather(int id, String wetter, Set<IImported> importeds) {
+    public Weather(final int id, final String wetter, final Set<ITraining> trainings) {
         this.id = id;
         this.wetter = wetter;
-        this.importeds = importeds;
+        this.trainings = trainings;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see ch.opentrainingcenter.transfer.internal.IWeather#getId()
      */
     @Override
@@ -40,32 +43,33 @@ public class Weather implements java.io.Serializable, IWeather {
         return this.id;
     }
 
-    public void setId(int id) {
+    public void setId(final int id) {
         this.id = id;
     }
 
-    /* (non-Javadoc)
-     * @see ch.opentrainingcenter.transfer.internal.IWeather#getWetter()
-     */
     @Override
     public String getWetter() {
         return this.wetter;
     }
 
-    public void setWetter(String wetter) {
+    public void setWetter(final String wetter) {
         this.wetter = wetter;
     }
 
-    /* (non-Javadoc)
-     * @see ch.opentrainingcenter.transfer.internal.IWeather#getImporteds()
-     */
     @Override
-    public Set<IImported> getImporteds() {
-        return this.importeds;
+    public Set<ITraining> getTrainings() {
+        return this.trainings;
     }
 
-    public void setImporteds(Set<IImported> importeds) {
-        this.importeds = importeds;
+    public void setTrainings(final Set<ITraining> importeds) {
+        this.trainings = importeds;
     }
 
+    public String getImageIcon() {
+        return imageIcon;
+    }
+
+    public void setImageIcon(final String imageIcon) {
+        this.imageIcon = imageIcon;
+    }
 }

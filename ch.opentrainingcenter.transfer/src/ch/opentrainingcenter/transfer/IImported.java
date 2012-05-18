@@ -12,10 +12,6 @@ public interface IImported {
 
     void setId(int id);
 
-    IWeather getWeather();
-
-    void setWeather(IWeather weather);
-
     ITrainingType getTrainingType();
 
     void setTrainingType(ITrainingType type);

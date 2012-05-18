@@ -41,4 +41,8 @@ public interface ITraining {
      * setzt eine notiz zu einem Lauf.
      */
     void setNote(String note);
+
+    IWeather getWeather();
+
+    void setWeather(IWeather weather);
 }

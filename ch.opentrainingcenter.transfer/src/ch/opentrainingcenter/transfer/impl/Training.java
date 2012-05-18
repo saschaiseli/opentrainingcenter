@@ -3,6 +3,7 @@ package ch.opentrainingcenter.transfer.impl;
 import java.util.Date;
 
 import ch.opentrainingcenter.transfer.ITraining;
+import ch.opentrainingcenter.transfer.IWeather;
 
 public class Training implements ITraining {
 
@@ -14,6 +15,7 @@ public class Training implements ITraining {
     private int maxHeartRate;
     private double maxSpeed;
     private String note;
+    private IWeather weather;
 
     public Training() {
         // maybe for hibernate
@@ -116,4 +118,13 @@ public class Training implements ITraining {
         this.note = note;
     }
 
+    @Override
+    public IWeather getWeather() {
+        return this.weather;
+    }
+
+    @Override
+    public void setWeather(final IWeather weather) {
+        this.weather = weather;
+    }
 }

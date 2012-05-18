@@ -11,10 +11,6 @@
    <param name="sequence">import_id_sequence</param>
    </generator>
   </id>
-  <many-to-one class="ch.opentrainingcenter.transfer.impl.Weather"
-   fetch="select" name="weather">
-   <column name="ID_FK_WEATHER"/>
-  </many-to-one>
   <many-to-one class="ch.opentrainingcenter.transfer.impl.TrainingType"
    fetch="select" name="trainingType">
    <column name="ID_FK_TRAININGTYPE"/>

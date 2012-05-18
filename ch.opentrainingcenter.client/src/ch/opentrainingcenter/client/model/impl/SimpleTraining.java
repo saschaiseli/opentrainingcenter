@@ -17,7 +17,7 @@ public class SimpleTraining implements ISimpleTraining {
     private final String laengeInKilometer;
     private final String pace;
     private final String speed;
-    private final String note;
+    private String note;
     private RunType type;
 
     public SimpleTraining(final double distanzInMeter, final double dauerInSekunden, final Date datum, final int avgHeartRate,
@@ -131,4 +131,8 @@ public class SimpleTraining implements ISimpleTraining {
         return note;
     }
 
+    @Override
+    public void setNote(final String note) {
+        this.note = note;
+    }
 }

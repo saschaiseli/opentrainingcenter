@@ -5,7 +5,7 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.TreeSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
@@ -20,9 +20,9 @@ public class AddEditHandler extends AbstractHandler {
     @Override
     public Object execute(final ExecutionEvent event) throws ExecutionException {
         final ISelection selection = HandlerUtil.getCurrentSelection(event);
-        final TreeSelection tree = (TreeSelection) selection;
+        final StructuredSelection sel = (StructuredSelection) selection;
 
-        final IImported record = (IImported) tree.getFirstElement();
+        final IImported record = (IImported) sel.getFirstElement();
         final ITraining training = record.getTraining();
         final String initialValue = training.getNote();
         final InputDialog dialog = new InputDialog(null, "Notiz hinzufügen / bearbeiten", "Notiz bearbeiten", initialValue, null);
