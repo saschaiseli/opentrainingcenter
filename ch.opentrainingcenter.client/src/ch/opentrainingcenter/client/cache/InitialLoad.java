@@ -23,13 +23,13 @@ public class InitialLoad {
 
     public void initalLoad(final ProgressBar fBar, final List<IImported> records) throws Exception {
         fBar.setMaximum(records.size());
-        int i = 1;
+        int i = 0;
         for (final IImported record : records) {
             final ActivityT activity = loader.convertImportedToActivity(record);
             cache.add(activity);
+            i++;
             fBar.setSelection(i);
             LOG.info("Record hinzugefügt");
-            i++;
         }
     }
 }

@@ -173,8 +173,8 @@ public final class TrainingCenterDataCache implements Cache {
         final ActivityT activityT = cache.get(time);
         if (activityT != null) {
             activityT.setNotes(note);
+            cache.put(time, activityT);
         }
-        cache.put(time, activityT);
         if (listeners == null) {
             return;
         }

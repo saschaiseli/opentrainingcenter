@@ -1,23 +1,29 @@
 package ch.opentrainingcenter.client.cache;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import ch.opentrainingcenter.tcx.ActivityT;
 
 public class MockRecordListener implements IRecordListener {
 
-    private Collection<ActivityT> changedEntry;
-    private Collection<ActivityT> deletedEntry;
+    private final Collection<ActivityT> changedEntry = new ArrayList<ActivityT>();
+    private final Collection<ActivityT> deletedEntry = new ArrayList<ActivityT>();
 
     @Override
     public void recordChanged(final Collection<ActivityT> entry) {
-        this.changedEntry = entry;
-
+        this.changedEntry.clear();
+        if (entry != null) {
+            this.changedEntry.addAll(entry);
+        }
     }
 
     @Override
     public void deleteRecord(final Collection<ActivityT> entry) {
-        this.deletedEntry = entry;
+        this.deletedEntry.clear();
+        if (entry != null) {
+            this.deletedEntry.addAll(entry);
+        }
     }
 
     public Collection<ActivityT> getChangedEntry() {
