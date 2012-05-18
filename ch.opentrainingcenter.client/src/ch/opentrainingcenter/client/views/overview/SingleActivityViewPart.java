@@ -185,8 +185,10 @@ public class SingleActivityViewPart extends ViewPart {
 
             @Override
             public void recordChanged(final Collection<ActivityT> entry) {
-                final ActivityT act = entry.iterator().next();
-                note.setText(act.getNotes());
+                if (entry != null) {
+                    final ActivityT act = entry.iterator().next();
+                    note.setText(act.getNotes());
+                }
                 section.update();
             }
 
