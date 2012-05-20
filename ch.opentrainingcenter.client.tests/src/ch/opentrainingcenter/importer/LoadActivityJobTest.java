@@ -1,7 +1,9 @@
 package ch.opentrainingcenter.importer;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -12,6 +14,9 @@ import org.mockito.Mockito;
 
 import ch.opentrainingcenter.client.cache.Cache;
 import ch.opentrainingcenter.tcx.ActivityT;
+import ch.opentrainingcenter.tcx.ExtensionsT;
+import ch.opentrainingcenter.transfer.ActivityExtension;
+import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IImported;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -56,7 +61,11 @@ public class LoadActivityJobTest {
         // prepare
         final ActivityT activity = Mockito.mock(ActivityT.class);
         final String text = "eben geladen";
-        Mockito.when(activity.getNotes()).thenReturn(text);
+        final ExtensionsT mock = Mockito.mock(ExtensionsT.class);
+        final List<Object> list = new ArrayList<Object>();
+        list.add(new ActivityExtension(text, CommonTransferFactory.createDefaultWeather()));
+        Mockito.when(mock.getAny()).thenReturn(list);
+        Mockito.when(activity.getExtensions()).thenReturn(mock);
 
         Mockito.when(loader.convertImportedToActivity((IImported) Mockito.any())).thenReturn(activity);
         final LoadActivityJob job = new LoadActivityJob("Junit", record, cache, loader);
@@ -64,7 +73,16 @@ public class LoadActivityJobTest {
         // execute
         job.run(monitor);
         // assert
-        assertEquals("Activity geladen", text, job.getLoaded().getNotes());
+        final ActivityT loaded = job.getLoaded();
+        final ExtensionsT extensions = loaded.getExtensions();
+        ActivityExtension ae = new ActivityExtension();
+        if (extensions != null) {
+            final Object object = extensions.getAny().get(0);
+            if (object != null) {
+                ae = (ActivityExtension) object;
+            }
+        }
+        assertEquals("Activity geladen", text, ae.getNote());
     }
 
     @Test
@@ -72,7 +90,11 @@ public class LoadActivityJobTest {
         // prepare
         final ActivityT activity = Mockito.mock(ActivityT.class);
         final String text = "eben geladen";
-        Mockito.when(activity.getNotes()).thenReturn(text);
+        final ExtensionsT mock = Mockito.mock(ExtensionsT.class);
+        final List<Object> list = new ArrayList<Object>();
+        list.add(new ActivityExtension(text, CommonTransferFactory.createDefaultWeather()));
+        Mockito.when(mock.getAny()).thenReturn(list);
+        Mockito.when(activity.getExtensions()).thenReturn(mock);
 
         Mockito.when(loader.convertImportedToActivity((IImported) Mockito.any())).thenThrow(new LoadImportedException("junit"));
         final LoadActivityJob job = new LoadActivityJob("Junit", record, cache, loader);
@@ -92,7 +114,11 @@ public class LoadActivityJobTest {
 
         final ActivityT activity = Mockito.mock(ActivityT.class);
         final String text = "eben geladen";
-        Mockito.when(activity.getNotes()).thenReturn(text);
+        final ExtensionsT mock = Mockito.mock(ExtensionsT.class);
+        final List<Object> list = new ArrayList<Object>();
+        list.add(new ActivityExtension(text, CommonTransferFactory.createDefaultWeather()));
+        Mockito.when(mock.getAny()).thenReturn(list);
+        Mockito.when(activity.getExtensions()).thenReturn(mock);
 
         Mockito.when(cache.get(date)).thenReturn(activity);
         final LoadActivityJob job = new LoadActivityJob("Junit", record, cache, loader);
@@ -100,6 +126,15 @@ public class LoadActivityJobTest {
         // execute
         job.run(monitor);
         // assert
-        assertEquals("Activity geladen", text, job.getLoaded().getNotes());
+        final ActivityT loaded = job.getLoaded();
+        final ExtensionsT extensions = loaded.getExtensions();
+        ActivityExtension ae = new ActivityExtension();
+        if (extensions != null) {
+            final Object object = extensions.getAny().get(0);
+            if (object != null) {
+                ae = (ActivityExtension) object;
+            }
+        }
+        assertEquals("Activity geladen", text, ae.getNote());
     }
 }

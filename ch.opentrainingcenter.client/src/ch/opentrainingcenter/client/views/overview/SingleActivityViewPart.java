@@ -47,9 +47,12 @@ import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.db.IDatabaseAccess;
 import ch.opentrainingcenter.tcx.ActivityT;
+import ch.opentrainingcenter.tcx.ExtensionsT;
+import ch.opentrainingcenter.transfer.ActivityExtension;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IImported;
 import ch.opentrainingcenter.transfer.ITraining;
+import ch.opentrainingcenter.transfer.IWeather;
 
 public class SingleActivityViewPart extends ViewPart {
 
@@ -185,7 +188,8 @@ public class SingleActivityViewPart extends ViewPart {
 
             @Override
             public void mouseExit(final MouseEvent e) {
-                safeNote(note.getText());
+                final String text = note.getText();
+                safeNote(text);
             }
 
             @Override
@@ -237,9 +241,15 @@ public class SingleActivityViewPart extends ViewPart {
             public void recordChanged(final Collection<ActivityT> entry) {
                 if (entry != null) {
                     final ActivityT act = entry.iterator().next();
-                    if (act.getId().toGregorianCalendar().getTime().equals(simpleTraining.getDatum())) {
+                    if (act.getId().toGregorianCalendar().getTime().equals(simpleTraining.getDatum()) && act.getExtensions() != null) {
                         // nur wenn es dieser record ist!
-                        note.setText(act.getNotes());
+                        final ExtensionsT extensions = act.getExtensions();
+                        final Object any = extensions.getAny().get(0);
+                        if (any != null) {
+                            final ActivityExtension ae = (ActivityExtension) any;
+                            note.setText(ae.getNote());
+                        }
+
                     }
                 }
                 section.update();
@@ -283,7 +293,11 @@ public class SingleActivityViewPart extends ViewPart {
 
     private void update(final IImported record) {
         databaseAccess.updateRecord(record);
-        TrainingCenterDataCache.getInstance().updateWetter(record.getActivityId(), record.getTraining().getWeather());
+        final ITraining training = record.getTraining();
+        final String note = training.getNote();
+        final IWeather weather = training.getWeather();
+        final ActivityExtension extension = new ActivityExtension(note, weather);
+        cache.updateExtension(record.getActivityId(), extension);
     }
 
     private void addMapSection(final Composite body) {

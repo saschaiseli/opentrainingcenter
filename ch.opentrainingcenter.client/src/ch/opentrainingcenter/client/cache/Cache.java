@@ -3,8 +3,9 @@ package ch.opentrainingcenter.client.cache;
 import java.util.Date;
 import java.util.List;
 
+import ch.opentrainingcenter.client.model.impl.SimpleTraining;
 import ch.opentrainingcenter.tcx.ActivityT;
-import ch.opentrainingcenter.transfer.IWeather;
+import ch.opentrainingcenter.transfer.ActivityExtension;
 
 public interface Cache {
 
@@ -43,15 +44,13 @@ public interface Cache {
     void removeListener(final IRecordListener listener);
 
     /**
-     * Aktualisiert den Cache Eintrag mit der neuen Notiz.
+     * Synchronisiert das Wetter und die Notes (beide in der ActivityExtension)
+     * die {@link ActivityT} und {@link SimpleTraining}
+     * 
+     * @param activityId
+     * @param extension
      */
-    void updateNote(final Date activityId, String note);
-
-    void updateWetter(Date activityId, IWeather weather);
-
-    void setSelection(final Object[] selectedItems);
-
-    List<?> getSelection();
+    void updateExtension(final Date activityId, final ActivityExtension extension);
 
     boolean contains(final Date activityId);
 

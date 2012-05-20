@@ -34,8 +34,8 @@ public class CommonTransferFactory {
     }
 
     public static ITraining createTraining(final Date dateOfStart, final double timeInSeconds, final double distance,
-            final int avgHeartRate, final int maxHeartBeat, final double maximumSpeed, final String note, final IWeather wetter) {
-        return new Training(dateOfStart, timeInSeconds, distance, avgHeartRate, maxHeartBeat, maximumSpeed, note, wetter);
+            final int avgHeartRate, final int maxHeartBeat, final double maximumSpeed, final ActivityExtension activityExtension) {
+        return new Training(dateOfStart, timeInSeconds, distance, avgHeartRate, maxHeartBeat, maximumSpeed, activityExtension);
     }
 
 }

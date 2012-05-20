@@ -10,6 +10,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
 import ch.opentrainingcenter.db.DatabaseAccessFactory;
+import ch.opentrainingcenter.transfer.ActivityExtension;
 import ch.opentrainingcenter.transfer.IImported;
 import ch.opentrainingcenter.transfer.ITraining;
 
@@ -35,6 +36,8 @@ public class AddEditHandler extends AbstractHandler {
 
     private void updateNote(final IImported record) {
         DatabaseAccessFactory.getDatabaseAccess().updateRecord(record);
-        TrainingCenterDataCache.getInstance().updateNote(record.getActivityId(), record.getTraining().getNote());
+        final ITraining training = record.getTraining();
+        final ActivityExtension extension = new ActivityExtension(training.getNote(), training.getWeather());
+        TrainingCenterDataCache.getInstance().updateExtension(record.getActivityId(), extension);
     }
 }

@@ -68,6 +68,8 @@ public class NavigationView extends ViewPart {
 
     private final IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 
+    private final ApplicationContext applicationContext = ApplicationContext.getApplicationContext();
+
     /**
      * This is a callback that will allow us to create the viewer and initialize
      * it.
@@ -111,7 +113,7 @@ public class NavigationView extends ViewPart {
 
             @Override
             public void menuShown(final MenuEvent e) {
-                final IImported reco = (IImported) cache.getSelection().get(0);
+                final IImported reco = (IImported) applicationContext.getSelection().get(0);
                 container.update(reco.getTrainingType().getId());
             }
 
@@ -144,7 +146,7 @@ public class NavigationView extends ViewPart {
                 final Object first = selection.getFirstElement();
                 if (first instanceof IImported) {
                     final IImported record = (IImported) first;
-                    cache.setSelection(selection.toArray());
+                    applicationContext.setSelection(selection.toArray());
                     final ITrainingType trainingType = record.getTrainingType();
                     container.update(trainingType.getId());
                     writeToStatusLine(record);
@@ -216,7 +218,7 @@ public class NavigationView extends ViewPart {
 
     private void openSingleRunView(final IImported record) {
 
-        ApplicationContext.getApplicationContext().setSelectedId(record.getActivityId());
+        applicationContext.setSelectedId(record.getActivityId());
 
         final IImportedConverter loader = ImporterFactory.createGpsFileLoader(store, cc);
         final LoadActivityJob job = new LoadActivityJob(Messages.NavigationView_1, record, cache, loader);

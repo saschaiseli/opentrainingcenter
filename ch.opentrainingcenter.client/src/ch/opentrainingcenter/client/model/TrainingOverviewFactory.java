@@ -11,9 +11,9 @@ import ch.opentrainingcenter.tcx.ActivityLapT;
 import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.tcx.ExtensionsT;
 import ch.opentrainingcenter.tcx.IntensityT;
+import ch.opentrainingcenter.transfer.ActivityExtension;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.ITraining;
-import ch.opentrainingcenter.transfer.IWeather;
 
 public final class TrainingOverviewFactory {
 
@@ -66,15 +66,17 @@ public final class TrainingOverviewFactory {
             avgHeartRate = 0;
         }
         final ExtensionsT extensions = activity.getExtensions();
-        IWeather wetter = CommonTransferFactory.createDefaultWeather();
+
+        ActivityExtension activityExtension = new ActivityExtension();
         if (extensions != null) {
             final List<Object> any = extensions.getAny();
             if (any != null && !any.isEmpty() && any.get(0) != null) {
-                wetter = (IWeather) any.get(0);
+                activityExtension = (ActivityExtension) any.get(0);
             }
         }
+
         return CommonTransferFactory.createTraining(dateOfStart, timeInSeconds, distance, avgHeartRate, maxHeartBeat, maximumSpeed,
-                activity.getNotes(), wetter);
+                activityExtension);
     }
 
     private static boolean hasCardio(final ActivityLapT lap) {

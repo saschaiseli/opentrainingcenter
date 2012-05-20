@@ -13,6 +13,7 @@ import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 
 import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.client.cache.Cache;
+import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.db.IDatabaseAccess;
 import ch.opentrainingcenter.transfer.IImported;
 
@@ -39,7 +40,7 @@ public class DeleteImportedRecord extends Action implements ISelectionListener, 
 
     @Override
     public void run() {
-        final List<?> selection = cache.getSelection();
+        final List<?> selection = ApplicationContext.getApplicationContext().getSelection();
         final List<Date> deletedIds = new ArrayList<Date>();
         for (final Object obj : selection) {
             final IImported record = (IImported) obj;

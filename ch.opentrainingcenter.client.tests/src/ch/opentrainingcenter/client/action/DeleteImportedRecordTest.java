@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.db.IDatabaseAccess;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IImported;
@@ -33,7 +34,7 @@ public class DeleteImportedRecordTest {
     @Test
     public void testRunNoSelection() {
         // prepare
-        cache.setSelection(new Object[] {});
+        ApplicationContext.getApplicationContext().setSelection(new Object[] {});
         delete = new DeleteImportedRecord(cache, dataAccess);
         // execute
         delete.run();
@@ -52,7 +53,7 @@ public class DeleteImportedRecordTest {
         selected.setActivityId(activityId);
         final ITrainingType trainingType = CommonTransferFactory.createTrainingType(11, "junit trainig type", "description");
         selected.setTrainingType(trainingType);
-        cache.setSelection(new Object[] { selected });
+        ApplicationContext.getApplicationContext().setSelection(new Object[] { selected });
         delete = new DeleteImportedRecord(cache, dataAccess);
         // execute
         delete.run();

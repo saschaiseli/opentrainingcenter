@@ -1,7 +1,5 @@
 package ch.opentrainingcenter.client.action;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -9,8 +7,8 @@ import ch.opentrainingcenter.client.cache.Cache;
 import ch.opentrainingcenter.client.cache.IRecordListener;
 import ch.opentrainingcenter.client.model.RunType;
 import ch.opentrainingcenter.tcx.ActivityT;
+import ch.opentrainingcenter.transfer.ActivityExtension;
 import ch.opentrainingcenter.transfer.IImported;
-import ch.opentrainingcenter.transfer.IWeather;
 
 public class MockCache implements Cache {
 
@@ -50,16 +48,6 @@ public class MockCache implements Cache {
     }
 
     @Override
-    public void setSelection(final Object[] selectedItems) {
-        this.selectedItems = selectedItems;
-    }
-
-    @Override
-    public List<?> getSelection() {
-        return Collections.unmodifiableList(Arrays.asList(selectedItems));
-    }
-
-    @Override
     public boolean contains(final Date activityId) {
 
         return false;
@@ -84,14 +72,6 @@ public class MockCache implements Cache {
     }
 
     @Override
-    public void updateNote(final Date activityId, final String note) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void updateWetter(final Date activityId, final IWeather weather) {
-        // TODO Auto-generated method stub
-
+    public void updateExtension(final Date activityId, final ActivityExtension extension) {
     }
 }

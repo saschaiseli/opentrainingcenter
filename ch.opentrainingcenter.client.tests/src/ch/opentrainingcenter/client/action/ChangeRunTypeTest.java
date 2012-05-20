@@ -1,6 +1,5 @@
 package ch.opentrainingcenter.client.action;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,6 +13,7 @@ import org.mockito.Mockito;
 import ch.opentrainingcenter.client.cache.Cache;
 import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
 import ch.opentrainingcenter.client.model.RunType;
+import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.db.IDatabaseAccess;
 import ch.opentrainingcenter.importer.IConvert2Tcx;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
@@ -34,7 +34,7 @@ public class ChangeRunTypeTest {
         databaseAccess = Mockito.mock(IDatabaseAccess.class);
         type = RunType.LONG_JOG;
         store = Mockito.mock(IPreferenceStore.class);
-
+        ApplicationContext.getApplicationContext().setSelection(new Object[] {});
     }
 
     @Test
@@ -49,11 +49,9 @@ public class ChangeRunTypeTest {
         assertEquals(type, changeRunType.getType());
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testRunNoSelection() throws DatatypeConfigurationException {
         final Cache cache = Mockito.mock(Cache.class);
-        Mockito.when(cache.getSelection()).thenReturn(Collections.EMPTY_LIST);
 
         changeRunType = new ChangeRunType(type, databaseAccess, cache);
         changeRunType.run();
@@ -64,7 +62,7 @@ public class ChangeRunTypeTest {
     @Test
     public void testRunNullSelection() throws DatatypeConfigurationException {
         final MockCache cache = new MockCache();
-        cache.setSelection(new Object[] {});
+        ApplicationContext.getApplicationContext().setSelection(new Object[] {});
 
         changeRunType = new ChangeRunType(type, databaseAccess, cache);
         changeRunType.run();
@@ -73,13 +71,13 @@ public class ChangeRunTypeTest {
     @Test
     public void testRunWithSelection() throws DatatypeConfigurationException {
         final MockCache cache = new MockCache();
-        cache.setSelection(new Object[] {});
+        ApplicationContext.getApplicationContext().setSelection(new Object[] {});
 
         final IImported selected = CommonTransferFactory.createIImported();
         selected.setId(42);
         final ITrainingType trainingType = CommonTransferFactory.createTrainingType(11, "junit traiing type", "description");
         selected.setTrainingType(trainingType);
-        cache.setSelection(new Object[] { selected });
+        ApplicationContext.getApplicationContext().setSelection(new Object[] { selected });
         // execute
         changeRunType = new ChangeRunType(RunType.EXT_INTERVALL, databaseAccess, cache);
         changeRunType.run();

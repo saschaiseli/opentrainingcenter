@@ -18,6 +18,8 @@ import ch.opentrainingcenter.client.cache.MockRecordListener;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.db.IDatabaseAccess;
 import ch.opentrainingcenter.tcx.ActivityT;
+import ch.opentrainingcenter.tcx.ExtensionsT;
+import ch.opentrainingcenter.transfer.ActivityExtension;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IImported;
@@ -199,12 +201,17 @@ public class TrainingCenterDataCacheTest {
         final Date dateA = activityA.getId().toGregorianCalendar().getTime();
 
         // execute
-        cache.updateNote(dateA, "test");
+        cache.updateExtension(dateA, new ActivityExtension("test", null));
         cache.add(activityA);
 
         // assert
         final ActivityT activityTFromCache = cache.get(dateA);
-        assertEquals("Note ist nicht gesetzt, da Record erst später in cache kam", null, activityTFromCache.getNotes());
+        final ExtensionsT extensions = activityTFromCache.getExtensions();
+        ActivityExtension ae = new ActivityExtension();
+        if (extensions != null) {
+            ae = (ActivityExtension) extensions.getAny().get(0);
+        }
+        assertEquals("Note ist nicht gesetzt, da Record erst später in cache kam", "", ae.getNote());
     }
 
     @Test
@@ -216,11 +223,14 @@ public class TrainingCenterDataCacheTest {
         cache.add(activityA);
 
         // execute
-        cache.updateNote(dateA, "test");
+        cache.updateExtension(dateA, new ActivityExtension("test", null));
 
         // assert
         final ActivityT activityTFromCache = cache.get(dateA);
-        assertEquals("Note muss korrekt gesetzt sein", "test", activityTFromCache.getNotes());
+
+        final ExtensionsT extensions = activityTFromCache.getExtensions();
+        final ActivityExtension ae = (ActivityExtension) extensions.getAny().get(0);
+        assertEquals("Note muss korrekt gesetzt sein", "test", ae.getNote());
     }
 
     @Test
@@ -233,11 +243,14 @@ public class TrainingCenterDataCacheTest {
         cache.add(activityA);
 
         // execute
-        cache.updateNote(dateA, "test");
+        cache.updateExtension(dateA, new ActivityExtension("test", null));
 
         // assert
         final ActivityT activityTFromCache = cache.get(dateA);
-        assertEquals("Note muss korrekt gesetzt sein", "test", activityTFromCache.getNotes());
+        final ExtensionsT extensions = activityTFromCache.getExtensions();
+        final ActivityExtension ae = (ActivityExtension) extensions.getAny().get(0);
+
+        assertEquals("Note muss korrekt gesetzt sein", "test", ae.getNote());
         assertEquals("Ein Record-Changed muss an Listener propagiert werden", 1, listener.getChangedEntry().size());
     }
 
@@ -271,7 +284,7 @@ public class TrainingCenterDataCacheTest {
         result.setActivityId(date);
         final ITrainingType type = CommonTransferFactory.createTrainingType(1, "junit", "description");
         result.setTrainingType(type);
-        final ITraining overview = CommonTransferFactory.createTraining(date, 1, 1, 1, 1, 1, null, null);
+        final ITraining overview = CommonTransferFactory.createTraining(date, 1, 1, 1, 1, 1, new ActivityExtension());
         result.setTraining(overview);
         return result;
     }

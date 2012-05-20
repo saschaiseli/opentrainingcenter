@@ -10,6 +10,7 @@ import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 
 import ch.opentrainingcenter.client.cache.Cache;
 import ch.opentrainingcenter.client.model.RunType;
+import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.db.IDatabaseAccess;
 import ch.opentrainingcenter.transfer.IImported;
 
@@ -29,8 +30,8 @@ public class ChangeRunType extends Action implements ISelectionListener, IWorkbe
 
     @Override
     public void run() {
-        final List<?> selection = cache.getSelection();
-        if (selection == null) {
+        final List<?> selection = ApplicationContext.getApplicationContext().getSelection();
+        if (selection == null || selection.isEmpty()) {
             return;
         }
         for (final Object obj : selection) {

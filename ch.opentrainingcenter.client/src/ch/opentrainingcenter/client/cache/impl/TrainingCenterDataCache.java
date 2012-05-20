@@ -1,9 +1,7 @@
 package ch.opentrainingcenter.client.cache.impl;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -24,6 +22,7 @@ import ch.opentrainingcenter.tcx.ActivityListT;
 import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.tcx.ExtensionsT;
 import ch.opentrainingcenter.tcx.TrainingCenterDatabaseT;
+import ch.opentrainingcenter.transfer.ActivityExtension;
 import ch.opentrainingcenter.transfer.IImported;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.IWeather;
@@ -33,8 +32,6 @@ public final class TrainingCenterDataCache implements Cache {
     private ListenerList listeners;
 
     private static Cache instance = null;
-
-    private Object[] selectedItems;
 
     private final TrainingCenterDatabaseT database;
 
@@ -96,9 +93,10 @@ public final class TrainingCenterDataCache implements Cache {
             final IImported imported = dataAccess.getImportedRecord(key);
             if (imported != null) {
                 final ITraining training = imported.getTraining();
-                activity.setNotes(training.getNote());
+                final String note = training.getNote();
+                final IWeather weather = training.getWeather();
                 final ExtensionsT ext = new ExtensionsT();
-                ext.getAny().add(training.getWeather());
+                ext.getAny().add(new ActivityExtension(note, weather));
                 activity.setExtensions(ext);
             }
 
@@ -115,7 +113,11 @@ public final class TrainingCenterDataCache implements Cache {
         final ActivityT activity = cache.get(key);
         if (imported != null) {
             final ITraining training = imported.getTraining();
-            activity.setNotes(training.getNote());
+            final String note = training.getNote();
+            final IWeather weather = training.getWeather();
+            final ExtensionsT ext = new ExtensionsT();
+            ext.getAny().add(new ActivityExtension(note, weather));
+            activity.setExtensions(ext);
         }
         return activity;
     }
@@ -127,7 +129,6 @@ public final class TrainingCenterDataCache implements Cache {
         database.getActivities().getActivity().clear();
         allImported.clear();
         cache.clear();
-        selectedItems = null;
     }
 
     @Override
@@ -160,11 +161,13 @@ public final class TrainingCenterDataCache implements Cache {
     }
 
     @Override
-    public void updateNote(final Date activityId, final String note) {
+    public void updateExtension(final Date activityId, final ActivityExtension extension) {
         final long time = activityId.getTime();
         final ActivityT activityT = cache.get(time);
         if (activityT != null) {
-            activityT.setNotes(note);
+            final ExtensionsT ext = new ExtensionsT();
+            ext.getAny().add(extension);
+            activityT.setExtensions(ext);
             cache.put(time, activityT);
         }
         notifyListeners(activityT);
@@ -181,19 +184,6 @@ public final class TrainingCenterDataCache implements Cache {
             final IRecordListener listener = (IRecordListener) rls[i];
             listener.recordChanged(changed);
         }
-    }
-
-    @Override
-    public void updateWetter(final Date activityId, final IWeather wetter) {
-        final long time = activityId.getTime();
-        final ActivityT activityT = cache.get(time);
-        if (activityT != null) {
-            final ExtensionsT ext = new ExtensionsT();
-            ext.getAny().add(wetter);
-            activityT.setExtensions(ext);
-            cache.put(time, activityT);
-        }
-        notifyListeners(activityT);
     }
 
     private void fireRecordAdded(final Collection<ActivityT> activitiesAdded) {
@@ -235,16 +225,6 @@ public final class TrainingCenterDataCache implements Cache {
                 listeners = null;
             }
         }
-    }
-
-    @Override
-    public void setSelection(final Object[] selectedItems) {
-        this.selectedItems = Arrays.copyOf(selectedItems, selectedItems.length);
-    }
-
-    @Override
-    public List<?> getSelection() {
-        return Collections.unmodifiableList(Arrays.asList(selectedItems));
     }
 
     @Override
