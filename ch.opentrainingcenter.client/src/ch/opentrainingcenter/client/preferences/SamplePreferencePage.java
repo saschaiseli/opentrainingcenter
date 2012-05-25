@@ -100,33 +100,26 @@ public class SamplePreferencePage extends FieldEditorPreferencePage implements I
         extDl.setTextLimit(2);
         addField(extDl);
 
-        final IntegerFieldEditor anaerobe = new IntegerFieldEditor(PreferenceConstants.ANAEROBE, Messages.SamplePreferencePage_16,
-                fieldEditorParent);
-        anaerobe.setValidRange(90, 100);
-        anaerobe.setErrorMessage(Messages.SamplePreferencePage_17);
-        anaerobe.setTextLimit(2);
-        addField(anaerobe);
+        final IntegerFieldEditor recom = new IntegerFieldEditor(PreferenceConstants.RECOM, "regeneration", fieldEditorParent);
+        addField(recom);
+        addField(new ColorFieldEditor(PreferenceConstants.RECOM_COLOR, "", fieldEditorParent));
 
-        addField(new ColorFieldEditor(PreferenceConstants.ANAEROBE_COLOR, Messages.SamplePreferencePage_18, getFieldEditorParent()));
+        final IntegerFieldEditor ga1 = new IntegerFieldEditor(PreferenceConstants.GA1, "", fieldEditorParent);
+        addField(ga1);
+        addField(new ColorFieldEditor(PreferenceConstants.GA1_COLOR, "", fieldEditorParent));
 
-        final IntegerFieldEditor schwellenzone = new IntegerFieldEditor(PreferenceConstants.SCHWELLENZONE,
-                Messages.SamplePreferencePage_19, fieldEditorParent);
-        schwellenzone.setValidRange(80, 90);
-        schwellenzone.setErrorMessage(Messages.SamplePreferencePage_20);
-        schwellenzone.setTextLimit(2);
-        addField(schwellenzone);
+        final IntegerFieldEditor ga12 = new IntegerFieldEditor(PreferenceConstants.GA12, "", fieldEditorParent);
+        addField(ga12);
+        addField(new ColorFieldEditor(PreferenceConstants.GA12_COLOR, "", fieldEditorParent));
 
-        addField(new ColorFieldEditor(PreferenceConstants.SCHWELLENZONE_COLOR, Messages.SamplePreferencePage_21, getFieldEditorParent()));
+        final IntegerFieldEditor ga2 = new IntegerFieldEditor(PreferenceConstants.GA2, "", fieldEditorParent);
+        addField(ga2);
+        addField(new ColorFieldEditor(PreferenceConstants.GA2_COLOR, "", fieldEditorParent));
 
-        final IntegerFieldEditor aerobe = new IntegerFieldEditor(PreferenceConstants.AEROBE, Messages.SamplePreferencePage_22,
-                fieldEditorParent);
-        aerobe.setErrorMessage(Messages.SamplePreferencePage_23);
-        aerobe.setValidRange(50, 80);
-        aerobe.setTextLimit(2);
-        addField(aerobe);
-
-        addField(new ColorFieldEditor(PreferenceConstants.AEROBE_COLOR, Messages.SamplePreferencePage_24, getFieldEditorParent()));
-
+        final IntegerFieldEditor wsa = new IntegerFieldEditor(PreferenceConstants.WSA, "", fieldEditorParent);
+        wsa.setEnabled(false, fieldEditorParent);
+        addField(wsa);
+        addField(new ColorFieldEditor(PreferenceConstants.WSA_COLOR, "", fieldEditorParent));
     }
 
     /*

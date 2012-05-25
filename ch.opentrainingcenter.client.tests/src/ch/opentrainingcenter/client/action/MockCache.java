@@ -14,7 +14,6 @@ public class MockCache implements Cache {
 
     private List<IImported> changedRecords;
     private RunType type;
-    private Object[] selectedItems;
     private List<Date> deletedIds;
 
     @Override

@@ -10,7 +10,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.client.helper.ZoneHelper.Zone;
 import ch.opentrainingcenter.transfer.IAthlete;
 import static org.junit.Assert.assertEquals;
@@ -36,21 +35,21 @@ public class HeartIntervallCreatorTest {
 
     @Test
     public void testValues() {
-        Mockito.when(store.getInt(Zone.AEROBE.getName())).thenReturn(20);
-        Mockito.when(store.getInt(Zone.SCHWELLE.getName())).thenReturn(30);
-        Mockito.when(store.getInt(Zone.ANAEROBE.getName())).thenReturn(40);
+        Mockito.when(store.getInt(Zone.GA1.getName())).thenReturn(20);
+        Mockito.when(store.getInt(Zone.GA12.getName())).thenReturn(30);
+        Mockito.when(store.getInt(Zone.GA2.getName())).thenReturn(40);
         Mockito.when(athlete.getMaxHeartRate()).thenReturn(Integer.valueOf(180));
         final Map<Zone, IntervalMarker> marker = creator.createMarker(athlete);
-        assertEquals("3 Bereiche sollten vorhanden sein", 3, marker.size());
+        assertEquals("5 Bereiche sollten vorhanden sein", 5, marker.size());
 
-        final IntervalMarker aerobe = marker.get(Zone.AEROBE);
-        assertEquals(Messages.HeartIntervallCreator_0, aerobe.getLabel());
+        final IntervalMarker aerobe = marker.get(Zone.GA1);
+        assertEquals("GA 1", aerobe.getLabel());
 
-        final IntervalMarker schwelle = marker.get(Zone.SCHWELLE);
-        assertEquals(Messages.HeartIntervallCreator_1, schwelle.getLabel());
+        final IntervalMarker schwelle = marker.get(Zone.GA12);
+        assertEquals("GA 1/2", schwelle.getLabel());
 
-        final IntervalMarker anaerobe = marker.get(Zone.ANAEROBE);
-        assertEquals(Messages.HeartIntervallCreator_2, anaerobe.getLabel());
+        final IntervalMarker anaerobe = marker.get(Zone.GA2);
+        assertEquals("GA 2", anaerobe.getLabel());
 
         assertProperties(aerobe);
         assertProperties(schwelle);

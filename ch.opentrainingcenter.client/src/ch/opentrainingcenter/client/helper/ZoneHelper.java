@@ -15,7 +15,15 @@ public final class ZoneHelper {
 
     public enum Zone {
 
-        AEROBE(PreferenceConstants.AEROBE), SCHWELLE(PreferenceConstants.SCHWELLENZONE), ANAEROBE(PreferenceConstants.ANAEROBE);
+        // AEROBE(PreferenceConstants.AEROBE),
+        // SCHWELLE(PreferenceConstants.SCHWELLENZONE),
+        // ANAEROBE(PreferenceConstants.ANAEROBE);
+
+        RECOM(PreferenceConstants.RECOM), //
+        GA1(PreferenceConstants.GA1), //
+        GA12(PreferenceConstants.GA12), //
+        GA2(PreferenceConstants.GA2), //
+        WSA(PreferenceConstants.WSA);
 
         private final String name;
 

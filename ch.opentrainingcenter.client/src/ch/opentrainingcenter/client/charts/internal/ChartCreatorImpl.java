@@ -82,9 +82,9 @@ public class ChartCreatorImpl implements ChartCreator {
 
     private void addIntervallMarker(final XYPlot plot) {
         final Map<Zone, IntervalMarker> markers = heartIntervall.createMarker(ApplicationContext.getApplicationContext().getAthlete());
-        plot.addRangeMarker(markers.get(ZoneHelper.Zone.AEROBE));
-        plot.addRangeMarker(markers.get(ZoneHelper.Zone.SCHWELLE));
-        plot.addRangeMarker(markers.get(ZoneHelper.Zone.ANAEROBE));
+        for (final Zone zone : ZoneHelper.Zone.values()) {
+            plot.addRangeMarker(markers.get(zone));
+        }
     }
 
 }

@@ -229,30 +229,6 @@
       </wizard>
    </extension>
    <extension
-         id="OpenTrainingCenter"
-         point="org.eclipse.core.runtime.products">
-      <product
-            application="ch.opentrainingcenter.client.application"
-            name="OpenTrainingCenter">
-         <property
-               name="appName"
-               value="OpenTrainingCenter">
-         </property>
-         <property
-               name="aboutImage"
-               value="icons/simpsons-icon.png">
-         </property>
-         <property
-               name="aboutText"
-               value="Hello, hello...">
-         </property>
-         <property
-               name="windowImages"
-               value="icons/16_16/icon_16_16.png,icons/32_32/icon_32_32.png,icons/48_48/icon_48_48.png,icons/64_64/icon_64_64.png,icons/128_128/icon_128_128.png">
-         </property>
-      </product>
-   </extension>
-   <extension
          id="Open_TrainingCenter"
          point="org.eclipse.core.runtime.products">
       <product

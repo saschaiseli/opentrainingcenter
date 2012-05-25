@@ -28,7 +28,8 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
     /*
      * (non-Javadoc)
      * 
-     * @see org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer# initializeDefaultPreferences()
+     * @see org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer#
+     * initializeDefaultPreferences()
      */
     @Override
     public void initializeDefaultPreferences() {
@@ -50,12 +51,16 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
         defaults.putInt(PreferenceConstants.EXTDL, 75);
         defaults.putInt(PreferenceConstants.INTDL, 80);
         defaults.putInt(PreferenceConstants.EXTINTERVALL, 89);
-        defaults.putInt(PreferenceConstants.ANAEROBE, 90);
-        defaults.put(PreferenceConstants.ANAEROBE_COLOR, "219,76,82"); //$NON-NLS-1$
-        defaults.putInt(PreferenceConstants.SCHWELLENZONE, 80);
-        defaults.put(PreferenceConstants.SCHWELLENZONE_COLOR, "96,134,216"); //$NON-NLS-1$
-        defaults.putInt(PreferenceConstants.AEROBE, 50);
-        defaults.put(PreferenceConstants.AEROBE_COLOR, "144,238,144"); //$NON-NLS-1$
+        defaults.putInt(PreferenceConstants.RECOM, 65);
+        defaults.put(PreferenceConstants.RECOM_COLOR, "219,76,82"); //$NON-NLS-1$
+        defaults.putInt(PreferenceConstants.GA1, 75);
+        defaults.put(PreferenceConstants.GA1_COLOR, "96,134,216"); //$NON-NLS-1$
+        defaults.putInt(PreferenceConstants.GA12, 85);
+        defaults.put(PreferenceConstants.GA12_COLOR, "144,238,144"); //$NON-NLS-1$
+        defaults.putInt(PreferenceConstants.GA2, 95);
+        defaults.put(PreferenceConstants.GA2_COLOR, "144,238,144"); //$NON-NLS-1$
+        defaults.putInt(PreferenceConstants.WSA, 100);
+        defaults.put(PreferenceConstants.WSA_COLOR, "144,238,144"); //$NON-NLS-1$
 
         defaults.put(PreferenceConstants.BACKUP_FILE_LOCATION, System.getProperty("user.home") + File.separator + ".otc/backup"); //$NON-NLS-1$ //$NON-NLS-2$
         final ConvertContainer cc = new ConvertContainer(ExtensionHelper.getConverters());
