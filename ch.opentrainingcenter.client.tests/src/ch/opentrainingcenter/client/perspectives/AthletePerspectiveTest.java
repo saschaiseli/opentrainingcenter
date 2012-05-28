@@ -7,9 +7,9 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import ch.opentrainingcenter.client.perspectives.AthletePerspective;
-import ch.opentrainingcenter.client.perspectives.OverviewPerspectiveFactory;
-import ch.opentrainingcenter.client.perspectives.PerspectiveNavigation;
-import ch.opentrainingcenter.client.perspectives.StatisticPerspectiveFactory;
+import ch.opentrainingcenter.client.perspectives.TablePerspective;
+import ch.opentrainingcenter.client.perspectives.MainPerspective;
+import ch.opentrainingcenter.client.perspectives.StatisticPerspective;
 import ch.opentrainingcenter.client.views.ahtlete.CreateAthleteView;
 
 public class AthletePerspectiveTest {
@@ -38,9 +38,9 @@ public class AthletePerspectiveTest {
 
         Mockito.verify(viewLayout, Mockito.times(1)).setCloseable(false);
 
-        Mockito.verify(layout, Mockito.times(1)).addPerspectiveShortcut(PerspectiveNavigation.ID);
-        Mockito.verify(layout, Mockito.times(1)).addPerspectiveShortcut(OverviewPerspectiveFactory.ID);
-        Mockito.verify(layout, Mockito.times(1)).addPerspectiveShortcut(StatisticPerspectiveFactory.ID);
+        Mockito.verify(layout, Mockito.times(1)).addPerspectiveShortcut(MainPerspective.ID);
+        Mockito.verify(layout, Mockito.times(1)).addPerspectiveShortcut(TablePerspective.ID);
+        Mockito.verify(layout, Mockito.times(1)).addPerspectiveShortcut(StatisticPerspective.ID);
         Mockito.verify(layout, Mockito.times(1)).addPerspectiveShortcut(AthletePerspective.ID);
 
     }

@@ -9,7 +9,7 @@ import org.mockito.Mockito;
 import ch.opentrainingcenter.client.views.table.OverviewViewer;
 
 public class OverviewPerspectiveFactoryTest {
-    private OverviewPerspectiveFactory perspective;
+    private TablePerspective perspective;
     private IPageLayout layout;
 
     @Before
@@ -20,7 +20,7 @@ public class OverviewPerspectiveFactoryTest {
     @Test
     public void testInitialLayout() {
         // prepare
-        perspective = new OverviewPerspectiveFactory();
+        perspective = new TablePerspective();
         final IViewLayout viewLayout = Mockito.mock(IViewLayout.class);
         Mockito.when(layout.getViewLayout(OverviewViewer.ID)).thenReturn(viewLayout);
 
@@ -34,9 +34,9 @@ public class OverviewPerspectiveFactoryTest {
 
         Mockito.verify(viewLayout, Mockito.times(1)).setCloseable(false);
 
-        Mockito.verify(layout, Mockito.times(1)).addPerspectiveShortcut(PerspectiveNavigation.ID);
-        Mockito.verify(layout, Mockito.times(1)).addPerspectiveShortcut(OverviewPerspectiveFactory.ID);
-        Mockito.verify(layout, Mockito.times(1)).addPerspectiveShortcut(StatisticPerspectiveFactory.ID);
+        Mockito.verify(layout, Mockito.times(1)).addPerspectiveShortcut(MainPerspective.ID);
+        Mockito.verify(layout, Mockito.times(1)).addPerspectiveShortcut(TablePerspective.ID);
+        Mockito.verify(layout, Mockito.times(1)).addPerspectiveShortcut(StatisticPerspective.ID);
         Mockito.verify(layout, Mockito.times(1)).addPerspectiveShortcut(AthletePerspective.ID);
     }
 }

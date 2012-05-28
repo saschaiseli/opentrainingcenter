@@ -5,7 +5,7 @@ import org.eclipse.ui.IPerspectiveFactory;
 
 import ch.opentrainingcenter.client.views.statistics.StatisticView;
 
-public class StatisticPerspectiveFactory implements IPerspectiveFactory {
+public class StatisticPerspective implements IPerspectiveFactory {
 
     public static final  String ID = "ch.opentrainingcenter.client.StatisticPerspective"; //$NON-NLS-1$
 
@@ -17,9 +17,9 @@ public class StatisticPerspectiveFactory implements IPerspectiveFactory {
         layout.addStandaloneView(StatisticView.ID, false, IPageLayout.LEFT, 1f, editorArea);
         layout.getViewLayout(StatisticView.ID).setCloseable(false);
 
-        layout.addPerspectiveShortcut(PerspectiveNavigation.ID);
-        layout.addPerspectiveShortcut(OverviewPerspectiveFactory.ID);
-        layout.addPerspectiveShortcut(StatisticPerspectiveFactory.ID);
+        layout.addPerspectiveShortcut(MainPerspective.ID);
+        layout.addPerspectiveShortcut(TablePerspective.ID);
+        layout.addPerspectiveShortcut(StatisticPerspective.ID);
         layout.addPerspectiveShortcut(AthletePerspective.ID);
     }
 

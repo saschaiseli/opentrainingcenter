@@ -17,7 +17,7 @@
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            class="ch.opentrainingcenter.client.perspectives.PerspectiveNavigation"
+            class="ch.opentrainingcenter.client.perspectives.MainPerspective"
             icon="icons/otc_perspective.png"
             id="ch.opentrainingcenter.client.perspective"
             name="OTC Perspektive">
@@ -30,14 +30,14 @@
             name="Athlete Perspektive">
       </perspective>
       <perspective
-            class="ch.opentrainingcenter.client.perspectives.StatisticPerspectiveFactory"
+            class="ch.opentrainingcenter.client.perspectives.StatisticPerspective"
             fixed="true"
             icon="icons/chart_bar.png"
             id="ch.opentrainingcenter.client.StatisticPerspective"
             name="Statistik">
       </perspective>
       <perspective
-            class="ch.opentrainingcenter.client.perspectives.OverviewPerspectiveFactory"
+            class="ch.opentrainingcenter.client.perspectives.TablePerspective"
             fixed="true"
             icon="icons/table_green_24_24.png"
             id="ch.opentrainingcenter.client.OverviewPerspective"
@@ -133,6 +133,36 @@
             id="ch.opentrainingcenter.client.action.AddEditHandler"
             name="AddEditNote">
       </command>
+      <command
+            description="Öffnet die Athlete Perspective"
+            id="ch.opentrainingcenter.client.commands.SwitchToAthlete"
+            name="name">
+      </command>
+      <command
+            description="Öffnet die Tabellen Perspective"
+            id="ch.opentrainingcenter.client.commands.SwitchToTable"
+            name="name">
+      </command>
+      <command
+            description="Öffnet die Statistik Perspective"
+            id="ch.opentrainingcenter.client.commands.SwitchToStatistic"
+            name="name">
+      </command>
+      <command
+            description="Öffnet die Main Perspective"
+            id="ch.opentrainingcenter.client.commands.SwitchToMain"
+            name="name">
+      </command>
+      <command
+            description="Macht ein Backup der importierten Gps Files"
+            id="ch.opentrainingcenter.client.commands.BackupGpsFiles"
+            name="backupGpsFiles">
+      </command>
+      <command
+            description="Importiert ein GPS File"
+            id="ch.opentrainingcenter.client.commands.ImportManualGpsFiles"
+            name="importManualGpsFiles">
+      </command>
    </extension>
    <extension
          id="opentrainingcenter"
@@ -202,6 +232,71 @@
                style="push">
          </command>
       </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:org.eclipse.ui.main.toolbar">
+         <toolbar
+               id="ch.opentrainingcenter.client.commands"
+               label="AllgemeineAktionen">
+            <command
+                  commandId="ch.opentrainingcenter.client.commands.BackupGpsFiles"
+                  icon="icons/drive_backup_24_24.png"
+                  label="Backup Gps Files"
+                  style="push"
+                  tooltip="Backup TOoltip">
+            </command>
+            <command
+                  commandId="ch.opentrainingcenter.client.commands.ImportManualGpsFiles"
+                  icon="icons/import_klein.png"
+                  label="Import Gps FIles"
+                  style="push">
+            </command>
+            <separator
+                  name="ch.opentrainingcenter.client.separator1"
+                  visible="true">
+            </separator>
+         </toolbar>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:org.eclipse.ui.main.toolbar">
+         <toolbar
+               id="ch.opentrainingcenter.client.toolbar"
+               label="Perspective Toolbars">
+            <command
+                  commandId="ch.opentrainingcenter.client.commands.SwitchToAthlete"
+                  icon="icons/athlete_perspective.png"
+                  label="Switch to da Athlete"
+                  style="push"
+                  tooltip="tooolTip">
+            </command>
+            <command
+                  commandId="ch.opentrainingcenter.client.commands.SwitchToStatistic"
+                  icon="icons/chart_bar.png"
+                  label="Switcha to da Stats"
+                  style="push"
+                  tooltip="Statistik">
+            </command>
+            <command
+                  commandId="ch.opentrainingcenter.client.commands.SwitchToTable"
+                  icon="icons/table_green_24_24.png"
+                  label="Switch to da Table"
+                  style="push"
+                  tooltip="tooolTip">
+            </command>
+            <command
+                  commandId="ch.opentrainingcenter.client.commands.SwitchToMain"
+                  icon="icons/otc_perspective.png"
+                  label="Switch to da Main"
+                  style="push"
+                  tooltip="tooolTip">
+            </command>
+            <separator
+                  name="ch.opentrainingcenter.client.separator1"
+                  visible="true">
+            </separator>
+         </toolbar>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.splashHandlers">
@@ -255,8 +350,72 @@
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="ch.opentrainingcenter.client.action.AddEditHandler"
+            class="ch.opentrainingcenter.client.commands.AddEditHandler"
             commandId="ch.opentrainingcenter.client.action.AddEditHandler">
+      </handler>
+      <handler
+            class="ch.opentrainingcenter.client.commands.SwitchToAthlete"
+            commandId="ch.opentrainingcenter.client.commands.SwitchToAthlete"
+            helpContextId="switchtotheathlete">
+            <enabledWhen>
+    <with variable="activeWorkbenchWindow.activePerspective">
+            <not>
+               <equals
+                     value="ch.opentrainingcenter.client.athletePerspective">
+               </equals>
+            </not>
+    </with>
+</enabledWhen>
+      </handler>
+      <handler
+            class="ch.opentrainingcenter.client.commands.SwitchToStatistic"
+            commandId="ch.opentrainingcenter.client.commands.SwitchToStatistic">
+         <enabledWhen>
+            <with
+                  variable="activeWorkbenchWindow.activePerspective">
+               <not>
+                  <equals
+                        value="ch.opentrainingcenter.client.StatisticPerspective">
+                  </equals>
+               </not>
+            </with>
+         </enabledWhen>
+      </handler>
+      <handler
+            class="ch.opentrainingcenter.client.commands.SwitchToMain"
+            commandId="ch.opentrainingcenter.client.commands.SwitchToMain">
+         <enabledWhen>
+            <with
+                  variable="activeWorkbenchWindow.activePerspective">
+               <not>
+                  <equals
+                        value="ch.opentrainingcenter.client.perspective">
+                  </equals>
+               </not>
+            </with>
+         </enabledWhen>
+      </handler>
+      <handler
+            class="ch.opentrainingcenter.client.commands.SwitchToTable"
+            commandId="ch.opentrainingcenter.client.commands.SwitchToTable">
+         <enabledWhen>
+            <with
+                  variable="activeWorkbenchWindow.activePerspective">
+               <not>
+                  <equals
+                        value="ch.opentrainingcenter.client.OverviewPerspective">
+                  </equals>
+               </not>
+            </with>
+         </enabledWhen>
+      </handler>
+      <handler
+            class="ch.opentrainingcenter.client.commands.BackupGpsFiles"
+            commandId="ch.opentrainingcenter.client.commands.BackupGpsFiles">
+      </handler>
+      <handler
+            class="ch.opentrainingcenter.client.commands.ImportManualGpsFiles"
+            commandId="ch.opentrainingcenter.client.commands.ImportManualGpsFiles">
       </handler>
    </extension>
    <extension

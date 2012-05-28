@@ -10,7 +10,7 @@ import java.util.Map;
 import org.eclipse.jface.preference.IPreferenceStore;
 
 import ch.opentrainingcenter.client.PreferenceConstants;
-import ch.opentrainingcenter.client.action.ImportManualGpsFiles;
+import ch.opentrainingcenter.client.commands.ImportManualGpsFiles;
 
 public final class FindGarminFiles {
 

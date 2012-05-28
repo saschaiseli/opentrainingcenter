@@ -10,7 +10,7 @@ import ch.opentrainingcenter.client.views.navigation.NavigationView;
 import ch.opentrainingcenter.client.views.overview.SingleActivityViewPart;
 import ch.opentrainingcenter.client.views.weeks.WeeklyOverview;
 
-public class PerspectiveNavigation implements IPerspectiveFactory {
+public class MainPerspective implements IPerspectiveFactory {
 
     public static final String RIGHT_PART = "rightPart"; //$NON-NLS-1$
 
@@ -41,9 +41,9 @@ public class PerspectiveNavigation implements IPerspectiveFactory {
         layout.addStandaloneView(BestRunsView.ID, false, IPageLayout.BOTTOM, 0.50f, WeeklyOverview.ID);
         layout.getViewLayout(BestRunsView.ID).setCloseable(false);
 
-        layout.addPerspectiveShortcut(PerspectiveNavigation.ID);
-        layout.addPerspectiveShortcut(OverviewPerspectiveFactory.ID);
-        layout.addPerspectiveShortcut(StatisticPerspectiveFactory.ID);
+        layout.addPerspectiveShortcut(MainPerspective.ID);
+        layout.addPerspectiveShortcut(TablePerspective.ID);
+        layout.addPerspectiveShortcut(StatisticPerspective.ID);
         layout.addPerspectiveShortcut(AthletePerspective.ID);
 
     }

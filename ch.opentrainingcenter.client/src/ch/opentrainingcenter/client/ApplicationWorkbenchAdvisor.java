@@ -6,7 +6,7 @@ import org.eclipse.ui.application.WorkbenchAdvisor;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 
 import ch.opentrainingcenter.client.perspectives.AthletePerspective;
-import ch.opentrainingcenter.client.perspectives.PerspectiveNavigation;
+import ch.opentrainingcenter.client.perspectives.MainPerspective;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
@@ -37,7 +37,7 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 
                 init(athlete);
 
-                return PerspectiveNavigation.ID;
+                return MainPerspective.ID;
             }
         } else {
             LOGGER.info(Messages.ApplicationWorkbenchAdvisor_AthleteNotInPreferences);

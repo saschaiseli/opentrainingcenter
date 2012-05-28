@@ -1,6 +1,7 @@
 package ch.opentrainingcenter.client.views.navigation;
 
 import java.util.Collection;
+import java.util.Collections;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jface.action.IMenuListener;
@@ -78,10 +79,6 @@ public class NavigationView extends ViewPart {
     public void createPartControl(final Composite parent) {
 
         parent.getShell().setMaximized(true);
-
-        final String athleteId = store.getString(PreferenceConstants.ATHLETE_ID);
-        final int id = Integer.parseInt(athleteId);
-        final IAthlete athlete = databaseAccess.getAthlete(id);
 
         viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
         viewer.setContentProvider(new ViewContentProvider());
@@ -165,13 +162,19 @@ public class NavigationView extends ViewPart {
                 getViewSite().getActionBars().getStatusLineManager().setMessage(message);
             }
         });
-        // if (!cache.isCacheLoaded()) {
-        // final Job job = new LoadJob(Messages.NavigationView_1, athlete,
-        // databaseAccess, cache);
-        // job.schedule();
-        // job.addJobChangeListener(new ImportJobChangeListener(viewer));
-        // } else {
-        final Collection<IImported> allImported = DatabaseAccessFactory.getDatabaseAccess().getAllImported(athlete);
+
+        final Collection<IImported> allImported;
+        final String athleteId = store.getString(PreferenceConstants.ATHLETE_ID);
+        final IAthlete athlete;
+        if (athleteId != null && athleteId.length() > 0) {
+            final int id = Integer.parseInt(athleteId);
+            athlete = databaseAccess.getAthlete(id);
+            allImported = DatabaseAccessFactory.getDatabaseAccess().getAllImported(athlete);
+        } else {
+            allImported = Collections.emptyList();
+            athlete = null;
+        }
+
         viewer.setInput(allImported);
         writeStatus(Messages.NavigationView_2 + allImported.size() + Messages.NavigationView_3);
         // }
