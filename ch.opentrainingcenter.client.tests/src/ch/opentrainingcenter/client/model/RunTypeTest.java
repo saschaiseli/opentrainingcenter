@@ -26,17 +26,17 @@ public class RunTypeTest {
 
     @Test
     public void testEnumTextesAndIndezes() {
-        assertEquals(Messages.RunType_0, RunType.NONE.getTitle());
+        assertEquals(Messages.RunType0, RunType.NONE.getTitle());
         assertEquals(0, RunType.NONE.getIndex());
-        assertEquals(Messages.RunType_1, RunType.EXT_INTERVALL.getTitle());
+        assertEquals(Messages.RunType1, RunType.EXT_INTERVALL.getTitle());
         assertEquals(1, RunType.EXT_INTERVALL.getIndex());
-        assertEquals(Messages.RunType_2, RunType.INT_INTERVALL.getTitle());
+        assertEquals(Messages.RunType2, RunType.INT_INTERVALL.getTitle());
         assertEquals(2, RunType.INT_INTERVALL.getIndex());
-        assertEquals(Messages.RunType_3, RunType.LONG_JOG.getTitle());
+        assertEquals(Messages.RunType3, RunType.LONG_JOG.getTitle());
         assertEquals(3, RunType.LONG_JOG.getIndex());
-        assertEquals(Messages.RunType_4, RunType.POWER_LONG_JOG.getTitle());
+        assertEquals(Messages.RunType4, RunType.POWER_LONG_JOG.getTitle());
         assertEquals(4, RunType.POWER_LONG_JOG.getIndex());
-        assertEquals(Messages.RunType_5, RunType.TEMPO_JOG.getTitle());
+        assertEquals(Messages.RunType5, RunType.TEMPO_JOG.getTitle());
         assertEquals(5, RunType.TEMPO_JOG.getIndex());
     }
 

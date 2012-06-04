@@ -43,7 +43,7 @@ public class BackupJob extends Job {
 
     @Override
     protected IStatus run(final IProgressMonitor monitor) {
-        monitor.beginTask(Messages.BackupGpsFiles_1, getFileToCopy().length);
+        monitor.beginTask(Messages.BackupGpsFiles1, getFileToCopy().length);
 
         final String zipFileName = createZipFileName();
         final File zipFile = new File(destFolder, zipFileName);

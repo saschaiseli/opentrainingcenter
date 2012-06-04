@@ -30,17 +30,17 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
         if (athleteId != null && athleteId.length() > 0) {
             final IAthlete athlete = DatabaseAccessFactory.getDatabaseAccess().getAthlete(Integer.parseInt(athleteId));
             if (athlete == null) {
-                LOGGER.info(Messages.ApplicationWorkbenchAdvisor_AthleteNotFound);
+                LOGGER.info(Messages.ApplicationWorkbenchAdvisorAthleteNotFound);
                 return AthletePerspective.ID;
             } else {
-                LOGGER.info(Messages.ApplicationWorkbenchAdvisor_AthleteFound);
+                LOGGER.info(Messages.ApplicationWorkbenchAdvisorAthleteFound);
 
                 init(athlete);
 
                 return MainPerspective.ID;
             }
         } else {
-            LOGGER.info(Messages.ApplicationWorkbenchAdvisor_AthleteNotInPreferences);
+            LOGGER.info(Messages.ApplicationWorkbenchAdvisorAthleteNotInPreferences);
             return AthletePerspective.ID;
         }
     }

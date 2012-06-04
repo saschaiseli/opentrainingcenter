@@ -31,7 +31,7 @@ public class DeleteImportedRecord extends Action implements ISelectionListener, 
         this.cache = cache;
         this.database = database;
         setId(ID);
-        setText(Messages.DeleteImportedRecord_0);
+        setText(Messages.DeleteImportedRecord0);
     }
 
     @Override

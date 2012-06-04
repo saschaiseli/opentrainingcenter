@@ -43,7 +43,7 @@ public class OverviewViewer extends ViewPart {
         final GridLayout layout = new GridLayout(2, false);
         parent.setLayout(layout);
         final Label searchLabel = new Label(parent, SWT.NONE);
-        searchLabel.setText(Messages.OverviewViewer_0);
+        searchLabel.setText(Messages.OverviewViewer0);
         searchLabel.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
         createViewer(parent);
     }
@@ -104,8 +104,8 @@ public class OverviewViewer extends ViewPart {
 
     // This will create the columns for the table
     private void createColumns() {
-        final String[] titles = { Messages.OverviewViewer_1, Messages.OverviewViewer_2, Messages.OverviewViewer_3,
-                Messages.OverviewViewer_4, Messages.OverviewViewer_5 };
+        final String[] titles = { Messages.OverviewViewer1, Messages.OverviewViewer2, Messages.OverviewViewer3, Messages.OverviewViewer4,
+                Messages.OverviewViewer5 };
         final int[] bounds = { 220, 100, 150, 120, 180 };
 
         // Datum

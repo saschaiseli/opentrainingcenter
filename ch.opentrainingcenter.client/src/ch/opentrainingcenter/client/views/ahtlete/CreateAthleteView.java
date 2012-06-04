@@ -88,7 +88,7 @@ public class CreateAthleteView extends ViewPart {
 
         td = new TableWrapData(TableWrapData.FILL_GRAB);
         body.setLayoutData(td);
-        form.setText(Messages.CreateAthleteView_0);
+        form.setText(Messages.CreateAthleteView0);
 
         createSelectSportler(body);
         createAddSportlerMask(body);
@@ -103,11 +103,11 @@ public class CreateAthleteView extends ViewPart {
             }
         });
         selectSportler.setExpanded(false);
-        td = new TableWrapData();
+        td = new TableWrapData(TableWrapData.FILL_GRAB);
         td.colspan = 1;
         selectSportler.setLayoutData(td);
-        selectSportler.setText(Messages.CreateAthleteView_1);
-        selectSportler.setDescription(Messages.CreateAthleteView_2);
+        selectSportler.setText(Messages.CreateAthleteView1);
+        selectSportler.setDescription(Messages.CreateAthleteView2);
 
         final Composite sportlerComposite = toolkit.createComposite(selectSportler);
         final GridLayout layoutClient = new GridLayout(2, false);
@@ -117,7 +117,7 @@ public class CreateAthleteView extends ViewPart {
 
         // gender
         final Label sportlerLabel = new Label(sportlerComposite, SWT.NONE);
-        sportlerLabel.setText(Messages.CreateAthleteView_3);
+        sportlerLabel.setText(Messages.CreateAthleteView3);
 
         GridData gridData = new GridData();
         gridData.horizontalAlignment = SWT.FILL;
@@ -140,7 +140,7 @@ public class CreateAthleteView extends ViewPart {
         user.setLayoutData(gridData);
 
         final Button selectUser = new Button(sportlerComposite, SWT.PUSH);
-        selectUser.setText(Messages.CreateAthleteView_4);
+        selectUser.setText(Messages.CreateAthleteView4);
         selectUser.setEnabled(false);
         selectUser.addSelectionListener(new SelectionAdapter() {
 
@@ -151,10 +151,10 @@ public class CreateAthleteView extends ViewPart {
                 store.setValue(PreferenceConstants.ATHLETE_ID, String.valueOf(dbId));
 
                 final IAthlete athlete = databaseAccess.getAthlete(dbId);
-                LOGGER.info(Messages.CreateAthleteView_5 + athlete + " wird im Cache gesetzt."); //$NON-NLS-1$
+                LOGGER.info(Messages.CreateAthleteView5 + athlete + " wird im Cache gesetzt."); //$NON-NLS-1$
                 ApplicationContext.getApplicationContext().setAthlete(athlete);
                 getViewSite().getWorkbenchWindow().getShell().setText(
-                        Application.WINDOW_TITLE + Messages.CreateAthleteView_7 + athlete.getName());
+                        Application.WINDOW_TITLE + Messages.CreateAthleteView7 + athlete.getName());
             }
         });
 
@@ -217,8 +217,8 @@ public class CreateAthleteView extends ViewPart {
         td = new TableWrapData();
         td.colspan = 1;
         overviewSection.setLayoutData(td);
-        overviewSection.setText(Messages.CreateAthleteView_8);
-        overviewSection.setDescription(Messages.CreateAthleteView_9);
+        overviewSection.setText(Messages.CreateAthleteView8);
+        overviewSection.setDescription(Messages.CreateAthleteView9);
 
         final Composite overViewComposite = toolkit.createComposite(overviewSection);
         final GridLayout layoutClient = new GridLayout(2, false);
@@ -226,7 +226,7 @@ public class CreateAthleteView extends ViewPart {
 
         // name
         final Label firstLabel = new Label(overViewComposite, SWT.NONE);
-        firstLabel.setText(Messages.CreateAthleteView_10);
+        firstLabel.setText(Messages.CreateAthleteView10);
         nameTf = new Text(overViewComposite, SWT.BORDER);
 
         GridData gridData = new GridData();
@@ -237,7 +237,7 @@ public class CreateAthleteView extends ViewPart {
 
         // alter
         final Label ageLabel = new Label(overViewComposite, SWT.NONE);
-        ageLabel.setText(Messages.CreateAthleteView_11);
+        ageLabel.setText(Messages.CreateAthleteView11);
         ageTf = new Text(overViewComposite, SWT.BORDER);
 
         gridData = new GridData();
@@ -248,7 +248,7 @@ public class CreateAthleteView extends ViewPart {
 
         // pulse
         final Label pulseLabel = new Label(overViewComposite, SWT.NONE);
-        pulseLabel.setText(Messages.CreateAthleteView_12);
+        pulseLabel.setText(Messages.CreateAthleteView12);
         pulseTf = new Text(overViewComposite, SWT.BORDER);
 
         gridData = new GridData();
@@ -259,10 +259,10 @@ public class CreateAthleteView extends ViewPart {
 
         // gender
         final Label genderLabel = new Label(overViewComposite, SWT.NONE);
-        genderLabel.setText(Messages.CreateAthleteView_13);
+        genderLabel.setText(Messages.CreateAthleteView13);
         genderCombo = new Combo(overViewComposite, SWT.NONE);
-        genderCombo.add(Messages.CreateAthleteView_14);
-        genderCombo.add(Messages.CreateAthleteView_15);
+        genderCombo.add(Messages.CreateAthleteView14);
+        genderCombo.add(Messages.CreateAthleteView15);
 
         gridData = new GridData();
         gridData.horizontalAlignment = SWT.RIGHT;
@@ -279,7 +279,8 @@ public class CreateAthleteView extends ViewPart {
         errorLabel.setLayoutData(gridData);
 
         final Button button1 = new Button(overViewComposite, SWT.PUSH);
-        button1.setText(Messages.CreateAthleteView_16);
+        button1.setText(Messages.CreateAthleteView16);
+        button1.setEnabled(false);
         button1.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -289,13 +290,15 @@ public class CreateAthleteView extends ViewPart {
                         .getMaxHeartBeat());
                 try {
                     DatabaseAccessFactory.getDatabaseAccess().save(athlete);
+                    resetForm();
                     errorLabel.setText(""); //$NON-NLS-1$
                     overviewSection.setExpanded(false);
                     selectSportler.setExpanded(true);
                 } catch (final Exception e1) {
-                    errorLabel.setText(Messages.CreateAthleteView_17);
+                    errorLabel.setText(Messages.CreateAthleteView17);
                 }
             }
+
         });
         gridData = new GridData();
         gridData.horizontalAlignment = SWT.LEFT;
@@ -308,11 +311,15 @@ public class CreateAthleteView extends ViewPart {
         overviewSection.setClient(overViewComposite);
     }
 
+    private void resetForm() {
+        nameTf.setText("");
+    }
+
     private void enableOrDisableButtonIfNoUserIsSelected(final Button selectUser) {
         if (user.getSelectionIndex() >= 0) {
             selectUser.setEnabled(true);
         } else {
-            selectUser.setToolTipText(Messages.CreateAthleteView_18);
+            selectUser.setToolTipText(Messages.CreateAthleteView18);
         }
     }
 
@@ -337,7 +344,7 @@ public class CreateAthleteView extends ViewPart {
         modelValue = BeanProperties.value(Sportler.class, "age").observe(sportler); //$NON-NLS-1$
         // Add an validator so that age can only be a number
         final UpdateValueStrategy strategy = new UpdateValueStrategy();
-        strategy.setBeforeSetValidator(new NumberValidator(18, 99, Messages.CreateAthleteView_19));
+        strategy.setBeforeSetValidator(new NumberValidator(18, 99, Messages.CreateAthleteView19));
         // strategy.setBeforeSetValidator(validator);
 
         final Binding bindValue = ctx.bindValue(widgetValue, modelValue, strategy, null);
@@ -350,7 +357,7 @@ public class CreateAthleteView extends ViewPart {
         // Add an validator so that age can only be a number
 
         final UpdateValueStrategy strategyPulse = new UpdateValueStrategy();
-        strategyPulse.setBeforeSetValidator(new NumberValidator(160, 220, Messages.CreateAthleteView_20));
+        strategyPulse.setBeforeSetValidator(new NumberValidator(160, 220, Messages.CreateAthleteView20));
 
         final Binding bindMaxPulse = ctx.bindValue(widgetValue, modelValue, strategyPulse, null);
         // Add some decorations

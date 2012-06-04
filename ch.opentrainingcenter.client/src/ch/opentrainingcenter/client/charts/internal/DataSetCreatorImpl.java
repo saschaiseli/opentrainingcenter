@@ -54,7 +54,7 @@ public class DataSetCreatorImpl implements DataSetCreator {
         final SpeedCompressor compressor = new SpeedCompressor(8);
         final List<PositionPace> compressSpeedDataPoints = compressor.compressSpeedDataPoints(positionPaces);
         final XYSeriesCollection dataset = new XYSeriesCollection();
-        dataset.addSeries(SpeedChartSupport.putPointsInSerie(new XYSeries(Messages.SingleActivityViewPart_18), compressSpeedDataPoints));
+        dataset.addSeries(SpeedChartSupport.putPointsInSerie(new XYSeries(Messages.SingleActivityViewPart18), compressSpeedDataPoints));
 
         return dataset;
     }
@@ -85,7 +85,7 @@ public class DataSetCreatorImpl implements DataSetCreator {
 
     private XYDataset createDataSet(final ChartType type) {
         final List<ActivityLapT> laps = selected.getLap();
-        final XYSeries series = new XYSeries(Messages.SingleActivityViewPart_18);
+        final XYSeries series = new XYSeries(Messages.SingleActivityViewPart18);
         for (final ActivityLapT activityLapT : laps) {
             final List<TrackT> tracks = activityLapT.getTrack();
             for (final TrackT track : tracks) {

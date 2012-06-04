@@ -65,7 +65,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
         exitAction = ActionFactory.QUIT.create(window);
         register(exitAction);
 
-        restart = new RestartOtc(window, Messages.ApplicationActionBarAdvisor_Restart);
+        restart = new RestartOtc(window, Messages.ApplicationActionBarAdvisorRestart);
         register(restart);
 
         aboutAction = ActionFactory.ABOUT.create(window);
@@ -77,9 +77,9 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 
     @Override
     protected void fillMenuBar(final IMenuManager menuBar) {
-        final MenuManager fileMenu = new MenuManager(Messages.ApplicationActionBarAdvisor_File, IWorkbenchActionConstants.M_FILE);
-        final MenuManager helpMenu = new MenuManager(Messages.ApplicationActionBarAdvisor_Help, IWorkbenchActionConstants.M_HELP);
-        final MenuManager windowsMenu = new MenuManager(Messages.ApplicationActionBarAdvisor_Windows, IWorkbenchActionConstants.M_WINDOW);
+        final MenuManager fileMenu = new MenuManager(Messages.ApplicationActionBarAdvisorFile, IWorkbenchActionConstants.M_FILE);
+        final MenuManager helpMenu = new MenuManager(Messages.ApplicationActionBarAdvisorHelp, IWorkbenchActionConstants.M_HELP);
+        final MenuManager windowsMenu = new MenuManager(Messages.ApplicationActionBarAdvisorWindows, IWorkbenchActionConstants.M_WINDOW);
         menuBar.add(fileMenu);
         menuBar.add(windowsMenu);
         menuBar.add(helpMenu);

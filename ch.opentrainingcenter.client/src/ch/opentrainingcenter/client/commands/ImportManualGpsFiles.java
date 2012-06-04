@@ -79,7 +79,7 @@ public class ImportManualGpsFiles extends AbstractHandler {
                     final IFileImport fileImporter = ImporterFactory.createFileImporter(cc, athlete, databaseAccess, location);
 
                     final IGpsFileModelWrapper model = dialog.getModelWrapper();
-                    final Job job = new ImportManualJob(Messages.ImportManualGpsFiles_LadeGpsFiles, model, filterPath, fileImporter, cache);
+                    final Job job = new ImportManualJob(Messages.ImportManualGpsFilesLadeGpsFiles, model, filterPath, fileImporter, cache);
                     job.schedule();
                 } else {
                     throw new ExecutionException("Kein Athlete gesetzt. Fuck you!");

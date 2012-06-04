@@ -31,9 +31,9 @@ public class ImportFileDialog implements IFilterDialog {
 
         cc = new ConvertContainer(ExtensionHelper.getConverters());
         readCurrentPreferences();
-
+        filePrefixes.add("*.*"); //$NON-NLS-1$
         dialog.setFilterExtensions(filePrefixes.toArray(new String[0]));
-        dialog.setText(Messages.ImportManualGpsFiles_FileDialog);
+        dialog.setText(Messages.ImportManualGpsFilesFileDialog);
     }
 
     /*

@@ -18,7 +18,7 @@ public class ImportPreferencePage extends FieldEditorPreferencePage implements I
 
     public ImportPreferencePage() {
         super(GRID);
-        setDescription(Messages.ImportPreferencePage_0);
+        setDescription(Messages.ImportPreferencePage0);
     }
 
     @Override
@@ -30,9 +30,9 @@ public class ImportPreferencePage extends FieldEditorPreferencePage implements I
     protected void createFieldEditors() {
         final Composite fieldEditorParent = getFieldEditorParent();
 
-        addField(new DirectoryFieldEditor(PreferenceConstants.GPS_FILE_LOCATION, Messages.SamplePreferencePage_1, fieldEditorParent));
+        addField(new DirectoryFieldEditor(PreferenceConstants.GPS_FILE_LOCATION, Messages.SamplePreferencePage1, fieldEditorParent));
 
-        addField(new DirectoryFieldEditor(PreferenceConstants.GPS_FILE_LOCATION_PROG, Messages.SamplePreferencePage_2, fieldEditorParent));
+        addField(new DirectoryFieldEditor(PreferenceConstants.GPS_FILE_LOCATION_PROG, Messages.SamplePreferencePage2, fieldEditorParent));
         final ConvertContainer cc = new ConvertContainer(ExtensionHelper.getConverters());
         for (final IConvert2Tcx tcx : cc.getAllConverter()) {
             final String paramName = PreferenceConstants.FILE_SUFFIX_FOR_BACKUP + tcx.getFilePrefix();

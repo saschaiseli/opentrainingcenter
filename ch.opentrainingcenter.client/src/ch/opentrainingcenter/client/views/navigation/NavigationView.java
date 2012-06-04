@@ -95,7 +95,7 @@ public class NavigationView extends ViewPart {
         menuManager.addMenuListener(new IMenuListener() {
             @Override
             public void menuAboutToShow(final IMenuManager manager) {
-                final MenuManager subMenu = new MenuManager(Messages.NavigationView_9);
+                final MenuManager subMenu = new MenuManager(Messages.NavigationView9);
                 for (final ChangeRunType crt : container.getActions()) {
                     subMenu.add(crt);
                 }
@@ -154,7 +154,7 @@ public class NavigationView extends ViewPart {
             }
 
             private void writeToStatusLine(final IImported record) {
-                writeToStatusLine(Messages.NavigationView_0 + TimeHelper.convertDateToString(record.getActivityId(), false)
+                writeToStatusLine(Messages.NavigationView0 + TimeHelper.convertDateToString(record.getActivityId(), false)
                         + " " + getOverview(record)); //$NON-NLS-1$
             }
 
@@ -176,7 +176,7 @@ public class NavigationView extends ViewPart {
         }
 
         viewer.setInput(allImported);
-        writeStatus(Messages.NavigationView_2 + allImported.size() + Messages.NavigationView_3);
+        writeStatus(Messages.NavigationView2 + allImported.size() + Messages.NavigationView3);
         // }
 
         cache.addListener(new IRecordListener() {
@@ -201,7 +201,7 @@ public class NavigationView extends ViewPart {
                     public void run() {
                         try {
                             if (allImported == null || allImported.isEmpty()) {
-                                writeStatus(Messages.NavigationView_4);
+                                writeStatus(Messages.NavigationView4);
                             }
                             viewer.setInput(allImported);
                             viewer.refresh();
@@ -224,7 +224,7 @@ public class NavigationView extends ViewPart {
         applicationContext.setSelectedId(record.getActivityId());
 
         final IImportedConverter loader = ImporterFactory.createGpsFileLoader(store, cc);
-        final LoadActivityJob job = new LoadActivityJob(Messages.NavigationView_1, record, cache, loader);
+        final LoadActivityJob job = new LoadActivityJob(Messages.NavigationView1, record, cache, loader);
         job.schedule();
         job.addJobChangeListener(new ImportActivityJobListener(record));
     }
@@ -232,8 +232,8 @@ public class NavigationView extends ViewPart {
     private String getOverview(final IImported record) {
         final StringBuffer str = new StringBuffer();
         final ITraining training = record.getTraining();
-        str.append(Messages.NavigationView_7).append(DistanceHelper.roundDistanceFromMeterToKmMitEinheit(training.getLaengeInMeter()));
-        str.append(Messages.NavigationView_8).append(TimeHelper.convertSecondsToHumanReadableZeit(training.getDauerInSekunden()));
+        str.append(Messages.NavigationView7).append(DistanceHelper.roundDistanceFromMeterToKmMitEinheit(training.getLaengeInMeter()));
+        str.append(Messages.NavigationView8).append(TimeHelper.convertSecondsToHumanReadableZeit(training.getDauerInSekunden()));
         return str.toString();
     }
 

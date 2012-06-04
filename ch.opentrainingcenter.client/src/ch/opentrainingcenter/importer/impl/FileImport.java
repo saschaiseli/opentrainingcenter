@@ -58,7 +58,7 @@ public class FileImport implements IFileImport {
         final List<ActivityT> activitiesToImport = new ArrayList<ActivityT>();
         for (final IGpsFileModel model : modelWrapper.getGpsFileModels()) {
             final File file = new File(filterPath, model.getFileName());
-            monitor.setTaskName(Messages.ImportManualGpsFiles_5 + file.getName());
+            monitor.setTaskName(Messages.ImportManualGpsFiles5 + file.getName());
             LOGGER.info("importiere File: " + file.getName()); //$NON-NLS-1$
             final List<ActivityT> activities = cc.getMatchingConverter(file).convertActivity(file);
 

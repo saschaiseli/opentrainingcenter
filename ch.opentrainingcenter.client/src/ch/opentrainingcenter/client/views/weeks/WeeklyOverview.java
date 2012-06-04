@@ -18,22 +18,22 @@ public class WeeklyOverview extends ViewPart {
     @Override
     public void createPartControl(final Composite parent) {
 
-	LOGGER.debug("create single activity view"); //$NON-NLS-1$
-	final FormToolkit toolkit = new FormToolkit(parent.getDisplay());
-	final ScrolledForm form = toolkit.createScrolledForm(parent);
-	// form.setSize(1000, 2000);
-	// gridlayout definieren
+        LOGGER.debug("create single activity view"); //$NON-NLS-1$
+        final FormToolkit toolkit = new FormToolkit(parent.getDisplay());
+        final ScrolledForm form = toolkit.createScrolledForm(parent);
+        // form.setSize(1000, 2000);
+        // gridlayout definieren
 
-	final TableWrapLayout layout = new TableWrapLayout();
-	layout.numColumns = 1;
-	layout.makeColumnsEqualWidth = false;
+        final TableWrapLayout layout = new TableWrapLayout();
+        layout.numColumns = 1;
+        layout.makeColumnsEqualWidth = false;
 
-	final Composite body = form.getBody();
-	body.setLayout(layout);
+        final Composite body = form.getBody();
+        body.setLayout(layout);
 
-	final TableWrapData td = new TableWrapData(TableWrapData.FILL_GRAB);
-	body.setLayoutData(td);
-	form.setText(Messages.WeeklyOverview_0);
+        final TableWrapData td = new TableWrapData(TableWrapData.FILL_GRAB);
+        body.setLayoutData(td);
+        form.setText(Messages.WeeklyOverview0);
     }
 
     /**
@@ -41,6 +41,6 @@ public class WeeklyOverview extends ViewPart {
      */
     @Override
     public void setFocus() {
-	// this.getControl().setFocus();
+        // this.getControl().setFocus();
     }
 }

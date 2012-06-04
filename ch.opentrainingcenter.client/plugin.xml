@@ -163,6 +163,11 @@
             id="ch.opentrainingcenter.client.commands.ImportManualGpsFiles"
             name="importManualGpsFiles">
       </command>
+      <command
+            description="Einen Gesundheits Record hinzufügen"
+            id="ch.opentrainingcenter.client.commands.AddDailyHealth"
+            name="addDailyHealth">
+      </command>
    </extension>
    <extension
          id="opentrainingcenter"
@@ -249,6 +254,12 @@
                   commandId="ch.opentrainingcenter.client.commands.ImportManualGpsFiles"
                   icon="icons/import_klein.png"
                   label="Import Gps FIles"
+                  style="push">
+            </command>
+            <command
+                  commandId="ch.opentrainingcenter.client.commands.AddDailyHealth"
+                  icon="icons/cardiology.png"
+                  label="Täglicher Health Record hinzufügen"
                   style="push">
             </command>
             <separator
@@ -416,6 +427,10 @@
       <handler
             class="ch.opentrainingcenter.client.commands.ImportManualGpsFiles"
             commandId="ch.opentrainingcenter.client.commands.ImportManualGpsFiles">
+      </handler>
+      <handler
+            class="ch.opentrainingcenter.client.commands.AddDailyHealth"
+            commandId="ch.opentrainingcenter.client.commands.AddDailyHealth">
       </handler>
    </extension>
    <extension

@@ -3,10 +3,10 @@ package ch.opentrainingcenter.client.charts;
 import ch.opentrainingcenter.client.Messages;
 
 public enum ChartSerieType {
-    YEAR(Messages.ChartSerieType_0, Messages.ChartSerieType_8, Messages.ChartSerieType_3), //
-    MONTH(Messages.ChartSerieType_1, Messages.ChartSerieType_2, Messages.ChartSerieType_3), //
-    WEEK(Messages.ChartSerieType_4, Messages.ChartSerieType_5, Messages.ChartSerieType_6), //
-    DAY(Messages.ChartSerieType_7);
+    YEAR(Messages.ChartSerieType0, Messages.ChartSerieType8, Messages.ChartSerieType3), //
+    MONTH(Messages.ChartSerieType1, Messages.ChartSerieType2, Messages.ChartSerieType3), //
+    WEEK(Messages.ChartSerieType4, Messages.ChartSerieType5, Messages.ChartSerieType6), //
+    DAY(Messages.ChartSerieType7);
 
     private final String name;
     private final String formatPattern;

@@ -4,13 +4,13 @@ import ch.opentrainingcenter.client.Messages;
 
 public enum Wetter {
     SUN(0, Messages.SUN), //
-    LIGHT_CLOUDY(1, Messages.LIGHT_CLOUDY), //
+    LIGHT_CLOUDY(1, Messages.LIGHTCLOUDY), //
     CLOUDY(2, Messages.CLOUDY), //
-    HEAVY_CLOUDY(3, Messages.HEAVY_CLOUDY), //
-    LIGHT_RAIN(4, Messages.LIGHT_RAIN), //
+    HEAVY_CLOUDY(3, Messages.HEAVYCLOUDY), //
+    LIGHT_RAIN(4, Messages.LIGHTRAIN), //
     RAIN(5, Messages.RAIN), //
-    HEAVY_RAIN(6, Messages.HEAVY_RAIN), //
-    LIGHT_SNOW(7, Messages.LIGHT_SNOW), //
+    HEAVY_RAIN(6, Messages.HEAVYRAIN), //
+    LIGHT_SNOW(7, Messages.LIGHTSNOW), //
     SNOW(8, Messages.SNOW), //
     UNBEKANNT(9, Messages.UNKNOWN);
 

@@ -11,7 +11,7 @@ import ch.opentrainingcenter.transfer.IAthlete;
 public class SportlerValidator implements IValidator {
 
     private static final int MINIMALE_LAENGE = 4;
-	private final int minLength;
+    private final int minLength;
 
     public SportlerValidator(final int minLength) {
         this.minLength = minLength;
@@ -26,15 +26,15 @@ public class SportlerValidator implements IValidator {
                 // in db schauen ob es den user bereits gibt
                 final IAthlete athlete = DatabaseAccessFactory.getDatabaseAccess().getAthlete(name);
                 if (athlete != null) {
-                    return ValidationStatus.error(Messages.SportlerValidator_0);
+                    return ValidationStatus.error(Messages.SportlerValidator0);
                 } else {
                     return ValidationStatus.OK_STATUS;
                 }
             } else {
-                return ValidationStatus.error(Messages.SportlerValidator_1 + minLength + Messages.SportlerValidator_2);
+                return ValidationStatus.error(Messages.SportlerValidator1 + minLength + Messages.SportlerValidator2);
             }
         }
-        return ValidationStatus.error(Messages.SportlerValidator_3);
+        return ValidationStatus.error(Messages.SportlerValidator3);
     }
 
 }

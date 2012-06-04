@@ -3,15 +3,15 @@ package ch.opentrainingcenter.client.views.overview;
 import ch.opentrainingcenter.client.Messages;
 
 public enum ChartType {
-    HEART_DISTANCE(Messages.ChartType_0, Messages.ChartType_1, Messages.ChartType_2), //
-    SPEED_DISTANCE(Messages.ChartType_3, Messages.ChartType_4, Messages.ChartType_5), //
-    ALTITUDE_DISTANCE(Messages.ChartType_6, Messages.ChartType_7, Messages.ChartType_8);
+    HEART_DISTANCE(Messages.ChartType0, Messages.ChartType1, Messages.ChartType2), //
+    SPEED_DISTANCE(Messages.ChartType3, Messages.ChartType4, Messages.ChartType5), //
+    ALTITUDE_DISTANCE(Messages.ChartType6, Messages.ChartType7, Messages.ChartType8);
 
     private final String titel;
     private final String yAchse;
     private final String xAchse;
 
-    private ChartType(String titel, String yAchse, String xAchse) {
+    private ChartType(final String titel, final String yAchse, final String xAchse) {
         this.titel = titel;
         this.yAchse = yAchse;
         this.xAchse = xAchse;

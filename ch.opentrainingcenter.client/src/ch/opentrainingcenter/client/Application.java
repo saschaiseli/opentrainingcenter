@@ -28,7 +28,7 @@ public class Application implements IApplication {
 
     public static final String IMPORT_EXTENSION_POINT = "ch.opentrainingcenter.myimporter";//$NON-NLS-1$
 
-    public static final String WINDOW_TITLE = Messages.Application_WindowTitle;
+    public static final String WINDOW_TITLE = Messages.ApplicationWindowTitle;
 
     private final IDatabaseAccess databaseAccess = DatabaseAccessFactory.getDatabaseAccess();
 
@@ -47,8 +47,8 @@ public class Application implements IApplication {
             if (isLocked) {
                 Log.error("DB gelockt. stoppe die Applikation");
                 System.exit(0);
-                final MessageDialog messageDialog = new MessageDialog(display.getActiveShell(), Messages.Application_0, null,
-                        Messages.Application_1, MessageDialog.ERROR, new String[] { Messages.Application_2 }, 0);
+                final MessageDialog messageDialog = new MessageDialog(display.getActiveShell(), Messages.Application0, null,
+                        Messages.Application1, MessageDialog.ERROR, new String[] { Messages.Application2 }, 0);
                 if (messageDialog.open() == 1) {
                     return IApplication.EXIT_OK;
                 }

@@ -47,7 +47,7 @@ public class RunTypeDialog extends TitleAreaDialog {
     @Override
     protected Control createDialogArea(final Composite parent) {
 
-        setTitle(Messages.RunTypeDialog_0);
+        setTitle(Messages.RunTypeDialog0);
         // setMessage("message");
         setTitleImage(Activator.getImageDescriptor(IImageKeys.IMPORT_GPS_GROSS).createImage());
 
@@ -55,7 +55,7 @@ public class RunTypeDialog extends TitleAreaDialog {
         parent.setLayout(layout);
 
         final Label label = new Label(parent, SWT.NONE);
-        label.setText(Messages.RunTypeDialog_1);
+        label.setText(Messages.RunTypeDialog1);
         label.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
 
         viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
@@ -85,7 +85,7 @@ public class RunTypeDialog extends TitleAreaDialog {
     }
 
     private void createColumns() {
-        final String[] titles = { Messages.RunTypeDialog_2, Messages.RunTypeDialog_3, Messages.RunTypeDialog_4 };
+        final String[] titles = { Messages.RunTypeDialog2, Messages.RunTypeDialog3, Messages.RunTypeDialog4 };
         final int[] bounds = { 80, 250, 250 };
 
         // Flag

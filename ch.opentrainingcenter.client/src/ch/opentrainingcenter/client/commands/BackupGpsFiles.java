@@ -35,7 +35,7 @@ public class BackupGpsFiles extends AbstractHandler {
             destFolder.mkdir();
             LOG.info("Pfad zu Backupfolder erstellt"); //$NON-NLS-1$
         }
-        final Job job = new BackupJob(Messages.BackupGpsFiles_0, source, destFolder, ExtensionHelper.getConverters());
+        final Job job = new BackupJob(Messages.BackupGpsFiles0, source, destFolder, ExtensionHelper.getConverters());
         job.schedule();
         return null;
     }

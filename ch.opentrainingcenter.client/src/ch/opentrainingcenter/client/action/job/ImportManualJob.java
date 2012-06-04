@@ -47,7 +47,7 @@ public class ImportManualJob extends Job {
 
     @Override
     protected IStatus run(final IProgressMonitor monitor) {
-        monitor.beginTask(Messages.ImportManualGpsFiles_4, modelWrapper.size());
+        monitor.beginTask(Messages.ImportManualGpsFiles4, modelWrapper.size());
         final List<ActivityT> activitiesToImport = new ArrayList<ActivityT>();
         try {
             final List<ActivityT> importFiles = importer.importFile(filterPath, modelWrapper, monitor);

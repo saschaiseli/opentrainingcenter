@@ -1,4 +1,4 @@
-package ch.opentrainingcenter.client.views.ahtlete;
+package ch.opentrainingcenter.client.views.dialoge;
 
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
@@ -6,20 +6,22 @@ import org.eclipse.core.runtime.IStatus;
 
 import ch.opentrainingcenter.client.Messages;
 
-public class NumberValidator implements IValidator {
+public class OptionalNumberValidator implements IValidator {
 
-    private final int max;
     private final int min;
-    private final String messageWennLeer;
+    private final int max;
 
-    public NumberValidator(final int min, final int max, final String messageWennLeer) {
+    public OptionalNumberValidator(final int min, final int max) {
         this.min = min;
         this.max = max;
-        this.messageWennLeer = messageWennLeer;
     }
 
     @Override
     public IStatus validate(final Object value) {
+        if (value == null) {
+            return ValidationStatus.OK_STATUS;
+        }
+
         if (value instanceof Integer) {
             final String s = String.valueOf(value);
             if (s.matches("\\d*")) { //$NON-NLS-1$
@@ -33,6 +35,6 @@ public class NumberValidator implements IValidator {
                 }
             }
         }
-        return ValidationStatus.error(messageWennLeer);
+        return ValidationStatus.error("Nur Zahlen erlaubt");
     }
 }

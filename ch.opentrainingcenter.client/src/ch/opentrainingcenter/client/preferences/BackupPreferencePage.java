@@ -14,7 +14,7 @@ public class BackupPreferencePage extends FieldEditorPreferencePage implements I
 
     public BackupPreferencePage() {
         super(GRID);
-        setDescription(Messages.BackupPreferencePage_0);
+        setDescription(Messages.BackupPreferencePage0);
     }
 
     @Override
@@ -26,7 +26,7 @@ public class BackupPreferencePage extends FieldEditorPreferencePage implements I
     protected void createFieldEditors() {
         final Composite fieldEditorParent = getFieldEditorParent();
 
-        addField(new DirectoryFieldEditor(PreferenceConstants.BACKUP_FILE_LOCATION, Messages.BackupPreferencePage_1, fieldEditorParent));
+        addField(new DirectoryFieldEditor(PreferenceConstants.BACKUP_FILE_LOCATION, Messages.BackupPreferencePage1, fieldEditorParent));
     }
 
 }

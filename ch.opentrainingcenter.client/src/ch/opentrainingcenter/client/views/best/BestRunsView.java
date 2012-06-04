@@ -85,7 +85,8 @@ public class BestRunsView extends ViewPart {
     }
 
     private void addPace(final Composite body, final IGoldMedalModel model) {
-        sectionPace = toolkit.createSection(body, Section.DESCRIPTION | ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE | ExpandableComposite.EXPANDED);
+        sectionPace = toolkit.createSection(body, Section.DESCRIPTION | ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE
+                | ExpandableComposite.EXPANDED);
 
         td = new TableWrapData(TableWrapData.FILL_GRAB);
         td.colspan = 1;
@@ -93,24 +94,30 @@ public class BestRunsView extends ViewPart {
         td.grabVertical = true;
 
         sectionPace.setLayoutData(td);
-        sectionPace.setText(Messages.BestRunsView_8);
-        sectionPace.setDescription(Messages.BestRunsView_9);
+        sectionPace.setText(Messages.BestRunsView8);
+        sectionPace.setDescription(Messages.BestRunsView9);
 
         final Composite overViewComposite = toolkit.createComposite(sectionPace);
         final GridLayout layoutClient = new GridLayout(3, false);
         overViewComposite.setLayout(layoutClient);
 
-        bestKl10 = createLabel(overViewComposite, Messages.BestRunsView_10 + Messages.BestRunsView_11, model.getSchnellstePace(Intervall.KLEINER_10), Units.PACE);
-        best10 = createLabel(overViewComposite, Messages.BestRunsView_12 + Messages.BestRunsView_13, model.getSchnellstePace(Intervall.VON10_BIS_15), Units.PACE);
-        best15 = createLabel(overViewComposite, Messages.BestRunsView_14 + Messages.BestRunsView_15, model.getSchnellstePace(Intervall.VON15_BIS_20), Units.PACE);
-        best20 = createLabel(overViewComposite, Messages.BestRunsView_16 + Messages.BestRunsView_17, model.getSchnellstePace(Intervall.VON20_BIS_25), Units.PACE);
-        best25 = createLabel(overViewComposite, Messages.BestRunsView_18 + Messages.BestRunsView_19, model.getSchnellstePace(Intervall.PLUS25), Units.PACE);
+        bestKl10 = createLabel(overViewComposite, Messages.BestRunsView10 + Messages.BestRunsView11, model
+                .getSchnellstePace(Intervall.KLEINER_10), Units.PACE);
+        best10 = createLabel(overViewComposite, Messages.BestRunsView12 + Messages.BestRunsView13, model
+                .getSchnellstePace(Intervall.VON10_BIS_15), Units.PACE);
+        best15 = createLabel(overViewComposite, Messages.BestRunsView14 + Messages.BestRunsView15, model
+                .getSchnellstePace(Intervall.VON15_BIS_20), Units.PACE);
+        best20 = createLabel(overViewComposite, Messages.BestRunsView16 + Messages.BestRunsView17, model
+                .getSchnellstePace(Intervall.VON20_BIS_25), Units.PACE);
+        best25 = createLabel(overViewComposite, Messages.BestRunsView18 + Messages.BestRunsView19, model
+                .getSchnellstePace(Intervall.PLUS25), Units.PACE);
         sectionPace.setClient(overViewComposite);
 
     }
 
     private void addText(final Composite body, final IGoldMedalModel model) {
-        sectionOverall = toolkit.createSection(body, Section.DESCRIPTION | ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE | ExpandableComposite.EXPANDED);
+        sectionOverall = toolkit.createSection(body, Section.DESCRIPTION | ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE
+                | ExpandableComposite.EXPANDED);
 
         td = new TableWrapData(TableWrapData.FILL_GRAB);
         td.colspan = 1;
@@ -118,19 +125,19 @@ public class BestRunsView extends ViewPart {
         td.grabVertical = true;
 
         sectionOverall.setLayoutData(td);
-        sectionOverall.setText(Messages.BestRunsView_1);
-        sectionOverall.setDescription(Messages.BestRunsView_2);
+        sectionOverall.setText(Messages.BestRunsView1);
+        sectionOverall.setDescription(Messages.BestRunsView2);
 
         final Composite overViewComposite = toolkit.createComposite(sectionOverall);
         final GridLayout layoutClient = new GridLayout(3, false);
         overViewComposite.setLayout(layoutClient);
 
-        bestPace = createLabel(overViewComposite, Messages.BestRunsView_3, model.getSchnellstePace(), Units.PACE);
-        longestDistance = createLabel(overViewComposite, Messages.BestRunsView_4, model.getLongestDistance(), Units.KM);
-        longestRun = createLabel(overViewComposite, Messages.BestRunsView_5, model.getLongestRun(), Units.HOUR_MINUTE_SEC);
-        highestPulse = createLabel(overViewComposite, Messages.BestRunsView_6, model.getHighestPulse(), Units.BEATS_PER_MINUTE);
-        highAvPulse = createLabel(overViewComposite, Messages.BestRunsView_7, model.getHighestAveragePulse(), Units.BEATS_PER_MINUTE);
-        lowestAvPulse = createLabel(overViewComposite, Messages.BestRunsView_20, model.getLowestAveragePulse(), Units.BEATS_PER_MINUTE);
+        bestPace = createLabel(overViewComposite, Messages.BestRunsView3, model.getSchnellstePace(), Units.PACE);
+        longestDistance = createLabel(overViewComposite, Messages.BestRunsView4, model.getLongestDistance(), Units.KM);
+        longestRun = createLabel(overViewComposite, Messages.BestRunsView5, model.getLongestRun(), Units.HOUR_MINUTE_SEC);
+        highestPulse = createLabel(overViewComposite, Messages.BestRunsView6, model.getHighestPulse(), Units.BEATS_PER_MINUTE);
+        highAvPulse = createLabel(overViewComposite, Messages.BestRunsView7, model.getHighestAveragePulse(), Units.BEATS_PER_MINUTE);
+        lowestAvPulse = createLabel(overViewComposite, Messages.BestRunsView20, model.getLowestAveragePulse(), Units.BEATS_PER_MINUTE);
 
         sectionOverall.setClient(overViewComposite);
     }
@@ -181,7 +188,7 @@ public class BestRunsView extends ViewPart {
         td.grabHorizontal = true;
         td.grabVertical = true;
         body.setLayoutData(td);
-        form.setText(Messages.BestRunsView_0);
+        form.setText(Messages.BestRunsView0);
         final String athleteId = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.ATHLETE_ID);
         if (athleteId != null && athleteId.length() > 0) {
             athlete = DatabaseAccessFactory.getDatabaseAccess().getAthlete(Integer.parseInt(athleteId));

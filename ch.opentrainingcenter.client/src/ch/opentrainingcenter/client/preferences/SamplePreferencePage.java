@@ -43,7 +43,7 @@ public class SamplePreferencePage extends FieldEditorPreferencePage implements I
 
     public SamplePreferencePage() {
         super(GRID);
-        setDescription(Messages.SamplePreferencePage_0);
+        setDescription(Messages.SamplePreferencePage0);
         allAthletes = DatabaseAccessFactory.getDatabaseAccess().getAllAthletes();
     }
 
@@ -56,47 +56,47 @@ public class SamplePreferencePage extends FieldEditorPreferencePage implements I
     public void createFieldEditors() {
         final Composite fieldEditorParent = getFieldEditorParent();
 
-        addField(new DirectoryFieldEditor(PreferenceConstants.GPS_FILE_LOCATION, Messages.SamplePreferencePage_1, fieldEditorParent));
+        addField(new DirectoryFieldEditor(PreferenceConstants.GPS_FILE_LOCATION, Messages.SamplePreferencePage1, fieldEditorParent));
 
-        addField(new DirectoryFieldEditor(PreferenceConstants.GPS_FILE_LOCATION_PROG, Messages.SamplePreferencePage_2, fieldEditorParent));
+        addField(new DirectoryFieldEditor(PreferenceConstants.GPS_FILE_LOCATION_PROG, Messages.SamplePreferencePage2, fieldEditorParent));
 
         final List<String[]> vals = new ArrayList<String[]>();
         for (final IAthlete ath : allAthletes) {
             vals.add(new String[] { ath.getName(), String.valueOf(ath.getId()) });
         }
-        final ComboFieldEditor comboField = new ComboFieldEditor(PreferenceConstants.ATHLETE_ID, Messages.SamplePreferencePage_3, vals
+        final ComboFieldEditor comboField = new ComboFieldEditor(PreferenceConstants.ATHLETE_ID, Messages.SamplePreferencePage3, vals
                 .toArray(new String[0][0]), fieldEditorParent);
         addField(comboField);
         comboField.setEnabled(false, fieldEditorParent);
 
-        final IntegerFieldEditor sb = new IntegerFieldEditor(PreferenceConstants.SB, Messages.SamplePreferencePage_4, fieldEditorParent);
-        sb.setLabelText(Messages.SamplePreferencePage_5);
+        final IntegerFieldEditor sb = new IntegerFieldEditor(PreferenceConstants.SB, Messages.SamplePreferencePage4, fieldEditorParent);
+        sb.setLabelText(Messages.SamplePreferencePage5);
         sb.setValidRange(91, 95);
-        sb.setErrorMessage(Messages.SamplePreferencePage_6);
+        sb.setErrorMessage(Messages.SamplePreferencePage6);
         sb.setTextLimit(2);
         addField(sb);
 
-        final IntegerFieldEditor extIntervall = new IntegerFieldEditor(PreferenceConstants.EXTINTERVALL, Messages.SamplePreferencePage_7,
+        final IntegerFieldEditor extIntervall = new IntegerFieldEditor(PreferenceConstants.EXTINTERVALL, Messages.SamplePreferencePage7,
                 fieldEditorParent);
-        extIntervall.setLabelText(Messages.SamplePreferencePage_8);
+        extIntervall.setLabelText(Messages.SamplePreferencePage8);
         extIntervall.setValidRange(85, 89);
-        extIntervall.setErrorMessage(Messages.SamplePreferencePage_9);
+        extIntervall.setErrorMessage(Messages.SamplePreferencePage9);
         extIntervall.setTextLimit(2);
         addField(extIntervall);
 
-        final IntegerFieldEditor intDl = new IntegerFieldEditor(PreferenceConstants.INTDL, Messages.SamplePreferencePage_10,
+        final IntegerFieldEditor intDl = new IntegerFieldEditor(PreferenceConstants.INTDL, Messages.SamplePreferencePage10,
                 fieldEditorParent);
-        intDl.setLabelText(Messages.SamplePreferencePage_11);
+        intDl.setLabelText(Messages.SamplePreferencePage11);
         intDl.setValidRange(75, 80);
-        intDl.setErrorMessage(Messages.SamplePreferencePage_12);
+        intDl.setErrorMessage(Messages.SamplePreferencePage12);
         intDl.setTextLimit(2);
         addField(intDl);
 
-        final IntegerFieldEditor extDl = new IntegerFieldEditor(PreferenceConstants.EXTDL, Messages.SamplePreferencePage_13,
+        final IntegerFieldEditor extDl = new IntegerFieldEditor(PreferenceConstants.EXTDL, Messages.SamplePreferencePage13,
                 fieldEditorParent);
-        extDl.setLabelText(Messages.SamplePreferencePage_14);
+        extDl.setLabelText(Messages.SamplePreferencePage14);
         extDl.setValidRange(70, 75);
-        extDl.setErrorMessage(Messages.SamplePreferencePage_15);
+        extDl.setErrorMessage(Messages.SamplePreferencePage15);
         extDl.setTextLimit(2);
         addField(extDl);
 

@@ -82,8 +82,8 @@ public class OTCBarChartViewer implements ISelectionProvider {
 
     private static final Logger LOGGER = Logger.getLogger(OTCBarChartViewer.class);
 
-    private static final String DISTANZ = Messages.OTCBarChartViewer_0;
-    private static final String HEART = Messages.OTCBarChartViewer_1;
+    private static final String DISTANZ = Messages.OTCBarChartViewer0;
+    private static final String HEART = Messages.OTCBarChartViewer1;
     private final Composite composite;
     private final ChartComposite chartComposite;
     private final ListenerList selectionListeners = new ListenerList(ListenerList.IDENTITY);
@@ -155,7 +155,7 @@ public class OTCBarChartViewer implements ISelectionProvider {
 
         if (type.isLabelVisible()) {
             final Button bItemLabelPrinter = new Button(radioContainer, SWT.CHECK);
-            bItemLabelPrinter.setText(Messages.OTCBarChartViewer_9);
+            bItemLabelPrinter.setText(Messages.OTCBarChartViewer9);
             bItemLabelPrinter.setSelection(true);
             bItemLabelPrinter.addSelectionListener(new SelectionListener() {
 
@@ -180,7 +180,7 @@ public class OTCBarChartViewer implements ISelectionProvider {
         }
 
         final Button b = new Button(radioContainer, SWT.CHECK);
-        b.setText(Messages.OTCBarChartViewer_2);
+        b.setText(Messages.OTCBarChartViewer2);
 
         b.addSelectionListener(new SelectionListener() {
 
@@ -211,7 +211,7 @@ public class OTCBarChartViewer implements ISelectionProvider {
                 plot.setDataset(1, createOrUpdateDataSet(daten, HEART, filter));
                 plot.mapDatasetToRangeAxis(1, 1);
 
-                final ValueAxis axis2 = new NumberAxis(Messages.OTCBarChartViewer_3);
+                final ValueAxis axis2 = new NumberAxis(Messages.OTCBarChartViewer3);
                 plot.setRangeAxis(1, axis2);
 
                 final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer(true, true);
@@ -249,7 +249,7 @@ public class OTCBarChartViewer implements ISelectionProvider {
         if (buttonFilter != null) {
             button.setText(buttonFilter.getTitle());
         } else {
-            button.setText(Messages.OTCBarChartViewer_10);
+            button.setText(Messages.OTCBarChartViewer10);
             button.setSelection(true);
         }
         button.addSelectionListener(new SelectionListener() {
@@ -312,7 +312,7 @@ public class OTCBarChartViewer implements ISelectionProvider {
             timeSeriesHeartCollection.setXPosition(TimePeriodAnchor.MIDDLE);
             return timeSeriesHeartCollection;
         }
-        throw new IllegalArgumentException(Messages.OTCBarChartViewer_4 + serieTyp + Messages.OTCBarChartViewer_5);
+        throw new IllegalArgumentException(Messages.OTCBarChartViewer4 + serieTyp + Messages.OTCBarChartViewer5);
     }
 
     private Map<String, TimeSeries> updateSeries(final TrainingOverviewDatenAufbereiten daten, final RunType filter) {
@@ -349,8 +349,8 @@ public class OTCBarChartViewer implements ISelectionProvider {
 
     private JFreeChart createChart(final IntervalXYDataset dataset, final ChartSerieType type) {
 
-        chart = ChartFactory.createXYBarChart(Messages.OTCBarChartViewer_6, Messages.OTCBarChartViewer_7, true,
-                Messages.OTCBarChartViewer_8, dataset, PlotOrientation.VERTICAL, false, true, false);
+        chart = ChartFactory.createXYBarChart(Messages.OTCBarChartViewer6, Messages.OTCBarChartViewer7, true, Messages.OTCBarChartViewer8,
+                dataset, PlotOrientation.VERTICAL, false, true, false);
         chart.setAntiAlias(true);
         chart.setBorderVisible(false);
         final org.eclipse.swt.graphics.Color b = Display.getDefault().getActiveShell().getBackground();

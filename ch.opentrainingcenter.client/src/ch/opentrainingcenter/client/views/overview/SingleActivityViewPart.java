@@ -83,7 +83,7 @@ public class SingleActivityViewPart extends ViewPart {
         LOGGER.debug("create single activity view"); //$NON-NLS-1$
         toolkit = new FormToolkit(parent.getDisplay());
         form = toolkit.createScrolledForm(parent);
-        form.setText(Messages.SingleActivityViewPart_0 + TimeHelper.convertDateToString(simpleTraining.getDatum(), true));
+        form.setText(Messages.SingleActivityViewPart0 + TimeHelper.convertDateToString(simpleTraining.getDatum(), true));
         final Composite body = form.getBody();
 
         final TableWrapLayout layout = new TableWrapLayout();
@@ -124,24 +124,24 @@ public class SingleActivityViewPart extends ViewPart {
         td = new TableWrapData(TableWrapData.FILL_GRAB);
         td.colspan = 1;
         overviewSection.setLayoutData(td);
-        overviewSection.setText(Messages.SingleActivityViewPart_1);
-        overviewSection.setDescription(Messages.SingleActivityViewPart_2);
+        overviewSection.setText(Messages.SingleActivityViewPart1);
+        overviewSection.setDescription(Messages.SingleActivityViewPart2);
 
         final Composite overViewComposite = toolkit.createComposite(overviewSection);
         final GridLayout layoutClient = new GridLayout(3, false);
         overViewComposite.setLayout(layoutClient);
 
-        addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_3, simpleTraining.getZeit(), Units.HOUR_MINUTE_SEC);
-        addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_4, simpleTraining.getLaengeInKilometer(), Units.KM);
+        addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart3, simpleTraining.getZeit(), Units.HOUR_MINUTE_SEC);
+        addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart4, simpleTraining.getLaengeInKilometer(), Units.KM);
         final int avgHeartRate = simpleTraining.getAvgHeartRate();
         if (avgHeartRate > 0) {
-            addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_5, String.valueOf(avgHeartRate), Units.BEATS_PER_MINUTE);
+            addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart5, String.valueOf(avgHeartRate), Units.BEATS_PER_MINUTE);
         } else {
-            addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_5, "-", Units.BEATS_PER_MINUTE); //$NON-NLS-1$
+            addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart5, "-", Units.BEATS_PER_MINUTE); //$NON-NLS-1$
         }
-        addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_6, simpleTraining.getMaxHeartBeat(), Units.BEATS_PER_MINUTE);
-        addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_7, simpleTraining.getPace(), Units.PACE);
-        addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_8, simpleTraining.getMaxSpeed(), Units.PACE);
+        addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart6, simpleTraining.getMaxHeartBeat(), Units.BEATS_PER_MINUTE);
+        addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart7, simpleTraining.getPace(), Units.PACE);
+        addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart8, simpleTraining.getMaxSpeed(), Units.PACE);
         overviewSection.setClient(overViewComposite);
     }
 
@@ -317,8 +317,8 @@ public class SingleActivityViewPart extends ViewPart {
         td.grabVertical = true;
 
         mapSection.setLayoutData(td);
-        mapSection.setText(Messages.SingleActivityViewPart_16);
-        mapSection.setDescription(Messages.SingleActivityViewPart_17);
+        mapSection.setText(Messages.SingleActivityViewPart16);
+        mapSection.setDescription(Messages.SingleActivityViewPart17);
 
         final Composite client = toolkit.createComposite(mapSection);
         // client.setBackground(getViewSite().getWorkbenchWindow().getShell().getDisplay().getSystemColor(SWT.COLOR_CYAN));
@@ -357,8 +357,8 @@ public class SingleActivityViewPart extends ViewPart {
         td.grabHorizontal = true;
         td.grabVertical = true;
         heartSection.setLayoutData(td);
-        heartSection.setText(Messages.SingleActivityViewPart_9);
-        heartSection.setDescription(Messages.SingleActivityViewPart_10);
+        heartSection.setText(Messages.SingleActivityViewPart9);
+        heartSection.setDescription(Messages.SingleActivityViewPart10);
         //
         final Composite client = toolkit.createComposite(heartSection);
 
@@ -392,8 +392,8 @@ public class SingleActivityViewPart extends ViewPart {
         td.grabHorizontal = true;
         td.grabVertical = true;
         speedSection.setLayoutData(td);
-        speedSection.setText(Messages.SingleActivityViewPart_11);
-        speedSection.setDescription(Messages.SingleActivityViewPart_12);
+        speedSection.setText(Messages.SingleActivityViewPart11);
+        speedSection.setDescription(Messages.SingleActivityViewPart12);
         //
         final Composite client = toolkit.createComposite(speedSection);
 
@@ -429,8 +429,8 @@ public class SingleActivityViewPart extends ViewPart {
         td.grabHorizontal = true;
         td.grabVertical = true;
         altitude.setLayoutData(td);
-        altitude.setText(Messages.SingleActivityViewPart_13);
-        altitude.setDescription(Messages.SingleActivityViewPart_14);
+        altitude.setText(Messages.SingleActivityViewPart13);
+        altitude.setDescription(Messages.SingleActivityViewPart14);
 
         final Composite client = toolkit.createComposite(altitude);
 
