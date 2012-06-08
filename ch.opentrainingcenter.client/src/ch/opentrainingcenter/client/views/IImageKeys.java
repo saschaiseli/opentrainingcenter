@@ -11,6 +11,8 @@ public final class IImageKeys {
 
     public static final String CARDIO = "icons/cardiology.png"; //$NON-NLS-1$
 
+    public static final String CARDIO3232 = "icons/cardiology_32_32.png"; //$NON-NLS-1$
+
     public static final String RUNNING_MAN = "icons/package_games_sports_24_24.png"; //$NON-NLS-1$
 
     public static final String GREEN_TABLE = "icons/table_green_24_24.png"; //$NON-NLS-1$

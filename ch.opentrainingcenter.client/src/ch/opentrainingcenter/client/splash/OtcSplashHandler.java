@@ -59,7 +59,7 @@ public class OtcSplashHandler extends AbstractSplashHandler {
         container.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
 
         /* Progress Bar */
-        fBar = new ProgressBar(container, SWT.HORIZONTAL);
+        fBar = new ProgressBar(container, SWT.HORIZONTAL | SWT.SMOOTH);
         final GridData gd = new GridData(SWT.FILL, SWT.BEGINNING, true, true);
         gd.horizontalIndent = 5;
         fBar.setLayoutData(gd);

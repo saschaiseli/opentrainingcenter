@@ -5,12 +5,16 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.databinding.AggregateValidationStatus;
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeanProperties;
 import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.observable.ChangeEvent;
+import org.eclipse.core.databinding.observable.IChangeListener;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -42,6 +46,7 @@ import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.client.PreferenceConstants;
 import ch.opentrainingcenter.client.model.sportler.Sportler;
 import ch.opentrainingcenter.client.views.ApplicationContext;
+import ch.opentrainingcenter.client.views.databinding.NumberValidator;
 import ch.opentrainingcenter.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.db.IDatabaseAccess;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
@@ -66,6 +71,7 @@ public class CreateAthleteView extends ViewPart {
     private Section selectSportler;
     private Section overviewSection;
     private final Map<Integer, Integer> indexOfSelectBoxMappedToDatabaseId = new HashMap<Integer, Integer>();
+    private Button okButton;
 
     public CreateAthleteView() {
     }
@@ -91,7 +97,7 @@ public class CreateAthleteView extends ViewPart {
         form.setText(Messages.CreateAthleteView0);
 
         createSelectSportler(body);
-        createAddSportlerMask(body);
+        createAddSportler(body);
     }
 
     private void createSelectSportler(final Composite body) {
@@ -204,7 +210,15 @@ public class CreateAthleteView extends ViewPart {
         selectSportler.setClient(sportlerComposite);
     }
 
-    private void createAddSportlerMask(final Composite body) {
+    private void enableOrDisableButtonIfNoUserIsSelected(final Button selectUser) {
+        if (user.getSelectionIndex() >= 0) {
+            selectUser.setEnabled(true);
+        } else {
+            selectUser.setToolTipText(Messages.CreateAthleteView18);
+        }
+    }
+
+    private void createAddSportler(final Composite body) {
 
         overviewSection = toolkit.createSection(body, Section.DESCRIPTION | Section.TITLE_BAR | Section.TWISTIE | Section.EXPANDED);
         overviewSection.addExpansionListener(new ExpansionAdapter() {
@@ -277,11 +291,12 @@ public class CreateAthleteView extends ViewPart {
         gridData.horizontalAlignment = GridData.FILL;
         gridData.horizontalSpan = 2;
         errorLabel.setLayoutData(gridData);
+        errorLabel.setVisible(false);
 
-        final Button button1 = new Button(overViewComposite, SWT.PUSH);
-        button1.setText(Messages.CreateAthleteView16);
-        button1.setEnabled(false);
-        button1.addSelectionListener(new SelectionAdapter() {
+        okButton = new Button(overViewComposite, SWT.PUSH);
+        okButton.setText(Messages.CreateAthleteView16);
+        okButton.setEnabled(false);
+        okButton.addSelectionListener(new SelectionAdapter() {
 
             @Override
             public void widgetSelected(final SelectionEvent e) {
@@ -304,7 +319,7 @@ public class CreateAthleteView extends ViewPart {
         gridData.horizontalAlignment = SWT.LEFT;
         gridData.grabExcessHorizontalSpace = false;
         gridData.horizontalIndent = 5;
-        button1.setLayoutData(gridData);
+        okButton.setLayoutData(gridData);
 
         bindValues();
 
@@ -313,14 +328,6 @@ public class CreateAthleteView extends ViewPart {
 
     private void resetForm() {
         nameTf.setText("");
-    }
-
-    private void enableOrDisableButtonIfNoUserIsSelected(final Button selectUser) {
-        if (user.getSelectionIndex() >= 0) {
-            selectUser.setEnabled(true);
-        } else {
-            selectUser.setToolTipText(Messages.CreateAthleteView18);
-        }
     }
 
     private void bindValues() {
@@ -344,7 +351,7 @@ public class CreateAthleteView extends ViewPart {
         modelValue = BeanProperties.value(Sportler.class, "age").observe(sportler); //$NON-NLS-1$
         // Add an validator so that age can only be a number
         final UpdateValueStrategy strategy = new UpdateValueStrategy();
-        strategy.setBeforeSetValidator(new NumberValidator(18, 99, Messages.CreateAthleteView19));
+        strategy.setBeforeSetValidator(new NumberValidator(12, 99, Messages.CreateAthleteView19));
         // strategy.setBeforeSetValidator(validator);
 
         final Binding bindValue = ctx.bindValue(widgetValue, modelValue, strategy, null);
@@ -357,7 +364,7 @@ public class CreateAthleteView extends ViewPart {
         // Add an validator so that age can only be a number
 
         final UpdateValueStrategy strategyPulse = new UpdateValueStrategy();
-        strategyPulse.setBeforeSetValidator(new NumberValidator(160, 220, Messages.CreateAthleteView20));
+        strategyPulse.setBeforeSetValidator(new NumberValidator(150, 220, Messages.CreateAthleteView20));
 
         final Binding bindMaxPulse = ctx.bindValue(widgetValue, modelValue, strategyPulse, null);
         // Add some decorations
@@ -369,17 +376,24 @@ public class CreateAthleteView extends ViewPart {
         modelValue = BeansObservables.observeValue(sportler, "gender"); //$NON-NLS-1$
         ctx.bindValue(widgetValue, modelValue);
 
-        // final IObservableValue errorObservable =
-        // WidgetProperties.text().observe(errorLabel);
-        // // This one listenes to all changes
-        // ctx.bindValue(errorObservable, new
-        // AggregateValidationStatus(ctx.getBindings(),
-        // AggregateValidationStatus.MAX_SEVERITY), null, null);
+        final IObservableValue errorObservable = WidgetProperties.text().observe(errorLabel);
+        // This one listenes to all changes
+        ctx.bindValue(errorObservable, new AggregateValidationStatus(ctx.getBindings(), AggregateValidationStatus.MAX_SEVERITY), null, null);
 
+        errorObservable.addChangeListener(new IChangeListener() {
+
+            @Override
+            public void handleChange(final ChangeEvent event) {
+                if (ValidationStatus.OK_STATUS.getMessage().equals(errorLabel.getText())) {
+                    okButton.setEnabled(true);
+                } else {
+                    okButton.setEnabled(false);
+                }
+            }
+        });
     }
 
     @Override
     public void setFocus() {
-        // TODO Auto-generated method stub
     }
 }
