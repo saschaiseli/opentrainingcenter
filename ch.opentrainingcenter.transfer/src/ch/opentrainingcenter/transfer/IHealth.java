@@ -2,27 +2,26 @@ package ch.opentrainingcenter.transfer;
 
 import java.util.Date;
 
-
 public interface IHealth {
 
-    public abstract int getId();
+    int getId();
 
-    public abstract void setId(int id);
+    void setId(int id);
 
-    public abstract IAthlete getAthlete();
+    IAthlete getAthlete();
 
-    public abstract void setAthlete(IAthlete athlete);
+    void setAthlete(IAthlete athlete);
 
-    public abstract Integer getWeight();
+    Double getWeight();
 
-    public abstract void setWeight(Integer weight);
+    void setWeight(Double weight);
 
-    public abstract Integer getCardio();
+    Integer getCardio();
 
-    public abstract void setCardio(Integer cardio);
+    void setCardio(Integer cardio);
 
-    public abstract Date getDateofmeasure();
+    Date getDateofmeasure();
 
-    public abstract void setDateofmeasure(Date dateofmeasure);
+    void setDateofmeasure(Date dateofmeasure);
 
 }

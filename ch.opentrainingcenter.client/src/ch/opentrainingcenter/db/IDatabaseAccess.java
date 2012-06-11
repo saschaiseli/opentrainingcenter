@@ -8,6 +8,7 @@ import org.eclipse.core.runtime.IExecutableExtensionFactory;
 
 import ch.opentrainingcenter.client.model.RunType;
 import ch.opentrainingcenter.transfer.IAthlete;
+import ch.opentrainingcenter.transfer.IHealth;
 import ch.opentrainingcenter.transfer.IImported;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.IWeather;
@@ -23,6 +24,11 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
     void createDatabase();
 
     List<IAthlete> getAllAthletes();
+
+    /**
+     * speichert den täglichen ruhepuls und gewicht.
+     */
+    void saveHealth(IHealth health);
 
     /**
      * Gibt eine nach datum sortierte Liste von allen importierted Records

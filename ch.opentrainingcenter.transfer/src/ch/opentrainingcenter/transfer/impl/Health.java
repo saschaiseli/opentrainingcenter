@@ -16,26 +16,27 @@ public class Health implements java.io.Serializable, IHealth {
     private static final long serialVersionUID = 1L;
     private int id;
     private IAthlete athlete;
-    private Integer weight;
+    private Double weight;
     private Integer cardio;
     private Date dateofmeasure;
 
     public Health() {
     }
 
-    public Health(int id) {
+    public Health(final int id) {
         this.id = id;
     }
 
-    public Health(int id, IAthlete athlete, Integer weight, Integer cardio, Date dateofmeasure) {
-        this.id = id;
+    public Health(final IAthlete athlete, final Double weight, final Integer cardio, final Date dateofmeasure) {
         this.athlete = athlete;
         this.weight = weight;
         this.cardio = cardio;
         this.dateofmeasure = dateofmeasure;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see ch.opentrainingcenter.transfer.internal.IHealth#getId()
      */
     @Override
@@ -43,15 +44,19 @@ public class Health implements java.io.Serializable, IHealth {
         return this.id;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see ch.opentrainingcenter.transfer.internal.IHealth#setId(int)
      */
     @Override
-    public void setId(int id) {
+    public void setId(final int id) {
         this.id = id;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see ch.opentrainingcenter.transfer.internal.IHealth#getAthlete()
      */
     @Override
@@ -59,31 +64,42 @@ public class Health implements java.io.Serializable, IHealth {
         return this.athlete;
     }
 
-    /* (non-Javadoc)
-     * @see ch.opentrainingcenter.transfer.internal.IHealth#setAthlete(ch.opentrainingcenter.transfer.IAthlete)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see ch.opentrainingcenter.transfer.internal.IHealth#setAthlete(ch.
+     * opentrainingcenter.transfer.IAthlete)
      */
     @Override
-    public void setAthlete(IAthlete athlete) {
+    public void setAthlete(final IAthlete athlete) {
         this.athlete = athlete;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see ch.opentrainingcenter.transfer.internal.IHealth#getWeight()
      */
     @Override
-    public Integer getWeight() {
+    public Double getWeight() {
         return this.weight;
     }
 
-    /* (non-Javadoc)
-     * @see ch.opentrainingcenter.transfer.internal.IHealth#setWeight(java.lang.Integer)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * ch.opentrainingcenter.transfer.internal.IHealth#setWeight(java.lang.Integer
+     * )
      */
     @Override
-    public void setWeight(Integer weight) {
+    public void setWeight(final Double weight) {
         this.weight = weight;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see ch.opentrainingcenter.transfer.internal.IHealth#getCardio()
      */
     @Override
@@ -91,15 +107,21 @@ public class Health implements java.io.Serializable, IHealth {
         return this.cardio;
     }
 
-    /* (non-Javadoc)
-     * @see ch.opentrainingcenter.transfer.internal.IHealth#setCardio(java.lang.Integer)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * ch.opentrainingcenter.transfer.internal.IHealth#setCardio(java.lang.Integer
+     * )
      */
     @Override
-    public void setCardio(Integer cardio) {
+    public void setCardio(final Integer cardio) {
         this.cardio = cardio;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see ch.opentrainingcenter.transfer.internal.IHealth#getDateofmeasure()
      */
     @Override
@@ -107,12 +129,22 @@ public class Health implements java.io.Serializable, IHealth {
         return this.dateofmeasure;
     }
 
-    /* (non-Javadoc)
-     * @see ch.opentrainingcenter.transfer.internal.IHealth#setDateofmeasure(java.util.Date)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * ch.opentrainingcenter.transfer.internal.IHealth#setDateofmeasure(java
+     * .util.Date)
      */
     @Override
-    public void setDateofmeasure(Date dateofmeasure) {
+    public void setDateofmeasure(final Date dateofmeasure) {
         this.dateofmeasure = dateofmeasure;
+    }
+
+    @Override
+    public String toString() {
+        return "Health [id=" + id + ", athlete=" + athlete + ", weight=" + weight + ", cardio=" + cardio + ", dateofmeasure=" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+                + dateofmeasure + "]"; //$NON-NLS-1$
     }
 
 }

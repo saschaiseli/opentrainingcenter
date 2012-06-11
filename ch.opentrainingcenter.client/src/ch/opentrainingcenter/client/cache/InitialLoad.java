@@ -29,7 +29,7 @@ public class InitialLoad {
             cache.add(activity);
             i++;
             fBar.setSelection(i);
-            LOG.info("Record hinzugefügt");
+            LOG.info("Record hinzugefügt"); //$NON-NLS-1$
         }
     }
 }

@@ -27,6 +27,14 @@ public class NumberValidatorTest {
     }
 
     @Test
+    public void testValidateNullDouble() {
+        Double val=null;
+        final IStatus status = validator.validate(val);
+
+        assertEquals("Leer text muss im Status sein", JUNIT_LEER, status.getMessage()); //$NON-NLS-1$
+    }
+    
+    @Test
     public void testValidateLeer() {
         final IStatus status = validator.validate(""); //$NON-NLS-1$
 

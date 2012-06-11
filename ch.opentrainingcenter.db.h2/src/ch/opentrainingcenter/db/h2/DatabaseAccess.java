@@ -10,9 +10,11 @@ import ch.opentrainingcenter.db.IDatabaseAccess;
 import ch.opentrainingcenter.db.h2.internal.AthleteDao;
 import ch.opentrainingcenter.db.h2.internal.Dao;
 import ch.opentrainingcenter.db.h2.internal.DatabaseCreator;
+import ch.opentrainingcenter.db.h2.internal.HealthDao;
 import ch.opentrainingcenter.db.h2.internal.ImportDao;
 import ch.opentrainingcenter.db.h2.internal.WeatherDao;
 import ch.opentrainingcenter.transfer.IAthlete;
+import ch.opentrainingcenter.transfer.IHealth;
 import ch.opentrainingcenter.transfer.IImported;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.IWeather;
@@ -22,6 +24,7 @@ public class DatabaseAccess implements IDatabaseAccess {
     private final AthleteDao athleteDao;
     private final ImportDao importDao;
     private final WeatherDao wetterDao;
+    private final HealthDao healthDao;
     private final DatabaseCreator databaseCreator;
 
     public DatabaseAccess() {
@@ -29,6 +32,7 @@ public class DatabaseAccess implements IDatabaseAccess {
         athleteDao = new AthleteDao(dao);
         importDao = new ImportDao(dao);
         wetterDao = new WeatherDao(dao);
+        healthDao = new HealthDao(dao);
         databaseCreator = new DatabaseCreator();
     }
 
@@ -110,6 +114,11 @@ public class DatabaseAccess implements IDatabaseAccess {
     @Override
     public List<IWeather> getWeather() {
         return wetterDao.getAllWeather();
+    }
+
+    @Override
+    public void saveHealth(final IHealth health) {
+        healthDao.saveHealth(health);
     }
 
 }

@@ -306,7 +306,6 @@ public class CreateAthleteView extends ViewPart {
                 try {
                     DatabaseAccessFactory.getDatabaseAccess().save(athlete);
                     resetForm();
-                    errorLabel.setText(""); //$NON-NLS-1$
                     overviewSection.setExpanded(false);
                     selectSportler.setExpanded(true);
                 } catch (final Exception e1) {
@@ -327,7 +326,10 @@ public class CreateAthleteView extends ViewPart {
     }
 
     private void resetForm() {
-        nameTf.setText("");
+        nameTf.setText(""); //$NON-NLS-1$
+        ageTf.setText(""); //$NON-NLS-1$
+        pulseTf.setText(""); //$NON-NLS-1$
+        errorLabel.setText(""); //$NON-NLS-1$
     }
 
     private void bindValues() {

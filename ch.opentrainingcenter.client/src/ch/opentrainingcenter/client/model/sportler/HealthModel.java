@@ -3,6 +3,7 @@ package ch.opentrainingcenter.client.model.sportler;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.Date;
 
 import org.apache.log4j.Logger;
 
@@ -10,26 +11,37 @@ public class HealthModel implements PropertyChangeListener {
 
     private static final Logger LOG = Logger.getLogger(HealthModel.class);
 
-    private int ruhePuls;
+    private Integer ruhePuls;
 
-    private double weight;
+    private Double weight;
+
+    private Date dateOfMeasure;
 
     private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 
-    public int getRuhePuls() {
+    public Integer getRuhePuls() {
         return ruhePuls;
     }
 
-    public void setRuhePuls(final int puls) {
+    public void setRuhePuls(final Integer puls) {
         LOG.info("Puls eingegeben: " + puls); //$NON-NLS-1$
         propertyChangeSupport.firePropertyChange("ruhePuls", this.ruhePuls, this.ruhePuls = puls); //$NON-NLS-1$
     }
 
-    public double getWeight() {
+    public Date getDateOfMeasure() {
+        return dateOfMeasure;
+    }
+
+    public void setDateOfMeasure(final Date dateOfMeasure) {
+        LOG.info("Neues datum beim Model gesetzt"); //$NON-NLS-1$
+        this.dateOfMeasure = dateOfMeasure;
+    }
+
+    public Double getWeight() {
         return weight;
     }
 
-    public void setWeight(final double gewicht) {
+    public void setWeight(final Double gewicht) {
         LOG.info("Gewicht eingegeben: " + gewicht); //$NON-NLS-1$
         propertyChangeSupport.firePropertyChange("weight", this.weight, this.weight = gewicht); //$NON-NLS-1$
     }

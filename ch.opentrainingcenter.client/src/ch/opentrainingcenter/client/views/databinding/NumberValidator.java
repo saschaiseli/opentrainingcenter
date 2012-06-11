@@ -29,7 +29,7 @@ public class NumberValidator implements IValidator {
                 } else if (d > max) {
                     return ValidationStatus.error(Messages.NumberValidator2 + max + Messages.NumberValidator3);
                 } else {
-                    return ValidationStatus.OK_STATUS;
+                    return ValidationStatus.ok();
                 }
             } catch (final NumberFormatException nfe) {
                 return ValidationStatus.error(messageWennLeer);

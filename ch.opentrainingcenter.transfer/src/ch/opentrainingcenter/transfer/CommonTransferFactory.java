@@ -3,6 +3,7 @@ package ch.opentrainingcenter.transfer;
 import java.util.Date;
 
 import ch.opentrainingcenter.transfer.impl.Athlete;
+import ch.opentrainingcenter.transfer.impl.Health;
 import ch.opentrainingcenter.transfer.impl.Imported;
 import ch.opentrainingcenter.transfer.impl.Training;
 import ch.opentrainingcenter.transfer.impl.TrainingType;
@@ -31,6 +32,10 @@ public class CommonTransferFactory {
 
     public static IWeather createWeather(final int id) {
         return new Weather(id);
+    }
+
+    public static IHealth createHealth(final IAthlete athlete, final Double weight, final Integer cardio, final Date dateofmeasure) {
+        return new Health(athlete, weight, cardio, dateofmeasure);
     }
 
     public static ITraining createTraining(final Date dateOfStart, final double timeInSeconds, final double distance,
