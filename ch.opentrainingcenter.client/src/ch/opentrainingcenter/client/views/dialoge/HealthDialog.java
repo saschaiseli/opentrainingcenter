@@ -1,24 +1,20 @@
 package ch.opentrainingcenter.client.views.dialoge;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.util.Date;
+import java.util.Locale;
 
 import org.apache.log4j.Logger;
-import org.eclipse.core.databinding.AggregateValidationStatus;
-import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeansObservables;
-import org.eclipse.core.databinding.observable.ChangeEvent;
-import org.eclipse.core.databinding.observable.IChangeListener;
-import org.eclipse.core.databinding.observable.list.IObservableList;
+import org.eclipse.core.databinding.conversion.IConverter;
+import org.eclipse.core.databinding.conversion.NumberToStringConverter;
+import org.eclipse.core.databinding.conversion.StringToNumberConverter;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.core.databinding.validation.MultiValidator;
+import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.MultiStatus;
-import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
@@ -38,13 +34,13 @@ import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.client.PreferenceConstants;
 import ch.opentrainingcenter.client.model.sportler.HealthModel;
 import ch.opentrainingcenter.client.views.IImageKeys;
-import ch.opentrainingcenter.client.views.databinding.NumberValidator;
-import ch.opentrainingcenter.client.views.databinding.StringToDoubleConverter;
 import ch.opentrainingcenter.client.views.databinding.StringToIntegerConverter;
 import ch.opentrainingcenter.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.db.IDatabaseAccess;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
+
+import com.ibm.icu.text.NumberFormat;
 
 /**
  * Dialog wo tägliche Daten, wie Gewicht und Ruhepuls erfasst werden können.
@@ -115,22 +111,18 @@ public class HealthDialog extends TitleAreaDialog {
         ruhePuls.setText(Messages.HealthDialog2);
 
         pulsText = new Text(containerTextFields, SWT.BORDER);
-        pulsText.setText("");
         final GridData gd_pulsText = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
         gd_pulsText.widthHint = 80;
         pulsText.setLayoutData(gd_pulsText);
 
-        final Label gewicht = new Label(containerTextFields, SWT.NONE);
-        gewicht.setText(Messages.HealthDialog3);
+        final Label gewichtLabel = new Label(containerTextFields, SWT.NONE);
+        gewichtLabel.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
+        gewichtLabel.setText(Messages.HealthDialog3);
 
         gewichtText = new Text(containerTextFields, SWT.BORDER);
-
         final GridData gd_gewichtText = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
         gd_gewichtText.widthHint = 80;
         gewichtText.setLayoutData(gd_gewichtText);
-        new Label(c, SWT.NONE);
-        new Label(c, SWT.NONE);
-        new Label(c, SWT.NONE);
 
         errorLabel = new Label(c, SWT.NONE);
         errorLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -140,6 +132,8 @@ public class HealthDialog extends TitleAreaDialog {
 
         ctx = new DataBindingContext();
         initDataBindings();
+        gewichtText.setText("");
+        pulsText.setText("");
 
         return c;
     }
@@ -156,81 +150,88 @@ public class HealthDialog extends TitleAreaDialog {
     @Override
     protected Control createButtonBar(final Composite parent) {
         final Control c = super.createButtonBar(parent);
-        // getButton(OK).setEnabled(false);
+        getButton(OK).setEnabled(false);
         return c;
     }
 
     protected void initDataBindings() {
 
         // -- puls -------------------
-        final IObservableValue pulseObservable = SWTObservables.observeText(pulsText, SWT.Modify);
-        final IObservableValue modelRuhePulsObserveValue = BeansObservables.observeValue(model, "ruhePuls"); //$NON-NLS-1$
+        final IObservableValue textPulsObservable = SWTObservables.observeText(pulsText, SWT.Modify);
+        final IObservableValue modelPulsObservable = BeansObservables.observeValue(model, "ruhePuls"); //$NON-NLS-1$
         // strategy
-        final UpdateValueStrategy strategy = new UpdateValueStrategy();
-        strategy.setBeforeSetValidator(new NumberValidator(10, 100, "Bitte Ruhepuls eingeben"));
-        strategy.setConverter(new StringToIntegerConverter());
+        final UpdateValueStrategy strategyPuls = new UpdateValueStrategy(UpdateValueStrategy.POLICY_CONVERT);
+        strategyPuls.setConverter(new StringToIntegerConverter());
 
-        final Binding bindValue = ctx.bindValue(pulseObservable, modelRuhePulsObserveValue, strategy, null);
-        ControlDecorationSupport.create(bindValue, SWT.TOP | SWT.RIGHT);
+        ctx.bindValue(textPulsObservable, modelPulsObservable, strategyPuls, null);
 
-        // -- gewicht -------------------
-        final IObservableValue gewichtObservable = SWTObservables.observeText(gewichtText, SWT.Modify);
-        final IObservableValue modelWeightObserveValue = BeansObservables.observeValue(model, "weight"); //$NON-NLS-1$
-
+        //
+        // ----------------------------------------------------
+        // --------------- gewicht ----------------------------
+        // ----------------------------------------------------
+        //
+        final IObservableValue textGewichtObservable = SWTObservables.observeText(gewichtText, SWT.Modify);
+        final IObservableValue modelGewichtObservable = BeansObservables.observeValue(model, "weight"); //$NON-NLS-1$
         // strategy
         final UpdateValueStrategy strategyGewicht = new UpdateValueStrategy();
-        strategyGewicht.setBeforeSetValidator(new NumberValidator(10, 100, "Bitte Gewicht eingeben"));
-        strategyGewicht.setConverter(new StringToDoubleConverter());
+        // strategyGewicht.setAfterGetValidator(new NumberValidator(0.0,
+        // Double.MAX_VALUE, ""));
 
-        final Binding bindGewicht = ctx.bindValue(gewichtObservable, modelWeightObserveValue, strategyGewicht, null);
-        ControlDecorationSupport.create(bindGewicht, SWT.TOP | SWT.RIGHT);
+        final NumberFormat numberFormat = NumberFormat.getInstance(Locale.getDefault());
+        final IConverter numberToStringConverter = StringToNumberConverter.toDouble(numberFormat, true);
+        strategyGewicht.setConverter(numberToStringConverter);
 
-        //
-        // final IObservableValue errorObservable =
-        // WidgetProperties.text().observe(errorLabel);
-        // // This one listenes to all changes
-        // final AggregateValidationStatus aggrStatus = new
-        // AggregateValidationStatus(ctx.getBindings(),
-        // AggregateValidationStatus.MAX_SEVERITY);
-        //
-        // ctx.bindValue(errorObservable, aggrStatus, null, null);
+        final UpdateValueStrategy strategyGewicht2 = new UpdateValueStrategy();
+        final IConverter c = NumberToStringConverter.fromDouble(numberFormat, true);
+        strategyGewicht2.setConverter(c);
 
-        final PropertyChangeSupport pcs = model.getPropertyChangeSupport();
-        pcs.addPropertyChangeListener(new PropertyChangeListener() {
+        ctx.bindValue(textGewichtObservable, modelGewichtObservable, strategyGewicht, strategyGewicht2);
 
+        final MultiValidator multi = new MultiValidator() {
             @Override
-            public void propertyChange(final PropertyChangeEvent arg0) {
-                System.out.println("property changed");
-            }
-        });
+            protected IStatus validate() {
+                LOG.debug("validate"); //$NON-NLS-1$
+                boolean pulsValid = false;
+                boolean gewichtValid = false;
+                final Object pulsVal = textPulsObservable.getValue();
+                final Object gewichtVal = textGewichtObservable.getValue();
+                try {
+                    final Integer puls = Integer.valueOf(pulsVal.toString());
+                    pulsValid = pulsValid(puls);
+                } catch (final NumberFormatException nfe) {
 
-        final IChangeListener listener = new IChangeListener() {
-
-            @Override
-            public void handleChange(final ChangeEvent event) {
-                System.out.println("Textfield changed: ");
-                final IObservableList stats = ctx.getValidationStatusProviders();
-
-                final IStatus status = AggregateValidationStatus.getStatusMaxSeverity(stats);
-                boolean enable = false;
-                if (status.isMultiStatus()) {
-                    LOG.info("Multistatus");
-                    final MultiStatus multi = (MultiStatus) status;
-                    LOG.info("Anzahl status childs: " + multi.getMessage() + " " + multi.getChildren().length);
-                    if (multi.getChildren().length == 1) {
-                        LOG.info("Nur ein child, somit ist mind eines ok ");
-                        enable = true;
-                    }
-                } else {
-                    LOG.info("Singlestatus mit wert: " + status.isOK());
-                    enable = status.isOK();
                 }
-                // if (getButton(OK) != null) {
-                // getButton(OK).setEnabled(enable);
-                // }
+
+                try {
+                    final Double gewicht = Double.valueOf(gewichtVal.toString());
+                    gewichtValid = gewichtValid(gewicht);
+                } catch (final NumberFormatException nfe) {
+
+                }
+
+                if (pulsValid || gewichtValid) {
+                    getButton(OK).setEnabled(true);
+                    setErrorMessage(null);
+                    return ValidationStatus.ok();
+                } else {
+                    getButton(OK).setEnabled(false);
+                    setErrorMessage("Gewicht und/oder Ruhepuls eingeben");
+                    return ValidationStatus.error("Mist"); //$NON-NLS-1$
+                }
+            }
+
+            private boolean gewichtValid(final Double gewicht) {
+                return gewicht != null && gewicht.doubleValue() > 0;
+            }
+
+            private boolean pulsValid(final Integer puls) {
+                return puls != null && puls > 0;
             }
         };
-        pulseObservable.addChangeListener(listener);
-        gewichtObservable.addChangeListener(listener);
+
+        ctx.addValidationStatusProvider(multi);
+
+        ctx.bindValue(multi.observeValidatedValue(textPulsObservable), modelPulsObservable);
+        ctx.bindValue(multi.observeValidatedValue(textGewichtObservable), modelGewichtObservable);
     }
 }

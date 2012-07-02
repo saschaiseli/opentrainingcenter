@@ -1,8 +1,10 @@
 package ch.opentrainingcenter.importer;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
 import java.util.Collections;
 import java.util.List;
@@ -55,6 +57,7 @@ public class Gmn2Tcx implements IConvert2Tcx {
     public TrainingCenterDatabaseT convert(final java.io.File file) throws Exception {
         final long start = System.currentTimeMillis();
         logger.debug("Start Time: " + start); //$NON-NLS-1$
+        // convertForMe();
         final InputStream convert2Tcx = convert2Tcx(file);
         final long nachTcx = System.currentTimeMillis();
         logger.debug("Zeit für das convertieren nach tcx: " + (nachTcx - start)); //$NON-NLS-1$
@@ -62,6 +65,26 @@ public class Gmn2Tcx implements IConvert2Tcx {
         final long nachUnmarshall = System.currentTimeMillis();
         logger.debug("Zeit für das unmarshalling: " + (nachUnmarshall - nachTcx)); //$NON-NLS-1$
         return unmarshall;
+    }
+
+    private void convertForMe() throws IOException {
+        final File f = new File("/home/sascha/allgmn"); //$NON-NLS-1$
+        final File[] listFiles = f.listFiles();
+        for (final File file : listFiles) {
+            final InputStream convert2Tcx = convert2Tcx(file);
+
+            final String name = file.getName();
+            final File outFile = new File("/home/sascha", name.replace("gmn", "tcx")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
+            final OutputStream out = new FileOutputStream(outFile);
+            final byte buf[] = new byte[1024];
+            int len;
+            while ((len = convert2Tcx.read(buf)) > 0) {
+                out.write(buf, 0, len);
+            }
+            out.close();
+            convert2Tcx.close();
+        }
     }
 
     @Override

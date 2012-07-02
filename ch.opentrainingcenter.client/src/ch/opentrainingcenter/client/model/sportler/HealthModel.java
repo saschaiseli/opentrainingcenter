@@ -23,9 +23,9 @@ public class HealthModel implements PropertyChangeListener {
         return ruhePuls;
     }
 
-    public void setRuhePuls(final Integer puls) {
-        LOG.info("Puls eingegeben: " + puls); //$NON-NLS-1$
-        propertyChangeSupport.firePropertyChange("ruhePuls", this.ruhePuls, this.ruhePuls = puls); //$NON-NLS-1$
+    public void setRuhePuls(final Integer ruhePuls) {
+        LOG.info("Puls eingegeben: " + ruhePuls); //$NON-NLS-1$
+        propertyChangeSupport.firePropertyChange("ruhePuls", this.ruhePuls, this.ruhePuls = ruhePuls); //$NON-NLS-1$
     }
 
     public Date getDateOfMeasure() {
@@ -41,9 +41,9 @@ public class HealthModel implements PropertyChangeListener {
         return weight;
     }
 
-    public void setWeight(final Double gewicht) {
-        LOG.info("Gewicht eingegeben: " + gewicht); //$NON-NLS-1$
-        propertyChangeSupport.firePropertyChange("weight", this.weight, this.weight = gewicht); //$NON-NLS-1$
+    public void setWeight(final Double weight) {
+        LOG.info("Gewicht eingegeben: " + weight); //$NON-NLS-1$
+        propertyChangeSupport.firePropertyChange("weight", this.weight, this.weight = weight); //$NON-NLS-1$
     }
 
     public PropertyChangeSupport getPropertyChangeSupport() {
