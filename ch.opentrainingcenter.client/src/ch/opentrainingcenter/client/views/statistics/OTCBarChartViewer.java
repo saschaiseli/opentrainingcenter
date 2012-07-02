@@ -1,5 +1,6 @@
 package ch.opentrainingcenter.client.views.statistics;
 
+//import static org.jfree.chart.labels.ItemLabelAnchor.*;
 import java.awt.Color;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -33,6 +34,8 @@ import org.jfree.chart.axis.DateTickMarkPosition;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.labels.CustomXYToolTipGenerator;
+import org.jfree.chart.labels.ItemLabelAnchor;
+import org.jfree.chart.labels.ItemLabelPosition;
 import org.jfree.chart.labels.StandardXYItemLabelGenerator;
 import org.jfree.chart.labels.StandardXYToolTipGenerator;
 import org.jfree.chart.labels.XYItemLabelGenerator;
@@ -73,6 +76,7 @@ import ch.opentrainingcenter.client.model.RunType;
 import ch.opentrainingcenter.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.importer.IConvert2Tcx;
 import ch.opentrainingcenter.tcx.ActivityT;
+import static org.jfree.ui.TextAnchor.CENTER;
 
 public class OTCBarChartViewer implements ISelectionProvider {
 
@@ -154,16 +158,16 @@ public class OTCBarChartViewer implements ISelectionProvider {
         // buttonsContainer.setLayout(radioLayout);
 
         if (type.isLabelVisible()) {
-            final Button bItemLabelPrinter = new Button(radioContainer, SWT.CHECK);
-            bItemLabelPrinter.setText(Messages.OTCBarChartViewer9);
-            bItemLabelPrinter.setSelection(true);
-            bItemLabelPrinter.addSelectionListener(new SelectionListener() {
+            final Button checkBoxKilometerAnzeigen = new Button(radioContainer, SWT.CHECK);
+            checkBoxKilometerAnzeigen.setText(Messages.OTCBarChartViewer9);
+            checkBoxKilometerAnzeigen.setSelection(true);
+            checkBoxKilometerAnzeigen.addSelectionListener(new SelectionListener() {
 
                 @Override
                 public void widgetSelected(final SelectionEvent e) {
                     withLabel = !withLabel;
                     final XYPlot plot = chart.getXYPlot();
-                    final XYItemRenderer renderer = plot.getRenderer(0);
+                    final XYBarRenderer renderer = (XYBarRenderer) plot.getRenderer(0);
                     if (withLabel) {
                         renderer.setBaseItemLabelGenerator(labelGenerator);
                     } else {
@@ -367,7 +371,7 @@ public class OTCBarChartViewer implements ISelectionProvider {
             myXyBarRenderer.setSeriesPaint(0, ColorFromPreferenceHelper.getColor(store, PreferenceConstants.DISTANCE_CHART_COLOR, ALPHA));
         }
 
-        plot.setRenderer(myXyBarRenderer);// new XYBarRenderer());
+        plot.setRenderer(myXyBarRenderer);
         plot.setBackgroundPaint(paint);
         plot.setDomainGridlinePaint(Color.lightGray);
         plot.setRangeGridlinePaint(Color.lightGray);
@@ -385,9 +389,13 @@ public class OTCBarChartViewer implements ISelectionProvider {
                     .getFormatPattern()), new DecimalFormat("0.000")); //$NON-NLS-1$
             renderer.setBaseToolTipGenerator(generator);
 
+            final ItemLabelPosition position = new ItemLabelPosition(ItemLabelAnchor.CENTER, CENTER, CENTER, -Math.PI / 2.0);
+            renderer.setBasePositiveItemLabelPosition(position);
+
             final XYItemLabelGenerator labelGenerator = new StandardXYItemLabelGenerator(formatString, new SimpleDateFormat(type
                     .getFormatPattern()), new DecimalFormat("0.000")); //$NON-NLS-1$
             renderer.setBaseItemLabelGenerator(labelGenerator);
+
             renderer.setBaseItemLabelsVisible(true);
         }
 
