@@ -45,7 +45,7 @@ public class LoadActivityJob extends Job {
                 cache.add(result);
             } catch (final Exception e) {
                 LOGGER.error("Konnte File nicht einlesen: " + e); //$NON-NLS-1$
-                throw new LoadImportedException("Konnte File nicht einlesen");
+                throw new LoadImportedException("Konnte File nicht einlesen", e); //$NON-NLS-1$
             }
         } else {
             // read from cache

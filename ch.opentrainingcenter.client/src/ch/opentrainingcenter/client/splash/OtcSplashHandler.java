@@ -2,6 +2,7 @@ package ch.opentrainingcenter.client.splash;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -30,8 +31,12 @@ import ch.opentrainingcenter.transfer.IImported;
 
 public class OtcSplashHandler extends AbstractSplashHandler {
 
+    public static final String ID = "ch.opentrainingcenter.client.splash"; //$NON-NLS-1$
+
     private final IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-    public static final String ID = "ch.opentrainingcenter.client.splash";
+
+    private static final Logger LOG = Logger.getLogger(OtcSplashHandler.class);
+
     private static final int HEIGHT = 20;
     private static final int MARGIN = 5;
     private ProgressBar fBar;
@@ -100,7 +105,7 @@ public class OtcSplashHandler extends AbstractSplashHandler {
                             try {
                                 load.initalLoad(fBar, allImported);
                             } catch (final Exception e) {
-
+                                LOG.info("Initial Load failed: " + e); //$NON-NLS-1$
                             }
                         }
                     }

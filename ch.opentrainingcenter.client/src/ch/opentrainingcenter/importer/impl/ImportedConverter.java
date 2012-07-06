@@ -25,7 +25,7 @@ public class ImportedConverter implements IImportedConverter {
     public ImportedConverter(final IPreferenceStore store, final ConvertContainer cc) {
         this.cc = cc;
         if (store == null) {
-            throw new IllegalArgumentException("Store darf nicht null sein");
+            throw new IllegalArgumentException("Store darf nicht null sein"); //$NON-NLS-1$
         }
         this.store = store;
     }
@@ -36,7 +36,7 @@ public class ImportedConverter implements IImportedConverter {
         final File file = FindGarminFiles.loadAllGPSFile(fileName, store);
         final List<ActivityT> converted = convertActivity(file);
         if (converted.isEmpty()) {
-            throw new FileNotFoundException("Das File " + fileName + " konnte nicht gefunden werden");
+            throw new FileNotFoundException("Das File " + fileName + " konnte nicht gefunden werden"); //$NON-NLS-1$ //$NON-NLS-2$
         } else {
             return converted.get(0);
         }

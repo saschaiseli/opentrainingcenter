@@ -12,4 +12,8 @@ public class LoadImportedException extends IOException {
     public LoadImportedException(final String message) {
         super(message);
     }
+
+    public LoadImportedException(final String message, final Throwable throwable) {
+        super(message, throwable);
+    }
 }

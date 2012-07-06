@@ -219,14 +219,19 @@ public class NavigationView extends ViewPart {
         }
     }
 
+    /**
+     * Öffnet einen Record asynchron
+     * 
+     * @param record
+     */
     private void openSingleRunView(final IImported record) {
 
         applicationContext.setSelectedId(record.getActivityId());
 
         final IImportedConverter loader = ImporterFactory.createGpsFileLoader(store, cc);
         final LoadActivityJob job = new LoadActivityJob(Messages.NavigationView1, record, cache, loader);
-        job.schedule();
         job.addJobChangeListener(new ImportActivityJobListener(record));
+        job.schedule();
     }
 
     private String getOverview(final IImported record) {

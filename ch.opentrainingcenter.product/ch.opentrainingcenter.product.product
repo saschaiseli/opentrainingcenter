@@ -4,8 +4,9 @@
 <product name="Open Training Center" uid="ch.opentrainingcenter.product" id="ch.opentrainingcenter.client.opentrainingcenter" application="ch.opentrainingcenter.client.application" version="1.0.0" useFeatures="false" includeLaunchers="true">
 
    <aboutInfo>
+      <image path="/icons/about.gif"/>
       <text>
-         Hello, hello...
+         %aboutText
       </text>
    </aboutInfo>
 
@@ -99,7 +100,9 @@
    </plugins>
 
    <configurations>
-      <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="4" />
+      <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="0" />
+      <plugin id="org.eclipse.equinox.common" autoStart="true" startLevel="2" />
+      <plugin id="org.eclipse.osgi" autoStart="true" startLevel="-1" />
    </configurations>
 
 </product>
