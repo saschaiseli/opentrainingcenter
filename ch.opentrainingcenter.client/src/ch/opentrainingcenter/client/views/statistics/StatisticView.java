@@ -25,12 +25,13 @@ public class StatisticView extends ViewPart {
         addItem(tabs, ChartSerieType.WEEK);
         addItem(tabs, ChartSerieType.MONTH);
         addItem(tabs, ChartSerieType.YEAR);
+
+        tabs.setSelection(1);
     }
 
     private void addItem(final TabFolder tabs, final ChartSerieType type) {
         final TabItem item = new TabItem(tabs, SWT.PUSH);
         item.setText(type.getName());
-
         final OTCBarChartViewer viewer = new OTCBarChartViewer(tabs, type, ExtensionHelper.getConverters());
         item.setControl(viewer.getControl());
     }

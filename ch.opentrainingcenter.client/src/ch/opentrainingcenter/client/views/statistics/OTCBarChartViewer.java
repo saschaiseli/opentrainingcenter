@@ -2,6 +2,7 @@ package ch.opentrainingcenter.client.views.statistics;
 
 //import static org.jfree.chart.labels.ItemLabelAnchor.*;
 import java.awt.Color;
+import java.awt.Font;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -56,6 +57,7 @@ import org.jfree.data.time.Week;
 import org.jfree.data.time.Year;
 import org.jfree.data.xy.IntervalXYDataset;
 import org.jfree.experimental.chart.swt.ChartComposite;
+import org.jfree.ui.TextAnchor;
 
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.Messages;
@@ -152,11 +154,6 @@ public class OTCBarChartViewer implements ISelectionProvider {
             createFilterButton(radioContainer, runType);
         }
 
-        // final Composite buttonsContainer = new Composite(composite,
-        // SWT.NONE);
-        // final GridLayout buttonsLayout = new GridLayout(1, false);
-        // buttonsContainer.setLayout(radioLayout);
-
         if (type.isLabelVisible()) {
             final Button checkBoxKilometerAnzeigen = new Button(radioContainer, SWT.CHECK);
             checkBoxKilometerAnzeigen.setText(Messages.OTCBarChartViewer9);
@@ -172,6 +169,12 @@ public class OTCBarChartViewer implements ISelectionProvider {
                         renderer.setBaseItemLabelGenerator(labelGenerator);
                     } else {
                         labelGenerator = renderer.getBaseItemLabelGenerator();
+
+                        final ItemLabelPosition position = new ItemLabelPosition(ItemLabelAnchor.CENTER, TextAnchor.CENTER,
+                                TextAnchor.CENTER, -Math.PI / 2.0);
+                        renderer.setBasePositiveItemLabelPosition(position);
+
+                        renderer.setBaseItemLabelFont(new Font("Default", Font.PLAIN, 7)); //$NON-NLS-1$
                         renderer.setBaseItemLabelGenerator(null);
                     }
                     chartComposite.forceRedraw();
