@@ -4,6 +4,8 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
+import ch.opentrainingcenter.client.splash.OtcSplashHandler;
+
 /**
  * The activator class controls the plug-in life cycle
  */
@@ -14,6 +16,8 @@ public class Activator extends AbstractUIPlugin {
 
     // The shared instance
     private static Activator plugin;
+
+    private static OtcSplashHandler otcSplashHandler;
 
     /**
      * The constructor
@@ -43,7 +47,8 @@ public class Activator extends AbstractUIPlugin {
     }
 
     /**
-     * Returns an image descriptor for the image file at the given plug-in relative path
+     * Returns an image descriptor for the image file at the given plug-in
+     * relative path
      * 
      * @param path
      *            the path
@@ -51,5 +56,14 @@ public class Activator extends AbstractUIPlugin {
      */
     public static ImageDescriptor getImageDescriptor(final String path) {
         return imageDescriptorFromPlugin(PLUGIN_ID, path);
+    }
+
+    public static void setSplashHandler(final OtcSplashHandler otcSplashHandler) {
+        Activator.otcSplashHandler = otcSplashHandler;
+
+    }
+
+    public static OtcSplashHandler getSplashHandler() {
+        return Activator.otcSplashHandler;
     }
 }

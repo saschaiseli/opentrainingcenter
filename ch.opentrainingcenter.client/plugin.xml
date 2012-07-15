@@ -189,11 +189,23 @@
          </property>
          <property
                name="aboutImage"
-               value="/ch.opentrainingcenter.product/icons/about.gif">
+               value="/icons/about.gif">
          </property>
          <property
                name="aboutText"
                value="%aboutText">
+         </property>
+         <property
+               name="startupForegroundColor"
+               value="FF97A3">
+         </property>
+         <property
+               name="startupMessageRect"
+               value="5,235,445,20">
+         </property>
+         <property
+               name="startupProgressRect"
+               value="5,275,445,15">
          </property>
       </product>
    </extension>
@@ -316,7 +328,7 @@
    <extension
          point="org.eclipse.ui.splashHandlers">
       <splashHandler
-            class="ch.opentrainingcenter.client.splash.OtcSplashHandler"
+         class="ch.opentrainingcenter.client.splash.OtcSplashHandler"
             id="ch.opentrainingcenter.client.splash">
       </splashHandler>
       <splashHandlerProductBinding

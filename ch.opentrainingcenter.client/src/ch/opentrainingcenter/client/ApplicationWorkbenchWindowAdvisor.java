@@ -1,5 +1,9 @@
 package ch.opentrainingcenter.client;
 
+import java.lang.reflect.InvocationTargetException;
+
+import org.apache.log4j.Logger;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceManager;
 import org.eclipse.swt.widgets.Shell;
@@ -10,11 +14,14 @@ import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 
 import ch.opentrainingcenter.client.perspectives.MainPerspective;
+import ch.opentrainingcenter.client.splash.InitialLoadRunnable;
+import ch.opentrainingcenter.client.splash.OtcSplashHandler;
 import ch.opentrainingcenter.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.db.IDatabaseAccess;
 
 public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 
+    private static final Logger LOG = Logger.getLogger(ApplicationWorkbenchWindowAdvisor.class);
     private final IPreferenceStore store;
     private final IDatabaseAccess databaseAccess;
 
@@ -53,6 +60,16 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
         final PreferenceManager pm = PlatformUI.getWorkbench().getPreferenceManager();
         pm.remove("org.eclipse.ui.preferencePages.Workbench"); //$NON-NLS-1$
 
+        final OtcSplashHandler splashHandler = Activator.getSplashHandler();
+
+        final IProgressMonitor monitor = splashHandler.getBundleProgressMonitor();
+        try {
+            new InitialLoadRunnable().run(monitor);
+        } catch (final InvocationTargetException e) {
+            LOG.error("Fehler im InitialLoad", e); //$NON-NLS-1$
+        } catch (final InterruptedException e) {
+            LOG.error("Fehler im InitialLoad", e); //$NON-NLS-1$
+        }
     }
 
     @Override

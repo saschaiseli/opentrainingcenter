@@ -1,13 +1,13 @@
 package ch.opentrainingcenter.client;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
-import org.jfree.util.Log;
 
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.db.DatabaseAccessFactory;
@@ -30,14 +30,21 @@ public class Application implements IApplication {
 
     public static final String WINDOW_TITLE = Messages.ApplicationWindowTitle;
 
+    private static final String DEVELOPING_FLAG = "developing"; //$NON-NLS-1$
+
+    private static boolean DEVELOPING = false;
+
     private final IDatabaseAccess databaseAccess = DatabaseAccessFactory.getDatabaseAccess();
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.equinox.app.IApplication#start(org.eclipse.equinox.app.
-     * IApplicationContext)
-     */
+    static {
+        final String[] commandLineArgs = Platform.getCommandLineArgs();
+        for (final String cmdArg : commandLineArgs) {
+            if (cmdArg.contains(DEVELOPING_FLAG)) {
+                DEVELOPING = true;
+            }
+        }
+    }
+
     @Override
     public Object start(final IApplicationContext context) {
         final Display display = PlatformUI.createDisplay();
@@ -45,7 +52,7 @@ public class Application implements IApplication {
 
         try {
             if (isLocked) {
-                Log.error("DB gelockt. stoppe die Applikation");
+                LOGGER.error("DB gelockt. stoppe die Applikation"); //$NON-NLS-1$
                 System.exit(0);
                 final MessageDialog messageDialog = new MessageDialog(display.getActiveShell(), Messages.Application0, null,
                         Messages.Application1, MessageDialog.ERROR, new String[] { Messages.Application2 }, 0);
@@ -70,18 +77,12 @@ public class Application implements IApplication {
             if (returnCode == PlatformUI.RETURN_RESTART) {
                 return IApplication.EXIT_RESTART;
             }
-
             return IApplication.EXIT_OK;
         } finally {
             display.dispose();
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.equinox.app.IApplication#stop()
-     */
     @Override
     public void stop() {
         if (!PlatformUI.isWorkbenchRunning()) {

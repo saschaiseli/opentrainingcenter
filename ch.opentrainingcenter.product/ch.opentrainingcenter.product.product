@@ -20,7 +20,10 @@
    <windowImages i16="/ch.opentrainingcenter.client/icons/16_16/icon_16_16.png" i32="/ch.opentrainingcenter.client/icons/32_32/icon_32_32.png" i48="/ch.opentrainingcenter.client/icons/48_48/icon_48_48.png" i64="/ch.opentrainingcenter.client/icons/64_64/icon_64_64.png" i128="/ch.opentrainingcenter.client/icons/128_128/icon_128_128.png"/>
 
    <splash
-      location="ch.opentrainingcenter.client" />
+      location="ch.opentrainingcenter.client"
+      startupProgressRect="5,275,445,15"
+      startupMessageRect="5,235,445,20"
+      startupForegroundColor="FF97A3" />
    <launcher name="opentrainingcenter">
       <linux icon="/ch.opentrainingcenter.client/icons/start.xpm"/>
       <solaris/>

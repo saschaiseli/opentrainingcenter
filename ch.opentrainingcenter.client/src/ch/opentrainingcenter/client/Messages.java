@@ -103,6 +103,7 @@ public final class Messages extends NLS {
     public static String ImportManualGpsFilesFileDialog;
     public static String ImportManualGpsFilesLadeGpsFiles;
     public static String ImportPreferencePage0;
+    public static String InitialLoadRunnable_0;
     public static String MapConverter0;
     public static String MapConverter1;
     public static String NavigationView0;
