@@ -15,6 +15,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.events.ExpansionAdapter;
@@ -287,7 +288,13 @@ public class SingleActivityViewPart extends ViewPart {
                 record.getTraining().setNote(text);
                 simpleTraining.setNote(text);
             }
-            update(record);
+            Display.getDefault().asyncExec(new Runnable() {
+
+                @Override
+                public void run() {
+                    update(record);
+                }
+            });
         }
     }
 

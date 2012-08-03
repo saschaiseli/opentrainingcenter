@@ -19,9 +19,6 @@ public class OtcSplashHandler extends BasicSplashHandler {
 
     public static final String ID = "ch.opentrainingcenter.client.splash"; //$NON-NLS-1$
 
-    private static final int HEIGHT = 20;
-    private static final int MARGIN = 5;
-
     public OtcSplashHandler() {
         super();
     }
