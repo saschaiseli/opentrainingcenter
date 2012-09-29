@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# Copyright (c) 2009 Braiden Kindt
+#
+# Permission is hereby granted, free of charge, to any person
+# obtaining a copy of this software and associated documentation
+# files (the "Software"), to deal in the Software without
+# restriction, including without limitation the rights to use,
+# copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the
+# Software is furnished to do so, subject to the following
+# conditions:
+#
+# The above copyright notice and this permission notice shall be
+# included in all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+# OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+# NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+# HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+# WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+# FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+# OTHER DEALINGS IN THE SOFTWARE.
+
+# a wrapper around garmin-tools 'garmin_save_runs' script
+# adds a symlink to $GARMIN_SAVE_RUNS/pending to each newly
+# downloaded .gmn file
+export GARMIN_SAVE_RUNS
+while read line ; do
+  if [ -z "$GARMIN_SAVE_RUNS" ] ; then 
+    export GARMIN_SAVE_RUNS=`pwd`
+  fi
+  mkdir -p "$GARMIN_SAVE_RUNS/pending"
+  ln -s "$line" "$GARMIN_SAVE_RUNS/pending/`basename $line`"
+done < <(garmin_save_runs | grep '^Wrote:' | cut -b7-)
