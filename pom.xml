@@ -17,7 +17,7 @@
 		<sonar.phase>generate-sources</sonar.phase>
 		<sonar.exclusions>rcp-parent, org.hibernate, logging, jfreechart,
 			com.eclipsesource.widgets.gmaps,junit,h2_lib,
-			ch.opentrainingcenter.tcx/**/*.java,**/Messages.java,ch/**/Messages.java, com/**/*.java</sonar.exclusions>
+			ch.opentrainingcenter.tcx/**/*.java,**/Messages.java,ch/**/Messages.java, com/**/*.java,ch/opentrainingcenter/importer/fitnesslog/model/*.java</sonar.exclusions>
 	</properties>
 
 	<repositories>
