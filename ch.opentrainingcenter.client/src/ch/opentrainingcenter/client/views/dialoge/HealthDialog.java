@@ -8,7 +8,6 @@ import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.conversion.IConverter;
-import org.eclipse.core.databinding.conversion.NumberToStringConverter;
 import org.eclipse.core.databinding.conversion.StringToNumberConverter;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.validation.MultiValidator;
@@ -34,6 +33,7 @@ import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.client.PreferenceConstants;
 import ch.opentrainingcenter.client.model.sportler.HealthModel;
 import ch.opentrainingcenter.client.views.IImageKeys;
+import ch.opentrainingcenter.client.views.databinding.NumberValidator;
 import ch.opentrainingcenter.client.views.databinding.StringToIntegerConverter;
 import ch.opentrainingcenter.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.db.IDatabaseAccess;
@@ -174,18 +174,13 @@ public class HealthDialog extends TitleAreaDialog {
         final IObservableValue modelGewichtObservable = BeansObservables.observeValue(model, "weight"); //$NON-NLS-1$
         // strategy
         final UpdateValueStrategy strategyGewicht = new UpdateValueStrategy();
-        // strategyGewicht.setAfterGetValidator(new NumberValidator(0.0,
-        // Double.MAX_VALUE, ""));
+        strategyGewicht.setAfterGetValidator(new NumberValidator(0.0, Double.MAX_VALUE, ""));
 
         final NumberFormat numberFormat = NumberFormat.getInstance(Locale.getDefault());
-        final IConverter numberToStringConverter = StringToNumberConverter.toDouble(numberFormat, true);
+        final IConverter numberToStringConverter = StringToNumberConverter.toDouble(numberFormat, false);
         strategyGewicht.setConverter(numberToStringConverter);
 
-        final UpdateValueStrategy strategyGewicht2 = new UpdateValueStrategy();
-        final IConverter c = NumberToStringConverter.fromDouble(numberFormat, true);
-        strategyGewicht2.setConverter(c);
-
-        ctx.bindValue(textGewichtObservable, modelGewichtObservable, strategyGewicht, strategyGewicht2);
+        ctx.bindValue(textGewichtObservable, modelGewichtObservable, strategyGewicht, null);
 
         final MultiValidator multi = new MultiValidator() {
             @Override
