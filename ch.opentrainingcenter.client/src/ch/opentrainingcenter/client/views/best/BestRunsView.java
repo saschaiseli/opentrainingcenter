@@ -70,7 +70,7 @@ public class BestRunsView extends ViewPart {
     private Section sectionOverall;
 
     public BestRunsView() {
-        TrainingCenterDataCache.getInstance().addListener(new IRecordListener() {
+        TrainingCenterDataCache.getInstance().addListener(new IRecordListener<ActivityT>() {
 
             @Override
             public void deleteRecord(final Collection<ActivityT> entry) {
@@ -101,16 +101,11 @@ public class BestRunsView extends ViewPart {
         final GridLayout layoutClient = new GridLayout(3, false);
         overViewComposite.setLayout(layoutClient);
 
-        bestKl10 = createLabel(overViewComposite, Messages.BestRunsView10 + Messages.BestRunsView11, model
-                .getSchnellstePace(Intervall.KLEINER_10), Units.PACE);
-        best10 = createLabel(overViewComposite, Messages.BestRunsView12 + Messages.BestRunsView13, model
-                .getSchnellstePace(Intervall.VON10_BIS_15), Units.PACE);
-        best15 = createLabel(overViewComposite, Messages.BestRunsView14 + Messages.BestRunsView15, model
-                .getSchnellstePace(Intervall.VON15_BIS_20), Units.PACE);
-        best20 = createLabel(overViewComposite, Messages.BestRunsView16 + Messages.BestRunsView17, model
-                .getSchnellstePace(Intervall.VON20_BIS_25), Units.PACE);
-        best25 = createLabel(overViewComposite, Messages.BestRunsView18 + Messages.BestRunsView19, model
-                .getSchnellstePace(Intervall.PLUS25), Units.PACE);
+        bestKl10 = createLabel(overViewComposite, Messages.BestRunsView10 + Messages.BestRunsView11, model.getSchnellstePace(Intervall.KLEINER_10), Units.PACE);
+        best10 = createLabel(overViewComposite, Messages.BestRunsView12 + Messages.BestRunsView13, model.getSchnellstePace(Intervall.VON10_BIS_15), Units.PACE);
+        best15 = createLabel(overViewComposite, Messages.BestRunsView14 + Messages.BestRunsView15, model.getSchnellstePace(Intervall.VON15_BIS_20), Units.PACE);
+        best20 = createLabel(overViewComposite, Messages.BestRunsView16 + Messages.BestRunsView17, model.getSchnellstePace(Intervall.VON20_BIS_25), Units.PACE);
+        best25 = createLabel(overViewComposite, Messages.BestRunsView18 + Messages.BestRunsView19, model.getSchnellstePace(Intervall.PLUS25), Units.PACE);
         sectionPace.setClient(overViewComposite);
 
     }

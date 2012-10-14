@@ -16,7 +16,6 @@ import org.jfree.chart.renderer.xy.XYSplineRenderer;
 import org.jfree.data.Range;
 import org.jfree.data.xy.XYDataset;
 
-import ch.opentrainingcenter.client.cache.Cache;
 import ch.opentrainingcenter.client.charts.ChartCreator;
 import ch.opentrainingcenter.client.charts.HeartIntervallCreator;
 import ch.opentrainingcenter.client.helper.ZoneHelper;
@@ -26,11 +25,9 @@ import ch.opentrainingcenter.client.views.overview.ChartType;
 
 public class ChartCreatorImpl implements ChartCreator {
 
-    private final Cache cache;
     private final HeartIntervallCreator heartIntervall;
 
-    public ChartCreatorImpl(final Cache cache, final IPreferenceStore store) {
-        this.cache = cache;
+    public ChartCreatorImpl(final IPreferenceStore store) {
         heartIntervall = new HeartIntervallCreator(store);
     }
 

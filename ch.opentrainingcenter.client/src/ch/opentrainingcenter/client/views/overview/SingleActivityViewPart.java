@@ -68,14 +68,14 @@ public class SingleActivityViewPart extends ViewPart {
     private TableWrapData td;
     private final DataSetCreator dataSetCreator;
     private final ChartCreator chartCreator;
-    private IRecordListener listener;
+    private IRecordListener<ActivityT> listener;
 
     public SingleActivityViewPart() {
         final Date selectedId = ApplicationContext.getApplicationContext().getSelectedId();
         activity = cache.get(selectedId);
         simpleTraining = TrainingOverviewFactory.creatSimpleTraining(activity);
         dataSetCreator = new DataSetCreatorImpl(activity);
-        chartCreator = new ChartCreatorImpl(cache, Activator.getDefault().getPreferenceStore());
+        chartCreator = new ChartCreatorImpl(Activator.getDefault().getPreferenceStore());
         setPartName(simpleTraining.getFormattedDate());
     }
 
@@ -114,8 +114,7 @@ public class SingleActivityViewPart extends ViewPart {
     }
 
     private void addOverviewSection(final Composite body) {
-        final Section overviewSection = toolkit.createSection(body, Section.DESCRIPTION | Section.TITLE_BAR | Section.TWISTIE
-                | Section.EXPANDED);
+        final Section overviewSection = toolkit.createSection(body, Section.DESCRIPTION | Section.TITLE_BAR | Section.TWISTIE | Section.EXPANDED);
         overviewSection.addExpansionListener(new ExpansionAdapter() {
             @Override
             public void expansionStateChanged(final ExpansionEvent e) {
@@ -236,7 +235,7 @@ public class SingleActivityViewPart extends ViewPart {
             }
         });
 
-        listener = new IRecordListener() {
+        listener = new IRecordListener<ActivityT>() {
 
             @Override
             public void recordChanged(final Collection<ActivityT> entry) {
@@ -308,8 +307,7 @@ public class SingleActivityViewPart extends ViewPart {
     }
 
     private void addMapSection(final Composite body) {
-        final Section mapSection = toolkit
-                .createSection(body, Section.DESCRIPTION | Section.TITLE_BAR | Section.TWISTIE | Section.EXPANDED);
+        final Section mapSection = toolkit.createSection(body, Section.DESCRIPTION | Section.TITLE_BAR | Section.TWISTIE | Section.EXPANDED);
         mapSection.addExpansionListener(new ExpansionAdapter() {
             @Override
             public void expansionStateChanged(final ExpansionEvent e) {
@@ -350,8 +348,7 @@ public class SingleActivityViewPart extends ViewPart {
      * Herz frequenz
      */
     private void addHeartSection(final Composite body) {
-        final Section heartSection = toolkit.createSection(body, Section.DESCRIPTION | Section.TITLE_BAR | Section.TWISTIE
-                | Section.EXPANDED);
+        final Section heartSection = toolkit.createSection(body, Section.DESCRIPTION | Section.TITLE_BAR | Section.TWISTIE | Section.EXPANDED);
         heartSection.addExpansionListener(new ExpansionAdapter() {
             @Override
             public void expansionStateChanged(final ExpansionEvent e) {
@@ -385,8 +382,7 @@ public class SingleActivityViewPart extends ViewPart {
     }
 
     private void addSpeedSection(final Composite body) {
-        final Section speedSection = toolkit.createSection(body, Section.DESCRIPTION | Section.TITLE_BAR | Section.TWISTIE
-                | Section.EXPANDED);
+        final Section speedSection = toolkit.createSection(body, Section.DESCRIPTION | Section.TITLE_BAR | Section.TWISTIE | Section.EXPANDED);
         speedSection.addExpansionListener(new ExpansionAdapter() {
             @Override
             public void expansionStateChanged(final ExpansionEvent e) {

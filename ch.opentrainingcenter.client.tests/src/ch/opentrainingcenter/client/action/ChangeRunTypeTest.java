@@ -39,13 +39,13 @@ public class ChangeRunTypeTest {
 
     @Test
     public void testConstructor() {
-        changeRunType = new ChangeRunType(type, databaseAccess, TrainingCenterDataCache.getInstance(databaseAccess, store, converters));
+        changeRunType = new ChangeRunType(type, databaseAccess, TrainingCenterDataCache.getInstance(databaseAccess));
         assertNotNull(changeRunType);
     }
 
     @Test
     public void testType() {
-        changeRunType = new ChangeRunType(type, databaseAccess, TrainingCenterDataCache.getInstance(databaseAccess, store, converters));
+        changeRunType = new ChangeRunType(type, databaseAccess, TrainingCenterDataCache.getInstance(databaseAccess));
         assertEquals(type, changeRunType.getType());
     }
 

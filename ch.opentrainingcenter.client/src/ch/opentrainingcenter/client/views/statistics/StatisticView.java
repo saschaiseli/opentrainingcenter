@@ -8,7 +8,6 @@ import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.ui.part.ViewPart;
 
 import ch.opentrainingcenter.client.charts.ChartSerieType;
-import ch.opentrainingcenter.importer.ExtensionHelper;
 
 public class StatisticView extends ViewPart {
 
@@ -25,6 +24,7 @@ public class StatisticView extends ViewPart {
         addItem(tabs, ChartSerieType.WEEK);
         addItem(tabs, ChartSerieType.MONTH);
         addItem(tabs, ChartSerieType.YEAR);
+        addItem(tabs, ChartSerieType.HEART);
 
         tabs.setSelection(1);
     }
@@ -32,7 +32,7 @@ public class StatisticView extends ViewPart {
     private void addItem(final TabFolder tabs, final ChartSerieType type) {
         final TabItem item = new TabItem(tabs, SWT.PUSH);
         item.setText(type.getName());
-        final OTCBarChartViewer viewer = new OTCBarChartViewer(tabs, type, ExtensionHelper.getConverters());
+        final OTCBarChartViewer viewer = new OTCBarChartViewer(tabs, type);
         item.setControl(viewer.getControl());
     }
 

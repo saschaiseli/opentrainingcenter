@@ -27,22 +27,22 @@ public class MockCache implements Cache {
     }
 
     @Override
-    public void remove(final List<Date> deletedIds) {
-        this.deletedIds = deletedIds;
+    public void remove(final List<Date> ids) {
+        this.deletedIds = ids;
     }
 
     @Override
-    public void update() {
-
-    }
-
-    @Override
-    public void addListener(final IRecordListener listener) {
+    public void notifyListeners() {
 
     }
 
     @Override
-    public void removeListener(final IRecordListener listener) {
+    public void addListener(final IRecordListener<ActivityT> listener) {
+
+    }
+
+    @Override
+    public void removeListener(final IRecordListener<ActivityT> listener) {
 
     }
 
@@ -72,5 +72,11 @@ public class MockCache implements Cache {
 
     @Override
     public void updateExtension(final Date activityId, final ActivityExtension extension) {
+    }
+
+    @Override
+    public void remove(final Date key) {
+        // TODO Auto-generated method stub
+
     }
 }

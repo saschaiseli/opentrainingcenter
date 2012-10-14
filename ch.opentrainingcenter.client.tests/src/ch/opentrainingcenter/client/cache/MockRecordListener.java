@@ -3,9 +3,7 @@ package ch.opentrainingcenter.client.cache;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import ch.opentrainingcenter.tcx.ActivityT;
-
-public class MockRecordListener implements IRecordListener {
+public class MockRecordListener<ActivityT> implements IRecordListener<ActivityT> {
 
     private final Collection<ActivityT> changedEntry = new ArrayList<ActivityT>();
     private final Collection<ActivityT> deletedEntry = new ArrayList<ActivityT>();

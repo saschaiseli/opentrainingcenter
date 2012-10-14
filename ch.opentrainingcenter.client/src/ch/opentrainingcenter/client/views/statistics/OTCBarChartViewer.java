@@ -76,7 +76,6 @@ import ch.opentrainingcenter.client.helper.ColorFromPreferenceHelper;
 import ch.opentrainingcenter.client.model.ISimpleTraining;
 import ch.opentrainingcenter.client.model.RunType;
 import ch.opentrainingcenter.db.DatabaseAccessFactory;
-import ch.opentrainingcenter.importer.IConvert2Tcx;
 import ch.opentrainingcenter.tcx.ActivityT;
 import static org.jfree.ui.TextAnchor.CENTER;
 
@@ -111,16 +110,16 @@ public class OTCBarChartViewer implements ISelectionProvider {
 
     private final Cache cache;
 
-    public OTCBarChartViewer(final Composite parent, final ChartSerieType type, final Map<String, IConvert2Tcx> converters) {
+    public OTCBarChartViewer(final Composite parent, final ChartSerieType type) {
         this.type = type;
         clazz = getSeriesType(type);
         statistik = new StatistikCreator();
 
-        daten = new TrainingOverviewDatenAufbereiten(statistik, DatabaseAccessFactory.getDatabaseAccess(), store);
+        daten = new TrainingOverviewDatenAufbereiten(statistik, DatabaseAccessFactory.getDatabaseAccess());
         distanceSerie = new TimeSeries(DISTANZ);
         heartSerie = new TimeSeries(HEART);
         cache = TrainingCenterDataCache.getInstance();
-        cache.addListener(new IRecordListener() {
+        cache.addListener(new IRecordListener<ActivityT>() {
 
             @Override
             public void recordChanged(final Collection<ActivityT> entry) {
@@ -170,8 +169,7 @@ public class OTCBarChartViewer implements ISelectionProvider {
                     } else {
                         labelGenerator = renderer.getBaseItemLabelGenerator();
 
-                        final ItemLabelPosition position = new ItemLabelPosition(ItemLabelAnchor.CENTER, TextAnchor.CENTER,
-                                TextAnchor.CENTER, -Math.PI / 2.0);
+                        final ItemLabelPosition position = new ItemLabelPosition(ItemLabelAnchor.CENTER, TextAnchor.CENTER, TextAnchor.CENTER, -Math.PI / 2.0);
                         renderer.setBasePositiveItemLabelPosition(position);
 
                         renderer.setBaseItemLabelFont(new Font("Default", Font.PLAIN, 7)); //$NON-NLS-1$
@@ -278,9 +276,9 @@ public class OTCBarChartViewer implements ISelectionProvider {
 
     }
 
-    private Class<? extends RegularTimePeriod> getSeriesType(final ChartSerieType type) {
+    private Class<? extends RegularTimePeriod> getSeriesType(final ChartSerieType chartType) {
         final Class<? extends RegularTimePeriod> thisClazz;
-        switch (type) {
+        switch (chartType) {
         case DAY:
             thisClazz = Day.class;
             break;
@@ -299,15 +297,14 @@ public class OTCBarChartViewer implements ISelectionProvider {
         return thisClazz;
     }
 
-    private void createOrUpdateDataSet(final TrainingOverviewDatenAufbereiten trainingOverviewDatenAufbereiten, final RunType filter) {
-        LOGGER.debug("createOrUpdateDataSet... " + filter); //$NON-NLS-1$
-        createOrUpdateDataSet(trainingOverviewDatenAufbereiten, DISTANZ, filter);
-        createOrUpdateDataSet(trainingOverviewDatenAufbereiten, HEART, filter);
+    private void createOrUpdateDataSet(final TrainingOverviewDatenAufbereiten trainingDaten, final RunType runTypeFilter) {
+        LOGGER.debug("createOrUpdateDataSet... " + runTypeFilter); //$NON-NLS-1$
+        createOrUpdateDataSet(trainingDaten, DISTANZ, runTypeFilter);
+        createOrUpdateDataSet(trainingDaten, HEART, runTypeFilter);
     }
 
-    private IntervalXYDataset createOrUpdateDataSet(final TrainingOverviewDatenAufbereiten daten, final String serieTyp,
-            final RunType filter) {
-        final Map<String, TimeSeries> series = updateSeries(daten, filter);
+    private IntervalXYDataset createOrUpdateDataSet(final TrainingOverviewDatenAufbereiten trainingDaten, final String serieTyp, final RunType runTypeFilter) {
+        final Map<String, TimeSeries> series = updateSeries(trainingDaten, runTypeFilter);
         if (DISTANZ.equals(serieTyp)) {
             timeSeriesDistanzCollection.removeAllSeries();
             timeSeriesDistanzCollection.addSeries(series.get(DISTANZ));
@@ -322,22 +319,22 @@ public class OTCBarChartViewer implements ISelectionProvider {
         throw new IllegalArgumentException(Messages.OTCBarChartViewer4 + serieTyp + Messages.OTCBarChartViewer5);
     }
 
-    private Map<String, TimeSeries> updateSeries(final TrainingOverviewDatenAufbereiten daten, final RunType filter) {
+    private Map<String, TimeSeries> updateSeries(final TrainingOverviewDatenAufbereiten trainingDaten, final RunType runType) {
         final Map<String, TimeSeries> map = new HashMap<String, TimeSeries>();
         final List<ISimpleTraining> trainings = new ArrayList<ISimpleTraining>();
-        daten.update(filter);
-        LOGGER.debug(daten);
+        trainingDaten.update(runType);
+        LOGGER.debug(trainingDaten);
         if (ChartSerieType.DAY.equals(type)) {
-            trainings.addAll(daten.getTrainingsPerDay());
+            trainings.addAll(trainingDaten.getTrainingsPerDay());
         }
         if (ChartSerieType.WEEK.equals(type)) {
-            trainings.addAll(daten.getTrainingsPerWeek());
+            trainings.addAll(trainingDaten.getTrainingsPerWeek());
         }
         if (ChartSerieType.MONTH.equals(type)) {
-            trainings.addAll(daten.getTrainingsPerMonth());
+            trainings.addAll(trainingDaten.getTrainingsPerMonth());
         }
         if (ChartSerieType.YEAR.equals(type)) {
-            trainings.addAll(daten.getTrainingsPerYear());
+            trainings.addAll(trainingDaten.getTrainingsPerYear());
         }
         //
         distanceSerie.clear();
@@ -354,10 +351,10 @@ public class OTCBarChartViewer implements ISelectionProvider {
         return map;
     }
 
-    private JFreeChart createChart(final IntervalXYDataset dataset, final ChartSerieType type) {
+    private JFreeChart createChart(final IntervalXYDataset dataset, final ChartSerieType chartSerieType) {
 
-        chart = ChartFactory.createXYBarChart(Messages.OTCBarChartViewer6, Messages.OTCBarChartViewer7, true, Messages.OTCBarChartViewer8,
-                dataset, PlotOrientation.VERTICAL, false, true, false);
+        chart = ChartFactory.createXYBarChart(Messages.OTCBarChartViewer6, Messages.OTCBarChartViewer7, true, Messages.OTCBarChartViewer8, dataset,
+                PlotOrientation.VERTICAL, false, true, false);
         chart.setAntiAlias(true);
         chart.setBorderVisible(false);
         final org.eclipse.swt.graphics.Color b = Display.getDefault().getActiveShell().getBackground();
@@ -367,7 +364,7 @@ public class OTCBarChartViewer implements ISelectionProvider {
         final XYPlot plot = chart.getXYPlot();
 
         XYItemRenderer myXyBarRenderer;
-        if (ChartSerieType.WEEK.equals(type)) {
+        if (ChartSerieType.WEEK.equals(chartSerieType)) {
             myXyBarRenderer = new WeekXYBarRenderer(dataset, plot, store);
         } else {
             myXyBarRenderer = new XYBarRenderer();
@@ -386,18 +383,18 @@ public class OTCBarChartViewer implements ISelectionProvider {
 
         renderer.setMargin(0.1);
 
-        if (type.isLabelVisible()) {
-            final String formatString = "{2}km (" + type.getLabel() + "{1})"; //$NON-NLS-1$//$NON-NLS-2$
-            final StandardXYToolTipGenerator generator = new StandardXYToolTipGenerator(formatString, new SimpleDateFormat(type
-                    .getFormatPattern()), new DecimalFormat("0.000")); //$NON-NLS-1$
+        if (chartSerieType.isLabelVisible()) {
+            final String label = "{2}km (" + chartSerieType.getLabel() + "{1})"; //$NON-NLS-1$//$NON-NLS-2$
+            final StandardXYToolTipGenerator generator = new StandardXYToolTipGenerator(label, new SimpleDateFormat(chartSerieType.getFormatPattern()),
+                    new DecimalFormat("0.000")); //$NON-NLS-1$
             renderer.setBaseToolTipGenerator(generator);
 
             final ItemLabelPosition position = new ItemLabelPosition(ItemLabelAnchor.CENTER, CENTER, CENTER, -Math.PI / 2.0);
             renderer.setBasePositiveItemLabelPosition(position);
 
-            final XYItemLabelGenerator labelGenerator = new StandardXYItemLabelGenerator(formatString, new SimpleDateFormat(type
-                    .getFormatPattern()), new DecimalFormat("0.000")); //$NON-NLS-1$
-            renderer.setBaseItemLabelGenerator(labelGenerator);
+            final XYItemLabelGenerator lgen = new StandardXYItemLabelGenerator(label, new SimpleDateFormat(chartSerieType.getFormatPattern()),
+                    new DecimalFormat("0.000")); //$NON-NLS-1$
+            renderer.setBaseItemLabelGenerator(lgen);
 
             renderer.setBaseItemLabelsVisible(true);
         }

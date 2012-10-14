@@ -81,7 +81,7 @@ public class OverviewViewer extends ViewPart {
         gridData.horizontalAlignment = GridData.FILL;
         viewer.getControl().setLayoutData(gridData);
 
-        cache.addListener(new IRecordListener() {
+        cache.addListener(new IRecordListener<ActivityT>() {
 
             @Override
             public void recordChanged(final Collection<ActivityT> entry) {
@@ -94,8 +94,7 @@ public class OverviewViewer extends ViewPart {
             }
 
             private void update() {
-                viewer.setInput(DatabaseAccessFactory.getDatabaseAccess().getAllImported(
-                        ApplicationContext.getApplicationContext().getAthlete()));
+                viewer.setInput(DatabaseAccessFactory.getDatabaseAccess().getAllImported(ApplicationContext.getApplicationContext().getAthlete()));
                 viewer.refresh();
             }
         });

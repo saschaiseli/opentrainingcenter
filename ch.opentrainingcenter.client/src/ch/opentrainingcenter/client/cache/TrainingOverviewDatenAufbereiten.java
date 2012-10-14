@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.eclipse.jface.preference.IPreferenceStore;
 
 import ch.opentrainingcenter.client.charts.IStatistikCreator;
 import ch.opentrainingcenter.client.helper.SimpleTrainingCalculator;
@@ -32,8 +31,7 @@ public class TrainingOverviewDatenAufbereiten {
 
     private final IDatabaseAccess databaseAccess;
 
-    public TrainingOverviewDatenAufbereiten(final IStatistikCreator statistik, final IDatabaseAccess databaseAccess,
-            final IPreferenceStore store) {
+    public TrainingOverviewDatenAufbereiten(final IStatistikCreator statistik, final IDatabaseAccess databaseAccess) {
         this.statistik = statistik;
         this.databaseAccess = databaseAccess;
         update(null);

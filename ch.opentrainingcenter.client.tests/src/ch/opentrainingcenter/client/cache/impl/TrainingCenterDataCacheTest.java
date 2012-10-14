@@ -13,7 +13,6 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import ch.opentrainingcenter.client.cache.ActivityTTestHelper;
-import ch.opentrainingcenter.client.cache.MockGpsFileLoader;
 import ch.opentrainingcenter.client.cache.MockRecordListener;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.db.IDatabaseAccess;
@@ -34,16 +33,14 @@ import static org.junit.Assert.assertTrue;
 public class TrainingCenterDataCacheTest {
 
     private static IDatabaseAccess mockDataAccess;
-    private static MockGpsFileLoader mockGps;
     private static TrainingCenterDataCache cache;
 
-    final MockRecordListener listener = new MockRecordListener();
+    final MockRecordListener<ActivityT> listener = new MockRecordListener<ActivityT>();
 
     @Before
     public void before() {
         mockDataAccess = Mockito.mock(IDatabaseAccess.class);
-        mockGps = new MockGpsFileLoader();
-        cache = TrainingCenterDataCache.getInstanceForTests(mockGps, mockDataAccess);
+        cache = TrainingCenterDataCache.getInstanceForTests(mockDataAccess);
     }
 
     @After
@@ -134,7 +131,7 @@ public class TrainingCenterDataCacheTest {
         // prepare
         cache.addListener(listener);
         // execute
-        cache.update();
+        cache.notifyListeners();
         // assert
         assertEquals("Nichts wurde upgedated", 0, listener.getChangedEntry().size());
         assertEquals("Nichts wurde upgedated", 0, listener.getDeletedEntry().size());
@@ -256,7 +253,7 @@ public class TrainingCenterDataCacheTest {
 
     @Test
     public void testUpdateOhneListener() {
-        cache.update();
+        cache.notifyListeners();
 
         assertEquals("Eh kein listener angehängt", 0, listener.getChangedEntry().size());
         assertEquals("Eh kein listener angehängt", 0, listener.getDeletedEntry().size());

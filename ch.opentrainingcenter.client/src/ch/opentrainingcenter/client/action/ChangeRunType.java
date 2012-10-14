@@ -38,7 +38,7 @@ public class ChangeRunType extends Action implements ISelectionListener, IWorkbe
             final IImported record = (IImported) obj;
             databaseAccess.updateRecord(record, type.getIndex());
         }
-        cache.update();
+        cache.notifyListeners();
     }
 
     RunType getType() {

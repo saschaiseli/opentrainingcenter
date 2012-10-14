@@ -154,8 +154,7 @@ public class NavigationView extends ViewPart {
             }
 
             private void writeToStatusLine(final IImported record) {
-                writeToStatusLine(Messages.NavigationView0 + TimeHelper.convertDateToString(record.getActivityId(), false)
-                        + " " + getOverview(record)); //$NON-NLS-1$
+                writeToStatusLine(Messages.NavigationView0 + TimeHelper.convertDateToString(record.getActivityId(), false) + " " + getOverview(record)); //$NON-NLS-1$
             }
 
             private void writeToStatusLine(final String message) {
@@ -179,7 +178,7 @@ public class NavigationView extends ViewPart {
         writeStatus(Messages.NavigationView2 + allImported.size() + Messages.NavigationView3);
         // }
 
-        cache.addListener(new IRecordListener() {
+        cache.addListener(new IRecordListener<ActivityT>() {
 
             @Override
             public void deleteRecord(final Collection<ActivityT> entry) {

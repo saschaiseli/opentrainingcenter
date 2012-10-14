@@ -67,6 +67,7 @@ public class Gmn2Tcx implements IConvert2Tcx {
         return unmarshall;
     }
 
+    @SuppressWarnings("unused")
     private void convertForMe() throws IOException {
         final File f = new File("/home/sascha/allgmn"); //$NON-NLS-1$
         final File[] listFiles = f.listFiles();

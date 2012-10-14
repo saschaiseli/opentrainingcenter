@@ -9,15 +9,11 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
-import org.eclipse.core.runtime.ListenerList;
-import org.eclipse.jface.preference.IPreferenceStore;
 
 import ch.opentrainingcenter.client.cache.Cache;
 import ch.opentrainingcenter.client.cache.IRecordListener;
 import ch.opentrainingcenter.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.db.IDatabaseAccess;
-import ch.opentrainingcenter.importer.IConvert2Tcx;
-import ch.opentrainingcenter.importer.IImportedConverter;
 import ch.opentrainingcenter.tcx.ActivityListT;
 import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.tcx.ExtensionsT;
@@ -27,9 +23,7 @@ import ch.opentrainingcenter.transfer.IImported;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.IWeather;
 
-public final class TrainingCenterDataCache implements Cache {
-
-    private ListenerList listeners;
+public final class TrainingCenterDataCache extends AbstractCache<Date, ActivityT> implements Cache {
 
     private static Cache instance = null;
 
@@ -37,7 +31,7 @@ public final class TrainingCenterDataCache implements Cache {
 
     private final Map<Date, IImported> allImported = new TreeMap<Date, IImported>(new ImportedComparator());
 
-    private final Map<Long, ActivityT> cache = new HashMap<Long, ActivityT>();
+    private final Map<Long, ActivityT> map = new HashMap<Long, ActivityT>();
 
     public static final Logger LOGGER = Logger.getLogger(TrainingCenterDataCache.class);
 
@@ -47,11 +41,6 @@ public final class TrainingCenterDataCache implements Cache {
         this(DatabaseAccessFactory.getDatabaseAccess());
     }
 
-    private TrainingCenterDataCache(final IDatabaseAccess databaseAccess, final IPreferenceStore store,
-            final Map<String, IConvert2Tcx> converters) {
-        this(databaseAccess);
-    }
-
     private TrainingCenterDataCache(final IDatabaseAccess dataAccess) {
         this.dataAccess = dataAccess;
         database = new TrainingCenterDatabaseT();
@@ -59,13 +48,13 @@ public final class TrainingCenterDataCache implements Cache {
         database.setActivities(activityList);
     }
 
-    public static TrainingCenterDataCache getInstanceForTests(final IImportedConverter loadGpsFile, final IDatabaseAccess dataAccess) {
+    public static TrainingCenterDataCache getInstanceForTests(final IDatabaseAccess dataAccess) {
         return new TrainingCenterDataCache(dataAccess);
     }
 
-    public static Cache getInstance(final IDatabaseAccess delegate, final IPreferenceStore store, final Map<String, IConvert2Tcx> converters) {
+    public static Cache getInstance(final IDatabaseAccess delegate) {
         if (instance == null) {
-            instance = new TrainingCenterDataCache(delegate, store, converters);
+            instance = new TrainingCenterDataCache(delegate);
         }
         return instance;
     }
@@ -88,7 +77,7 @@ public final class TrainingCenterDataCache implements Cache {
     public void addAll(final List<ActivityT> activities) {
         database.getActivities().getActivity().addAll(activities);
         for (final ActivityT activity : activities) {
-            final Date key = activity.getId().toGregorianCalendar().getTime();
+            final Date key = getKey(activity);
 
             final IImported imported = dataAccess.getImportedRecord(key);
             if (imported != null) {
@@ -101,7 +90,7 @@ public final class TrainingCenterDataCache implements Cache {
             }
 
             allImported.put(key, imported);
-            cache.put(key.getTime(), activity);
+            map.put(key.getTime(), activity);
         }
         fireRecordAdded(null);
     }
@@ -110,7 +99,7 @@ public final class TrainingCenterDataCache implements Cache {
     public ActivityT get(final Date activityId) {
         final long key = activityId.getTime();
         final IImported imported = allImported.get(activityId);
-        final ActivityT activity = cache.get(key);
+        final ActivityT activity = map.get(key);
         if (imported != null) {
             final ITraining training = imported.getTraining();
             final String note = training.getNote();
@@ -128,7 +117,7 @@ public final class TrainingCenterDataCache implements Cache {
     public void resetCache() {
         database.getActivities().getActivity().clear();
         allImported.clear();
-        cache.clear();
+        map.clear();
     }
 
     @Override
@@ -149,26 +138,14 @@ public final class TrainingCenterDataCache implements Cache {
     }
 
     @Override
-    public void update() {
-        if (listeners == null) {
-            return;
-        }
-        final Object[] rls = listeners.getListeners();
-        for (int i = 0; i < rls.length; i++) {
-            final IRecordListener listener = (IRecordListener) rls[i];
-            listener.recordChanged(null);
-        }
-    }
-
-    @Override
     public void updateExtension(final Date activityId, final ActivityExtension extension) {
         final long time = activityId.getTime();
-        final ActivityT activityT = cache.get(time);
+        final ActivityT activityT = map.get(time);
         if (activityT != null) {
             final ExtensionsT ext = new ExtensionsT();
             ext.getAny().add(extension);
             activityT.setExtensions(ext);
-            cache.put(time, activityT);
+            map.put(time, activityT);
         }
         notifyListeners(activityT);
     }
@@ -181,7 +158,8 @@ public final class TrainingCenterDataCache implements Cache {
         final List<ActivityT> changed = new ArrayList<ActivityT>();
         changed.add(activityT);
         for (int i = 0; i < rls.length; i++) {
-            final IRecordListener listener = (IRecordListener) rls[i];
+            @SuppressWarnings("unchecked")
+            final IRecordListener<ActivityT> listener = (IRecordListener<ActivityT>) rls[i];
             listener.recordChanged(changed);
         }
     }
@@ -192,7 +170,8 @@ public final class TrainingCenterDataCache implements Cache {
         }
         final Object[] rls = listeners.getListeners();
         for (int i = 0; i < rls.length; i++) {
-            final IRecordListener listener = (IRecordListener) rls[i];
+            @SuppressWarnings("unchecked")
+            final IRecordListener<ActivityT> listener = (IRecordListener<ActivityT>) rls[i];
             listener.recordChanged(activitiesAdded);
         }
 
@@ -204,26 +183,9 @@ public final class TrainingCenterDataCache implements Cache {
         }
         final Object[] rls = listeners.getListeners();
         for (int i = 0; i < rls.length; i++) {
-            final IRecordListener listener = (IRecordListener) rls[i];
+            @SuppressWarnings("unchecked")
+            final IRecordListener<ActivityT> listener = (IRecordListener<ActivityT>) rls[i];
             listener.deleteRecord(deletedActivities);
-        }
-    }
-
-    @Override
-    public void addListener(final IRecordListener listener) {
-        if (listeners == null) {
-            listeners = new ListenerList();
-        }
-        listeners.add(listener);
-    }
-
-    @Override
-    public void removeListener(final IRecordListener listener) {
-        if (listeners != null) {
-            listeners.remove(listener);
-            if (listeners.isEmpty()) {
-                listeners = null;
-            }
         }
     }
 
@@ -231,7 +193,7 @@ public final class TrainingCenterDataCache implements Cache {
     public boolean contains(final Date activityId) {
         if (activityId != null) {
             final long key = activityId.getTime();
-            return cache.containsKey(key);
+            return map.containsKey(key);
         } else {
             return false;
         }
@@ -240,8 +202,16 @@ public final class TrainingCenterDataCache implements Cache {
     @Override
     public String toString() {
         final StringBuffer str = new StringBuffer();
-        str.append("Cache: Anzahl Elemente: ").append(cache.size()); //$NON-NLS-1$
+        str.append("Cache: Anzahl Elemente: ").append(map.size()); //$NON-NLS-1$
         return str.toString();
     }
 
+    @Override
+    public void remove(final Date key) {
+    }
+
+    @Override
+    public Date getKey(final ActivityT value) {
+        return value.getId().toGregorianCalendar().getTime();
+    }
 }

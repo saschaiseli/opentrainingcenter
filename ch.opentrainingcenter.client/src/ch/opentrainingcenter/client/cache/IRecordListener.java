@@ -2,18 +2,17 @@ package ch.opentrainingcenter.client.cache;
 
 import java.util.Collection;
 
-import ch.opentrainingcenter.tcx.ActivityT;
-
-public interface IRecordListener {
+public interface IRecordListener<V> {
 
     /**
      * Neuer record zum cache oder weg vom cache gekommen
      */
-     void recordChanged(Collection<ActivityT> entry);
+    void recordChanged(Collection<V> entry);
 
     /**
-     * Ein record wird aus dem Cache gelöscht. Wird verwendet um die entsprechenden Views zu schliessen.
+     * Ein record wird aus dem Cache gelöscht. Wird verwendet um die
+     * entsprechenden Views zu schliessen.
      */
-     void deleteRecord(Collection<ActivityT> entry);
+    void deleteRecord(Collection<V> entry);
 
 }

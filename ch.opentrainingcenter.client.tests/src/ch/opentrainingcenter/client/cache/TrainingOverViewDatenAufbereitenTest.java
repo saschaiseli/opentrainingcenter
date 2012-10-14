@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -43,7 +42,6 @@ public class TrainingOverViewDatenAufbereitenTest {
     @Before
     public void setUp() {
 
-        final IPreferenceStore store = Mockito.mock(IPreferenceStore.class);
         databaseAccess = Mockito.mock(IDatabaseAccess.class);
         auf = new TrainingOverviewDatenAufbereiten(new IStatistikCreator() {
 
@@ -66,7 +64,7 @@ public class TrainingOverViewDatenAufbereitenTest {
             public List<ISimpleTraining> getTrainingsProTag(final List<ISimpleTraining> allTrainings) {
                 return trainingsProTag;
             }
-        }, databaseAccess, store);
+        }, databaseAccess);
     }
 
     @Test
