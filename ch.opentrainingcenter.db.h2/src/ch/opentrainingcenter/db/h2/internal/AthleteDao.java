@@ -33,8 +33,10 @@ public class AthleteDao {
         final Query query = session.createQuery("from Athlete where id=:idAthlete");//$NON-NLS-1$
         query.setParameter("idAthlete", id);//$NON-NLS-1$
         IAthlete athlete = null;
-        if (query.list() != null && query.list().size() == 1) {
-            athlete = (IAthlete) query.list().get(0);
+        @SuppressWarnings("unchecked")
+        final List<IAthlete> athletes = query.list();
+        if (athletes != null && athletes.size() == 1) {
+            athlete = athletes.get(0);
         }
         dao.commit();
         session.flush();
@@ -47,8 +49,10 @@ public class AthleteDao {
         final Query query = session.createQuery("from Athlete where name=:name");//$NON-NLS-1$
         query.setParameter("name", name);//$NON-NLS-1$
         IAthlete athlete = null;
-        if (query.list() != null && query.list().size() == 1) {
-            athlete = (IAthlete) query.list().get(0);
+        @SuppressWarnings("unchecked")
+        final List<IAthlete> athletes = query.list();
+        if (athletes != null && athletes.size() == 1) {
+            athlete = athletes.get(0);
         }
         dao.commit();
         session.flush();

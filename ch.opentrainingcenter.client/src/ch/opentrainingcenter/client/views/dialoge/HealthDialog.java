@@ -16,11 +16,13 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.DateTime;
@@ -39,6 +41,7 @@ import ch.opentrainingcenter.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.db.IDatabaseAccess;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
+import ch.opentrainingcenter.transfer.IHealth;
 
 import com.ibm.icu.text.NumberFormat;
 
@@ -52,7 +55,7 @@ public class HealthDialog extends TitleAreaDialog {
 
     private static final Logger LOG = Logger.getLogger(HealthDialog.class);
 
-    private final HealthModel model = new HealthModel();
+    private final HealthModel model;
     private Text pulsText;
     private Text gewichtText;
 
@@ -61,19 +64,26 @@ public class HealthDialog extends TitleAreaDialog {
 
     private DateTime dateTime;
 
+    private final Shell parent;
     private final IDatabaseAccess db;
-
     private final IAthlete athlete;
 
-    public HealthDialog(final Shell parentShell) {
-        this(parentShell, DatabaseAccessFactory.getDatabaseAccess(), Activator.getDefault().getPreferenceStore());
+    public HealthDialog(final Shell parent) {
+        this(parent, DatabaseAccessFactory.getDatabaseAccess(), Activator.getDefault().getPreferenceStore());
     }
 
-    public HealthDialog(final Shell parentShell, final IDatabaseAccess databaseAccess, final IPreferenceStore store) {
-        super(parentShell);
+    public HealthDialog(final Shell parent, final IDatabaseAccess databaseAccess, final IPreferenceStore store) {
+        super(parent);
+        this.parent = parent;
         this.db = databaseAccess;
         final String id = store.getString(PreferenceConstants.ATHLETE_ID);
-        athlete = databaseAccess.getAthlete(Integer.valueOf(id));
+        athlete = db.getAthlete(Integer.valueOf(id));
+        final IHealth healt = db.getHealth(athlete, new Date());
+        if (healt != null) {
+            model = new HealthModel(healt.getWeight(), healt.getCardio(), healt.getDateofmeasure());
+        } else {
+            model = new HealthModel();
+        }
         Assert.isNotNull(athlete);
     }
 
@@ -97,7 +107,7 @@ public class HealthDialog extends TitleAreaDialog {
 
         dateTime = new DateTime(c, SWT.BORDER | SWT.CALENDAR);
         dateTime.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1));
-
+        dateTime.setData(new Date());
         final Composite containerTextFields = new Composite(c, SWT.NONE);
         final GridLayout layoutContainer = new GridLayout(2, true);
         layoutContainer.marginLeft = 10;
@@ -132,25 +142,40 @@ public class HealthDialog extends TitleAreaDialog {
 
         ctx = new DataBindingContext();
         initDataBindings();
-        gewichtText.setText("");
-        pulsText.setText("");
+        // ctx.updateModels();
+        // ctx.updateTargets();
 
+        // gewichtText.setText("");
+        // pulsText.setText("");
         return c;
     }
 
     @Override
     protected void buttonPressed(final int buttonId) {
         if (IDialogConstants.OK_ID == buttonId) {
-            model.setDateOfMeasure((Date) dateTime.getData());
-            db.saveHealth(CommonTransferFactory.createHealth(athlete, model.getWeight(), model.getRuhePuls(), model.getDateOfMeasure()));
+            final Date date = (Date) dateTime.getData();
+            model.setDateOfMeasure(date);
+            final IHealth health = db.getHealth(athlete, date);
+            boolean confirm = true;
+            if (health != null) {
+                confirm = MessageDialog.openConfirm(parent, "Bereits erfasste Daten", "Sollen die bereits erfassten daten gelöscht werden??");
+            }
+            if (confirm) {
+                db.saveOrUpdate(CommonTransferFactory.createHealth(athlete, model.getWeight(), model.getRuhePuls(), model.getDateOfMeasure()));
+            }
+        } else {
+            super.buttonPressed(buttonId);
         }
-        super.buttonPressed(buttonId);
+
     }
 
     @Override
     protected Control createButtonBar(final Composite parent) {
         final Control c = super.createButtonBar(parent);
-        getButton(OK).setEnabled(false);
+        final Button ok = getButton(OK);
+        ok.setEnabled(model.getDateOfMeasure() != null);
+        final Button button = new Button(ok.getParent(), SWT.NONE);
+        button.setText(">>");
         return c;
     }
 
@@ -174,7 +199,7 @@ public class HealthDialog extends TitleAreaDialog {
         final IObservableValue modelGewichtObservable = BeansObservables.observeValue(model, "weight"); //$NON-NLS-1$
         // strategy
         final UpdateValueStrategy strategyGewicht = new UpdateValueStrategy();
-        strategyGewicht.setAfterGetValidator(new NumberValidator(0.0, Double.MAX_VALUE, ""));
+        strategyGewicht.setAfterGetValidator(new NumberValidator(20.0, Double.MAX_VALUE, ""));
 
         final NumberFormat numberFormat = NumberFormat.getInstance(Locale.getDefault());
         final IConverter numberToStringConverter = StringToNumberConverter.toDouble(numberFormat, false);

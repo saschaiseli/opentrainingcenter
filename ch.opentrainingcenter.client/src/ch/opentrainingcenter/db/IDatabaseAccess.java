@@ -26,11 +26,6 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
     List<IAthlete> getAllAthletes();
 
     /**
-     * speichert den täglichen ruhepuls und gewicht.
-     */
-    void saveHealth(IHealth health);
-
-    /**
      * Gibt eine nach datum sortierte Liste von allen importierted Records
      * zurück.
      * 
@@ -140,4 +135,15 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
      * @return alle in der Datenbank verfügbaren wetter
      */
     List<IWeather> getWeather();
+
+    /**
+     * speichert den täglichen ruhepuls und gewicht. daten werden überschrieben.
+     */
+    void saveOrUpdate(IHealth health);
+
+    /**
+     * gibt die gesundheitsdaten des atheleten zu dem gegebenen datum zurück.
+     * Wenn noch keine daten erfasst sind, wird null zurückgegeben.
+     */
+    IHealth getHealth(IAthlete athlete, Date date);
 }

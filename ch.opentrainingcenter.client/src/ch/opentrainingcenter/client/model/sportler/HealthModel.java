@@ -11,13 +11,22 @@ public class HealthModel implements PropertyChangeListener {
 
     private static final Logger LOG = Logger.getLogger(HealthModel.class);
 
-    private Integer ruhePuls;
-
     private Double weight;
+    private Integer ruhePuls;
 
     private Date dateOfMeasure;
 
     private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
+
+    public HealthModel() {
+
+    }
+
+    public HealthModel(final Double gewicht, final Integer ruhePuls, final Date date) {
+        this.weight = gewicht;
+        this.ruhePuls = ruhePuls;
+        this.dateOfMeasure = date;
+    }
 
     public Integer getRuhePuls() {
         return ruhePuls;
