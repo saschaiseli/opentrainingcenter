@@ -1,5 +1,6 @@
 package ch.opentrainingcenter.client.views.dialoge;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -33,6 +34,7 @@ import org.eclipse.swt.widgets.Text;
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.client.PreferenceConstants;
+import ch.opentrainingcenter.client.cache.impl.HealthCache;
 import ch.opentrainingcenter.client.model.sportler.HealthModel;
 import ch.opentrainingcenter.client.views.IImageKeys;
 import ch.opentrainingcenter.client.views.databinding.NumberValidator;
@@ -88,12 +90,12 @@ public class HealthDialog extends TitleAreaDialog {
     }
 
     @Override
-    protected Control createDialogArea(final Composite parent) {
+    protected Control createDialogArea(final Composite composite) {
         setMessage(Messages.HealthDialog0);
         setTitle(Messages.HealthDialog1);
         setTitleImage(Activator.getImageDescriptor(IImageKeys.CARDIO3232).createImage());
 
-        final Composite c = new Composite(parent, SWT.NONE);
+        final Composite c = new Composite(composite, SWT.NONE);
 
         final GridLayout layout = new GridLayout(2, true);
         layout.marginHeight = 10;
@@ -142,18 +144,15 @@ public class HealthDialog extends TitleAreaDialog {
 
         ctx = new DataBindingContext();
         initDataBindings();
-        // ctx.updateModels();
-        // ctx.updateTargets();
-
-        // gewichtText.setText("");
-        // pulsText.setText("");
         return c;
     }
 
     @Override
     protected void buttonPressed(final int buttonId) {
         if (IDialogConstants.OK_ID == buttonId) {
-            final Date date = (Date) dateTime.getData();
+            final Calendar cal = Calendar.getInstance(Locale.getDefault());
+            cal.set(dateTime.getYear(), dateTime.getMonth(), dateTime.getDay());
+            final Date date = cal.getTime();
             model.setDateOfMeasure(date);
             final IHealth health = db.getHealth(athlete, date);
             boolean confirm = true;
@@ -161,7 +160,9 @@ public class HealthDialog extends TitleAreaDialog {
                 confirm = MessageDialog.openConfirm(parent, "Bereits erfasste Daten", "Sollen die bereits erfassten daten gelöscht werden??");
             }
             if (confirm) {
-                db.saveOrUpdate(CommonTransferFactory.createHealth(athlete, model.getWeight(), model.getRuhePuls(), model.getDateOfMeasure()));
+                final IHealth healthToSave = CommonTransferFactory.createHealth(athlete, model.getWeight(), model.getRuhePuls(), model.getDateOfMeasure());
+                db.saveOrUpdate(healthToSave);
+                HealthCache.getInstance().add(healthToSave);
             }
         } else {
             super.buttonPressed(buttonId);
@@ -170,12 +171,10 @@ public class HealthDialog extends TitleAreaDialog {
     }
 
     @Override
-    protected Control createButtonBar(final Composite parent) {
-        final Control c = super.createButtonBar(parent);
+    protected Control createButtonBar(final Composite p) {
+        final Control c = super.createButtonBar(p);
         final Button ok = getButton(OK);
         ok.setEnabled(model.getDateOfMeasure() != null);
-        final Button button = new Button(ok.getParent(), SWT.NONE);
-        button.setText(">>");
         return c;
     }
 
