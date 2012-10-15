@@ -146,4 +146,9 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
      * Wenn noch keine daten erfasst sind, wird null zurückgegeben.
      */
     IHealth getHealth(IAthlete athlete, Date date);
+
+    /**
+     * Gibt alle Gesundheitsdaten von dem Athleten zurück.
+     */
+    List<IHealth> getHealth(IAthlete athlete);
 }

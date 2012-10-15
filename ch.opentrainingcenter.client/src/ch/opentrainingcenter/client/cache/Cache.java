@@ -7,40 +7,6 @@ import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.transfer.ActivityExtension;
 
 public interface Cache extends ICache<Date, ActivityT> {
-    //
-    // /**
-    // * Methode um importierte Runs im cache abzulegen.
-    // *
-    // * @param activities
-    // * eine Liste von Aktivitäten.
-    // */
-    // void add(final ActivityT activity);
-    //
-    // /**
-    // * Methode um importierte Runs im cache abzulegen.
-    // *
-    // * @param activities
-    // * eine Liste von Aktivitäten.
-    // */
-    // void addAll(final List<ActivityT> activities);
-    //
-    // ActivityT get(final Date activityId);
-    //
-    // /**
-    // * Entfernt alle Records mit den angegebenen Ids.
-    // *
-    // * @param ids
-    // */
-    // void remove(final List<Date> ids);
-    //
-    // /**
-    // * Alle Listener notifizieren
-    // */
-    // void update();
-    //
-    // void addListener(final IRecordListener listener);
-    //
-    // void removeListener(final IRecordListener listener);
 
     /**
      * Synchronisiert das Wetter und die Notes (beide in der ActivityExtension)
@@ -50,7 +16,5 @@ public interface Cache extends ICache<Date, ActivityT> {
      * @param extension
      */
     void updateExtension(final Date activityId, final ActivityExtension extension);
-
-    // boolean contains(final Date activityId);
 
 }

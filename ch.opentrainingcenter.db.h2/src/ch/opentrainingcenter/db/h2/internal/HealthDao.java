@@ -45,7 +45,6 @@ public class HealthDao {
         LOG.info("load health from: " + athlete); //$NON-NLS-1$
         final Session session = dao.getSession();
         dao.begin();
-
         final Criteria criteria = session.createCriteria(IHealth.class);
         criteria.add(Restrictions.eq("athlete", athlete));
         criteria.add(Restrictions.eq("dateofmeasure", date));
@@ -62,5 +61,18 @@ public class HealthDao {
 
     private boolean notEmpty(final List<?> records) {
         return records != null && !records.isEmpty();
+    }
+
+    public List<IHealth> getHealth(final IAthlete athlete) {
+        final Session session = dao.getSession();
+        dao.begin();
+        final Criteria criteria = session.createCriteria(IHealth.class);
+        criteria.add(Restrictions.eq("athlete", athlete));
+
+        @SuppressWarnings("unchecked")
+        final List<IHealth> healthRecords = criteria.list();
+        dao.commit();
+        session.flush();
+        return healthRecords;
     }
 }

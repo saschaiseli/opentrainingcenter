@@ -60,6 +60,10 @@ public abstract class AbstractCache<K, V> implements ICache<K, V> {
         return cache.containsKey(key);
     }
 
+    public int size() {
+        return cache.size();
+    }
+
     @Override
     public void notifyListeners() {
         if (listeners == null) {

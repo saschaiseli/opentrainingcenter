@@ -126,4 +126,9 @@ public class DatabaseAccess implements IDatabaseAccess {
         return healthDao.getHealth(athlete, date);
     }
 
+    @Override
+    public List<IHealth> getHealth(final IAthlete athlete) {
+        return healthDao.getHealth(athlete);
+    }
+
 }
