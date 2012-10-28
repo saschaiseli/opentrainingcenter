@@ -64,6 +64,10 @@ public abstract class AbstractCache<K, V> implements ICache<K, V> {
         return cache.size();
     }
 
+    public List<V> getAll() {
+        return new ArrayList<V>(cache.values());
+    }
+
     @Override
     public void notifyListeners() {
         if (listeners == null) {

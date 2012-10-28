@@ -6,7 +6,7 @@ import org.eclipse.ui.IPerspectiveFactory;
 
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.client.views.best.BestRunsView;
-import ch.opentrainingcenter.client.views.navigation.NavigationView;
+import ch.opentrainingcenter.client.views.navigation.KalenderWocheNavigationView;
 import ch.opentrainingcenter.client.views.overview.SingleActivityViewPart;
 import ch.opentrainingcenter.client.views.weeks.WeeklyOverview;
 
@@ -24,8 +24,8 @@ public class MainPerspective implements IPerspectiveFactory {
         final String editorArea = layout.getEditorArea();
         layout.setEditorAreaVisible(false);
 
-        layout.addStandaloneView(NavigationView.ID, false, IPageLayout.LEFT, 0.20f, editorArea);
-        layout.getViewLayout(NavigationView.ID).setCloseable(false);
+        layout.addStandaloneView(KalenderWocheNavigationView.ID, false, IPageLayout.LEFT, 0.20f, editorArea);
+        layout.getViewLayout(KalenderWocheNavigationView.ID).setCloseable(false);
 
         final IFolderLayout folderMiddle = layout.createFolder(RIGHT_PART, IPageLayout.LEFT, 0.70f, editorArea);
 

@@ -48,6 +48,14 @@
          point="org.eclipse.ui.views">
       <view
             allowMultiple="true"
+            class="ch.opentrainingcenter.client.views.navigation.KalenderWocheNavigationView"
+            fastViewWidthRatio="0.25"
+            icon="icons/package_games_sports_24_24.png"
+            id="ch.opentrainingcenter.client.kalenderNavigationView"
+            name="Navigation">
+      </view>
+       <view
+            allowMultiple="true"
             class="ch.opentrainingcenter.client.views.navigation.NavigationView"
             fastViewWidthRatio="0.25"
             icon="icons/package_games_sports_24_24.png"
@@ -168,6 +176,36 @@
             id="ch.opentrainingcenter.client.commands.AddDailyHealth"
             name="addDailyHealth">
       </command>
+      <command
+            description="Intensives Intervall"
+            id="ch.opentrainingcenter.client.commands.IntIntervall"
+            name="IntIntervall">
+      </command>
+      <command
+            description="Extensives Intervall"
+            id="ch.opentrainingcenter.client.commands.ExtIntervall"
+            name="ExtIntervall">
+      </command>
+      <command
+            description="Langer Lauf"
+            id="ch.opentrainingcenter.client.commands.LongJog"
+            name="LongJog">
+      </command>
+      <command
+            description="Power Long Jog"
+            id="ch.opentrainingcenter.client.commands.PowerLongJog"
+            name="PowerLongJog">
+      </command>
+      <command
+            description="Unbekannter Typ"
+            id="ch.opentrainingcenter.client.commands.Unknown"
+            name="NONE">
+      </command>
+      <command
+            description="Löscht einen Lauf"
+            id="ch.opentrainingcenter.client.commands.DeleteImportedRecord"
+            name="LoeschteinenRecord">
+      </command>
    </extension>
    <extension
          id="opentrainingcenter"
@@ -251,6 +289,116 @@
                commandId="ch.opentrainingcenter.client.action.AddEditHandler"
                label="Add/Edit Note"
                style="push">
+            <visibleWhen
+                  checkEnabled="true">
+               <iterate
+                     operator="and">
+                  <or>
+                     <instanceof
+                           value="ch.opentrainingcenter.client.model.navigation.impl.ConcreteImported">
+                     </instanceof>
+                  </or>
+               </iterate>
+            </visibleWhen>
+         </command>
+         <menu
+               label="Lauftyp ändern">
+            <command
+                  commandId="ch.opentrainingcenter.client.commands.IntIntervall"
+                  label="Intensives Intervall"
+                  style="push">
+               <visibleWhen
+                     checkEnabled="true">
+                  <iterate
+                        operator="and">
+                     <or>
+                        <instanceof
+                              value="ch.opentrainingcenter.client.model.navigation.impl.ConcreteImported">
+                        </instanceof>
+                     </or>
+                  </iterate>
+               </visibleWhen>
+            </command>
+            <command
+                  commandId="ch.opentrainingcenter.client.commands.ExtIntervall"
+                  label="Extensives Intervall"
+                  style="push">
+               <visibleWhen
+                     checkEnabled="true">
+                  <iterate
+                        operator="and">
+                     <or>
+                        <instanceof
+                              value="ch.opentrainingcenter.client.model.navigation.impl.ConcreteImported">
+                        </instanceof>
+                     </or>
+                  </iterate>
+               </visibleWhen>
+            </command>
+            <command
+                  commandId="ch.opentrainingcenter.client.commands.PowerLongJog"
+                  label="Power Long Jog"
+                  style="push">
+               <visibleWhen
+                     checkEnabled="true">
+                  <iterate
+                        operator="and">
+                     <or>
+                        <instanceof
+                              value="ch.opentrainingcenter.client.model.navigation.impl.ConcreteImported">
+                        </instanceof>
+                     </or>
+                  </iterate>
+               </visibleWhen>
+            </command>
+            <command
+                  commandId="ch.opentrainingcenter.client.commands.LongJog"
+                  label="Langer Lauf"
+                  style="push">
+               <visibleWhen
+                     checkEnabled="true">
+                  <iterate
+                        operator="and">
+                     <or>
+                        <instanceof
+                              value="ch.opentrainingcenter.client.model.navigation.impl.ConcreteImported">
+                        </instanceof>
+                     </or>
+                  </iterate>
+               </visibleWhen>
+            </command>
+            <command
+                  commandId="ch.opentrainingcenter.client.commands.Unknown"
+                  label="None"
+                  style="push">
+               <visibleWhen
+                     checkEnabled="true">
+                  <iterate
+                        operator="and">
+                     <or>
+                        <instanceof
+                              value="ch.opentrainingcenter.client.model.navigation.impl.ConcreteImported">
+                        </instanceof>
+                     </or>
+                  </iterate>
+               </visibleWhen>
+            </command>
+         </menu>
+         <command
+               commandId="ch.opentrainingcenter.client.commands.DeleteImportedRecord"
+               label="Löscht den Record"
+               style="push">
+            <visibleWhen
+                  checkEnabled="true">
+               <iterate
+                     operator="and">
+                  <or>
+                     <instanceof
+                           value="ch.opentrainingcenter.client.model.navigation.impl.ConcreteImported">
+                     </instanceof>
+                  </or>
+               </iterate>
+            </visibleWhen>
          </command>
       </menuContribution>
       <menuContribution
@@ -335,20 +483,6 @@
             productId="ch.opentrainingcenter.client.opentrainingcenter"
             splashId="ch.opentrainingcenter.client.splash">
       </splashHandlerProductBinding>
-   </extension>
-   <extension
-         point="org.eclipse.ui.newWizards">
-      <category
-            id="ch.opentrainingcenter.client"
-            name="Sample Wizards">
-      </category>
-      <wizard
-            category="ch.opentrainingcenter.client"
-            class="ch.opentrainingcenter.client.wizards.SampleNewWizard"
-            icon="icons/sample.gif"
-            id="ch.opentrainingcenter.client.wizards.SampleNewWizard"
-            name="Multi-page Editor file">
-      </wizard>
    </extension>
    <extension
          id="Open_TrainingCenter"
@@ -448,33 +582,29 @@
             class="ch.opentrainingcenter.client.commands.AddDailyHealth"
             commandId="ch.opentrainingcenter.client.commands.AddDailyHealth">
       </handler>
-   </extension>
-   <extension
-         point="ch.opentrainingcenter.client.splashExtension">
-      <splashExtension
-            icon="icons/af.png"
-            id="af"
-            tooltip="Application Framework">
-      </splashExtension>
-      <splashExtension
-            icon="icons/embedded.png"
-            id="embedded"
-            tooltip="Embedded">
-      </splashExtension>
-      <splashExtension
-            icon="icons/enterprise.png"
-            id="enterprise"
-            tooltip="Enterprise">
-      </splashExtension>
-      <splashExtension
-            icon="icons/languages.png"
-            id="languages"
-            tooltip="Languages">
-      </splashExtension>
-      <splashExtension
-            icon="icons/rcp.png"
-            id="rcp"
-            tooltip="RCP">
-      </splashExtension>
+      <handler
+            class="ch.opentrainingcenter.client.commands.runtype.IntIntervall"
+            commandId="ch.opentrainingcenter.client.commands.IntIntervall">
+      </handler>
+      <handler
+            class="ch.opentrainingcenter.client.commands.runtype.ExtIntervall"
+            commandId="ch.opentrainingcenter.client.commands.ExtIntervall">
+      </handler>
+      <handler
+            class="ch.opentrainingcenter.client.commands.runtype.PowerLongJog"
+            commandId="ch.opentrainingcenter.client.commands.PowerLongJog">
+      </handler>
+      <handler
+            class="ch.opentrainingcenter.client.commands.runtype.LongJog"
+            commandId="ch.opentrainingcenter.client.commands.LongJog">
+      </handler>
+      <handler
+            class="ch.opentrainingcenter.client.commands.runtype.UnknownJog"
+            commandId="ch.opentrainingcenter.client.commands.Unknown">
+      </handler>
+      <handler
+            class="ch.opentrainingcenter.client.commands.DeleteImportedRecord"
+            commandId="ch.opentrainingcenter.client.commands.DeleteImportedRecord">
+      </handler>
    </extension>
 </plugin>

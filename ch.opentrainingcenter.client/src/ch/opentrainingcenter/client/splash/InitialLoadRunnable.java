@@ -14,6 +14,7 @@ import ch.opentrainingcenter.client.cache.Cache;
 import ch.opentrainingcenter.client.cache.ICache;
 import ch.opentrainingcenter.client.cache.impl.HealthCache;
 import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
+import ch.opentrainingcenter.client.model.navigation.impl.ConcreteHealth;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.db.IDatabaseAccess;
@@ -57,9 +58,9 @@ public class InitialLoadRunnable implements IRunnableWithProgress {
             }
             i = 0;
             final List<IHealth> healths = databaseAccess.getHealth(athlete);
-            final ICache<Integer, IHealth> healthCache = HealthCache.getInstance();
+            final ICache<Integer, ConcreteHealth> healthCache = HealthCache.getInstance();
             for (final IHealth health : healths) {
-                healthCache.add(health);
+                healthCache.add(new ConcreteHealth(health));
                 monitor.subTask("Gesundheitswerte laden: " + i++);
                 LOG.info("Gesundheitswerte dem Cache hinzugefügt");
             }

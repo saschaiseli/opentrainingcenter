@@ -7,7 +7,8 @@ import ch.opentrainingcenter.client.cache.Cache;
 import ch.opentrainingcenter.client.model.RunType;
 import ch.opentrainingcenter.db.IDatabaseAccess;
 
-public final class RunTypeActionContainer {
+@Deprecated
+public class RunTypeActionContainer {
 
     private final List<ChangeRunType> actions = new ArrayList<ChangeRunType>();
 

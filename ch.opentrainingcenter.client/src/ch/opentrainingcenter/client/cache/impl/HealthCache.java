@@ -1,6 +1,6 @@
 package ch.opentrainingcenter.client.cache.impl;
 
-import ch.opentrainingcenter.transfer.IHealth;
+import ch.opentrainingcenter.client.model.navigation.impl.ConcreteHealth;
 
 /**
  * Cache um die Gesundheitszustände zu verwalten. Namentlich sind die Ruhepuls
@@ -9,7 +9,7 @@ import ch.opentrainingcenter.transfer.IHealth;
  * @author sascha
  * 
  */
-public class HealthCache extends AbstractCache<Integer, IHealth> {
+public class HealthCache extends AbstractCache<Integer, ConcreteHealth> {
 
     private static HealthCache INSTANCE = new HealthCache();
 
@@ -22,7 +22,7 @@ public class HealthCache extends AbstractCache<Integer, IHealth> {
     }
 
     @Override
-    public Integer getKey(final IHealth value) {
+    public Integer getKey(final ConcreteHealth value) {
         return value.getId();
     }
 }

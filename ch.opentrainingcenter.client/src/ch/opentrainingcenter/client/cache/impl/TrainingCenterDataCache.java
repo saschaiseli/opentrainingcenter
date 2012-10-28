@@ -27,7 +27,7 @@ public final class TrainingCenterDataCache extends AbstractCache<Date, ActivityT
 
     private static Cache instance = null;
 
-    private final TrainingCenterDatabaseT database;
+    private final TrainingCenterDatabaseT trainingCenterModel;
 
     private final Map<Date, IImported> allImported = new TreeMap<Date, IImported>(new ImportedComparator());
 
@@ -43,9 +43,9 @@ public final class TrainingCenterDataCache extends AbstractCache<Date, ActivityT
 
     private TrainingCenterDataCache(final IDatabaseAccess dataAccess) {
         this.dataAccess = dataAccess;
-        database = new TrainingCenterDatabaseT();
+        trainingCenterModel = new TrainingCenterDatabaseT();
         final ActivityListT activityList = new ActivityListT();
-        database.setActivities(activityList);
+        trainingCenterModel.setActivities(activityList);
     }
 
     public static TrainingCenterDataCache getInstanceForTests(final IDatabaseAccess dataAccess) {
@@ -75,7 +75,7 @@ public final class TrainingCenterDataCache extends AbstractCache<Date, ActivityT
 
     @Override
     public void addAll(final List<ActivityT> activities) {
-        database.getActivities().getActivity().addAll(activities);
+        trainingCenterModel.getActivities().getActivity().addAll(activities);
         for (final ActivityT activity : activities) {
             final Date key = getKey(activity);
 
@@ -115,14 +115,14 @@ public final class TrainingCenterDataCache extends AbstractCache<Date, ActivityT
      * Methode für Testzwecke
      */
     public void resetCache() {
-        database.getActivities().getActivity().clear();
+        trainingCenterModel.getActivities().getActivity().clear();
         allImported.clear();
         map.clear();
     }
 
     @Override
     public void remove(final List<Date> deletedIds) {
-        final List<ActivityT> activities = database.getActivities().getActivity();
+        final List<ActivityT> activities = trainingCenterModel.getActivities().getActivity();
         final List<ActivityT> activitiesToDelete = new ArrayList<ActivityT>();
         for (final ActivityT activity : activities) {
             final Date key = activity.getId().toGregorianCalendar().getTime();
@@ -130,7 +130,7 @@ public final class TrainingCenterDataCache extends AbstractCache<Date, ActivityT
                 activitiesToDelete.add(activity);
             }
         }
-        database.getActivities().getActivity().removeAll(activitiesToDelete);
+        trainingCenterModel.getActivities().getActivity().removeAll(activitiesToDelete);
         for (final Date key : deletedIds) {
             allImported.remove(key);
         }

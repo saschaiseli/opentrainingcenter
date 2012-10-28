@@ -17,6 +17,7 @@ import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.db.IDatabaseAccess;
 import ch.opentrainingcenter.transfer.IImported;
 
+@Deprecated
 public class DeleteImportedRecord extends Action implements ISelectionListener, IWorkbenchAction {
 
     public static final String ID = "ch.opentrainingcenter.client.action.DeleteImportedRecord"; //$NON-NLS-1$
@@ -55,4 +56,5 @@ public class DeleteImportedRecord extends Action implements ISelectionListener, 
     @Override
     public void selectionChanged(final IWorkbenchPart part, final ISelection selection) {
     }
+
 }

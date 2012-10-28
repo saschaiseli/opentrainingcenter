@@ -35,6 +35,7 @@ import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.client.PreferenceConstants;
 import ch.opentrainingcenter.client.cache.impl.HealthCache;
+import ch.opentrainingcenter.client.model.navigation.impl.ConcreteHealth;
 import ch.opentrainingcenter.client.model.sportler.HealthModel;
 import ch.opentrainingcenter.client.views.IImageKeys;
 import ch.opentrainingcenter.client.views.databinding.NumberValidator;
@@ -162,7 +163,7 @@ public class HealthDialog extends TitleAreaDialog {
             if (confirm) {
                 final IHealth healthToSave = CommonTransferFactory.createHealth(athlete, model.getWeight(), model.getRuhePuls(), model.getDateOfMeasure());
                 db.saveOrUpdate(healthToSave);
-                HealthCache.getInstance().add(healthToSave);
+                HealthCache.getInstance().add(new ConcreteHealth(healthToSave));
             }
         } else {
             super.buttonPressed(buttonId);

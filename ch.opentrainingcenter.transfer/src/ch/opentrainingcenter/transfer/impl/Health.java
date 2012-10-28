@@ -34,108 +34,51 @@ public class Health implements java.io.Serializable, IHealth {
         this.dateofmeasure = dateofmeasure;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see ch.opentrainingcenter.transfer.internal.IHealth#getId()
-     */
     @Override
     public int getId() {
         return this.id;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see ch.opentrainingcenter.transfer.internal.IHealth#setId(int)
-     */
     @Override
     public void setId(final int id) {
         this.id = id;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see ch.opentrainingcenter.transfer.internal.IHealth#getAthlete()
-     */
     @Override
     public IAthlete getAthlete() {
         return this.athlete;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see ch.opentrainingcenter.transfer.internal.IHealth#setAthlete(ch.
-     * opentrainingcenter.transfer.IAthlete)
-     */
     @Override
     public void setAthlete(final IAthlete athlete) {
         this.athlete = athlete;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see ch.opentrainingcenter.transfer.internal.IHealth#getWeight()
-     */
     @Override
     public Double getWeight() {
         return this.weight;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * ch.opentrainingcenter.transfer.internal.IHealth#setWeight(java.lang.Integer
-     * )
-     */
     @Override
     public void setWeight(final Double weight) {
         this.weight = weight;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see ch.opentrainingcenter.transfer.internal.IHealth#getCardio()
-     */
     @Override
     public Integer getCardio() {
         return this.cardio;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * ch.opentrainingcenter.transfer.internal.IHealth#setCardio(java.lang.Integer
-     * )
-     */
     @Override
     public void setCardio(final Integer cardio) {
         this.cardio = cardio;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see ch.opentrainingcenter.transfer.internal.IHealth#getDateofmeasure()
-     */
     @Override
     public Date getDateofmeasure() {
         return this.dateofmeasure;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * ch.opentrainingcenter.transfer.internal.IHealth#setDateofmeasure(java
-     * .util.Date)
-     */
     @Override
     public void setDateofmeasure(final Date dateofmeasure) {
         this.dateofmeasure = dateofmeasure;
@@ -146,5 +89,4 @@ public class Health implements java.io.Serializable, IHealth {
         return "Health [id=" + id + ", athlete=" + athlete + ", weight=" + weight + ", cardio=" + cardio + ", dateofmeasure=" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
                 + dateofmeasure + "]"; //$NON-NLS-1$
     }
-
 }
