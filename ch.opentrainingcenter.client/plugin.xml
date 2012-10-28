@@ -400,17 +400,18 @@
                id="ch.opentrainingcenter.client.commands"
                label="AllgemeineAktionen">
             <command
-                  commandId="ch.opentrainingcenter.client.commands.BackupGpsFiles"
-                  icon="icons/drive_backup_24_24.png"
-                  label="Backup Gps Files"
+                  commandId="ch.opentrainingcenter.client.commands.ImportManualGpsFiles"
+                  icon="icons/16_16/import_wiz.gif"
+                  label="Import GPS Files"
                   style="push"
-                  tooltip="Backup TOoltip">
+                  tooltip="Importieren von GPS Files von einer Sportuhr">
             </command>
             <command
-                  commandId="ch.opentrainingcenter.client.commands.ImportManualGpsFiles"
-                  icon="icons/import_klein.png"
-                  label="Import Gps FIles"
-                  style="push">
+                  commandId="ch.opentrainingcenter.client.commands.BackupGpsFiles"
+                  icon="icons/16_16/export.gif"
+                  label="Backup Gps Files"
+                  style="push"
+                  tooltip="Packt alle GPS Tracks zusammen und exportiert diese">
             </command>
             <command
                   commandId="ch.opentrainingcenter.client.commands.AddDailyHealth"
