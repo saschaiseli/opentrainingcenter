@@ -52,15 +52,7 @@
             fastViewWidthRatio="0.25"
             icon="icons/package_games_sports_24_24.png"
             id="ch.opentrainingcenter.client.kalenderNavigationView"
-            name="Navigation">
-      </view>
-       <view
-            allowMultiple="true"
-            class="ch.opentrainingcenter.client.views.navigation.NavigationView"
-            fastViewWidthRatio="0.25"
-            icon="icons/package_games_sports_24_24.png"
-            id="ch.opentrainingcenter.client.navigationView"
-            name="Läufe">
+            name="Übersicht">
       </view>
       <view
             allowMultiple="true"
@@ -606,5 +598,23 @@
             class="ch.opentrainingcenter.client.commands.DeleteImportedRecord"
             commandId="ch.opentrainingcenter.client.commands.DeleteImportedRecord">
       </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.viewActions">
+      <viewContribution
+            id="ch.opentrainingcenter.client.kalenderNavigationViewAction"
+            targetID="ch.opentrainingcenter.client.kalenderNavigationView">
+         <action
+               class="ch.opentrainingcenter.client.views.navigation.tree.CollapseAll"
+               definitionId="additions"
+               icon="icons/16_16/collapseall.gif"
+               id="ch.opentrainingcenter.client.action2"
+               label="Collapse All"
+               menubarPath="additions"
+               style="push"
+               toolbarPath="additions"
+               tooltip="Alles einklappen">
+         </action>
+      </viewContribution>
    </extension>
 </plugin>

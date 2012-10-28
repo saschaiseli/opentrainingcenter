@@ -91,6 +91,10 @@ public class KalenderWocheNavigationView extends ViewPart {
         treeModel.addItems(DecoratImported.decorate(allImported));
     }
 
+    public TreeViewer getTreeViewer() {
+        return viewer;
+    }
+
     @Override
     public void createPartControl(final Composite parent) {
         parent.getShell().setMaximized(true);

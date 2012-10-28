@@ -24,10 +24,12 @@ public class MainPerspective implements IPerspectiveFactory {
         final String editorArea = layout.getEditorArea();
         layout.setEditorAreaVisible(false);
 
-        layout.addStandaloneView(KalenderWocheNavigationView.ID, false, IPageLayout.LEFT, 0.20f, editorArea);
+        // layout.addStandaloneView(KalenderWocheNavigationView.ID, false,
+        // IPageLayout.LEFT, 0.20f, editorArea);
+        layout.addView(KalenderWocheNavigationView.ID, IPageLayout.LEFT, 0.15f, editorArea);
         layout.getViewLayout(KalenderWocheNavigationView.ID).setCloseable(false);
 
-        final IFolderLayout folderMiddle = layout.createFolder(RIGHT_PART, IPageLayout.LEFT, 0.70f, editorArea);
+        final IFolderLayout folderMiddle = layout.createFolder(RIGHT_PART, IPageLayout.LEFT, 0.75f, editorArea);
 
         if (ApplicationContext.getApplicationContext().getSelectedId() != null) {
             folderMiddle.addView(SingleActivityViewPart.ID + MULTI_VIEW);

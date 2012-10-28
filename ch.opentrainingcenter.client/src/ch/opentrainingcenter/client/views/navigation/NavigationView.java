@@ -28,9 +28,6 @@ import org.eclipse.ui.part.ViewPart;
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.client.PreferenceConstants;
-import ch.opentrainingcenter.client.action.ChangeRunType;
-import ch.opentrainingcenter.client.action.DeleteImportedRecord;
-import ch.opentrainingcenter.client.action.RunTypeActionContainer;
 import ch.opentrainingcenter.client.cache.Cache;
 import ch.opentrainingcenter.client.cache.IRecordListener;
 import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
@@ -61,7 +58,8 @@ public class NavigationView extends ViewPart {
 
     private final Cache cache = TrainingCenterDataCache.getInstance();
 
-    private final RunTypeActionContainer container = new RunTypeActionContainer(DatabaseAccessFactory.getDatabaseAccess(), cache);
+    // private final RunTypeActionContainer container = new
+    // RunTypeActionContainer(DatabaseAccessFactory.getDatabaseAccess(), cache);
 
     private final IDatabaseAccess databaseAccess = DatabaseAccessFactory.getDatabaseAccess();
 
@@ -84,7 +82,8 @@ public class NavigationView extends ViewPart {
         viewer.setContentProvider(new ViewContentProvider());
         viewer.setLabelProvider(new ViewLabelProvider());
 
-        final DeleteImportedRecord deleteRecordAction = new DeleteImportedRecord(cache, databaseAccess);
+        // final DeleteImportedRecord deleteRecordAction = new
+        // DeleteImportedRecord(cache, databaseAccess);
         // final AddEditNote addEditNote = new AddEditNote(cache,
         // databaseAccess);
         final MenuManager menuManager = new MenuManager("KontextMenu"); //$NON-NLS-1$
@@ -96,12 +95,12 @@ public class NavigationView extends ViewPart {
             @Override
             public void menuAboutToShow(final IMenuManager manager) {
                 final MenuManager subMenu = new MenuManager(Messages.NavigationView9);
-                for (final ChangeRunType crt : container.getActions()) {
-                    subMenu.add(crt);
-                }
+                // for (final ChangeRunType crt : container.getActions()) {
+                // subMenu.add(crt);
+                // }
                 manager.add(subMenu);
                 // manager.add(addEditNote);
-                manager.add(deleteRecordAction);
+                // manager.add(deleteRecordAction);
             }
         });
 
@@ -111,7 +110,7 @@ public class NavigationView extends ViewPart {
             @Override
             public void menuShown(final MenuEvent e) {
                 final IImported reco = (IImported) applicationContext.getSelection().get(0);
-                container.update(reco.getTrainingType().getId());
+                // container.update(reco.getTrainingType().getId());
             }
 
             @Override
@@ -145,7 +144,7 @@ public class NavigationView extends ViewPart {
                     final IImported record = (IImported) first;
                     applicationContext.setSelection(selection.toArray());
                     final ITrainingType trainingType = record.getTrainingType();
-                    container.update(trainingType.getId());
+                    // container.update(trainingType.getId());
                     writeToStatusLine(record);
                 } else {
                     writeToStatusLine(""); //$NON-NLS-1$
