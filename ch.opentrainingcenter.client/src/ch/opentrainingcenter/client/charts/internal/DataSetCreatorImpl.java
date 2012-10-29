@@ -90,10 +90,8 @@ public class DataSetCreatorImpl implements DataSetCreator {
             final List<TrackT> tracks = activityLapT.getTrack();
             for (final TrackT track : tracks) {
                 final List<TrackpointT> trackpoints = track.getTrackpoint();
-                TrackpointT previousTrackPoint = null;
                 for (final TrackpointT trackpoint : trackpoints) {
-                    addPoint(type, series, trackpoint, previousTrackPoint);
-                    previousTrackPoint = trackpoint;
+                    addPoint(type, series, trackpoint);
                 }
             }
         }
@@ -103,7 +101,7 @@ public class DataSetCreatorImpl implements DataSetCreator {
         return dataset;
     }
 
-    private void addPoint(final ChartType type, final XYSeries serie, final TrackpointT point, final TrackpointT previousPoint) {
+    private void addPoint(final ChartType type, final XYSeries serie, final TrackpointT point) {
         switch (type) {
         case HEART_DISTANCE: {
             final Double m = point.getDistanceMeters();
@@ -122,7 +120,7 @@ public class DataSetCreatorImpl implements DataSetCreator {
             break;
         }
         case SPEED_DISTANCE: {
-            throw new IllegalArgumentException("Do not use this method for speed ");
+            throw new IllegalArgumentException("Do not use this method for speed "); //$NON-NLS-1$
         }
         }
     }

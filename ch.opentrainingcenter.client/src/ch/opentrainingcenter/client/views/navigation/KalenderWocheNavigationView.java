@@ -1,7 +1,7 @@
 package ch.opentrainingcenter.client.views.navigation;
 
 import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
 
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -10,6 +10,7 @@ import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MenuEvent;
@@ -31,6 +32,7 @@ import ch.opentrainingcenter.client.cache.IRecordListener;
 import ch.opentrainingcenter.client.cache.impl.HealthCache;
 import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
 import ch.opentrainingcenter.client.model.navigation.IKalenderWocheNavigationModel;
+import ch.opentrainingcenter.client.model.navigation.impl.ConcreteHealth;
 import ch.opentrainingcenter.client.model.navigation.impl.ConcreteImported;
 import ch.opentrainingcenter.client.model.navigation.impl.DecoratImported;
 import ch.opentrainingcenter.client.model.navigation.impl.KWTraining;
@@ -59,7 +61,7 @@ public class KalenderWocheNavigationView extends ViewPart {
     private final IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 
     private final Cache cache = TrainingCenterDataCache.getInstance();
-
+    private final HealthCache healthCache = HealthCache.getInstance();
     private final IKalenderWocheNavigationModel treeModel = new KWTraining();
 
     private final ApplicationContext context = ApplicationContext.getApplicationContext();
@@ -71,24 +73,34 @@ public class KalenderWocheNavigationView extends ViewPart {
     private IAthlete athlete;
 
     public KalenderWocheNavigationView() {
-        final Collection<IImported> allImported;
         final String athleteId = store.getString(PreferenceConstants.ATHLETE_ID);
         if (athleteId != null && athleteId.length() > 0) {
             final int id = Integer.parseInt(athleteId);
             athlete = db.getAthlete(id);
-            allImported = db.getAllImported(athlete);
         } else {
-            allImported = Collections.emptyList();
             athlete = null;
         }
-
-        updateModel(allImported);
+        updateModel();
     }
 
-    private void updateModel(final Collection<IImported> allImported) {
-        treeModel.reset();
-        treeModel.addItems(HealthCache.getInstance().getAll());
-        treeModel.addItems(DecoratImported.decorate(allImported));
+    private void updateModel() {
+        Display.getDefault().asyncExec(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    final List<IImported> imported = db.getAllImported(athlete);
+                    treeModel.reset();
+                    treeModel.addItems(healthCache.getAll());
+                    treeModel.addItems(DecoratImported.decorate(imported));
+                    if (viewer != null) {
+                        viewer.refresh();
+                    }
+                } catch (final Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     public TreeViewer getTreeViewer() {
@@ -158,13 +170,25 @@ public class KalenderWocheNavigationView extends ViewPart {
 
         });
 
+        healthCache.addListener(new IRecordListener<ConcreteHealth>() {
+
+            @Override
+            public void recordChanged(final Collection<ConcreteHealth> entry) {
+                updateModel();
+            }
+
+            @Override
+            public void deleteRecord(final Collection<ConcreteHealth> entry) {
+                updateModel();
+            }
+        });
+
         cache.addListener(new IRecordListener<ActivityT>() {
 
             @Override
             public void deleteRecord(final Collection<ActivityT> entry) {
 
-                updateModel(db.getAllImported(athlete));
-                viewer.refresh();
+                updateModel();
                 final IWorkbenchPage wbp = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
                 for (final ActivityT record : entry) {
                     final String secondaryViewId = getSecondaryId(record);
@@ -174,21 +198,14 @@ public class KalenderWocheNavigationView extends ViewPart {
 
             @Override
             public void recordChanged(final Collection<ActivityT> entry) {
-                Display.getDefault().asyncExec(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        try {
-                            updateModel(db.getAllImported(athlete));
-                            viewer.refresh();
-                        } catch (final Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
+                updateModel();
             }
         });
-
+        final IImported newestRun = db.getNewestRun(athlete);
+        if (newestRun != null) {
+            viewer.setSelection(new StructuredSelection(newestRun), true);
+            openSingleRunView(newestRun);
+        }
     }
 
     private String getSecondaryId(final ActivityT record) {

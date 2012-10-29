@@ -17,7 +17,7 @@ import ch.opentrainingcenter.importer.ExtensionHelper;
 
 public class BackupGpsFiles extends AbstractHandler {
 
-    public static final String ID = "ch.opentrainingcenter.client.commands.BackupGpsFiles";
+    public static final String ID = "ch.opentrainingcenter.client.commands.BackupGpsFiles"; //$NON-NLS-1$
     private static final Logger LOG = Logger.getLogger(BackupGpsFiles.class);
     private final IPreferenceStore store;
 

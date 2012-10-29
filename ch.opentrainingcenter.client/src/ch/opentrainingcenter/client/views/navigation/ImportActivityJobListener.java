@@ -50,8 +50,8 @@ public class ImportActivityJobListener implements IJobChangeListener {
                 }
             }
 
-            private String getSecondaryId(final ActivityT record) {
-                return String.valueOf(record.getId().hashCode());
+            private String getSecondaryId(final ActivityT activity) {
+                return String.valueOf(activity.getId().hashCode());
             }
         });
     }

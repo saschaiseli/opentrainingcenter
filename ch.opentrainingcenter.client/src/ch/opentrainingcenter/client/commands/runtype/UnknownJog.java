@@ -4,7 +4,7 @@ import ch.opentrainingcenter.client.model.RunType;
 
 public class UnknownJog extends ChangeRunType {
 
-    public static final String ID = "ch.opentrainingcenter.client.commands.Unknown";
+    public static final String ID = "ch.opentrainingcenter.client.commands.Unknown"; //$NON-NLS-1$
 
     @Override
     public RunType getType() {

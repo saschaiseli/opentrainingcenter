@@ -4,7 +4,7 @@ import ch.opentrainingcenter.client.model.RunType;
 
 public class ExtIntervall extends ChangeRunType {
 
-    public static final String ID = "ch.opentrainingcenter.client.commands.ExtIntervall";
+    public static final String ID = "ch.opentrainingcenter.client.commands.ExtIntervall"; //$NON-NLS-1$
 
     @Override
     public RunType getType() {

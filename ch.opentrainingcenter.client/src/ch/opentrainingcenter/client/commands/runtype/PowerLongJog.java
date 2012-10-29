@@ -4,7 +4,7 @@ import ch.opentrainingcenter.client.model.RunType;
 
 public class PowerLongJog extends ChangeRunType {
 
-    public static final String ID = "ch.opentrainingcenter.client.commands.PowerLongJog";
+    public static final String ID = "ch.opentrainingcenter.client.commands.PowerLongJog"; //$NON-NLS-1$
 
     @Override
     public RunType getType() {

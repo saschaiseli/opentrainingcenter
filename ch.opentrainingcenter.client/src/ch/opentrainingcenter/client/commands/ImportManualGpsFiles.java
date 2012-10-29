@@ -82,7 +82,7 @@ public class ImportManualGpsFiles extends AbstractHandler {
                     final Job job = new ImportManualJob(Messages.ImportManualGpsFilesLadeGpsFiles, model, filterPath, fileImporter, cache);
                     job.schedule();
                 } else {
-                    throw new ExecutionException("Kein Athlete gesetzt. Fuck you!");
+                    throw new ExecutionException("Kein Athlete gesetzt."); //$NON-NLS-1$
                 }
             }
         }

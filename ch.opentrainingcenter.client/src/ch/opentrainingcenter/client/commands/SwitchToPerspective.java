@@ -21,7 +21,7 @@ public abstract class SwitchToPerspective extends AbstractHandler {
         try {
             workbench.showPerspective(desc.getId(), window);
         } catch (final WorkbenchException e) {
-            MessageDialog.openInformation(HandlerUtil.getActiveWorkbenchWindow(event).getShell(), "Info", "Info for you");
+            MessageDialog.openInformation(HandlerUtil.getActiveWorkbenchWindow(event).getShell(), "Info", "Info for you"); //$NON-NLS-1$ //$NON-NLS-2$
         }
         return null;
     }
