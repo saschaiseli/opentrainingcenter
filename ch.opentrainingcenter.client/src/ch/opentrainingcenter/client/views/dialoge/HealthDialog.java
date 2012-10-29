@@ -71,17 +71,24 @@ public class HealthDialog extends TitleAreaDialog {
     private final IDatabaseAccess db;
     private final IAthlete athlete;
 
+    private final Date date;
+
     public HealthDialog(final Shell parent) {
-        this(parent, DatabaseAccessFactory.getDatabaseAccess(), Activator.getDefault().getPreferenceStore());
+        this(parent, DatabaseAccessFactory.getDatabaseAccess(), Activator.getDefault().getPreferenceStore(), new Date());
     }
 
-    public HealthDialog(final Shell parent, final IDatabaseAccess databaseAccess, final IPreferenceStore store) {
+    public HealthDialog(final Shell parent, final IHealth health) {
+        this(parent, DatabaseAccessFactory.getDatabaseAccess(), Activator.getDefault().getPreferenceStore(), health.getDateofmeasure());
+    }
+
+    public HealthDialog(final Shell parent, final IDatabaseAccess databaseAccess, final IPreferenceStore store, final Date date) {
         super(parent);
         this.parent = parent;
         this.db = databaseAccess;
+        this.date = date;
         final String id = store.getString(PreferenceConstants.ATHLETE_ID);
         athlete = db.getAthlete(Integer.valueOf(id));
-        final IHealth healt = db.getHealth(athlete, new Date());
+        final IHealth healt = db.getHealth(athlete, date);
         if (healt != null) {
             model = new HealthModel(healt.getWeight(), healt.getCardio(), healt.getDateofmeasure());
         } else {
@@ -110,7 +117,10 @@ public class HealthDialog extends TitleAreaDialog {
 
         dateTime = new DateTime(c, SWT.BORDER | SWT.CALENDAR);
         dateTime.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1));
-        dateTime.setData(new Date());
+
+        final Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        dateTime.setDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
         final Composite containerTextFields = new Composite(c, SWT.NONE);
         final GridLayout layoutContainer = new GridLayout(2, true);
         layoutContainer.marginLeft = 10;
@@ -153,16 +163,17 @@ public class HealthDialog extends TitleAreaDialog {
         if (IDialogConstants.OK_ID == buttonId) {
             final Calendar cal = Calendar.getInstance(Locale.getDefault());
             cal.set(dateTime.getYear(), dateTime.getMonth(), dateTime.getDay());
-            final Date date = cal.getTime();
-            model.setDateOfMeasure(date);
-            final IHealth health = db.getHealth(athlete, date);
+            final Date dateOfMeasure = cal.getTime();
+            model.setDateOfMeasure(dateOfMeasure);
+            final IHealth health = db.getHealth(athlete, dateOfMeasure);
             boolean confirm = true;
             if (health != null) {
                 confirm = MessageDialog.openConfirm(parent, "Bereits erfasste Daten", "Sollen die bereits erfassten daten gelöscht werden??");
             }
             if (confirm) {
                 final IHealth healthToSave = CommonTransferFactory.createHealth(athlete, model.getWeight(), model.getRuhePuls(), model.getDateOfMeasure());
-                db.saveOrUpdate(healthToSave);
+                final int id = db.saveOrUpdate(healthToSave);
+                healthToSave.setId(id);
                 HealthCache.getInstance().add(new ConcreteHealth(healthToSave));
             }
         } else {

@@ -20,7 +20,7 @@ public class HealthDao {
         this.dao = dao;
     }
 
-    public void saveOrUpdate(final IHealth health) {
+    public int saveOrUpdate(final IHealth health) {
         LOG.info("save daily health: " + health); //$NON-NLS-1$
 
         IHealth exists = getHealth(health.getAthlete(), health.getDateofmeasure());
@@ -35,6 +35,8 @@ public class HealthDao {
         session.saveOrUpdate(exists);
         dao.commit();
         session.flush();
+        final int id = getHealth(health.getAthlete(), health.getDateofmeasure()).getId();
+        return id;
     }
 
     /**
@@ -46,8 +48,8 @@ public class HealthDao {
         final Session session = dao.getSession();
         dao.begin();
         final Criteria criteria = session.createCriteria(IHealth.class);
-        criteria.add(Restrictions.eq("athlete", athlete));
-        criteria.add(Restrictions.eq("dateofmeasure", date));
+        criteria.add(Restrictions.eq("athlete", athlete)); //$NON-NLS-1$
+        criteria.add(Restrictions.eq("dateofmeasure", date)); //$NON-NLS-1$
         IHealth health = null;
         @SuppressWarnings("unchecked")
         final List<IHealth> healthRecords = criteria.list();
@@ -67,7 +69,7 @@ public class HealthDao {
         final Session session = dao.getSession();
         dao.begin();
         final Criteria criteria = session.createCriteria(IHealth.class);
-        criteria.add(Restrictions.eq("athlete", athlete));
+        criteria.add(Restrictions.eq("athlete", athlete)); //$NON-NLS-1$
 
         @SuppressWarnings("unchecked")
         final List<IHealth> healthRecords = criteria.list();

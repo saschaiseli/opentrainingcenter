@@ -138,8 +138,9 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
 
     /**
      * speichert den täglichen ruhepuls und gewicht. daten werden überschrieben.
+     * die id wird zurückgegeben.
      */
-    void saveOrUpdate(IHealth health);
+    int saveOrUpdate(IHealth health);
 
     /**
      * gibt die gesundheitsdaten des atheleten zu dem gegebenen datum zurück.

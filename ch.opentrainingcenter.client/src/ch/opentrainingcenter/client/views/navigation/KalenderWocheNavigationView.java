@@ -38,6 +38,7 @@ import ch.opentrainingcenter.client.model.navigation.impl.DecoratImported;
 import ch.opentrainingcenter.client.model.navigation.impl.KWTraining;
 import ch.opentrainingcenter.client.model.navigation.impl.NavigationElementComparer;
 import ch.opentrainingcenter.client.views.ApplicationContext;
+import ch.opentrainingcenter.client.views.dialoge.HealthDialog;
 import ch.opentrainingcenter.client.views.navigation.tree.KalenderWocheTreeContentProvider;
 import ch.opentrainingcenter.client.views.navigation.tree.KalenderWocheTreeLabelProvider;
 import ch.opentrainingcenter.client.views.overview.SingleActivityViewPart;
@@ -50,6 +51,7 @@ import ch.opentrainingcenter.importer.ImporterFactory;
 import ch.opentrainingcenter.importer.LoadActivityJob;
 import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.transfer.IAthlete;
+import ch.opentrainingcenter.transfer.IHealth;
 import ch.opentrainingcenter.transfer.IImported;
 
 public class KalenderWocheNavigationView extends ViewPart {
@@ -166,8 +168,12 @@ public class KalenderWocheNavigationView extends ViewPart {
                 if (item instanceof ConcreteImported) {
                     openSingleRunView(((ConcreteImported) item).getImported());
                 }
-            }
 
+                if (item instanceof IHealth) {
+                    final HealthDialog dialog = new HealthDialog(parent.getShell(), (IHealth) item);
+                    dialog.open();
+                }
+            }
         });
 
         healthCache.addListener(new IRecordListener<ConcreteHealth>() {
@@ -203,7 +209,6 @@ public class KalenderWocheNavigationView extends ViewPart {
         });
         final IImported newestRun = db.getNewestRun(athlete);
         if (newestRun != null) {
-            viewer.setSelection(new StructuredSelection(newestRun), true);
             openSingleRunView(newestRun);
         }
     }
@@ -223,6 +228,7 @@ public class KalenderWocheNavigationView extends ViewPart {
         final LoadActivityJob job = new LoadActivityJob(Messages.NavigationView1, record, cache, loader);
         job.addJobChangeListener(new ImportActivityJobListener(record));
         job.schedule();
+        viewer.setSelection(new StructuredSelection(record), true);
     }
 
     @Override

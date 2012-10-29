@@ -117,8 +117,8 @@ public class DatabaseAccess implements IDatabaseAccess {
     }
 
     @Override
-    public void saveOrUpdate(final IHealth health) {
-        healthDao.saveOrUpdate(health);
+    public int saveOrUpdate(final IHealth health) {
+        return healthDao.saveOrUpdate(health);
     }
 
     @Override
