@@ -56,15 +56,4 @@ public final class SpeedCalculator {
             return -1;
         }
     }
-
-    /**
-     * Konvertiert geschwindigkeit von m/s nach min/km
-     * 
-     * @param speedMeterPerSecond
-     *            v[m/s]
-     * @return pace [min/km]
-     */
-    public static double convertMeterPerSecondToPace(final double speedMeterPerSecond) {
-        return 0;
-    }
 }

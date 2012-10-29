@@ -60,7 +60,7 @@ public class OverviewViewer extends ViewPart {
         final MenuManager menuManager = new MenuManager("KontextMenu"); //$NON-NLS-1$
         table.setMenu(menuManager.createContextMenu(table));
 
-        getSite().registerContextMenu("ch.opentrainingcenter.client.somepopup", menuManager, viewer);
+        getSite().registerContextMenu("ch.opentrainingcenter.client.somepopup", menuManager, viewer); //$NON-NLS-1$
         getSite().setSelectionProvider(viewer);
 
         getSite().registerContextMenu(menuManager, viewer);
