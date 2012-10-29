@@ -25,12 +25,12 @@
       startupMessageRect="5,235,445,20"
       startupForegroundColor="FF97A3" />
    <launcher name="opentrainingcenter">
-      <linux icon="/ch.opentrainingcenter.client/icons/start.xpm"/>
       <solaris/>
       <win useIco="false">
          <bmp/>
       </win>
    </launcher>
+
 
    <vm>
    </vm>
