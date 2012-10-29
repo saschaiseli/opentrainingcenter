@@ -100,26 +100,26 @@ public class SamplePreferencePage extends FieldEditorPreferencePage implements I
         extDl.setTextLimit(2);
         addField(extDl);
 
-        final IntegerFieldEditor recom = new IntegerFieldEditor(PreferenceConstants.RECOM, "regeneration", fieldEditorParent);
+        final IntegerFieldEditor recom = new IntegerFieldEditor(PreferenceConstants.RECOM, Messages.SamplePreferencePage_0, fieldEditorParent);
         addField(recom);
-        addField(new ColorFieldEditor(PreferenceConstants.RECOM_COLOR, "", fieldEditorParent));
+        addField(new ColorFieldEditor(PreferenceConstants.RECOM_COLOR, "", fieldEditorParent)); //$NON-NLS-1$
 
-        final IntegerFieldEditor ga1 = new IntegerFieldEditor(PreferenceConstants.GA1, "", fieldEditorParent);
+        final IntegerFieldEditor ga1 = new IntegerFieldEditor(PreferenceConstants.GA1, "", fieldEditorParent); //$NON-NLS-1$
         addField(ga1);
-        addField(new ColorFieldEditor(PreferenceConstants.GA1_COLOR, "", fieldEditorParent));
+        addField(new ColorFieldEditor(PreferenceConstants.GA1_COLOR, "", fieldEditorParent)); //$NON-NLS-1$
 
-        final IntegerFieldEditor ga12 = new IntegerFieldEditor(PreferenceConstants.GA12, "", fieldEditorParent);
+        final IntegerFieldEditor ga12 = new IntegerFieldEditor(PreferenceConstants.GA12, "", fieldEditorParent); //$NON-NLS-1$
         addField(ga12);
-        addField(new ColorFieldEditor(PreferenceConstants.GA12_COLOR, "", fieldEditorParent));
+        addField(new ColorFieldEditor(PreferenceConstants.GA12_COLOR, "", fieldEditorParent)); //$NON-NLS-1$
 
-        final IntegerFieldEditor ga2 = new IntegerFieldEditor(PreferenceConstants.GA2, "", fieldEditorParent);
+        final IntegerFieldEditor ga2 = new IntegerFieldEditor(PreferenceConstants.GA2, "", fieldEditorParent); //$NON-NLS-1$
         addField(ga2);
-        addField(new ColorFieldEditor(PreferenceConstants.GA2_COLOR, "", fieldEditorParent));
+        addField(new ColorFieldEditor(PreferenceConstants.GA2_COLOR, "", fieldEditorParent)); //$NON-NLS-1$
 
-        final IntegerFieldEditor wsa = new IntegerFieldEditor(PreferenceConstants.WSA, "", fieldEditorParent);
+        final IntegerFieldEditor wsa = new IntegerFieldEditor(PreferenceConstants.WSA, "", fieldEditorParent); //$NON-NLS-1$
         wsa.setEnabled(false, fieldEditorParent);
         addField(wsa);
-        addField(new ColorFieldEditor(PreferenceConstants.WSA_COLOR, "", fieldEditorParent));
+        addField(new ColorFieldEditor(PreferenceConstants.WSA_COLOR, "", fieldEditorParent)); //$NON-NLS-1$
     }
 
     /*

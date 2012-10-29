@@ -61,8 +61,8 @@ public class InitialLoadRunnable implements IRunnableWithProgress {
             final ICache<Integer, ConcreteHealth> healthCache = HealthCache.getInstance();
             for (final IHealth health : healths) {
                 healthCache.add(new ConcreteHealth(health));
-                monitor.subTask("Gesundheitswerte laden: " + i++);
-                LOG.info("Gesundheitswerte dem Cache hinzugefügt");
+                monitor.subTask(Messages.InitialLoadRunnable_1 + i++);
+                LOG.info(Messages.InitialLoadRunnable_2);
             }
         }
     }

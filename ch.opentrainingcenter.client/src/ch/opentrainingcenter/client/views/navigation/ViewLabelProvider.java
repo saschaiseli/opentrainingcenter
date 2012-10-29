@@ -4,6 +4,7 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
 import ch.opentrainingcenter.client.Activator;
+import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.client.helper.TimeHelper;
 import ch.opentrainingcenter.client.views.IImageKeys;
 import ch.opentrainingcenter.transfer.IHealth;
@@ -21,7 +22,7 @@ public class ViewLabelProvider extends LabelProvider {
             return TimeHelper.convertDateToString(record.getActivityId(), false);
         } else {
             final IHealth health = (IHealth) element;
-            return TimeHelper.convertDateToString(health.getDateofmeasure(), false) + " Ruhepuls " + health.getCardio();
+            return TimeHelper.convertDateToString(health.getDateofmeasure(), false) + Messages.ViewLabelProvider_0 + health.getCardio();
         }
     }
 

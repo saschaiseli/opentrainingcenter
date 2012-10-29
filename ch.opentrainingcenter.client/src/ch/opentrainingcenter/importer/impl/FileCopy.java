@@ -9,6 +9,7 @@ import java.nio.channels.FileChannel;
 
 import org.apache.log4j.Logger;
 
+import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.importer.IFileCopy;
 
 public class FileCopy implements IFileCopy {
@@ -20,13 +21,13 @@ public class FileCopy implements IFileCopy {
             return;
         }
         if (!destFile.exists()) {
-            LOG.debug("Destination File existiert nicht");
+            LOG.debug(Messages.FileCopy_0);
             final File dir = new File(getFolder(destFile.getAbsolutePath()));
             if (dir.mkdir()) {
-                LOG.debug("Folder erstellt");
+                LOG.debug(Messages.FileCopy_1);
                 destFile.createNewFile();
             } else {
-                LOG.debug("Folder nicht erstellt");
+                LOG.debug(Messages.FileCopy_2);
             }
         }
 
@@ -39,7 +40,7 @@ public class FileCopy implements IFileCopy {
             long count = 0;
             final long size = source.size();
             while ((count += destination.transferFrom(source, 0, size - count)) < size) {
-                LOG.info("do copy work...");
+                LOG.info(Messages.FileCopy_3);
             }
         } finally {
             if (source != null) {

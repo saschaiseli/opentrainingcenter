@@ -5,6 +5,8 @@ import org.eclipse.osgi.util.NLS;
 public final class Messages extends NLS {
 
     private static final String BUNDLENAME = "ch.opentrainingcenter.client.messages"; //$NON-NLS-1$
+    public static String AddEditHandler_0;
+    public static String AddEditHandler_1;
     public static String Application0;
     public static String Application1;
     public static String Application2;
@@ -84,12 +86,20 @@ public final class Messages extends NLS {
     public static String CreateAthleteView8;
     public static String CreateAthleteView9;
     public static String DeleteImportedRecord0;
+    public static String HealthDialog_0;
+    public static String HealthDialog_1;
+    public static String HealthDialog_3;
     public static String HealthDialog0;
     public static String HealthDialog1;
     public static String HealthDialog2;
     public static String HealthDialog3;
     public static String HealthDialog4;
     public static String HealthDialog5;
+    public static String HeartIntervallCreator_0;
+    public static String HeartIntervallCreator_1;
+    public static String HeartIntervallCreator_2;
+    public static String HeartIntervallCreator_3;
+    public static String HeartIntervallCreator_4;
     public static String HeartIntervallCreator0;
     public static String HeartIntervallCreator1;
     public static String HeartIntervallCreator2;
@@ -104,8 +114,12 @@ public final class Messages extends NLS {
     public static String ImportManualGpsFilesLadeGpsFiles;
     public static String ImportPreferencePage0;
     public static String InitialLoadRunnable_0;
+    public static String InitialLoadRunnable_1;
+    public static String InitialLoadRunnable_2;
     public static String MapConverter0;
     public static String MapConverter1;
+    public static String NavigationParent_0;
+    public static String NavigationParent_1;
     public static String NavigationView0;
     public static String NavigationView1;
     public static String NavigationView2;
@@ -120,6 +134,7 @@ public final class Messages extends NLS {
     public static String NumberValidator1;
     public static String NumberValidator2;
     public static String NumberValidator3;
+    public static String OptionalNumberValidator_0;
     public static String OTCBarChartViewer0;
     public static String OTCBarChartViewer1;
     public static String OTCBarChartViewer10;
@@ -139,6 +154,7 @@ public final class Messages extends NLS {
     public static String OverviewViewer3;
     public static String OverviewViewer4;
     public static String OverviewViewer5;
+    public static String SamplePreferencePage_0;
     public static String SamplePreferencePage0;
     public static String SamplePreferencePage1;
     public static String SamplePreferencePage10;
@@ -164,6 +180,11 @@ public final class Messages extends NLS {
     public static String SamplePreferencePage7;
     public static String SamplePreferencePage8;
     public static String SamplePreferencePage9;
+    public static String SingleActivityViewPart_0;
+    public static String SingleActivityViewPart_1;
+    public static String SingleActivityViewPart_3;
+    public static String SingleActivityViewPart_6;
+    public static String SingleActivityViewPart_7;
     public static String SingleActivityViewPart0;
     public static String SingleActivityViewPart1;
     public static String SingleActivityViewPart10;
@@ -205,6 +226,9 @@ public final class Messages extends NLS {
     public static String Units2;
     public static String Units3;
     public static String Units4;
+    public static String RuhePulsChart_0;
+    public static String RuhePulsChart_1;
+    public static String RuhePulsChart_2;
     public static String RunType0;
     public static String RunType1;
     public static String RunType2;
@@ -220,13 +244,41 @@ public final class Messages extends NLS {
     public static String SUN;
     public static String LIGHTCLOUDY;
     public static String CLOUDY;
+    public static String FileCopy_0;
+    public static String FileCopy_1;
+    public static String FileCopy_2;
+    public static String FileCopy_3;
+    public static String GewichtChart_0;
+    public static String GewichtChart_1;
+    public static String GewichtChart_2;
+    public static String GpsFileNameFilter_0;
     public static String HEAVYCLOUDY;
     public static String LIGHTRAIN;
     public static String RAIN;
     public static String HEAVYRAIN;
     public static String LIGHTSNOW;
     public static String SNOW;
+    public static String StatusLineWriter_0;
+    public static String StatusLineWriter_1;
+    public static String StatusLineWriter_10;
+    public static String StatusLineWriter_11;
+    public static String StatusLineWriter_12;
+    public static String StatusLineWriter_13;
+    public static String StatusLineWriter_14;
+    public static String StatusLineWriter_15;
+    public static String StatusLineWriter_16;
+    public static String StatusLineWriter_17;
+    public static String StatusLineWriter_18;
+    public static String StatusLineWriter_2;
+    public static String StatusLineWriter_3;
+    public static String StatusLineWriter_4;
+    public static String StatusLineWriter_5;
+    public static String StatusLineWriter_6;
+    public static String StatusLineWriter_7;
+    public static String StatusLineWriter_8;
+    public static String StatusLineWriter_9;
     public static String UNKNOWN;
+    public static String ViewLabelProvider_0;
     static {
         // initialize resource bundle
         NLS.initializeMessages(BUNDLENAME, Messages.class);

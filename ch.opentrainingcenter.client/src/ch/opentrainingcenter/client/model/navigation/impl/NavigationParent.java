@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.client.model.KalenderWoche;
 import ch.opentrainingcenter.client.model.navigation.INavigationItem;
 import ch.opentrainingcenter.client.model.navigation.INavigationParent;
@@ -20,10 +21,10 @@ public class NavigationParent implements INavigationParent {
     @Override
     public String getName() {
         final int kwCurrent = kw.getKw();
-        final StringBuffer result = new StringBuffer("KW");
+        final StringBuffer result = new StringBuffer(Messages.NavigationParent_0);
         result.append(kw.getKw());
         if (isLastOrFirstWeekInYear(kwCurrent)) {
-            result.append(" - ").append(kw.getJahr());
+            result.append(Messages.NavigationParent_1).append(kw.getJahr());
         }
         return result.toString();
     }

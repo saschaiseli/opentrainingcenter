@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.eclipse.jface.action.IStatusLineManager;
 
+import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.client.helper.DistanceHelper;
 import ch.opentrainingcenter.client.helper.TimeHelper;
 import ch.opentrainingcenter.client.model.navigation.INavigationItem;
@@ -46,24 +47,24 @@ class StatusLineWriter {
     private void writeHealthToStatus(final ConcreteHealth health) {
         final StringBuffer str = new StringBuffer();
         if (health.getCardio() != null && health.getWeight() != null) {
-            str.append("Ruhepuls/Gewicht vom ").append(TimeHelper.convertDateToString(health.getDate(), false));
-            str.append(" --> ");
-            str.append(health.getCardio()).append("bpm / ").append(health.getWeight()).append("kg");
+            str.append(Messages.StatusLineWriter_0).append(TimeHelper.convertDateToString(health.getDate(), false));
+            str.append(Messages.StatusLineWriter_1);
+            str.append(health.getCardio()).append(Messages.StatusLineWriter_2).append(health.getWeight()).append(Messages.StatusLineWriter_3);
         } else if (health.getCardio() != null) {
-            str.append("Ruhepuls vom ").append(TimeHelper.convertDateToString(health.getDate(), false));
-            str.append(" --> ").append(health.getCardio()).append("bpm");
+            str.append(Messages.StatusLineWriter_4).append(TimeHelper.convertDateToString(health.getDate(), false));
+            str.append(Messages.StatusLineWriter_5).append(health.getCardio()).append(Messages.StatusLineWriter_6);
         } else if (health.getWeight() != null) {
-            str.append("Gewicht vom ").append(TimeHelper.convertDateToString(health.getDate(), false));
-            str.append(" --> ").append(health.getWeight()).append("kg");
+            str.append(Messages.StatusLineWriter_7).append(TimeHelper.convertDateToString(health.getDate(), false));
+            str.append(Messages.StatusLineWriter_8).append(health.getWeight()).append(Messages.StatusLineWriter_9);
         } else {
-            throw new IllegalArgumentException("Falsche Datenstruktur. Health ohne cardio und gewicht ist nicht möglich");
+            throw new IllegalArgumentException(Messages.StatusLineWriter_10);
         }
         writeToStatusLine(str.toString());
     }
 
     private void writeToStatusLine(final NavigationParent parent) {
         final List<INavigationItem> childs = parent.getChilds();
-        final StringBuffer str = new StringBuffer("Kalenderwoche ");
+        final StringBuffer str = new StringBuffer(Messages.StatusLineWriter_11);
         str.append(parent.getKalenderWoche().getKw());
         str.append(' ');
         int rec = 0;
@@ -74,7 +75,7 @@ class StatusLineWriter {
             } else if (child instanceof ConcreteHealth) {
                 health++;
             } else {
-                throw new IllegalArgumentException("Typ: " + child + " nicht bekannt");
+                throw new IllegalArgumentException(Messages.StatusLineWriter_12 + child + Messages.StatusLineWriter_13);
             }
         }
         if (rec == 0) {
@@ -91,19 +92,19 @@ class StatusLineWriter {
     }
 
     private Object getRecordText(final int size) {
-        return "Anzahl Läufe: " + size;
+        return Messages.StatusLineWriter_14 + size;
     }
 
     private Object getHealthText(final int size) {
-        return "Anzahl Messdaten: " + size;
+        return Messages.StatusLineWriter_15 + size;
     }
 
     private void writeToStatusLine(final IImported record) {
         final StringBuffer str = new StringBuffer();
         final ITraining training = record.getTraining();
-        str.append("Lauf vom ").append(TimeHelper.convertDateToString(record.getActivityId(), false));
-        str.append(" --> Distanz: ").append(DistanceHelper.roundDistanceFromMeterToKmMitEinheit(training.getLaengeInMeter()));
-        str.append(" Dauer: ").append(TimeHelper.convertSecondsToHumanReadableZeit(training.getDauerInSekunden()));
+        str.append(Messages.StatusLineWriter_16).append(TimeHelper.convertDateToString(record.getActivityId(), false));
+        str.append(Messages.StatusLineWriter_17).append(DistanceHelper.roundDistanceFromMeterToKmMitEinheit(training.getLaengeInMeter()));
+        str.append(Messages.StatusLineWriter_18).append(TimeHelper.convertSecondsToHumanReadableZeit(training.getDauerInSekunden()));
         writeToStatusLine(str.toString());
     }
 

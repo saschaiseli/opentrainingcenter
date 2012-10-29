@@ -8,6 +8,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
 import ch.opentrainingcenter.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.transfer.ActivityExtension;
@@ -26,7 +27,7 @@ public class AddEditHandler extends AbstractHandler {
         final IImported record = (IImported) sel.getFirstElement();
         final ITraining training = record.getTraining();
         final String initialValue = training.getNote();
-        final InputDialog dialog = new InputDialog(null, "Notiz hinzufügen / bearbeiten", "Notiz bearbeiten", initialValue, null);
+        final InputDialog dialog = new InputDialog(null, Messages.AddEditHandler_0, Messages.AddEditHandler_1, initialValue, null);
         if (dialog.open() == InputDialog.OK) {
             training.setNote(dialog.getValue());
             updateNote(record);

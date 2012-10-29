@@ -154,8 +154,8 @@ public class SingleActivityViewPart extends ViewPart {
             }
         });
         section.setRedraw(true);
-        section.setText("Bemerkungen");
-        section.setDescription("Beschreibung von Zustand der Gesundheit, wie der Lauf erlebt wurde. Usw..");
+        section.setText(Messages.SingleActivityViewPart_0);
+        section.setDescription(Messages.SingleActivityViewPart_1);
 
         final Composite container = toolkit.createComposite(section);
         final GridLayout layout = new GridLayout(2, false);
@@ -163,11 +163,11 @@ public class SingleActivityViewPart extends ViewPart {
         layout.horizontalSpacing = 10;
         container.setLayout(layout);
 
-        final Label label = toolkit.createLabel(container, "");
-        label.setText("Beschreibung : ");
+        final Label label = toolkit.createLabel(container, ""); //$NON-NLS-1$
+        label.setText(Messages.SingleActivityViewPart_3);
         // label.setLayoutData(gd);
 
-        final Text note = toolkit.createText(container, "", SWT.V_SCROLL | SWT.MULTI | SWT.BORDER);
+        final Text note = toolkit.createText(container, "", SWT.V_SCROLL | SWT.MULTI | SWT.BORDER); //$NON-NLS-1$
         final GridData noteGd = new GridData();
         noteGd.grabExcessHorizontalSpace = true;
         noteGd.grabExcessVerticalSpace = true;
@@ -213,8 +213,8 @@ public class SingleActivityViewPart extends ViewPart {
             }
         });
 
-        final Label labelWetter = toolkit.createLabel(container, "");
-        labelWetter.setText("Wetter : ");
+        final Label labelWetter = toolkit.createLabel(container, ""); //$NON-NLS-1$
+        labelWetter.setText(Messages.SingleActivityViewPart_6);
         // gd.minimumWidth = 10;
         // labelWetter.setLayoutData(gd);
 
@@ -272,7 +272,7 @@ public class SingleActivityViewPart extends ViewPart {
                 final Wetter currentWeather = Wetter.getRunType(index);
                 final ITraining training = record.getTraining();
                 training.setWeather(CommonTransferFactory.createWeather(currentWeather.getIndex()));
-                Log.info("Das Wetter wurde geändert: " + training.getWeather());
+                Log.info(Messages.SingleActivityViewPart_7 + training.getWeather());
                 simpleTraining.setWetter(wetter);
             }
             update(record);

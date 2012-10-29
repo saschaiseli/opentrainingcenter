@@ -35,6 +35,6 @@ public class OptionalNumberValidator implements IValidator {
                 }
             }
         }
-        return ValidationStatus.error("Nur Zahlen erlaubt");
+        return ValidationStatus.error(Messages.OptionalNumberValidator_0);
     }
 }

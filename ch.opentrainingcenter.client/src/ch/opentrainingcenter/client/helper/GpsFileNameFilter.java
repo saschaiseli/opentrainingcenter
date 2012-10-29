@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.importer.ConvertContainer;
 import ch.opentrainingcenter.importer.IConvert2Tcx;
 
@@ -22,7 +23,7 @@ public class GpsFileNameFilter implements FilenameFilter {
 
     @Override
     public boolean accept(final File dir, final String name) {
-        LOG.debug("Filename zum filtern: " + name);
+        LOG.debug(Messages.GpsFileNameFilter_0 + name);
         for (final String suffix : cc.getSupportedFileSuffixes()) {
             if (name != null && name.endsWith(suffix.replace("*.", ""))) { //$NON-NLS-1$ //$NON-NLS-2$
                 return true;

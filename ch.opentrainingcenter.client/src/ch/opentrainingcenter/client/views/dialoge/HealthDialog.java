@@ -168,7 +168,7 @@ public class HealthDialog extends TitleAreaDialog {
             final IHealth health = db.getHealth(athlete, dateOfMeasure);
             boolean confirm = true;
             if (health != null) {
-                confirm = MessageDialog.openConfirm(parent, "Bereits erfasste Daten", "Sollen die bereits erfassten daten gelöscht werden??");
+                confirm = MessageDialog.openConfirm(parent, Messages.HealthDialog_0, Messages.HealthDialog_1);
             }
             if (confirm) {
                 final IHealth healthToSave = CommonTransferFactory.createHealth(athlete, model.getWeight(), model.getRuhePuls(), model.getDateOfMeasure());
@@ -210,7 +210,7 @@ public class HealthDialog extends TitleAreaDialog {
         final IObservableValue modelGewichtObservable = BeansObservables.observeValue(model, "weight"); //$NON-NLS-1$
         // strategy
         final UpdateValueStrategy strategyGewicht = new UpdateValueStrategy();
-        strategyGewicht.setAfterGetValidator(new NumberValidator(20.0, Double.MAX_VALUE, ""));
+        strategyGewicht.setAfterGetValidator(new NumberValidator(20.0, Double.MAX_VALUE, "")); //$NON-NLS-1$
 
         final NumberFormat numberFormat = NumberFormat.getInstance(Locale.getDefault());
         final IConverter numberToStringConverter = StringToNumberConverter.toDouble(numberFormat, false);
@@ -246,7 +246,7 @@ public class HealthDialog extends TitleAreaDialog {
                     return ValidationStatus.ok();
                 } else {
                     getButton(OK).setEnabled(false);
-                    setErrorMessage("Gewicht und/oder Ruhepuls eingeben");
+                    setErrorMessage(Messages.HealthDialog_3);
                     return ValidationStatus.error("Mist"); //$NON-NLS-1$
                 }
             }

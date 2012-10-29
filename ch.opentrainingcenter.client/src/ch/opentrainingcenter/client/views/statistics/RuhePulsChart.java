@@ -1,5 +1,6 @@
 package ch.opentrainingcenter.client.views.statistics;
 
+import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.client.model.navigation.impl.ConcreteHealth;
 
 public class RuhePulsChart extends VitaldatenChartViewer {
@@ -11,16 +12,16 @@ public class RuhePulsChart extends VitaldatenChartViewer {
 
     @Override
     protected String getYAchseBeschriftung() {
-        return "Puls [bpm]";
+        return Messages.RuhePulsChart_0;
     }
 
     @Override
     protected String getChartTitle() {
-        return "morgendlicher Ruhepuls";
+        return Messages.RuhePulsChart_1;
     }
 
     @Override
     protected String getTabName() {
-        return "Ruhepuls";
+        return Messages.RuhePulsChart_2;
     }
 }
