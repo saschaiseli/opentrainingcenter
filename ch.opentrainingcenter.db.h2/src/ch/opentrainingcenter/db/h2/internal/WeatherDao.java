@@ -8,6 +8,7 @@ import org.hibernate.criterion.Order;
 
 import ch.opentrainingcenter.transfer.IWeather;
 
+@SuppressWarnings("nls")
 public class WeatherDao {
 
     private final Dao dao;

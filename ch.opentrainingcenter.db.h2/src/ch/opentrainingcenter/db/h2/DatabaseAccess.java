@@ -131,4 +131,9 @@ public class DatabaseAccess implements IDatabaseAccess {
         return healthDao.getHealth(athlete);
     }
 
+    @Override
+    public void removeHealth(final int id) {
+        healthDao.remove(id);
+    }
+
 }

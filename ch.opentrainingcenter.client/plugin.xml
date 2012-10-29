@@ -198,6 +198,11 @@
             id="ch.opentrainingcenter.client.commands.DeleteImportedRecord"
             name="LoeschteinenRecord">
       </command>
+      <command
+            description="Löscht einen Vitalrecord"
+            id="ch.opentrainingcenter.client.commands.DeleteHealthRecord"
+            name="LoeschteinenVitalRecord">
+      </command>
    </extension>
    <extension
          id="opentrainingcenter"
@@ -387,6 +392,22 @@
                   <or>
                      <instanceof
                            value="ch.opentrainingcenter.client.model.navigation.impl.ConcreteImported">
+                     </instanceof>
+                  </or>
+               </iterate>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="ch.opentrainingcenter.client.commands.DeleteHealthRecord"
+               label="Löscht den Record"
+               style="push">
+            <visibleWhen
+                  checkEnabled="true">
+               <iterate
+                     operator="and">
+                  <or>
+                     <instanceof
+                           value="ch.opentrainingcenter.client.model.navigation.impl.ConcreteHealth">
                      </instanceof>
                   </or>
                </iterate>
@@ -598,6 +619,10 @@
       <handler
             class="ch.opentrainingcenter.client.commands.DeleteImportedRecord"
             commandId="ch.opentrainingcenter.client.commands.DeleteImportedRecord">
+      </handler>
+      <handler
+            class="ch.opentrainingcenter.client.commands.DeleteHealthRecord"
+            commandId="ch.opentrainingcenter.client.commands.DeleteHealthRecord">
       </handler>
    </extension>
    <extension

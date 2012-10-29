@@ -19,6 +19,7 @@ import ch.opentrainingcenter.transfer.IImported;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.ITrainingType;
 
+@SuppressWarnings("nls")
 public class ImportDao {
 
     private final Dao dao;

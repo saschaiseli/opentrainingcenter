@@ -152,4 +152,9 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
      * Gibt alle Gesundheitsdaten von dem Athleten zurück.
      */
     List<IHealth> getHealth(IAthlete athlete);
+
+    /**
+     * Löscht einen Records mit der angegebenen ID.
+     */
+    void removeHealth(int id);
 }
