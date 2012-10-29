@@ -24,7 +24,9 @@ public class StatisticView extends ViewPart {
         addItem(tabs, ChartSerieType.WEEK);
         addItem(tabs, ChartSerieType.MONTH);
         addItem(tabs, ChartSerieType.YEAR);
-        addItem(tabs, ChartSerieType.HEART);
+
+        addHealthChart(tabs, new RuhePulsChart());
+        addHealthChart(tabs, new GewichtChart());
 
         tabs.setSelection(1);
     }
@@ -33,6 +35,15 @@ public class StatisticView extends ViewPart {
         final TabItem item = new TabItem(tabs, SWT.PUSH);
         item.setText(type.getName());
         final OTCBarChartViewer viewer = new OTCBarChartViewer(tabs, type);
+        item.setControl(viewer.getControl());
+    }
+
+    private void addHealthChart(final TabFolder tabs, final VitaldatenChartViewer viewer) {
+        final TabItem item = new TabItem(tabs, SWT.PUSH);
+        item.setText(viewer.getTabName());
+
+        viewer.createPartControl(tabs);
+
         item.setControl(viewer.getControl());
     }
 

@@ -440,8 +440,6 @@ public class OTCBarChartViewer implements ISelectionProvider {
 
     @Override
     public void setSelection(final ISelection selection) {
-        // TODO Auto-generated method stub
-
     }
 
 }
