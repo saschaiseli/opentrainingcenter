@@ -11,6 +11,8 @@ import ch.opentrainingcenter.client.Messages;
 
 public final class TimeHelper {
 
+    private static final String DATE_TIME_FORMAT_PATTERN = "dd.MM.yyyy HH:mm:ss"; //$NON-NLS-1$
+    private static final String DATE_FORMAT_PATTERN = "dd.MM.yyyy"; //$NON-NLS-1$
     private static final int SEKUNDE_IN_MS = 1000;
     private static final String UNKNOWN_DATE = "--:--:--"; //$NON-NLS-1$
 
@@ -65,7 +67,7 @@ public final class TimeHelper {
         final Calendar calendar = Calendar.getInstance();
         calendar.setTime(time);
         calendar.get(Calendar.DAY_OF_WEEK);
-        final SimpleDateFormat format = new SimpleDateFormat(Messages.TimeHelper0);
+        final SimpleDateFormat format = new SimpleDateFormat(DATE_TIME_FORMAT_PATTERN);
         if (withDay) {
             return calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()) + Messages.TimeHelper1 + format.format(time);
         } else {
@@ -89,12 +91,22 @@ public final class TimeHelper {
     public static final String convertDateToString(final Date datum, final boolean withDay) {
         final Calendar calendar = Calendar.getInstance();
         calendar.setTime(datum);
-        final SimpleDateFormat format = new SimpleDateFormat(Messages.TimeHelper0);
+        final SimpleDateFormat format = new SimpleDateFormat(DATE_TIME_FORMAT_PATTERN);
         if (withDay) {
             return calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()) + Messages.TimeHelper1 + format.format(datum);
         } else {
             return format.format(datum);
         }
+    }
+
+    /**
+     * @return datum als String in der Form dd.mm.yyyy
+     */
+    public static final String convertDateToString(final Date datum) {
+        final Calendar calendar = Calendar.getInstance(Locale.getDefault());
+        calendar.setTime(datum);
+        final SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT_PATTERN);
+        return format.format(datum);
     }
 
     public static int getKalenderWoche(final Date date) {

@@ -14,12 +14,10 @@ public class KalenderWocheTreeLabelProvider extends LabelProvider {
     public String getText(final Object element) {
         if (element instanceof INavigationParent) {
             final INavigationParent parent = (INavigationParent) element;
-            return parent.getName();// TimeHelper.convertDateToString(record.getActivityId(),
-            // false);
+            return parent.getName();
         } else {
             final INavigationItem item = (INavigationItem) element;
-            return item.getName();// TimeHelper.convertDateToString(health.getDateofmeasure(),
-            // false) + " Ruhepuls " + health.getCardio();
+            return item.getName();
         }
     }
 

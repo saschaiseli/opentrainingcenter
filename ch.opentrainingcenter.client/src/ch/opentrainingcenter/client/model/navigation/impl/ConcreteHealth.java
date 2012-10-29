@@ -15,7 +15,7 @@ public class ConcreteHealth extends HealthDecorator implements INavigationItem {
 
     @Override
     public String getName() {
-        return TimeHelper.convertDateToString(super.getDateofmeasure(), false);
+        return TimeHelper.convertDateToString(super.getDateofmeasure());
     }
 
     @Override

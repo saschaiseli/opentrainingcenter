@@ -9,6 +9,9 @@ import java.util.Date;
  * 
  */
 public interface INavigationItem extends Comparable<INavigationItem> {
+    /**
+     * @return den String welcher im Tree dargestellt wird.
+     */
     String getName();
 
     Date getDate();
