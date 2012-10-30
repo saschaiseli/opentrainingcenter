@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
+@SuppressWarnings("nls")
 public class KalenderWocheTest {
 
     @Test
@@ -33,5 +34,15 @@ public class KalenderWocheTest {
         final KalenderWoche kw2 = new KalenderWoche(cal2.getTime());
 
         assertEquals("Erstes Element ist älter, daher grösser", 1, kw1.compareTo(kw2));
+    }
+
+    @Test
+    public void testErsterJanuar() {
+        final Calendar cal = Calendar.getInstance(Locale.getDefault());
+        cal.set(2012, 0, 1, 13, 22, 59);
+        final KalenderWoche kw1 = new KalenderWoche(cal.getTime());
+
+        assertEquals("Erstes Element ist älter, daher grösser", 52, kw1.getKw());
+        assertEquals("Erstes Element ist älter, daher grösser", 2011, kw1.getJahr());
     }
 }

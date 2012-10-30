@@ -168,6 +168,28 @@ public class KalenderWocheNavigationModelTest {
     }
 
     @Test
+    public void testAnzahl4() {
+        kw.addItem(createItem(2012, 0, 1)); // kw52 --> aber 2011 eintragen!!
+        kw.addItem(createItem(2012, 0, 2)); // kw1 --> 2012
+
+        final Collection<Integer> parents = kw.getParents();
+        assertEquals("2 Jahre", 2, parents.size());
+
+        Collection<INavigationParent> weeks = kw.getWeeks(2012);
+
+        final INavigationParent parent2012 = weeks.iterator().next();
+        final List<INavigationItem> childs = parent2012.getChilds();
+        assertEquals("1 Child vorhanden", 1, childs.size());
+        assertEquals("KW1", "KW1", parent2012.getName());
+
+        weeks = kw.getWeeks(2011);
+        final INavigationParent parent2011 = weeks.iterator().next();
+        final List<INavigationItem> childs2 = parent2011.getChilds();
+        assertEquals("1 Child vorhanden", 1, childs2.size());
+        assertEquals("KW52", "KW52", parent2011.getName());
+    }
+
+    @Test
     public void testKW() {
         final INavigationItem item = Mockito.mock(INavigationItem.class);
         cal.set(2012, 07, 29);

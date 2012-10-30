@@ -25,8 +25,7 @@ public final class TimeHelper {
      * 
      * @param sec
      *            sekunden
-     * @return Zeit im Format HH:MM:ss. Wenn Zeit negativ ist, wird --:--:--
-     *         zurückgegeben.
+     * @return Zeit im Format HH:MM:ss. Wenn Zeit negativ ist, wird --:--:-- zurückgegeben.
      */
     public static final String convertSecondsToHumanReadableZeit(final double sec) {
         if (sec < 0) {
@@ -52,15 +51,13 @@ public final class TimeHelper {
     /**
      * konvertiere ein {@link XMLGregorianCalendar} in ein lesbareres format.
      * 
-     * wenn der parameter withDay true ist wird der wochentag noch mit
-     * ausgegeben
+     * wenn der parameter withDay true ist wird der wochentag noch mit ausgegeben
      * 
      * @param datum
      *            {@link XMLGregorianCalendar}
      * @param withDay
      *            flag ob der wochenag auch mitgegeben werden soll.
-     * @return das datum '2010.11.23 14:23' und wenn das flag with Day ist wird
-     *         noch der ausgeschreibene wochentag vorangestellt.
+     * @return das datum '2010.11.23 14:23' und wenn das flag with Day ist wird noch der ausgeschreibene wochentag vorangestellt.
      */
     public static final String convertGregorianDateToString(final XMLGregorianCalendar datum, final boolean withDay) {
         final Date time = datum.toGregorianCalendar().getTime();
@@ -78,15 +75,13 @@ public final class TimeHelper {
     /**
      * konvertiere ein {@link Date} in ein lesbareres format.
      * 
-     * wenn der parameter withDay true ist wird der wochentag noch mit
-     * ausgegeben
+     * wenn der parameter withDay true ist wird der wochentag noch mit ausgegeben
      * 
      * @param datum
      *            {@link XMLGregorianCalendar}
      * @param withDay
      *            flag ob der wochenag auch mitgegeben werden soll.
-     * @return das datum '2010.11.23 14:23' und wenn das flag with Day ist wird
-     *         noch der ausgeschreibene wochentag vorangestellt.
+     * @return das datum '2010.11.23 14:23' und wenn das flag with Day ist wird noch der ausgeschreibene wochentag vorangestellt.
      */
     public static final String convertDateToString(final Date datum, final boolean withDay) {
         final Calendar calendar = Calendar.getInstance();
@@ -115,10 +110,21 @@ public final class TimeHelper {
         return calendar.get(Calendar.WEEK_OF_YEAR);
     }
 
+    /**
+     * Gibt das Jahr zurück. Allerdings gibt zum Beispiel der 1. Januar 2012 nicht 2012 zurück sondern 2011. Das Jahr bezieht sich immer auf die Woche in der
+     * der Tag ist.
+     */
     public static int getJahr(final Date date) {
         final Calendar calendar = Calendar.getInstance(Locale.getDefault());
         calendar.setTime(date);
-        return calendar.get(Calendar.YEAR);
+        int year = calendar.get(Calendar.YEAR);
+        final int month = calendar.get(Calendar.MONTH);
+        final int week = calendar.get(Calendar.WEEK_OF_YEAR);
+        if (week == 52 && month == 0) {
+            // so zum beispiel am 1. januar 2012 --> KW52
+            year--;
+        }
+        return year;
     }
 
     private static String addZero(final int i) {
