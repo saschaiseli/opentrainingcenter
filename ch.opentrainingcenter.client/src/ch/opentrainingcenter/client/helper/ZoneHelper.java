@@ -14,11 +14,6 @@ public final class ZoneHelper {
     private final IPreferenceStore store;
 
     public enum Zone {
-
-        // AEROBE(PreferenceConstants.AEROBE),
-        // SCHWELLE(PreferenceConstants.SCHWELLENZONE),
-        // ANAEROBE(PreferenceConstants.ANAEROBE);
-
         RECOM(PreferenceConstants.RECOM), //
         GA1(PreferenceConstants.GA1), //
         GA12(PreferenceConstants.GA12), //

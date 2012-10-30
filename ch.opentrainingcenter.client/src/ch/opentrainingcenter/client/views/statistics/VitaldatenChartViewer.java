@@ -1,6 +1,7 @@
 package ch.opentrainingcenter.client.views.statistics;
 
 import java.awt.Color;
+import java.awt.Paint;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
@@ -72,6 +73,11 @@ public abstract class VitaldatenChartViewer extends ViewPart implements ISelecti
      * @return Den Namen, der im Tab dargestellt werden soll.
      */
     protected abstract String getTabName();
+
+    /**
+     * @return Die Farbe für den Bar Renderer. Wird aus den Preferences gelesen
+     */
+    protected abstract Paint getBarColor();
 
     @Override
     public void addSelectionChangedListener(final ISelectionChangedListener listener) {
@@ -152,7 +158,7 @@ public abstract class VitaldatenChartViewer extends ViewPart implements ISelecti
 
         final OTCBarPainter painter = new OTCBarPainter();
         renderer.setBarPainter(painter);
-
+        renderer.setSeriesPaint(0, getBarColor());
         renderer.setMargin(0.1);
         final DateAxis axis = (DateAxis) plot.getDomainAxis();
         axis.setTickMarkPosition(DateTickMarkPosition.MIDDLE);

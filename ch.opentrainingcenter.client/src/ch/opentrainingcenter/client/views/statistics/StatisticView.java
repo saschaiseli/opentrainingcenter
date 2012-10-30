@@ -8,6 +8,9 @@ import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.ui.part.ViewPart;
 
 import ch.opentrainingcenter.client.charts.ChartSerieType;
+import ch.opentrainingcenter.client.charts.GewichtChart;
+import ch.opentrainingcenter.client.charts.OTCBarChartViewer;
+import ch.opentrainingcenter.client.charts.RuhePulsChart;
 
 public class StatisticView extends ViewPart {
 

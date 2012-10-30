@@ -33,10 +33,6 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
         final Calendar cal = Calendar.getInstance(Locale.getDefault());
         defaults.put(PreferenceConstants.GPS_FILE_LOCATION, userHome + File.separator + cal.get(Calendar.YEAR) + File.separator + (cal.get(Calendar.MONTH) + 1));
         defaults.put(PreferenceConstants.GPS_FILE_LOCATION_PROG, userHome + "/data/otc"); //$NON-NLS-1$
-        defaults.putInt(PreferenceConstants.SB, 95);
-        defaults.putInt(PreferenceConstants.EXTDL, 75);
-        defaults.putInt(PreferenceConstants.INTDL, 80);
-        defaults.putInt(PreferenceConstants.EXTINTERVALL, 89);
         defaults.putInt(PreferenceConstants.RECOM, 65);
         defaults.put(PreferenceConstants.RECOM_COLOR, "144,238,144"); //$NON-NLS-1$
         defaults.putInt(PreferenceConstants.GA1, 75);
@@ -57,10 +53,14 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
         // training target
         defaults.putInt(PreferenceConstants.KM_PER_WEEK, 40);
 
+        defaults.put(PreferenceConstants.KM_PER_WEEK_COLOR_ABOVE, "0,180,52"); //$NON-NLS-1$
+        defaults.put(PreferenceConstants.KM_PER_WEEK_COLOR_BELOW, "255,201,57"); //$NON-NLS-1$
+
         defaults.put(PreferenceConstants.DISTANCE_CHART_COLOR, "40,4,252"); //$NON-NLS-1$
         defaults.put(PreferenceConstants.DISTANCE_HEART_COLOR, "255,17,14"); //$NON-NLS-1$
 
-        defaults.put(PreferenceConstants.KM_PER_WEEK_COLOR_ABOVE, "255,201,57"); //$NON-NLS-1$
-        defaults.put(PreferenceConstants.KM_PER_WEEK_COLOR_BELOW, "0,180,52"); //$NON-NLS-1$
+        defaults.put(PreferenceConstants.RUHEPULS_COLOR, "255,0,26"); //$NON-NLS-1$
+        defaults.put(PreferenceConstants.GEWICHT_COLOR, "240,173,50"); //$NON-NLS-1$
+
     }
 }

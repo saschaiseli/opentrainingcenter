@@ -15,17 +15,6 @@ public final class PreferenceConstants {
      */
     public static final String GPS_FILE_LOCATION_PROG = "gps_path_prog"; //$NON-NLS-1$
     public static final String ATHLETE_ID = "athlete_id"; //$NON-NLS-1$
-    public static final String SB = "spitzenbereich"; //$NON-NLS-1$
-    public static final String EXTDL = "extensiver_dauerlauf"; //$NON-NLS-1$
-    public static final String INTDL = "intensiver_dauerlauf"; //$NON-NLS-1$
-    public static final String EXTINTERVALL = "exttensiver_intervall"; //$NON-NLS-1$
-    //    public static final String AEROBE = "aerobe"; //$NON-NLS-1$
-    // public static final String AEROBE_COLOR = AEROBE + COLOR_POSTFIX;
-    //    public static final String SCHWELLENZONE = "schwelle"; //$NON-NLS-1$
-    // public static final String SCHWELLENZONE_COLOR = SCHWELLENZONE +
-    // COLOR_POSTFIX;
-    //    public static final String ANAEROBE = "anaerobe"; //$NON-NLS-1$
-    // public static final String ANAEROBE_COLOR = ANAEROBE + COLOR_POSTFIX;
     public static final String BACKUP_FILE_LOCATION = "backup_path"; //$NON-NLS-1$
     public static final String FILE_SUFFIX_FOR_BACKUP = "filesuffix_"; //$NON-NLS-1$
     public static final String KM_PER_WEEK = "KM_PER_WEEK"; //$NON-NLS-1$
@@ -43,6 +32,8 @@ public final class PreferenceConstants {
     public static final String GA2_COLOR = GA2 + COLOR_POSTFIX;
     public static final String WSA = "WSA";//$NON-NLS-1$
     public static final String WSA_COLOR = WSA + COLOR_POSTFIX;
+    public static final String RUHEPULS_COLOR = "RUHEPULS"; //$NON-NLS-1$
+    public static final String GEWICHT_COLOR = "GEWICHT"; //$NON-NLS-1$
 
     private PreferenceConstants() {
 

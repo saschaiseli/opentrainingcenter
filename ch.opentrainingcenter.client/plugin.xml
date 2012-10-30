@@ -251,7 +251,7 @@
       <page
             class="ch.opentrainingcenter.client.preferences.SamplePreferencePage"
             id="ch.opentrainingcenter.client.preferences.SamplePreferencePage"
-            name="Einstellungen">
+            name="Allgemein">
       </page>
       <page
             class="ch.opentrainingcenter.client.preferences.BackupPreferencePage"
@@ -266,7 +266,7 @@
       <page
             class="ch.opentrainingcenter.client.preferences.TrainingTargetPreferencePage"
             id="ch.opentrainingcenter.client.preferences.TrainingTargetPage"
-            name="Trainingsziele">
+            name="Farben">
       </page>
    </extension>
    <extension

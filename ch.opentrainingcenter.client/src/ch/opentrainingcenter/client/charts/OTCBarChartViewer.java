@@ -1,4 +1,4 @@
-package ch.opentrainingcenter.client.views.statistics;
+package ch.opentrainingcenter.client.charts;
 
 //import static org.jfree.chart.labels.ItemLabelAnchor.*;
 import java.awt.Color;
@@ -66,11 +66,6 @@ import ch.opentrainingcenter.client.cache.Cache;
 import ch.opentrainingcenter.client.cache.IRecordListener;
 import ch.opentrainingcenter.client.cache.TrainingOverviewDatenAufbereiten;
 import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
-import ch.opentrainingcenter.client.charts.ChartSerieType;
-import ch.opentrainingcenter.client.charts.Cross;
-import ch.opentrainingcenter.client.charts.IStatistikCreator;
-import ch.opentrainingcenter.client.charts.OTCBarPainter;
-import ch.opentrainingcenter.client.charts.WeekXYBarRenderer;
 import ch.opentrainingcenter.client.charts.internal.StatistikCreator;
 import ch.opentrainingcenter.client.helper.ColorFromPreferenceHelper;
 import ch.opentrainingcenter.client.model.ISimpleTraining;
@@ -106,7 +101,7 @@ public class OTCBarChartViewer implements ISelectionProvider {
     private final TrainingOverviewDatenAufbereiten daten;
     private RunType filter = RunType.NONE;
 
-    private final IPreferenceStore store = Activator.getDefault().getPreferenceStore();;
+    private final IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 
     private final Cache cache;
 

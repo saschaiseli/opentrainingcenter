@@ -43,7 +43,7 @@ public class SamplePreferencePage extends FieldEditorPreferencePage implements I
 
     public SamplePreferencePage() {
         super(GRID);
-        setDescription(Messages.SamplePreferencePage0);
+        setDescription("Allgemeine Einstellungen");
         allAthletes = DatabaseAccessFactory.getDatabaseAccess().getAllAthletes();
     }
 
@@ -54,65 +54,37 @@ public class SamplePreferencePage extends FieldEditorPreferencePage implements I
      */
     @Override
     public void createFieldEditors() {
-        final Composite fieldEditorParent = getFieldEditorParent();
+        final Composite training = getFieldEditorParent();
 
         final List<String[]> vals = new ArrayList<String[]>();
         for (final IAthlete ath : allAthletes) {
             vals.add(new String[] { ath.getName(), String.valueOf(ath.getId()) });
         }
         final ComboFieldEditor comboField = new ComboFieldEditor(PreferenceConstants.ATHLETE_ID, Messages.SamplePreferencePage3,
-                vals.toArray(new String[0][0]), fieldEditorParent);
+                vals.toArray(new String[0][0]), training);
         addField(comboField);
-        comboField.setEnabled(false, fieldEditorParent);
+        comboField.setEnabled(false, training);
 
-        final IntegerFieldEditor sb = new IntegerFieldEditor(PreferenceConstants.SB, Messages.SamplePreferencePage4, fieldEditorParent);
-        sb.setLabelText(Messages.SamplePreferencePage5);
-        sb.setValidRange(91, 95);
-        sb.setErrorMessage(Messages.SamplePreferencePage6);
-        sb.setTextLimit(2);
-        addField(sb);
-
-        final IntegerFieldEditor extIntervall = new IntegerFieldEditor(PreferenceConstants.EXTINTERVALL, Messages.SamplePreferencePage7, fieldEditorParent);
-        extIntervall.setLabelText(Messages.SamplePreferencePage8);
-        extIntervall.setValidRange(85, 89);
-        extIntervall.setErrorMessage(Messages.SamplePreferencePage9);
-        extIntervall.setTextLimit(2);
-        addField(extIntervall);
-
-        final IntegerFieldEditor intDl = new IntegerFieldEditor(PreferenceConstants.INTDL, Messages.SamplePreferencePage10, fieldEditorParent);
-        intDl.setLabelText(Messages.SamplePreferencePage11);
-        intDl.setValidRange(75, 80);
-        intDl.setErrorMessage(Messages.SamplePreferencePage12);
-        intDl.setTextLimit(2);
-        addField(intDl);
-
-        final IntegerFieldEditor extDl = new IntegerFieldEditor(PreferenceConstants.EXTDL, Messages.SamplePreferencePage13, fieldEditorParent);
-        extDl.setLabelText(Messages.SamplePreferencePage14);
-        extDl.setValidRange(70, 75);
-        extDl.setErrorMessage(Messages.SamplePreferencePage15);
-        extDl.setTextLimit(2);
-        addField(extDl);
-
-        final IntegerFieldEditor recom = new IntegerFieldEditor(PreferenceConstants.RECOM, Messages.SamplePreferencePage_0, fieldEditorParent);
+        final IntegerFieldEditor recom = new IntegerFieldEditor(PreferenceConstants.RECOM, "Regeneration", training);
         addField(recom);
-        addField(new ColorFieldEditor(PreferenceConstants.RECOM_COLOR, "", fieldEditorParent)); //$NON-NLS-1$
+        addField(new ColorFieldEditor(PreferenceConstants.RECOM_COLOR, "", training));
 
-        final IntegerFieldEditor ga1 = new IntegerFieldEditor(PreferenceConstants.GA1, "", fieldEditorParent); //$NON-NLS-1$
+        final IntegerFieldEditor ga1 = new IntegerFieldEditor(PreferenceConstants.GA1, "GA1", training);
         addField(ga1);
-        addField(new ColorFieldEditor(PreferenceConstants.GA1_COLOR, "", fieldEditorParent)); //$NON-NLS-1$
+        addField(new ColorFieldEditor(PreferenceConstants.GA1_COLOR, "", training)); //$NON-NLS-1$
 
-        final IntegerFieldEditor ga12 = new IntegerFieldEditor(PreferenceConstants.GA12, "", fieldEditorParent); //$NON-NLS-1$
+        final IntegerFieldEditor ga12 = new IntegerFieldEditor(PreferenceConstants.GA12, "GA 1/2", training);
         addField(ga12);
-        addField(new ColorFieldEditor(PreferenceConstants.GA12_COLOR, "", fieldEditorParent)); //$NON-NLS-1$
+        addField(new ColorFieldEditor(PreferenceConstants.GA12_COLOR, "", training)); //$NON-NLS-1$
 
-        final IntegerFieldEditor ga2 = new IntegerFieldEditor(PreferenceConstants.GA2, "", fieldEditorParent); //$NON-NLS-1$
+        final IntegerFieldEditor ga2 = new IntegerFieldEditor(PreferenceConstants.GA2, "GA2", training);
         addField(ga2);
-        addField(new ColorFieldEditor(PreferenceConstants.GA2_COLOR, "", fieldEditorParent)); //$NON-NLS-1$
+        addField(new ColorFieldEditor(PreferenceConstants.GA2_COLOR, "", training)); //$NON-NLS-1$
 
-        final IntegerFieldEditor wsa = new IntegerFieldEditor(PreferenceConstants.WSA, "", fieldEditorParent); //$NON-NLS-1$
-        wsa.setEnabled(false, fieldEditorParent);
+        final IntegerFieldEditor wsa = new IntegerFieldEditor(PreferenceConstants.WSA, "Wettkampf", training);
+        wsa.setEnabled(false, training);
         addField(wsa);
-        addField(new ColorFieldEditor(PreferenceConstants.WSA_COLOR, "", fieldEditorParent)); //$NON-NLS-1$
+        addField(new ColorFieldEditor(PreferenceConstants.WSA_COLOR, "", training)); //$NON-NLS-1$
     }
 
     /*

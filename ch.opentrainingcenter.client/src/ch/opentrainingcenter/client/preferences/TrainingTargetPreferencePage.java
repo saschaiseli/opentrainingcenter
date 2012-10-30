@@ -46,8 +46,8 @@ public class TrainingTargetPreferencePage extends FieldEditorPreferencePage impl
         kmPerWeek.setErrorMessage(Messages.TrainingTargetPreferencePage4);
 
         addField(kmPerWeek);
-        addField(new ColorFieldEditor(PreferenceConstants.KM_PER_WEEK_COLOR_BELOW, Messages.TrainingTargetPreferencePage5, training));
         addField(new ColorFieldEditor(PreferenceConstants.KM_PER_WEEK_COLOR_ABOVE, Messages.TrainingTargetPreferencePage6, training));
+        addField(new ColorFieldEditor(PreferenceConstants.KM_PER_WEEK_COLOR_BELOW, Messages.TrainingTargetPreferencePage5, training));
 
         // -----------
         final Group groupChartColors = new Group(parent, SWT.NONE);
@@ -59,7 +59,19 @@ public class TrainingTargetPreferencePage extends FieldEditorPreferencePage impl
         addField(new ColorFieldEditor(PreferenceConstants.DISTANCE_CHART_COLOR, Messages.TrainingTargetPreferencePage8, chart));
         addField(new ColorFieldEditor(PreferenceConstants.DISTANCE_HEART_COLOR, Messages.TrainingTargetPreferencePage9, chart));
 
+        // ----------- Vital
+        final Group groupVitalColors = new Group(parent, SWT.NONE);
+        groupVitalColors.setText(Messages.TrainingTargetPreferencePage7);
+        groupVitalColors.setLayout(gridLayout);
+        final Composite vital = new Composite(groupChartColors, SWT.NONE);
+        vital.setLayout(GridLayoutFactory.swtDefaults().create());
+
+        addField(new ColorFieldEditor(PreferenceConstants.RUHEPULS_COLOR, "Farbe für Ruhepuls", vital));
+        addField(new ColorFieldEditor(PreferenceConstants.GEWICHT_COLOR, "Farbe für Gewicht", vital));
+
+        // -- layout
         GridDataFactory.defaultsFor(groupTrainingTarget).grab(false, false).span(2, 1).indent(5, 5).applyTo(groupTrainingTarget);
         GridDataFactory.defaultsFor(groupTrainingTarget).grab(true, false).span(2, 1).indent(5, 5).applyTo(groupChartColors);
+        GridDataFactory.defaultsFor(groupTrainingTarget).grab(true, false).span(2, 1).indent(5, 5).applyTo(groupVitalColors);
     }
 }
