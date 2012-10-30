@@ -43,7 +43,7 @@ public class SamplePreferencePage extends FieldEditorPreferencePage implements I
 
     public SamplePreferencePage() {
         super(GRID);
-        setDescription("Allgemeine Einstellungen");
+        setDescription(Messages.SamplePreferencePage_1);
         allAthletes = DatabaseAccessFactory.getDatabaseAccess().getAllAthletes();
     }
 
@@ -65,23 +65,23 @@ public class SamplePreferencePage extends FieldEditorPreferencePage implements I
         addField(comboField);
         comboField.setEnabled(false, training);
 
-        final IntegerFieldEditor recom = new IntegerFieldEditor(PreferenceConstants.RECOM, "Regeneration", training);
+        final IntegerFieldEditor recom = new IntegerFieldEditor(PreferenceConstants.RECOM, Messages.SamplePreferencePage_2, training);
         addField(recom);
-        addField(new ColorFieldEditor(PreferenceConstants.RECOM_COLOR, "", training));
+        addField(new ColorFieldEditor(PreferenceConstants.RECOM_COLOR, "", training)); //$NON-NLS-1$
 
-        final IntegerFieldEditor ga1 = new IntegerFieldEditor(PreferenceConstants.GA1, "GA1", training);
+        final IntegerFieldEditor ga1 = new IntegerFieldEditor(PreferenceConstants.GA1, Messages.SamplePreferencePage_4, training);
         addField(ga1);
         addField(new ColorFieldEditor(PreferenceConstants.GA1_COLOR, "", training)); //$NON-NLS-1$
 
-        final IntegerFieldEditor ga12 = new IntegerFieldEditor(PreferenceConstants.GA12, "GA 1/2", training);
+        final IntegerFieldEditor ga12 = new IntegerFieldEditor(PreferenceConstants.GA12, Messages.SamplePreferencePage_5, training);
         addField(ga12);
         addField(new ColorFieldEditor(PreferenceConstants.GA12_COLOR, "", training)); //$NON-NLS-1$
 
-        final IntegerFieldEditor ga2 = new IntegerFieldEditor(PreferenceConstants.GA2, "GA2", training);
+        final IntegerFieldEditor ga2 = new IntegerFieldEditor(PreferenceConstants.GA2, Messages.SamplePreferencePage_6, training);
         addField(ga2);
         addField(new ColorFieldEditor(PreferenceConstants.GA2_COLOR, "", training)); //$NON-NLS-1$
 
-        final IntegerFieldEditor wsa = new IntegerFieldEditor(PreferenceConstants.WSA, "Wettkampf", training);
+        final IntegerFieldEditor wsa = new IntegerFieldEditor(PreferenceConstants.WSA, Messages.SamplePreferencePage_7, training);
         wsa.setEnabled(false, training);
         addField(wsa);
         addField(new ColorFieldEditor(PreferenceConstants.WSA_COLOR, "", training)); //$NON-NLS-1$

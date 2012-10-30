@@ -63,15 +63,15 @@ public class TrainingTargetPreferencePage extends FieldEditorPreferencePage impl
         final Group groupVitalColors = new Group(parent, SWT.NONE);
         groupVitalColors.setText(Messages.TrainingTargetPreferencePage7);
         groupVitalColors.setLayout(gridLayout);
-        final Composite vital = new Composite(groupChartColors, SWT.NONE);
+        final Composite vital = new Composite(groupVitalColors, SWT.NONE);
         vital.setLayout(GridLayoutFactory.swtDefaults().create());
 
-        addField(new ColorFieldEditor(PreferenceConstants.RUHEPULS_COLOR, "Farbe für Ruhepuls", vital));
-        addField(new ColorFieldEditor(PreferenceConstants.GEWICHT_COLOR, "Farbe für Gewicht", vital));
+        addField(new ColorFieldEditor(PreferenceConstants.RUHEPULS_COLOR, Messages.TrainingTargetPreferencePage_0, vital));
+        addField(new ColorFieldEditor(PreferenceConstants.GEWICHT_COLOR, Messages.TrainingTargetPreferencePage_1, vital));
 
         // -- layout
-        GridDataFactory.defaultsFor(groupTrainingTarget).grab(false, false).span(2, 1).indent(5, 5).applyTo(groupTrainingTarget);
-        GridDataFactory.defaultsFor(groupTrainingTarget).grab(true, false).span(2, 1).indent(5, 5).applyTo(groupChartColors);
-        GridDataFactory.defaultsFor(groupTrainingTarget).grab(true, false).span(2, 1).indent(5, 5).applyTo(groupVitalColors);
+        GridDataFactory.defaultsFor(groupTrainingTarget).grab(true, true).span(2, 1).indent(5, 5).applyTo(groupTrainingTarget);
+        GridDataFactory.defaultsFor(groupChartColors).grab(true, true).span(2, 1).indent(5, 5).applyTo(groupChartColors);
+        GridDataFactory.defaultsFor(groupVitalColors).grab(true, true).span(2, 1).indent(5, 5).applyTo(groupVitalColors);
     }
 }

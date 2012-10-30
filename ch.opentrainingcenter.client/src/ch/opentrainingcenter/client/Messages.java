@@ -155,6 +155,12 @@ public final class Messages extends NLS {
     public static String OverviewViewer4;
     public static String OverviewViewer5;
     public static String SamplePreferencePage_0;
+    public static String SamplePreferencePage_1;
+    public static String SamplePreferencePage_2;
+    public static String SamplePreferencePage_4;
+    public static String SamplePreferencePage_5;
+    public static String SamplePreferencePage_6;
+    public static String SamplePreferencePage_7;
     public static String SamplePreferencePage0;
     public static String SamplePreferencePage1;
     public static String SamplePreferencePage10;
@@ -212,6 +218,8 @@ public final class Messages extends NLS {
     public static String TimeHelper1;
     public static String TimeHelper2;
     public static String TimeHelper3;
+    public static String TrainingTargetPreferencePage_0;
+    public static String TrainingTargetPreferencePage_1;
     public static String TrainingTargetPreferencePage0;
     public static String TrainingTargetPreferencePage1;
     public static String TrainingTargetPreferencePage3;
