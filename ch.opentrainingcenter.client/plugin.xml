@@ -58,7 +58,7 @@
             allowMultiple="true"
             category="ch.opentrainingcenter.client.otccategory"
             class="ch.opentrainingcenter.client.views.overview.SingleActivityViewPart"
-            icon="icons/overview_chart.png"
+            icon="icons/insp_sbook.gif"
             id="ch.opentrainingcenter.client.views.singlerun"
             name="Uebersicht eines Trainings"
             restorable="true">
@@ -103,6 +103,15 @@
             class="ch.opentrainingcenter.client.views.best.BestRunsView"
             id="ch.opentrainingcenter.client.best.bestof"
             name="Bestzeiten"
+            restorable="true">
+      </view>
+      <view
+            allowMultiple="true"
+            category="ch.opentrainingcenter.client.otccategory"
+            class="ch.opentrainingcenter.client.views.planung.JahresplanungViewPart"
+            icon="icons/container_obj.gif"
+            id="ch.opentrainingcenter.client.views.planung.JahresplanungViewPart"
+            name="Jahresplanung"
             restorable="true">
       </view>
    </extension>
@@ -202,6 +211,11 @@
             description="Löscht einen Vitalrecord"
             id="ch.opentrainingcenter.client.commands.DeleteHealthRecord"
             name="LoeschteinenVitalRecord">
+      </command>
+      <command
+            description="Trainingsplan"
+            id="ch.opentrainingcenter.client.commands.AddTrainingPlan"
+            name="AddTrainingPlan">
       </command>
    </extension>
    <extension
@@ -408,6 +422,22 @@
                   <or>
                      <instanceof
                            value="ch.opentrainingcenter.client.model.navigation.impl.ConcreteHealth">
+                     </instanceof>
+                  </or>
+               </iterate>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="ch.opentrainingcenter.client.commands.AddTrainingPlan"
+               label="Trainingsplan"
+               style="push">
+            <visibleWhen
+                  checkEnabled="true">
+               <iterate
+                     operator="and">
+                  <or>
+                     <instanceof
+                           value="java.lang.Integer">
                      </instanceof>
                   </or>
                </iterate>
@@ -623,6 +653,10 @@
       <handler
             class="ch.opentrainingcenter.client.commands.DeleteHealthRecord"
             commandId="ch.opentrainingcenter.client.commands.DeleteHealthRecord">
+      </handler>
+      <handler
+            class="ch.opentrainingcenter.client.commands.AddTrainingPlan"
+            commandId="ch.opentrainingcenter.client.commands.AddTrainingPlan">
       </handler>
    </extension>
    <extension

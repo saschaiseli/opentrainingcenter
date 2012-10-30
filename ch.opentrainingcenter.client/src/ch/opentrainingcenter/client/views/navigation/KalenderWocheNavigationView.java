@@ -27,6 +27,7 @@ import org.eclipse.ui.part.ViewPart;
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.client.PreferenceConstants;
+import ch.opentrainingcenter.client.action.job.LoadJahresplanung;
 import ch.opentrainingcenter.client.cache.Cache;
 import ch.opentrainingcenter.client.cache.IRecordListener;
 import ch.opentrainingcenter.client.cache.impl.HealthCache;
@@ -173,7 +174,13 @@ public class KalenderWocheNavigationView extends ViewPart {
                     final HealthDialog dialog = new HealthDialog(parent.getShell(), (IHealth) item);
                     dialog.open();
                 }
+
+                if (item instanceof Integer) {
+                    // Jahr
+                    openJahresplanung((Integer) item);
+                }
             }
+
         });
 
         healthCache.addListener(new IRecordListener<ConcreteHealth>() {
@@ -229,6 +236,14 @@ public class KalenderWocheNavigationView extends ViewPart {
         job.addJobChangeListener(new ImportActivityJobListener(record));
         job.schedule();
         viewer.setSelection(new StructuredSelection(record), true);
+    }
+
+    /**
+     * Öffnet die Jahresplanung für das angegebene Jahr.
+     */
+    private void openJahresplanung(final Integer jahr) {
+        final LoadJahresplanung job = new LoadJahresplanung("Lade Planung für das Jahr ", jahr, cache, db);
+        job.schedule();
     }
 
     @Override

@@ -8,6 +8,7 @@ import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.client.views.best.BestRunsView;
 import ch.opentrainingcenter.client.views.navigation.KalenderWocheNavigationView;
 import ch.opentrainingcenter.client.views.overview.SingleActivityViewPart;
+import ch.opentrainingcenter.client.views.planung.JahresplanungViewPart;
 import ch.opentrainingcenter.client.views.weeks.WeeklyOverview;
 
 public class MainPerspective implements IPerspectiveFactory {
@@ -36,6 +37,8 @@ public class MainPerspective implements IPerspectiveFactory {
         } else {
             folderMiddle.addPlaceholder(SingleActivityViewPart.ID + MULTI_VIEW);
         }
+
+        folderMiddle.addPlaceholder(JahresplanungViewPart.ID + MULTI_VIEW);
 
         layout.addStandaloneView(WeeklyOverview.ID, false, IPageLayout.RIGHT, 0.10f, editorArea);
         layout.getViewLayout(WeeklyOverview.ID).setCloseable(false);
