@@ -28,8 +28,7 @@ public final class ImporterFactory {
      *            Ort, wo die importieren Files hinkopiert werden
      * @param fileCopy
      */
-    public static IFileImport createFileImporter(final ConvertContainer cc, final IAthlete athlete, final IDatabaseAccess databaseAccess,
-            final String backup) {
+    public static IFileImport createFileImporter(final ConvertContainer cc, final IAthlete athlete, final IDatabaseAccess databaseAccess, final String backup) {
         return new FileImport(cc, athlete, databaseAccess, backup, new FileCopy());
     }
 

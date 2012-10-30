@@ -75,8 +75,7 @@ public final class TrainingOverviewFactory {
             }
         }
 
-        return CommonTransferFactory.createTraining(dateOfStart, timeInSeconds, distance, avgHeartRate, maxHeartBeat, maximumSpeed,
-                activityExtension);
+        return CommonTransferFactory.createTraining(dateOfStart, timeInSeconds, distance, avgHeartRate, maxHeartBeat, maximumSpeed, activityExtension);
     }
 
     private static boolean hasCardio(final ActivityLapT lap) {

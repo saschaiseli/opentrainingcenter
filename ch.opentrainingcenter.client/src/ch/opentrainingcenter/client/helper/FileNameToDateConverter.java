@@ -20,8 +20,8 @@ public final class FileNameToDateConverter {
             Integer.parseInt(fileName.substring(6, 8));
             Integer.parseInt(fileName.substring(9, 11));
             Integer.parseInt(fileName.substring(11, 13));
-            str.append(fileName.substring(0, 4)).append('.').append(fileName.substring(4, 6)).append('.').append(fileName.substring(6, 8)).append(' ')
-                    .append(fileName.substring(9, 11)).append(':').append(fileName.substring(11, 13));
+            str.append(fileName.substring(0, 4)).append('.').append(fileName.substring(4, 6)).append('.').append(fileName.substring(6, 8)).append(' ').append(
+                    fileName.substring(9, 11)).append(':').append(fileName.substring(11, 13));
             return str.toString();
         } catch (final NumberFormatException nfe) {
             return fileName;

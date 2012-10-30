@@ -43,8 +43,7 @@ public class FileImport implements IFileImport {
      * @param backup
      *            Ort, wo die importieren Files hinkopiert werden
      */
-    public FileImport(final ConvertContainer cc, final IAthlete athlete, final IDatabaseAccess dbAccess, final String backup,
-            final IFileCopy fileCopy) {
+    public FileImport(final ConvertContainer cc, final IAthlete athlete, final IDatabaseAccess dbAccess, final String backup, final IFileCopy fileCopy) {
         this.cc = cc;
         this.athlete = athlete;
         this.dbAccess = dbAccess;
@@ -53,8 +52,7 @@ public class FileImport implements IFileImport {
     }
 
     @Override
-    public List<ActivityT> importFile(final String filterPath, final IGpsFileModelWrapper modelWrapper, final IProgressMonitor monitor)
-            throws Exception {
+    public List<ActivityT> importFile(final String filterPath, final IGpsFileModelWrapper modelWrapper, final IProgressMonitor monitor) throws Exception {
         final List<ActivityT> activitiesToImport = new ArrayList<ActivityT>();
         for (final IGpsFileModel model : modelWrapper.getGpsFileModels()) {
             final File file = new File(filterPath, model.getFileName());
@@ -75,8 +73,7 @@ public class FileImport implements IFileImport {
         for (final ActivityT activity : activities) {
             final ITraining overview = TrainingOverviewFactory.creatTrainingOverview(activity);
 
-            final int id = dbAccess.importRecord(athlete.getId(), file.getName(), activity.getId().toGregorianCalendar().getTime(),
-                    overview, model.getId());
+            final int id = dbAccess.importRecord(athlete.getId(), file.getName(), activity.getId().toGregorianCalendar().getTime(), overview, model.getId());
             if (id > 0) {
                 // neu hinzugefügt
                 result.add(activity);

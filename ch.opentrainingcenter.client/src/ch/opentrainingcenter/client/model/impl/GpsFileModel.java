@@ -43,7 +43,8 @@ public class GpsFileModel implements IGpsFileModel {
     /*
      * (non-Javadoc)
      * 
-     * @see ch.opentrainingcenter.client.model.impl.IGpsFileModel#setTyp(ch.opentrainingcenter.client.model.RunType)
+     * @see ch.opentrainingcenter.client.model.impl.IGpsFileModel#setTyp(ch.
+     * opentrainingcenter.client.model.RunType)
      */
     @Override
     public void setTyp(final RunType typ) {
@@ -63,7 +64,9 @@ public class GpsFileModel implements IGpsFileModel {
     /*
      * (non-Javadoc)
      * 
-     * @see ch.opentrainingcenter.client.model.impl.IGpsFileModel#setImportFile(boolean)
+     * @see
+     * ch.opentrainingcenter.client.model.impl.IGpsFileModel#setImportFile(boolean
+     * )
      */
     @Override
     public void setImportFile(final boolean importFile) {

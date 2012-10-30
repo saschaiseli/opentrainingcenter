@@ -26,8 +26,7 @@ public final class MapConverter {
                 for (final TrackpointT point : trackpoint) {
                     final PositionT position = point.getPosition();
                     if (position != null) {
-                        str.append('[').append(position.getLatitudeDegrees()).append(',').append(position.getLongitudeDegrees()).append(
-                                "],"); //$NON-NLS-1$
+                        str.append('[').append(position.getLatitudeDegrees()).append(',').append(position.getLongitudeDegrees()).append("],"); //$NON-NLS-1$
                         pointAdded = true;
                     }
                 }

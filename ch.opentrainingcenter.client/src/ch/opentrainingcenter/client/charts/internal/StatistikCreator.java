@@ -17,7 +17,7 @@ import ch.opentrainingcenter.client.model.ISimpleTraining;
 public class StatistikCreator implements IStatistikCreator {
 
     private static final int LAST_KW_IN_YEAR = 52;
-	private static final Logger LOGGER = Logger.getLogger(StatistikCreator.class);
+    private static final Logger LOGGER = Logger.getLogger(StatistikCreator.class);
 
     @Override
     public Map<Integer, List<ISimpleTraining>> getTrainingsProJahr(final List<ISimpleTraining> allTrainings) {

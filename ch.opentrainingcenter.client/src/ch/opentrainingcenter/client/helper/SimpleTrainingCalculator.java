@@ -40,8 +40,8 @@ public final class SimpleTrainingCalculator {
         return result;
     }
 
-    private static void compressTrainings(final List<ISimpleTraining> result,
-            final Map.Entry<Integer, List<ISimpleTraining>> trainingsProWocheOderMonat, final RunType filter) {
+    private static void compressTrainings(final List<ISimpleTraining> result, final Map.Entry<Integer, List<ISimpleTraining>> trainingsProWocheOderMonat,
+            final RunType filter) {
         double distance = 0;
         double seconds = 0;
         int heartRate = 0;

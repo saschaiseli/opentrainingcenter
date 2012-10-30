@@ -159,8 +159,7 @@ public class CreateAthleteView extends ViewPart {
                 final IAthlete athlete = databaseAccess.getAthlete(dbId);
                 LOGGER.info(Messages.CreateAthleteView5 + athlete + " wird im Cache gesetzt."); //$NON-NLS-1$
                 ApplicationContext.getApplicationContext().setAthlete(athlete);
-                getViewSite().getWorkbenchWindow().getShell().setText(
-                        Application.WINDOW_TITLE + Messages.CreateAthleteView7 + athlete.getName());
+                getViewSite().getWorkbenchWindow().getShell().setText(Application.WINDOW_TITLE + Messages.CreateAthleteView7 + athlete.getName());
             }
         });
 
@@ -301,8 +300,7 @@ public class CreateAthleteView extends ViewPart {
             @Override
             public void widgetSelected(final SelectionEvent e) {
                 LOGGER.info("save " + sportler); //$NON-NLS-1$
-                final IAthlete athlete = CommonTransferFactory.createAthlete(sportler.getName(), sportler.getAge(), sportler
-                        .getMaxHeartBeat());
+                final IAthlete athlete = CommonTransferFactory.createAthlete(sportler.getName(), sportler.getAge(), sportler.getMaxHeartBeat());
                 try {
                     DatabaseAccessFactory.getDatabaseAccess().save(athlete);
                     resetForm();

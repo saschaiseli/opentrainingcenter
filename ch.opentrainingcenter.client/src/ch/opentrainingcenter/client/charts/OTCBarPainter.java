@@ -18,8 +18,8 @@ public class OTCBarPainter extends StandardXYBarPainter {
     }
 
     @Override
-    public void paintBarShadow(final Graphics2D g2, final XYBarRenderer renderer, final int row, final int column,
-            final RectangularShape bar, final RectangleEdge base, final boolean pegShadow) {
+    public void paintBarShadow(final Graphics2D g2, final XYBarRenderer renderer, final int row, final int column, final RectangularShape bar,
+            final RectangleEdge base, final boolean pegShadow) {
         // nur nicht diese hässlichen shadows
     }
 

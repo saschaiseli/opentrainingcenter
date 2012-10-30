@@ -7,7 +7,7 @@ import ch.opentrainingcenter.client.views.statistics.StatisticView;
 
 public class StatisticPerspective implements IPerspectiveFactory {
 
-    public static final  String ID = "ch.opentrainingcenter.client.StatisticPerspective"; //$NON-NLS-1$
+    public static final String ID = "ch.opentrainingcenter.client.StatisticPerspective"; //$NON-NLS-1$
 
     @Override
     public void createInitialLayout(final IPageLayout layout) {

@@ -22,8 +22,8 @@ public class SimpleTraining implements ISimpleTraining {
     private RunType type;
     private Wetter wetter;
 
-    public SimpleTraining(final double distanzInMeter, final double dauerInSekunden, final Date datum, final int avgHeartRate,
-            final int maxHeartRate, final double speed, final RunType type, final String note) {
+    public SimpleTraining(final double distanzInMeter, final double dauerInSekunden, final Date datum, final int avgHeartRate, final int maxHeartRate,
+            final double speed, final RunType type, final String note) {
         this.distanzInMeter = distanzInMeter;
         this.avgHeartRate = avgHeartRate;
         this.maxHeartRate = maxHeartRate;

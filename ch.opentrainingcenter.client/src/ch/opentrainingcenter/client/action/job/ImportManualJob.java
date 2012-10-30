@@ -36,8 +36,7 @@ public class ImportManualJob extends Job {
      * @param cache
      *            Access zu Cache
      */
-    public ImportManualJob(final String name, final IGpsFileModelWrapper modelWrapper, final String filterPath, final IFileImport importer,
-            final Cache cache) {
+    public ImportManualJob(final String name, final IGpsFileModelWrapper modelWrapper, final String filterPath, final IFileImport importer, final Cache cache) {
         super(name);
         this.modelWrapper = modelWrapper;
         this.filterPath = filterPath;

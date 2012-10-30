@@ -36,8 +36,7 @@ public class WeekXYBarRenderer extends XYBarRenderer implements XYItemRenderer {
         colorBelow = ColorFromPreferenceHelper.getColor(store, PreferenceConstants.KM_PER_WEEK_COLOR_BELOW, ALPHA);
         colorAbove = ColorFromPreferenceHelper.getColor(store, PreferenceConstants.KM_PER_WEEK_COLOR_ABOVE, ALPHA);
 
-        final IntervalMarker below = new IntervalMarker(targetKmPerWeek - INTERVALL_MARKER_BREITE, targetKmPerWeek
-                + INTERVALL_MARKER_BREITE);
+        final IntervalMarker below = new IntervalMarker(targetKmPerWeek - INTERVALL_MARKER_BREITE, targetKmPerWeek + INTERVALL_MARKER_BREITE);
         below.setPaint(colorBelow);
         below.setAlpha(1f);
 
