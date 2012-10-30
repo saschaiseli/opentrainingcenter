@@ -39,8 +39,10 @@ class StatusLineWriter {
         } else if (selection instanceof ConcreteImported) {
             final ConcreteImported record = (ConcreteImported) selection;
             writeToStatusLine(record);
+        } else if (selection instanceof Integer) {
+            writeToStatusLine(""); //$NON-NLS-1$
         } else {
-            throw new IllegalArgumentException("Parent hat nicht definierte Childs. Fehlerhafte Datenstruktur"); //$NON-NLS-1$
+            throw new IllegalArgumentException("Parent hat nicht definierte Childs. Fehlerhafte Datenstruktur: " + selection.getClass().getCanonicalName()); //$NON-NLS-1$
         }
     }
 
