@@ -25,6 +25,9 @@ public class KalenderWocheTreeContentProvider implements IStructuredContentProvi
             final INavigationParent naviParent = (INavigationParent) parent;
             return naviParent.getChilds().toArray();
         }
+        if (parent instanceof Integer) {
+            return model.getWeeks((Integer) parent).toArray();
+        }
         return null;
     }
 
@@ -35,7 +38,7 @@ public class KalenderWocheTreeContentProvider implements IStructuredContentProvi
 
     @Override
     public boolean hasChildren(final Object element) {
-        if (element instanceof INavigationParent) {
+        if (element instanceof INavigationParent || element instanceof Integer) {
             return true;
         }
         return false;

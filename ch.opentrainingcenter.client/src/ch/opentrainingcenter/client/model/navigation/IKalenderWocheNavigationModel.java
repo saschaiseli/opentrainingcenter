@@ -7,7 +7,7 @@ public interface IKalenderWocheNavigationModel {
     /**
      * Sortierte Liste. Der neuste Eintrag erscheint als erstes.
      */
-    Collection<INavigationParent> getParents();
+    Collection<Integer> getParents();
 
     void addItems(Collection<? extends INavigationItem> items);
 
@@ -19,4 +19,6 @@ public interface IKalenderWocheNavigationModel {
      * Löscht alle Daten im Model.
      */
     void reset();
+
+    Collection<INavigationParent> getWeeks(Integer jahr);
 }

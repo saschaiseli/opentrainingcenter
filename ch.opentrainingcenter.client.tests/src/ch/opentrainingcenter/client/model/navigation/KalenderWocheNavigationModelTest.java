@@ -1,5 +1,6 @@
 package ch.opentrainingcenter.client.model.navigation;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -34,10 +35,10 @@ public class KalenderWocheNavigationModelTest {
         final Date date = cal.getTime();
         Mockito.when(item.getDate()).thenReturn(date);
         kw.addItem(item);
-        final Collection<INavigationParent> parents = kw.getParents();
+        final Collection<Integer> parents = kw.getParents();
         assertEquals("Ein Child an einem Parent", 1, parents.size());
-        final INavigationParent parent = parents.iterator().next();
-        assertEquals("Ein Child vorhanden", 1, parent.getChilds().size());
+        final Integer parent = parents.iterator().next();
+        assertEquals("Das Jahr ist 2012", 2012, parent.intValue());
     }
 
     @Test
@@ -52,13 +53,41 @@ public class KalenderWocheNavigationModelTest {
     }
 
     @Test
+    public void testAnzahlList() {
+        final List<INavigationItem> list = new ArrayList<INavigationItem>();
+        list.add(createItem(2012, 7, 28)); // kw35
+        list.add(createItem(2012, 7, 29)); // kw35
+        list.add(createItem(2012, 8, 3)); // kw36
+
+        kw.addItems(list);
+
+        final Collection<Integer> parents = kw.getParents();
+        assertEquals("1 Jahr", 1, parents.size());
+
+        final Collection<INavigationParent> weeks = kw.getWeeks(2012);
+
+        final Iterator<INavigationParent> iterator = weeks.iterator();
+        final INavigationParent parent = iterator.next();
+        final List<INavigationItem> childs = parent.getChilds();
+        assertEquals("1 Child vorhanden", 1, childs.size());
+        assertEquals("KW36", "KW36", parent.getName());
+        assertEquals("2012", 2012, parent.getKalenderWoche().getJahr());
+
+        final INavigationParent parent2 = iterator.next();
+        assertEquals("2 Child vorhanden", 2, parent2.getChilds().size());
+    }
+
+    @Test
     public void testAnzahl2() {
         kw.addItem(createItem(2012, 7, 28)); // kw35
         kw.addItem(createItem(2012, 7, 29)); // kw35
         kw.addItem(createItem(2012, 8, 3)); // kw36
-        final Collection<INavigationParent> parents = kw.getParents();
-        assertEquals("2 KWs abgefüllt", 2, parents.size());
-        final Iterator<INavigationParent> iterator = parents.iterator();
+        final Collection<Integer> parents = kw.getParents();
+        assertEquals("1 Jahr", 1, parents.size());
+
+        final Collection<INavigationParent> weeks = kw.getWeeks(2012);
+
+        final Iterator<INavigationParent> iterator = weeks.iterator();
         final INavigationParent parent = iterator.next();
         final List<INavigationItem> childs = parent.getChilds();
         assertEquals("1 Child vorhanden", 1, childs.size());
@@ -77,10 +106,12 @@ public class KalenderWocheNavigationModelTest {
         kw.addItem(createItem(2012, 8, 3)); // KW36
         kw.removeItem(itemToRemove);
 
-        final Collection<INavigationParent> parents = kw.getParents();
-        assertEquals("2 KWs abgefüllt", 2, parents.size());
+        final Collection<Integer> parents = kw.getParents();
+        assertEquals("1 Jahr", 1, parents.size());
 
-        final Iterator<INavigationParent> iterator = parents.iterator();
+        final Collection<INavigationParent> weeks = kw.getWeeks(2012);
+
+        final Iterator<INavigationParent> iterator = weeks.iterator();
         // der erste wird kw36 sein
         final INavigationParent parent = iterator.next();
         final List<INavigationItem> childs = parent.getChilds();
@@ -93,24 +124,47 @@ public class KalenderWocheNavigationModelTest {
     }
 
     @Test
+    public void testAnzahl3Remove() {
+        final INavigationItem a = createItem(2012, 7, 28);
+        final INavigationItem b = createItem(2012, 7, 29);
+        final INavigationItem c = createItem(2013, 8, 3);
+        kw.addItem(a);
+        kw.addItem(b);
+        kw.addItem(c);
+        kw.removeItem(a);
+        kw.removeItem(b);
+        kw.removeItem(c);
+
+        final Collection<Integer> parents = kw.getParents();
+        assertEquals("0 Jahr", 0, parents.size());
+
+        Collection<INavigationParent> weeks = kw.getWeeks(2012);
+        assertEquals("Jahr 2012 leer", 0, weeks.size());
+
+        weeks = kw.getWeeks(2013);
+        assertEquals("Jahr 2013 leer", 0, weeks.size());
+    }
+
+    @Test
     public void testAnzahl3() {
         kw.addItem(createItem(2012, 11, 24));
         kw.addItem(createItem(2013, 0, 1));
-        final Collection<INavigationParent> parents = kw.getParents();
-        assertEquals("2 KWs abgefüllt", 2, parents.size());
-        final Iterator<INavigationParent> iterator = parents.iterator();
 
-        final INavigationParent parent2 = iterator.next();
-        final List<INavigationItem> childs2 = parent2.getChilds();
-        assertEquals("1 Child vorhanden", 1, childs2.size());
-        assertEquals("KW1", "KW1 - 2013", parent2.getName());
-        assertEquals("2013", 2013, parent2.getKalenderWoche().getJahr());
+        final Collection<Integer> parents = kw.getParents();
+        assertEquals("2 Jahre", 2, parents.size());
 
-        final INavigationParent parent = iterator.next();
-        final List<INavigationItem> childs = parent.getChilds();
+        Collection<INavigationParent> weeks = kw.getWeeks(2013);
+
+        final INavigationParent parent2013 = weeks.iterator().next();
+        final List<INavigationItem> childs = parent2013.getChilds();
         assertEquals("1 Child vorhanden", 1, childs.size());
-        assertEquals("KW52", "KW52 - 2012", parent.getName());
-        assertEquals("2012", 2012, parent.getKalenderWoche().getJahr());
+        assertEquals("KW1", "KW1", parent2013.getName());
+
+        weeks = kw.getWeeks(2012);
+        final INavigationParent parent2012 = weeks.iterator().next();
+        final List<INavigationItem> childs2 = parent2012.getChilds();
+        assertEquals("1 Child vorhanden", 1, childs2.size());
+        assertEquals("KW52", "KW52", parent2012.getName());
     }
 
     @Test
@@ -120,8 +174,10 @@ public class KalenderWocheNavigationModelTest {
         final Date date = cal.getTime();
         Mockito.when(item.getDate()).thenReturn(date);
         kw.addItem(item);
-        final Collection<INavigationParent> parents = kw.getParents();
-        final INavigationParent parent = parents.iterator().next();
+
+        final Collection<INavigationParent> weeks = kw.getWeeks(2012);
+
+        final INavigationParent parent = weeks.iterator().next();
         final KalenderWoche kwoche = parent.getKalenderWoche();
         assertEquals("KalenderWoche", 35, kwoche.getKw());
         assertEquals("KalenderWoche", 2012, kwoche.getJahr());

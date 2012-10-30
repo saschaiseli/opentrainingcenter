@@ -20,17 +20,9 @@ public class NavigationParent implements INavigationParent {
 
     @Override
     public String getName() {
-        final int kwCurrent = kw.getKw();
         final StringBuffer result = new StringBuffer(Messages.NavigationParent_0);
         result.append(kw.getKw());
-        if (isLastOrFirstWeekInYear(kwCurrent)) {
-            result.append(Messages.NavigationParent_1).append(kw.getJahr());
-        }
         return result.toString();
-    }
-
-    private boolean isLastOrFirstWeekInYear(final int kwCurrent) {
-        return kwCurrent == 1 || kwCurrent == 52;
     }
 
     @Override

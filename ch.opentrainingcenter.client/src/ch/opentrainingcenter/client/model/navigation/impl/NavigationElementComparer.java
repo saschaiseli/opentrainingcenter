@@ -8,6 +8,11 @@ public class NavigationElementComparer implements IElementComparer {
 
     @Override
     public boolean equals(final Object a, final Object b) {
+        if (a instanceof Integer && b instanceof Integer) {
+            final Integer kwa = (Integer) a;
+            final Integer kwb = (Integer) b;
+            return kwb.equals(kwa);
+        }
         if (a instanceof KWTraining && b instanceof KWTraining) {
             final KWTraining kwa = (KWTraining) a;
             final KWTraining kwb = (KWTraining) b;
@@ -42,6 +47,10 @@ public class NavigationElementComparer implements IElementComparer {
         if (element instanceof ConcreteImported) {
             final ConcreteImported first = (ConcreteImported) element;
             return first.getActivityId().hashCode();
+        }
+        if (element instanceof Integer) {
+            final Integer first = (Integer) element;
+            return first.hashCode();
         }
         return 0;
     }

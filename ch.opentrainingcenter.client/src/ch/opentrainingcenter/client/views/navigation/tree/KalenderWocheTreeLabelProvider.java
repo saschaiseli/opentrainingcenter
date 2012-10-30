@@ -15,6 +15,8 @@ public class KalenderWocheTreeLabelProvider extends LabelProvider {
         if (element instanceof INavigationParent) {
             final INavigationParent parent = (INavigationParent) element;
             return parent.getName();
+        } else if (element instanceof Integer) {
+            return String.valueOf(element);
         } else {
             final INavigationItem item = (INavigationItem) element;
             return item.getName();
@@ -23,7 +25,7 @@ public class KalenderWocheTreeLabelProvider extends LabelProvider {
 
     @Override
     public Image getImage(final Object element) {
-        if (element instanceof INavigationParent) {
+        if (element instanceof INavigationParent || element instanceof Integer) {
             return PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_FOLDER);
         }
         if (element instanceof INavigationItem) {
