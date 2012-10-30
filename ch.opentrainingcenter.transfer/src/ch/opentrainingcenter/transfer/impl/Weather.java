@@ -80,6 +80,6 @@ public class Weather implements java.io.Serializable, IWeather {
 
     @Override
     public String toString() {
-        return "Weather [id=" + id + ", wetter=" + wetter + "]";
+        return "Weather [id=" + id + ", wetter=" + wetter + "]"; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
     }
 }

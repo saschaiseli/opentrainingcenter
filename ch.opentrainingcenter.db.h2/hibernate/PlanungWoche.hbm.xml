@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 21.10.2011 12:19:41 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+	<class name="ch.opentrainingcenter.transfer.impl.PlanungWoche" table="PLANUNGWOCHE"
+		schema="PUBLIC" catalog="OTC">
+		<id name="id" type="int">
+			<column name="ID" />
+			<generator class="sequence">
+				<param name="sequence">planung_id_sequence</param>
+			</generator>
+		</id>
+		<many-to-one name="athlete"
+			class="ch.opentrainingcenter.transfer.impl.Athlete" fetch="select"
+			update="false" cascade="all">
+			<column name="ID_FK_ATHLETE" />
+		</many-to-one>
+		<property name="kw" type="int">
+			<column name="KW" />
+		</property>
+		<property name="jahr" type="int">
+			<column name="JAHR" />
+		</property>
+		<property name="active" type="boolean">
+			<column name="ACTIVE" />
+		</property>
+		<property name="kmProWoche" type="int">
+			<column name="KMPROWOCHE" />
+		</property>
+	</class>
+</hibernate-mapping>

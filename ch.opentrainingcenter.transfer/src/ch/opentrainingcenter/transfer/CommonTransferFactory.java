@@ -5,6 +5,7 @@ import java.util.Date;
 import ch.opentrainingcenter.transfer.impl.Athlete;
 import ch.opentrainingcenter.transfer.impl.Health;
 import ch.opentrainingcenter.transfer.impl.Imported;
+import ch.opentrainingcenter.transfer.impl.PlanungWoche;
 import ch.opentrainingcenter.transfer.impl.Training;
 import ch.opentrainingcenter.transfer.impl.TrainingType;
 import ch.opentrainingcenter.transfer.impl.Weather;
@@ -38,9 +39,12 @@ public class CommonTransferFactory {
         return new Health(athlete, weight, cardio, dateofmeasure);
     }
 
-    public static ITraining createTraining(final Date dateOfStart, final double timeInSeconds, final double distance,
-            final int avgHeartRate, final int maxHeartBeat, final double maximumSpeed, final ActivityExtension activityExtension) {
+    public static ITraining createTraining(final Date dateOfStart, final double timeInSeconds, final double distance, final int avgHeartRate,
+            final int maxHeartBeat, final double maximumSpeed, final ActivityExtension activityExtension) {
         return new Training(dateOfStart, timeInSeconds, distance, avgHeartRate, maxHeartBeat, maximumSpeed, activityExtension);
     }
 
+    public static IPlanungWoche createPlanungWoche(final IAthlete athlete, final int kw, final int jahr, final int kmProWoche) {
+        return new PlanungWoche(athlete, kw, jahr, kmProWoche);
+    }
 }

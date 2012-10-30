@@ -100,7 +100,7 @@ public class Imported implements java.io.Serializable, IImported {
 
     @Override
     public String toString() {
-        return "Imported [id=" + id + ", athlete=" + athlete + ", importedDate=" + importedDate + ", comments=" + comments //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-                + ", activityId=" + activityId + ", overview=" + overview + " note=" + note + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        return "Imported [id=" + id + ", athlete=" + athlete + ", importedDate=" + importedDate + ", comments=" + comments //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                + ", activityId=" + activityId + ", overview=" + overview + " note=" + note + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
     }
 }

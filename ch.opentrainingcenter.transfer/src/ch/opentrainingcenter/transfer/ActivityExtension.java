@@ -21,7 +21,7 @@ public class ActivityExtension {
      * Default konstruktor mit unbekanntem Wetter und einer leeren Notiz.
      */
     public ActivityExtension() {
-        this.note = "";
+        this.note = ""; //$NON-NLS-1$
         this.weather = CommonTransferFactory.createDefaultWeather();
     }
 
@@ -40,6 +40,6 @@ public class ActivityExtension {
 
     @Override
     public String toString() {
-        return "ActivityExtension [note=" + note + ", weather=" + weather.getWetter() + "]";
+        return "ActivityExtension [note=" + note + ", weather=" + weather.getWetter() + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 }
