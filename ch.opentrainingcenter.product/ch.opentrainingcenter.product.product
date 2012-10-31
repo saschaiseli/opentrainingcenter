@@ -31,7 +31,6 @@
       </win>
    </launcher>
 
-
    <vm>
    </vm>
 
@@ -47,6 +46,7 @@
       <plugin id="h2_lib"/>
       <plugin id="javax.servlet"/>
       <plugin id="jfreechart"/>
+      <plugin id="jodatime"/>
       <plugin id="junit"/>
       <plugin id="logging"/>
       <plugin id="org.eclipse.ant.core"/>
