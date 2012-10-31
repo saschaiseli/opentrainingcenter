@@ -40,6 +40,7 @@
 		<module>com.eclipsesource.widgets.gmaps</module>
 		<module>h2</module>
 		<module>jfreechart</module>
+		<module>jodatime</module>
 		<module>logging</module>
 		<module>org.hibernate</module>
 		<!-- Tests -->
