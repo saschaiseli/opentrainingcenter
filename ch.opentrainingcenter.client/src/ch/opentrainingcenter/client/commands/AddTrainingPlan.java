@@ -26,7 +26,7 @@ public class AddTrainingPlan extends AbstractHandler {
         final ISelection selection = HandlerUtil.getCurrentSelection(event);
         final List<?> records = ((StructuredSelection) selection).toList();
         final Integer jahr = (Integer) records.get(0);
-        final LoadJahresplanung job = new LoadJahresplanung(Messages.AddTrainingPlan_0, jahr, null, null);
+        final LoadJahresplanung job = new LoadJahresplanung(Messages.AddTrainingPlan_0, jahr);
         job.schedule();
         return null;
     }

@@ -4,13 +4,9 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-import org.apache.log4j.Logger;
-
 import ch.opentrainingcenter.transfer.IAthlete;
 
 public class PlanungModel implements PropertyChangeListener {
-
-    private static final Logger LOG = Logger.getLogger(PlanungModel.class);
 
     private int id;
     private IAthlete athlete;

@@ -14,7 +14,7 @@ import ch.opentrainingcenter.transfer.IAthlete;
 public class PlanungWocheModel implements IPlanungWocheModel {
     private static final Logger LOG = Logger.getLogger(PlanungWocheModel.class);
     private final Map<KwJahrKey, PlanungModel> jahresplanung = new TreeMap<KwJahrKey, PlanungModel>();
-    private final int kwStart;
+
     private final int anzahl;
     private final IAthlete athlete;
     private int jahr;
@@ -22,7 +22,6 @@ public class PlanungWocheModel implements IPlanungWocheModel {
     public PlanungWocheModel(final List<PlanungModel> planungen, final IAthlete athlete, final int jahr, final int kwStart, final int anzahl) {
         this.athlete = athlete;
         this.jahr = jahr;
-        this.kwStart = kwStart;
         this.anzahl = anzahl;
         if (planungen == null || planungen.isEmpty()) {
             populate(kwStart, anzahl);
