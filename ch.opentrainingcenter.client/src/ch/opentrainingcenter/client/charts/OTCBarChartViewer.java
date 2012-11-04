@@ -66,6 +66,7 @@ import ch.opentrainingcenter.client.cache.Cache;
 import ch.opentrainingcenter.client.cache.IRecordListener;
 import ch.opentrainingcenter.client.cache.TrainingOverviewDatenAufbereiten;
 import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
+import ch.opentrainingcenter.client.cache.impl.TrainingsPlanCache;
 import ch.opentrainingcenter.client.charts.internal.StatistikCreator;
 import ch.opentrainingcenter.client.helper.ColorFromPreferenceHelper;
 import ch.opentrainingcenter.client.model.ISimpleTraining;
@@ -360,7 +361,7 @@ public class OTCBarChartViewer implements ISelectionProvider {
 
         XYItemRenderer myXyBarRenderer;
         if (ChartSerieType.WEEK.equals(chartSerieType)) {
-            myXyBarRenderer = new WeekXYBarRenderer(dataset, plot, store);
+            myXyBarRenderer = new WeekXYBarRenderer(dataset, store, TrainingsPlanCache.getInstance());
         } else {
             myXyBarRenderer = new XYBarRenderer();
             myXyBarRenderer.setSeriesPaint(0, ColorFromPreferenceHelper.getColor(store, PreferenceConstants.DISTANCE_CHART_COLOR, ALPHA));

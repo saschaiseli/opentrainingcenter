@@ -24,6 +24,8 @@ import org.joda.time.DateTime;
 import org.joda.time.Interval;
 
 import ch.opentrainingcenter.client.Activator;
+import ch.opentrainingcenter.client.PreferenceConstants;
+import ch.opentrainingcenter.client.cache.impl.TrainingsPlanCache;
 import ch.opentrainingcenter.client.helper.TimeHelper;
 import ch.opentrainingcenter.client.model.ModelFactory;
 import ch.opentrainingcenter.client.model.planing.IPlanungWocheModel;
@@ -32,6 +34,7 @@ import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.db.IDatabaseAccess;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
+import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IPlanungWoche;
 
 public class JahresplanungViewPart extends ViewPart {
@@ -81,25 +84,25 @@ public class JahresplanungViewPart extends ViewPart {
         td = new TableWrapData(TableWrapData.FILL_GRAB);
         td.colspan = 1;
         td.indent = 0;
-
+        final int anzahl = store.getInt(PreferenceConstants.WEEK_FOR_PLAN);
         final Interval intervalStart = TimeHelper.getInterval(jahr, kw);
-        final Interval intervalEnd = TimeHelper.getInterval(jahr, kw + 6);
+        final Interval intervalEnd = TimeHelper.getInterval(jahr, kw + anzahl);
         monat.setLayoutData(td);
-        monat.setText("Trainingsplan von KW" + kw + " bis KW" + (kw + 6));
+        monat.setText("Trainingsplan von KW" + kw + " bis KW" + (kw + anzahl));
         monat.setDescription("6 Wochen Trainingsplan (vom " + intervalStart.getStart() + " bis " + intervalEnd.getEnd());
 
         final Composite composite = toolkit.createComposite(monat);
         final GridLayout layoutClient = new GridLayout(1, true);
         composite.setLayout(layoutClient);
-        final boolean first = true;
+
         db = DatabaseAccessFactory.getDatabaseAccess();
-        final List<IPlanungWoche> planungen = db.getPlanungsWoche(context.getAthlete(), jahr, kw, 6);
+        final List<IPlanungWoche> planungen = db.getPlanungsWoche(context.getAthlete(), jahr, kw, anzahl);
         final List<PlanungModel> pl = new ArrayList<PlanungModel>();
         for (final IPlanungWoche p : planungen) {
             pl.add(ModelFactory.createPlanungModel(p.getAthlete(), p.getJahr(), p.getKw(), p.getKmProWoche(), p.isInterval()));
         }
 
-        final IPlanungWocheModel models = ModelFactory.createPlanungWochenModel(pl, context.getAthlete(), jahr, kw, 6);
+        final IPlanungWocheModel models = ModelFactory.createPlanungWochenModel(pl, context.getAthlete(), jahr, kw, anzahl);
         final List<KWViewPart> views = new ArrayList<KWViewPart>();
 
         KWViewPart kwViewPart;
@@ -118,12 +121,20 @@ public class JahresplanungViewPart extends ViewPart {
             @Override
             public void handleEvent(final Event event) {
                 // speichern
+                final TrainingsPlanCache cache = TrainingsPlanCache.getInstance();
                 final List<IPlanungWoche> result = new ArrayList<IPlanungWoche>();
                 for (final PlanungModel m : models) {
-                    if (m.getKmProWoche() == 0) {
+                    final int km = m.getKmProWoche();
+                    if (km == 0) {
                         m.setInterval(false);
                     }
-                    result.add(CommonTransferFactory.createIPlanungWoche(m.getAthlete(), m.getJahr(), m.getKw(), m.getKmProWoche(), m.isInterval()));
+                    final IAthlete athlete = m.getAthlete();
+                    final int j = m.getJahr();
+                    final int kwTmp = m.getKw();
+                    final boolean interval = m.isInterval();
+                    final IPlanungWoche pla = CommonTransferFactory.createIPlanungWoche(athlete, j, kwTmp, km, interval);
+                    result.add(pla);
+                    cache.add(m);
                 }
                 db.saveOrUpdate(result);
             }

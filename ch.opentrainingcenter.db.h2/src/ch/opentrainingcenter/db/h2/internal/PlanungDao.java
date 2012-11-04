@@ -78,4 +78,17 @@ public class PlanungDao {
         session.flush();
         return result;
     }
+
+    public List<IPlanungWoche> getPlanungsWoche(final IAthlete athlete) {
+        LOG.info("load IPlanungWoche from: " + athlete); //$NON-NLS-1$
+        final Session session = dao.getSession();
+        dao.begin();
+        final Criteria criteria = session.createCriteria(IPlanungWoche.class);
+        criteria.add(Restrictions.eq("athlete", athlete)); //$NON-NLS-1$
+        @SuppressWarnings("unchecked")
+        final List<IPlanungWoche> records = criteria.list();
+        dao.commit();
+        session.flush();
+        return records;
+    }
 }

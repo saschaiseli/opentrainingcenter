@@ -38,7 +38,7 @@ public class MainPerspective implements IPerspectiveFactory {
             folderMiddle.addPlaceholder(SingleActivityViewPart.ID + MULTI_VIEW);
         }
 
-        folderMiddle.addPlaceholder(JahresplanungViewPart.ID + MULTI_VIEW);
+        folderMiddle.addPlaceholder(JahresplanungViewPart.ID);
 
         layout.addStandaloneView(WeeklyOverview.ID, false, IPageLayout.RIGHT, 0.10f, editorArea);
         layout.getViewLayout(WeeklyOverview.ID).setCloseable(false);

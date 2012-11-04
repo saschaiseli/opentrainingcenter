@@ -14,7 +14,10 @@ import ch.opentrainingcenter.client.cache.Cache;
 import ch.opentrainingcenter.client.cache.ICache;
 import ch.opentrainingcenter.client.cache.impl.HealthCache;
 import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
+import ch.opentrainingcenter.client.cache.impl.TrainingsPlanCache;
+import ch.opentrainingcenter.client.model.ModelFactory;
 import ch.opentrainingcenter.client.model.navigation.impl.ConcreteHealth;
+import ch.opentrainingcenter.client.model.planing.impl.PlanungModel;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.db.IDatabaseAccess;
@@ -26,6 +29,7 @@ import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IHealth;
 import ch.opentrainingcenter.transfer.IImported;
+import ch.opentrainingcenter.transfer.IPlanungWoche;
 
 public class InitialLoadRunnable implements IRunnableWithProgress {
 
@@ -38,8 +42,8 @@ public class InitialLoadRunnable implements IRunnableWithProgress {
         final IAthlete athlete = ApplicationContext.getApplicationContext().getAthlete();
         if (athlete != null) {
 
-            final IDatabaseAccess databaseAccess = DatabaseAccessFactory.getDatabaseAccess();
-            final List<IImported> allImported = databaseAccess.getAllImported(athlete, 10);
+            final IDatabaseAccess db = DatabaseAccessFactory.getDatabaseAccess();
+            final List<IImported> allImported = db.getAllImported(athlete, 10);
             final ConvertContainer cc = new ConvertContainer(ExtensionHelper.getConverters());
             final IImportedConverter fileLoader = ImporterFactory.createGpsFileLoader(store, cc);
             final Cache cache = TrainingCenterDataCache.getInstance();
@@ -57,12 +61,22 @@ public class InitialLoadRunnable implements IRunnableWithProgress {
                 }
             }
             i = 0;
-            final List<IHealth> healths = databaseAccess.getHealth(athlete);
+            final List<IHealth> healths = db.getHealth(athlete);
             final ICache<Integer, ConcreteHealth> healthCache = HealthCache.getInstance();
             for (final IHealth health : healths) {
                 healthCache.add(new ConcreteHealth(health));
                 monitor.subTask(Messages.InitialLoadRunnable_1 + i++);
                 LOG.info(Messages.InitialLoadRunnable_2);
+            }
+
+            final List<IPlanungWoche> planungsWoche = db.getPlanungsWoche(athlete);
+            final TrainingsPlanCache planCache = TrainingsPlanCache.getInstance();
+            i = 0;
+            for (final IPlanungWoche plan : planungsWoche) {
+                final PlanungModel model = ModelFactory.createPlanungModel(athlete, plan.getJahr(), plan.getKw(), plan.getKmProWoche(), plan.isInterval());
+                planCache.add(model);
+                monitor.subTask("Trainingspläne laden: " + i++);
+                LOG.info("Trainingsplan dem Cache hinzugefügt");
             }
         }
     }

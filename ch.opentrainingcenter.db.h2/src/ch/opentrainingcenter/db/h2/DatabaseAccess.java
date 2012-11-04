@@ -150,4 +150,9 @@ public class DatabaseAccess implements IDatabaseAccess {
         planungsDao.saveOrUpdate(planung);
     }
 
+    @Override
+    public List<IPlanungWoche> getPlanungsWoche(final IAthlete athlete) {
+        return planungsDao.getPlanungsWoche(athlete);
+    }
+
 }

@@ -36,7 +36,7 @@ public class LoadJahresplanung extends Job {
             public void run() {
                 try {
                     final IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-                    page.showView(JahresplanungViewPart.ID, String.valueOf(jahr), IWorkbenchPage.VIEW_ACTIVATE);
+                    page.showView(JahresplanungViewPart.ID);
 
                 } catch (final Exception e) {
                     e.printStackTrace();

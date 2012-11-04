@@ -40,12 +40,12 @@ public class TrainingTargetPreferencePage extends FieldEditorPreferencePage impl
         final Composite training = new Composite(groupTrainingTarget, SWT.NONE);
         training.setLayout(GridLayoutFactory.swtDefaults().create());
 
-        final IntegerFieldEditor kmPerWeek = new IntegerFieldEditor(PreferenceConstants.KM_PER_WEEK, "KM / Woche", training); //$NON-NLS-1$
-        kmPerWeek.setLabelText(Messages.TrainingTargetPreferencePage3);
-        kmPerWeek.setValidRange(0, Integer.MAX_VALUE);
-        kmPerWeek.setErrorMessage(Messages.TrainingTargetPreferencePage4);
+        final IntegerFieldEditor weekToPlan = new IntegerFieldEditor(PreferenceConstants.WEEK_FOR_PLAN, "Wochen", training); //$NON-NLS-1$
+        weekToPlan.setLabelText("Anzahl Wochen zum vorausplanen");
+        weekToPlan.setValidRange(0, Integer.MAX_VALUE);
+        addField(weekToPlan);
 
-        addField(kmPerWeek);
+        addField(new ColorFieldEditor(PreferenceConstants.KM_PER_WEEK_COLOR_NOT_DEFINED, "Undefiniert", training));
         addField(new ColorFieldEditor(PreferenceConstants.KM_PER_WEEK_COLOR_ABOVE, Messages.TrainingTargetPreferencePage6, training));
         addField(new ColorFieldEditor(PreferenceConstants.KM_PER_WEEK_COLOR_BELOW, Messages.TrainingTargetPreferencePage5, training));
 

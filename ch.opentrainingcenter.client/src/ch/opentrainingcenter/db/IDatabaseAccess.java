@@ -177,4 +177,6 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
     List<IPlanungWoche> getPlanungsWoche(IAthlete athlete, int jahr, int kwStart, int anzahl);
 
     void saveOrUpdate(List<IPlanungWoche> planung);
+
+    List<IPlanungWoche> getPlanungsWoche(IAthlete athlete);
 }
