@@ -9,6 +9,7 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 
 import ch.opentrainingcenter.client.cache.Cache;
+import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.client.views.planung.JahresplanungViewPart;
 import ch.opentrainingcenter.db.IDatabaseAccess;
 
@@ -21,6 +22,7 @@ public class LoadJahresplanung extends Job {
     public LoadJahresplanung(final String title, final int jahr, final Cache cache, final IDatabaseAccess db) {
         super(title + jahr);
         this.jahr = jahr;
+        ApplicationContext.getApplicationContext().setSelectedJahr(jahr);
         this.cache = cache;
         this.db = db;
     }

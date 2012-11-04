@@ -7,6 +7,9 @@ import java.util.Locale;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import org.joda.time.DateTime;
+import org.joda.time.Interval;
+
 import ch.opentrainingcenter.client.Messages;
 
 public final class TimeHelper {
@@ -135,5 +138,36 @@ public final class TimeHelper {
 
     private static String addZero(final int i) {
         return i < 10 ? Messages.TimeHelper2 + i : Messages.TimeHelper3 + i;
+    }
+
+    /**
+     * Berechnet den Montag, sowie den Sonntag der angegebenen Kalenderwoche in
+     * dem entsprechenden Jahr. </br> Für KW 44 im 2012 wäre dies 29. Oktober
+     * <--> 4. November
+     * 
+     * @param jahr
+     *            Das Jahr
+     * @param kalenderwoche
+     *            Die Kalenderwoche
+     * @return Start und Enddatum --> Montag und Sonntag der Kalenderwoche
+     */
+    public static Interval getInterval(final int jahr, final int kalenderwoche) {
+        Interval result = null;
+        final DateTime dt = new DateTime(jahr, 1, 1, 0, 0);
+        DateTime day = null;
+        // etwas gewagt, aber das scheiss ding will einfach nicht anders
+        for (int i = kalenderwoche - 1; i <= kalenderwoche + 1; i++) {
+            day = dt.weekOfWeekyear().addToCopy(i);
+            if (day.getWeekOfWeekyear() == kalenderwoche && day.getYear() == jahr) {
+                break;
+            }
+        }
+        if (day != null) {
+            final int dayOfWeek = day.getDayOfWeek();
+            final DateTime start = day.minusDays(dayOfWeek - 1);
+            final DateTime end = day.plusDays(7 - dayOfWeek);
+            result = new Interval(start.getMillis(), end.getMillis());
+        }
+        return result;
     }
 }

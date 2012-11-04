@@ -11,6 +11,7 @@ public class PlanungWoche implements IPlanungWoche {
     private int jahr;
     private boolean active;
     private int kmProWoche;
+    private boolean interval;
 
     public PlanungWoche(final IAthlete athlete, final int kw, final int jahr, final int kmProWoche) {
         this(athlete, kw, jahr, kmProWoche, true);
@@ -45,12 +46,12 @@ public class PlanungWoche implements IPlanungWoche {
     }
 
     @Override
-    public int getKalenderWoche() {
+    public int getKw() {
         return kw;
     }
 
     @Override
-    public void setKalenderWoche(final int kw) {
+    public void setKw(final int kw) {
         this.kw = kw;
     }
 
@@ -75,13 +76,29 @@ public class PlanungWoche implements IPlanungWoche {
     }
 
     @Override
-    public int getTargetKilometer() {
+    public int getKmProWoche() {
         return kmProWoche;
     }
 
     @Override
-    public void setTargetKilometer(final int kmProWoche) {
+    public void setKmProWoche(final int kmProWoche) {
         this.kmProWoche = kmProWoche;
+    }
+
+    @Override
+    public boolean isInterval() {
+        return interval;
+    }
+
+    @Override
+    public void setInterval(final boolean interval) {
+        this.interval = interval;
+    }
+
+    @Override
+    public String toString() {
+        return "PlanungWoche [id=" + id + ", athlete=" + athlete + ", kw=" + kw + ", jahr=" + jahr + ", active=" + active + ", kmProWoche=" + kmProWoche
+                + ", interval=" + interval + "]";
     }
 
 }

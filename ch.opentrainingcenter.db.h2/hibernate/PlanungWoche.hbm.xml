@@ -28,5 +28,8 @@
 		<property name="kmProWoche" type="int">
 			<column name="KMPROWOCHE" />
 		</property>
+		<property name="interval" type="boolean">
+			<column name="INTERVAL" />
+		</property>
 	</class>
 </hibernate-mapping>

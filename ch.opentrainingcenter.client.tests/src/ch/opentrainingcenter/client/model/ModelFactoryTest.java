@@ -9,9 +9,13 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import ch.opentrainingcenter.client.helper.DistanceHelper;
+import ch.opentrainingcenter.client.model.planing.IPlanungWocheModel;
+import ch.opentrainingcenter.transfer.IAthlete;
+import ch.opentrainingcenter.transfer.IPlanungWoche;
 import ch.opentrainingcenter.transfer.ITraining;
 import static org.junit.Assert.assertEquals;
 
+@SuppressWarnings("nls")
 public class ModelFactoryTest {
 
     private ITraining overview;
@@ -87,4 +91,19 @@ public class ModelFactoryTest {
         assertEquals("Nur ein File model zum importieren", 1, model.size());
 
     }
+
+    @Test
+    public void testPlanung() {
+
+        final List<IPlanungWoche> planungen = null;
+        final IAthlete athlete = null;
+        final int jahr = 2012;
+        final int kw = 40;
+        final int anzahl = 10;
+        final IPlanungWocheModel model = ModelFactory.createPlanungsModel(planungen, athlete, jahr, kw, anzahl);
+
+        assertEquals("10 Records populated", 10, model.size());
+
+    }
+
 }

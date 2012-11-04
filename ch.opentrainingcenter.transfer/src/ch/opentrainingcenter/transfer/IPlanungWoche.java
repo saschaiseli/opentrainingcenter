@@ -1,7 +1,8 @@
 package ch.opentrainingcenter.transfer;
 
 /**
- * Laufplanung für eine Woche
+ * Laufplanung für eine Woche eines Athleten. Kilometer in der Woche, Intervall
+ * oder nicht. KW und Jahr.
  * 
  */
 public interface IPlanungWoche {
@@ -14,9 +15,9 @@ public interface IPlanungWoche {
 
     void setAthlete(IAthlete athlete);
 
-    int getKalenderWoche();
+    int getKw();
 
-    void setKalenderWoche(int kw);
+    void setKw(int kw);
 
     int getJahr();
 
@@ -26,7 +27,11 @@ public interface IPlanungWoche {
 
     void setActive(boolean active);
 
-    int getTargetKilometer();
+    int getKmProWoche();
 
-    void setTargetKilometer(int kmProWoche);
+    void setKmProWoche(int kmProWoche);
+
+    boolean isInterval();
+
+    void setInterval(boolean interval);
 }

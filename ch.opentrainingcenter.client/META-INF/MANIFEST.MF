@@ -21,7 +21,8 @@ Require-Bundle: org.eclipse.ui,
  com.eclipsesource.widgets.gmaps,
  org.eclipse.ui.ide,
  org.eclipse.core.resources,
- com.ibm.icu
+ com.ibm.icu,
+ jodatime
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: ch.opentrainingcenter.client,
  ch.opentrainingcenter.db,

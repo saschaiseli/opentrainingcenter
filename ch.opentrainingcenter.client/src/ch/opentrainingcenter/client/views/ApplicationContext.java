@@ -16,6 +16,8 @@ public class ApplicationContext {
 
     private static final ApplicationContext INSTANCE = new ApplicationContext();
 
+    private int selectedJahr;
+
     private Date selectedId;
 
     private IAthlete athlete;
@@ -54,5 +56,13 @@ public class ApplicationContext {
 
     public List<?> getSelection() {
         return Collections.unmodifiableList(selectedItems);
+    }
+
+    public int getSelectedJahr() {
+        return selectedJahr;
+    }
+
+    public void setSelectedJahr(final int selectedJahr) {
+        this.selectedJahr = selectedJahr;
     }
 }

@@ -216,7 +216,7 @@ public class KalenderWocheNavigationView extends ViewPart {
         });
         final IImported newestRun = db.getNewestRun(athlete);
         if (newestRun != null) {
-            openSingleRunView(newestRun);
+            // openSingleRunView(newestRun);
         }
     }
 

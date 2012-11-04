@@ -18,4 +18,8 @@ public final class IImageKeys {
     public static final String GREEN_TABLE = "icons/table_green_24_24.png"; //$NON-NLS-1$
 
     public static final String BACKUP = "icons/drive_backup_24_24.png"; //$NON-NLS-1$
+
+    public static final String LOCK = "icons/stock_lock.png"; //$NON-NLS-1$
+
+    public static final String LOCK_OPEN = "icons/stock_lock_open.png"; //$NON-NLS-1$
 }

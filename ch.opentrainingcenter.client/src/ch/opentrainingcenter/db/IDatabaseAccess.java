@@ -10,6 +10,7 @@ import ch.opentrainingcenter.client.model.RunType;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IHealth;
 import ch.opentrainingcenter.transfer.IImported;
+import ch.opentrainingcenter.transfer.IPlanungWoche;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.IWeather;
 
@@ -157,4 +158,21 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
      * Löscht einen Records mit der angegebenen ID.
      */
     void removeHealth(int id);
+
+    /**
+     * Gibt eine Liste mit den geplanten Trainings vom entsprechenden Athleten
+     * zurück.
+     * 
+     * @param athlete
+     *            Der Athlete
+     * @param jahr
+     *            das Jahr aus welchem die Pläne sind
+     * @param kwStart
+     *            Kalenderwoche des ersten Planes
+     * @param anzahl
+     *            anzahl Kalenderwoche die geplant werden wollen.
+     * @return eine Liste mit den Plänen, wenn nichts gefunden wurde, wird eine
+     *         leere Liste zurückgegeben.
+     */
+    List<IPlanungWoche> getPlanungsWoche(IAthlete athlete, int jahr, int kwStart, int anzahl);
 }

@@ -12,10 +12,12 @@ import ch.opentrainingcenter.db.h2.internal.Dao;
 import ch.opentrainingcenter.db.h2.internal.DatabaseCreator;
 import ch.opentrainingcenter.db.h2.internal.HealthDao;
 import ch.opentrainingcenter.db.h2.internal.ImportDao;
+import ch.opentrainingcenter.db.h2.internal.PlanungDao;
 import ch.opentrainingcenter.db.h2.internal.WeatherDao;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IHealth;
 import ch.opentrainingcenter.transfer.IImported;
+import ch.opentrainingcenter.transfer.IPlanungWoche;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.IWeather;
 
@@ -26,6 +28,7 @@ public class DatabaseAccess implements IDatabaseAccess {
     private final WeatherDao wetterDao;
     private final HealthDao healthDao;
     private final DatabaseCreator databaseCreator;
+    private final PlanungDao planungsDao;
 
     public DatabaseAccess() {
         final Dao dao = new Dao();
@@ -33,6 +36,7 @@ public class DatabaseAccess implements IDatabaseAccess {
         importDao = new ImportDao(dao);
         wetterDao = new WeatherDao(dao);
         healthDao = new HealthDao(dao);
+        planungsDao = new PlanungDao(dao);
         databaseCreator = new DatabaseCreator();
     }
 
@@ -134,6 +138,11 @@ public class DatabaseAccess implements IDatabaseAccess {
     @Override
     public void removeHealth(final int id) {
         healthDao.remove(id);
+    }
+
+    @Override
+    public List<IPlanungWoche> getPlanungsWoche(final IAthlete athlete, final int jahr, final int kwStart, final int anzahl) {
+        return planungsDao.getPlanungsWoche(athlete, jahr, kwStart, anzahl);
     }
 
 }
