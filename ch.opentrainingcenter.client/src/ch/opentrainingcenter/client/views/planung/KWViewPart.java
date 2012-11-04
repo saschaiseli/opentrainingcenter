@@ -16,6 +16,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Scale;
 
+import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.client.model.planing.impl.PlanungModel;
 
 public class KWViewPart {
@@ -31,7 +32,7 @@ public class KWViewPart {
     public Composite addLabelAndValue(final Composite parent, final PlanungModel m) {
 
         this.model = m;
-        final String label = "KW" + model.getKw();
+        final String label = Messages.KWViewPart_0 + model.getKw();
         final int value = model.getKmProWoche();
         final boolean interval = model.isInterval();
 
@@ -64,12 +65,12 @@ public class KWViewPart {
         scale.setLayoutData(gd1);
 
         kmProWoche = new Label(composite, SWT.NONE);
-        kmProWoche.setText(value + " km");
+        kmProWoche.setText(value + Messages.KWViewPart_1);
         scale.addListener(SWT.Selection, new Listener() {
             @Override
             public void handleEvent(final Event event) {
                 final int newValue = scale.getSelection();
-                kmProWoche.setText(newValue + " km");
+                kmProWoche.setText(newValue + Messages.KWViewPart_2);
                 model.setKmProWoche(newValue);
             }
         });
@@ -84,7 +85,7 @@ public class KWViewPart {
         gdButton.horizontalAlignment = SWT.CENTER;
 
         buttonInterval = new Button(composite, SWT.CHECK);
-        buttonInterval.setText("Intervall Training");
+        buttonInterval.setText(Messages.KWViewPart_3);
         buttonInterval.setLayoutData(gdButton);
         buttonInterval.setSelection(interval);
 

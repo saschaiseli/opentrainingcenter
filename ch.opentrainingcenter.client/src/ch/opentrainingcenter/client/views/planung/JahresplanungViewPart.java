@@ -24,6 +24,7 @@ import org.joda.time.DateTime;
 import org.joda.time.Interval;
 
 import ch.opentrainingcenter.client.Activator;
+import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.client.PreferenceConstants;
 import ch.opentrainingcenter.client.cache.impl.TrainingsPlanCache;
 import ch.opentrainingcenter.client.helper.TimeHelper;
@@ -58,7 +59,7 @@ public class JahresplanungViewPart extends ViewPart {
         LOG.debug("create JahresplanungViewPart"); //$NON-NLS-1$
         toolkit = new FormToolkit(parent.getDisplay());
         form = toolkit.createScrolledForm(parent);
-        form.setText("Tralalaaaa");
+        form.setText(Messages.JahresplanungViewPart_0);
         final Composite body = form.getBody();
 
         final TableWrapLayout layout = new TableWrapLayout();
@@ -88,8 +89,8 @@ public class JahresplanungViewPart extends ViewPart {
         final Interval intervalStart = TimeHelper.getInterval(jahr, kw);
         final Interval intervalEnd = TimeHelper.getInterval(jahr, kw + anzahl);
         monat.setLayoutData(td);
-        monat.setText("Trainingsplan von KW" + kw + " bis KW" + (kw + anzahl));
-        monat.setDescription("6 Wochen Trainingsplan (vom " + intervalStart.getStart() + " bis " + intervalEnd.getEnd());
+        monat.setText(Messages.JahresplanungViewPart_1 + kw + Messages.JahresplanungViewPart_2 + (kw + anzahl));
+        monat.setDescription(Messages.JahresplanungViewPart_3 + intervalStart.getStart() + Messages.JahresplanungViewPart_4 + intervalEnd.getEnd());
 
         final Composite composite = toolkit.createComposite(monat);
         final GridLayout layoutClient = new GridLayout(1, true);
@@ -114,7 +115,7 @@ public class JahresplanungViewPart extends ViewPart {
         }
 
         save = new Button(composite, SWT.PUSH);
-        save.setText("Speichern");
+        save.setText(Messages.JahresplanungViewPart_5);
 
         save.addListener(SWT.Selection, new Listener() {
 

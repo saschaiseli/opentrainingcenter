@@ -75,8 +75,8 @@ public class InitialLoadRunnable implements IRunnableWithProgress {
             for (final IPlanungWoche plan : planungsWoche) {
                 final PlanungModel model = ModelFactory.createPlanungModel(athlete, plan.getJahr(), plan.getKw(), plan.getKmProWoche(), plan.isInterval());
                 planCache.add(model);
-                monitor.subTask("Trainingspläne laden: " + i++);
-                LOG.info("Trainingsplan dem Cache hinzugefügt");
+                monitor.subTask(Messages.InitialLoadRunnable_3 + i++);
+                LOG.info(Messages.InitialLoadRunnable_4);
             }
         }
     }

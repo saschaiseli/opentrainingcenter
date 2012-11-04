@@ -242,7 +242,7 @@ public class KalenderWocheNavigationView extends ViewPart {
      * Öffnet die Jahresplanung für das angegebene Jahr.
      */
     private void openJahresplanung(final Integer jahr) {
-        final LoadJahresplanung job = new LoadJahresplanung("Lade Planung für das Jahr ", jahr, cache, db);
+        final LoadJahresplanung job = new LoadJahresplanung(Messages.KalenderWocheNavigationView_0, jahr, cache, db);
         job.schedule();
     }
 

@@ -8,6 +8,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 
+import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.client.cache.Cache;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.client.views.planung.JahresplanungViewPart;
@@ -29,7 +30,7 @@ public class LoadJahresplanung extends Job {
 
     @Override
     protected IStatus run(final IProgressMonitor monitor) {
-        monitor.beginTask("Lade Jahresplanung", 1);
+        monitor.beginTask(Messages.LoadJahresplanung_0, 1);
         Display.getDefault().asyncExec(new Runnable() {
 
             @Override

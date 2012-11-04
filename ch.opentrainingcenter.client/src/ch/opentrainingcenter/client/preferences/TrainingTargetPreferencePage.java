@@ -41,11 +41,11 @@ public class TrainingTargetPreferencePage extends FieldEditorPreferencePage impl
         training.setLayout(GridLayoutFactory.swtDefaults().create());
 
         final IntegerFieldEditor weekToPlan = new IntegerFieldEditor(PreferenceConstants.WEEK_FOR_PLAN, "Wochen", training); //$NON-NLS-1$
-        weekToPlan.setLabelText("Anzahl Wochen zum vorausplanen");
+        weekToPlan.setLabelText(Messages.TrainingTargetPreferencePage_2);
         weekToPlan.setValidRange(0, Integer.MAX_VALUE);
         addField(weekToPlan);
 
-        addField(new ColorFieldEditor(PreferenceConstants.KM_PER_WEEK_COLOR_NOT_DEFINED, "Undefiniert", training));
+        addField(new ColorFieldEditor(PreferenceConstants.KM_PER_WEEK_COLOR_NOT_DEFINED, Messages.TrainingTargetPreferencePage_3, training));
         addField(new ColorFieldEditor(PreferenceConstants.KM_PER_WEEK_COLOR_ABOVE, Messages.TrainingTargetPreferencePage6, training));
         addField(new ColorFieldEditor(PreferenceConstants.KM_PER_WEEK_COLOR_BELOW, Messages.TrainingTargetPreferencePage5, training));
 

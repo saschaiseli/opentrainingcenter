@@ -7,6 +7,7 @@ public final class Messages extends NLS {
     private static final String BUNDLENAME = "ch.opentrainingcenter.client.messages"; //$NON-NLS-1$
     public static String AddEditHandler_0;
     public static String AddEditHandler_1;
+    public static String AddTrainingPlan_0;
     public static String Application0;
     public static String Application1;
     public static String Application2;
@@ -116,6 +117,8 @@ public final class Messages extends NLS {
     public static String InitialLoadRunnable_0;
     public static String InitialLoadRunnable_1;
     public static String InitialLoadRunnable_2;
+    public static String InitialLoadRunnable_3;
+    public static String InitialLoadRunnable_4;
     public static String MapConverter0;
     public static String MapConverter1;
     public static String NavigationParent_0;
@@ -220,6 +223,8 @@ public final class Messages extends NLS {
     public static String TimeHelper3;
     public static String TrainingTargetPreferencePage_0;
     public static String TrainingTargetPreferencePage_1;
+    public static String TrainingTargetPreferencePage_2;
+    public static String TrainingTargetPreferencePage_3;
     public static String TrainingTargetPreferencePage0;
     public static String TrainingTargetPreferencePage1;
     public static String TrainingTargetPreferencePage3;
@@ -264,7 +269,19 @@ public final class Messages extends NLS {
     public static String LIGHTRAIN;
     public static String RAIN;
     public static String HEAVYRAIN;
+    public static String JahresplanungViewPart_0;
+    public static String JahresplanungViewPart_1;
+    public static String JahresplanungViewPart_2;
+    public static String JahresplanungViewPart_3;
+    public static String JahresplanungViewPart_4;
+    public static String JahresplanungViewPart_5;
+    public static String KalenderWocheNavigationView_0;
+    public static String KWViewPart_0;
+    public static String KWViewPart_1;
+    public static String KWViewPart_2;
+    public static String KWViewPart_3;
     public static String LIGHTSNOW;
+    public static String LoadJahresplanung_0;
     public static String SNOW;
     public static String StatusLineWriter_0;
     public static String StatusLineWriter_1;
