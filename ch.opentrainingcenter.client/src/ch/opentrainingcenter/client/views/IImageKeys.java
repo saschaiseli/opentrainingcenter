@@ -5,9 +5,9 @@ public final class IImageKeys {
     private IImageKeys() {
     }
 
-    public static final String IMPORT_GPS_KLEIN = "icons/import_klein.png"; //$NON-NLS-1$
+    public static final String IMPORT_GPS_KLEIN = "icons/16_16/import_wiz.gif"; //$NON-NLS-1$
 
-    public static final String IMPORT_GPS_GROSS = "icons/import_gross.png"; //$NON-NLS-1$
+    public static final String IMPORT_GPS_GROSS = "icons/16_16/import_wiz.gif"; //$NON-NLS-1$
 
     public static final String CARDIO = "icons/cardiology.png"; //$NON-NLS-1$
 
