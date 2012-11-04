@@ -10,10 +10,11 @@ import org.mockito.Mockito;
 
 import ch.opentrainingcenter.client.helper.DistanceHelper;
 import ch.opentrainingcenter.client.model.planing.IPlanungWocheModel;
+import ch.opentrainingcenter.client.model.planing.impl.PlanungModel;
 import ch.opentrainingcenter.transfer.IAthlete;
-import ch.opentrainingcenter.transfer.IPlanungWoche;
 import ch.opentrainingcenter.transfer.ITraining;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 @SuppressWarnings("nls")
 public class ModelFactoryTest {
@@ -95,15 +96,28 @@ public class ModelFactoryTest {
     @Test
     public void testPlanung() {
 
-        final List<IPlanungWoche> planungen = null;
+        final List<PlanungModel> planungen = null;
         final IAthlete athlete = null;
         final int jahr = 2012;
         final int kw = 40;
         final int anzahl = 10;
-        final IPlanungWocheModel model = ModelFactory.createPlanungsModel(planungen, athlete, jahr, kw, anzahl);
+        final PlanungModel model = ModelFactory.createPlanungModel(athlete, jahr, kw, 444, true);
+
+        assertNotNull(model);
+
+    }
+
+    @Test
+    public void testPlanungWocheModel() {
+
+        final List<PlanungModel> planungen = null;
+        final IAthlete athlete = null;
+        final int jahr = 2012;
+        final int kw = 40;
+        final int anzahl = 10;
+        final IPlanungWocheModel model = ModelFactory.createPlanungWochenModel(planungen, athlete, jahr, kw, anzahl);
 
         assertEquals("10 Records populated", 10, model.size());
 
     }
-
 }

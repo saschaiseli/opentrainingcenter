@@ -7,9 +7,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import ch.opentrainingcenter.transfer.CommonTransferFactory;
+import ch.opentrainingcenter.client.model.ModelFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
-import ch.opentrainingcenter.transfer.IPlanungWoche;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -18,7 +17,7 @@ import static org.junit.Assert.assertTrue;
 @SuppressWarnings("nls")
 public class PlanungWocheModelTest {
 
-    private List<IPlanungWoche> planungen;
+    private List<PlanungModel> planungen;
     private IAthlete athlete;
     private PlanungWocheModel model;
     private int jahr;
@@ -32,7 +31,7 @@ public class PlanungWocheModelTest {
 
     @Test
     public void testPopulateEmpty() {
-        planungen = new ArrayList<IPlanungWoche>();
+        planungen = new ArrayList<PlanungModel>();
         jahr = 2012;
         anzahl = 5;
         kwStart = 44;
@@ -65,7 +64,7 @@ public class PlanungWocheModelTest {
 
     @Test
     public void testPopulateEmptyJahrUebergreifend() {
-        planungen = new ArrayList<IPlanungWoche>();
+        planungen = new ArrayList<PlanungModel>();
         jahr = 2012;
         anzahl = 5;
         kwStart = 50;
@@ -86,18 +85,23 @@ public class PlanungWocheModelTest {
         anzahl = 5;
         kwStart = 50;
 
-        planungen = new ArrayList<IPlanungWoche>();
-        final IPlanungWoche eins = CommonTransferFactory.createPlanungWoche(athlete, jahr, 12, 42);
-        final IPlanungWoche zwei = CommonTransferFactory.createPlanungWoche(athlete, jahr, 13, 84);
+        planungen = new ArrayList<PlanungModel>();
+        final PlanungModel eins = ModelFactory.createPlanungModel(athlete, jahr, 12, 42);
+        final PlanungModel zwei = ModelFactory.createPlanungModel(athlete, jahr, 13, 84);
         planungen.add(eins);
         planungen.add(zwei);
 
         model = new PlanungWocheModel(planungen, athlete, jahr, kwStart, anzahl);
 
-        assertPlanung(model, 2012, 12, 42, true);
-        assertPlanung(model, 2012, 13, 84, true);
+        assertEquals("Anzahl 5", anzahl, model.size());
 
-        assertEquals("Anzahl 2", 2, model.size());
+        assertPlanung(model, 2012, 12, 42);
+        assertPlanung(model, 2012, 13, 84);
+        // diese müssen noch neu erstellt werden
+        assertPlanung(model, 2012, 14, 0);
+        assertPlanung(model, 2012, 15, 0);
+        assertPlanung(model, 2012, 16, 0);
+
     }
 
     @Test
@@ -106,29 +110,30 @@ public class PlanungWocheModelTest {
         anzahl = 5;
         kwStart = 50;
 
-        planungen = new ArrayList<IPlanungWoche>();
-        final IPlanungWoche eins = CommonTransferFactory.createPlanungWoche(athlete, jahr, 12, 42);
-        final IPlanungWoche zwei = CommonTransferFactory.createPlanungWoche(athlete, jahr, 13, 84);
-        final IPlanungWoche drei = CommonTransferFactory.createPlanungWoche(athlete, jahr, 42, 1042);
+        planungen = new ArrayList<PlanungModel>();
+        final PlanungModel eins = ModelFactory.createPlanungModel(athlete, jahr, 12, 42);
+        final PlanungModel zwei = ModelFactory.createPlanungModel(athlete, jahr, 13, 84);
+        final PlanungModel drei = ModelFactory.createPlanungModel(athlete, jahr, 14, 1042);
         planungen.add(eins);
         planungen.add(zwei);
 
         model = new PlanungWocheModel(planungen, athlete, jahr, kwStart, anzahl);
 
-        assertPlanung(model, 2012, 12, 42, true);
-        assertPlanung(model, 2012, 13, 84, true);
+        assertPlanung(model, 2012, 12, 42);
+        assertPlanung(model, 2012, 13, 84);
 
-        eins.setActive(false);
         model.addOrUpdate(eins);
-        zwei.setActive(false);
+        zwei.setKmProWoche(10000);
         model.addOrUpdate(zwei);
         model.addOrUpdate(drei);
 
-        assertEquals("Anzahl 3", 3, model.size());
+        assertEquals("Anzahl 5", anzahl, model.size());
 
-        assertPlanung(model, 2012, 12, 42, false);
-        assertPlanung(model, 2012, 13, 84, false);
-        assertPlanung(model, 2012, 42, 1042, true);
+        assertPlanung(model, 2012, 12, 42);
+        assertPlanung(model, 2012, 13, 10000);
+        assertPlanung(model, 2012, 14, 1042);
+        assertPlanung(model, 2012, 15, 0);
+        assertPlanung(model, 2012, 16, 0);
     }
 
     @Test
@@ -137,49 +142,50 @@ public class PlanungWocheModelTest {
         anzahl = 5;
         kwStart = 50;
 
-        planungen = new ArrayList<IPlanungWoche>();
-        final IPlanungWoche eins = CommonTransferFactory.createPlanungWoche(athlete, jahr, 12, 42);
-        final IPlanungWoche zwei = CommonTransferFactory.createPlanungWoche(athlete, jahr, 13, 84);
-        final IPlanungWoche drei = CommonTransferFactory.createPlanungWoche(athlete, jahr, 42, 1042);
+        planungen = new ArrayList<PlanungModel>();
+        final PlanungModel eins = ModelFactory.createPlanungModel(athlete, jahr, 12, 42);
+        final PlanungModel zwei = ModelFactory.createPlanungModel(athlete, jahr, 13, 84);
+        final PlanungModel drei = ModelFactory.createPlanungModel(athlete, jahr, 14, 1042);
         planungen.add(eins);
         planungen.add(zwei);
 
         model = new PlanungWocheModel(planungen, athlete, jahr, kwStart, anzahl);
 
-        assertPlanung(model, 2012, 12, 42, true);
-        assertPlanung(model, 2012, 13, 84, true);
+        assertEquals("Anzahl 5", anzahl, model.size());
 
-        eins.setActive(false);
+        assertPlanung(model, 2012, 12, 42);
+        assertPlanung(model, 2012, 13, 84);
+        assertPlanung(model, 2012, 14, 0);
+        assertPlanung(model, 2012, 15, 0);
+        assertPlanung(model, 2012, 16, 0);
+
         model.addOrUpdate(eins);
-        zwei.setActive(false);
         model.addOrUpdate(zwei);
         model.addOrUpdate(drei);
 
-        assertEquals("Anzahl 3", 3, model.size());
-
-        assertPlanung(model, 2012, 12, 42, false);
-        assertPlanung(model, 2012, 13, 84, false);
-        assertPlanung(model, 2012, 42, 1042, true);
+        assertPlanung(model, 2012, 12, 42);
+        assertPlanung(model, 2012, 13, 84);
+        assertPlanung(model, 2012, 14, 1042);
+        assertPlanung(model, 2012, 15, 0);
+        assertPlanung(model, 2012, 16, 0);
 
         assertNotNull("Iterator muss vorhanden sein", model.iterator());
     }
 
     // Helpers
-    private void assertPlanung(final PlanungWocheModel wochenModel, final int j, final int k, final int km, final boolean active) {
-        final IPlanungWoche planung = wochenModel.getPlanung(j, k);
+    private void assertPlanung(final PlanungWocheModel wochenModel, final int j, final int k, final int km) {
+        final PlanungModel planung = wochenModel.getPlanung(j, k);
         assertTrue("Jahr: ", j == planung.getJahr());
         assertTrue("Kalenderwoche: ", k == planung.getKw());
         assertTrue("Default Km/woche: ", km == planung.getKmProWoche());
-        assertEquals("Active: ", active, planung.isActive());
         assertFalse("Interval: ", planung.isInterval());
     }
 
     private void assertEmptyPlanung(final PlanungWocheModel wochenModel, final int j, final int k) {
-        final IPlanungWoche planung = wochenModel.getPlanung(j, k);
+        final PlanungModel planung = wochenModel.getPlanung(j, k);
         assertTrue("Jahr: ", j == planung.getJahr());
         assertTrue("Kalenderwoche: ", k == planung.getKw());
         assertTrue("Default Km/woche: ", 0 == planung.getKmProWoche());
-        assertTrue("Active: ", planung.isActive());
         assertFalse("Interval: ", planung.isInterval());
     }
 }

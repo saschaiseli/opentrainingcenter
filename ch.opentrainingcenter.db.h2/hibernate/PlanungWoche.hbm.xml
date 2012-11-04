@@ -16,19 +16,16 @@
 			update="false" cascade="all">
 			<column name="ID_FK_ATHLETE" />
 		</many-to-one>
-		<property name="kw" type="int">
+		<property name="kw" type="java.lang.Integer">
 			<column name="KW" />
 		</property>
-		<property name="jahr" type="int">
+		<property name="jahr" type="java.lang.Integer">
 			<column name="JAHR" />
 		</property>
-		<property name="active" type="boolean">
-			<column name="ACTIVE" />
-		</property>
-		<property name="kmProWoche" type="int">
+		<property name="kmProWoche" type="java.lang.Integer">
 			<column name="KMPROWOCHE" />
 		</property>
-		<property name="interval" type="boolean">
+		<property name="interval" type="java.lang.Boolean">
 			<column name="INTERVAL" />
 		</property>
 	</class>

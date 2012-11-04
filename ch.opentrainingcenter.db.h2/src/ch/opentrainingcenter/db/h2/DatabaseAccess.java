@@ -145,4 +145,9 @@ public class DatabaseAccess implements IDatabaseAccess {
         return planungsDao.getPlanungsWoche(athlete, jahr, kwStart, anzahl);
     }
 
+    @Override
+    public void saveOrUpdate(final List<IPlanungWoche> planung) {
+        planungsDao.saveOrUpdate(planung);
+    }
+
 }

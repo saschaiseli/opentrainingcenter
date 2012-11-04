@@ -7,9 +7,9 @@ import ch.opentrainingcenter.client.model.impl.GpsFileModel;
 import ch.opentrainingcenter.client.model.impl.GpsFileModelWrapper;
 import ch.opentrainingcenter.client.model.impl.SimpleTraining;
 import ch.opentrainingcenter.client.model.planing.IPlanungWocheModel;
+import ch.opentrainingcenter.client.model.planing.impl.PlanungModel;
 import ch.opentrainingcenter.client.model.planing.impl.PlanungWocheModel;
 import ch.opentrainingcenter.transfer.IAthlete;
-import ch.opentrainingcenter.transfer.IPlanungWoche;
 import ch.opentrainingcenter.transfer.ITraining;
 
 public final class ModelFactory {
@@ -48,8 +48,20 @@ public final class ModelFactory {
         return new GpsFileModelWrapper(fileModels);
     }
 
-    public static IPlanungWocheModel createPlanungsModel(final List<IPlanungWoche> planungen, final IAthlete athlete, final int jahr, final int kw,
+    public static IPlanungWocheModel createPlanungWochenModel(final List<PlanungModel> planungen, final IAthlete athlete, final int jahr, final int kw,
             final int anzahl) {
         return new PlanungWocheModel(planungen, athlete, jahr, kw, anzahl);
+    }
+
+    public static PlanungModel createEmptyPlanungModel(final IAthlete athlete, final int jahr, final int kw) {
+        return new PlanungModel(athlete, jahr, kw, 0);
+    }
+
+    public static PlanungModel createPlanungModel(final IAthlete athlete, final int jahr, final int kw, final int kmProWoche) {
+        return createPlanungModel(athlete, jahr, kw, kmProWoche, false);
+    }
+
+    public static PlanungModel createPlanungModel(final IAthlete athlete, final int jahr, final int kw, final int kmProWoche, final boolean interval) {
+        return new PlanungModel(athlete, jahr, kw, kmProWoche, interval);
     }
 }

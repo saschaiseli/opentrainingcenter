@@ -23,10 +23,6 @@ public interface IPlanungWoche {
 
     void setJahr(int jahr);
 
-    boolean isActive();
-
-    void setActive(boolean active);
-
     int getKmProWoche();
 
     void setKmProWoche(int kmProWoche);

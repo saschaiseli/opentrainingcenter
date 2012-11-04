@@ -3,26 +3,26 @@ package ch.opentrainingcenter.transfer.impl;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IPlanungWoche;
 
-public class PlanungWoche implements IPlanungWoche {
+public class PlanungWoche implements java.io.Serializable, IPlanungWoche {
 
+    private static final long serialVersionUID = 1L;
     private int id;
     private IAthlete athlete;
     private int kw;
     private int jahr;
-    private boolean active;
     private int kmProWoche;
     private boolean interval;
 
-    public PlanungWoche(final IAthlete athlete, final int kw, final int jahr, final int kmProWoche) {
-        this(athlete, kw, jahr, kmProWoche, true);
+    public PlanungWoche() {
+        // für hibernate
     }
 
-    public PlanungWoche(final IAthlete athlete, final int kw, final int jahr, final int kmProWoche, final boolean active) {
+    public PlanungWoche(final IAthlete athlete, final int jahr, final int kw, final int kmProWoche, final boolean interval) {
         this.athlete = athlete;
         this.kw = kw;
         this.jahr = jahr;
         this.kmProWoche = kmProWoche;
-        this.active = active;
+        this.interval = interval;
     }
 
     @Override
@@ -66,16 +66,6 @@ public class PlanungWoche implements IPlanungWoche {
     }
 
     @Override
-    public boolean isActive() {
-        return active;
-    }
-
-    @Override
-    public void setActive(final boolean active) {
-        this.active = active;
-    }
-
-    @Override
     public int getKmProWoche() {
         return kmProWoche;
     }
@@ -97,8 +87,7 @@ public class PlanungWoche implements IPlanungWoche {
 
     @Override
     public String toString() {
-        return "PlanungWoche [id=" + id + ", athlete=" + athlete + ", kw=" + kw + ", jahr=" + jahr + ", active=" + active + ", kmProWoche=" + kmProWoche
-                + ", interval=" + interval + "]";
+        return "PlanungWoche [id=" + id + ", athlete=" + athlete + ", kw=" + kw + ", jahr=" + jahr + ", kmProWoche=" + kmProWoche //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ 
+                + ", interval=" + interval + "]"; //$NON-NLS-1$ //$NON-NLS-2$
     }
-
 }

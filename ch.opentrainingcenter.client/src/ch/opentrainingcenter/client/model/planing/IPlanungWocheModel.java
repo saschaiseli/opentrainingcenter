@@ -1,8 +1,8 @@
 package ch.opentrainingcenter.client.model.planing;
 
-import ch.opentrainingcenter.transfer.IPlanungWoche;
+import ch.opentrainingcenter.client.model.planing.impl.PlanungModel;
 
-public interface IPlanungWocheModel extends Iterable<IPlanungWoche> {
+public interface IPlanungWocheModel extends Iterable<PlanungModel> {
 
     /**
      * @param woche
@@ -10,13 +10,12 @@ public interface IPlanungWocheModel extends Iterable<IPlanungWoche> {
      *            ist fachlich die kalenderwoche. Einträge mit der selben KW
      *            werden überschrieben.
      */
-    void addOrUpdate(final IPlanungWoche woche);
+    void addOrUpdate(final PlanungModel woche);
 
-    IPlanungWoche getPlanung(int jahr, int kw);
+    PlanungModel getPlanung(int jahr, int kw);
 
     /**
      * Anzahl Planungen.
      */
     int size();
-
 }
