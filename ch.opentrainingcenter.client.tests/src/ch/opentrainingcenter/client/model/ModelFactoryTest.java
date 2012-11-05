@@ -101,7 +101,7 @@ public class ModelFactoryTest {
         final int jahr = 2012;
         final int kw = 40;
         final int anzahl = 10;
-        final PlanungModel model = ModelFactory.createPlanungModel(athlete, jahr, kw, 444, true);
+        final PlanungModel model = ModelFactory.createPlanungModel(athlete, jahr, kw, 444, true, 20);
 
         assertNotNull(model);
 

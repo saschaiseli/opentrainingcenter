@@ -15,17 +15,19 @@ public class PlanungModel implements PropertyChangeListener {
     private int kmProWoche;
     private boolean interval;
     private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
+    private int langerLauf;
 
     public PlanungModel(final IAthlete athlete, final int jahr, final int kw, final int kmProWoche) {
-        this(athlete, jahr, kw, kmProWoche, false);
+        this(athlete, jahr, kw, kmProWoche, false, 0);
     }
 
-    public PlanungModel(final IAthlete athlete, final int jahr, final int kw, final int kmProWoche, final boolean interval) {
+    public PlanungModel(final IAthlete athlete, final int jahr, final int kw, final int kmProWoche, final boolean interval, final int langerLauf) {
         this.athlete = athlete;
         this.kw = kw;
         this.jahr = jahr;
         this.kmProWoche = kmProWoche;
         this.interval = interval;
+        this.langerLauf = langerLauf;
     }
 
     public int getId() {
@@ -73,6 +75,15 @@ public class PlanungModel implements PropertyChangeListener {
         return interval;
     }
 
+    public void setLangerLauf(final int langerLauf) {
+        this.langerLauf = langerLauf;
+        propertyChangeSupport.firePropertyChange("langerLauf", this.langerLauf, this.langerLauf = langerLauf); //$NON-NLS-1$
+    }
+
+    public int getLangerLauf() {
+        return langerLauf;
+    }
+
     public void setInterval(final boolean interval) {
         this.interval = interval;
         propertyChangeSupport.firePropertyChange("interval", this.interval, this.interval = interval); //$NON-NLS-1$
@@ -100,4 +111,5 @@ public class PlanungModel implements PropertyChangeListener {
     public void propertyChange(final PropertyChangeEvent evt) {
         propertyChangeSupport.firePropertyChange("planungmodel", null, this); //$NON-NLS-1$
     }
+
 }

@@ -28,5 +28,8 @@
 		<property name="interval" type="java.lang.Boolean">
 			<column name="INTERVAL" />
 		</property>
+				<property name="langerLauf" type="java.lang.Integer">
+			<column name="LANGERLAUF" />
+		</property>
 	</class>
 </hibernate-mapping>

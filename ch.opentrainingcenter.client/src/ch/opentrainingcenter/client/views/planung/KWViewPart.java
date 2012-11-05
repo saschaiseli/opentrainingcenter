@@ -15,6 +15,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Scale;
+import org.eclipse.swt.widgets.Spinner;
 
 import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.client.model.planing.impl.PlanungModel;
@@ -28,6 +29,7 @@ public class KWViewPart {
     private Composite composite;
     private Scale scale;
     private Label kmProWoche;
+    private Spinner langerLaufSpinner;
 
     public Composite addLabelAndValue(final Composite parent, final PlanungModel m) {
 
@@ -38,7 +40,7 @@ public class KWViewPart {
 
         composite = new Composite(parent, SWT.NONE);
         // c.setBackground(getViewSite().getWorkbenchWindow().getShell().getDisplay().getSystemColor(SWT.COLOR_CYAN));
-        final GridLayout layout = new GridLayout(4, false);
+        final GridLayout layout = new GridLayout(6, false);
         composite.setLayout(layout);
 
         final GridData gd = new GridData();
@@ -104,9 +106,24 @@ public class KWViewPart {
             }
         });
 
-        final GridData gdLabel = new GridData();
-        gdLabel.widthHint = 120;
-        gdLabel.horizontalIndent = 0;
+        final Label laufLabel = new Label(composite, SWT.NONE);
+        laufLabel.setText("Langer Lauf: ");
+        final GridData gdLabelSpinner = new GridData();
+        gdLabelSpinner.horizontalAlignment = SWT.RIGHT;
+        gdLabelSpinner.horizontalIndent = 30;
+        laufLabel.setLayoutData(gdLabelSpinner);
+
+        final GridData gdSpinner = new GridData();
+        gdSpinner.widthHint = 20;
+        gdSpinner.horizontalIndent = 0;
+
+        langerLaufSpinner = new Spinner(composite, SWT.BORDER);
+        langerLaufSpinner.setToolTipText("Langer Lauf");
+        langerLaufSpinner.setMinimum(0);
+        langerLaufSpinner.setMaximum(1000);
+        langerLaufSpinner.setSelection(m.getLangerLauf());
+        langerLaufSpinner.setIncrement(1);
+        langerLaufSpinner.setLayoutData(gdSpinner);
 
         ctx = new DataBindingContext();
         initDataBindings();
@@ -117,5 +134,9 @@ public class KWViewPart {
         final IObservableValue intervalObservable = SWTObservables.observeImage(buttonInterval);
         final IObservableValue modelIntervalObservable = BeansObservables.observeValue(model, "interval"); //$NON-NLS-1$
         ctx.bindValue(intervalObservable, modelIntervalObservable, null, null);
+
+        final IObservableValue langerLaufObservable = SWTObservables.observeSelection(langerLaufSpinner);
+        final IObservableValue modelLangerLaufObservable = BeansObservables.observeValue(model, "langerLauf"); //$NON-NLS-1$
+        ctx.bindValue(langerLaufObservable, modelLangerLaufObservable, null, null);
     }
 }

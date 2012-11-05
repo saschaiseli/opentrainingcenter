@@ -44,7 +44,8 @@ public class CommonTransferFactory {
         return new Training(dateOfStart, timeInSeconds, distance, avgHeartRate, maxHeartBeat, maximumSpeed, activityExtension);
     }
 
-    public static IPlanungWoche createIPlanungWoche(final IAthlete athlete, final int jahr, final int kw, final int kmProWoche, final boolean interval) {
-        return new PlanungWoche(athlete, jahr, kw, kmProWoche, interval);
+    public static IPlanungWoche createIPlanungWoche(final IAthlete athlete, final int jahr, final int kw, final int kmProWoche, final boolean interval,
+            final int langerLauf) {
+        return new PlanungWoche(athlete, jahr, kw, kmProWoche, interval, langerLauf);
     }
 }

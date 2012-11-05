@@ -12,17 +12,19 @@ public class PlanungWoche implements java.io.Serializable, IPlanungWoche {
     private int jahr;
     private int kmProWoche;
     private boolean interval;
+    private int langerLauf;
 
     public PlanungWoche() {
         // für hibernate
     }
 
-    public PlanungWoche(final IAthlete athlete, final int jahr, final int kw, final int kmProWoche, final boolean interval) {
+    public PlanungWoche(final IAthlete athlete, final int jahr, final int kw, final int kmProWoche, final boolean interval, final int langerLauf) {
         this.athlete = athlete;
         this.kw = kw;
         this.jahr = jahr;
         this.kmProWoche = kmProWoche;
         this.interval = interval;
+        this.langerLauf = langerLauf;
     }
 
     @Override
@@ -86,8 +88,19 @@ public class PlanungWoche implements java.io.Serializable, IPlanungWoche {
     }
 
     @Override
+    public int getLangerLauf() {
+        return langerLauf;
+    }
+
+    @Override
+    public void setLangerLauf(final int langerLauf) {
+        this.langerLauf = langerLauf;
+    }
+
+    @Override
     public String toString() {
         return "PlanungWoche [id=" + id + ", athlete=" + athlete + ", kw=" + kw + ", jahr=" + jahr + ", kmProWoche=" + kmProWoche //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ 
                 + ", interval=" + interval + "]"; //$NON-NLS-1$ //$NON-NLS-2$
     }
+
 }

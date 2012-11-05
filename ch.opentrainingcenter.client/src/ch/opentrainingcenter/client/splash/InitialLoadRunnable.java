@@ -73,7 +73,8 @@ public class InitialLoadRunnable implements IRunnableWithProgress {
             final TrainingsPlanCache planCache = TrainingsPlanCache.getInstance();
             i = 0;
             for (final IPlanungWoche plan : planungsWoche) {
-                final PlanungModel model = ModelFactory.createPlanungModel(athlete, plan.getJahr(), plan.getKw(), plan.getKmProWoche(), plan.isInterval());
+                final PlanungModel model = ModelFactory.createPlanungModel(athlete, plan.getJahr(), plan.getKw(), plan.getKmProWoche(), plan.isInterval(), plan
+                        .getLangerLauf());
                 planCache.add(model);
                 monitor.subTask(Messages.InitialLoadRunnable_3 + i++);
                 LOG.info(Messages.InitialLoadRunnable_4);

@@ -90,7 +90,9 @@ public class JahresplanungViewPart extends ViewPart {
         final Interval intervalEnd = TimeHelper.getInterval(jahr, kw + anzahl);
         monat.setLayoutData(td);
         monat.setText(Messages.JahresplanungViewPart_1 + kw + Messages.JahresplanungViewPart_2 + (kw + anzahl));
-        monat.setDescription(Messages.JahresplanungViewPart_3 + intervalStart.getStart() + Messages.JahresplanungViewPart_4 + intervalEnd.getEnd());
+        final String startDateString = TimeHelper.convertDateToString(intervalStart.getStart().toDate());
+        final String endDateString = TimeHelper.convertDateToString(intervalEnd.getEnd().toDate());
+        monat.setDescription(Messages.JahresplanungViewPart_3 + startDateString + Messages.JahresplanungViewPart_4 + endDateString + ")");
 
         final Composite composite = toolkit.createComposite(monat);
         final GridLayout layoutClient = new GridLayout(1, true);
@@ -100,7 +102,7 @@ public class JahresplanungViewPart extends ViewPart {
         final List<IPlanungWoche> planungen = db.getPlanungsWoche(context.getAthlete(), jahr, kw, anzahl);
         final List<PlanungModel> pl = new ArrayList<PlanungModel>();
         for (final IPlanungWoche p : planungen) {
-            pl.add(ModelFactory.createPlanungModel(p.getAthlete(), p.getJahr(), p.getKw(), p.getKmProWoche(), p.isInterval()));
+            pl.add(ModelFactory.createPlanungModel(p.getAthlete(), p.getJahr(), p.getKw(), p.getKmProWoche(), p.isInterval(), p.getLangerLauf()));
         }
 
         final IPlanungWocheModel models = ModelFactory.createPlanungWochenModel(pl, context.getAthlete(), jahr, kw, anzahl);
@@ -133,7 +135,8 @@ public class JahresplanungViewPart extends ViewPart {
                     final int j = m.getJahr();
                     final int kwTmp = m.getKw();
                     final boolean interval = m.isInterval();
-                    final IPlanungWoche pla = CommonTransferFactory.createIPlanungWoche(athlete, j, kwTmp, km, interval);
+                    final int langerLauf = m.getLangerLauf();
+                    final IPlanungWoche pla = CommonTransferFactory.createIPlanungWoche(athlete, j, kwTmp, km, interval, langerLauf);
                     result.add(pla);
                     cache.add(m);
                 }

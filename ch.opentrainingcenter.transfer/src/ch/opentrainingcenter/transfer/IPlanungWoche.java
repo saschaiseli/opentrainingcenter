@@ -30,4 +30,8 @@ public interface IPlanungWoche {
     boolean isInterval();
 
     void setInterval(boolean interval);
+
+    int getLangerLauf();
+
+    void setLangerLauf(int langerLauf);
 }

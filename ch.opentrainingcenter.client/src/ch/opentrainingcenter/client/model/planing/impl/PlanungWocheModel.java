@@ -50,7 +50,7 @@ public class PlanungWocheModel implements IPlanungWocheModel {
             final int kw = woche.getKw();
             final int j = woche.getJahr();
             key = new KwJahrKey(j, kw);
-            jahresplanung.put(key, ModelFactory.createPlanungModel(athlete, j, kw, woche.getKmProWoche(), woche.isInterval()));
+            jahresplanung.put(key, ModelFactory.createPlanungModel(athlete, j, kw, woche.getKmProWoche(), woche.isInterval(), woche.getLangerLauf()));
         }
         if (jahresplanung.size() != anzahl && key != null) {
             // noch mit leeren auffüllen

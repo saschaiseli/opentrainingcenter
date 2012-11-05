@@ -47,6 +47,7 @@ public class PlanungDao {
             } else {
                 existing.setKmProWoche(planung.getKmProWoche());
                 existing.setInterval(planung.isInterval());
+                existing.setLangerLauf(planung.getLangerLauf());
                 save(existing);
             }
         }

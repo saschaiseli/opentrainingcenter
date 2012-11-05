@@ -58,10 +58,11 @@ public final class ModelFactory {
     }
 
     public static PlanungModel createPlanungModel(final IAthlete athlete, final int jahr, final int kw, final int kmProWoche) {
-        return createPlanungModel(athlete, jahr, kw, kmProWoche, false);
+        return createPlanungModel(athlete, jahr, kw, kmProWoche, false, 0);
     }
 
-    public static PlanungModel createPlanungModel(final IAthlete athlete, final int jahr, final int kw, final int kmProWoche, final boolean interval) {
-        return new PlanungModel(athlete, jahr, kw, kmProWoche, interval);
+    public static PlanungModel createPlanungModel(final IAthlete athlete, final int jahr, final int kw, final int kmProWoche, final boolean interval,
+            final int langerLauf) {
+        return new PlanungModel(athlete, jahr, kw, kmProWoche, interval, langerLauf);
     }
 }
