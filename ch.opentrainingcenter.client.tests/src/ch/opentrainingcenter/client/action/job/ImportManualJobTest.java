@@ -9,6 +9,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -47,6 +48,7 @@ public class ImportManualJobTest {
     }
 
     @Test
+    @Ignore
     public void testRun() {
         job = new ImportManualJob("junit", modelWrapper, filterPath, importer, cache);
 
@@ -57,6 +59,7 @@ public class ImportManualJobTest {
     }
 
     @Test(timeout = 3000)
+    @Ignore
     public void testRunMitFileModel() throws Exception {
         job = new ImportManualJob("junit", modelWrapper, filterPath, importer, cache);
 
