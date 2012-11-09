@@ -1,6 +1,7 @@
 package ch.opentrainingcenter.client.views.planung;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -27,6 +28,7 @@ import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.client.PreferenceConstants;
 import ch.opentrainingcenter.client.cache.impl.TrainingsPlanCache;
+import ch.opentrainingcenter.client.helper.PlanungWocheComparator;
 import ch.opentrainingcenter.client.helper.TimeHelper;
 import ch.opentrainingcenter.client.model.ModelFactory;
 import ch.opentrainingcenter.client.model.planing.IPlanungWocheModel;
@@ -50,9 +52,6 @@ public class JahresplanungViewPart extends ViewPart {
     private TableWrapData td;
     private Button save;
     private IDatabaseAccess db;
-
-    public JahresplanungViewPart() {
-    }
 
     @Override
     public void createPartControl(final Composite parent) {
@@ -92,14 +91,23 @@ public class JahresplanungViewPart extends ViewPart {
         monat.setText(Messages.JahresplanungViewPart_1 + kw + Messages.JahresplanungViewPart_2 + (kw + anzahl));
         final String startDateString = TimeHelper.convertDateToString(intervalStart.getStart().toDate());
         final String endDateString = TimeHelper.convertDateToString(intervalEnd.getEnd().toDate());
-        monat.setDescription(Messages.JahresplanungViewPart_3 + startDateString + Messages.JahresplanungViewPart_4 + endDateString + ")");
+        monat.setDescription(Messages.JahresplanungViewPart_3 + startDateString + Messages.JahresplanungViewPart_4 + endDateString + ")"); //$NON-NLS-1$
 
         final Composite composite = toolkit.createComposite(monat);
         final GridLayout layoutClient = new GridLayout(1, true);
         composite.setLayout(layoutClient);
 
         db = DatabaseAccessFactory.getDatabaseAccess();
-        final List<IPlanungWoche> planungen = db.getPlanungsWoche(context.getAthlete(), jahr, kw, anzahl);
+        final List<IPlanungWoche> all = db.getPlanungsWoche(context.getAthlete(), jahr, kw);
+
+        Collections.sort(all, Collections.reverseOrder(new PlanungWocheComparator()));
+        final List<IPlanungWoche> planungen;
+        if (all.size() > anzahl) {
+            planungen = all.subList(0, anzahl);
+        } else {
+            planungen = all;
+        }
+
         final List<PlanungModel> pl = new ArrayList<PlanungModel>();
         for (final IPlanungWoche p : planungen) {
             pl.add(ModelFactory.createPlanungModel(p.getAthlete(), p.getJahr(), p.getKw(), p.getKmProWoche(), p.isInterval(), p.getLangerLauf()));

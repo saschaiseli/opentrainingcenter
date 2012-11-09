@@ -36,6 +36,8 @@ public final class PreferenceConstants {
     public static final String WSA_COLOR = WSA + COLOR_POSTFIX;
     public static final String RUHEPULS_COLOR = "RUHEPULS"; //$NON-NLS-1$
     public static final String GEWICHT_COLOR = "GEWICHT"; //$NON-NLS-1$
+    public static final String ZIEL_ERFUELLT_COLOR = "ZIEL_ERFUELLT_COLOR"; //$NON-NLS-1$
+    public static final String ZIEL_NICHT_ERFUELLT_COLOR = "ZIEL_NICHT_ERFUELLT_COLOR"; //$NON-NLS-1$
 
     private PreferenceConstants() {
 

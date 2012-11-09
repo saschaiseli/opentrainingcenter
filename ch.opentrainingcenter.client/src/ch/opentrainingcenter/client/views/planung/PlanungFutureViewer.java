@@ -26,7 +26,7 @@ public class PlanungFutureViewer {
     private TableViewer viewer;
 
     void createViewer(final Composite parent) {
-        viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
+        viewer = new TableViewer(parent, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
         createColumns();
         final Table table = viewer.getTable();
         table.setHeaderVisible(true);
@@ -51,10 +51,10 @@ public class PlanungFutureViewer {
         viewer.setInput(planungsWoche);
 
         final GridData gridData = new GridData();
-        gridData.verticalAlignment = GridData.FILL;
+        // gridData.verticalAlignment = GridData.FILL;
         gridData.horizontalSpan = 2;
-        gridData.grabExcessHorizontalSpace = true;
-        gridData.grabExcessVerticalSpace = true;
+        gridData.grabExcessHorizontalSpace = false;
+        gridData.grabExcessVerticalSpace = false;
         gridData.horizontalAlignment = GridData.FILL;
         viewer.getControl().setLayoutData(gridData);
 
@@ -63,7 +63,7 @@ public class PlanungFutureViewer {
     // This will create the columns for the table
     private void createColumns() {
         final String[] titles = { "Jahr", "KW", "Km/Woche", "Langer Lauf", "Intervall" };
-        final int[] bounds = { 50, 50, 50, 50, 50 };
+        final int[] bounds = { 50, 40, 100, 100, 50 };
 
         // Jahr
         TableViewerColumn col = createTableViewerColumn(titles[0], bounds[0]);

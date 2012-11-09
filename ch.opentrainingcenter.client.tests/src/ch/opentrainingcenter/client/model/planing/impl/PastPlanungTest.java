@@ -13,7 +13,10 @@ import ch.opentrainingcenter.transfer.IPlanungWoche;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.ITrainingType;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
+@SuppressWarnings("nls")
 public class PastPlanungTest {
     private PastPlanungImpl planung;
     private IPlanungWoche pl;
@@ -127,6 +130,70 @@ public class PastPlanungTest {
         assertEquals(300, planung.getKmEffective());
         assertEquals(200, planung.getLangerLaufEffective());
         assertEquals(true, planung.hasInterval());
+    }
+
+    @Test
+    public void testSuccess() {
+        final IImported recordA = createRecord(100001.0d, RunType.EXT_INTERVALL);
+        final IImported recordB = createRecord(100001.0d, RunType.EXT_INTERVALL);
+        final IImported recordC = createRecord(100001.0d, RunType.EXT_INTERVALL);
+        effective.add(recordA);
+        effective.add(recordB);
+        effective.add(recordC);
+
+        // 100km
+        // 88km langer;
+        // intervall
+        planung = new PastPlanungImpl(pl, effective);
+        assertTrue("Überall mehr geleistet als geplant", planung.isSuccess());
+    }
+
+    @Test
+    public void testNotSuccess() {
+        final IImported recordA = createRecord(50001.0d, RunType.EXT_INTERVALL);
+        final IImported recordB = createRecord(50001.0d, RunType.EXT_INTERVALL);
+        final IImported recordC = createRecord(50001.0d, RunType.EXT_INTERVALL);
+        effective.add(recordA);
+        effective.add(recordB);
+        effective.add(recordC);
+
+        // 100km
+        // 88km langer;
+        // intervall
+        planung = new PastPlanungImpl(pl, effective);
+        assertFalse("Längster Lauf zu kurz", planung.isSuccess());
+    }
+
+    @Test
+    public void testNotSuccess2() {
+        final IImported recordA = createRecord(100001.0d, RunType.LONG_JOG);
+        final IImported recordB = createRecord(100001.0d, RunType.LONG_JOG);
+        final IImported recordC = createRecord(100001.0d, RunType.LONG_JOG);
+        effective.add(recordA);
+        effective.add(recordB);
+        effective.add(recordC);
+
+        // 100km
+        // 88km langer;
+        // intervall
+        planung = new PastPlanungImpl(pl, effective);
+        assertFalse("Kein Intervall", planung.isSuccess());
+    }
+
+    @Test
+    public void testNotSuccess3() {
+        final IImported recordA = createRecord(1001.0d, RunType.LONG_JOG);
+        final IImported recordB = createRecord(1001.0d, RunType.EXT_INTERVALL);
+        final IImported recordC = createRecord(1001.0d, RunType.LONG_JOG);
+        effective.add(recordA);
+        effective.add(recordB);
+        effective.add(recordC);
+
+        // 100km
+        // 88km langer;
+        // intervall
+        planung = new PastPlanungImpl(pl, effective);
+        assertFalse("Zuwenig Kilometer", planung.isSuccess());
     }
 
     private IImported createRecord(final double km, final RunType t) {

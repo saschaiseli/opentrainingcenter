@@ -169,12 +169,10 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
      *            das Jahr aus welchem die Pläne sind
      * @param kwStart
      *            Kalenderwoche des ersten Planes
-     * @param anzahl
-     *            anzahl Kalenderwoche die geplant werden wollen.
      * @return eine Liste mit den Plänen, wenn nichts gefunden wurde, wird eine
      *         leere Liste zurückgegeben.
      */
-    List<IPlanungWoche> getPlanungsWoche(IAthlete athlete, int jahr, int kwStart, int anzahl);
+    List<IPlanungWoche> getPlanungsWoche(IAthlete athlete, int jahr, int kwStart);
 
     void saveOrUpdate(List<IPlanungWoche> planung);
 

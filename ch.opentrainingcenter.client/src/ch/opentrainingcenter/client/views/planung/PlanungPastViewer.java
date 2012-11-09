@@ -4,17 +4,21 @@ import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.joda.time.DateTime;
 
+import ch.opentrainingcenter.client.PreferenceConstants;
+import ch.opentrainingcenter.client.helper.ColorFromPreferenceHelper;
 import ch.opentrainingcenter.client.helper.PlanungWocheComparator;
 import ch.opentrainingcenter.client.model.planing.IPastPlanung;
 import ch.opentrainingcenter.client.model.planing.IPastPlanungModel;
@@ -30,6 +34,13 @@ import ch.opentrainingcenter.transfer.IPlanungWoche;
 public class PlanungPastViewer {
 
     private TableViewer viewer;
+    private final Color erfuellt;
+    private final Color nichtErfuellt;
+
+    public PlanungPastViewer(final IPreferenceStore store) {
+        erfuellt = ColorFromPreferenceHelper.getSwtColor(store, PreferenceConstants.ZIEL_ERFUELLT_COLOR);
+        nichtErfuellt = ColorFromPreferenceHelper.getSwtColor(store, PreferenceConstants.ZIEL_NICHT_ERFUELLT_COLOR);
+    }
 
     void createViewer(final Composite parent) {
         viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
@@ -68,9 +79,10 @@ public class PlanungPastViewer {
 
     // This will create the columns for the table
     private void createColumns() {
-        final String[] titles = { "Jahr", "KW", "Km/Woche geplant", "Km/Woche effektiv", "Langer Lauf", "Langer Lauf effektiv", "Intervall",
-                "Intervall effektiv" };
-        final int[] bounds = { 50, 50, 50, 50, 50, 50, 50, 50 };
+
+        final String[] titles = { "Jahr", "KW", "Km/Woche", "Langer Lauf", "Intervall", "", "Km/Woche effektiv", "Langer Lauf effektiv", "Intervall effektiv",
+                "" }; //$NON-NLS-1$
+        final int[] bounds = { 50, 40, 100, 100, 65, 100, 150, 150, 150, 100 };
 
         // Jahr
         TableViewerColumn col = createTableViewerColumn(titles[0], bounds[0]);
@@ -79,6 +91,16 @@ public class PlanungPastViewer {
             public String getText(final Object element) {
                 final IPastPlanung woche = (IPastPlanung) element;
                 return String.valueOf(woche.getPlanung().getJahr());
+            }
+
+            @Override
+            public Color getBackground(final Object element) {
+                final IPastPlanung woche = (IPastPlanung) element;
+                if (woche.isSuccess()) {
+                    return erfuellt;
+                } else {
+                    return nichtErfuellt;
+                }
             }
         });
 
@@ -89,6 +111,16 @@ public class PlanungPastViewer {
             public String getText(final Object element) {
                 final IPastPlanung woche = (IPastPlanung) element;
                 return String.valueOf(woche.getPlanung().getKw());
+            }
+
+            @Override
+            public Color getBackground(final Object element) {
+                final IPastPlanung woche = (IPastPlanung) element;
+                if (woche.isSuccess()) {
+                    return erfuellt;
+                } else {
+                    return nichtErfuellt;
+                }
             }
         });
 
@@ -102,18 +134,8 @@ public class PlanungPastViewer {
             }
         });
 
-        // Km pro woche effektiv
-        col = createTableViewerColumn(titles[3], bounds[3]);
-        col.setLabelProvider(new ColumnLabelProvider() {
-            @Override
-            public String getText(final Object element) {
-                final IPastPlanung woche = (IPastPlanung) element;
-                return String.valueOf(woche.getKmEffective());
-            }
-        });
-
         // Langer Lauf
-        col = createTableViewerColumn(titles[4], bounds[4]);
+        col = createTableViewerColumn(titles[3], bounds[3]);
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(final Object element) {
@@ -122,17 +144,8 @@ public class PlanungPastViewer {
             }
         });
 
-        // Langer Lauf effektiv
-        col = createTableViewerColumn(titles[5], bounds[5]);
-        col.setLabelProvider(new ColumnLabelProvider() {
-            @Override
-            public String getText(final Object element) {
-                final IPastPlanung woche = (IPastPlanung) element;
-                return String.valueOf(woche.getLangerLaufEffective());
-            }
-        });
         // Intervall
-        col = createTableViewerColumn(titles[6], bounds[6]);
+        col = createTableViewerColumn(titles[4], bounds[4]);
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(final Object element) {
@@ -141,16 +154,87 @@ public class PlanungPastViewer {
             }
         });
 
-        // Intervall effektiv
+        // LEEEEEEEEEEEEEEEEEEEER
+        col = createTableViewerColumn(titles[5], bounds[5]);
+        col.setLabelProvider(new ColumnLabelProvider() {
+            @Override
+            public String getText(final Object element) {
+                return String.valueOf(""); //$NON-NLS-1$
+            }
+        });
+
+        // Km pro woche effektiv
+        col = createTableViewerColumn(titles[6], bounds[6]);
+        col.setLabelProvider(new ColumnLabelProvider() {
+            @Override
+            public String getText(final Object element) {
+                final IPastPlanung woche = (IPastPlanung) element;
+                return String.valueOf(woche.getKmEffective());
+            }
+
+            @Override
+            public Color getBackground(final Object element) {
+                final IPastPlanung woche = (IPastPlanung) element;
+                if (woche.getPlanung().getKmProWoche() > woche.getKmEffective()) {
+                    return nichtErfuellt;
+                } else {
+                    return erfuellt;
+                }
+            }
+        });
+
+        // Langer Lauf effektiv
         col = createTableViewerColumn(titles[7], bounds[7]);
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(final Object element) {
                 final IPastPlanung woche = (IPastPlanung) element;
-                return String.valueOf(woche.hasInterval());
+                return String.valueOf(woche.getLangerLaufEffective());
+            }
+
+            @Override
+            public Color getBackground(final Object element) {
+                final IPastPlanung woche = (IPastPlanung) element;
+                if (woche.getPlanung().getLangerLauf() > woche.getLangerLaufEffective()) {
+                    return nichtErfuellt;
+                } else {
+                    return erfuellt;
+                }
             }
         });
 
+        // Intervall effektiv
+        col = createTableViewerColumn(titles[8], bounds[8]);
+        col.setLabelProvider(new ColumnLabelProvider() {
+
+            @Override
+            public String getText(final Object element) {
+                final IPastPlanung woche = (IPastPlanung) element;
+                return String.valueOf(woche.hasInterval());
+            }
+
+            @Override
+            public Color getBackground(final Object element) {
+                final IPastPlanung woche = (IPastPlanung) element;
+                final boolean isInter = woche.getPlanung().isInterval();
+                final boolean hasInter = woche.hasInterval();
+                if ((isInter && hasInter) || (!isInter && hasInter)) {
+                    return erfuellt;
+                } else {
+                    return nichtErfuellt;
+                }
+            }
+        });
+        // Intervall effektiv
+        col = createTableViewerColumn(titles[9], bounds[9]);
+        col.setLabelProvider(new ColumnLabelProvider() {
+
+            @Override
+            public String getText(final Object element) {
+                return String.valueOf("      ");
+            }
+
+        });
     }
 
     private TableViewerColumn createTableViewerColumn(final String title, final int bound) {

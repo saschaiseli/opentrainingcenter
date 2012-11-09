@@ -45,6 +45,9 @@ public class TrainingTargetPreferencePage extends FieldEditorPreferencePage impl
         weekToPlan.setValidRange(0, Integer.MAX_VALUE);
         addField(weekToPlan);
 
+        addField(new ColorFieldEditor(PreferenceConstants.ZIEL_ERFUELLT_COLOR, "Farbe Ziel erreicht", training));
+        addField(new ColorFieldEditor(PreferenceConstants.ZIEL_NICHT_ERFUELLT_COLOR, "Farbe Ziel nicht erreicht", training));
+
         addField(new ColorFieldEditor(PreferenceConstants.KM_PER_WEEK_COLOR_NOT_DEFINED, Messages.TrainingTargetPreferencePage_3, training));
         addField(new ColorFieldEditor(PreferenceConstants.KM_PER_WEEK_COLOR_ABOVE, Messages.TrainingTargetPreferencePage6, training));
         addField(new ColorFieldEditor(PreferenceConstants.KM_PER_WEEK_COLOR_BELOW, Messages.TrainingTargetPreferencePage5, training));

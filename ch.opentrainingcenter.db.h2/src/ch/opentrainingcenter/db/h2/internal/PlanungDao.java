@@ -5,7 +5,10 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.LogicalExpression;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.SimpleExpression;
 
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IPlanungWoche;
@@ -19,17 +22,17 @@ public class PlanungDao {
         this.dao = dao;
     }
 
-    public List<IPlanungWoche> getPlanungsWoche(final IAthlete athlete, final int jahr, final int kwStart, final int anzahl) {
+    public List<IPlanungWoche> getPlanungsWoche(final IAthlete athlete, final int jahr, final int kwStart) {
 
         LOG.info("load IPlanungWoche from: " + athlete); //$NON-NLS-1$
         final Session session = dao.getSession();
         dao.begin();
         final Criteria criteria = session.createCriteria(IPlanungWoche.class);
         criteria.add(Restrictions.eq("athlete", athlete)); //$NON-NLS-1$
-        criteria.add(Restrictions.eq("jahr", jahr)); //$NON-NLS-1$
-        criteria.add(Restrictions.ge("kw", kwStart)); //$NON-NLS-1$
-        criteria.add(Restrictions.lt("kw", kwStart + anzahl)); //$NON-NLS-1$
-        criteria.add(Restrictions.eq("jahr", jahr)); //$NON-NLS-1$
+        final LogicalExpression selbesJahr = Restrictions.and(Restrictions.ge("kw", kwStart), Restrictions.eq("jahr", jahr)); //$NON-NLS-1$ //$NON-NLS-2$
+        final SimpleExpression groesseresJahr = Restrictions.gt("jahr", jahr); //$NON-NLS-1$
+        final Criterion rest1 = Restrictions.or(selbesJahr, groesseresJahr);
+        criteria.add(rest1);
         @SuppressWarnings("unchecked")
         final List<IPlanungWoche> result = criteria.list();
         dao.commit();

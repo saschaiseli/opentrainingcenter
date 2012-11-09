@@ -141,8 +141,8 @@ public class DatabaseAccess implements IDatabaseAccess {
     }
 
     @Override
-    public List<IPlanungWoche> getPlanungsWoche(final IAthlete athlete, final int jahr, final int kwStart, final int anzahl) {
-        return planungsDao.getPlanungsWoche(athlete, jahr, kwStart, anzahl);
+    public List<IPlanungWoche> getPlanungsWoche(final IAthlete athlete, final int jahr, final int kw) {
+        return planungsDao.getPlanungsWoche(athlete, jahr, kw);
     }
 
     @Override

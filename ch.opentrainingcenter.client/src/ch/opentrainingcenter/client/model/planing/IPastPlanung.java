@@ -28,4 +28,9 @@ public interface IPastPlanung {
      *         intervall gemacht wurde.
      */
     boolean hasInterval();
+
+    /**
+     * @return true wenn die geplanten Ziele übertroffen wurden.
+     */
+    boolean isSuccess();
 }
