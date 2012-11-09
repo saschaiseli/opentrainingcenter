@@ -31,6 +31,7 @@
 	<modules>
 		<module>ch.opentrainingcenter.product</module>
 		<module>ch.opentrainingcenter.client</module>
+		<module>ch.opentrainingcenter.core</module>
 		<module>ch.opentrainingcenter.db.h2</module>
 		<module>ch.opentrainingcenter.importer</module>
 		<module>ch.opentrainingcenter.importer.fitnesslog</module>
