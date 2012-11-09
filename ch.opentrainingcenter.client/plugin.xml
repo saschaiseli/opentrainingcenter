@@ -114,6 +114,15 @@
             name="Jahresplanung"
             restorable="true">
       </view>
+      <view
+            allowMultiple="false"
+            category="ch.opentrainingcenter.client.otccategory"
+            class="ch.opentrainingcenter.client.views.planung.ShowJahresplanungViewPart"
+            icon="icons/container_obj.gif"
+            id="ch.opentrainingcenter.client.views.planung.ShowJahresplanungViewPart"
+            name="ShowJahresplanung"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -216,6 +225,11 @@
             description="Trainingsplan"
             id="ch.opentrainingcenter.client.commands.AddTrainingPlan"
             name="AddTrainingPlan">
+      </command>
+      <command
+            description="Alte Trainingsplan"
+            id="ch.opentrainingcenter.client.commands.ShowTrainingPlan"
+            name="ShowTrainingPlan">
       </command>
    </extension>
    <extension
@@ -443,6 +457,22 @@
                </iterate>
             </visibleWhen>
          </command>
+         <command
+               commandId="ch.opentrainingcenter.client.commands.ShowTrainingPlan"
+               label="Übersicht Trainingsplan"
+               style="push">
+            <visibleWhen
+                  checkEnabled="true">
+               <iterate
+                     operator="and">
+                  <or>
+                     <instanceof
+                           value="java.lang.Integer">
+                     </instanceof>
+                  </or>
+               </iterate>
+            </visibleWhen>
+         </command>
       </menuContribution>
       <menuContribution
             allPopups="false"
@@ -657,6 +687,10 @@
       <handler
             class="ch.opentrainingcenter.client.commands.AddTrainingPlan"
             commandId="ch.opentrainingcenter.client.commands.AddTrainingPlan">
+      </handler>
+      <handler
+            class="ch.opentrainingcenter.client.commands.ShowTrainingPlan"
+            commandId="ch.opentrainingcenter.client.commands.ShowTrainingPlan">
       </handler>
    </extension>
    <extension

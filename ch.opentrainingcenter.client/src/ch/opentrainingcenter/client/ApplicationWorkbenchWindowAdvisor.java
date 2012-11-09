@@ -16,14 +16,17 @@ import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 import ch.opentrainingcenter.client.perspectives.MainPerspective;
 import ch.opentrainingcenter.client.splash.InitialLoadRunnable;
 import ch.opentrainingcenter.client.splash.OtcSplashHandler;
+import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.db.IDatabaseAccess;
+import ch.opentrainingcenter.transfer.IAthlete;
 
 public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 
     private static final Logger LOG = Logger.getLogger(ApplicationWorkbenchWindowAdvisor.class);
     private final IPreferenceStore store;
     private final IDatabaseAccess databaseAccess;
+    private final ApplicationContext context = ApplicationContext.getApplicationContext();
 
     public ApplicationWorkbenchWindowAdvisor(final IWorkbenchWindowConfigurer configurer) {
         this(configurer, Activator.getDefault().getPreferenceStore(), DatabaseAccessFactory.getDatabaseAccess());
@@ -53,7 +56,9 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
         configurer.setShowStatusLine(true);
         final String id = store.getString(PreferenceConstants.ATHLETE_ID);
         if (id != null && id.length() > 0) {
-            configurer.setTitle(Application.WINDOW_TITLE + " / " + databaseAccess.getAthlete(Integer.parseInt(id)).getName()); //$NON-NLS-1$
+            final IAthlete athlete = databaseAccess.getAthlete(Integer.parseInt(id));
+            configurer.setTitle(Application.WINDOW_TITLE + " / " + athlete.getName()); //$NON-NLS-1$
+            context.setAthlete(athlete);
         } else {
             configurer.setTitle(Application.WINDOW_TITLE);
         }
