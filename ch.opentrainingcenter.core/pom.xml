@@ -8,7 +8,7 @@
     <version>1.0.0-SNAPSHOT</version>
   </parent>
   <groupId>ch.opentrainingcenter</groupId>
-  <artifactId>ch.opentrainingcenter.client</artifactId>
+  <artifactId>ch.opentrainingcenter.core</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
 </project>
