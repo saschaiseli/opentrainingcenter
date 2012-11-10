@@ -11,7 +11,7 @@ import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.client.model.IGpsFileModel;
 import ch.opentrainingcenter.client.model.IGpsFileModelWrapper;
 import ch.opentrainingcenter.client.model.TrainingOverviewFactory;
-import ch.opentrainingcenter.db.IDatabaseAccess;
+import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.importer.ConvertContainer;
 import ch.opentrainingcenter.importer.IFileCopy;
 import ch.opentrainingcenter.importer.IFileImport;

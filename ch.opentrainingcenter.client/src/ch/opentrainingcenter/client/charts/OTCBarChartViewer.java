@@ -71,7 +71,7 @@ import ch.opentrainingcenter.client.charts.internal.StatistikCreator;
 import ch.opentrainingcenter.client.helper.ColorFromPreferenceHelper;
 import ch.opentrainingcenter.client.model.ISimpleTraining;
 import ch.opentrainingcenter.client.model.RunType;
-import ch.opentrainingcenter.db.DatabaseAccessFactory;
+import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.tcx.ActivityT;
 import static org.jfree.ui.TextAnchor.CENTER;
 

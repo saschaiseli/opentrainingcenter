@@ -19,7 +19,7 @@ import org.joda.time.DateTime;
 import ch.opentrainingcenter.client.helper.PlanungWocheComparator;
 import ch.opentrainingcenter.client.model.planing.impl.KwJahrKey;
 import ch.opentrainingcenter.client.views.ApplicationContext;
-import ch.opentrainingcenter.db.DatabaseAccessFactory;
+import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.transfer.IPlanungWoche;
 
 public class PlanungFutureViewer {

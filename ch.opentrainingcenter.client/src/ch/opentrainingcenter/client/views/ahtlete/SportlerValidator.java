@@ -5,7 +5,7 @@ import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
 
 import ch.opentrainingcenter.client.Messages;
-import ch.opentrainingcenter.db.DatabaseAccessFactory;
+import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
 
 public class SportlerValidator implements IValidator {

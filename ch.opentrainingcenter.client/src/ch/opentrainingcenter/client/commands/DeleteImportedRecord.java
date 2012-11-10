@@ -14,8 +14,8 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 import ch.opentrainingcenter.client.cache.Cache;
 import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
-import ch.opentrainingcenter.db.DatabaseAccessFactory;
-import ch.opentrainingcenter.db.IDatabaseAccess;
+import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
+import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.transfer.IImported;
 
 public class DeleteImportedRecord extends AbstractHandler {

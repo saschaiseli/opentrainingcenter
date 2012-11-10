@@ -9,9 +9,9 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 
 import ch.opentrainingcenter.client.views.ApplicationContext;
-import ch.opentrainingcenter.db.DatabaseAccessFactory;
-import ch.opentrainingcenter.db.DatabaseHelper;
-import ch.opentrainingcenter.db.IDatabaseAccess;
+import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
+import ch.opentrainingcenter.core.db.DatabaseHelper;
+import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.transfer.IAthlete;
 
 /**

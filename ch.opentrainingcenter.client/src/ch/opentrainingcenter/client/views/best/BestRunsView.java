@@ -25,7 +25,7 @@ import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
 import ch.opentrainingcenter.client.model.IGoldMedalModel;
 import ch.opentrainingcenter.client.model.Units;
 import ch.opentrainingcenter.client.model.impl.GoldMedalModel.Intervall;
-import ch.opentrainingcenter.db.DatabaseAccessFactory;
+import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.transfer.IAthlete;
 

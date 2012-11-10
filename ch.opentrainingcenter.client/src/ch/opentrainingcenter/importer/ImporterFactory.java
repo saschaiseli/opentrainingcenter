@@ -2,7 +2,7 @@ package ch.opentrainingcenter.importer;
 
 import org.eclipse.jface.preference.IPreferenceStore;
 
-import ch.opentrainingcenter.db.IDatabaseAccess;
+import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.importer.impl.FileCopy;
 import ch.opentrainingcenter.importer.impl.FileImport;
 import ch.opentrainingcenter.importer.impl.ImportedConverter;

@@ -11,8 +11,8 @@ import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
 import ch.opentrainingcenter.client.model.RunType;
 import ch.opentrainingcenter.client.model.navigation.impl.ConcreteImported;
 import ch.opentrainingcenter.client.views.ApplicationContext;
-import ch.opentrainingcenter.db.DatabaseAccessFactory;
-import ch.opentrainingcenter.db.IDatabaseAccess;
+import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
+import ch.opentrainingcenter.core.db.IDatabaseAccess;
 
 public abstract class ChangeRunType extends AbstractHandler {
 

@@ -3,6 +3,8 @@ package ch.opentrainingcenter.db;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import ch.opentrainingcenter.core.db.DatabaseHelper;
+import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.transfer.IAthlete;
 import static org.junit.Assert.assertEquals;
 

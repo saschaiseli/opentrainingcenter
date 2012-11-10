@@ -8,7 +8,7 @@ import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 import ch.opentrainingcenter.client.perspectives.AthletePerspective;
 import ch.opentrainingcenter.client.perspectives.MainPerspective;
 import ch.opentrainingcenter.client.views.ApplicationContext;
-import ch.opentrainingcenter.db.DatabaseAccessFactory;
+import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
 
 /**

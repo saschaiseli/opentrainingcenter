@@ -19,7 +19,7 @@ import org.mockito.Mockito;
 
 import ch.opentrainingcenter.client.model.IGpsFileModel;
 import ch.opentrainingcenter.client.model.IGpsFileModelWrapper;
-import ch.opentrainingcenter.db.IDatabaseAccess;
+import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.importer.ConvertContainer;
 import ch.opentrainingcenter.importer.IConvert2Tcx;
 import ch.opentrainingcenter.importer.IFileCopy;

@@ -47,8 +47,8 @@ import ch.opentrainingcenter.client.PreferenceConstants;
 import ch.opentrainingcenter.client.model.sportler.Sportler;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.client.views.databinding.NumberValidator;
-import ch.opentrainingcenter.db.DatabaseAccessFactory;
-import ch.opentrainingcenter.db.IDatabaseAccess;
+import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
+import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
 

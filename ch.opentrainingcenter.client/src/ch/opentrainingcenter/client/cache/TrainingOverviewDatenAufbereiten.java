@@ -15,7 +15,7 @@ import ch.opentrainingcenter.client.model.ISimpleTraining;
 import ch.opentrainingcenter.client.model.ModelFactory;
 import ch.opentrainingcenter.client.model.RunType;
 import ch.opentrainingcenter.client.views.ApplicationContext;
-import ch.opentrainingcenter.db.IDatabaseAccess;
+import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.transfer.IImported;
 
 public class TrainingOverviewDatenAufbereiten {

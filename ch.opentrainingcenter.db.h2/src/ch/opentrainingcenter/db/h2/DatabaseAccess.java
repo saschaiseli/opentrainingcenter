@@ -6,7 +6,7 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
 
-import ch.opentrainingcenter.db.IDatabaseAccess;
+import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.db.h2.internal.AthleteDao;
 import ch.opentrainingcenter.db.h2.internal.Dao;
 import ch.opentrainingcenter.db.h2.internal.DatabaseCreator;

@@ -5,10 +5,10 @@ Bundle-SymbolicName: ch.opentrainingcenter.db.h2;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Require-Bundle: org.eclipse.core.runtime,
  ch.opentrainingcenter.transfer,
- ch.opentrainingcenter.client,
  h2_lib,
  org.hibernate,
- logging
+ logging,
+ ch.opentrainingcenter.core
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: ch.opentrainingcenter.db.h2;
   uses:="ch.opentrainingcenter.transfer.impl,
