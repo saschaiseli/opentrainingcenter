@@ -26,7 +26,7 @@ public final class DatabaseAccessFactory {
         dao = (IDatabaseAccess) getDao(daos, IDatabaseAccess.EXTENSION_POINT_NAME);
     }
 
-    private Object getDao(final IConfigurationElement[] confItems, final String extensionAttr) {
+    Object getDao(final IConfigurationElement[] confItems, final String extensionAttr) {
         LOGGER.info("Anzahl Configuration Elements: " + confItems.length); //$NON-NLS-1$
         for (final IConfigurationElement element : confItems) {
             try {
@@ -40,5 +40,9 @@ public final class DatabaseAccessFactory {
             }
         }
         return null;
+    }
+
+    static DatabaseAccessFactory getInstance() {
+        return instance;
     }
 }

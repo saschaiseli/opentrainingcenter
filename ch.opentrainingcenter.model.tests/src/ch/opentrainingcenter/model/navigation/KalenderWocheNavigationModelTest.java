@@ -18,13 +18,15 @@ import static org.junit.Assert.assertEquals;
 @SuppressWarnings("nls")
 public class KalenderWocheNavigationModelTest {
 
+    private final Locale locale = Locale.GERMAN;
+
     private IKalenderWocheNavigationModel kw;
     private Calendar cal;
 
     @Before
     public void before() {
         kw = new KWTraining();
-        cal = Calendar.getInstance(Locale.getDefault());
+        cal = Calendar.getInstance(locale);
     }
 
     @Test

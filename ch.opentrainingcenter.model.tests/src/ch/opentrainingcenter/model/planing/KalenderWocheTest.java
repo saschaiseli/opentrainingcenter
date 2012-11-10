@@ -10,10 +10,11 @@ import static org.junit.Assert.assertEquals;
 
 @SuppressWarnings("nls")
 public class KalenderWocheTest {
+    private final Locale locale = Locale.GERMAN;
 
     @Test
     public void testOrder() {
-        final Calendar cal = Calendar.getInstance(Locale.getDefault());
+        final Calendar cal = Calendar.getInstance(locale);
         cal.set(2012, 0, 4, 13, 22, 59);
         final KalenderWoche kw1 = new KalenderWoche(cal.getTime());
 
@@ -26,7 +27,7 @@ public class KalenderWocheTest {
 
     @Test
     public void testOrderJahr() {
-        final Calendar cal = Calendar.getInstance(Locale.getDefault());
+        final Calendar cal = Calendar.getInstance(locale);
         cal.set(2012, 0, 4, 13, 22, 59);
         final KalenderWoche kw1 = new KalenderWoche(cal.getTime());
 
