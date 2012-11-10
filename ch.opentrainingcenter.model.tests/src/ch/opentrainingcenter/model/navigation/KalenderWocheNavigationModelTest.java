@@ -12,10 +12,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import ch.opentrainingcenter.model.navigation.IKalenderWocheNavigationModel;
-import ch.opentrainingcenter.model.navigation.INavigationItem;
-import ch.opentrainingcenter.model.navigation.INavigationParent;
-import ch.opentrainingcenter.model.navigation.KalenderWoche;
 import ch.opentrainingcenter.model.navigation.internal.KWTraining;
 import static org.junit.Assert.assertEquals;
 
@@ -176,7 +172,7 @@ public class KalenderWocheNavigationModelTest {
         kw.addItem(createItem(2012, 0, 2)); // kw1 --> 2012
 
         final Collection<Integer> parents = kw.getParents();
-        assertEquals("2 Jahre", 2, parents.size());
+        assertEquals("2 Jahre (Locale isch: " + Locale.getDefault() + ")", 2, parents.size());
 
         Collection<INavigationParent> weeks = kw.getWeeks(2012);
 

@@ -35,7 +35,7 @@ public class TimeHelperTest {
         final Calendar cal = Calendar.getInstance(Locale.getDefault());
         cal.set(2012, 0, 1);
         final int kw = TimeHelper.getKalenderWoche(cal.getTime());
-        assertEquals(52, kw);
+        assertEquals("Locale isch: " + Locale.getDefault(), 52, kw);
     }
 
     @Test
@@ -59,7 +59,7 @@ public class TimeHelperTest {
         final Calendar cal = Calendar.getInstance(Locale.getDefault());
         cal.set(2012, 3, 1);
         final int kw = TimeHelper.getKalenderWoche(cal.getTime());
-        assertEquals(13, kw);
+        assertEquals("Locale isch: " + Locale.getDefault(), 13, kw);
     }
 
     @Test
@@ -83,7 +83,7 @@ public class TimeHelperTest {
         final Calendar cal = Calendar.getInstance(Locale.getDefault());
         cal.set(2012, 6, 1);
         final int kw = TimeHelper.getKalenderWoche(cal.getTime());
-        assertEquals(26, kw);
+        assertEquals("Locale isch: " + Locale.getDefault(), 26, kw);
     }
 
     @Test

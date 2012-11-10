@@ -11,14 +11,14 @@ public final class DatabaseAccessFactory {
 
     private static DatabaseAccessFactory instance = null;
 
+    private final IDatabaseAccess dao;
+
     public static IDatabaseAccess getDatabaseAccess() {
         if (instance == null) {
             instance = new DatabaseAccessFactory();
         }
         return instance.dao;
     }
-
-    private final IDatabaseAccess dao;
 
     private DatabaseAccessFactory() {
         // test hier ob es datenbank gibt

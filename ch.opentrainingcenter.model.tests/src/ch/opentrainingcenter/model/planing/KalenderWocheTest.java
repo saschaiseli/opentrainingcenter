@@ -6,7 +6,6 @@ import java.util.Locale;
 import org.junit.Test;
 
 import ch.opentrainingcenter.model.navigation.KalenderWoche;
-
 import static org.junit.Assert.assertEquals;
 
 @SuppressWarnings("nls")
@@ -44,7 +43,7 @@ public class KalenderWocheTest {
         cal.set(2012, 0, 1, 13, 22, 59);
         final KalenderWoche kw1 = new KalenderWoche(cal.getTime());
 
-        assertEquals("Erstes Element ist älter, daher grösser", 52, kw1.getKw());
+        assertEquals("Erstes Element ist älter, daher grösser (Locale isch: " + Locale.getDefault() + ")", 52, kw1.getKw());
         assertEquals("Erstes Element ist älter, daher grösser", 2011, kw1.getJahr());
     }
 }
