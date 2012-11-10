@@ -18,8 +18,8 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
 import ch.opentrainingcenter.client.Messages;
-import ch.opentrainingcenter.client.helper.GpsFileNameFilter;
-import ch.opentrainingcenter.importer.IConvert2Tcx;
+import ch.opentrainingcenter.core.helper.GpsFileNameFilter;
+import ch.opentrainingcenter.core.importer.IConvert2Tcx;
 
 public class BackupJob extends Job {
 

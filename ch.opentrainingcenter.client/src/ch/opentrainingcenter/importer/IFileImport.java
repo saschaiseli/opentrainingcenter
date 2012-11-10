@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import ch.opentrainingcenter.client.model.IGpsFileModelWrapper;
+import ch.opentrainingcenter.model.importer.IGpsFileModelWrapper;
 import ch.opentrainingcenter.tcx.ActivityT;
 
 public interface IFileImport {

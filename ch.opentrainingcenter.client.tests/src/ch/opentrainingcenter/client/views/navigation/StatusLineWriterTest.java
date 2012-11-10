@@ -9,12 +9,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import ch.opentrainingcenter.client.helper.DistanceHelper;
-import ch.opentrainingcenter.client.helper.TimeHelper;
-import ch.opentrainingcenter.client.model.navigation.INavigationItem;
-import ch.opentrainingcenter.client.model.navigation.impl.ConcreteHealth;
-import ch.opentrainingcenter.client.model.navigation.impl.ConcreteImported;
-import ch.opentrainingcenter.client.model.navigation.impl.NavigationParent;
+import ch.opentrainingcenter.client.views.IImageKeys;
+import ch.opentrainingcenter.core.helper.DistanceHelper;
+import ch.opentrainingcenter.core.helper.TimeHelper;
+import ch.opentrainingcenter.model.ModelFactory;
+import ch.opentrainingcenter.model.navigation.ConcreteHealth;
+import ch.opentrainingcenter.model.navigation.ConcreteImported;
+import ch.opentrainingcenter.model.navigation.INavigationItem;
+import ch.opentrainingcenter.model.navigation.INavigationParent;
 import ch.opentrainingcenter.transfer.IHealth;
 import ch.opentrainingcenter.transfer.IImported;
 import ch.opentrainingcenter.transfer.ITraining;
@@ -61,13 +63,13 @@ public class StatusLineWriterTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testParentOhneChild() {
-        final NavigationParent selection = new NavigationParent();
+        final INavigationParent selection = ModelFactory.createNavigationParent();
         writer.writeStatusLine(selection);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testParentOhneDefiniertesChild() {
-        final NavigationParent selection = new NavigationParent();
+        final INavigationParent selection = ModelFactory.createNavigationParent();
         selection.add(new DummyItem());
         writer.writeStatusLine(selection);
     }
@@ -86,7 +88,7 @@ public class StatusLineWriterTest {
         Mockito.when(health.getWeight()).thenReturn(67.5d);
         Mockito.when(health.getCardio()).thenReturn(null);
 
-        final INavigationItem item = new ConcreteHealth(health);
+        final INavigationItem item = new ConcreteHealth(health, IImageKeys.CARDIO3232);
 
         // execute
         writer.writeStatusLine(item);
@@ -102,7 +104,7 @@ public class StatusLineWriterTest {
         Mockito.when(health.getWeight()).thenReturn(null);
         Mockito.when(health.getCardio()).thenReturn(59);
 
-        final INavigationItem item = new ConcreteHealth(health);
+        final INavigationItem item = new ConcreteHealth(health, IImageKeys.CARDIO3232);
 
         // execute
         writer.writeStatusLine(item);
@@ -118,7 +120,7 @@ public class StatusLineWriterTest {
         Mockito.when(health.getWeight()).thenReturn(67.5d);
         Mockito.when(health.getCardio()).thenReturn(59);
 
-        final INavigationItem item = new ConcreteHealth(health);
+        final INavigationItem item = new ConcreteHealth(health, IImageKeys.CARDIO3232);
 
         // execute
         writer.writeStatusLine(item);
@@ -153,7 +155,7 @@ public class StatusLineWriterTest {
 
     @Test
     public void testParentMitImported() {
-        final NavigationParent selection = new NavigationParent();
+        final INavigationParent selection = ModelFactory.createNavigationParent();
         final IImported imported = Mockito.mock(IImported.class);
         Mockito.when(imported.getActivityId()).thenReturn(date);
         final INavigationItem item = new ConcreteImported(imported);
@@ -168,13 +170,13 @@ public class StatusLineWriterTest {
 
     @Test
     public void testParentMitHealth() {
-        final NavigationParent selection = new NavigationParent();
+        final INavigationParent selection = ModelFactory.createNavigationParent();
         final IHealth health = Mockito.mock(IHealth.class);
         Mockito.when(health.getDateofmeasure()).thenReturn(date);
         Mockito.when(health.getWeight()).thenReturn(67.5d);
         Mockito.when(health.getCardio()).thenReturn(59);
 
-        final INavigationItem item = new ConcreteHealth(health);
+        final INavigationItem item = new ConcreteHealth(health, IImageKeys.CARDIO3232);
 
         selection.add(item);
 
@@ -186,7 +188,7 @@ public class StatusLineWriterTest {
 
     @Test
     public void testParentMitZweiChild() {
-        final NavigationParent selection = new NavigationParent();
+        final INavigationParent selection = ModelFactory.createNavigationParent();
         final ConcreteImported imported = Mockito.mock(ConcreteImported.class);
         final ConcreteHealth health = Mockito.mock(ConcreteHealth.class);
 

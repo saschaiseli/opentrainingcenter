@@ -14,24 +14,24 @@ import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.client.PreferenceConstants;
 import ch.opentrainingcenter.client.action.job.ImportManualJob;
-import ch.opentrainingcenter.client.cache.Cache;
 import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
-import ch.opentrainingcenter.client.model.IGpsFileModelWrapper;
 import ch.opentrainingcenter.client.views.dialoge.IFilterDialog;
 import ch.opentrainingcenter.client.views.dialoge.ImportFileDialog;
 import ch.opentrainingcenter.client.views.dialoge.RunTypeDialog;
+import ch.opentrainingcenter.core.cache.Cache;
 import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
-import ch.opentrainingcenter.importer.ConvertContainer;
-import ch.opentrainingcenter.importer.ExtensionHelper;
-import ch.opentrainingcenter.importer.IConvert2Tcx;
+import ch.opentrainingcenter.core.importer.ConvertContainer;
+import ch.opentrainingcenter.core.importer.ExtensionHelper;
+import ch.opentrainingcenter.core.importer.IConvert2Tcx;
+import ch.opentrainingcenter.core.importer.ImporterFactory;
 import ch.opentrainingcenter.importer.IFileImport;
-import ch.opentrainingcenter.importer.ImporterFactory;
+import ch.opentrainingcenter.importer.impl.FileImport;
+import ch.opentrainingcenter.model.importer.IGpsFileModelWrapper;
 import ch.opentrainingcenter.transfer.IAthlete;
 
 public class ImportManualGpsFiles extends AbstractHandler {
 
-    public static final String IMPORT_PATTERN = "_$_"; //$NON-NLS-1$
     private final IDatabaseAccess databaseAccess;
     private final Cache cache;
     private final IPreferenceStore store;
@@ -76,8 +76,7 @@ public class ImportManualGpsFiles extends AbstractHandler {
                 if (validId(athleteId)) {
                     final int id = Integer.parseInt(athleteId);
                     final IAthlete athlete = databaseAccess.getAthlete(id);
-                    final IFileImport fileImporter = ImporterFactory.createFileImporter(cc, athlete, databaseAccess, location);
-
+                    final IFileImport fileImporter = new FileImport(cc, athlete, databaseAccess, location, ImporterFactory.createFileCopy());
                     final IGpsFileModelWrapper model = dialog.getModelWrapper();
                     final Job job = new ImportManualJob(Messages.ImportManualGpsFilesLadeGpsFiles, model, filterPath, fileImporter, cache);
                     job.schedule();

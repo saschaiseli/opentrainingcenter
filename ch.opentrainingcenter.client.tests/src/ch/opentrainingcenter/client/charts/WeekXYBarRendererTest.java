@@ -10,9 +10,9 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import ch.opentrainingcenter.client.PreferenceConstants;
-import ch.opentrainingcenter.client.cache.ICache;
-import ch.opentrainingcenter.client.model.planing.impl.KwJahrKey;
-import ch.opentrainingcenter.client.model.planing.impl.PlanungModel;
+import ch.opentrainingcenter.core.cache.ICache;
+import ch.opentrainingcenter.model.planing.IPlanungModel;
+import ch.opentrainingcenter.model.planing.KwJahrKey;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -21,8 +21,9 @@ public class WeekXYBarRendererTest {
     private WeekXYBarRenderer renderer;
     private IntervalXYDataset dataset;
     private IPreferenceStore store;
-    private ICache<KwJahrKey, PlanungModel> cache;
+    private ICache<KwJahrKey, IPlanungModel> cache;
 
+    @SuppressWarnings("unchecked")
     @Before
     public void before() {
         dataset = Mockito.mock(IntervalXYDataset.class);
@@ -31,7 +32,7 @@ public class WeekXYBarRendererTest {
         Mockito.when(store.getString(PreferenceConstants.KM_PER_WEEK_COLOR_BELOW)).thenReturn("125,120,115");
         Mockito.when(store.getString(PreferenceConstants.KM_PER_WEEK_COLOR_ABOVE)).thenReturn("225,220,215");
         Mockito.when(store.getString(PreferenceConstants.KM_PER_WEEK_COLOR_NOT_DEFINED)).thenReturn("123,123,123");
-        final PlanungModel model = Mockito.mock(PlanungModel.class);
+        final IPlanungModel model = Mockito.mock(IPlanungModel.class);
         Mockito.when(model.getKmProWoche()).thenReturn(Integer.valueOf(100));
         Mockito.when(cache.get((KwJahrKey) Mockito.any())).thenReturn(model);
     }

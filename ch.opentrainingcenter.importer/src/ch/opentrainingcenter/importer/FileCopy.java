@@ -9,7 +9,7 @@ import java.nio.channels.FileChannel;
 
 import org.apache.log4j.Logger;
 
-import ch.opentrainingcenter.importer.IFileCopy;
+import ch.opentrainingcenter.core.importer.IFileCopy;
 
 public class FileCopy implements IFileCopy {
     private static final Logger LOG = Logger.getLogger(FileCopy.class);

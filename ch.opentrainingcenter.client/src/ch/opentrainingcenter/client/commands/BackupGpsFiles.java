@@ -13,7 +13,7 @@ import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.client.PreferenceConstants;
 import ch.opentrainingcenter.client.action.job.BackupJob;
-import ch.opentrainingcenter.importer.ExtensionHelper;
+import ch.opentrainingcenter.core.importer.ExtensionHelper;
 
 public class BackupGpsFiles extends AbstractHandler {
 

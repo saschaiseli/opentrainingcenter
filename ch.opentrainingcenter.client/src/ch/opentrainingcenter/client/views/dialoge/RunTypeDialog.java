@@ -21,10 +21,10 @@ import org.eclipse.swt.widgets.TableColumn;
 
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.Messages;
-import ch.opentrainingcenter.client.model.IGpsFileModel;
-import ch.opentrainingcenter.client.model.IGpsFileModelWrapper;
-import ch.opentrainingcenter.client.model.ModelFactory;
 import ch.opentrainingcenter.client.views.IImageKeys;
+import ch.opentrainingcenter.model.ModelFactory;
+import ch.opentrainingcenter.model.importer.IGpsFileModel;
+import ch.opentrainingcenter.model.importer.IGpsFileModelWrapper;
 
 public class RunTypeDialog extends TitleAreaDialog {
 

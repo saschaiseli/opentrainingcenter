@@ -13,12 +13,12 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import ch.opentrainingcenter.client.cache.Cache;
-import ch.opentrainingcenter.client.model.IGpsFileModel;
-import ch.opentrainingcenter.client.model.IGpsFileModelWrapper;
-import ch.opentrainingcenter.importer.ConvertContainer;
-import ch.opentrainingcenter.importer.IConvert2Tcx;
+import ch.opentrainingcenter.core.cache.Cache;
+import ch.opentrainingcenter.core.importer.ConvertContainer;
+import ch.opentrainingcenter.core.importer.IConvert2Tcx;
 import ch.opentrainingcenter.importer.IFileImport;
+import ch.opentrainingcenter.model.importer.IGpsFileModel;
+import ch.opentrainingcenter.model.importer.IGpsFileModelWrapper;
 import ch.opentrainingcenter.tcx.ActivityT;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

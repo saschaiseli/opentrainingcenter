@@ -19,14 +19,14 @@ import org.joda.time.DateTime;
 
 import ch.opentrainingcenter.client.PreferenceConstants;
 import ch.opentrainingcenter.client.helper.ColorFromPreferenceHelper;
-import ch.opentrainingcenter.client.helper.PlanungWocheComparator;
-import ch.opentrainingcenter.client.model.planing.IPastPlanung;
-import ch.opentrainingcenter.client.model.planing.IPastPlanungModel;
-import ch.opentrainingcenter.client.model.planing.impl.KwJahrKey;
-import ch.opentrainingcenter.client.model.planing.impl.PastPlanungModel;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
+import ch.opentrainingcenter.model.ModelFactory;
+import ch.opentrainingcenter.model.planing.IPastPlanung;
+import ch.opentrainingcenter.model.planing.IPastPlanungModel;
+import ch.opentrainingcenter.model.planing.KwJahrKey;
+import ch.opentrainingcenter.model.planing.PlanungWocheComparator;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IImported;
 import ch.opentrainingcenter.transfer.IPlanungWoche;
@@ -62,7 +62,7 @@ public class PlanungPastViewer {
         final List<IImported> allImported = db.getAllImported(athlete);
         final DateTime dt = new DateTime();
         final KwJahrKey now = new KwJahrKey(dt.getYear(), dt.getWeekOfWeekyear());
-        final IPastPlanungModel model = new PastPlanungModel(planungsWoche, allImported, now);
+        final IPastPlanungModel model = ModelFactory.createPastPlanungModel(planungsWoche, allImported, now);
 
         viewer.setInput(model.getPastPlanungen());
 

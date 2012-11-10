@@ -10,21 +10,22 @@ import org.eclipse.jface.preference.IPreferenceStore;
 
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.Messages;
-import ch.opentrainingcenter.client.cache.Cache;
-import ch.opentrainingcenter.client.cache.ICache;
+import ch.opentrainingcenter.client.PreferenceConstants;
 import ch.opentrainingcenter.client.cache.impl.HealthCache;
 import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
 import ch.opentrainingcenter.client.cache.impl.TrainingsPlanCache;
-import ch.opentrainingcenter.client.model.ModelFactory;
-import ch.opentrainingcenter.client.model.navigation.impl.ConcreteHealth;
-import ch.opentrainingcenter.client.model.planing.impl.PlanungModel;
 import ch.opentrainingcenter.client.views.ApplicationContext;
+import ch.opentrainingcenter.client.views.IImageKeys;
+import ch.opentrainingcenter.core.cache.Cache;
+import ch.opentrainingcenter.core.cache.ICache;
 import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
-import ch.opentrainingcenter.importer.ConvertContainer;
-import ch.opentrainingcenter.importer.ExtensionHelper;
-import ch.opentrainingcenter.importer.IImportedConverter;
-import ch.opentrainingcenter.importer.ImporterFactory;
+import ch.opentrainingcenter.core.importer.ConvertContainer;
+import ch.opentrainingcenter.core.importer.ExtensionHelper;
+import ch.opentrainingcenter.core.importer.IImportedConverter;
+import ch.opentrainingcenter.core.importer.ImporterFactory;
+import ch.opentrainingcenter.model.navigation.ConcreteHealth;
+import ch.opentrainingcenter.model.planing.IPlanungModel;
 import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IHealth;
@@ -45,7 +46,7 @@ public class InitialLoadRunnable implements IRunnableWithProgress {
             final IDatabaseAccess db = DatabaseAccessFactory.getDatabaseAccess();
             final List<IImported> allImported = db.getAllImported(athlete, 10);
             final ConvertContainer cc = new ConvertContainer(ExtensionHelper.getConverters());
-            final IImportedConverter fileLoader = ImporterFactory.createGpsFileLoader(store, cc);
+            final IImportedConverter fileLoader = ImporterFactory.createGpsFileLoader(cc, store.getString(PreferenceConstants.GPS_FILE_LOCATION_PROG));
             final Cache cache = TrainingCenterDataCache.getInstance();
             int i = 1;
             for (final IImported record : allImported) {
@@ -64,7 +65,7 @@ public class InitialLoadRunnable implements IRunnableWithProgress {
             final List<IHealth> healths = db.getHealth(athlete);
             final ICache<Integer, ConcreteHealth> healthCache = HealthCache.getInstance();
             for (final IHealth health : healths) {
-                healthCache.add(new ConcreteHealth(health));
+                healthCache.add(ch.opentrainingcenter.model.ModelFactory.createConcreteHealth(health, IImageKeys.CARDIO3232));
                 monitor.subTask(Messages.InitialLoadRunnable_1 + i++);
                 LOG.info(Messages.InitialLoadRunnable_2);
             }
@@ -73,8 +74,8 @@ public class InitialLoadRunnable implements IRunnableWithProgress {
             final TrainingsPlanCache planCache = TrainingsPlanCache.getInstance();
             i = 0;
             for (final IPlanungWoche plan : planungsWoche) {
-                final PlanungModel model = ModelFactory.createPlanungModel(athlete, plan.getJahr(), plan.getKw(), plan.getKmProWoche(), plan.isInterval(), plan
-                        .getLangerLauf());
+                final IPlanungModel model = ch.opentrainingcenter.model.ModelFactory.createPlanungModel(athlete, plan.getJahr(), plan.getKw(), plan
+                        .getKmProWoche(), plan.isInterval(), plan.getLangerLauf());
                 planCache.add(model);
                 monitor.subTask(Messages.InitialLoadRunnable_3 + i++);
                 LOG.info(Messages.InitialLoadRunnable_4);

@@ -1,7 +1,5 @@
 package ch.opentrainingcenter.client.helper;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,9 +8,9 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
-import ch.opentrainingcenter.client.SimpleTrainingDescriptor;
-import ch.opentrainingcenter.client.model.ISimpleTraining;
-import ch.opentrainingcenter.client.model.RunType;
+import ch.opentrainingcenter.model.RunType;
+import ch.opentrainingcenter.model.training.ISimpleTraining;
+import static org.junit.Assert.assertEquals;
 
 public class SimpleTrainingCalculatorTest {
 

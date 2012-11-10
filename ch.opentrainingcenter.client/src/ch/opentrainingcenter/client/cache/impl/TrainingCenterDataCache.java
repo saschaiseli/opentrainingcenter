@@ -10,8 +10,8 @@ import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
 
-import ch.opentrainingcenter.client.cache.Cache;
-import ch.opentrainingcenter.client.cache.IRecordListener;
+import ch.opentrainingcenter.core.cache.Cache;
+import ch.opentrainingcenter.core.cache.IRecordListener;
 import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.tcx.ActivityListT;

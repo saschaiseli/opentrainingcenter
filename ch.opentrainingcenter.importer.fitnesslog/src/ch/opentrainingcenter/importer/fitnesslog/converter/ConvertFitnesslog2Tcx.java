@@ -19,7 +19,7 @@ import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
 import org.xml.sax.SAXException;
 
-import ch.opentrainingcenter.importer.IConvert2Tcx;
+import ch.opentrainingcenter.core.importer.IConvert2Tcx;
 import ch.opentrainingcenter.importer.fitnesslog.Activator;
 import ch.opentrainingcenter.importer.fitnesslog.model.FitnessWorkbook;
 import ch.opentrainingcenter.tcx.ActivityT;

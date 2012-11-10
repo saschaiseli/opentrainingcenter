@@ -12,7 +12,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import ch.opentrainingcenter.importer.IConvert2Tcx;
+import ch.opentrainingcenter.core.importer.IConvert2Tcx;
 import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.tcx.TrainingCenterDatabaseT;
 import static org.junit.Assert.assertEquals;

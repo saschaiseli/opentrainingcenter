@@ -5,8 +5,8 @@ import org.eclipse.swt.graphics.Image;
 
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.Messages;
-import ch.opentrainingcenter.client.helper.TimeHelper;
 import ch.opentrainingcenter.client.views.IImageKeys;
+import ch.opentrainingcenter.core.helper.TimeHelper;
 import ch.opentrainingcenter.transfer.IHealth;
 import ch.opentrainingcenter.transfer.IImported;
 

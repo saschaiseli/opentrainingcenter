@@ -12,8 +12,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ch.opentrainingcenter.client.charts.internal.StatistikCreator;
-import ch.opentrainingcenter.client.model.ISimpleTraining;
-import ch.opentrainingcenter.client.model.impl.SimpleTraining;
+import ch.opentrainingcenter.model.ModelFactory;
+import ch.opentrainingcenter.model.training.ISimpleTraining;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -194,6 +194,6 @@ public class IStatistikCreatorTest {
         final int avgHeartRate = 0;
         final int maxHeartRate = 1;
         final double speed = 0;
-        return new SimpleTraining(distanzInMeter, dauerInSekunden, datum, avgHeartRate, maxHeartRate, speed, null, null);
+        return ModelFactory.createSimpleTraining(distanzInMeter, dauerInSekunden, datum, avgHeartRate, maxHeartRate, speed, null, null);
     }
 }

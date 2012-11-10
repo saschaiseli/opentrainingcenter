@@ -18,12 +18,12 @@ import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Spinner;
 
 import ch.opentrainingcenter.client.Messages;
-import ch.opentrainingcenter.client.model.planing.impl.PlanungModel;
+import ch.opentrainingcenter.model.planing.IPlanungModel;
 
 public class KWViewPart {
 
     private DataBindingContext ctx;
-    private PlanungModel model;
+    private IPlanungModel model;
     private Label kw;
     private Button buttonInterval;
     private Composite composite;
@@ -31,7 +31,7 @@ public class KWViewPart {
     private Label kmProWoche;
     private Spinner langerLaufSpinner;
 
-    public Composite addLabelAndValue(final Composite parent, final PlanungModel m) {
+    public Composite addLabelAndValue(final Composite parent, final IPlanungModel m) {
 
         this.model = m;
         final String label = Messages.KWViewPart_0 + model.getKw();

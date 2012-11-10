@@ -7,14 +7,13 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import ch.opentrainingcenter.client.Messages;
-import ch.opentrainingcenter.client.model.IGpsFileModel;
-import ch.opentrainingcenter.client.model.IGpsFileModelWrapper;
-import ch.opentrainingcenter.client.model.TrainingOverviewFactory;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
-import ch.opentrainingcenter.importer.ConvertContainer;
-import ch.opentrainingcenter.importer.IFileCopy;
+import ch.opentrainingcenter.core.importer.ConvertContainer;
+import ch.opentrainingcenter.core.importer.IFileCopy;
 import ch.opentrainingcenter.importer.IFileImport;
+import ch.opentrainingcenter.model.TrainingOverviewFactory;
+import ch.opentrainingcenter.model.importer.IGpsFileModel;
+import ch.opentrainingcenter.model.importer.IGpsFileModelWrapper;
 import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.ITraining;
@@ -56,7 +55,7 @@ public class FileImport implements IFileImport {
         final List<ActivityT> activitiesToImport = new ArrayList<ActivityT>();
         for (final IGpsFileModel model : modelWrapper.getGpsFileModels()) {
             final File file = new File(filterPath, model.getFileName());
-            monitor.setTaskName(Messages.ImportManualGpsFiles5 + file.getName());
+            monitor.setTaskName("Importiere File" + file.getName());
             LOGGER.info("importiere File: " + file.getName()); //$NON-NLS-1$
             final List<ActivityT> activities = cc.getMatchingConverter(file).convertActivity(file);
 

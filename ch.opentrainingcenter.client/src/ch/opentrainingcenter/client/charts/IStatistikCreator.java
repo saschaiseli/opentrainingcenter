@@ -3,7 +3,7 @@ package ch.opentrainingcenter.client.charts;
 import java.util.List;
 import java.util.Map;
 
-import ch.opentrainingcenter.client.model.ISimpleTraining;
+import ch.opentrainingcenter.model.training.ISimpleTraining;
 
 public interface IStatistikCreator {
 

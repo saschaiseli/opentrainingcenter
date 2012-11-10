@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-import ch.opentrainingcenter.client.model.impl.GoldMedalModel.Intervall;
+import ch.opentrainingcenter.model.training.Intervall;
 
 public class DistanceIntervallTest {
     private static final double DEFAULT = -1d;

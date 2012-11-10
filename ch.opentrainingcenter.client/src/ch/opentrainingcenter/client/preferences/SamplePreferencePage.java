@@ -18,10 +18,10 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.client.PreferenceConstants;
-import ch.opentrainingcenter.client.helper.GpsFileNameFilter;
 import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
-import ch.opentrainingcenter.importer.ExtensionHelper;
-import ch.opentrainingcenter.importer.ImporterFactory;
+import ch.opentrainingcenter.core.helper.GpsFileNameFilter;
+import ch.opentrainingcenter.core.importer.ExtensionHelper;
+import ch.opentrainingcenter.core.importer.ImporterFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
 
 /**

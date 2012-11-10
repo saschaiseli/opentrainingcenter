@@ -11,9 +11,9 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.widgets.Display;
 
 import ch.opentrainingcenter.client.Messages;
-import ch.opentrainingcenter.client.cache.Cache;
-import ch.opentrainingcenter.client.model.IGpsFileModelWrapper;
+import ch.opentrainingcenter.core.cache.Cache;
 import ch.opentrainingcenter.importer.IFileImport;
+import ch.opentrainingcenter.model.importer.IGpsFileModelWrapper;
 import ch.opentrainingcenter.tcx.ActivityT;
 
 public class ImportManualJob extends Job {

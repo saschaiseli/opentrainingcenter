@@ -7,8 +7,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.eclipse.core.runtime.ListenerList;
 
-import ch.opentrainingcenter.client.cache.ICache;
-import ch.opentrainingcenter.client.cache.IRecordListener;
+import ch.opentrainingcenter.core.cache.ICache;
+import ch.opentrainingcenter.core.cache.IRecordListener;
 
 public abstract class AbstractCache<K, V> implements ICache<K, V> {
 

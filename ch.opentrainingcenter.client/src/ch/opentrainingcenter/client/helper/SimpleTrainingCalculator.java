@@ -7,9 +7,9 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import ch.opentrainingcenter.client.model.ISimpleTraining;
-import ch.opentrainingcenter.client.model.ModelFactory;
-import ch.opentrainingcenter.client.model.RunType;
+import ch.opentrainingcenter.model.ModelFactory;
+import ch.opentrainingcenter.model.RunType;
+import ch.opentrainingcenter.model.training.ISimpleTraining;
 
 public final class SimpleTrainingCalculator {
 

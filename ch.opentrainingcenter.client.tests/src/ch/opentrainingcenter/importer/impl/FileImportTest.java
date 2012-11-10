@@ -17,12 +17,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import ch.opentrainingcenter.client.model.IGpsFileModel;
-import ch.opentrainingcenter.client.model.IGpsFileModelWrapper;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
-import ch.opentrainingcenter.importer.ConvertContainer;
-import ch.opentrainingcenter.importer.IConvert2Tcx;
-import ch.opentrainingcenter.importer.IFileCopy;
+import ch.opentrainingcenter.core.importer.ConvertContainer;
+import ch.opentrainingcenter.core.importer.IConvert2Tcx;
+import ch.opentrainingcenter.core.importer.IFileCopy;
+import ch.opentrainingcenter.importer.impl.FileImport;
+import ch.opentrainingcenter.model.importer.IGpsFileModel;
+import ch.opentrainingcenter.model.importer.IGpsFileModelWrapper;
 import ch.opentrainingcenter.tcx.ActivityLapT;
 import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.tcx.HeartRateInBeatsPerMinuteT;

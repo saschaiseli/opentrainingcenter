@@ -2,7 +2,7 @@ package ch.opentrainingcenter.client.cache.impl;
 
 import java.util.List;
 
-import ch.opentrainingcenter.client.model.navigation.impl.ConcreteHealth;
+import ch.opentrainingcenter.model.navigation.ConcreteHealth;
 
 /**
  * Cache um die Gesundheitszustände zu verwalten. Namentlich sind die Ruhepuls

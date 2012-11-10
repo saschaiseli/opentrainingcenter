@@ -1,6 +1,6 @@
 package ch.opentrainingcenter.client.commands.runtype;
 
-import ch.opentrainingcenter.client.model.RunType;
+import ch.opentrainingcenter.model.RunType;
 
 public class ExtIntervall extends ChangeRunType {
 

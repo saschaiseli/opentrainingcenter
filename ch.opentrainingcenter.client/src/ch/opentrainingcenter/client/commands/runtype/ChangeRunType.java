@@ -6,13 +6,13 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 
-import ch.opentrainingcenter.client.cache.Cache;
 import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
-import ch.opentrainingcenter.client.model.RunType;
-import ch.opentrainingcenter.client.model.navigation.impl.ConcreteImported;
 import ch.opentrainingcenter.client.views.ApplicationContext;
+import ch.opentrainingcenter.core.cache.Cache;
 import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
+import ch.opentrainingcenter.model.RunType;
+import ch.opentrainingcenter.model.navigation.ConcreteImported;
 
 public abstract class ChangeRunType extends AbstractHandler {
 
@@ -28,7 +28,7 @@ public abstract class ChangeRunType extends AbstractHandler {
         }
         for (final Object obj : selection) {
             final ConcreteImported record = (ConcreteImported) obj;
-            db.updateRecord(record.getImported(), getType().getIndex());
+            db.updateRecord(record, getType().getIndex());
         }
         cache.notifyListeners();
         return null;

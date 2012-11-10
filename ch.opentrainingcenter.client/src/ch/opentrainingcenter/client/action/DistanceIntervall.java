@@ -8,7 +8,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import ch.opentrainingcenter.client.model.impl.GoldMedalModel.Intervall;
+import ch.opentrainingcenter.model.training.Intervall;
 
 public class DistanceIntervall {
 

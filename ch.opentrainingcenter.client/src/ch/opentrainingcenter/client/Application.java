@@ -25,8 +25,6 @@ public class Application implements IApplication {
 
     public static final String DATABASE_EXTENSION_POINT = "ch.opentrainingdatabase.db"; //$NON-NLS-1$
 
-    public static final String IMPORT_EXTENSION_POINT = "ch.opentrainingcenter.myimporter";//$NON-NLS-1$
-
     public static final String WINDOW_TITLE = Messages.ApplicationWindowTitle;
 
     private final IDatabaseAccess databaseAccess = DatabaseAccessFactory.getDatabaseAccess();

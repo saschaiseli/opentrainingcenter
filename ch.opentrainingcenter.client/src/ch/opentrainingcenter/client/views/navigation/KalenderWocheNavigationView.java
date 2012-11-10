@@ -28,28 +28,28 @@ import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.client.PreferenceConstants;
 import ch.opentrainingcenter.client.action.job.LoadJahresplanung;
-import ch.opentrainingcenter.client.cache.Cache;
-import ch.opentrainingcenter.client.cache.IRecordListener;
 import ch.opentrainingcenter.client.cache.impl.HealthCache;
 import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
-import ch.opentrainingcenter.client.model.navigation.IKalenderWocheNavigationModel;
-import ch.opentrainingcenter.client.model.navigation.impl.ConcreteHealth;
-import ch.opentrainingcenter.client.model.navigation.impl.ConcreteImported;
-import ch.opentrainingcenter.client.model.navigation.impl.DecoratImported;
-import ch.opentrainingcenter.client.model.navigation.impl.KWTraining;
-import ch.opentrainingcenter.client.model.navigation.impl.NavigationElementComparer;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.client.views.dialoge.HealthDialog;
 import ch.opentrainingcenter.client.views.navigation.tree.KalenderWocheTreeContentProvider;
 import ch.opentrainingcenter.client.views.navigation.tree.KalenderWocheTreeLabelProvider;
 import ch.opentrainingcenter.client.views.overview.SingleActivityViewPart;
+import ch.opentrainingcenter.core.cache.Cache;
+import ch.opentrainingcenter.core.cache.IRecordListener;
 import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
-import ch.opentrainingcenter.importer.ConvertContainer;
-import ch.opentrainingcenter.importer.ExtensionHelper;
-import ch.opentrainingcenter.importer.IImportedConverter;
-import ch.opentrainingcenter.importer.ImporterFactory;
-import ch.opentrainingcenter.importer.LoadActivityJob;
+import ch.opentrainingcenter.core.importer.ConvertContainer;
+import ch.opentrainingcenter.core.importer.ExtensionHelper;
+import ch.opentrainingcenter.core.importer.IImportedConverter;
+import ch.opentrainingcenter.core.importer.ImporterFactory;
+import ch.opentrainingcenter.core.importer.LoadActivityJob;
+import ch.opentrainingcenter.model.ModelFactory;
+import ch.opentrainingcenter.model.navigation.ConcreteHealth;
+import ch.opentrainingcenter.model.navigation.ConcreteImported;
+import ch.opentrainingcenter.model.navigation.DecoratImported;
+import ch.opentrainingcenter.model.navigation.IKalenderWocheNavigationModel;
+import ch.opentrainingcenter.model.navigation.NavigationElementComparer;
 import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IHealth;
@@ -65,7 +65,7 @@ public class KalenderWocheNavigationView extends ViewPart {
 
     private final Cache cache = TrainingCenterDataCache.getInstance();
     private final HealthCache healthCache = HealthCache.getInstance();
-    private final IKalenderWocheNavigationModel treeModel = new KWTraining();
+    private final IKalenderWocheNavigationModel treeModel = ModelFactory.createKwModel();
 
     private final ApplicationContext context = ApplicationContext.getApplicationContext();
 
@@ -167,7 +167,7 @@ public class KalenderWocheNavigationView extends ViewPart {
                 final Object item = selection.getFirstElement();
 
                 if (item instanceof ConcreteImported) {
-                    openSingleRunView(((ConcreteImported) item).getImported());
+                    openSingleRunView(((IImported) item));
                 }
 
                 if (item instanceof IHealth) {
@@ -231,7 +231,7 @@ public class KalenderWocheNavigationView extends ViewPart {
      */
     private void openSingleRunView(final IImported record) {
         context.setSelectedId(record.getActivityId());
-        final IImportedConverter loader = ImporterFactory.createGpsFileLoader(store, cc);
+        final IImportedConverter loader = ImporterFactory.createGpsFileLoader(cc, store.getString(PreferenceConstants.GPS_FILE_LOCATION_PROG));
         final LoadActivityJob job = new LoadActivityJob(Messages.NavigationView1, record, cache, loader);
         job.addJobChangeListener(new ImportActivityJobListener(record));
         job.schedule();

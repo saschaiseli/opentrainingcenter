@@ -35,10 +35,10 @@ import org.jfree.data.xy.IntervalXYDataset;
 import org.jfree.experimental.chart.swt.ChartComposite;
 
 import ch.opentrainingcenter.client.Messages;
-import ch.opentrainingcenter.client.cache.IRecordListener;
 import ch.opentrainingcenter.client.cache.impl.HealthCache;
 import ch.opentrainingcenter.client.charts.OTCBarPainter;
-import ch.opentrainingcenter.client.model.navigation.impl.ConcreteHealth;
+import ch.opentrainingcenter.core.cache.IRecordListener;
+import ch.opentrainingcenter.model.navigation.ConcreteHealth;
 
 public abstract class VitaldatenChartViewer extends ViewPart implements ISelectionProvider, IRecordListener<ConcreteHealth> {
 

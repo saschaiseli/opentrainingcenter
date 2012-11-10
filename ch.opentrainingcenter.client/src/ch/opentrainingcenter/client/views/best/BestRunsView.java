@@ -20,12 +20,12 @@ import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.client.PreferenceConstants;
 import ch.opentrainingcenter.client.action.GoldMedalAction;
-import ch.opentrainingcenter.client.cache.IRecordListener;
 import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
-import ch.opentrainingcenter.client.model.IGoldMedalModel;
 import ch.opentrainingcenter.client.model.Units;
-import ch.opentrainingcenter.client.model.impl.GoldMedalModel.Intervall;
+import ch.opentrainingcenter.core.cache.IRecordListener;
 import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
+import ch.opentrainingcenter.model.training.IGoldMedalModel;
+import ch.opentrainingcenter.model.training.Intervall;
 import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.transfer.IAthlete;
 

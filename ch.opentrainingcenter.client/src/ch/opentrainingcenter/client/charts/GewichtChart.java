@@ -8,8 +8,8 @@ import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.client.PreferenceConstants;
 import ch.opentrainingcenter.client.helper.ColorFromPreferenceHelper;
-import ch.opentrainingcenter.client.model.navigation.impl.ConcreteHealth;
 import ch.opentrainingcenter.client.views.statistics.VitaldatenChartViewer;
+import ch.opentrainingcenter.model.navigation.ConcreteHealth;
 
 public class GewichtChart extends VitaldatenChartViewer {
     private final IPreferenceStore store = Activator.getDefault().getPreferenceStore();

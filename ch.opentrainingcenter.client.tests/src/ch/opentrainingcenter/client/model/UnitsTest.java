@@ -5,6 +5,7 @@ import org.junit.Test;
 import ch.opentrainingcenter.client.Messages;
 import static org.junit.Assert.assertEquals;
 
+@SuppressWarnings("nls")
 public class UnitsTest {
     @Test
     public void testEnumMitLabels() {

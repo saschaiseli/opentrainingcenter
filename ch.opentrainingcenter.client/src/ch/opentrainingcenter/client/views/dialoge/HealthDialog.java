@@ -35,13 +35,13 @@ import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.client.PreferenceConstants;
 import ch.opentrainingcenter.client.cache.impl.HealthCache;
-import ch.opentrainingcenter.client.model.navigation.impl.ConcreteHealth;
-import ch.opentrainingcenter.client.model.sportler.HealthModel;
 import ch.opentrainingcenter.client.views.IImageKeys;
 import ch.opentrainingcenter.client.views.databinding.NumberValidator;
 import ch.opentrainingcenter.client.views.databinding.StringToIntegerConverter;
 import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
+import ch.opentrainingcenter.model.ModelFactory;
+import ch.opentrainingcenter.model.sportler.HealthModel;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IHealth;
@@ -174,7 +174,7 @@ public class HealthDialog extends TitleAreaDialog {
                 final IHealth healthToSave = CommonTransferFactory.createHealth(athlete, model.getWeight(), model.getRuhePuls(), model.getDateOfMeasure());
                 final int id = db.saveOrUpdate(healthToSave);
                 healthToSave.setId(id);
-                HealthCache.getInstance().add(new ConcreteHealth(healthToSave));
+                HealthCache.getInstance().add(ModelFactory.createConcreteHealth(healthToSave, IImageKeys.CARDIO3232));
             }
         } else {
             super.buttonPressed(buttonId);

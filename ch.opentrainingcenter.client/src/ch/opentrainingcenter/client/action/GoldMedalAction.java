@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import ch.opentrainingcenter.client.helper.DistanceHelper;
-import ch.opentrainingcenter.client.helper.SpeedCalculator;
-import ch.opentrainingcenter.client.helper.TimeHelper;
-import ch.opentrainingcenter.client.model.IGoldMedalModel;
-import ch.opentrainingcenter.client.model.impl.GoldMedalModel;
-import ch.opentrainingcenter.client.model.impl.GoldMedalModel.Intervall;
+import ch.opentrainingcenter.core.helper.DistanceHelper;
+import ch.opentrainingcenter.core.helper.SpeedCalculator;
+import ch.opentrainingcenter.core.helper.TimeHelper;
+import ch.opentrainingcenter.model.ModelFactory;
+import ch.opentrainingcenter.model.training.IGoldMedalModel;
+import ch.opentrainingcenter.model.training.Intervall;
 import ch.opentrainingcenter.transfer.IImported;
 import ch.opentrainingcenter.transfer.ITraining;
 
@@ -17,7 +17,7 @@ public class GoldMedalAction {
     private static final String UNKNOWN = "-"; //$NON-NLS-1$
 
     public IGoldMedalModel getModel(final List<IImported> allImported) {
-        final IGoldMedalModel result = new GoldMedalModel();
+        final IGoldMedalModel result = ModelFactory.createGoldMedalModel();
         final List<Double> maxSpeed = new ArrayList<Double>();
         final List<Double> laenge = new ArrayList<Double>();
         final List<Double> dauer = new ArrayList<Double>();
@@ -53,7 +53,7 @@ public class GoldMedalAction {
         return result;
     }
 
-    private String getPace(final DistanceIntervall di, final GoldMedalModel.Intervall intervall) {
+    private String getPace(final DistanceIntervall di, final Intervall intervall) {
         return String.valueOf(di.getMax(intervall) > 0 ? di.getMax(intervall) : UNKNOWN);
     }
 

@@ -5,12 +5,12 @@ import java.util.List;
 import org.eclipse.jface.action.IStatusLineManager;
 
 import ch.opentrainingcenter.client.Messages;
-import ch.opentrainingcenter.client.helper.DistanceHelper;
-import ch.opentrainingcenter.client.helper.TimeHelper;
-import ch.opentrainingcenter.client.model.navigation.INavigationItem;
-import ch.opentrainingcenter.client.model.navigation.impl.ConcreteHealth;
-import ch.opentrainingcenter.client.model.navigation.impl.ConcreteImported;
-import ch.opentrainingcenter.client.model.navigation.impl.NavigationParent;
+import ch.opentrainingcenter.core.helper.DistanceHelper;
+import ch.opentrainingcenter.core.helper.TimeHelper;
+import ch.opentrainingcenter.model.navigation.ConcreteHealth;
+import ch.opentrainingcenter.model.navigation.ConcreteImported;
+import ch.opentrainingcenter.model.navigation.INavigationItem;
+import ch.opentrainingcenter.model.navigation.INavigationParent;
 import ch.opentrainingcenter.transfer.IImported;
 import ch.opentrainingcenter.transfer.ITraining;
 
@@ -28,8 +28,8 @@ class StatusLineWriter {
     protected void writeStatusLine(final Object selection) {
         if (selection == null) {
             writeToStatusLine(""); //$NON-NLS-1$
-        } else if (selection instanceof NavigationParent) {
-            final NavigationParent parent = (NavigationParent) selection;
+        } else if (selection instanceof INavigationParent) {
+            final INavigationParent parent = (INavigationParent) selection;
             if (parent.getChilds().isEmpty()) {
                 throw new IllegalArgumentException("Parent hat keine Childs. Fehlerhafte Datenstruktur"); //$NON-NLS-1$
             }
@@ -64,7 +64,7 @@ class StatusLineWriter {
         writeToStatusLine(str.toString());
     }
 
-    private void writeToStatusLine(final NavigationParent parent) {
+    private void writeToStatusLine(final INavigationParent parent) {
         final List<INavigationItem> childs = parent.getChilds();
         final StringBuffer str = new StringBuffer(Messages.StatusLineWriter_11);
         str.append(parent.getKalenderWoche().getKw());

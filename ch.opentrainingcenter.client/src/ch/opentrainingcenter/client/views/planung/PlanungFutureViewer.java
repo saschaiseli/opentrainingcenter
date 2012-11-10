@@ -16,10 +16,10 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.joda.time.DateTime;
 
-import ch.opentrainingcenter.client.helper.PlanungWocheComparator;
-import ch.opentrainingcenter.client.model.planing.impl.KwJahrKey;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
+import ch.opentrainingcenter.model.planing.KwJahrKey;
+import ch.opentrainingcenter.model.planing.PlanungWocheComparator;
 import ch.opentrainingcenter.transfer.IPlanungWoche;
 
 public class PlanungFutureViewer {

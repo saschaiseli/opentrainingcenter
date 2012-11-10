@@ -12,7 +12,7 @@ import java.util.TreeMap;
 import org.apache.log4j.Logger;
 
 import ch.opentrainingcenter.client.charts.IStatistikCreator;
-import ch.opentrainingcenter.client.model.ISimpleTraining;
+import ch.opentrainingcenter.model.training.ISimpleTraining;
 
 public class StatistikCreator implements IStatistikCreator {
 

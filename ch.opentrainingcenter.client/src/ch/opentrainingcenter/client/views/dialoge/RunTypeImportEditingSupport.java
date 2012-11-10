@@ -6,7 +6,7 @@ import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 
-import ch.opentrainingcenter.client.model.IGpsFileModel;
+import ch.opentrainingcenter.model.importer.IGpsFileModel;
 
 class RunTypeImportEditingSupport extends EditingSupport {
 

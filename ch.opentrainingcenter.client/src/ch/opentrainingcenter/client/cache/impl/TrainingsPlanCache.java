@@ -1,9 +1,9 @@
 package ch.opentrainingcenter.client.cache.impl;
 
-import ch.opentrainingcenter.client.model.planing.impl.KwJahrKey;
-import ch.opentrainingcenter.client.model.planing.impl.PlanungModel;
+import ch.opentrainingcenter.model.planing.IPlanungModel;
+import ch.opentrainingcenter.model.planing.KwJahrKey;
 
-public class TrainingsPlanCache extends AbstractCache<KwJahrKey, PlanungModel> {
+public class TrainingsPlanCache extends AbstractCache<KwJahrKey, IPlanungModel> {
 
     private static TrainingsPlanCache INSTANCE = new TrainingsPlanCache();
 
@@ -16,7 +16,7 @@ public class TrainingsPlanCache extends AbstractCache<KwJahrKey, PlanungModel> {
     }
 
     @Override
-    public KwJahrKey getKey(final PlanungModel value) {
+    public KwJahrKey getKey(final IPlanungModel value) {
         return new KwJahrKey(value.getJahr(), value.getKw());
     }
 }

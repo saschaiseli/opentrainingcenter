@@ -6,8 +6,8 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 
 import ch.opentrainingcenter.client.Activator;
-import ch.opentrainingcenter.client.model.navigation.INavigationItem;
-import ch.opentrainingcenter.client.model.navigation.INavigationParent;
+import ch.opentrainingcenter.model.navigation.INavigationItem;
+import ch.opentrainingcenter.model.navigation.INavigationParent;
 
 public class KalenderWocheTreeLabelProvider extends LabelProvider {
     @Override

@@ -3,9 +3,9 @@ package ch.opentrainingcenter.client.action;
 import java.util.Date;
 import java.util.List;
 
-import ch.opentrainingcenter.client.cache.Cache;
-import ch.opentrainingcenter.client.cache.IRecordListener;
-import ch.opentrainingcenter.client.model.RunType;
+import ch.opentrainingcenter.core.cache.Cache;
+import ch.opentrainingcenter.core.cache.IRecordListener;
+import ch.opentrainingcenter.model.RunType;
 import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.transfer.ActivityExtension;
 import ch.opentrainingcenter.transfer.IImported;

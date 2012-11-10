@@ -1,6 +1,6 @@
 package ch.opentrainingcenter.client.cache;
 
-import ch.opentrainingcenter.importer.IImportedConverter;
+import ch.opentrainingcenter.core.importer.IImportedConverter;
 import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.transfer.IImported;
 

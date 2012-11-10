@@ -6,7 +6,12 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: ch.opentrainingcenter.core.Activator
 Require-Bundle: org.eclipse.core.runtime,
  logging,
- ch.opentrainingcenter.transfer
+ ch.opentrainingcenter.transfer,
+ ch.opentrainingcenter.tcx,
+ jodatime
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: ch.opentrainingcenter.core.db
+Export-Package: ch.opentrainingcenter.core.cache,
+ ch.opentrainingcenter.core.db,
+ ch.opentrainingcenter.core.helper,
+ ch.opentrainingcenter.core.importer

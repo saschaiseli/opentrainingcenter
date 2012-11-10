@@ -11,9 +11,9 @@ import org.eclipse.swt.widgets.Shell;
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.client.PreferenceConstants;
-import ch.opentrainingcenter.importer.ConvertContainer;
-import ch.opentrainingcenter.importer.ExtensionHelper;
-import ch.opentrainingcenter.importer.IConvert2Tcx;
+import ch.opentrainingcenter.core.importer.ConvertContainer;
+import ch.opentrainingcenter.core.importer.ExtensionHelper;
+import ch.opentrainingcenter.core.importer.IConvert2Tcx;
 
 public class ImportFileDialog implements IFilterDialog {
 

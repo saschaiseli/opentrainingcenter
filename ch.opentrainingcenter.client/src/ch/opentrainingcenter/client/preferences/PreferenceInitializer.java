@@ -10,9 +10,9 @@ import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 
 import ch.opentrainingcenter.client.Application;
 import ch.opentrainingcenter.client.PreferenceConstants;
-import ch.opentrainingcenter.importer.ConvertContainer;
-import ch.opentrainingcenter.importer.ExtensionHelper;
-import ch.opentrainingcenter.importer.IConvert2Tcx;
+import ch.opentrainingcenter.core.importer.ConvertContainer;
+import ch.opentrainingcenter.core.importer.ExtensionHelper;
+import ch.opentrainingcenter.core.importer.IConvert2Tcx;
 
 /**
  * Class used to initialize default preference values.

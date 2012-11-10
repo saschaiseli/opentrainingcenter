@@ -28,14 +28,14 @@ import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.client.PreferenceConstants;
 import ch.opentrainingcenter.client.cache.impl.TrainingsPlanCache;
-import ch.opentrainingcenter.client.helper.PlanungWocheComparator;
-import ch.opentrainingcenter.client.helper.TimeHelper;
-import ch.opentrainingcenter.client.model.ModelFactory;
-import ch.opentrainingcenter.client.model.planing.IPlanungWocheModel;
-import ch.opentrainingcenter.client.model.planing.impl.PlanungModel;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
+import ch.opentrainingcenter.core.helper.TimeHelper;
+import ch.opentrainingcenter.model.ModelFactory;
+import ch.opentrainingcenter.model.planing.IPlanungModel;
+import ch.opentrainingcenter.model.planing.IPlanungWocheModel;
+import ch.opentrainingcenter.model.planing.PlanungWocheComparator;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IPlanungWoche;
@@ -108,7 +108,7 @@ public class JahresplanungViewPart extends ViewPart {
             planungen = all;
         }
 
-        final List<PlanungModel> pl = new ArrayList<PlanungModel>();
+        final List<IPlanungModel> pl = new ArrayList<IPlanungModel>();
         for (final IPlanungWoche p : planungen) {
             pl.add(ModelFactory.createPlanungModel(p.getAthlete(), p.getJahr(), p.getKw(), p.getKmProWoche(), p.isInterval(), p.getLangerLauf()));
         }
@@ -118,7 +118,7 @@ public class JahresplanungViewPart extends ViewPart {
 
         KWViewPart kwViewPart;
 
-        for (final PlanungModel model : models) {
+        for (final IPlanungModel model : models) {
             kwViewPart = new KWViewPart();
             kwViewPart.addLabelAndValue(composite, model);
             views.add(kwViewPart);
@@ -134,7 +134,7 @@ public class JahresplanungViewPart extends ViewPart {
                 // speichern
                 final TrainingsPlanCache cache = TrainingsPlanCache.getInstance();
                 final List<IPlanungWoche> result = new ArrayList<IPlanungWoche>();
-                for (final PlanungModel m : models) {
+                for (final IPlanungModel m : models) {
                     final int km = m.getKmProWoche();
                     if (km == 0) {
                         m.setInterval(false);

@@ -4,8 +4,8 @@ import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
-import ch.opentrainingcenter.client.model.navigation.IKalenderWocheNavigationModel;
-import ch.opentrainingcenter.client.model.navigation.INavigationParent;
+import ch.opentrainingcenter.model.navigation.IKalenderWocheNavigationModel;
+import ch.opentrainingcenter.model.navigation.INavigationParent;
 
 public class KalenderWocheTreeContentProvider implements IStructuredContentProvider, ITreeContentProvider {
     IKalenderWocheNavigationModel model;

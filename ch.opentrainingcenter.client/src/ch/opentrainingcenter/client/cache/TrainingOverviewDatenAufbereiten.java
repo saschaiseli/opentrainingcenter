@@ -10,12 +10,12 @@ import org.apache.log4j.Logger;
 
 import ch.opentrainingcenter.client.charts.IStatistikCreator;
 import ch.opentrainingcenter.client.helper.SimpleTrainingCalculator;
-import ch.opentrainingcenter.client.helper.TimeHelper;
-import ch.opentrainingcenter.client.model.ISimpleTraining;
-import ch.opentrainingcenter.client.model.ModelFactory;
-import ch.opentrainingcenter.client.model.RunType;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
+import ch.opentrainingcenter.core.helper.TimeHelper;
+import ch.opentrainingcenter.model.ModelFactory;
+import ch.opentrainingcenter.model.RunType;
+import ch.opentrainingcenter.model.training.ISimpleTraining;
 import ch.opentrainingcenter.transfer.IImported;
 
 public class TrainingOverviewDatenAufbereiten {

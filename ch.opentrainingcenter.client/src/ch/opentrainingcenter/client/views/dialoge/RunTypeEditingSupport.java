@@ -5,8 +5,8 @@ import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TableViewer;
 
-import ch.opentrainingcenter.client.model.IGpsFileModel;
-import ch.opentrainingcenter.client.model.RunType;
+import ch.opentrainingcenter.model.RunType;
+import ch.opentrainingcenter.model.importer.IGpsFileModel;
 
 class RunTypeEditingSupport extends EditingSupport {
 
