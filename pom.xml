@@ -49,8 +49,11 @@
 		<module>junit</module>
 		<module>mockito</module>
 		<module>ch.opentrainingcenter.client.tests</module>
+		<module>ch.opentrainingcenter.core.tests</module>
+		<module>ch.opentrainingcenter.model.tests</module>
 		<module>ch.opentrainingcenter.importer.tests</module>
 		<module>ch.opentrainingcenter.importer.fitnesslog.tests</module>
+
 	</modules>
 
 	<profiles>
