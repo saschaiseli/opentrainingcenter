@@ -136,6 +136,25 @@ public class PastPlanungTest {
     }
 
     @Test
+    public void testRechnenFehlerMitRunden() {
+
+        final IImported recordA = createRecord(10200.0d, RunType.EXT_INTERVALL);
+        final IImported recordB = createRecord(20300.0d, RunType.INT_INTERVALL);
+        final IImported recordC = createRecord(20400.0d, RunType.INT_INTERVALL);
+        final IImported recordD = createRecord(20400.0d, RunType.INT_INTERVALL);
+
+        effective.add(recordA);
+        effective.add(recordB);
+        effective.add(recordC);
+        effective.add(recordD);
+
+        planung = new PastPlanungImpl(pl, effective);
+
+        assertEquals(pl, planung.getPlanung());
+        assertEquals(71, planung.getKmEffective());
+    }
+
+    @Test
     public void testSuccess() {
         final IImported recordA = createRecord(100001.0d, RunType.EXT_INTERVALL);
         final IImported recordB = createRecord(100001.0d, RunType.EXT_INTERVALL);

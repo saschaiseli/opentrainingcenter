@@ -31,21 +31,21 @@ public class PastPlanungImpl implements IPastPlanung {
 
     private int[] analyse(final List<IImported> effective) {
         final int[] result = new int[3];
-        int km = 0;
+        double km = 0;
         int longest = 0;
         boolean inter = false;
         for (final IImported record : effective) {
-            final double kmAbgerundet = Math.floor(record.getTraining().getLaengeInMeter() / 1000);
-            if (longest < kmAbgerundet) {
-                longest = (int) kmAbgerundet;
+            final double kmTotal = record.getTraining().getLaengeInMeter() / 1000;
+            if (longest < kmTotal) {
+                longest = (int) kmTotal;
             }
-            km += kmAbgerundet;
+            km += kmTotal;
             final ITrainingType type = record.getTrainingType();
             if (isInterval(type.getId())) {
                 inter = true;
             }
         }
-        result[0] = km;
+        result[0] = (int) km;
         result[1] = longest;
         result[2] = inter ? 1 : 0;
         return result;
