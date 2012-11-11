@@ -1,6 +1,7 @@
 package ch.opentrainingcenter.model.navigation;
 
 import java.util.Date;
+import java.util.Locale;
 
 import ch.opentrainingcenter.core.helper.TimeHelper;
 
@@ -9,8 +10,8 @@ public class KalenderWoche implements Comparable<KalenderWoche> {
     private final int jahr;
 
     public KalenderWoche(final Date date) {
-        kw = TimeHelper.getKalenderWoche(date);
-        jahr = TimeHelper.getJahr(date);
+        kw = TimeHelper.getKalenderWoche(date, Locale.GERMAN);
+        jahr = TimeHelper.getJahr(date, Locale.GERMAN);
     }
 
     public int getKw() {

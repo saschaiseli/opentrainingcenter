@@ -7,15 +7,9 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 @SuppressWarnings("nls")
 public class DatabaseAccessFactoryTest {
-    @Test
-    public void test() {
-        final IDatabaseAccess db = DatabaseAccessFactory.getDatabaseAccess();
-        assertNotNull("Es muss eine Datenbank verbindung gefunden werden.", db);
-    }
 
     @Test
     public void testGetDAo() throws CoreException {

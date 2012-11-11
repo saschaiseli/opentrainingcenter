@@ -110,8 +110,8 @@ public final class TimeHelper {
         return format.format(datum);
     }
 
-    public static int getKalenderWoche(final Date date) {
-        final Calendar calendar = Calendar.getInstance(Locale.getDefault());
+    public static int getKalenderWoche(final Date date, final Locale locale) {
+        final Calendar calendar = Calendar.getInstance(locale);
         calendar.setTime(date);
         return calendar.get(Calendar.WEEK_OF_YEAR);
     }
@@ -120,9 +120,10 @@ public final class TimeHelper {
      * Gibt das Jahr zurück. Allerdings gibt zum Beispiel der 1. Januar 2012
      * nicht 2012 zurück sondern 2011. Das Jahr bezieht sich immer auf die Woche
      * in der der Tag ist.
+     * 
      */
-    public static int getJahr(final Date date) {
-        final Calendar calendar = Calendar.getInstance(Locale.getDefault());
+    public static int getJahr(final Date date, final Locale locale) {
+        final Calendar calendar = Calendar.getInstance(locale);
         calendar.setTime(date);
         int year = calendar.get(Calendar.YEAR);
         final int month = calendar.get(Calendar.MONTH);
