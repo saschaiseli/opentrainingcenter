@@ -31,9 +31,11 @@
 	<modules>
 		<module>ch.opentrainingcenter.product</module>
 		<module>ch.opentrainingcenter.client</module>
+		<module>ch.opentrainingcenter.charts</module>
 		<module>ch.opentrainingcenter.core</module>
 		<module>ch.opentrainingcenter.model</module>		
 		<module>ch.opentrainingcenter.db.h2</module>
+		<module>ch.opentrainingcenter.i18n</module>
 		<module>ch.opentrainingcenter.importer</module>
 		<module>ch.opentrainingcenter.importer.fitnesslog</module>
 		<module>ch.opentrainingcenter.importer.tcx</module>
@@ -50,6 +52,7 @@
 		<module>mockito</module>
 		<module>ch.opentrainingcenter.client.tests</module>
 		<module>ch.opentrainingcenter.core.tests</module>
+		<module>ch.opentrainingcenter.charts.tests</module>
 		<module>ch.opentrainingcenter.model.tests</module>
 		<module>ch.opentrainingcenter.importer.tests</module>
 		<module>ch.opentrainingcenter.importer.fitnesslog.tests</module>
