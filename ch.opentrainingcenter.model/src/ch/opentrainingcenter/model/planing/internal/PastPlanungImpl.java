@@ -81,7 +81,7 @@ public class PastPlanungImpl implements IPastPlanung {
     @Override
     public boolean isSuccess() {
         boolean result = false;
-        final boolean isInter = interval && planung.isInterval() || !planung.isInterval() && interval;
+        final boolean isInter = interval || interval && planung.isInterval() || !planung.isInterval() && !interval;
         if (kmEffective >= planung.getKmProWoche() && kmLangerLaufEffective >= planung.getLangerLauf() && isInter) {
             result = true;
         }

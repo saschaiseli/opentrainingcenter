@@ -218,7 +218,7 @@ public class PlanungPastViewer {
                 final IPastPlanung woche = (IPastPlanung) element;
                 final boolean isInter = woche.getPlanung().isInterval();
                 final boolean hasInter = woche.hasInterval();
-                if ((isInter && hasInter) || (!isInter && hasInter)) {
+                if (hasInter || (isInter && hasInter) || (!isInter && !hasInter)) {
                     return erfuellt;
                 } else {
                     return nichtErfuellt;
@@ -231,7 +231,7 @@ public class PlanungPastViewer {
 
             @Override
             public String getText(final Object element) {
-                return String.valueOf("      ");
+                return String.valueOf("      "); //$NON-NLS-1$
             }
 
         });

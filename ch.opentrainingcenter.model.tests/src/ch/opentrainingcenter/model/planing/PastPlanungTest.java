@@ -9,6 +9,8 @@ import org.mockito.Mockito;
 
 import ch.opentrainingcenter.core.helper.RunType;
 import ch.opentrainingcenter.model.planing.internal.PastPlanungImpl;
+import ch.opentrainingcenter.transfer.CommonTransferFactory;
+import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IImported;
 import ch.opentrainingcenter.transfer.IPlanungWoche;
 import ch.opentrainingcenter.transfer.ITraining;
@@ -195,6 +197,24 @@ public class PastPlanungTest {
         // intervall
         planung = new PastPlanungImpl(pl, effective);
         assertFalse("Zuwenig Kilometer", planung.isSuccess());
+    }
+
+    @Test
+    public void testNoPlanung() {
+        final IImported recordA = createRecord(1001.0d, RunType.LONG_JOG);
+        final IImported recordB = createRecord(1001.0d, RunType.LONG_JOG);
+        final IImported recordC = createRecord(1001.0d, RunType.LONG_JOG);
+        effective.add(recordA);
+        effective.add(recordB);
+        effective.add(recordC);
+
+        final IAthlete athlete = Mockito.mock(IAthlete.class);
+        final IPlanungWoche tmp = CommonTransferFactory.createIPlanungWoche(athlete, 2012, 0, 0, false, 0);
+        // 100km
+        // 88km langer;
+        // intervall
+        planung = new PastPlanungImpl(tmp, effective);
+        assertTrue("Keine Planung, also alles erfolgreich", planung.isSuccess());
     }
 
     private IImported createRecord(final double km, final RunType t) {
