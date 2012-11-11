@@ -17,13 +17,13 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
 import org.eclipse.ui.part.ViewPart;
 
 import ch.opentrainingcenter.client.Activator;
-import ch.opentrainingcenter.client.Messages;
-import ch.opentrainingcenter.client.PreferenceConstants;
 import ch.opentrainingcenter.client.action.GoldMedalAction;
-import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
 import ch.opentrainingcenter.client.model.Units;
+import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.core.cache.IRecordListener;
+import ch.opentrainingcenter.core.cache.TrainingCenterDataCache;
 import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
+import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.model.training.IGoldMedalModel;
 import ch.opentrainingcenter.model.training.Intervall;
 import ch.opentrainingcenter.tcx.ActivityT;

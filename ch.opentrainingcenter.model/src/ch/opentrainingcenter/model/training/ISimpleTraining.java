@@ -2,7 +2,7 @@ package ch.opentrainingcenter.model.training;
 
 import java.util.Date;
 
-import ch.opentrainingcenter.model.RunType;
+import ch.opentrainingcenter.core.helper.RunType;
 
 public interface ISimpleTraining {
 

@@ -9,8 +9,8 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.client.action.job.LoadJahresplanung;
+import ch.opentrainingcenter.i18n.Messages;
 
 public class AddTrainingPlan extends AbstractHandler {
 

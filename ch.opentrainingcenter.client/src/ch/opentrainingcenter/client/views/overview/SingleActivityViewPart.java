@@ -26,24 +26,19 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.forms.widgets.TableWrapData;
 import org.eclipse.ui.forms.widgets.TableWrapLayout;
 import org.eclipse.ui.part.ViewPart;
-import org.jfree.chart.JFreeChart;
-import org.jfree.experimental.chart.swt.ChartComposite;
-import org.jfree.util.Log;
 
+import ch.opentrainingcenter.charts.single.ChartFactory;
+import ch.opentrainingcenter.charts.single.ChartType;
 import ch.opentrainingcenter.client.Activator;
-import ch.opentrainingcenter.client.Messages;
-import ch.opentrainingcenter.client.cache.impl.TrainingCenterDataCache;
-import ch.opentrainingcenter.client.charts.ChartCreator;
-import ch.opentrainingcenter.client.charts.DataSetCreator;
-import ch.opentrainingcenter.client.charts.internal.ChartCreatorImpl;
-import ch.opentrainingcenter.client.charts.internal.DataSetCreatorImpl;
 import ch.opentrainingcenter.client.model.Units;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.core.cache.Cache;
 import ch.opentrainingcenter.core.cache.IRecordListener;
+import ch.opentrainingcenter.core.cache.TrainingCenterDataCache;
 import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.helper.TimeHelper;
+import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.model.TrainingOverviewFactory;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
 import ch.opentrainingcenter.model.training.Wetter;
@@ -66,16 +61,18 @@ public class SingleActivityViewPart extends ViewPart {
     private FormToolkit toolkit;
     private ScrolledForm form;
     private TableWrapData td;
-    private final DataSetCreator dataSetCreator;
-    private final ChartCreator chartCreator;
+
     private IRecordListener<ActivityT> listener;
+    private final ChartFactory factory;
 
     public SingleActivityViewPart() {
-        final Date selectedId = ApplicationContext.getApplicationContext().getSelectedId();
+        final ApplicationContext context = ApplicationContext.getApplicationContext();
+        final Date selectedId = context.getSelectedId();
         activity = cache.get(selectedId);
         simpleTraining = TrainingOverviewFactory.creatSimpleTraining(activity);
-        dataSetCreator = new DataSetCreatorImpl(activity);
-        chartCreator = new ChartCreatorImpl(Activator.getDefault().getPreferenceStore());
+
+        factory = new ChartFactory(Activator.getDefault().getPreferenceStore(), activity, context.getAthlete());
+
         setPartName(simpleTraining.getFormattedDate());
     }
 
@@ -272,7 +269,6 @@ public class SingleActivityViewPart extends ViewPart {
                 final Wetter currentWeather = Wetter.getRunType(index);
                 final ITraining training = record.getTraining();
                 training.setWeather(CommonTransferFactory.createWeather(currentWeather.getIndex()));
-                Log.info(Messages.SingleActivityViewPart_7 + training.getWeather());
                 simpleTraining.setWetter(wetter);
             }
             update(record);
@@ -372,11 +368,7 @@ public class SingleActivityViewPart extends ViewPart {
 
         client.setLayout(layout);
 
-        final JFreeChart chart = chartCreator.createChart(dataSetCreator.createDatasetHeart(), ChartType.HEART_DISTANCE);
-        final ChartComposite chartComposite = new ChartComposite(client, SWT.NONE, chart, true);
-        td = new TableWrapData(TableWrapData.FILL_GRAB);
-        td.heightHint = 400;
-        chartComposite.setLayoutData(td);
+        factory.addChartToComposite(client, ChartType.HEART_DISTANCE);
 
         heartSection.setClient(client);
     }
@@ -406,11 +398,7 @@ public class SingleActivityViewPart extends ViewPart {
 
         client.setLayout(layout);
 
-        final JFreeChart chart = chartCreator.createChart(dataSetCreator.createDatasetSpeed(), ChartType.SPEED_DISTANCE);
-        final ChartComposite chartComposite = new ChartComposite(client, SWT.NONE, chart, true);
-        td = new TableWrapData(TableWrapData.FILL_GRAB);
-        td.heightHint = 400;
-        chartComposite.setLayoutData(td);
+        factory.addChartToComposite(client, ChartType.SPEED_DISTANCE);
 
         speedSection.setClient(client);
     }
@@ -442,11 +430,16 @@ public class SingleActivityViewPart extends ViewPart {
         layout.makeColumnsEqualWidth = false;
         client.setLayout(layout);
 
-        final JFreeChart chart = chartCreator.createChart(dataSetCreator.createDatasetAltitude(), ChartType.ALTITUDE_DISTANCE);
-        final ChartComposite chartComposite = new ChartComposite(client, SWT.NONE, chart, true);
-        td = new TableWrapData(TableWrapData.FILL_GRAB);
-        td.heightHint = 400;
-        chartComposite.setLayoutData(td);
+        // final JFreeChart chart =
+        // chartCreator.createChart(dataSetCreator.createDatasetAltitude(),
+        // ChartType.ALTITUDE_DISTANCE);
+        // final ChartComposite chartComposite = new ChartComposite(client,
+        // SWT.NONE, chart, true);
+        // td = new TableWrapData(TableWrapData.FILL_GRAB);
+        // td.heightHint = 400;
+        // chartComposite.setLayoutData(td);
+
+        factory.addChartToComposite(client, ChartType.ALTITUDE_DISTANCE);
 
         altitude.setClient(client);
     }

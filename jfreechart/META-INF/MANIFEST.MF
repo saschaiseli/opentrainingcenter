@@ -68,3 +68,4 @@ Export-Package: com.keypoint,
  org.jfree.util
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Eclipse-BuddyPolicy: registered
+Require-Bundle: org.eclipse.swt

@@ -1,6 +1,6 @@
 package ch.opentrainingcenter.client.commands.runtype;
 
-import ch.opentrainingcenter.model.RunType;
+import ch.opentrainingcenter.core.helper.RunType;
 
 public class PowerLongJog extends ChangeRunType {
 

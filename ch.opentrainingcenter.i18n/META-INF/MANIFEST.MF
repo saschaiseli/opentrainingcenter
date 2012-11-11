@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: I18n
+Bundle-SymbolicName: ch.opentrainingcenter.i18n
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: ch.opentrainingcenter.i18n.Activator
+Require-Bundle: org.eclipse.core.runtime
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: ch.opentrainingcenter.i18n

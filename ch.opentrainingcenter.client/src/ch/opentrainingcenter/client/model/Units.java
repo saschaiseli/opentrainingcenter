@@ -1,6 +1,6 @@
 package ch.opentrainingcenter.client.model;
 
-import ch.opentrainingcenter.client.Messages;
+import ch.opentrainingcenter.i18n.Messages;
 
 public enum Units {
     BEATS_PER_MINUTE(Messages.Units0), //

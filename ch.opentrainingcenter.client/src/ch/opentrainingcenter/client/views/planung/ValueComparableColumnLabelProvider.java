@@ -4,8 +4,8 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.swt.graphics.Color;
 
-import ch.opentrainingcenter.client.PreferenceConstants;
-import ch.opentrainingcenter.client.helper.ColorFromPreferenceHelper;
+import ch.opentrainingcenter.core.PreferenceConstants;
+import ch.opentrainingcenter.core.helper.ColorFromPreferenceHelper;
 
 public class ValueComparableColumnLabelProvider extends ColumnLabelProvider {
 

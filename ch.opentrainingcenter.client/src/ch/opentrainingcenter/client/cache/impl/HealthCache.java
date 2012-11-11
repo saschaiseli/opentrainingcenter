@@ -2,6 +2,7 @@ package ch.opentrainingcenter.client.cache.impl;
 
 import java.util.List;
 
+import ch.opentrainingcenter.core.cache.AbstractCache;
 import ch.opentrainingcenter.model.navigation.ConcreteHealth;
 
 /**

@@ -9,7 +9,7 @@ import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 
 import ch.opentrainingcenter.client.Application;
-import ch.opentrainingcenter.client.PreferenceConstants;
+import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.core.importer.ConvertContainer;
 import ch.opentrainingcenter.core.importer.ExtensionHelper;
 import ch.opentrainingcenter.core.importer.IConvert2Tcx;

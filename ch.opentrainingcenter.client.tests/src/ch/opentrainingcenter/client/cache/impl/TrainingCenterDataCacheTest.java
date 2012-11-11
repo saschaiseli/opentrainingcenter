@@ -15,6 +15,7 @@ import org.mockito.Mockito;
 import ch.opentrainingcenter.client.cache.ActivityTTestHelper;
 import ch.opentrainingcenter.client.cache.MockRecordListener;
 import ch.opentrainingcenter.client.views.ApplicationContext;
+import ch.opentrainingcenter.core.cache.TrainingCenterDataCache;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.tcx.ExtensionsT;

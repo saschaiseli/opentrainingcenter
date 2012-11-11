@@ -8,7 +8,7 @@ import org.eclipse.ui.forms.widgets.TableWrapData;
 import org.eclipse.ui.forms.widgets.TableWrapLayout;
 import org.eclipse.ui.part.ViewPart;
 
-import ch.opentrainingcenter.client.Messages;
+import ch.opentrainingcenter.i18n.Messages;
 
 public class WeeklyOverview extends ViewPart {
     public static final String ID = "ch.opentrainingcenter.client.weeks.weeklyOverview"; //$NON-NLS-1$

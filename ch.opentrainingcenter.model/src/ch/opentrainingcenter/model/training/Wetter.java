@@ -1,6 +1,6 @@
 package ch.opentrainingcenter.model.training;
 
-import ch.opentrainingcenter.model.Messages;
+import ch.opentrainingcenter.i18n.Messages;
 
 public enum Wetter {
     SUN(0, Messages.SUN), //

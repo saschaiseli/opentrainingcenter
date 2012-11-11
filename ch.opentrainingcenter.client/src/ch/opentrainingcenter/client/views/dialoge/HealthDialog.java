@@ -32,14 +32,14 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import ch.opentrainingcenter.client.Activator;
-import ch.opentrainingcenter.client.Messages;
-import ch.opentrainingcenter.client.PreferenceConstants;
 import ch.opentrainingcenter.client.cache.impl.HealthCache;
 import ch.opentrainingcenter.client.views.IImageKeys;
 import ch.opentrainingcenter.client.views.databinding.NumberValidator;
 import ch.opentrainingcenter.client.views.databinding.StringToIntegerConverter;
+import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
+import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.model.ModelFactory;
 import ch.opentrainingcenter.model.sportler.HealthModel;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;

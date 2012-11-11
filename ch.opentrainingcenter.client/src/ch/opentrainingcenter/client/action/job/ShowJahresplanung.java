@@ -8,9 +8,9 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 
-import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.client.views.planung.ShowJahresplanungViewPart;
+import ch.opentrainingcenter.i18n.Messages;
 
 public class ShowJahresplanung extends Job {
 

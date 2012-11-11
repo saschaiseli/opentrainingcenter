@@ -3,8 +3,8 @@ package ch.opentrainingcenter.model.training.internal;
 import java.util.Date;
 
 import ch.opentrainingcenter.core.helper.DistanceHelper;
+import ch.opentrainingcenter.core.helper.RunType;
 import ch.opentrainingcenter.core.helper.TimeHelper;
-import ch.opentrainingcenter.model.RunType;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
 import ch.opentrainingcenter.model.training.Wetter;
 

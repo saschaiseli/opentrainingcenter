@@ -1,16 +1,19 @@
 package ch.opentrainingcenter.client.views.statistics;
 
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.TabFolder;
-import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.ui.part.ViewPart;
 
-import ch.opentrainingcenter.client.charts.ChartSerieType;
-import ch.opentrainingcenter.client.charts.GewichtChart;
-import ch.opentrainingcenter.client.charts.OTCBarChartViewer;
-import ch.opentrainingcenter.client.charts.RuhePulsChart;
+import ch.opentrainingcenter.charts.bar.BarChartFactory;
+import ch.opentrainingcenter.charts.statistics.StatisticsFactory;
+import ch.opentrainingcenter.client.Activator;
+import ch.opentrainingcenter.client.cache.impl.HealthCache;
+import ch.opentrainingcenter.client.views.ApplicationContext;
+import ch.opentrainingcenter.core.helper.ChartSerieType;
 
 public class StatisticView extends ViewPart {
 
@@ -23,31 +26,20 @@ public class StatisticView extends ViewPart {
 
         final TabFolder tabs = new TabFolder(container, SWT.BORDER);
 
-        addItem(tabs, ChartSerieType.DAY);
-        addItem(tabs, ChartSerieType.WEEK);
-        addItem(tabs, ChartSerieType.MONTH);
-        addItem(tabs, ChartSerieType.YEAR);
+        final IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+        final BarChartFactory barChartFactory = new BarChartFactory(store, ApplicationContext.getApplicationContext().getAthlete());
 
-        addHealthChart(tabs, new RuhePulsChart());
-        addHealthChart(tabs, new GewichtChart());
+        barChartFactory.addItem(tabs, ChartSerieType.DAY, Display.getDefault().getActiveShell());
+        barChartFactory.addItem(tabs, ChartSerieType.WEEK, Display.getDefault().getActiveShell());
+        barChartFactory.addItem(tabs, ChartSerieType.MONTH, Display.getDefault().getActiveShell());
+        barChartFactory.addItem(tabs, ChartSerieType.YEAR, Display.getDefault().getActiveShell());
+
+        final StatisticsFactory factory = new StatisticsFactory(HealthCache.getInstance(), store);
+
+        factory.addRuhePulsChart(tabs);
+        factory.addRuheGewichtChart(tabs);
 
         tabs.setSelection(1);
-    }
-
-    private void addItem(final TabFolder tabs, final ChartSerieType type) {
-        final TabItem item = new TabItem(tabs, SWT.PUSH);
-        item.setText(type.getName());
-        final OTCBarChartViewer viewer = new OTCBarChartViewer(tabs, type);
-        item.setControl(viewer.getControl());
-    }
-
-    private void addHealthChart(final TabFolder tabs, final VitaldatenChartViewer viewer) {
-        final TabItem item = new TabItem(tabs, SWT.PUSH);
-        item.setText(viewer.getTabName());
-
-        viewer.createPartControl(tabs);
-
-        item.setControl(viewer.getControl());
     }
 
     @Override

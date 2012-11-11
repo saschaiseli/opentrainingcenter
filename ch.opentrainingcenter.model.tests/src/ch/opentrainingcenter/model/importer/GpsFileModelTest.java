@@ -6,7 +6,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import ch.opentrainingcenter.model.RunType;
+import ch.opentrainingcenter.core.helper.RunType;
 import ch.opentrainingcenter.model.importer.internal.GpsFileModel;
 
 public class GpsFileModelTest {

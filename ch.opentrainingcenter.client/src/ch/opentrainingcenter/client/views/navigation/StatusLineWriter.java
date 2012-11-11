@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.eclipse.jface.action.IStatusLineManager;
 
-import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.core.helper.DistanceHelper;
 import ch.opentrainingcenter.core.helper.TimeHelper;
+import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.model.navigation.ConcreteHealth;
 import ch.opentrainingcenter.model.navigation.ConcreteImported;
 import ch.opentrainingcenter.model.navigation.INavigationItem;

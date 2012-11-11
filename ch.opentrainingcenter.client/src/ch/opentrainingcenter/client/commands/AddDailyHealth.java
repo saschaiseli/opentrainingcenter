@@ -7,8 +7,8 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.PlatformUI;
 
 import ch.opentrainingcenter.client.Activator;
-import ch.opentrainingcenter.client.PreferenceConstants;
 import ch.opentrainingcenter.client.views.dialoge.HealthDialog;
+import ch.opentrainingcenter.core.PreferenceConstants;
 
 public class AddDailyHealth extends AbstractHandler {
 

@@ -8,10 +8,13 @@ Require-Bundle: org.eclipse.core.runtime,
  logging,
  ch.opentrainingcenter.transfer,
  ch.opentrainingcenter.tcx,
- jodatime
+ jodatime,
+ ch.opentrainingcenter.i18n,
+ org.eclipse.jface
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: ch.opentrainingcenter.core.cache,
+Export-Package: ch.opentrainingcenter.core,
+ ch.opentrainingcenter.core.cache,
  ch.opentrainingcenter.core.db,
  ch.opentrainingcenter.core.helper,
  ch.opentrainingcenter.core.importer

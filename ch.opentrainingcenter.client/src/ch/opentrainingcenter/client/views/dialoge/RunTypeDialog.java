@@ -20,8 +20,8 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
 import ch.opentrainingcenter.client.Activator;
-import ch.opentrainingcenter.client.Messages;
 import ch.opentrainingcenter.client.views.IImageKeys;
+import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.model.ModelFactory;
 import ch.opentrainingcenter.model.importer.IGpsFileModel;
 import ch.opentrainingcenter.model.importer.IGpsFileModelWrapper;

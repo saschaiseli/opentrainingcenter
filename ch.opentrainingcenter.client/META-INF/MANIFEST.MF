@@ -17,14 +17,15 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.databinding.beans,
  org.eclipse.jface.databinding,
  org.eclipse.core.databinding.property,
- jfreechart,
  com.eclipsesource.widgets.gmaps,
  org.eclipse.ui.ide,
  org.eclipse.core.resources,
  com.ibm.icu,
  jodatime,
  ch.opentrainingcenter.core,
- ch.opentrainingcenter.model
+ ch.opentrainingcenter.model,
+ ch.opentrainingcenter.charts,
+ ch.opentrainingcenter.i18n
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: ch.opentrainingcenter.client,
  ch.opentrainingcenter.importer

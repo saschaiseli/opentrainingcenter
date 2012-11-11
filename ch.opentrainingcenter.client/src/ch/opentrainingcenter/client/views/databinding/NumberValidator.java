@@ -4,7 +4,7 @@ import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
 
-import ch.opentrainingcenter.client.Messages;
+import ch.opentrainingcenter.i18n.Messages;
 
 public class NumberValidator implements IValidator {
 

@@ -2,6 +2,8 @@ package ch.opentrainingcenter.model;
 
 import org.junit.Test;
 
+import ch.opentrainingcenter.core.helper.RunType;
+import ch.opentrainingcenter.i18n.Messages;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 

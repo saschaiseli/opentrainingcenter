@@ -25,14 +25,14 @@ import org.joda.time.DateTime;
 import org.joda.time.Interval;
 
 import ch.opentrainingcenter.client.Activator;
-import ch.opentrainingcenter.client.Messages;
-import ch.opentrainingcenter.client.PreferenceConstants;
-import ch.opentrainingcenter.client.cache.impl.TrainingsPlanCache;
 import ch.opentrainingcenter.client.views.ApplicationContext;
+import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.helper.TimeHelper;
+import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.model.ModelFactory;
+import ch.opentrainingcenter.model.cache.TrainingsPlanCache;
 import ch.opentrainingcenter.model.planing.IPlanungModel;
 import ch.opentrainingcenter.model.planing.IPlanungWocheModel;
 import ch.opentrainingcenter.model.planing.PlanungWocheComparator;

@@ -2,7 +2,8 @@ package ch.opentrainingcenter.client.views.overview;
 
 import org.junit.Test;
 
-import ch.opentrainingcenter.client.Messages;
+import ch.opentrainingcenter.charts.single.ChartType;
+import ch.opentrainingcenter.i18n.Messages;
 import static org.junit.Assert.assertEquals;
 
 public class ChartTypeTest {

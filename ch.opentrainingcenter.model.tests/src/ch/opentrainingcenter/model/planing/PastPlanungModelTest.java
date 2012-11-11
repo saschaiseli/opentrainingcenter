@@ -10,7 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import ch.opentrainingcenter.model.RunType;
+import ch.opentrainingcenter.core.helper.RunType;
 import ch.opentrainingcenter.model.planing.IPastPlanung;
 import ch.opentrainingcenter.model.planing.KwJahrKey;
 import ch.opentrainingcenter.model.planing.internal.PastPlanungModel;

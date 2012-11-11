@@ -10,10 +10,10 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.preference.IPreferenceStore;
 
 import ch.opentrainingcenter.client.Activator;
-import ch.opentrainingcenter.client.Messages;
-import ch.opentrainingcenter.client.PreferenceConstants;
 import ch.opentrainingcenter.client.action.job.BackupJob;
+import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.core.importer.ExtensionHelper;
+import ch.opentrainingcenter.i18n.Messages;
 
 public class BackupGpsFiles extends AbstractHandler {
 

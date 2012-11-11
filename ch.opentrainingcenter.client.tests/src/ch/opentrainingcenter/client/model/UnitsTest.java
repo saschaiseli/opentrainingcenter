@@ -2,7 +2,7 @@ package ch.opentrainingcenter.client.model;
 
 import org.junit.Test;
 
-import ch.opentrainingcenter.client.Messages;
+import ch.opentrainingcenter.i18n.Messages;
 import static org.junit.Assert.assertEquals;
 
 @SuppressWarnings("nls")

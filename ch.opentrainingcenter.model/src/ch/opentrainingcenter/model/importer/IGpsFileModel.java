@@ -1,6 +1,6 @@
 package ch.opentrainingcenter.model.importer;
 
-import ch.opentrainingcenter.model.RunType;
+import ch.opentrainingcenter.core.helper.RunType;
 
 public interface IGpsFileModel {
 

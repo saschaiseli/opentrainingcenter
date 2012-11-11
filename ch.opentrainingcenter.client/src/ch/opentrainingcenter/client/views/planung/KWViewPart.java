@@ -17,7 +17,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Spinner;
 
-import ch.opentrainingcenter.client.Messages;
+import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.model.planing.IPlanungModel;
 
 public class KWViewPart {

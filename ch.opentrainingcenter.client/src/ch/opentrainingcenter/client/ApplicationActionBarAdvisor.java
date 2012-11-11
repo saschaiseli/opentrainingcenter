@@ -12,6 +12,7 @@ import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
 
 import ch.opentrainingcenter.client.action.RestartOtc;
+import ch.opentrainingcenter.i18n.Messages;
 
 public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 

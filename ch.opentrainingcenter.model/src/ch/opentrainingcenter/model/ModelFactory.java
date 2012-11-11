@@ -3,6 +3,7 @@ package ch.opentrainingcenter.model;
 import java.util.Date;
 import java.util.List;
 
+import ch.opentrainingcenter.core.helper.RunType;
 import ch.opentrainingcenter.model.importer.IGpsFileModel;
 import ch.opentrainingcenter.model.importer.IGpsFileModelWrapper;
 import ch.opentrainingcenter.model.importer.internal.GpsFileModel;

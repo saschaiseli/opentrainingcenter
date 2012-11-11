@@ -5,7 +5,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.junit.Before;
 import org.junit.Test;
 
-import ch.opentrainingcenter.client.Messages;
+import ch.opentrainingcenter.i18n.Messages;
 import static org.junit.Assert.assertEquals;
 
 public class NumberValidatorTest {

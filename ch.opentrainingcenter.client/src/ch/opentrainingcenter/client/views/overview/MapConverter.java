@@ -2,7 +2,7 @@ package ch.opentrainingcenter.client.views.overview;
 
 import java.util.List;
 
-import ch.opentrainingcenter.client.Messages;
+import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.tcx.ActivityLapT;
 import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.tcx.PositionT;
