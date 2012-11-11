@@ -23,6 +23,7 @@ import ch.opentrainingcenter.tcx.ActivityT;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+@SuppressWarnings("nls")
 public class ImportManualJobTest {
     private ImportManualJob job;
     private IGpsFileModelWrapper modelWrapper;

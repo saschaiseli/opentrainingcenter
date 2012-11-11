@@ -7,7 +7,6 @@ import org.jfree.chart.plot.IntervalMarker;
 import org.jfree.ui.RectangleAnchor;
 import org.jfree.ui.TextAnchor;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -37,7 +36,6 @@ public class HeartIntervallCreatorTest {
     }
 
     @Test
-    @Ignore
     public void testValues() {
         Mockito.when(store.getInt(Zone.GA1.getName())).thenReturn(20);
         Mockito.when(store.getInt(Zone.GA12.getName())).thenReturn(30);
@@ -47,13 +45,13 @@ public class HeartIntervallCreatorTest {
         assertEquals("5 Bereiche sollten vorhanden sein", 5, marker.size());
 
         final IntervalMarker aerobe = marker.get(Zone.GA1);
-        assertEquals("GA1", aerobe.getLabel());
+        assertEquals("GA 1", aerobe.getLabel());
 
         final IntervalMarker schwelle = marker.get(Zone.GA12);
-        assertEquals("GA1/2", schwelle.getLabel());
+        assertEquals("GA 1/2", schwelle.getLabel());
 
         final IntervalMarker anaerobe = marker.get(Zone.GA2);
-        assertEquals("GA2", anaerobe.getLabel());
+        assertEquals("GA 2", anaerobe.getLabel());
 
         assertProperties(aerobe);
         assertProperties(schwelle);
