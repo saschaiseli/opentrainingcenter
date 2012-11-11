@@ -7,6 +7,7 @@ import ch.opentrainingcenter.i18n.Messages;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+@SuppressWarnings("nls")
 public class RunTypeTest {
 
     @Test(expected = IllegalArgumentException.class)

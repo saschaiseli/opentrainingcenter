@@ -20,13 +20,13 @@ public class FileCopy implements IFileCopy {
             return;
         }
         if (!destFile.exists()) {
-            LOG.debug("Destination File existiert nicht");
+            LOG.debug("Destination File existiert nicht"); //$NON-NLS-1$
             final File dir = new File(getFolder(destFile.getAbsolutePath()));
             if (dir.mkdir()) {
-                LOG.debug("Folder erstellt");
+                LOG.debug("Folder erstellt"); //$NON-NLS-1$
                 destFile.createNewFile();
             } else {
-                LOG.debug("Folder nicht erstellt");
+                LOG.debug("Folder nicht erstellt"); //$NON-NLS-1$
             }
         }
 
@@ -39,7 +39,7 @@ public class FileCopy implements IFileCopy {
             long count = 0;
             final long size = source.size();
             while ((count += destination.transferFrom(source, 0, size - count)) < size) {
-                LOG.info("do copy work...");
+                LOG.info("do copy work..."); //$NON-NLS-1$
             }
         } finally {
             if (source != null) {
@@ -51,6 +51,7 @@ public class FileCopy implements IFileCopy {
         }
     }
 
+    @Override
     public void copyFiles(final String sourceFolder, final String destinationFolder, final FilenameFilter filter) throws IOException {
         final File file = new File(sourceFolder);
         final String[] filteredFileNames = file.list(filter);

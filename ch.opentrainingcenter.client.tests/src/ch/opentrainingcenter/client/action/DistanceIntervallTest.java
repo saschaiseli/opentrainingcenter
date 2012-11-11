@@ -1,12 +1,12 @@
 package ch.opentrainingcenter.client.action;
 
-import static org.junit.Assert.assertEquals;
-
 import org.junit.Before;
 import org.junit.Test;
 
 import ch.opentrainingcenter.model.training.Intervall;
+import static org.junit.Assert.assertEquals;
 
+@SuppressWarnings("nls")
 public class DistanceIntervallTest {
     private static final double DEFAULT = -1d;
     private DistanceIntervall intervall;

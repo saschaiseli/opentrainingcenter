@@ -8,6 +8,7 @@ import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.transfer.IAthlete;
 import static org.junit.Assert.assertEquals;
 
+@SuppressWarnings("nls")
 public class DatabaseHelperTest {
     @Test
     public void testDbExistingOk() {

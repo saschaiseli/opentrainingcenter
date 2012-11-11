@@ -1,14 +1,14 @@
 package ch.opentrainingcenter.model.importer;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import org.junit.Test;
 
 import ch.opentrainingcenter.core.helper.RunType;
 import ch.opentrainingcenter.model.importer.internal.GpsFileModel;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
+@SuppressWarnings("nls")
 public class GpsFileModelTest {
 
     private static final String FILENAME = "junit.txt";

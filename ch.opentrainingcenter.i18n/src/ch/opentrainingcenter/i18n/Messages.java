@@ -247,6 +247,7 @@ public final class Messages extends NLS {
     public static String GewichtChart_0;
     public static String GewichtChart_1;
     public static String GewichtChart_2;
+    public static String Gmn2Tcx_0;
     public static String GpsFileNameFilter_0;
     public static String JahresplanungViewPart_0;
     public static String JahresplanungViewPart_1;

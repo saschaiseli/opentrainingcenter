@@ -1,17 +1,16 @@
 package ch.opentrainingcenter.model.importer;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
 
-import ch.opentrainingcenter.model.importer.IGpsFileModel;
 import ch.opentrainingcenter.model.importer.internal.GpsFileModel;
 import ch.opentrainingcenter.model.importer.internal.GpsFileModelWrapper;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
+@SuppressWarnings("nls")
 public class GpsFileModelWrapperTest {
 
     @Test

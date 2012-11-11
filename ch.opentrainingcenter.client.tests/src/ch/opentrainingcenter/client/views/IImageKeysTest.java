@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
+@SuppressWarnings("nls")
 public class IImageKeysTest {
     @Test
     public void testStupidImageKeys() {

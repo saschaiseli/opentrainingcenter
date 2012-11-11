@@ -3,10 +3,10 @@ package ch.opentrainingcenter.client.charts;
 import org.junit.Test;
 
 import ch.opentrainingcenter.charts.bar.internal.Cross;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+@SuppressWarnings("nls")
 public class CrossTest {
     @Test
     public void testNotNull() {

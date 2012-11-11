@@ -21,7 +21,6 @@ import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.importer.ConvertContainer;
 import ch.opentrainingcenter.core.importer.IConvert2Tcx;
 import ch.opentrainingcenter.core.importer.IFileCopy;
-import ch.opentrainingcenter.importer.impl.FileImport;
 import ch.opentrainingcenter.model.importer.IGpsFileModel;
 import ch.opentrainingcenter.model.importer.IGpsFileModelWrapper;
 import ch.opentrainingcenter.tcx.ActivityLapT;
@@ -39,6 +38,7 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@SuppressWarnings("nls")
 public class FileImportTest {
     private FileImport fileImport;
     private ConvertContainer cc;

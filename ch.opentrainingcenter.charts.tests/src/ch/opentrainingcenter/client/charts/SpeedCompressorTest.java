@@ -8,10 +8,10 @@ import org.junit.Test;
 
 import ch.opentrainingcenter.charts.bar.internal.PositionPace;
 import ch.opentrainingcenter.charts.bar.internal.SpeedCompressor;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+@SuppressWarnings("nls")
 public class SpeedCompressorTest {
 
     private SpeedCompressor compressor;

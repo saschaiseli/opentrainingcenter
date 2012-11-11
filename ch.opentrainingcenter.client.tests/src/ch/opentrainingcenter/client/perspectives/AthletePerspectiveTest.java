@@ -6,12 +6,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import ch.opentrainingcenter.client.perspectives.AthletePerspective;
-import ch.opentrainingcenter.client.perspectives.TablePerspective;
-import ch.opentrainingcenter.client.perspectives.MainPerspective;
-import ch.opentrainingcenter.client.perspectives.StatisticPerspective;
 import ch.opentrainingcenter.client.views.ahtlete.CreateAthleteView;
 
+@SuppressWarnings("nls")
 public class AthletePerspectiveTest {
     private AthletePerspective perspective;
     private IPageLayout layout;

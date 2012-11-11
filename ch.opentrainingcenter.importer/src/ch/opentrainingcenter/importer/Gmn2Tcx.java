@@ -16,6 +16,7 @@ import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
 
 import ch.opentrainingcenter.core.importer.IConvert2Tcx;
+import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.importer.internal.xml.ConvertXml;
 import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.tcx.TrainingCenterDatabaseT;
@@ -26,7 +27,7 @@ public class Gmn2Tcx implements IConvert2Tcx {
 
     private final ConvertXml delegate;
 
-    private Bundle bundle;
+    private final Bundle bundle;
 
     public Gmn2Tcx() {
         logger.info("Gmn2Tcx erfolgreich instanziert....");//$NON-NLS-1$
@@ -45,14 +46,14 @@ public class Gmn2Tcx implements IConvert2Tcx {
         delegate = new ConvertXml(f.getAbsolutePath());
     }
 
-    /**
-     * Constructor 4 tests
-     * 
-     * @param locationOfScript
-     */
-    public Gmn2Tcx(final String locationOfScript) {
-        delegate = null;// new ConvertXml(new URL(locationOfScript));
-    }
+    // /**
+    // * Constructor 4 tests
+    // *
+    // * @param locationOfScript
+    // */
+    // public Gmn2Tcx(final String locationOfScript) {
+    // delegate = null;// new ConvertXml(new URL(locationOfScript));
+    // }
 
     @Override
     public TrainingCenterDatabaseT convert(final java.io.File file) throws Exception {
@@ -137,7 +138,7 @@ public class Gmn2Tcx implements IConvert2Tcx {
 
     @Override
     public String getName() {
-        return "Garmin Files";
+        return Messages.Gmn2Tcx_0;
     }
 
 }

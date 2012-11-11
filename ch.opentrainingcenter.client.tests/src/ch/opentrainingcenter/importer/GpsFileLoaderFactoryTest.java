@@ -33,7 +33,6 @@ public class GpsFileLoaderFactoryTest {
 
     @Test
     public void testFileImporter() {
-        final ConvertContainer cc = Mockito.mock(ConvertContainer.class);
         final IAthlete athlete = Mockito.mock(IAthlete.class);
         final IDatabaseAccess databaseAccess = Mockito.mock(IDatabaseAccess.class);
         final String backup = "";

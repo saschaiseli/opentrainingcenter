@@ -8,6 +8,7 @@ import org.mockito.Mockito;
 
 import ch.opentrainingcenter.client.views.statistics.StatisticView;
 
+@SuppressWarnings("nls")
 public class StatisticPerspectiveFactoryTest {
     private StatisticPerspective perspective;
     private IPageLayout layout;

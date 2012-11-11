@@ -8,6 +8,7 @@ import org.mockito.Mockito;
 
 import ch.opentrainingcenter.client.views.table.OverviewViewer;
 
+@SuppressWarnings("nls")
 public class OverviewPerspectiveFactoryTest {
     private TablePerspective perspective;
     private IPageLayout layout;

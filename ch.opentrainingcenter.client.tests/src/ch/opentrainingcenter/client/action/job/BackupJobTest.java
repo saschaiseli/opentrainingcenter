@@ -18,6 +18,7 @@ import ch.opentrainingcenter.tcx.TrainingCenterDatabaseT;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+@SuppressWarnings("nls")
 public class BackupJobTest {
 
     private BackupJob job;
