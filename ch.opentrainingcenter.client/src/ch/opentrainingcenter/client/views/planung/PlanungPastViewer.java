@@ -18,7 +18,6 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.joda.time.DateTime;
 
 import ch.opentrainingcenter.client.views.ApplicationContext;
-import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.helper.ColorFromPreferenceHelper;
@@ -26,6 +25,7 @@ import ch.opentrainingcenter.model.ModelFactory;
 import ch.opentrainingcenter.model.planing.IPastPlanung;
 import ch.opentrainingcenter.model.planing.IPastPlanungModel;
 import ch.opentrainingcenter.model.planing.KwJahrKey;
+import ch.opentrainingcenter.model.planing.PlanungStatus;
 import ch.opentrainingcenter.model.planing.PlanungWocheComparator;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IImported;
@@ -34,12 +34,16 @@ import ch.opentrainingcenter.transfer.IPlanungWoche;
 public class PlanungPastViewer {
 
     private TableViewer viewer;
-    private final Color erfuellt;
-    private final Color nichtErfuellt;
+    // private final Color erfuellt;
+    // private final Color nichtErfuellt;
+    private final IPreferenceStore store;
 
     public PlanungPastViewer(final IPreferenceStore store) {
-        erfuellt = ColorFromPreferenceHelper.getSwtColor(store, PreferenceConstants.ZIEL_ERFUELLT_COLOR);
-        nichtErfuellt = ColorFromPreferenceHelper.getSwtColor(store, PreferenceConstants.ZIEL_NICHT_ERFUELLT_COLOR);
+        this.store = store;
+        // erfuellt = ColorFromPreferenceHelper.getSwtColor(store,
+        // PreferenceConstants.ZIEL_ERFUELLT_COLOR);
+        // nichtErfuellt = ColorFromPreferenceHelper.getSwtColor(store,
+        // PreferenceConstants.ZIEL_NICHT_ERFUELLT_COLOR);
     }
 
     void createViewer(final Composite parent) {
@@ -96,11 +100,7 @@ public class PlanungPastViewer {
             @Override
             public Color getBackground(final Object element) {
                 final IPastPlanung woche = (IPastPlanung) element;
-                if (woche.isSuccess()) {
-                    return erfuellt;
-                } else {
-                    return nichtErfuellt;
-                }
+                return ColorFromPreferenceHelper.getSwtColor(store, woche.isSuccess().getColorPreference());
             }
         });
 
@@ -116,11 +116,7 @@ public class PlanungPastViewer {
             @Override
             public Color getBackground(final Object element) {
                 final IPastPlanung woche = (IPastPlanung) element;
-                if (woche.isSuccess()) {
-                    return erfuellt;
-                } else {
-                    return nichtErfuellt;
-                }
+                return ColorFromPreferenceHelper.getSwtColor(store, woche.isSuccess().getColorPreference());
             }
         });
 
@@ -175,11 +171,13 @@ public class PlanungPastViewer {
             @Override
             public Color getBackground(final Object element) {
                 final IPastPlanung woche = (IPastPlanung) element;
-                if (woche.getPlanung().getKmProWoche() > woche.getKmEffective()) {
-                    return nichtErfuellt;
+                final String color;
+                if (woche.getPlanung().getKmProWoche() <= 0) {
+                    color = PlanungStatus.UNBEKANNT.getColorPreference();
                 } else {
-                    return erfuellt;
+                    color = getStatus(woche.getPlanung().getKmProWoche(), woche.getKmEffective()).getColorPreference();
                 }
+                return ColorFromPreferenceHelper.getSwtColor(store, color);
             }
         });
 
@@ -195,11 +193,13 @@ public class PlanungPastViewer {
             @Override
             public Color getBackground(final Object element) {
                 final IPastPlanung woche = (IPastPlanung) element;
-                if (woche.getPlanung().getLangerLauf() > woche.getLangerLaufEffective()) {
-                    return nichtErfuellt;
+                final String color;
+                if (woche.getPlanung().getKmProWoche() <= 0) {
+                    color = PlanungStatus.UNBEKANNT.getColorPreference();
                 } else {
-                    return erfuellt;
+                    color = getStatus(woche.getPlanung().getLangerLauf(), woche.getLangerLaufEffective()).getColorPreference();
                 }
+                return ColorFromPreferenceHelper.getSwtColor(store, color);
             }
         });
 
@@ -218,11 +218,17 @@ public class PlanungPastViewer {
                 final IPastPlanung woche = (IPastPlanung) element;
                 final boolean isInter = woche.getPlanung().isInterval();
                 final boolean hasInter = woche.hasInterval();
-                if (hasInter || (isInter && hasInter) || (!isInter && !hasInter)) {
-                    return erfuellt;
+                final String color;
+                if (woche.getPlanung().getKmProWoche() <= 0) {
+                    color = PlanungStatus.UNBEKANNT.getColorPreference();
                 } else {
-                    return nichtErfuellt;
+                    if (hasInter || (isInter && hasInter) || (!isInter && !hasInter)) {
+                        color = PlanungStatus.ERFOLGREICH.getColorPreference();
+                    } else {
+                        color = PlanungStatus.NICHT_ERFOLGREICH.getColorPreference();
+                    }
                 }
+                return ColorFromPreferenceHelper.getSwtColor(store, color);
             }
         });
         // Intervall effektiv
@@ -235,6 +241,17 @@ public class PlanungPastViewer {
             }
 
         });
+    }
+
+    /**
+     * Nicht erfolgreich / erfolgreich (unbekannt muss anders detektiert werden)
+     */
+    private PlanungStatus getStatus(final int ziel, final int effective) {
+        PlanungStatus status = PlanungStatus.NICHT_ERFOLGREICH;
+        if (ziel < effective) {
+            status = PlanungStatus.ERFOLGREICH;
+        }
+        return status;
     }
 
     private TableViewerColumn createTableViewerColumn(final String title, final int bound) {

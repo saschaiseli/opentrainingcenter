@@ -30,7 +30,11 @@ public interface IPastPlanung {
     boolean hasInterval();
 
     /**
-     * @return true wenn die geplanten Ziele übertroffen wurden.
+     * Wenn die angegebenen Km / Woche kleiner gleich 0 sind wird angenommen,
+     * dass keine planung vorhanden ist. Wenn eine Planung vorhanden ist, wird
+     * geschaut ob die km/woche + der längste lauf grösser gleich dem Ziel sind.
+     * Intervall muss auch gemacht sein, wenn dies geplant ist. ungeplantes
+     * Intervall ist auch ok.
      */
-    boolean isSuccess();
+    PlanungStatus isSuccess();
 }

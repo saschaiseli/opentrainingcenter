@@ -30,9 +30,9 @@ public class WeekXYBarRendererTest {
         dataset = Mockito.mock(IntervalXYDataset.class);
         store = Mockito.mock(IPreferenceStore.class);
         cache = Mockito.mock(ICache.class);
-        Mockito.when(store.getString(PreferenceConstants.KM_PER_WEEK_COLOR_BELOW)).thenReturn("125,120,115");
-        Mockito.when(store.getString(PreferenceConstants.KM_PER_WEEK_COLOR_ABOVE)).thenReturn("225,220,215");
-        Mockito.when(store.getString(PreferenceConstants.KM_PER_WEEK_COLOR_NOT_DEFINED)).thenReturn("123,123,123");
+        Mockito.when(store.getString(PreferenceConstants.ZIEL_NICHT_ERFUELLT_COLOR)).thenReturn("125,120,115");
+        Mockito.when(store.getString(PreferenceConstants.ZIEL_ERFUELLT_COLOR)).thenReturn("225,220,215");
+        Mockito.when(store.getString(PreferenceConstants.ZIEL_NICHT_BEKANNT_COLOR)).thenReturn("123,123,123");
         final IPlanungModel model = Mockito.mock(IPlanungModel.class);
         Mockito.when(model.getKmProWoche()).thenReturn(Integer.valueOf(100));
         Mockito.when(cache.get((KwJahrKey) Mockito.any())).thenReturn(model);

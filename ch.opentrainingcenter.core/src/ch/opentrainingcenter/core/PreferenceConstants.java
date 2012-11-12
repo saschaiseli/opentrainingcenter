@@ -19,9 +19,7 @@ public final class PreferenceConstants {
     public static final String FILE_SUFFIX_FOR_BACKUP = "filesuffix_"; //$NON-NLS-1$
     //    public static final String KM_PER_WEEK = "KM_PER_WEEK"; //$NON-NLS-1$
     public static final String WEEK_FOR_PLAN = "WEEK_FOR_PLAN"; //$NON-NLS-1$
-    public static final String KM_PER_WEEK_COLOR_NOT_DEFINED = "KM_PER_WEEK_COLOR_NOT_DEFINED"; //$NON-NLS-1$
-    public static final String KM_PER_WEEK_COLOR_BELOW = "KM_PER_WEEK_COLOR_BELOW"; //$NON-NLS-1$
-    public static final String KM_PER_WEEK_COLOR_ABOVE = "KM_PER_WEEK_COLOR_ABOVE"; //$NON-NLS-1$
+
     public static final String DISTANCE_CHART_COLOR = "DISTANCE_CHART_COLOR"; //$NON-NLS-1$
     public static final String DISTANCE_HEART_COLOR = "DISTANCE_HEART_COLOR"; //$NON-NLS-1$
     public static final String RECOM = "RECOM";//$NON-NLS-1$
@@ -38,6 +36,7 @@ public final class PreferenceConstants {
     public static final String GEWICHT_COLOR = "GEWICHT"; //$NON-NLS-1$
     public static final String ZIEL_ERFUELLT_COLOR = "ZIEL_ERFUELLT_COLOR"; //$NON-NLS-1$
     public static final String ZIEL_NICHT_ERFUELLT_COLOR = "ZIEL_NICHT_ERFUELLT_COLOR"; //$NON-NLS-1$
+    public static final String ZIEL_NICHT_BEKANNT_COLOR = "ZIEL_NICHT_BEKANNT_COLOR"; //$NON-NLS-1$
 
     private PreferenceConstants() {
 

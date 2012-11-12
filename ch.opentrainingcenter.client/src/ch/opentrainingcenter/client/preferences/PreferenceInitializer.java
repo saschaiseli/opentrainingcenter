@@ -54,10 +54,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
         defaults.putInt(PreferenceConstants.WEEK_FOR_PLAN, 6);
         defaults.put(PreferenceConstants.ZIEL_ERFUELLT_COLOR, "108,233,144"); //$NON-NLS-1$
         defaults.put(PreferenceConstants.ZIEL_NICHT_ERFUELLT_COLOR, "212,62,59"); //$NON-NLS-1$
-
-        defaults.put(PreferenceConstants.KM_PER_WEEK_COLOR_NOT_DEFINED, "123,123,123"); //$NON-NLS-1$
-        defaults.put(PreferenceConstants.KM_PER_WEEK_COLOR_ABOVE, "0,180,52"); //$NON-NLS-1$
-        defaults.put(PreferenceConstants.KM_PER_WEEK_COLOR_BELOW, "255,201,57"); //$NON-NLS-1$
+        defaults.put(PreferenceConstants.ZIEL_NICHT_BEKANNT_COLOR, "173,216,230"); //$NON-NLS-1$
 
         defaults.put(PreferenceConstants.DISTANCE_CHART_COLOR, "40,4,252"); //$NON-NLS-1$
         defaults.put(PreferenceConstants.DISTANCE_HEART_COLOR, "255,17,14"); //$NON-NLS-1$

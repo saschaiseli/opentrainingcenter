@@ -16,8 +16,6 @@ import ch.opentrainingcenter.transfer.IPlanungWoche;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.ITrainingType;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 @SuppressWarnings("nls")
 public class PastPlanungTest {
@@ -167,7 +165,7 @@ public class PastPlanungTest {
         // 88km langer;
         // intervall
         planung = new PastPlanungImpl(pl, effective);
-        assertTrue("Überall mehr geleistet als geplant", planung.isSuccess());
+        assertEquals("Überall mehr geleistet als geplant", PlanungStatus.ERFOLGREICH, planung.isSuccess());
     }
 
     @Test
@@ -183,7 +181,7 @@ public class PastPlanungTest {
         // 88km langer;
         // intervall
         planung = new PastPlanungImpl(pl, effective);
-        assertFalse("Längster Lauf zu kurz", planung.isSuccess());
+        assertEquals("Längster Lauf zu kurz", PlanungStatus.NICHT_ERFOLGREICH, planung.isSuccess());
     }
 
     @Test
@@ -199,7 +197,7 @@ public class PastPlanungTest {
         // 88km langer;
         // intervall
         planung = new PastPlanungImpl(pl, effective);
-        assertFalse("Kein Intervall", planung.isSuccess());
+        assertEquals("Kein Intervall", PlanungStatus.NICHT_ERFOLGREICH, planung.isSuccess());
     }
 
     @Test
@@ -215,7 +213,7 @@ public class PastPlanungTest {
         // 88km langer;
         // intervall
         planung = new PastPlanungImpl(pl, effective);
-        assertFalse("Zuwenig Kilometer", planung.isSuccess());
+        assertEquals("Zuwenig Kilometer", PlanungStatus.NICHT_ERFOLGREICH, planung.isSuccess());
     }
 
     @Test
@@ -233,7 +231,7 @@ public class PastPlanungTest {
         // 88km langer;
         // intervall
         planung = new PastPlanungImpl(tmp, effective);
-        assertTrue("Keine Planung, also alles erfolgreich", planung.isSuccess());
+        assertEquals("Keine Planung, also alles erfolgreich", PlanungStatus.UNBEKANNT, planung.isSuccess());
     }
 
     private IImported createRecord(final double km, final RunType t) {

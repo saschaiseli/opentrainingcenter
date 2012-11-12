@@ -34,9 +34,9 @@ public class WeekXYBarRenderer extends XYBarRenderer implements XYItemRenderer {
     public WeekXYBarRenderer(final IntervalXYDataset dataset, final IPreferenceStore store, final ICache<KwJahrKey, IPlanungModel> cache) {
         this.dataset = dataset;
         this.cache = cache;
-        colorNotDefined = ColorFromPreferenceHelper.getColor(store, PreferenceConstants.KM_PER_WEEK_COLOR_NOT_DEFINED, ALPHA);
-        colorBelow = ColorFromPreferenceHelper.getColor(store, PreferenceConstants.KM_PER_WEEK_COLOR_BELOW, ALPHA);
-        colorAbove = ColorFromPreferenceHelper.getColor(store, PreferenceConstants.KM_PER_WEEK_COLOR_ABOVE, ALPHA);
+        colorNotDefined = ColorFromPreferenceHelper.getColor(store, PreferenceConstants.ZIEL_NICHT_BEKANNT_COLOR, ALPHA);
+        colorBelow = ColorFromPreferenceHelper.getColor(store, PreferenceConstants.ZIEL_NICHT_ERFUELLT_COLOR, ALPHA);
+        colorAbove = ColorFromPreferenceHelper.getColor(store, PreferenceConstants.ZIEL_ERFUELLT_COLOR, ALPHA);
     }
 
     @Override

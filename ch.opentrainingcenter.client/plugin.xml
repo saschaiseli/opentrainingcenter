@@ -336,7 +336,7 @@
                         operator="and">
                      <or>
                         <instanceof
-                              value="ch.opentrainingcenter.client.model.navigation.impl.ConcreteImported">
+                              value="ch.opentrainingcenter.model.navigation.ConcreteImported">
                         </instanceof>
                      </or>
                   </iterate>
@@ -352,7 +352,7 @@
                         operator="and">
                      <or>
                         <instanceof
-                              value="ch.opentrainingcenter.client.model.navigation.impl.ConcreteImported">
+                              value="ch.opentrainingcenter.model.navigation.ConcreteImported">
                         </instanceof>
                      </or>
                   </iterate>
@@ -368,7 +368,7 @@
                         operator="and">
                      <or>
                         <instanceof
-                              value="ch.opentrainingcenter.client.model.navigation.impl.ConcreteImported">
+                              value="ch.opentrainingcenter.model.navigation.ConcreteImported">
                         </instanceof>
                      </or>
                   </iterate>
@@ -384,7 +384,7 @@
                         operator="and">
                      <or>
                         <instanceof
-                              value="ch.opentrainingcenter.client.model.navigation.impl.ConcreteImported">
+                              value="ch.opentrainingcenter.model.navigation.ConcreteImported">
                         </instanceof>
                      </or>
                   </iterate>
@@ -400,7 +400,7 @@
                         operator="and">
                      <or>
                         <instanceof
-                              value="ch.opentrainingcenter.client.model.navigation.impl.ConcreteImported">
+                              value="ch.opentrainingcenter.model.navigation.ConcreteImported">
                         </instanceof>
                      </or>
                   </iterate>
@@ -417,7 +417,7 @@
                      operator="and">
                   <or>
                      <instanceof
-                           value="ch.opentrainingcenter.client.model.navigation.impl.ConcreteImported">
+                           value="ch.opentrainingcenter.model.navigation.ConcreteImported">
                      </instanceof>
                   </or>
                </iterate>
@@ -433,7 +433,7 @@
                      operator="and">
                   <or>
                      <instanceof
-                           value="ch.opentrainingcenter.client.model.navigation.impl.ConcreteHealth">
+                           value="ch.opentrainingcenter.model.navigation.ConcreteHealth">
                      </instanceof>
                   </or>
                </iterate>

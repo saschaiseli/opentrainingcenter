@@ -3,6 +3,7 @@ package ch.opentrainingcenter.model.planing.internal;
 import java.util.List;
 
 import ch.opentrainingcenter.model.planing.IPastPlanung;
+import ch.opentrainingcenter.model.planing.PlanungStatus;
 import ch.opentrainingcenter.transfer.IImported;
 import ch.opentrainingcenter.transfer.IPlanungWoche;
 import ch.opentrainingcenter.transfer.ITrainingType;
@@ -79,13 +80,17 @@ public class PastPlanungImpl implements IPastPlanung {
     }
 
     @Override
-    public boolean isSuccess() {
-        boolean result = false;
-        final boolean isInter = interval || interval && planung.isInterval() || !planung.isInterval() && !interval;
-        if (kmEffective >= planung.getKmProWoche() && kmLangerLaufEffective >= planung.getLangerLauf() && isInter) {
-            result = true;
+    public PlanungStatus isSuccess() {
+        PlanungStatus status = PlanungStatus.NICHT_ERFOLGREICH;
+        if (planung.getKmProWoche() <= 0) {
+            status = PlanungStatus.UNBEKANNT;
+        } else {
+            final boolean isInter = interval || interval && planung.isInterval() || !planung.isInterval() && !interval;
+            if (kmEffective >= planung.getKmProWoche() && kmLangerLaufEffective >= planung.getLangerLauf() && isInter) {
+                status = PlanungStatus.ERFOLGREICH;
+            }
         }
-        return result;
+        return status;
     }
 
 }
