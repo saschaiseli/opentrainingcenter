@@ -75,7 +75,6 @@ import ch.opentrainingcenter.model.cache.TrainingsPlanCache;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
 import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.transfer.IAthlete;
-import static org.jfree.ui.TextAnchor.CENTER;
 
 public class OTCBarChartViewer implements ISelectionProvider {
 
@@ -110,6 +109,8 @@ public class OTCBarChartViewer implements ISelectionProvider {
 
     private final Shell shell;
 
+    private final org.eclipse.swt.graphics.Color radioContainerBackground;
+
     public OTCBarChartViewer(final Composite parent, final ChartSerieType type, final IPreferenceStore store, final IAthlete athlete, final Shell shell) {
         this.type = type;
         this.store = store;
@@ -139,16 +140,21 @@ public class OTCBarChartViewer implements ISelectionProvider {
             }
         });
 
-        composite = new Composite(parent, SWT.NONE | SWT.H_SCROLL);
+        composite = new Composite(parent, SWT.NONE);
+        radioContainerBackground = Display.getCurrent().getSystemColor(SWT.COLOR_WHITE);
 
         final GridLayout layout = new GridLayout(2, false);
         composite.setLayout(layout);
-
+        composite.setBackground(radioContainerBackground);
         final Composite radioContainer = new Composite(composite, SWT.NONE);
         final GridLayout radioLayout = new GridLayout(1, false);
+        final GridData gdRadio = new GridData();
+        gdRadio.verticalAlignment = SWT.BOTTOM;
         radioLayout.marginTop = 10;
         radioLayout.marginBottom = 40;
         radioContainer.setLayout(radioLayout);
+        radioContainer.setLayoutData(gdRadio);
+        radioContainer.setBackground(radioContainerBackground);
 
         createFilterButton(radioContainer, null);
         for (final RunType runType : RunType.values()) {
@@ -157,6 +163,7 @@ public class OTCBarChartViewer implements ISelectionProvider {
 
         if (type.isLabelVisible()) {
             final Button checkBoxKilometerAnzeigen = new Button(radioContainer, SWT.CHECK);
+            checkBoxKilometerAnzeigen.setBackground(radioContainerBackground);
             checkBoxKilometerAnzeigen.setText(Messages.OTCBarChartViewer9);
             checkBoxKilometerAnzeigen.setSelection(true);
             checkBoxKilometerAnzeigen.addSelectionListener(new SelectionListener() {
@@ -170,7 +177,7 @@ public class OTCBarChartViewer implements ISelectionProvider {
                         renderer.setBaseItemLabelGenerator(labelGenerator);
                     } else {
                         labelGenerator = renderer.getBaseItemLabelGenerator();
-
+                        //
                         final ItemLabelPosition position = new ItemLabelPosition(ItemLabelAnchor.CENTER, TextAnchor.CENTER, TextAnchor.CENTER, -Math.PI / 2.0);
                         renderer.setBasePositiveItemLabelPosition(position);
 
@@ -188,7 +195,7 @@ public class OTCBarChartViewer implements ISelectionProvider {
 
         final Button b = new Button(radioContainer, SWT.CHECK);
         b.setText(Messages.OTCBarChartViewer2);
-
+        b.setBackground(radioContainerBackground);
         b.addSelectionListener(new SelectionListener() {
 
             @Override
@@ -253,6 +260,7 @@ public class OTCBarChartViewer implements ISelectionProvider {
 
     private void createFilterButton(final Composite radioContainer, final RunType buttonFilter) {
         final Button button = new Button(radioContainer, SWT.RADIO);
+        button.setBackground(radioContainerBackground);
         if (buttonFilter != null) {
             button.setText(buttonFilter.getTitle());
         } else {
@@ -359,10 +367,9 @@ public class OTCBarChartViewer implements ISelectionProvider {
                 PlotOrientation.VERTICAL, false, true, false);
         chart.setAntiAlias(true);
         chart.setBorderVisible(false);
-        final org.eclipse.swt.graphics.Color b = shell.getBackground();
-        final Color paint = new Color(b.getRed(), b.getGreen(), b.getBlue());
-        chart.setBackgroundPaint(paint);
-
+        chart.setAntiAlias(true);
+        chart.setBorderVisible(true);
+        chart.setTextAntiAlias(true);
         final XYPlot plot = chart.getXYPlot();
 
         XYItemRenderer myXyBarRenderer;
@@ -374,7 +381,7 @@ public class OTCBarChartViewer implements ISelectionProvider {
         }
 
         plot.setRenderer(myXyBarRenderer);
-        plot.setBackgroundPaint(paint);
+        plot.setBackgroundPaint(Color.white);
         plot.setDomainGridlinePaint(Color.lightGray);
         plot.setRangeGridlinePaint(Color.lightGray);
 
@@ -391,7 +398,15 @@ public class OTCBarChartViewer implements ISelectionProvider {
                     new DecimalFormat("0.000")); //$NON-NLS-1$
             renderer.setBaseToolTipGenerator(generator);
 
-            final ItemLabelPosition position = new ItemLabelPosition(ItemLabelAnchor.CENTER, CENTER, CENTER, -Math.PI / 2.0);
+            // final ItemLabelPosition position = new
+            // ItemLabelPosition(ItemLabelAnchor.CENTER, TextAnchor.CENTER,
+            // TextAnchor.CENTER, -Math.PI / 2.0);
+            // renderer.setBasePositiveItemLabelPosition(position);
+
+            renderer.setBaseItemLabelFont(new Font("Default", Font.PLAIN, 7)); //$NON-NLS-1$
+            renderer.setBaseItemLabelGenerator(null);
+
+            final ItemLabelPosition position = new ItemLabelPosition(ItemLabelAnchor.CENTER, TextAnchor.CENTER, TextAnchor.CENTER, -Math.PI / 2.0);
             renderer.setBasePositiveItemLabelPosition(position);
 
             final XYItemLabelGenerator lgen = new StandardXYItemLabelGenerator(label, new SimpleDateFormat(chartSerieType.getFormatPattern()),
