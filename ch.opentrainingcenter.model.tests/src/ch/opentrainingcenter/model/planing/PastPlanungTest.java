@@ -155,19 +155,6 @@ public class PastPlanungTest {
     }
 
     @Test
-    public void testFehlerMitDatum() {
-
-        final IImported recordA = createRecord(10200.0d, RunType.EXT_INTERVALL);
-
-        effective.add(recordA);
-
-        planung = new PastPlanungImpl(pl, effective);
-        final IPlanungWoche result = planung.getPlanung();
-        assertEquals(2011, result.getJahr());
-        assertEquals(2012, result.getKw());
-    }
-
-    @Test
     public void testSuccess() {
         final IImported recordA = createRecord(100001.0d, RunType.EXT_INTERVALL);
         final IImported recordB = createRecord(100001.0d, RunType.EXT_INTERVALL);
