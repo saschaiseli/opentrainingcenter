@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.joda.time.DateTime;
 
+import ch.opentrainingcenter.core.helper.TimeHelper;
 import ch.opentrainingcenter.model.planing.IPastPlanung;
 import ch.opentrainingcenter.model.planing.IPastPlanungModel;
 import ch.opentrainingcenter.model.planing.KwJahrKey;
@@ -46,7 +48,8 @@ public class PastPlanungModel implements IPastPlanungModel {
         if (records != null) {
             for (final IImported record : records) {
                 final DateTime dt = new DateTime(record.getActivityId());
-                final KwJahrKey key = new KwJahrKey(dt.getYear(), dt.getWeekOfWeekyear());
+
+                final KwJahrKey key = new KwJahrKey(TimeHelper.getJahr(dt.toDate(), Locale.GERMAN), dt.getWeekOfWeekyear());
                 if (!result.containsKey(key)) {
                     // noch kein ein wert vorhanden
                     result.put(key, new ArrayList<IImported>());

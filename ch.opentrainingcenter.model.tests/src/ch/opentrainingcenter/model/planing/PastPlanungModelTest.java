@@ -11,8 +11,6 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import ch.opentrainingcenter.core.helper.RunType;
-import ch.opentrainingcenter.model.planing.IPastPlanung;
-import ch.opentrainingcenter.model.planing.KwJahrKey;
 import ch.opentrainingcenter.model.planing.internal.PastPlanungModel;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IImported;
@@ -107,6 +105,26 @@ public class PastPlanungModelTest {
         assertEquals("Effektive Distanz", 10, pastPlanung.getKmEffective());
         assertEquals("Effektive Distanz", 10, pastPlanung.getLangerLaufEffective());
         assertEquals("Effektive Distanz", true, pastPlanung.hasInterval());
+    }
+
+    @Test
+    public void testPopulateFehlerMitErstem1Januar2012() {
+        final List<IImported> list = new ArrayList<IImported>();
+        final Calendar cal = Calendar.getInstance(Locale.GERMAN);
+        cal.set(2012, 00, 01);
+        list.add(createImported(cal.getTime(), 10300d, RunType.INT_INTERVALL));
+
+        // execute
+        model = new PastPlanungModel(null, list, now);
+
+        final List<IPastPlanung> pastPlanungen = model.getPastPlanungen();
+        assertEquals("Ein Record vorhanden", 1, pastPlanungen.size());
+        final IPastPlanung pastPlanung = pastPlanungen.get(0);
+
+        final IPlanungWoche planung = pastPlanung.getPlanung();
+
+        assertEquals("1 Januar 2012 ist in KW52", 52, planung.getKw());
+        assertEquals("1 Januar 2012 ist in KW52 aber 2011!!!", 2011, planung.getJahr());
     }
 
     @Test
