@@ -118,6 +118,7 @@ public class SingleActivityViewPart extends ViewPart {
                 form.reflow(true);
             }
         });
+        overviewSection.setExpanded(true);
         td = new TableWrapData(TableWrapData.FILL_GRAB);
         td.colspan = 1;
         overviewSection.setLayoutData(td);
@@ -150,7 +151,7 @@ public class SingleActivityViewPart extends ViewPart {
                 form.reflow(true);
             }
         });
-        section.setRedraw(true);
+        section.setExpanded(true);
         section.setText(Messages.SingleActivityViewPart_0);
         section.setDescription(Messages.SingleActivityViewPart_1);
 
@@ -311,7 +312,6 @@ public class SingleActivityViewPart extends ViewPart {
             }
         });
         mapSection.setExpanded(false);
-
         td = new TableWrapData(TableWrapData.FILL_GRAB);
         td.colspan = 2;
         td.grabHorizontal = true;

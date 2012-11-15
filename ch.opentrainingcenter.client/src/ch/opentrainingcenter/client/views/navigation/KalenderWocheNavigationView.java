@@ -216,7 +216,7 @@ public class KalenderWocheNavigationView extends ViewPart {
         });
         final IImported newestRun = db.getNewestRun(athlete);
         if (newestRun != null) {
-            // openSingleRunView(newestRun);
+            openSingleRunView(newestRun);
         }
     }
 
@@ -234,7 +234,9 @@ public class KalenderWocheNavigationView extends ViewPart {
         final IImportedConverter loader = ImporterFactory.createGpsFileLoader(cc, store.getString(PreferenceConstants.GPS_FILE_LOCATION_PROG));
         final LoadActivityJob job = new LoadActivityJob(Messages.NavigationView1, record, cache, loader);
         job.addJobChangeListener(new ImportActivityJobListener(record));
+        viewer.getControl().setRedraw(false);
         job.schedule();
+        viewer.getControl().setRedraw(true);
         viewer.setSelection(new StructuredSelection(record), true);
     }
 

@@ -115,7 +115,7 @@ public class OTCBarChartViewer implements ISelectionProvider {
         this.type = type;
         this.store = store;
         this.shell = shell;
-        clazz = getSeriesType(type);
+        clazz = getSeriesType(this.type);
         statistik = new StatistikCreator();
 
         daten = new TrainingOverviewDatenAufbereiten(statistik, DatabaseAccessFactory.getDatabaseAccess(), athlete);
