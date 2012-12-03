@@ -13,6 +13,7 @@ import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.helper.RunType;
 import ch.opentrainingcenter.model.navigation.ConcreteImported;
+import ch.opentrainingcenter.transfer.IImported;
 
 public abstract class ChangeRunType extends AbstractHandler {
 
@@ -27,7 +28,7 @@ public abstract class ChangeRunType extends AbstractHandler {
             return null;
         }
         for (final Object obj : selection) {
-            final ConcreteImported record = (ConcreteImported) obj;
+            final IImported record = ((ConcreteImported) obj).getImported();
             db.updateRecord(record, getType().getIndex());
         }
         cache.notifyListeners();
