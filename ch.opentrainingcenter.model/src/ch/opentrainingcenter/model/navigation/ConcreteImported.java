@@ -30,4 +30,9 @@ public class ConcreteImported extends ImportedDecorator implements INavigationIt
     public int compareTo(final INavigationItem o) {
         return o.getDate().compareTo(getDate());
     }
+
+    @Override
+    public String toString() {
+        return "ConcreteImported [getName()=" + getName() + "]"; //$NON-NLS-1$ //$NON-NLS-2$
+    }
 }

@@ -94,7 +94,7 @@ public final class TimeHelper {
         calendar.setTime(datum);
         final SimpleDateFormat format = new SimpleDateFormat(DATE_TIME_FORMAT_PATTERN);
         if (withDay) {
-            return calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()) + "\\" + format.format(datum); //$NON-NLS-1$
+            return calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()) + " " + format.format(datum); //$NON-NLS-1$
         } else {
             return format.format(datum);
         }

@@ -14,6 +14,8 @@ import org.mockito.Mockito;
 
 import ch.opentrainingcenter.model.navigation.internal.KWTraining;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 @SuppressWarnings("nls")
 public class KalenderWocheNavigationModelTest {
@@ -206,6 +208,58 @@ public class KalenderWocheNavigationModelTest {
         assertEquals("KalenderWoche", 2012, kwoche.getJahr());
     }
 
+    @Test
+    public void testGetItem() {
+        final List<INavigationItem> list = new ArrayList<INavigationItem>();
+        list.add(createItem(2012, 7, 28)); // kw35
+        final INavigationItem createdItem = createConcreteImported(2012, 7, 29);
+        list.add(createdItem); // kw35
+        list.add(createItem(2012, 8, 3)); // kw36
+
+        kw.addItems(list);
+
+        cal.set(2012, 07, 29);
+        final Date date = cal.getTime();
+
+        final INavigationItem item = kw.getImportedItem(date);
+        assertNotNull(item);
+        assertEquals(createdItem, item);
+    }
+
+    @Test
+    public void testGetItemNotFound() {
+        final List<INavigationItem> list = new ArrayList<INavigationItem>();
+        list.add(createItem(2012, 7, 28)); // kw35
+        final INavigationItem createdItem = createConcreteImported(2012, 7, 1);
+        list.add(createdItem); // kw35
+        list.add(createItem(2012, 8, 3)); // kw36
+
+        kw.addItems(list);
+
+        cal.set(2012, 07, 29);
+        final Date date = cal.getTime();
+
+        final INavigationItem item = kw.getImportedItem(date);
+        assertNull(item);
+    }
+
+    @Test
+    public void testGetItemNotFoundOther() {
+        final List<INavigationItem> list = new ArrayList<INavigationItem>();
+        list.add(createItem(2012, 7, 28)); // kw35
+        final INavigationItem createdItem = createItem(2012, 7, 1);
+        list.add(createdItem); // kw35
+        list.add(createItem(2012, 8, 3)); // kw36
+
+        kw.addItems(list);
+
+        cal.set(2012, 07, 29);
+        final Date date = cal.getTime();
+
+        final INavigationItem item = kw.getImportedItem(date);
+        assertNull(item);
+    }
+
     private INavigationItem createItem(final int year, final int month, final int day) {
         final INavigationItem item = Mockito.mock(INavigationItem.class);
         cal.set(year, month, day);
@@ -214,4 +268,11 @@ public class KalenderWocheNavigationModelTest {
         return item;
     }
 
+    private ConcreteImported createConcreteImported(final int year, final int month, final int day) {
+        final ConcreteImported item = Mockito.mock(ConcreteImported.class);
+        cal.set(year, month, day);
+        final Date date = cal.getTime();
+        Mockito.when(item.getDate()).thenReturn(date);
+        return item;
+    }
 }

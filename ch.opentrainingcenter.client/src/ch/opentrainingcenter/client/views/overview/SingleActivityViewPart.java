@@ -4,6 +4,10 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.apache.log4j.Logger;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.ISelectionProvider;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
@@ -50,7 +54,7 @@ import ch.opentrainingcenter.transfer.IImported;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.IWeather;
 
-public class SingleActivityViewPart extends ViewPart {
+public class SingleActivityViewPart extends ViewPart implements ISelectionProvider {
 
     public static final String ID = "ch.opentrainingcenter.client.views.singlerun"; //$NON-NLS-1$
     private static final Logger LOGGER = Logger.getLogger(SingleActivityViewPart.class);
@@ -95,6 +99,8 @@ public class SingleActivityViewPart extends ViewPart {
         addHeartSection(body);
         addSpeedSection(body);
         addAltitudeSection(body);
+
+        getSite().setSelectionProvider(this);
     }
 
     @Override
@@ -468,6 +474,25 @@ public class SingleActivityViewPart extends ViewPart {
         einheit.setLayoutData(gd);
 
         return dauer;
+    }
+
+    @Override
+    public void addSelectionChangedListener(final ISelectionChangedListener l) {
+        //        System.out.println("asd" + l); //$NON-NLS-1$
+    }
+
+    @Override
+    public ISelection getSelection() {
+        return new StructuredSelection(simpleTraining);
+    }
+
+    @Override
+    public void removeSelectionChangedListener(final ISelectionChangedListener l) {
+    }
+
+    @Override
+    public void setSelection(final ISelection selection) {
+
     }
 
 }

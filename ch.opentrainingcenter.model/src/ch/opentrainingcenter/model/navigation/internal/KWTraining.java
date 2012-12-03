@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.Map;
 import java.util.TreeMap;
 
+import ch.opentrainingcenter.model.navigation.ConcreteImported;
 import ch.opentrainingcenter.model.navigation.IKalenderWocheNavigationModel;
 import ch.opentrainingcenter.model.navigation.INavigationItem;
 import ch.opentrainingcenter.model.navigation.INavigationParent;
@@ -88,5 +89,18 @@ public class KWTraining implements IKalenderWocheNavigationModel {
         } else {
             return Collections.emptyList();
         }
+    }
+
+    @Override
+    public INavigationItem getImportedItem(final Date date) {
+        final KalenderWoche kw = new KalenderWoche(date);
+        final Map<Integer, INavigationParent> jahresWerte = map.get(kw.getJahr());
+        final INavigationParent naviParent = jahresWerte.get(kw.getKw());
+        for (final INavigationItem item : naviParent.getChilds()) {
+            if (item instanceof ConcreteImported && item.getDate().compareTo(date) == 0) {
+                return item;
+            }
+        }
+        return null;
     }
 }

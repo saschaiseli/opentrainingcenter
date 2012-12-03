@@ -16,5 +16,6 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: ch.opentrainingcenter.core,
  ch.opentrainingcenter.core.cache,
  ch.opentrainingcenter.core.db,
+ ch.opentrainingcenter.core.exception,
  ch.opentrainingcenter.core.helper,
  ch.opentrainingcenter.core.importer

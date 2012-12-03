@@ -1,6 +1,7 @@
 package ch.opentrainingcenter.model.navigation;
 
 import java.util.Collection;
+import java.util.Date;
 
 public interface IKalenderWocheNavigationModel {
 
@@ -21,4 +22,6 @@ public interface IKalenderWocheNavigationModel {
     void reset();
 
     Collection<INavigationParent> getWeeks(Integer jahr);
+
+    INavigationItem getImportedItem(Date date);
 }
