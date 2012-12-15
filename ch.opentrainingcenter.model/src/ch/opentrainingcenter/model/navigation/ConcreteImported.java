@@ -11,6 +11,10 @@ public class ConcreteImported extends ImportedDecorator implements INavigationIt
         super(imported);
     }
 
+    public IImported getImported() {
+        return imported;
+    }
+
     @Override
     public String getName() {
         return TimeHelper.convertDateToString(super.getActivityId(), false);

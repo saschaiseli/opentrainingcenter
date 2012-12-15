@@ -9,7 +9,7 @@ import ch.opentrainingcenter.transfer.ITrainingType;
 
 public abstract class ImportedDecorator implements IImported {
 
-    private final IImported imported;
+    protected final IImported imported;
 
     public ImportedDecorator(final IImported imported) {
         this.imported = imported;
