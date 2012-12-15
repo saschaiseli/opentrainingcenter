@@ -12,6 +12,7 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MenuEvent;
@@ -160,10 +161,12 @@ public class KalenderWocheNavigationView extends ViewPart {
 
             @Override
             public void selectionChanged(final SelectionChangedEvent event) {
-                final IStructuredSelection selection = (IStructuredSelection) event.getSelection();
+                final TreeSelection selection = (TreeSelection) event.getSelection();
+                final Object[] array = selection.toArray();
+                status.writeStatusLine(array);
                 final Object first = selection.getFirstElement();
                 context.setSelection(selection.toArray());
-                status.writeStatusLine(first);
+                // status.writeStatusLine(first);
             }
         });
 
