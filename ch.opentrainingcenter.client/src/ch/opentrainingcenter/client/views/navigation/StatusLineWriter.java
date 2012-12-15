@@ -27,32 +27,41 @@ class StatusLineWriter {
      * @param array
      */
     protected void writeStatusLine(final Object[] array) {
-        final List<ConcreteImported> items = new ArrayList<ConcreteImported>();
-        for (final Object obj : array) {
-            if (obj instanceof INavigationParent) {
-                final INavigationParent navi = (INavigationParent) obj;
-                final List<INavigationItem> childs = navi.getChilds();
-                for (final INavigationItem item : childs) {
-                    addLauf(items, item);
+        if (isSelectionMitInhalt(array)) {
+            final List<ConcreteImported> items = new ArrayList<ConcreteImported>();
+
+            for (final Object obj : array) {
+                if (obj instanceof INavigationParent) {
+                    final INavigationParent navi = (INavigationParent) obj;
+                    final List<INavigationItem> childs = navi.getChilds();
+                    for (final INavigationItem item : childs) {
+                        addLauf(items, item);
+                    }
                 }
+                addLauf(items, obj);
             }
-            addLauf(items, obj);
-        }
-        if (!items.isEmpty()) {
-            int count = 0;
-            double distance = 0d;
-            double dauer = 0d;
-            for (final ConcreteImported item : items) {
-                count++;
-                distance += item.getTraining().getLaengeInMeter();
-                dauer += item.getTraining().getDauerInSekunden();
+            if (!items.isEmpty()) {
+                int count = 0;
+                double distance = 0d;
+                double dauer = 0d;
+                for (final ConcreteImported item : items) {
+                    count++;
+                    distance += item.getTraining().getLaengeInMeter();
+                    dauer += item.getTraining().getDauerInSekunden();
+                }
+                final String msg = "Anzahl Läufe: " + count + " Distanz total: " + DistanceHelper.roundDistanceFromMeterToKm(distance) + "km Dauer total: "
+                        + TimeHelper.convertSecondsToHumanReadableZeit(dauer);
+                writeToStatusLine(msg);
+            } else {
+                writeToStatusLine(""); //$NON-NLS-1$
             }
-            final String msg = "Anzahl Läufe: " + count + " Distanz total: " + DistanceHelper.roundDistanceFromMeterToKm(distance) + "km Dauer total: "
-                    + TimeHelper.convertSecondsToHumanReadableZeit(dauer);
-            writeToStatusLine(msg);
         } else {
             writeToStatusLine(""); //$NON-NLS-1$
         }
+    }
+
+    private boolean isSelectionMitInhalt(final Object[] array) {
+        return array != null && array.length > 0;
     }
 
     private void addLauf(final List<ConcreteImported> items, final Object obj) {
