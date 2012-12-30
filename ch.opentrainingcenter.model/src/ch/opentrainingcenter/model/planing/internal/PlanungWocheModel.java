@@ -19,29 +19,32 @@ public class PlanungWocheModel implements IPlanungWocheModel {
 
     private final int anzahl;
     private final IAthlete athlete;
-    private int jahr;
+    private final int jahr;
 
     public PlanungWocheModel(final List<IPlanungModel> planungen, final IAthlete athlete, final int jahr, final int kwStart, final int anzahl) {
         this.athlete = athlete;
-        this.jahr = jahr;
         this.anzahl = anzahl;
         if (planungen == null || planungen.isEmpty()) {
+            this.jahr = jahr;
             populate(kwStart, anzahl);
         } else {
+            final IPlanungModel model = planungen.get(0);
+            this.jahr = model.getJahr();
             populate(planungen);
         }
     }
 
     private void populate(final int start, final int count) {
         int kw = start;
+        int j = jahr;
         for (int i = start; i < start + count; i++) {
             if (i == 53) {
-                jahr++;
+                j++;
                 kw = 1;
             }
-            final PlanungModel pl = ModelFactory.createEmptyPlanungModel(athlete, jahr, kw);
+            final PlanungModel pl = ModelFactory.createEmptyPlanungModel(athlete, j, kw);
             LOG.info(pl);
-            jahresplanung.put(new KwJahrKey(jahr, kw), pl);
+            jahresplanung.put(new KwJahrKey(j, kw), pl);
             kw++;
         }
     }

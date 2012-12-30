@@ -439,38 +439,6 @@
                </iterate>
             </visibleWhen>
          </command>
-         <command
-               commandId="ch.opentrainingcenter.client.commands.AddTrainingPlan"
-               label="Aktueller Trainingsplan"
-               style="push">
-            <visibleWhen
-                  checkEnabled="true">
-               <iterate
-                     operator="and">
-                  <or>
-                     <instanceof
-                           value="java.lang.Integer">
-                     </instanceof>
-                  </or>
-               </iterate>
-            </visibleWhen>
-         </command>
-         <command
-               commandId="ch.opentrainingcenter.client.commands.ShowTrainingPlan"
-               label="Übersicht Trainingsplan"
-               style="push">
-            <visibleWhen
-                  checkEnabled="true">
-               <iterate
-                     operator="and">
-                  <or>
-                     <instanceof
-                           value="java.lang.Integer">
-                     </instanceof>
-                  </or>
-               </iterate>
-            </visibleWhen>
-         </command>
       </menuContribution>
       <menuContribution
             allPopups="false"
@@ -502,6 +470,18 @@
                   name="ch.opentrainingcenter.client.separator1"
                   visible="true">
             </separator>
+            <command
+                  commandId="ch.opentrainingcenter.client.commands.AddTrainingPlan"
+                  label="Trainingspläne verwalten"
+                  style="push"
+                  tooltip="Trainingspläne verwalten">
+            </command>
+            <command
+                  commandId="ch.opentrainingcenter.client.commands.ShowTrainingPlan"
+                  label="Übersicht Trainingpläne"
+                  style="push"
+                  tooltip="Trainingspläne">
+            </command>
          </toolbar>
       </menuContribution>
       <menuContribution

@@ -81,6 +81,25 @@ public class PlanungWocheModelTest {
     }
 
     @Test
+    public void testPopulateEmptyJahrUebergreifendMitPlanungen() {
+        planungen = new ArrayList<IPlanungModel>();
+        final IPlanungModel eins = ModelFactory.createPlanungModel(athlete, 2013, 1, 42);
+        planungen.add(eins);
+        jahr = 2012;
+        anzahl = 5;
+        kwStart = 52;
+        model = new PlanungWocheModel(planungen, athlete, jahr, kwStart, anzahl);
+
+        assertPlanung(model, 2013, 1, 42);
+        assertEmptyPlanung(model, 2013, 2);
+        assertEmptyPlanung(model, 2013, 3);
+        assertEmptyPlanung(model, 2013, 4);
+        assertEmptyPlanung(model, 2013, 5);
+
+        assertEquals("Anzahl 5", 5, model.size());
+    }
+
+    @Test
     public void testPopulateNotEmpty() {
         jahr = 2012;
         anzahl = 5;
