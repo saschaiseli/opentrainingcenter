@@ -1,6 +1,7 @@
 package ch.opentrainingcenter.client.views.planung;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -17,13 +18,40 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.joda.time.DateTime;
 
 import ch.opentrainingcenter.client.views.ApplicationContext;
+import ch.opentrainingcenter.core.cache.IRecordListener;
 import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
+import ch.opentrainingcenter.model.cache.TrainingsPlanCache;
+import ch.opentrainingcenter.model.planing.IPlanungModel;
 import ch.opentrainingcenter.model.planing.KwJahrKey;
 import ch.opentrainingcenter.model.planing.PlanungWocheComparator;
 import ch.opentrainingcenter.transfer.IPlanungWoche;
 
 public class PlanungFutureViewer {
     private TableViewer viewer;
+    private List<IPlanungWoche> all;
+
+    public PlanungFutureViewer() {
+        final TrainingsPlanCache cache = TrainingsPlanCache.getInstance();
+        cache.addListener(new IRecordListener<IPlanungModel>() {
+
+            @Override
+            public void recordChanged(final Collection<IPlanungModel> entry) {
+                refresh();
+            }
+
+            @Override
+            public void deleteRecord(final Collection<IPlanungModel> entry) {
+                refresh();
+            }
+
+            private void refresh() {
+                if (viewer != null) {
+                    all = DatabaseAccessFactory.getDatabaseAccess().getPlanungsWoche(ApplicationContext.getApplicationContext().getAthlete());
+                    viewer.refresh();
+                }
+            }
+        });
+    }
 
     void createViewer(final Composite parent) {
         viewer = new TableViewer(parent, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
@@ -37,7 +65,7 @@ public class PlanungFutureViewer {
         final MenuManager menuManager = new MenuManager("KontextMenu"); //$NON-NLS-1$
         table.setMenu(menuManager.createContextMenu(table));
 
-        final List<IPlanungWoche> all = DatabaseAccessFactory.getDatabaseAccess().getPlanungsWoche(ApplicationContext.getApplicationContext().getAthlete());
+        all = DatabaseAccessFactory.getDatabaseAccess().getPlanungsWoche(ApplicationContext.getApplicationContext().getAthlete());
         final DateTime dt = new DateTime();
         final KwJahrKey now = new KwJahrKey(dt.getYear(), dt.getWeekOfWeekyear());
         final List<IPlanungWoche> planungsWoche = new ArrayList<IPlanungWoche>();

@@ -134,6 +134,7 @@ public class JahresplanungViewPart extends ViewPart {
                 // speichern
                 final TrainingsPlanCache cache = TrainingsPlanCache.getInstance();
                 final List<IPlanungWoche> result = new ArrayList<IPlanungWoche>();
+                final List<IPlanungModel> list = new ArrayList<IPlanungModel>();
                 for (final IPlanungModel m : models) {
                     final int km = m.getKmProWoche();
                     if (km == 0) {
@@ -146,9 +147,10 @@ public class JahresplanungViewPart extends ViewPart {
                     final int langerLauf = m.getLangerLauf();
                     final IPlanungWoche pla = CommonTransferFactory.createIPlanungWoche(athlete, j, kwTmp, km, interval, langerLauf);
                     result.add(pla);
-                    cache.add(m);
+                    list.add(m);
                 }
                 db.saveOrUpdate(result);
+                cache.addAll(list);
             }
         });
 
