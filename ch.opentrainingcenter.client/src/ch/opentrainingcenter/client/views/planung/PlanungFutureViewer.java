@@ -47,7 +47,7 @@ public class PlanungFutureViewer {
                 planungsWoche.add(woche);
             }
         }
-        Collections.sort(planungsWoche, new PlanungWocheComparator());
+        Collections.sort(planungsWoche, new PlanungWocheComparator(false));
         viewer.setInput(planungsWoche);
 
         final GridData gridData = new GridData();
