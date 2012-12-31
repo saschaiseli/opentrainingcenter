@@ -6,24 +6,26 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.PlatformUI;
 
 import ch.opentrainingcenter.client.Activator;
-import ch.opentrainingcenter.client.views.dialoge.HealthDialog;
+import ch.opentrainingcenter.client.views.dialoge.RouteDialog;
+import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 
-public class AddDailyHealth extends OtcAbstractHandler {
+public class AddRoute extends OtcAbstractHandler {
 
-    public static final String ID = "ch.opentrainingcenter.client.commands.AddDailyHealth"; //$NON-NLS-1$
+    public static final String ID = "ch.opentrainingcenter.client.commands.AddRoute"; //$NON-NLS-1$
 
-    public AddDailyHealth() {
+    public AddRoute() {
         this(Activator.getDefault().getPreferenceStore());
     }
 
-    public AddDailyHealth(final IPreferenceStore store) {
+    public AddRoute(final IPreferenceStore store) {
         super(store);
     }
 
     @Override
     public Object execute(final ExecutionEvent event) throws ExecutionException {
-        final HealthDialog dialog = new HealthDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell());
+        final RouteDialog dialog = new RouteDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), DatabaseAccessFactory.getDatabaseAccess());
         dialog.open();
         return null;
     }
+
 }

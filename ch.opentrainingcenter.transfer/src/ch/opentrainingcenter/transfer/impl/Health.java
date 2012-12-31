@@ -20,11 +20,10 @@ public class Health implements java.io.Serializable, IHealth {
     private Integer cardio;
     private Date dateofmeasure;
 
+    /**
+     * nur für hibernate
+     */
     public Health() {
-    }
-
-    public Health(final int id) {
-        this.id = id;
     }
 
     public Health(final IAthlete athlete, final Double weight, final Integer cardio, final Date dateofmeasure) {

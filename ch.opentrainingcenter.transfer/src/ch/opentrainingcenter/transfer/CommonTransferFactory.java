@@ -6,6 +6,7 @@ import ch.opentrainingcenter.transfer.impl.Athlete;
 import ch.opentrainingcenter.transfer.impl.Health;
 import ch.opentrainingcenter.transfer.impl.Imported;
 import ch.opentrainingcenter.transfer.impl.PlanungWoche;
+import ch.opentrainingcenter.transfer.impl.Route;
 import ch.opentrainingcenter.transfer.impl.Training;
 import ch.opentrainingcenter.transfer.impl.TrainingType;
 import ch.opentrainingcenter.transfer.impl.Weather;
@@ -51,5 +52,9 @@ public class CommonTransferFactory {
 
     public static IPlanungWoche createIPlanungWocheEmpty(final IAthlete athlete, final int jahr, final int kw) {
         return new PlanungWoche(athlete, jahr, kw, 0, false, 0);
+    }
+
+    public static IRoute createRoute(final String name, final String beschreibung) {
+        return new Route(name, beschreibung);
     }
 }

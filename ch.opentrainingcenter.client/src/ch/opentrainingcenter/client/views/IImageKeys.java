@@ -22,4 +22,8 @@ public final class IImageKeys {
     public static final String LOCK = "icons/stock_lock.png"; //$NON-NLS-1$
 
     public static final String LOCK_OPEN = "icons/stock_lock_open.png"; //$NON-NLS-1$
+
+    public static final String ROUTE3232 = "icons/32_32/route_32_32.png"; //$NON-NLS-1$
+
+    public static final String ROUTE6464 = "icons/64_64/route_64_64.png"; //$NON-NLS-1$
 }

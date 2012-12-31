@@ -10,6 +10,7 @@ import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IHealth;
 import ch.opentrainingcenter.transfer.IImported;
 import ch.opentrainingcenter.transfer.IPlanungWoche;
+import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.IWeather;
 
@@ -176,4 +177,16 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
     void saveOrUpdate(List<IPlanungWoche> planung);
 
     List<IPlanungWoche> getPlanungsWoche(IAthlete athlete);
+
+    /**
+     * @param name
+     *            eindeutige identifizierung der Route
+     * @return die route oder null, wenn nichts unter diesem namen gefunden.
+     */
+    IRoute getRoute(String name);
+
+    /**
+     * Speichert die Strecke ab.
+     */
+    void saveOrUpdate(IRoute route);
 }

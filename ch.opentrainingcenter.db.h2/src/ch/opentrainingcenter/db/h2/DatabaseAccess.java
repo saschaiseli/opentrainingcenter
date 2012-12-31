@@ -13,31 +13,35 @@ import ch.opentrainingcenter.db.h2.internal.DatabaseCreator;
 import ch.opentrainingcenter.db.h2.internal.HealthDao;
 import ch.opentrainingcenter.db.h2.internal.ImportDao;
 import ch.opentrainingcenter.db.h2.internal.PlanungDao;
+import ch.opentrainingcenter.db.h2.internal.RouteDao;
 import ch.opentrainingcenter.db.h2.internal.WeatherDao;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IHealth;
 import ch.opentrainingcenter.transfer.IImported;
 import ch.opentrainingcenter.transfer.IPlanungWoche;
+import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.IWeather;
 
 public class DatabaseAccess implements IDatabaseAccess {
 
     private final AthleteDao athleteDao;
-    private final ImportDao importDao;
-    private final WeatherDao wetterDao;
-    private final HealthDao healthDao;
     private final DatabaseCreator databaseCreator;
+    private final HealthDao healthDao;
+    private final ImportDao importDao;
     private final PlanungDao planungsDao;
+    private final RouteDao routeDao;
+    private final WeatherDao wetterDao;
 
     public DatabaseAccess() {
         final Dao dao = new Dao();
         athleteDao = new AthleteDao(dao);
-        importDao = new ImportDao(dao);
-        wetterDao = new WeatherDao(dao);
-        healthDao = new HealthDao(dao);
-        planungsDao = new PlanungDao(dao);
         databaseCreator = new DatabaseCreator();
+        healthDao = new HealthDao(dao);
+        importDao = new ImportDao(dao);
+        planungsDao = new PlanungDao(dao);
+        routeDao = new RouteDao(dao);
+        wetterDao = new WeatherDao(dao);
     }
 
     @Override
@@ -153,6 +157,16 @@ public class DatabaseAccess implements IDatabaseAccess {
     @Override
     public List<IPlanungWoche> getPlanungsWoche(final IAthlete athlete) {
         return planungsDao.getPlanungsWoche(athlete);
+    }
+
+    @Override
+    public IRoute getRoute(final String name) {
+        return routeDao.getRoute(name);
+    }
+
+    @Override
+    public void saveOrUpdate(final IRoute route) {
+        routeDao.saveOrUpdate(route);
     }
 
 }

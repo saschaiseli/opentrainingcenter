@@ -37,6 +37,7 @@ public class DatabaseCreator extends Dao {
         queries.add("CREATE TABLE PUBLIC.TRAININGTYPE (ID INTEGER NOT NULL, TITLE VARCHAR(2147483647), DESCRIPTION VARCHAR(2147483647), IMAGEICON VARCHAR(2147483647), PRIMARY KEY (ID))");//$NON-NLS-1$
         queries.add("CREATE TABLE PUBLIC.TRAINING (ID INTEGER NOT NULL, DATUM VARCHAR(2147483647), DAUER DOUBLE, LAENGEINMETER DOUBLE, AVERAGEHEARTBEAT INTEGER,MAXHEARTBEAT INTEGER, MAXSPEED DOUBLE, NOTE VARCHAR(2147483647),ID_FK_WEATHER INTEGER, PRIMARY KEY (ID))");//$NON-NLS-1$
         queries.add("CREATE TABLE PUBLIC.PLANUNGWOCHE ( ID INTEGER NOT NULL, KW INTEGER, JAHR INTEGER,KMPROWOCHE INTEGER, INTERVAL BOOLEAN,LANGERLAUF INTEGER, ID_FK_ATHLETE INTEGER, PRIMARY KEY (ID))");//$NON-NLS-1$
+        queries.add("CREATE TABLE PUBLIC.ROUTE ( ID INTEGER NOT NULL, NAME VARCHAR(255), BESCHREIBUNG VARCHAR(2147483647), PRIMARY KEY (ID))");//$NON-NLS-1$
 
         queries.add("ALTER TABLE PUBLIC.HEALTH ADD FOREIGN KEY (ID_FK_ATHLETE) REFERENCES OTC.PUBLIC.ATHLETE (ID)");//$NON-NLS-1$
         queries.add("ALTER TABLE PUBLIC.IMPORTED ADD FOREIGN KEY (ID_FK_ATHLETE) REFERENCES OTC.PUBLIC.ATHLETE (ID)");//$NON-NLS-1$
@@ -49,8 +50,10 @@ public class DatabaseCreator extends Dao {
         queries.add("CREATE sequence TRAINING_ID_SEQUENCE;");//$NON-NLS-1$
         queries.add("CREATE sequence HEALTH_ID_SEQUENCE;"); //$NON-NLS-1$
         queries.add("CREATE sequence PLANUNG_ID_SEQUENCE;"); //$NON-NLS-1$
+        queries.add("CREATE sequence ROUTE_ID_SEQUENCE;"); //$NON-NLS-1$
 
         queries.add("INSERT INTO PUBLIC.ATHLETE (ID,NAME,AGE,MAXHEARTRATE) values(0,'Sascha',37, 200);");//$NON-NLS-1$
+        queries.add("INSERT INTO PUBLIC.ROUTE (ID,NAME,BESCHREIBUNG) values(0,'Unbekannt','');");//$NON-NLS-1$
 
         queries.add("INSERT INTO PUBLIC.TRAININGTYPE (ID,TITLE,DESCRIPTION, IMAGEICON) values(0,'NONE','Unbekannter Typ','icons/man_u_32_32.png');");//$NON-NLS-1$
         queries.add("INSERT INTO PUBLIC.TRAININGTYPE (ID,TITLE,DESCRIPTION, IMAGEICON) values(1,'EXT_INTERVALL','Gleich wie intensives Intervalltraining. Der Unterschied liegt in der Länge der Intervalle und der damit verbundenen geringeren Laufgeschwindigkeit. Beispiel: 5 Minuten schnell, 2 Minuten Trabpause, 5 Minuten schnell etc. Extensive Intervalle werden bereits schon in der Aufbauetappe des Jahresplanes integriert.','icons/man_ei_32_32.png');");//$NON-NLS-1$

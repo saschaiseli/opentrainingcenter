@@ -229,6 +229,11 @@
             id="ch.opentrainingcenter.client.commands.ShowTrainingPlan"
             name="ShowTrainingPlan">
       </command>
+      <command
+            description="neue Route hinzufügen"
+            id="ch.opentrainingcenter.client.commands.AddRoute"
+            name="neue Route hinzufügen">
+      </command>
    </extension>
    <extension
          id="opentrainingcenter"
@@ -472,15 +477,24 @@
             </separator>
             <command
                   commandId="ch.opentrainingcenter.client.commands.AddTrainingPlan"
+                  icon="icons/plaene_erfassen.gif"
                   label="Trainingspläne verwalten"
                   style="push"
                   tooltip="Trainingspläne verwalten">
             </command>
             <command
                   commandId="ch.opentrainingcenter.client.commands.ShowTrainingPlan"
+                  icon="icons/plaeneuebersicht.gif"
                   label="Übersicht Trainingpläne"
                   style="push"
                   tooltip="Trainingspläne">
+            </command>
+            <command
+                  commandId="ch.opentrainingcenter.client.commands.AddRoute"
+                  icon="icons/16_16/route_16_16.png"
+                  label="Neue Strecke hinzufügen"
+                  style="push"
+                  tooltip="Neue Strecke hinzufügen">
             </command>
          </toolbar>
       </menuContribution>
@@ -669,6 +683,10 @@
       <handler
             class="ch.opentrainingcenter.client.commands.ShowTrainingPlan"
             commandId="ch.opentrainingcenter.client.commands.ShowTrainingPlan">
+      </handler>
+      <handler
+            class="ch.opentrainingcenter.client.commands.AddRoute"
+            commandId="ch.opentrainingcenter.client.commands.AddRoute">
       </handler>
    </extension>
    <extension

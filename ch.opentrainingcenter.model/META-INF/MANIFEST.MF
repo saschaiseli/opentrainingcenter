@@ -20,4 +20,5 @@ Export-Package: ch.opentrainingcenter.model,
  ch.opentrainingcenter.model.navigation,
  ch.opentrainingcenter.model.planing,
  ch.opentrainingcenter.model.sportler,
+ ch.opentrainingcenter.model.strecke,
  ch.opentrainingcenter.model.training
