@@ -23,6 +23,7 @@ import ch.opentrainingcenter.core.importer.IConvert2Tcx;
 import ch.opentrainingcenter.core.importer.IFileCopy;
 import ch.opentrainingcenter.model.importer.IGpsFileModel;
 import ch.opentrainingcenter.model.importer.IGpsFileModelWrapper;
+import ch.opentrainingcenter.model.strecke.StreckeModel;
 import ch.opentrainingcenter.tcx.ActivityLapT;
 import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.tcx.HeartRateInBeatsPerMinuteT;
@@ -91,6 +92,9 @@ public class FileImportTest {
         final List<IGpsFileModel> values = new ArrayList<IGpsFileModel>();
         final IGpsFileModel fileModel = mock(IGpsFileModel.class);
         when(fileModel.getFileName()).thenReturn(garminFile.getName());
+        final StreckeModel route = Mockito.mock(StreckeModel.class);
+        when(route.getId()).thenReturn(42);
+        when(fileModel.getRoute()).thenReturn(route);
         values.add(fileModel);
         when(modelWrapper.getGpsFileModels()).thenReturn(values);
 
@@ -125,6 +129,9 @@ public class FileImportTest {
         final List<IGpsFileModel> values = new ArrayList<IGpsFileModel>();
         final IGpsFileModel fileModel = mock(IGpsFileModel.class);
         when(fileModel.getFileName()).thenReturn(garminFile.getName());
+        final StreckeModel route = Mockito.mock(StreckeModel.class);
+        when(route.getId()).thenReturn(42);
+        when(fileModel.getRoute()).thenReturn(route);
         values.add(fileModel);
         when(modelWrapper.getGpsFileModels()).thenReturn(values);
 
