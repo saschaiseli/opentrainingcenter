@@ -44,4 +44,8 @@ public interface IImported {
 
     ITraining getTraining();
 
+    void setRoute(IRoute route);
+
+    IRoute getRoute();
+
 }

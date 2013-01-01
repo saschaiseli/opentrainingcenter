@@ -111,7 +111,7 @@ public class FileImportTest {
 
         final IProgressMonitor monitor = mock(IProgressMonitor.class);
 
-        when(dbAccess.importRecord(anyInt(), anyString(), (Date) any(), (ITraining) any(), Mockito.anyInt())).thenReturn(42);
+        when(dbAccess.importRecord(anyInt(), anyString(), (Date) any(), (ITraining) any(), Mockito.anyInt(), anyInt())).thenReturn(42);
 
         final List<ActivityT> importFile = fileImport.importFile(dir, modelWrapper, monitor);
 
@@ -145,7 +145,7 @@ public class FileImportTest {
 
         final IProgressMonitor monitor = mock(IProgressMonitor.class);
 
-        when(dbAccess.importRecord(anyInt(), anyString(), (Date) any(), (ITraining) any(), Mockito.anyInt())).thenReturn(-1);
+        when(dbAccess.importRecord(anyInt(), anyString(), (Date) any(), (ITraining) any(), Mockito.anyInt(), anyInt())).thenReturn(-1);
 
         final List<ActivityT> importFile = fileImport.importFile(dir, modelWrapper, monitor);
 

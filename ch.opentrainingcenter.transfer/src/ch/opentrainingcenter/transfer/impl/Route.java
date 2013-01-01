@@ -1,6 +1,10 @@
 package ch.opentrainingcenter.transfer.impl;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import ch.opentrainingcenter.transfer.IAthlete;
+import ch.opentrainingcenter.transfer.IImported;
 import ch.opentrainingcenter.transfer.IRoute;
 
 public class Route implements IRoute {
@@ -9,6 +13,7 @@ public class Route implements IRoute {
     private String beschreibung;
     private int id;
     private IAthlete athlete;
+    private Set<IImported> importeds = new HashSet<IImported>(0);
 
     /**
      * nur für hibernate
@@ -61,6 +66,15 @@ public class Route implements IRoute {
     @Override
     public void setBeschreibung(final String beschreibung) {
         this.beschreibung = beschreibung;
+    }
+
+    @Override
+    public Set<IImported> getImporteds() {
+        return this.importeds;
+    }
+
+    public void setImporteds(final Set<IImported> importeds) {
+        this.importeds = importeds;
     }
 
     @Override

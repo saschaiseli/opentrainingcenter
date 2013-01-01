@@ -25,6 +25,7 @@ import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.model.ModelFactory;
 import ch.opentrainingcenter.model.importer.IGpsFileModel;
 import ch.opentrainingcenter.model.importer.IGpsFileModelWrapper;
+import ch.opentrainingcenter.model.strecke.StreckeModel;
 
 public class RunTypeDialog extends TitleAreaDialog {
 
@@ -32,8 +33,11 @@ public class RunTypeDialog extends TitleAreaDialog {
 
     private TableViewer viewer;
 
-    public RunTypeDialog(final Shell parentShell, final String[] fileNames) {
+    private final List<StreckeModel> strecken;
+
+    public RunTypeDialog(final Shell parentShell, final String[] fileNames, final List<StreckeModel> strecken) {
         super(parentShell);
+        this.strecken = strecken;
 
         initModel(fileNames);
     }
@@ -133,10 +137,16 @@ public class RunTypeDialog extends TitleAreaDialog {
             @Override
             public String getText(final Object element) {
                 final IGpsFileModel record = (IGpsFileModel) element;
-                return "";//record.getRoute().getName(); //$NON-NLS-1$
+                String route;
+                if (record.getRoute() == null) {
+                    route = strecken.get(0).getName();
+                } else {
+                    route = record.getRoute().getName();
+                }
+                return route;
             }
         });
-        col.setEditingSupport(new StreckeEditingSupport(viewer));
+        col.setEditingSupport(new StreckeEditingSupport(viewer, strecken));
     }
 
     public IGpsFileModelWrapper getModelWrapper() {

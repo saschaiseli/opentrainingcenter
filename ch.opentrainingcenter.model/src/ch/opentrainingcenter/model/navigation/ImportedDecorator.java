@@ -4,6 +4,7 @@ import java.util.Date;
 
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IImported;
+import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.ITrainingType;
 
@@ -83,6 +84,16 @@ public abstract class ImportedDecorator implements IImported {
     @Override
     public ITraining getTraining() {
         return imported.getTraining();
+    }
+
+    @Override
+    public void setRoute(final IRoute route) {
+        imported.setRoute(route);
+    }
+
+    @Override
+    public IRoute getRoute() {
+        return imported.getRoute();
     }
 
     @Override

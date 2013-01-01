@@ -16,6 +16,7 @@ import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IImported;
+import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.ITrainingType;
 
@@ -46,7 +47,7 @@ public class ImportDao {
         return keyFileName;
     }
 
-    public int importRecord(final int athleteId, final String fileName, final Date activityId, final ITraining overview, final int type) {
+    public int importRecord(final int athleteId, final String fileName, final Date activityId, final ITraining overview, final int type, final int routeId) {
         final int id = searchRecord(activityId);
         if (id > 0) {
             return -1;
@@ -60,6 +61,7 @@ public class ImportDao {
         record.setActivityId(activityId);
         record.setTraining(overview);
         record.setTrainingType(getTrainingType(type));
+        record.setRoute(getRoute(routeId));
         final Session session = dao.getSession();
         final Transaction tx = session.beginTransaction();
         session.saveOrUpdate(record);
@@ -90,6 +92,14 @@ public class ImportDao {
         final Query query = dao.getSession().createQuery("from TrainingType where id=:idType");//$NON-NLS-1$
         query.setParameter("idType", id);//$NON-NLS-1$
         final List<ITrainingType> list = query.list();
+        return list.get(0);
+    }
+
+    @SuppressWarnings("unchecked")
+    private IRoute getRoute(final int routeId) {
+        final Query query = dao.getSession().createQuery("from Route where id=:idType");//$NON-NLS-1$
+        query.setParameter("idType", routeId);//$NON-NLS-1$
+        final List<IRoute> list = query.list();
         return list.get(0);
     }
 

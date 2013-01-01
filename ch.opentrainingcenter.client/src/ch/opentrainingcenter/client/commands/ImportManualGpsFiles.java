@@ -1,5 +1,7 @@
 package ch.opentrainingcenter.client.commands;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.commands.AbstractHandler;
@@ -27,8 +29,11 @@ import ch.opentrainingcenter.core.importer.ImporterFactory;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.importer.IFileImport;
 import ch.opentrainingcenter.importer.impl.FileImport;
+import ch.opentrainingcenter.model.ModelFactory;
 import ch.opentrainingcenter.model.importer.IGpsFileModelWrapper;
+import ch.opentrainingcenter.model.strecke.StreckeModel;
 import ch.opentrainingcenter.transfer.IAthlete;
+import ch.opentrainingcenter.transfer.IRoute;
 
 public class ImportManualGpsFiles extends AbstractHandler {
 
@@ -38,7 +43,7 @@ public class ImportManualGpsFiles extends AbstractHandler {
     private final ConvertContainer cc;
 
     /**
-     * Constructor für Eclipse
+     * Constructor
      */
     public ImportManualGpsFiles() {
         this.databaseAccess = DatabaseAccessFactory.getDatabaseAccess();
@@ -69,13 +74,18 @@ public class ImportManualGpsFiles extends AbstractHandler {
             final String[] fileNames = importDialog.getFileNames();
             final String filterPath = importDialog.getFilterPath();
 
-            final RunTypeDialog dialog = new RunTypeDialog(window.getShell(), fileNames);
+            final String athleteId = store.getString(PreferenceConstants.ATHLETE_ID);
+            final int id = Integer.parseInt(athleteId);
+            final IAthlete athlete = databaseAccess.getAthlete(id);
+            final List<IRoute> routen = databaseAccess.getRoute(athlete);
+            final List<StreckeModel> strecken = new ArrayList<StreckeModel>();
+            for (final IRoute route : routen) {
+                strecken.add(ModelFactory.createStreckeModel(route));
+            }
+            final RunTypeDialog dialog = new RunTypeDialog(window.getShell(), fileNames, strecken);
             final int open = dialog.open();
             if (open >= 0) {
-                final String athleteId = store.getString(PreferenceConstants.ATHLETE_ID);
                 if (validId(athleteId)) {
-                    final int id = Integer.parseInt(athleteId);
-                    final IAthlete athlete = databaseAccess.getAthlete(id);
                     final IFileImport fileImporter = new FileImport(cc, athlete, databaseAccess, location, ImporterFactory.createFileCopy());
                     final IGpsFileModelWrapper model = dialog.getModelWrapper();
                     final Job job = new ImportManualJob(Messages.ImportManualGpsFilesLadeGpsFiles, model, filterPath, fileImporter, cache);

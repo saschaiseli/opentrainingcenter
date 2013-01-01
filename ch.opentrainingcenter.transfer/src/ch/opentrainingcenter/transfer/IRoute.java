@@ -1,5 +1,7 @@
 package ch.opentrainingcenter.transfer;
 
+import java.util.Set;
+
 /**
  * Definition einer Route.
  */
@@ -27,5 +29,7 @@ public interface IRoute {
     String getBeschreibung();
 
     void setBeschreibung(String beschreibung);
+
+    Set<IImported> getImporteds();
 
 }

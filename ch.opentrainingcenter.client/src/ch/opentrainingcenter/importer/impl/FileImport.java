@@ -72,7 +72,8 @@ public class FileImport implements IFileImport {
         for (final ActivityT activity : activities) {
             final ITraining overview = TrainingOverviewFactory.creatTrainingOverview(activity);
 
-            final int id = dbAccess.importRecord(athlete.getId(), file.getName(), activity.getId().toGregorianCalendar().getTime(), overview, model.getId());
+            final int id = dbAccess.importRecord(athlete.getId(), file.getName(), activity.getId().toGregorianCalendar().getTime(), overview, model.getId(),
+                    model.getRoute().getId());
             if (id > 0) {
                 // neu hinzugefügt
                 result.add(activity);

@@ -22,5 +22,11 @@
 		<property name="beschreibung" type="java.lang.String">
 			<column name="BESCHREIBUNG" />
 		</property>
+		<set name="importeds" table="IMPORTED" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="ID_FK_ROUTE" />
+            </key>
+            <one-to-many class="ch.opentrainingcenter.transfer.impl.Imported" />
+        </set>
 	</class>
 </hibernate-mapping>

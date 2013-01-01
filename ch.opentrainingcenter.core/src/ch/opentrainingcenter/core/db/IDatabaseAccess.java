@@ -107,10 +107,12 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
      *            id der aktivität.
      * @param type
      *            der typ des trainings
+     * @param routeId
+     *            Die ID der Strecke.
      * @return id des datenbankeintrages oder -1 wenn der record bereits in der
      *         datenbank war.
      */
-    int importRecord(int athleteId, String fileName, Date activityId, ITraining overview, int type);
+    int importRecord(int athleteId, String fileName, Date activityId, ITraining overview, int type, int routeId);
 
     void removeImportedRecord(Date activityId);
 
