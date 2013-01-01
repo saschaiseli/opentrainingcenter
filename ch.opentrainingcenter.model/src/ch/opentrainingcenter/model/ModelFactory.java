@@ -20,6 +20,7 @@ import ch.opentrainingcenter.model.planing.KwJahrKey;
 import ch.opentrainingcenter.model.planing.internal.PastPlanungModel;
 import ch.opentrainingcenter.model.planing.internal.PlanungModel;
 import ch.opentrainingcenter.model.planing.internal.PlanungWocheModel;
+import ch.opentrainingcenter.model.strecke.StreckeModel;
 import ch.opentrainingcenter.model.training.IGoldMedalModel;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
 import ch.opentrainingcenter.model.training.Wetter;
@@ -29,6 +30,7 @@ import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IHealth;
 import ch.opentrainingcenter.transfer.IImported;
 import ch.opentrainingcenter.transfer.IPlanungWoche;
+import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
 
 public class ModelFactory {
@@ -99,5 +101,9 @@ public class ModelFactory {
 
     public static INavigationParent createNavigationParent() {
         return new NavigationParent();
+    }
+
+    public static StreckeModel createStreckeModel(final IRoute route) {
+        return new StreckeModel(route.getId(), route.getAthlete(), route.getName(), route.getBeschreibung());
     }
 }

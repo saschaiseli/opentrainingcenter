@@ -160,8 +160,13 @@ public class DatabaseAccess implements IDatabaseAccess {
     }
 
     @Override
-    public IRoute getRoute(final String name) {
-        return routeDao.getRoute(name);
+    public IRoute getRoute(final String name, final IAthlete athlete) {
+        return routeDao.getRoute(name, athlete);
+    }
+
+    @Override
+    public List<IRoute> getRoute(final IAthlete athlete) {
+        return routeDao.getRoute(athlete);
     }
 
     @Override

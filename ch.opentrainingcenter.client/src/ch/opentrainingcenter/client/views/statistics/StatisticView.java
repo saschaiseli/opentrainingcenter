@@ -11,7 +11,7 @@ import org.eclipse.ui.part.ViewPart;
 import ch.opentrainingcenter.charts.bar.BarChartFactory;
 import ch.opentrainingcenter.charts.statistics.StatisticsFactory;
 import ch.opentrainingcenter.client.Activator;
-import ch.opentrainingcenter.client.cache.impl.HealthCache;
+import ch.opentrainingcenter.client.cache.HealthCache;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.core.helper.ChartSerieType;
 

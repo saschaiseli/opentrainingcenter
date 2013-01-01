@@ -30,7 +30,7 @@ import org.eclipse.ui.part.ViewPart;
 
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.action.job.LoadJahresplanung;
-import ch.opentrainingcenter.client.cache.impl.HealthCache;
+import ch.opentrainingcenter.client.cache.HealthCache;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.client.views.dialoge.HealthDialog;
 import ch.opentrainingcenter.client.views.navigation.tree.KalenderWocheTreeContentProvider;

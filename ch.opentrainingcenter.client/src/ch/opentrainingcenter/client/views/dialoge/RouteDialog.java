@@ -22,18 +22,20 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import ch.opentrainingcenter.client.Activator;
+import ch.opentrainingcenter.client.cache.StreckeCache;
 import ch.opentrainingcenter.client.views.IImageKeys;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.model.strecke.StreckeModel;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
+import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IRoute;
 
 public class RouteDialog extends TitleAreaDialog {
 
     private static final Logger LOG = Logger.getLogger(RouteDialog.class);
 
-    private final StreckeModel model = new StreckeModel();
+    private final StreckeModel model;
 
     private DataBindingContext ctx;
     private Text name;
@@ -43,10 +45,11 @@ public class RouteDialog extends TitleAreaDialog {
 
     private final Shell parent;
 
-    public RouteDialog(final Shell parent, final IDatabaseAccess databaseAccess) {
+    public RouteDialog(final Shell parent, final IDatabaseAccess databaseAccess, final IAthlete athlete) {
         super(parent);
         this.parent = parent;
         this.databaseAccess = databaseAccess;
+        model = new StreckeModel(athlete);
     }
 
     @Override
@@ -97,14 +100,16 @@ public class RouteDialog extends TitleAreaDialog {
             // speichern
             LOG.debug("Neue Route speichern"); //$NON-NLS-1$
 
-            IRoute route = databaseAccess.getRoute(model.getName());
+            IRoute route = databaseAccess.getRoute(model.getName(), model.getAthlete());
             boolean confirm = true;
             if (route != null) {
                 confirm = MessageDialog.openConfirm(parent, "Es ist bereits eine Route unter diesem Namen erfasst", Messages.HealthDialog_1);
             }
             if (confirm) {
-                route = CommonTransferFactory.createRoute(model.getName(), model.getBeschreibung());
+                route = CommonTransferFactory.createRoute(model.getName(), model.getBeschreibung(), model.getAthlete());
                 databaseAccess.saveOrUpdate(route);
+                StreckeCache.getInstance().add(model);
+                super.buttonPressed(buttonId);
             }
         } else {
             super.buttonPressed(buttonId);

@@ -48,7 +48,6 @@ public class RunTypeDialog extends TitleAreaDialog {
     protected Control createDialogArea(final Composite parent) {
 
         setTitle(Messages.RunTypeDialog0);
-        // setMessage("message");
         setTitleImage(Activator.getImageDescriptor(IImageKeys.IMPORT_GPS_GROSS).createImage());
 
         final GridLayout layout = new GridLayout(2, false);
@@ -85,8 +84,8 @@ public class RunTypeDialog extends TitleAreaDialog {
     }
 
     private void createColumns() {
-        final String[] titles = { Messages.RunTypeDialog2, Messages.RunTypeDialog3, Messages.RunTypeDialog4 };
-        final int[] bounds = { 80, 250, 250 };
+        final String[] titles = { Messages.RunTypeDialog2, Messages.RunTypeDialog3, Messages.RunTypeDialog4, "Strecke" };
+        final int[] bounds = { 80, 250, 250, 100 };
 
         // Flag
         TableViewerColumn col = createTableViewerColumn(titles[0], bounds[0]);
@@ -127,6 +126,17 @@ public class RunTypeDialog extends TitleAreaDialog {
             }
         });
         col.setEditingSupport(new RunTypeEditingSupport(viewer));
+
+        // Strecke
+        col = createTableViewerColumn(titles[3], bounds[3]);
+        col.setLabelProvider(new ColumnLabelProvider() {
+            @Override
+            public String getText(final Object element) {
+                final IGpsFileModel record = (IGpsFileModel) element;
+                return "";//record.getRoute().getName(); //$NON-NLS-1$
+            }
+        });
+        col.setEditingSupport(new StreckeEditingSupport(viewer));
     }
 
     public IGpsFileModelWrapper getModelWrapper() {

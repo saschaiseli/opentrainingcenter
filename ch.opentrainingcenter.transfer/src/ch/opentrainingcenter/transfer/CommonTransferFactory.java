@@ -54,7 +54,7 @@ public class CommonTransferFactory {
         return new PlanungWoche(athlete, jahr, kw, 0, false, 0);
     }
 
-    public static IRoute createRoute(final String name, final String beschreibung) {
-        return new Route(name, beschreibung);
+    public static IRoute createRoute(final String name, final String beschreibung, final IAthlete athlete) {
+        return new Route(name, beschreibung, athlete);
     }
 }

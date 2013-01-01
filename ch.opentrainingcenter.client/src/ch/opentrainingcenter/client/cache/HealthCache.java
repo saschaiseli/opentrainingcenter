@@ -1,4 +1,4 @@
-package ch.opentrainingcenter.client.cache.impl;
+package ch.opentrainingcenter.client.cache;
 
 import java.util.List;
 

@@ -9,7 +9,8 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.preference.IPreferenceStore;
 
 import ch.opentrainingcenter.client.Activator;
-import ch.opentrainingcenter.client.cache.impl.HealthCache;
+import ch.opentrainingcenter.client.cache.HealthCache;
+import ch.opentrainingcenter.client.cache.StreckeCache;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.client.views.IImageKeys;
 import ch.opentrainingcenter.core.PreferenceConstants;
@@ -26,11 +27,13 @@ import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.model.cache.TrainingsPlanCache;
 import ch.opentrainingcenter.model.navigation.ConcreteHealth;
 import ch.opentrainingcenter.model.planing.IPlanungModel;
+import ch.opentrainingcenter.model.strecke.StreckeModel;
 import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IHealth;
 import ch.opentrainingcenter.transfer.IImported;
 import ch.opentrainingcenter.transfer.IPlanungWoche;
+import ch.opentrainingcenter.transfer.IRoute;
 
 public class InitialLoadRunnable implements IRunnableWithProgress {
 
@@ -44,43 +47,65 @@ public class InitialLoadRunnable implements IRunnableWithProgress {
         if (athlete != null) {
 
             final IDatabaseAccess db = DatabaseAccessFactory.getDatabaseAccess();
-            final List<IImported> allImported = db.getAllImported(athlete, 10);
-            final ConvertContainer cc = new ConvertContainer(ExtensionHelper.getConverters());
-            final IImportedConverter fileLoader = ImporterFactory.createGpsFileLoader(cc, store.getString(PreferenceConstants.GPS_FILE_LOCATION_PROG));
-            final Cache cache = TrainingCenterDataCache.getInstance();
-            int i = 1;
-            for (final IImported record : allImported) {
-                ActivityT activity;
-                try {
-                    activity = fileLoader.convertImportedToActivity(record);
-                    monitor.subTask(Messages.InitialLoadRunnable_0 + i);
-                    i++;
-                    cache.add(activity);
-                    LOG.info("Record hinzugefügt"); //$NON-NLS-1$
-                } catch (final Exception e) {
-                    LOG.error("Fehler im initial load", e); //$NON-NLS-1$
-                }
-            }
-            i = 0;
-            final List<IHealth> healths = db.getHealth(athlete);
-            final ICache<Integer, ConcreteHealth> healthCache = HealthCache.getInstance();
-            for (final IHealth health : healths) {
-                healthCache.add(ch.opentrainingcenter.model.ModelFactory.createConcreteHealth(health, IImageKeys.CARDIO3232));
-                monitor.subTask(Messages.InitialLoadRunnable_1 + i++);
-                LOG.info(Messages.InitialLoadRunnable_2);
-            }
+            loadFirstRecords(monitor, athlete, db);
+            loadAllHealths(monitor, athlete, db);
+            loadAllPlaene(monitor, athlete, db);
+            loadAllRouten(monitor, athlete, db);
+        }
+    }
 
-            final List<IPlanungWoche> planungsWoche = db.getPlanungsWoche(athlete);
-            final TrainingsPlanCache planCache = TrainingsPlanCache.getInstance();
-            i = 0;
-            for (final IPlanungWoche plan : planungsWoche) {
-                final IPlanungModel model = ch.opentrainingcenter.model.ModelFactory.createPlanungModel(athlete, plan.getJahr(), plan.getKw(), plan
-                        .getKmProWoche(), plan.isInterval(), plan.getLangerLauf());
-                planCache.add(model);
-                monitor.subTask(Messages.InitialLoadRunnable_3 + i++);
-                LOG.info(Messages.InitialLoadRunnable_4);
+    private void loadFirstRecords(final IProgressMonitor monitor, final IAthlete athlete, final IDatabaseAccess db) {
+        final List<IImported> allImported = db.getAllImported(athlete, 10);
+        final ConvertContainer cc = new ConvertContainer(ExtensionHelper.getConverters());
+        final IImportedConverter fileLoader = ImporterFactory.createGpsFileLoader(cc, store.getString(PreferenceConstants.GPS_FILE_LOCATION_PROG));
+        final Cache cache = TrainingCenterDataCache.getInstance();
+        int i = 1;
+        for (final IImported record : allImported) {
+            ActivityT activity;
+            try {
+                activity = fileLoader.convertImportedToActivity(record);
+                monitor.subTask(Messages.InitialLoadRunnable_0 + i);
+                i++;
+                cache.add(activity);
+                LOG.info("Record hinzugefügt"); //$NON-NLS-1$
+            } catch (final Exception e) {
+                LOG.error("Fehler im initial load", e); //$NON-NLS-1$
             }
         }
     }
 
+    private void loadAllPlaene(final IProgressMonitor monitor, final IAthlete athlete, final IDatabaseAccess db) {
+        int i = 0;
+        final List<IPlanungWoche> planungsWoche = db.getPlanungsWoche(athlete);
+        final TrainingsPlanCache planCache = TrainingsPlanCache.getInstance();
+        for (final IPlanungWoche plan : planungsWoche) {
+            final IPlanungModel model = ch.opentrainingcenter.model.ModelFactory.createPlanungModel(athlete, plan.getJahr(), plan.getKw(),
+                    plan.getKmProWoche(), plan.isInterval(), plan.getLangerLauf());
+            planCache.add(model);
+            monitor.subTask(Messages.InitialLoadRunnable_3 + i++);
+            LOG.info(Messages.InitialLoadRunnable_4);
+        }
+    }
+
+    private void loadAllHealths(final IProgressMonitor monitor, final IAthlete athlete, final IDatabaseAccess db) {
+        int i = 0;
+        final List<IHealth> healths = db.getHealth(athlete);
+        final ICache<Integer, ConcreteHealth> healthCache = HealthCache.getInstance();
+        for (final IHealth health : healths) {
+            healthCache.add(ch.opentrainingcenter.model.ModelFactory.createConcreteHealth(health, IImageKeys.CARDIO3232));
+            monitor.subTask(Messages.InitialLoadRunnable_1 + i++);
+            LOG.info(Messages.InitialLoadRunnable_2);
+        }
+    }
+
+    private void loadAllRouten(final IProgressMonitor monitor, final IAthlete athlete, final IDatabaseAccess db) {
+        int i = 0;
+        final List<IRoute> routen = db.getRoute(athlete);
+        final ICache<String, StreckeModel> cache = StreckeCache.getInstance();
+        for (final IRoute route : routen) {
+            cache.add(ch.opentrainingcenter.model.ModelFactory.createStreckeModel(route));
+            monitor.subTask("Strecken laden: " + i++);
+            LOG.info("Strecke dem Cache hinzugefügt: " + route); //$NON-NLS-1$
+        }
+    }
 }

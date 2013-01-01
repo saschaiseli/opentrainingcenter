@@ -183,10 +183,15 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
      *            eindeutige identifizierung der Route
      * @return die route oder null, wenn nichts unter diesem namen gefunden.
      */
-    IRoute getRoute(String name);
+    IRoute getRoute(String name, IAthlete athlete);
 
     /**
      * Speichert die Strecke ab.
      */
     void saveOrUpdate(IRoute route);
+
+    /**
+     * Liefert alle Strecken von dem Athleten
+     */
+    List<IRoute> getRoute(IAthlete athlete);
 }

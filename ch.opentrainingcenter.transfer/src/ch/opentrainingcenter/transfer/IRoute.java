@@ -5,6 +5,14 @@ package ch.opentrainingcenter.transfer;
  */
 public interface IRoute {
 
+    int getId();
+
+    void setId(int id);
+
+    IAthlete getAthlete();
+
+    void setAthlete(IAthlete athlete);
+
     void setName(String name);
 
     /**
@@ -20,7 +28,4 @@ public interface IRoute {
 
     void setBeschreibung(String beschreibung);
 
-    int getId();
-
-    void setId(int id);
 }
