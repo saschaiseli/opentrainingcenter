@@ -17,17 +17,19 @@ public class ActivityExtension {
 
     private final IWeather weather;
 
+    private final IRoute route;
+
     /**
      * Default konstruktor mit unbekanntem Wetter und einer leeren Notiz.
      */
     public ActivityExtension() {
-        this.note = ""; //$NON-NLS-1$
-        this.weather = CommonTransferFactory.createDefaultWeather();
+        this("", CommonTransferFactory.createDefaultWeather(), null); //$NON-NLS-1$
     }
 
-    public ActivityExtension(final String note, final IWeather weather) {
+    public ActivityExtension(final String note, final IWeather weather, final IRoute route) {
         this.note = note;
         this.weather = weather;
+        this.route = route;
     }
 
     public String getNote() {
@@ -38,8 +40,13 @@ public class ActivityExtension {
         return weather;
     }
 
+    public IRoute getRoute() {
+        return route;
+    }
+
+    @SuppressWarnings("nls")
     @Override
     public String toString() {
-        return "ActivityExtension [note=" + note + ", weather=" + weather.getWetter() + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        return "ActivityExtension [note=" + note + ", weather=" + weather + ", route=" + route + "]";
     }
 }

@@ -77,4 +77,11 @@ public class StreckeModel implements PropertyChangeListener {
     public void propertyChange(final PropertyChangeEvent evt) {
         propertyChangeSupport.firePropertyChange("name", null, this); //$NON-NLS-1$
     }
+
+    @SuppressWarnings("nls")
+    @Override
+    public String toString() {
+        return "StreckeModel [id=" + id + ", athlete=" + athlete + ", name=" + name + ", beschreibung=" + beschreibung + "]";
+    }
+
 }

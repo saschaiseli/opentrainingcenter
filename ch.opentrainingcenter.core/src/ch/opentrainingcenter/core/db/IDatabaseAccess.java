@@ -130,6 +130,11 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
     void updateRecord(IImported record, int index);
 
     /**
+     * updated training type
+     */
+    void updateRecordRoute(IImported record, int idRoute);
+
+    /**
      * updated ganzer record
      */
     void updateRecord(IImported record);

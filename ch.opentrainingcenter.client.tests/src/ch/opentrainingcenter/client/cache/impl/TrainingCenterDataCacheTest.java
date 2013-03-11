@@ -200,7 +200,7 @@ public class TrainingCenterDataCacheTest {
         final Date dateA = activityA.getId().toGregorianCalendar().getTime();
 
         // execute
-        cache.updateExtension(dateA, new ActivityExtension("test", null));
+        cache.updateExtension(dateA, new ActivityExtension("test", null, null));
         cache.add(activityA);
 
         // assert
@@ -222,7 +222,7 @@ public class TrainingCenterDataCacheTest {
         cache.add(activityA);
 
         // execute
-        cache.updateExtension(dateA, new ActivityExtension("test", null));
+        cache.updateExtension(dateA, new ActivityExtension("test", null, null));
 
         // assert
         final ActivityT activityTFromCache = cache.get(dateA);
@@ -242,7 +242,7 @@ public class TrainingCenterDataCacheTest {
         cache.add(activityA);
 
         // execute
-        cache.updateExtension(dateA, new ActivityExtension("test", null));
+        cache.updateExtension(dateA, new ActivityExtension("test", null, null));
 
         // assert
         final ActivityT activityTFromCache = cache.get(dateA);

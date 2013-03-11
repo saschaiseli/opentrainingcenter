@@ -64,7 +64,7 @@ public class LoadActivityJobTest {
         final String text = "eben geladen";
         final ExtensionsT mock = Mockito.mock(ExtensionsT.class);
         final List<Object> list = new ArrayList<Object>();
-        list.add(new ActivityExtension(text, CommonTransferFactory.createDefaultWeather()));
+        list.add(new ActivityExtension(text, CommonTransferFactory.createDefaultWeather(), null));
         Mockito.when(mock.getAny()).thenReturn(list);
         Mockito.when(activity.getExtensions()).thenReturn(mock);
 
@@ -93,7 +93,7 @@ public class LoadActivityJobTest {
         final String text = "eben geladen";
         final ExtensionsT mock = Mockito.mock(ExtensionsT.class);
         final List<Object> list = new ArrayList<Object>();
-        list.add(new ActivityExtension(text, CommonTransferFactory.createDefaultWeather()));
+        list.add(new ActivityExtension(text, CommonTransferFactory.createDefaultWeather(), null));
         Mockito.when(mock.getAny()).thenReturn(list);
         Mockito.when(activity.getExtensions()).thenReturn(mock);
 
@@ -117,7 +117,7 @@ public class LoadActivityJobTest {
         final String text = "eben geladen";
         final ExtensionsT mock = Mockito.mock(ExtensionsT.class);
         final List<Object> list = new ArrayList<Object>();
-        list.add(new ActivityExtension(text, CommonTransferFactory.createDefaultWeather()));
+        list.add(new ActivityExtension(text, CommonTransferFactory.createDefaultWeather(), null));
         Mockito.when(mock.getAny()).thenReturn(list);
         Mockito.when(activity.getExtensions()).thenReturn(mock);
 

@@ -90,6 +90,11 @@ public class DatabaseAccess implements IDatabaseAccess {
     }
 
     @Override
+    public void updateRecordRoute(final IImported record, final int idRoute) {
+        importDao.updateRecordRoute(record, idRoute);
+    }
+
+    @Override
     public void updateRecord(final IImported record) {
         importDao.updateRecord(record);
     }

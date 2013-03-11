@@ -4,6 +4,7 @@ import java.util.Date;
 
 import ch.opentrainingcenter.transfer.ActivityExtension;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
+import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.IWeather;
 
@@ -18,13 +19,14 @@ public class Training implements ITraining {
     private double maxSpeed;
     private String note;
     private IWeather weather = CommonTransferFactory.createDefaultWeather();
+    private IRoute route;
 
     public Training() {
         // maybe for hibernate
     }
 
-    public Training(final Date dateOfStart, final double timeInSeconds, final double distance, final int avgHeartRate,
-            final int maxHeartBeat, final double maximumSpeed, final ActivityExtension activitExtension) {
+    public Training(final Date dateOfStart, final double timeInSeconds, final double distance, final int avgHeartRate, final int maxHeartBeat,
+            final double maximumSpeed, final ActivityExtension activitExtension) {
         date = dateOfStart;
         dauerInSekunden = timeInSeconds;
         laengeInMeter = distance;
@@ -33,6 +35,7 @@ public class Training implements ITraining {
         maxSpeed = maximumSpeed;
         this.note = activitExtension.getNote();
         weather = activitExtension.getWeather();
+        route = activitExtension.getRoute();
     }
 
     @Override
@@ -106,12 +109,6 @@ public class Training implements ITraining {
     }
 
     @Override
-    public String toString() {
-        return "Training [id=" + id + ", date=" + date + ", dauerInSekunden=" + dauerInSekunden + ", laengeInMeter=" + laengeInMeter + ", avgHeartBeat=" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-                + avgHeartBeat + ", maxHeartRate=" + maxHeartRate + ", maxSpeed=" + maxSpeed + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-    }
-
-    @Override
     public String getNote() {
         return note;
     }
@@ -130,4 +127,23 @@ public class Training implements ITraining {
     public void setWeather(final IWeather weather) {
         this.weather = weather;
     }
+
+    @Override
+    public IRoute getRoute() {
+        return route;
+    }
+
+    @Override
+    public void setRoute(final IRoute route) {
+        this.route = route;
+    }
+
+    @SuppressWarnings("nls")
+    @Override
+    public String toString() {
+        return "Training [id=" + id + ", date=" + date + ", dauerInSekunden=" + dauerInSekunden + ", laengeInMeter=" + laengeInMeter + ", avgHeartBeat="
+                + avgHeartBeat + ", maxHeartRate=" + maxHeartRate + ", maxSpeed=" + maxSpeed + ", note=" + note + ", weather=" + weather + ", route=" + route
+                + "]";
+    }
+
 }

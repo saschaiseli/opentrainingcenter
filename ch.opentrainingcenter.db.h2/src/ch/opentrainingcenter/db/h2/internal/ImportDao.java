@@ -79,6 +79,15 @@ public class ImportDao {
         session.flush();
     }
 
+    public void updateRecordRoute(final IImported record, final int idRoute) {
+        record.setRoute(getRoute(idRoute));
+        final Session session = dao.getSession();
+        final Transaction tx = session.beginTransaction();
+        session.update(record);
+        tx.commit();
+        session.flush();
+    }
+
     public void updateRecord(final IImported record) {
         final Session session = dao.getSession();
         final Transaction tx = session.beginTransaction();
@@ -198,4 +207,5 @@ public class ImportDao {
         }
         return result;
     }
+
 }

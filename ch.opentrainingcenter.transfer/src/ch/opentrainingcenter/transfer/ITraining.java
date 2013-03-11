@@ -45,4 +45,8 @@ public interface ITraining {
     IWeather getWeather();
 
     void setWeather(IWeather weather);
+
+    IRoute getRoute();
+
+    void setRoute(IRoute route);
 }

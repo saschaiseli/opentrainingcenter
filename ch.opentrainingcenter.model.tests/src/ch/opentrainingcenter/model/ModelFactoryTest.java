@@ -15,7 +15,9 @@ import ch.opentrainingcenter.model.importer.IGpsFileModelWrapper;
 import ch.opentrainingcenter.model.planing.IPlanungModel;
 import ch.opentrainingcenter.model.planing.IPlanungWocheModel;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
+import ch.opentrainingcenter.model.training.internal.SimpleTraining;
 import ch.opentrainingcenter.transfer.IAthlete;
+import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -40,6 +42,11 @@ public class ModelFactoryTest {
         Mockito.when(overview.getAverageHeartBeat()).thenReturn(avgHeart);
         Mockito.when(overview.getMaxHeartBeat()).thenReturn(maxHeart);
         Mockito.when(overview.getMaxSpeed()).thenReturn(maxSpeed);
+        final IRoute route = Mockito.mock(IRoute.class);
+        final IAthlete athlete = Mockito.mock(IAthlete.class);
+        Mockito.when(route.getAthlete()).thenReturn(athlete);
+        Mockito.when(route.getName()).thenReturn("blabla");
+        Mockito.when(overview.getRoute()).thenReturn(route);
     }
 
     @Test
@@ -57,8 +64,17 @@ public class ModelFactoryTest {
 
     @Test
     public void testSimpleTrainingMitTyp() {
-        final ISimpleTraining training = ModelFactory.createSimpleTraining(overview, RunType.EXT_INTERVALL, "");
+        final ISimpleTraining training = new SimpleTraining(overview.getLaengeInMeter(), overview.getDauerInSekunden(), overview.getDateOfStart(), overview
+                .getAverageHeartBeat(), overview.getMaxHeartBeat(), overview.getMaxSpeed(), RunType.EXT_INTERVALL, "");
         assertTraining(training);
+    }
+
+    /**
+     * Nur für tests
+     */
+    protected static ISimpleTraining createSimpleTraining(final ITraining overview, final RunType runType, final String note) {
+        return new SimpleTraining(overview.getLaengeInMeter(), overview.getDauerInSekunden(), overview.getDateOfStart(), overview.getAverageHeartBeat(),
+                overview.getMaxHeartBeat(), overview.getMaxSpeed(), runType, note);
     }
 
     private void assertTraining(final ISimpleTraining training) {

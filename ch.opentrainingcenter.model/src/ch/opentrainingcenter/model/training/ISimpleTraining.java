@@ -3,6 +3,7 @@ package ch.opentrainingcenter.model.training;
 import java.util.Date;
 
 import ch.opentrainingcenter.core.helper.RunType;
+import ch.opentrainingcenter.model.strecke.StreckeModel;
 
 public interface ISimpleTraining {
 
@@ -37,4 +38,8 @@ public interface ISimpleTraining {
     Wetter getWetter();
 
     void setWetter(Wetter type);
+
+    StreckeModel getStrecke();
+
+    void setStrecke(StreckeModel strecke);
 }

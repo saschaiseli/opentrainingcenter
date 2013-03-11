@@ -5,6 +5,7 @@ import java.util.Date;
 import ch.opentrainingcenter.core.helper.DistanceHelper;
 import ch.opentrainingcenter.core.helper.RunType;
 import ch.opentrainingcenter.core.helper.TimeHelper;
+import ch.opentrainingcenter.model.strecke.StreckeModel;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
 import ch.opentrainingcenter.model.training.Wetter;
 
@@ -21,6 +22,7 @@ public class SimpleTraining implements ISimpleTraining {
     private String note;
     private RunType type;
     private Wetter wetter;
+    private StreckeModel strecke;
 
     public SimpleTraining(final double distanzInMeter, final double dauerInSekunden, final Date datum, final int avgHeartRate, final int maxHeartRate,
             final double speed, final RunType type, final String note) {
@@ -103,11 +105,6 @@ public class SimpleTraining implements ISimpleTraining {
     }
 
     @Override
-    public String toString() {
-        return "SimpleTraining [distanzInMeter=" + distanzInMeter + ", dauerInSekunden=" + dauerInSekunden + ", datum=" + datum + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-    }
-
-    @Override
     public String getNote() {
         return note;
     }
@@ -126,4 +123,23 @@ public class SimpleTraining implements ISimpleTraining {
     public void setWetter(final Wetter wetter) {
         this.wetter = wetter;
     }
+
+    @Override
+    public StreckeModel getStrecke() {
+        return strecke;
+    }
+
+    @Override
+    public void setStrecke(final StreckeModel strecke) {
+        this.strecke = strecke;
+    }
+
+    @SuppressWarnings("nls")
+    @Override
+    public String toString() {
+        return "SimpleTraining [distanzInMeter=" + distanzInMeter + ", dauerInSekunden=" + dauerInSekunden + ", datum=" + datum + ", avgHeartRate="
+                + avgHeartRate + ", maxHeartRate=" + maxHeartRate + ", readableZeit=" + readableZeit + ", laengeInKilometer=" + laengeInKilometer + ", pace="
+                + pace + ", speed=" + speed + ", note=" + note + ", type=" + type + ", wetter=" + wetter + ", strecke=" + strecke + "]";
+    }
+
 }

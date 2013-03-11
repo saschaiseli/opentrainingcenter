@@ -38,7 +38,7 @@ public class AddEditHandler extends AbstractHandler {
     private void updateNote(final IImported record) {
         DatabaseAccessFactory.getDatabaseAccess().updateRecord(record);
         final ITraining training = record.getTraining();
-        final ActivityExtension extension = new ActivityExtension(training.getNote(), training.getWeather());
+        final ActivityExtension extension = new ActivityExtension(training.getNote(), training.getWeather(), record.getRoute());
         TrainingCenterDataCache.getInstance().updateExtension(record.getActivityId(), extension);
     }
 }

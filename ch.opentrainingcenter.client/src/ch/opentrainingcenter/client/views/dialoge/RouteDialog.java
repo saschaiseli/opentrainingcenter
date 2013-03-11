@@ -102,8 +102,10 @@ public class RouteDialog extends TitleAreaDialog {
 
             IRoute route = databaseAccess.getRoute(model.getName(), model.getAthlete());
             boolean confirm = true;
+
             if (route != null) {
                 confirm = MessageDialog.openConfirm(parent, "Es ist bereits eine Route unter diesem Namen erfasst", Messages.HealthDialog_1);
+
             }
             if (confirm) {
                 route = CommonTransferFactory.createRoute(model.getName(), model.getBeschreibung(), model.getAthlete());

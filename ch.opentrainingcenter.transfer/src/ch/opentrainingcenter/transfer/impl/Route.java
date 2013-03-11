@@ -28,6 +28,11 @@ public class Route implements IRoute {
         this.athlete = athlete;
     }
 
+    public Route(final int id, final String name, final String beschreibung, final IAthlete athlete) {
+        this(name, beschreibung, athlete);
+        this.id = id;
+    }
+
     @Override
     public int getId() {
         return this.id;

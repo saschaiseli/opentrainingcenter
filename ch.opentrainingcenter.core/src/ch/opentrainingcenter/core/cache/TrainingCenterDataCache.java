@@ -84,7 +84,7 @@ public final class TrainingCenterDataCache extends AbstractCache<Date, ActivityT
                 final String note = training.getNote();
                 final IWeather weather = training.getWeather();
                 final ExtensionsT ext = new ExtensionsT();
-                ext.getAny().add(new ActivityExtension(note, weather));
+                ext.getAny().add(new ActivityExtension(note, weather, imported.getRoute()));
                 activity.setExtensions(ext);
             }
 
@@ -104,7 +104,7 @@ public final class TrainingCenterDataCache extends AbstractCache<Date, ActivityT
             final String note = training.getNote();
             final IWeather weather = training.getWeather();
             final ExtensionsT ext = new ExtensionsT();
-            ext.getAny().add(new ActivityExtension(note, weather));
+            ext.getAny().add(new ActivityExtension(note, weather, imported.getRoute()));
             activity.setExtensions(ext);
         }
         return activity;

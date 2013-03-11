@@ -1,7 +1,13 @@
 package ch.opentrainingcenter.client.views.overview;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.ISelection;
@@ -34,6 +40,7 @@ import org.eclipse.ui.part.ViewPart;
 import ch.opentrainingcenter.charts.single.ChartFactory;
 import ch.opentrainingcenter.charts.single.ChartType;
 import ch.opentrainingcenter.client.Activator;
+import ch.opentrainingcenter.client.cache.StreckeCache;
 import ch.opentrainingcenter.client.model.Units;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.core.cache.Cache;
@@ -44,6 +51,7 @@ import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.helper.TimeHelper;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.model.TrainingOverviewFactory;
+import ch.opentrainingcenter.model.strecke.StreckeModel;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
 import ch.opentrainingcenter.model.training.Wetter;
 import ch.opentrainingcenter.tcx.ActivityT;
@@ -59,6 +67,7 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
     public static final String ID = "ch.opentrainingcenter.client.views.singlerun"; //$NON-NLS-1$
     private static final Logger LOGGER = Logger.getLogger(SingleActivityViewPart.class);
     private final Cache cache = TrainingCenterDataCache.getInstance();
+    private final StreckeCache cacheStrecke = StreckeCache.getInstance();
     private final IDatabaseAccess databaseAccess = DatabaseAccessFactory.getDatabaseAccess();
     private final ISimpleTraining simpleTraining;
     private final ActivityT activity;
@@ -263,8 +272,57 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
             public void deleteRecord(final Collection<ActivityT> entry) {
             }
         };
+
+        final Label labelStrecke = toolkit.createLabel(container, ""); //$NON-NLS-1$
+        labelStrecke.setText("Strecke:");
+        // gd.minimumWidth = 10;
+        // labelWetter.setLayoutData(gd);
+
+        final Combo streckeCombo = new Combo(container, SWT.READ_ONLY);
+        streckeCombo.setBounds(50, 50, 150, 65);
+
+        final List<StreckeModel> all = cacheStrecke.getAll();
+        Collections.sort(all, new Comparator<StreckeModel>() {
+
+            @Override
+            public int compare(final StreckeModel a, final StreckeModel b) {
+                return Integer.valueOf(a.getId()).compareTo(Integer.valueOf(b.getId()));
+            }
+        });
+        final List<String> allNamen = new ArrayList<String>();
+        final Map<Integer, Integer> mapDbIndex = new HashMap<Integer, Integer>();
+        int i = 0;
+        for (final StreckeModel strecke : all) {
+            allNamen.add(strecke.getName());
+            mapDbIndex.put(strecke.getId(), i);
+            i++;
+        }
+        streckeCombo.setItems(allNamen.toArray(new String[1]));
+        final StreckeModel strecke = simpleTraining.getStrecke();
+        streckeCombo.select(strecke != null ? mapDbIndex.get(strecke.getId()) : 0);
+        streckeCombo.addSelectionListener(new SelectionListener() {
+
+            @Override
+            public void widgetSelected(final SelectionEvent e) {
+                final Combo source = (Combo) e.getSource();
+                final String[] items = source.getItems();
+                final String key = items[source.getSelectionIndex()];
+                safeStrecke(key);
+            }
+
+            @Override
+            public void widgetDefaultSelected(final SelectionEvent e) {
+            }
+        });
+
         cache.addListener(listener);
         section.setClient(container);
+    }
+
+    private void safeStrecke(final String key) {
+        final IImported record = databaseAccess.getImportedRecord(activity.getId().toGregorianCalendar().getTime());
+        final StreckeModel newModel = cacheStrecke.get(key);
+        updateRoute(record, newModel.getId());
     }
 
     private void safeWeather(final int index) {
@@ -300,12 +358,21 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         }
     }
 
+    private void updateRoute(final IImported record, final int idRoute) {
+        databaseAccess.updateRecordRoute(record, idRoute);
+        updateCache(databaseAccess.getImportedRecord(record.getActivityId()));
+    }
+
     private void update(final IImported record) {
         databaseAccess.updateRecord(record);
+        updateCache(record);
+    }
+
+    private void updateCache(final IImported record) {
         final ITraining training = record.getTraining();
         final String note = training.getNote();
         final IWeather weather = training.getWeather();
-        final ActivityExtension extension = new ActivityExtension(note, weather);
+        final ActivityExtension extension = new ActivityExtension(note, weather, record.getRoute());
         cache.updateExtension(record.getActivityId(), extension);
     }
 
