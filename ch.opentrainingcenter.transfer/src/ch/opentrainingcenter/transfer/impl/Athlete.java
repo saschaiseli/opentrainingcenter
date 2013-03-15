@@ -28,11 +28,11 @@ public class Athlete implements java.io.Serializable, IAthlete {
     }
 
     public Athlete(final String name) {
-        this(name, null, null, null, null);
+        this(name, null, null, new HashSet<Health>(0), new HashSet<IImported>(0));
     }
 
     public Athlete(final String name, final Integer age, final Integer maxHeartRate) {
-        this(name, age, maxHeartRate, null, null);
+        this(name, age, maxHeartRate, new HashSet<Health>(0), new HashSet<IImported>(0));
     }
 
     public Athlete(final String name, final Integer age, final Integer maxHeartRate, final Set<Health> healths, final Set<IImported> importeds) {
@@ -76,7 +76,9 @@ public class Athlete implements java.io.Serializable, IAthlete {
     /*
      * (non-Javadoc)
      * 
-     * @see ch.opentrainingcenter.transfer.internal.IAthlete#setName(java.lang.String)
+     * @see
+     * ch.opentrainingcenter.transfer.internal.IAthlete#setName(java.lang.String
+     * )
      */
     @Override
     public void setName(final String name) {
@@ -116,7 +118,9 @@ public class Athlete implements java.io.Serializable, IAthlete {
     /*
      * (non-Javadoc)
      * 
-     * @see ch.opentrainingcenter.transfer.internal.IAthlete#setHealths(java.util.Set)
+     * @see
+     * ch.opentrainingcenter.transfer.internal.IAthlete#setHealths(java.util
+     * .Set)
      */
     @Override
     public void setHealths(final Set<Health> healths) {
@@ -136,7 +140,9 @@ public class Athlete implements java.io.Serializable, IAthlete {
     /*
      * (non-Javadoc)
      * 
-     * @see ch.opentrainingcenter.transfer.internal.IAthlete#setImporteds(java.util.Set)
+     * @see
+     * ch.opentrainingcenter.transfer.internal.IAthlete#setImporteds(java.util
+     * .Set)
      */
     @Override
     public void setImporteds(final Set<IImported> importeds) {

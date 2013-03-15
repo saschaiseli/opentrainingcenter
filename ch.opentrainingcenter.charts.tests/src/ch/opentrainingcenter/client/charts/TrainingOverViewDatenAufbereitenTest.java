@@ -16,8 +16,10 @@ import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.helper.RunType;
 import ch.opentrainingcenter.core.helper.TimeHelper;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
+import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IImported;
+import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.ITrainingType;
 import static org.junit.Assert.assertEquals;
@@ -86,6 +88,14 @@ public class TrainingOverViewDatenAufbereitenTest {
         Mockito.when(mockB.getTraining()).thenReturn(training);
         Mockito.when(mockB.getTrainingType()).thenReturn(type);
         values.add(mockB);
+
+        final IAthlete athlete = CommonTransferFactory.createAthlete("name", 42, 42);
+        final IRoute route = CommonTransferFactory.createRoute(42, "name", "beschreibung", athlete);
+        Mockito.when(training.getRoute()).thenReturn(route);
+
+        Mockito.when(mockA.getRoute()).thenReturn(route);
+        Mockito.when(mockB.getRoute()).thenReturn(route);
+
         Mockito.when(databaseAccess.getAllImported((IAthlete) Mockito.any())).thenReturn(values);
 
         // execute
@@ -106,6 +116,12 @@ public class TrainingOverViewDatenAufbereitenTest {
         final ITrainingType type = Mockito.mock(ITrainingType.class);
         Mockito.when(type.getId()).thenReturn(RunType.EXT_INTERVALL.getIndex());
         Mockito.when(mockA.getTrainingType()).thenReturn(type);
+
+        final IAthlete athlete = CommonTransferFactory.createAthlete("name", 42, 42);
+
+        final IRoute route = CommonTransferFactory.createRoute(42, "name", "beschreibung", athlete);
+        Mockito.when(training.getRoute()).thenReturn(route);
+        Mockito.when(mockA.getRoute()).thenReturn(route);
 
         values.add(mockA);
         Mockito.when(databaseAccess.getAllImported((IAthlete) Mockito.any())).thenReturn(values);
@@ -130,6 +146,13 @@ public class TrainingOverViewDatenAufbereitenTest {
         Mockito.when(mockA.getTrainingType()).thenReturn(type);
 
         values.add(mockA);
+
+        final IAthlete athlete = CommonTransferFactory.createAthlete("name", 42, 42);
+        final IRoute route = CommonTransferFactory.createRoute(42, "name", "beschreibung", athlete);
+        Mockito.when(training.getRoute()).thenReturn(route);
+
+        Mockito.when(mockA.getRoute()).thenReturn(route);
+
         Mockito.when(databaseAccess.getAllImported((IAthlete) Mockito.any())).thenReturn(values);
 
         // execute
@@ -152,6 +175,11 @@ public class TrainingOverViewDatenAufbereitenTest {
         Mockito.when(mockA.getTrainingType()).thenReturn(type);
 
         values.add(mockA);
+        final IAthlete athlete = CommonTransferFactory.createAthlete("name", 42, 42);
+        final IRoute route = CommonTransferFactory.createRoute(42, "name", "beschreibung", athlete);
+        Mockito.when(training.getRoute()).thenReturn(route);
+
+        Mockito.when(mockA.getRoute()).thenReturn(route);
         Mockito.when(databaseAccess.getAllImported((IAthlete) Mockito.any())).thenReturn(values);
 
         // execute
@@ -174,6 +202,11 @@ public class TrainingOverViewDatenAufbereitenTest {
         Mockito.when(mockA.getTrainingType()).thenReturn(type);
 
         values.add(mockA);
+        final IAthlete athlete = CommonTransferFactory.createAthlete("name", 42, 42);
+        final IRoute route = CommonTransferFactory.createRoute(42, "name", "beschreibung", athlete);
+        Mockito.when(training.getRoute()).thenReturn(route);
+
+        Mockito.when(mockA.getRoute()).thenReturn(route);
         Mockito.when(databaseAccess.getAllImported((IAthlete) Mockito.any())).thenReturn(values);
 
         // execute
@@ -196,6 +229,12 @@ public class TrainingOverViewDatenAufbereitenTest {
         Mockito.when(mockA.getTrainingType()).thenReturn(type);
 
         values.add(mockA);
+        final IAthlete athlete = CommonTransferFactory.createAthlete("name", 42, 42);
+        final IRoute route = CommonTransferFactory.createRoute(42, "name", "beschreibung", athlete);
+        Mockito.when(training.getRoute()).thenReturn(route);
+
+        Mockito.when(mockA.getRoute()).thenReturn(route);
+
         Mockito.when(databaseAccess.getAllImported((IAthlete) Mockito.any())).thenReturn(values);
 
         // execute
@@ -221,6 +260,12 @@ public class TrainingOverViewDatenAufbereitenTest {
         final ITrainingType type = Mockito.mock(ITrainingType.class);
         Mockito.when(type.getId()).thenReturn(RunType.LONG_JOG.getIndex());
         Mockito.when(mockA.getTrainingType()).thenReturn(type);
+
+        final IAthlete athlete = CommonTransferFactory.createAthlete("name", 42, 42);
+        final IRoute route = CommonTransferFactory.createRoute(42, "name", "beschreibung", athlete);
+        Mockito.when(training.getRoute()).thenReturn(route);
+
+        Mockito.when(mockA.getRoute()).thenReturn(route);
 
         values.add(mockA);
         Mockito.when(databaseAccess.getAllImported((IAthlete) Mockito.any())).thenReturn(values);
@@ -265,6 +310,12 @@ public class TrainingOverViewDatenAufbereitenTest {
         Mockito.when(mockA.getTrainingType()).thenReturn(type);
         Mockito.when(mockA.getActivityId()).thenReturn(date);
         values.add(mockA);
+        final IAthlete athlete = CommonTransferFactory.createAthlete("name", 42, 42);
+        final IRoute route = CommonTransferFactory.createRoute(42, "name", "beschreibung", athlete);
+        Mockito.when(training.getRoute()).thenReturn(route);
+
+        Mockito.when(mockA.getRoute()).thenReturn(route);
+
         Mockito.when(databaseAccess.getAllImported((IAthlete) Mockito.any())).thenReturn(values);
         // execute
         auf.update(RunType.LONG_JOG);
