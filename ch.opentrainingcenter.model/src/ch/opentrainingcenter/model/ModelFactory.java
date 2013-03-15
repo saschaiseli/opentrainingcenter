@@ -74,7 +74,9 @@ public class ModelFactory {
         if (overview.getWeather() != null) {
             training.setWetter(Wetter.getRunType(overview.getWeather().getId()));
         }
-        training.setStrecke(ModelFactory.createStreckeModel(overview.getRoute()));
+        if (overview.getRoute() != null) {
+            training.setStrecke(ModelFactory.createStreckeModel(overview.getRoute()));
+        }
         return training;
     }
 

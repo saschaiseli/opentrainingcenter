@@ -18,14 +18,14 @@
             class="ch.opentrainingcenter.client.perspectives.MainPerspective"
             icon="icons/otc_perspective.png"
             id="ch.opentrainingcenter.client.perspective"
-            name="OTC Perspektive">
+            name="%otc">
       </perspective>
       <perspective
             class="ch.opentrainingcenter.client.perspectives.AthletePerspective"
             fixed="true"
-            icon="icons/athlete_perspective.png"
+            icon="icons/32_32/einstellungen.png"
             id="ch.opentrainingcenter.client.athletePerspective"
-            name="Athlete Perspektive">
+            name="%einstellungen">
       </perspective>
       <perspective
             class="ch.opentrainingcenter.client.perspectives.StatisticPerspective"
@@ -48,17 +48,17 @@
             allowMultiple="true"
             class="ch.opentrainingcenter.client.views.navigation.KalenderWocheNavigationView"
             fastViewWidthRatio="0.25"
-            icon="icons/package_games_sports_24_24.png"
+            icon="icons/16_16/home_16_16.png"
             id="ch.opentrainingcenter.client.kalenderNavigationView"
-            name="Übersicht">
+            name="%kalenderwochen">
       </view>
       <view
             allowMultiple="true"
             category="ch.opentrainingcenter.client.otccategory"
             class="ch.opentrainingcenter.client.views.overview.SingleActivityViewPart"
-            icon="icons/insp_sbook.gif"
+            icon="icons/16_16/datasheet.gif"
             id="ch.opentrainingcenter.client.views.singlerun"
-            name="Uebersicht eines Trainings"
+            name="%trainingsuebersicht"
             restorable="true">
       </view>
       <category
@@ -68,24 +68,24 @@
       <view
             category="ch.opentrainingcenter.client.otccategory"
             class="ch.opentrainingcenter.client.views.ahtlete.CreateAthleteView"
-            icon="icons/create.gif"
+            icon="icons/16_16/einstellungen.png"
             id="ch.opentrainingcenter.client.athlete.createathlete"
-            name="Create Athlete"
+            name="%einstellungen"
             restorable="true">
       </view>
       <view
             class="ch.opentrainingcenter.client.views.statistics.StatisticView"
-            icon="icons/chart_bar.png"
+            icon="icons/16_16/chart_16_16.png"
             id="ch.opentrainingcenter.client.views.statistics.StatisticView"
-            name="StatisticView"
+            name="%auswertungen"
             restorable="true">
       </view>
       <view
             allowMultiple="false"
             class="ch.opentrainingcenter.client.views.table.OverviewViewer"
-            icon="icons/table_green_24_24.png"
+            icon="icons/16_16/table_16_16.png"
             id="ch.opentrainingcenter.client.table.overview"
-            name="TableView"
+            name="%tabelle"
             restorable="true">
       </view>
       <view
@@ -93,32 +93,32 @@
             category="ch.opentrainingcenter.client.otccategory"
             class="ch.opentrainingcenter.client.views.weeks.WeeklyOverview"
             id="ch.opentrainingcenter.client.weeks.weeklyOverview"
-            name="Wochenübersicht"
+            name="%wochenuebersicht"
             restorable="false">
       </view>
       <view
             allowMultiple="false"
             class="ch.opentrainingcenter.client.views.best.BestRunsView"
             id="ch.opentrainingcenter.client.best.bestof"
-            name="Bestzeiten"
+            name="%bestzeiten"
             restorable="true">
       </view>
       <view
             allowMultiple="false"
             category="ch.opentrainingcenter.client.otccategory"
             class="ch.opentrainingcenter.client.views.planung.JahresplanungViewPart"
-            icon="icons/container_obj.gif"
+            icon="icons/16_16/container_obj.gif"
             id="ch.opentrainingcenter.client.views.planung.JahresplanungViewPart"
-            name="Jahresplanung"
+            name="%planung"
             restorable="true">
       </view>
       <view
             allowMultiple="false"
             category="ch.opentrainingcenter.client.otccategory"
             class="ch.opentrainingcenter.client.views.planung.ShowJahresplanungViewPart"
-            icon="icons/container_obj.gif"
+            icon="icons/16_16/container_obj.gif"
             id="ch.opentrainingcenter.client.views.planung.ShowJahresplanungViewPart"
-            name="ShowJahresplanung"
+            name="%aktuelleplanung"
             restorable="true">
       </view>
    </extension>
@@ -454,22 +454,23 @@
             <command
                   commandId="ch.opentrainingcenter.client.commands.ImportManualGpsFiles"
                   icon="icons/16_16/import_wiz.gif"
-                  label="Import GPS Files"
+                  label="%import"
                   style="push"
-                  tooltip="Importieren von GPS Files von einer Sportuhr">
+                  tooltip="%import_tooltip">
             </command>
             <command
                   commandId="ch.opentrainingcenter.client.commands.BackupGpsFiles"
                   icon="icons/16_16/export.gif"
-                  label="Backup Gps Files"
+                  label="%backup"
                   style="push"
-                  tooltip="Packt alle GPS Tracks zusammen und exportiert diese">
+                  tooltip="%backup_tooltip">
             </command>
             <command
                   commandId="ch.opentrainingcenter.client.commands.AddDailyHealth"
-                  icon="icons/cardiology.png"
-                  label="Täglicher Health Record hinzufügen"
-                  style="push">
+                  icon="icons/16_16/cardiology.png"
+                  label="%health"
+                  style="push"
+                  tooltip="%health_tooltip">
             </command>
             <separator
                   name="ch.opentrainingcenter.client.separator1"
@@ -477,24 +478,24 @@
             </separator>
             <command
                   commandId="ch.opentrainingcenter.client.commands.AddTrainingPlan"
-                  icon="icons/plaene_erfassen.gif"
-                  label="Trainingspläne verwalten"
+                  icon="icons/16_16/plaene_erfassen.gif"
+                  label="%trainingsplaene"
                   style="push"
                   tooltip="Trainingspläne verwalten">
             </command>
             <command
                   commandId="ch.opentrainingcenter.client.commands.ShowTrainingPlan"
-                  icon="icons/plaeneuebersicht.gif"
-                  label="Übersicht Trainingpläne"
+                  icon="icons/16_16/plaeneuebersicht.gif"
+                  label="%trainingsplaeneuebersicht"
                   style="push"
-                  tooltip="Trainingspläne">
+                  tooltip="%trainingsplaene_uebersicht_tooltip">
             </command>
             <command
                   commandId="ch.opentrainingcenter.client.commands.AddRoute"
                   icon="icons/16_16/route_16_16.png"
-                  label="Neue Strecke hinzufügen"
+                  label="%neuestrecke"
                   style="push"
-                  tooltip="Neue Strecke hinzufügen">
+                  tooltip="%neuestrecke">
             </command>
          </toolbar>
       </menuContribution>
@@ -506,31 +507,31 @@
                label="Perspective Toolbars">
             <command
                   commandId="ch.opentrainingcenter.client.commands.SwitchToAthlete"
-                  icon="icons/athlete_perspective.png"
-                  label="Switch to da Athlete"
+                  icon="icons/16_16/einstellungen.png"
+                  label="%einstellungen"
                   style="push"
-                  tooltip="tooolTip">
+                  tooltip="%einstellungen">
             </command>
             <command
                   commandId="ch.opentrainingcenter.client.commands.SwitchToStatistic"
-                  icon="icons/chart_bar.png"
-                  label="Switcha to da Stats"
+                  icon="icons/16_16/chart_16_16.png"
+                  label="%auswertungen"
                   style="push"
-                  tooltip="Statistik">
+                  tooltip="%auswertungen">
             </command>
             <command
                   commandId="ch.opentrainingcenter.client.commands.SwitchToTable"
-                  icon="icons/table_green_24_24.png"
-                  label="Switch to da Table"
+                  icon="icons/16_16/table_16_16.png"
+                  label="%tabelle"
                   style="push"
-                  tooltip="tooolTip">
+                  tooltip="%tabelle">
             </command>
             <command
                   commandId="ch.opentrainingcenter.client.commands.SwitchToMain"
-                  icon="icons/otc_perspective.png"
-                  label="Switch to da Main"
+                  icon="icons/16_16/home_16_16.png"
+                  label="%home"
                   style="push"
-                  tooltip="tooolTip">
+                  tooltip="%home">
             </command>
             <separator
                   name="ch.opentrainingcenter.client.separator1"
