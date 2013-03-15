@@ -30,6 +30,7 @@ Bundle-Localization: plugin
 Export-Package: ch.opentrainingcenter.client,
  ch.opentrainingcenter.importer
 Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ClassPath: lib/log4j-1.2.16.jar,
  lib/slf4j-api-1.6.4.jar,
  .
