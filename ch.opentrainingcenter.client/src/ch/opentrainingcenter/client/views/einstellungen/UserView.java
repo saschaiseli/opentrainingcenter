@@ -1,4 +1,4 @@
-package ch.opentrainingcenter.client.views.ahtlete;
+package ch.opentrainingcenter.client.views.einstellungen;
 
 import java.util.HashMap;
 import java.util.List;
@@ -10,13 +10,13 @@ import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeanProperties;
-import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.ChangeEvent;
 import org.eclipse.core.databinding.observable.IChangeListener;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
@@ -31,6 +31,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.events.ExpansionAdapter;
 import org.eclipse.ui.forms.events.ExpansionEvent;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -43,8 +44,10 @@ import org.eclipse.ui.part.ViewPart;
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.Application;
 import ch.opentrainingcenter.client.views.ApplicationContext;
+import ch.opentrainingcenter.client.views.ahtlete.SportlerValidator;
 import ch.opentrainingcenter.client.views.databinding.NumberValidator;
 import ch.opentrainingcenter.core.PreferenceConstants;
+import ch.opentrainingcenter.core.cache.TrainingCenterDataCache;
 import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.i18n.Messages;
@@ -52,18 +55,17 @@ import ch.opentrainingcenter.model.sportler.Sportler;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
 
-@Deprecated
-public class CreateAthleteView extends ViewPart {
-    public static final String ID = "ch.opentrainingcenter.client.athlete.createathlete"; //$NON-NLS-1$
+public class UserView extends ViewPart {
 
-    private static final Logger LOGGER = Logger.getLogger(CreateAthleteView.class);
+    public static final String ID = "ch.opentrainingcenter.client.views.einstellungen.user"; //$NON-NLS-1$
+
+    private static final Logger LOGGER = Logger.getLogger(UserView.class);
     private final Sportler sportler = new Sportler();
     private final IDatabaseAccess databaseAccess = DatabaseAccessFactory.getDatabaseAccess();
     private final IPreferenceStore store = Activator.getDefault().getPreferenceStore();
     private Text nameTf;
     private Text ageTf;
     private Text pulseTf;
-    private Combo genderCombo;
     private Label errorLabel;
     private FormToolkit toolkit;
     private ScrolledForm form;
@@ -72,15 +74,16 @@ public class CreateAthleteView extends ViewPart {
     private Section selectSportler;
     private Section overviewSection;
     private final Map<Integer, Integer> indexOfSelectBoxMappedToDatabaseId = new HashMap<Integer, Integer>();
-    private Button okButton;
+    private Button createButton;
 
-    public CreateAthleteView() {
-    }
+    private int index;
+
+    private Composite parent;
 
     @Override
     public void createPartControl(final Composite parent) {
-
-        LOGGER.debug("create single activity view"); //$NON-NLS-1$
+        this.parent = parent;
+        LOGGER.debug("Create User View"); //$NON-NLS-1$
         toolkit = new FormToolkit(parent.getDisplay());
         form = toolkit.createScrolledForm(parent);
         // form.setSize(1000, 2000);
@@ -109,7 +112,7 @@ public class CreateAthleteView extends ViewPart {
                 form.reflow(true);
             }
         });
-        selectSportler.setExpanded(false);
+        selectSportler.setExpanded(true);
         td = new TableWrapData(TableWrapData.FILL_GRAB);
         td.colspan = 1;
         selectSportler.setLayoutData(td);
@@ -132,16 +135,16 @@ public class CreateAthleteView extends ViewPart {
         sportlerLabel.setLayoutData(gridData);
         //
         user = new Combo(sportlerComposite, SWT.NONE);
-        int i = 0;
+        index = 0;
         for (final IAthlete athlete : allAthletes) {
-            user.add(athlete.getName(), i);
-            indexOfSelectBoxMappedToDatabaseId.put(i, athlete.getId());
-            i++;
+            user.add(athlete.getName(), index);
+            indexOfSelectBoxMappedToDatabaseId.put(index, athlete.getId());
+            index++;
         }
 
         gridData = new GridData();
         gridData.horizontalAlignment = SWT.FILL;
-        gridData.grabExcessHorizontalSpace = false;
+        gridData.grabExcessHorizontalSpace = true;
         gridData.horizontalAlignment = SWT.LEFT;
         gridData.horizontalIndent = 5;
         user.setLayoutData(gridData);
@@ -149,6 +152,12 @@ public class CreateAthleteView extends ViewPart {
         final Button selectUser = new Button(sportlerComposite, SWT.PUSH);
         selectUser.setText(Messages.CreateAthleteView4);
         selectUser.setEnabled(false);
+        gridData = new GridData();
+        gridData.horizontalAlignment = SWT.FILL;
+        gridData.horizontalSpan = 1;
+        gridData.grabExcessHorizontalSpace = false;
+        gridData.horizontalAlignment = SWT.LEFT;
+        selectUser.setLayoutData(gridData);
         selectUser.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -161,6 +170,31 @@ public class CreateAthleteView extends ViewPart {
                 LOGGER.info(Messages.CreateAthleteView5 + athlete + " wird im Cache gesetzt."); //$NON-NLS-1$
                 ApplicationContext.getApplicationContext().setAthlete(athlete);
                 getViewSite().getWorkbenchWindow().getShell().setText(Application.WINDOW_TITLE + Messages.CreateAthleteView7 + athlete.getName());
+
+                final boolean confirm = MessageDialog.openConfirm(parent.getShell(), "Benutzerwechsel",
+                        "Bei einem Benutzerwechsel muss OTC neu gestartet werden");
+                if (confirm) {
+                    PlatformUI.getWorkbench().restart();
+                }
+            }
+
+        });
+
+        final Button editUser = new Button(sportlerComposite, SWT.PUSH);
+        editUser.setText("Edit");
+        editUser.setEnabled(false);
+        editUser.setLayoutData(gridData);
+        editUser.addSelectionListener(new SelectionAdapter() {
+
+            @Override
+            public void widgetSelected(final SelectionEvent e) {
+                final int selectionIndex = user.getSelectionIndex();
+                final int dbId = indexOfSelectBoxMappedToDatabaseId.get(selectionIndex);
+
+                final IAthlete athlete = databaseAccess.getAthlete(dbId);
+                nameTf.setText(athlete.getName());
+                ageTf.setText(athlete.getAge().toString());
+                pulseTf.setText(athlete.getMaxHeartRate().toString());
             }
         });
 
@@ -168,7 +202,7 @@ public class CreateAthleteView extends ViewPart {
 
             @Override
             public void widgetSelected(final SelectionEvent e) {
-                enableOrDisableButtonIfNoUserIsSelected(selectUser);
+                enableOrDisableButtonIfNoUserIsSelected(selectUser, editUser);
             }
 
             @Override
@@ -181,7 +215,7 @@ public class CreateAthleteView extends ViewPart {
 
             @Override
             public void focusLost(final FocusEvent e) {
-                enableOrDisableButtonIfNoUserIsSelected(selectUser);
+                enableOrDisableButtonIfNoUserIsSelected(selectUser, editUser);
             }
 
             @Override
@@ -189,13 +223,6 @@ public class CreateAthleteView extends ViewPart {
 
             }
         });
-
-        gridData = new GridData();
-        gridData.horizontalAlignment = SWT.FILL;
-        gridData.horizontalSpan = 2;
-        gridData.grabExcessHorizontalSpace = false;
-        gridData.horizontalAlignment = SWT.LEFT;
-        selectUser.setLayoutData(gridData);
 
         final Label spacer = new Label(sportlerComposite, SWT.NONE);
         spacer.setText(""); //$NON-NLS-1$
@@ -210,14 +237,6 @@ public class CreateAthleteView extends ViewPart {
         selectSportler.setClient(sportlerComposite);
     }
 
-    private void enableOrDisableButtonIfNoUserIsSelected(final Button selectUser) {
-        if (user.getSelectionIndex() >= 0) {
-            selectUser.setEnabled(true);
-        } else {
-            selectUser.setToolTipText(Messages.CreateAthleteView18);
-        }
-    }
-
     private void createAddSportler(final Composite body) {
 
         overviewSection = toolkit.createSection(body, Section.DESCRIPTION | Section.TITLE_BAR | Section.TWISTIE | Section.EXPANDED);
@@ -227,7 +246,7 @@ public class CreateAthleteView extends ViewPart {
                 form.reflow(true);
             }
         });
-        overviewSection.setExpanded(false);
+        overviewSection.setExpanded(true);
         td = new TableWrapData();
         td.colspan = 1;
         overviewSection.setLayoutData(td);
@@ -271,19 +290,6 @@ public class CreateAthleteView extends ViewPart {
         gridData.horizontalIndent = 5;
         pulseTf.setLayoutData(gridData);
 
-        // gender
-        final Label genderLabel = new Label(overViewComposite, SWT.NONE);
-        genderLabel.setText(Messages.CreateAthleteView13);
-        genderCombo = new Combo(overViewComposite, SWT.NONE);
-        genderCombo.add(Messages.CreateAthleteView14);
-        genderCombo.add(Messages.CreateAthleteView15);
-
-        gridData = new GridData();
-        gridData.horizontalAlignment = SWT.RIGHT;
-        gridData.grabExcessHorizontalSpace = false;
-        gridData.horizontalIndent = 5;
-        genderCombo.setLayoutData(gridData);
-
         errorLabel = new Label(overViewComposite, SWT.NONE);
         gridData = new GridData();
         gridData.horizontalAlignment = SWT.FILL;
@@ -293,20 +299,22 @@ public class CreateAthleteView extends ViewPart {
         errorLabel.setLayoutData(gridData);
         errorLabel.setVisible(false);
 
-        okButton = new Button(overViewComposite, SWT.PUSH);
-        okButton.setText(Messages.CreateAthleteView16);
-        okButton.setEnabled(false);
-        okButton.addSelectionListener(new SelectionAdapter() {
+        createButton = new Button(overViewComposite, SWT.PUSH);
+        createButton.setText(Messages.CreateAthleteView16);
+        createButton.setEnabled(false);
+        createButton.addSelectionListener(new SelectionAdapter() {
 
             @Override
             public void widgetSelected(final SelectionEvent e) {
                 LOGGER.info("save " + sportler); //$NON-NLS-1$
                 final IAthlete athlete = CommonTransferFactory.createAthlete(sportler.getName(), sportler.getAge(), sportler.getMaxHeartBeat());
                 try {
+                    TrainingCenterDataCache.getInstance().resetCache();
                     DatabaseAccessFactory.getDatabaseAccess().save(athlete);
                     resetForm();
-                    overviewSection.setExpanded(false);
-                    selectSportler.setExpanded(true);
+                    user.add(athlete.getName(), index);
+                    indexOfSelectBoxMappedToDatabaseId.put(index, athlete.getId());
+                    index++;
                 } catch (final Exception e1) {
                     errorLabel.setText(Messages.CreateAthleteView17);
                 }
@@ -317,11 +325,18 @@ public class CreateAthleteView extends ViewPart {
         gridData.horizontalAlignment = SWT.LEFT;
         gridData.grabExcessHorizontalSpace = false;
         gridData.horizontalIndent = 5;
-        okButton.setLayoutData(gridData);
+        createButton.setLayoutData(gridData);
 
         bindValues();
 
         overviewSection.setClient(overViewComposite);
+    }
+
+    private void enableOrDisableButtonIfNoUserIsSelected(final Button selectUser, final Button edit) {
+        if (user.getSelectionIndex() >= 0) {
+            selectUser.setEnabled(true);
+            edit.setEnabled(true);
+        }
     }
 
     private void resetForm() {
@@ -333,7 +348,6 @@ public class CreateAthleteView extends ViewPart {
 
     private void bindValues() {
         // The DataBindingContext object will manage the databindings
-        // Lets bind it
         final DataBindingContext ctx = new DataBindingContext();
 
         // name
@@ -341,7 +355,6 @@ public class CreateAthleteView extends ViewPart {
         IObservableValue modelValue = BeanProperties.value(Sportler.class, "name").observe(sportler); //$NON-NLS-1$
         final UpdateValueStrategy strategyName = new UpdateValueStrategy();
         strategyName.setBeforeSetValidator(new SportlerValidator(5));
-        // strategy.setBeforeSetValidator(validator);
 
         final Binding bindName = ctx.bindValue(widgetValue, modelValue, strategyName, null);
         // Add some decorations
@@ -371,11 +384,6 @@ public class CreateAthleteView extends ViewPart {
         // Add some decorations
         ControlDecorationSupport.create(bindMaxPulse, SWT.TOP | SWT.RIGHT);
         // -----------------------
-        //
-        // gender
-        widgetValue = WidgetProperties.selection().observe(genderCombo);
-        modelValue = BeansObservables.observeValue(sportler, "gender"); //$NON-NLS-1$
-        ctx.bindValue(widgetValue, modelValue);
 
         final IObservableValue errorObservable = WidgetProperties.text().observe(errorLabel);
         // This one listenes to all changes
@@ -386,9 +394,9 @@ public class CreateAthleteView extends ViewPart {
             @Override
             public void handleChange(final ChangeEvent event) {
                 if (ValidationStatus.OK_STATUS.getMessage().equals(errorLabel.getText())) {
-                    okButton.setEnabled(true);
+                    createButton.setEnabled(true);
                 } else {
-                    okButton.setEnabled(false);
+                    createButton.setEnabled(false);
                 }
             }
         });
@@ -396,5 +404,7 @@ public class CreateAthleteView extends ViewPart {
 
     @Override
     public void setFocus() {
+        form.setFocus();
     }
+
 }

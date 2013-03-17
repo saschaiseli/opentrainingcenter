@@ -47,7 +47,7 @@ public class TrainingOverviewFactoryTest {
 
     @Test
     public void testSimpleTrainingNullActivity() {
-        assertNull(TrainingOverviewFactory.creatSimpleTraining(null));
+        assertNull(TrainingOverviewFactory.creatSimpleTraining(null, null));
     }
 
     @Test

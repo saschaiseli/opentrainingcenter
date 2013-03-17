@@ -38,6 +38,6 @@ public class OverviewPerspectiveFactoryTest {
         Mockito.verify(layout, Mockito.times(1)).addPerspectiveShortcut(MainPerspective.ID);
         Mockito.verify(layout, Mockito.times(1)).addPerspectiveShortcut(TablePerspective.ID);
         Mockito.verify(layout, Mockito.times(1)).addPerspectiveShortcut(StatisticPerspective.ID);
-        Mockito.verify(layout, Mockito.times(1)).addPerspectiveShortcut(AthletePerspective.ID);
+        Mockito.verify(layout, Mockito.times(1)).addPerspectiveShortcut(EinstellungenPerspective.ID);
     }
 }

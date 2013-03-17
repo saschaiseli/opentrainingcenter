@@ -5,7 +5,7 @@ import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchAdvisor;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 
-import ch.opentrainingcenter.client.perspectives.AthletePerspective;
+import ch.opentrainingcenter.client.perspectives.EinstellungenPerspective;
 import ch.opentrainingcenter.client.perspectives.MainPerspective;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.core.PreferenceConstants;
@@ -33,22 +33,15 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
             final IAthlete athlete = DatabaseAccessFactory.getDatabaseAccess().getAthlete(Integer.parseInt(athleteId));
             if (athlete == null) {
                 LOGGER.info(Messages.ApplicationWorkbenchAdvisorAthleteNotFound);
-                return AthletePerspective.ID;
+                return EinstellungenPerspective.ID;
             } else {
                 LOGGER.info(Messages.ApplicationWorkbenchAdvisorAthleteFound);
-
-                init(athlete);
-
+                ApplicationContext.getApplicationContext().setAthlete(athlete);
                 return MainPerspective.ID;
             }
         } else {
             LOGGER.info(Messages.ApplicationWorkbenchAdvisorAthleteNotInPreferences);
-            return AthletePerspective.ID;
+            return EinstellungenPerspective.ID;
         }
-    }
-
-    private void init(final IAthlete athlete) {
-        ApplicationContext.getApplicationContext().setAthlete(athlete);
-        // do some cache initial load
     }
 }

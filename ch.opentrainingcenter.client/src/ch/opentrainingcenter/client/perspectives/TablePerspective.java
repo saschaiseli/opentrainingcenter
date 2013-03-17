@@ -20,7 +20,7 @@ public class TablePerspective implements IPerspectiveFactory {
         layout.addPerspectiveShortcut(MainPerspective.ID);
         layout.addPerspectiveShortcut(TablePerspective.ID);
         layout.addPerspectiveShortcut(StatisticPerspective.ID);
-        layout.addPerspectiveShortcut(AthletePerspective.ID);
+        layout.addPerspectiveShortcut(EinstellungenPerspective.ID);
     }
 
 }

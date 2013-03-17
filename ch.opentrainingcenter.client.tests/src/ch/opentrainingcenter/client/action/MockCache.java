@@ -79,4 +79,10 @@ public class MockCache implements Cache {
         // TODO Auto-generated method stub
 
     }
+
+    @Override
+    public void resetCache() {
+        // TODO Auto-generated method stub
+
+    }
 }

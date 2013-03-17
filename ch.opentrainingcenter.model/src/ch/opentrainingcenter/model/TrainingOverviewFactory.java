@@ -14,6 +14,7 @@ import ch.opentrainingcenter.tcx.ExtensionsT;
 import ch.opentrainingcenter.tcx.IntensityT;
 import ch.opentrainingcenter.transfer.ActivityExtension;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
+import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.ITraining;
 
 public final class TrainingOverviewFactory {
@@ -83,9 +84,9 @@ public final class TrainingOverviewFactory {
         return lap.getMaximumHeartRateBpm() != null;
     }
 
-    public static ISimpleTraining creatSimpleTraining(final ActivityT activity) {
+    public static ISimpleTraining creatSimpleTraining(final ActivityT activity, final IAthlete athlete) {
         if (activity != null) {
-            return ModelFactory.createSimpleTraining(create(activity));
+            return ModelFactory.createSimpleTraining(create(activity), athlete);
         } else {
             return null;
         }

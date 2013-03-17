@@ -5,6 +5,7 @@ import org.eclipse.ui.IPerspectiveFactory;
 
 import ch.opentrainingcenter.client.views.ahtlete.CreateAthleteView;
 
+@Deprecated
 public class AthletePerspective implements IPerspectiveFactory {
 
     public static final String ID = "ch.opentrainingcenter.client.athletePerspective"; //$NON-NLS-1$

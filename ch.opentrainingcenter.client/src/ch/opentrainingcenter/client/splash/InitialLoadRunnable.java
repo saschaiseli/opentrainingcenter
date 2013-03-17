@@ -103,7 +103,7 @@ public class InitialLoadRunnable implements IRunnableWithProgress {
         final List<IRoute> routen = db.getRoute(athlete);
         final ICache<String, StreckeModel> cache = StreckeCache.getInstance();
         for (final IRoute route : routen) {
-            final StreckeModel strecke = ch.opentrainingcenter.model.ModelFactory.createStreckeModel(route);
+            final StreckeModel strecke = ch.opentrainingcenter.model.ModelFactory.createStreckeModel(route, athlete);
             cache.add(strecke);
             monitor.subTask("Strecken laden: " + i++);
             LOG.info("Strecke dem Cache hinzugefügt: " + route + " Strecke: " + strecke); //$NON-NLS-1$ //$NON-NLS-2$

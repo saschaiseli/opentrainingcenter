@@ -137,11 +137,11 @@ public class RunTypeDialog extends TitleAreaDialog {
             @Override
             public String getText(final Object element) {
                 final IGpsFileModel record = (IGpsFileModel) element;
-                String route;
-                if (record.getRoute() == null) {
-                    route = strecken.get(0).getName();
-                } else {
+                final String route;
+                if (record.getRoute() != null) {
                     route = record.getRoute().getName();
+                } else {
+                    route = ""; //$NON-NLS-1$
                 }
                 return route;
             }

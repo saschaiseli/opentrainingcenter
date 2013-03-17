@@ -16,4 +16,6 @@ public interface Cache extends ICache<Date, ActivityT> {
      */
     void updateExtension(final Date activityId, final ActivityExtension extension);
 
+    void resetCache();
+
 }

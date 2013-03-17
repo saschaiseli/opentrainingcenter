@@ -14,6 +14,7 @@ import ch.opentrainingcenter.importer.IFileImport;
 import ch.opentrainingcenter.model.TrainingOverviewFactory;
 import ch.opentrainingcenter.model.importer.IGpsFileModel;
 import ch.opentrainingcenter.model.importer.IGpsFileModelWrapper;
+import ch.opentrainingcenter.model.strecke.StreckeModel;
 import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.ITraining;
@@ -72,8 +73,13 @@ public class FileImport implements IFileImport {
         for (final ActivityT activity : activities) {
             final ITraining overview = TrainingOverviewFactory.creatTrainingOverview(activity);
 
+            final StreckeModel route = model.getRoute();
+            int routeId = 0;
+            if (route != null) {
+                routeId = route.getId();
+            }
             final int id = dbAccess.importRecord(athlete.getId(), file.getName(), activity.getId().toGregorianCalendar().getTime(), overview, model.getId(),
-                    model.getRoute().getId());
+                    routeId);
             if (id > 0) {
                 // neu hinzugefügt
                 result.add(activity);

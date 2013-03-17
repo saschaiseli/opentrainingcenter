@@ -1,6 +1,6 @@
 package ch.opentrainingcenter.client.commands;
 
-import ch.opentrainingcenter.client.perspectives.AthletePerspective;
+import ch.opentrainingcenter.client.perspectives.EinstellungenPerspective;
 
 public class SwitchToAthlete extends SwitchToPerspective {
 
@@ -8,12 +8,12 @@ public class SwitchToAthlete extends SwitchToPerspective {
 
     @Override
     String getPerspectiveId() {
-        return AthletePerspective.ID;
+        return EinstellungenPerspective.ID;
     }
 
     @Override
     boolean isSamePerspective(final String perspectiveId) {
-        return AthletePerspective.ID.equals(perspectiveId);
+        return EinstellungenPerspective.ID.equals(perspectiveId);
     }
 
     @Override

@@ -113,6 +113,7 @@ public final class TrainingCenterDataCache extends AbstractCache<Date, ActivityT
     /**
      * Methode für Testzwecke
      */
+    @Override
     public void resetCache() {
         trainingCenterModel.getActivities().getActivity().clear();
         allImported.clear();

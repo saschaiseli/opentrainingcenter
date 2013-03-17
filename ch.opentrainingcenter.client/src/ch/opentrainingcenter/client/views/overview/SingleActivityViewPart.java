@@ -58,6 +58,7 @@ import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.tcx.ExtensionsT;
 import ch.opentrainingcenter.transfer.ActivityExtension;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
+import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IImported;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.IWeather;
@@ -82,9 +83,11 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         final ApplicationContext context = ApplicationContext.getApplicationContext();
         final Date selectedId = context.getSelectedId();
         activity = cache.get(selectedId);
-        simpleTraining = TrainingOverviewFactory.creatSimpleTraining(activity);
 
-        factory = new ChartFactory(Activator.getDefault().getPreferenceStore(), activity, context.getAthlete());
+        final IAthlete athlete = context.getAthlete();
+        simpleTraining = TrainingOverviewFactory.creatSimpleTraining(activity, athlete);
+
+        factory = new ChartFactory(Activator.getDefault().getPreferenceStore(), activity, athlete);
 
         setPartName(simpleTraining.getFormattedDate());
     }
@@ -297,9 +300,11 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
             mapDbIndex.put(strecke.getId(), i);
             i++;
         }
-        streckeCombo.setItems(allNamen.toArray(new String[1]));
         final StreckeModel strecke = simpleTraining.getStrecke();
-        streckeCombo.select(strecke != null ? mapDbIndex.get(strecke.getId()) : 0);
+        if (allNamen.size() > 0) {
+            streckeCombo.setItems(allNamen.toArray(new String[1]));
+            streckeCombo.select(strecke != null ? mapDbIndex.get(strecke.getId()) : 0);
+        }
         streckeCombo.addSelectionListener(new SelectionListener() {
 
             @Override
@@ -502,15 +507,6 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         layout.numColumns = 2;
         layout.makeColumnsEqualWidth = false;
         client.setLayout(layout);
-
-        // final JFreeChart chart =
-        // chartCreator.createChart(dataSetCreator.createDatasetAltitude(),
-        // ChartType.ALTITUDE_DISTANCE);
-        // final ChartComposite chartComposite = new ChartComposite(client,
-        // SWT.NONE, chart, true);
-        // td = new TableWrapData(TableWrapData.FILL_GRAB);
-        // td.heightHint = 400;
-        // chartComposite.setLayoutData(td);
 
         factory.addChartToComposite(client, ChartType.ALTITUDE_DISTANCE);
 

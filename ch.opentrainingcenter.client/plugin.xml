@@ -21,10 +21,10 @@
             name="%otc">
       </perspective>
       <perspective
-            class="ch.opentrainingcenter.client.perspectives.AthletePerspective"
+            class="ch.opentrainingcenter.client.perspectives.EinstellungenPerspective"
             fixed="true"
             icon="icons/32_32/einstellungen.png"
-            id="ch.opentrainingcenter.client.athletePerspective"
+            id="ch.opentrainingcenter.client.einstellungen"
             name="%einstellungen">
       </perspective>
       <perspective
@@ -119,6 +119,22 @@
             icon="icons/16_16/container_obj.gif"
             id="ch.opentrainingcenter.client.views.planung.ShowJahresplanungViewPart"
             name="%aktuelleplanung"
+            restorable="true">
+      </view>
+      <view
+            category="ch.opentrainingcenter.client.otccategory"
+            class="ch.opentrainingcenter.client.views.einstellungen.UserView"
+            icon="icons/16_16/userin_16_16.png"
+            id="ch.opentrainingcenter.client.views.einstellungen.user"
+            name="%userverwaltung"
+            restorable="true">
+      </view>
+      <view
+            category="ch.opentrainingcenter.client.otccategory"
+            class="ch.opentrainingcenter.client.views.einstellungen.RoutenView"
+            icon="icons/16_16/map_16_16.png"
+            id="ch.opentrainingcenter.client.views.einstellungen.routen"
+            name="%routenverwaltung"
             restorable="true">
       </view>
    </extension>
@@ -707,5 +723,8 @@
                tooltip="Alles einklappen">
          </action>
       </viewContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
    </extension>
 </plugin>

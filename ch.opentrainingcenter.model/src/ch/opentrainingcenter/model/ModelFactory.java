@@ -67,15 +67,17 @@ public class ModelFactory {
 
     /**
      * Erstellt ein SimpleTraining mit dem Lauf Typ NONE
+     * 
+     * @param athlete
      */
-    public static ISimpleTraining createSimpleTraining(final ITraining overview) {
+    public static ISimpleTraining createSimpleTraining(final ITraining overview, final IAthlete athlete) {
         final SimpleTraining training = new SimpleTraining(overview.getLaengeInMeter(), overview.getDauerInSekunden(), overview.getDateOfStart(), overview
                 .getAverageHeartBeat(), overview.getMaxHeartBeat(), overview.getMaxSpeed(), RunType.NONE, overview.getNote());
         if (overview.getWeather() != null) {
             training.setWetter(Wetter.getRunType(overview.getWeather().getId()));
         }
         if (overview.getRoute() != null) {
-            training.setStrecke(ModelFactory.createStreckeModel(overview.getRoute()));
+            training.setStrecke(ModelFactory.createStreckeModel(overview.getRoute(), athlete));
         }
         return training;
     }
@@ -101,7 +103,7 @@ public class ModelFactory {
         return new NavigationParent();
     }
 
-    public static StreckeModel createStreckeModel(final IRoute route) {
-        return new StreckeModel(route.getId(), route.getAthlete(), route.getName(), route.getBeschreibung());
+    public static StreckeModel createStreckeModel(final IRoute route, final IAthlete athlete) {
+        return new StreckeModel(route.getId(), athlete, route.getName(), route.getBeschreibung());
     }
 }

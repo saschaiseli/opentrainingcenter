@@ -7,7 +7,6 @@ import java.beans.PropertyChangeSupport;
 public class Sportler implements PropertyChangeListener {
 
     private String name;
-    private String gender;
     private Integer age;
     private Integer maxHeartBeat;
 
@@ -23,14 +22,6 @@ public class Sportler implements PropertyChangeListener {
 
     public void setName(final String name) {
         propertyChangeSupport.firePropertyChange("name", this.name, this.name = name); //$NON-NLS-1$
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(final String gender) {
-        propertyChangeSupport.firePropertyChange("gender", this.gender, this.gender = gender); //$NON-NLS-1$
     }
 
     public Integer getAge() {
@@ -68,7 +59,7 @@ public class Sportler implements PropertyChangeListener {
 
     @Override
     public String toString() {
-        return "Sportler [name=" + name + ", gender=" + gender + ", age=" + age + ", maxHeartBeat=" + maxHeartBeat + "]"; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+        return "Sportler [name=" + name + ", age=" + age + ", maxHeartBeat=" + maxHeartBeat + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
     }
 
 }

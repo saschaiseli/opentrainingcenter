@@ -32,6 +32,7 @@ public class ModelFactoryTest {
     private final int avgHeart = 145;
     private final int maxHeart = 189;
     private final double maxSpeed = 3.45d;
+    private IAthlete athlete;
 
     @Before
     public void before() {
@@ -43,7 +44,7 @@ public class ModelFactoryTest {
         Mockito.when(overview.getMaxHeartBeat()).thenReturn(maxHeart);
         Mockito.when(overview.getMaxSpeed()).thenReturn(maxSpeed);
         final IRoute route = Mockito.mock(IRoute.class);
-        final IAthlete athlete = Mockito.mock(IAthlete.class);
+        athlete = Mockito.mock(IAthlete.class);
         Mockito.when(route.getAthlete()).thenReturn(athlete);
         Mockito.when(route.getName()).thenReturn("blabla");
         Mockito.when(overview.getRoute()).thenReturn(route);
@@ -51,7 +52,7 @@ public class ModelFactoryTest {
 
     @Test
     public void testSimpleTraining() {
-        final ISimpleTraining training = ModelFactory.createSimpleTraining(overview);
+        final ISimpleTraining training = ModelFactory.createSimpleTraining(overview, athlete);
         assertTraining(training);
     }
 

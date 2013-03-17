@@ -80,7 +80,7 @@ public class ImportManualGpsFiles extends AbstractHandler {
             final List<IRoute> routen = databaseAccess.getRoute(athlete);
             final List<StreckeModel> strecken = new ArrayList<StreckeModel>();
             for (final IRoute route : routen) {
-                strecken.add(ModelFactory.createStreckeModel(route));
+                strecken.add(ModelFactory.createStreckeModel(route, athlete));
             }
             final RunTypeDialog dialog = new RunTypeDialog(window.getShell(), fileNames, strecken);
             final int open = dialog.open();
