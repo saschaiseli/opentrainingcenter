@@ -4,7 +4,6 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.ui.part.ViewPart;
 
@@ -29,10 +28,10 @@ public class StatisticView extends ViewPart {
         final IPreferenceStore store = Activator.getDefault().getPreferenceStore();
         final BarChartFactory barChartFactory = new BarChartFactory(store, ApplicationContext.getApplicationContext().getAthlete());
 
-        barChartFactory.addItem(tabs, ChartSerieType.DAY, Display.getDefault().getActiveShell());
-        barChartFactory.addItem(tabs, ChartSerieType.WEEK, Display.getDefault().getActiveShell());
-        barChartFactory.addItem(tabs, ChartSerieType.MONTH, Display.getDefault().getActiveShell());
-        barChartFactory.addItem(tabs, ChartSerieType.YEAR, Display.getDefault().getActiveShell());
+        barChartFactory.addItem(tabs, ChartSerieType.DAY);
+        barChartFactory.addItem(tabs, ChartSerieType.WEEK);
+        barChartFactory.addItem(tabs, ChartSerieType.MONTH);
+        barChartFactory.addItem(tabs, ChartSerieType.YEAR);
 
         final StatisticsFactory factory = new StatisticsFactory(HealthCache.getInstance(), store);
 

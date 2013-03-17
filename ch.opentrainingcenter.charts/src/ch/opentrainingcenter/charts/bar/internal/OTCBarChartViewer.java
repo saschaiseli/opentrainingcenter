@@ -27,7 +27,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.AxisLocation;
@@ -107,14 +106,11 @@ public class OTCBarChartViewer implements ISelectionProvider {
 
     private final Cache cache;
 
-    private final Shell shell;
-
     private final org.eclipse.swt.graphics.Color radioContainerBackground;
 
-    public OTCBarChartViewer(final Composite parent, final ChartSerieType type, final IPreferenceStore store, final IAthlete athlete, final Shell shell) {
+    public OTCBarChartViewer(final Composite parent, final ChartSerieType type, final IPreferenceStore store, final IAthlete athlete) {
         this.type = type;
         this.store = store;
-        this.shell = shell;
         clazz = getSeriesType(this.type);
         statistik = new StatistikCreator();
 

@@ -2,7 +2,6 @@ package ch.opentrainingcenter.charts.bar;
 
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 
@@ -20,10 +19,10 @@ public class BarChartFactory {
         this.athlete = athlete;
     }
 
-    public void addItem(final TabFolder tabs, final ChartSerieType type, final Shell shell) {
+    public void addItem(final TabFolder tabs, final ChartSerieType type) {
         final TabItem item = new TabItem(tabs, SWT.PUSH);
         item.setText(type.getName());
-        final OTCBarChartViewer viewer = new OTCBarChartViewer(tabs, type, store, athlete, shell);
+        final OTCBarChartViewer viewer = new OTCBarChartViewer(tabs, type, store, athlete);
         item.setControl(viewer.getControl());
     }
 

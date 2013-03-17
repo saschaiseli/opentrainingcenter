@@ -26,7 +26,7 @@ public class RouteDao {
      * @param athlete
      */
     public IRoute getRoute(final String name, final IAthlete athlete) {
-        LOG.info("load Route mit dem namen: " + name); //$NON-NLS-1$
+        LOG.info("load Route mit dem namen: " + name + " " + athlete); //$NON-NLS-1$ //$NON-NLS-2$
         final Session session = dao.getSession();
         dao.begin();
         final Criteria criteria = session.createCriteria(IRoute.class);
