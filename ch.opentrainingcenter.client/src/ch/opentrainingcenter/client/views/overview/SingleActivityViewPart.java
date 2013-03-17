@@ -181,7 +181,6 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
 
         final Label label = toolkit.createLabel(container, ""); //$NON-NLS-1$
         label.setText(Messages.SingleActivityViewPart_3);
-        // label.setLayoutData(gd);
 
         final Text note = toolkit.createText(container, "", SWT.V_SCROLL | SWT.MULTI | SWT.BORDER); //$NON-NLS-1$
         final GridData noteGd = new GridData();
@@ -231,8 +230,6 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
 
         final Label labelWetter = toolkit.createLabel(container, ""); //$NON-NLS-1$
         labelWetter.setText(Messages.SingleActivityViewPart_6);
-        // gd.minimumWidth = 10;
-        // labelWetter.setLayoutData(gd);
 
         final Combo weatherCombo = new Combo(container, SWT.READ_ONLY);
         weatherCombo.setBounds(50, 50, 150, 65);
@@ -277,9 +274,7 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         };
 
         final Label labelStrecke = toolkit.createLabel(container, ""); //$NON-NLS-1$
-        labelStrecke.setText("Strecke:");
-        // gd.minimumWidth = 10;
-        // labelWetter.setLayoutData(gd);
+        labelStrecke.setText(Messages.SingleActivityViewPart_2);
 
         final Combo streckeCombo = new Combo(container, SWT.READ_ONLY);
         streckeCombo.setBounds(50, 50, 150, 65);
@@ -437,7 +432,7 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         heartSection.setLayoutData(td);
         heartSection.setText(Messages.SingleActivityViewPart9);
         heartSection.setDescription(Messages.SingleActivityViewPart10);
-        //
+
         final Composite client = toolkit.createComposite(heartSection);
 
         final TableWrapLayout layout = new TableWrapLayout();
@@ -467,7 +462,7 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         speedSection.setLayoutData(td);
         speedSection.setText(Messages.SingleActivityViewPart11);
         speedSection.setDescription(Messages.SingleActivityViewPart12);
-        //
+
         final Composite client = toolkit.createComposite(speedSection);
 
         final TableWrapLayout layout = new TableWrapLayout();
@@ -541,7 +536,7 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
 
     @Override
     public void addSelectionChangedListener(final ISelectionChangedListener l) {
-        //        System.out.println("asd" + l); //$NON-NLS-1$
+
     }
 
     @Override

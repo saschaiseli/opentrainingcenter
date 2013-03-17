@@ -81,11 +81,11 @@ public class UserView extends ViewPart {
     private Composite parent;
 
     @Override
-    public void createPartControl(final Composite parent) {
-        this.parent = parent;
+    public void createPartControl(final Composite parentComposite) {
+        this.parent = parentComposite;
         LOGGER.debug("Create User View"); //$NON-NLS-1$
-        toolkit = new FormToolkit(parent.getDisplay());
-        form = toolkit.createScrolledForm(parent);
+        toolkit = new FormToolkit(this.parent.getDisplay());
+        form = toolkit.createScrolledForm(this.parent);
         // form.setSize(1000, 2000);
         // gridlayout definieren
 
@@ -171,8 +171,7 @@ public class UserView extends ViewPart {
                 ApplicationContext.getApplicationContext().setAthlete(athlete);
                 getViewSite().getWorkbenchWindow().getShell().setText(Application.WINDOW_TITLE + Messages.CreateAthleteView7 + athlete.getName());
 
-                final boolean confirm = MessageDialog.openConfirm(parent.getShell(), "Benutzerwechsel",
-                        "Bei einem Benutzerwechsel muss OTC neu gestartet werden");
+                final boolean confirm = MessageDialog.openConfirm(parent.getShell(), Messages.UserView_0, Messages.UserView_1);
                 if (confirm) {
                     PlatformUI.getWorkbench().restart();
                 }
@@ -181,7 +180,7 @@ public class UserView extends ViewPart {
         });
 
         final Button editUser = new Button(sportlerComposite, SWT.PUSH);
-        editUser.setText("Edit");
+        editUser.setText(Messages.UserView_2);
         editUser.setEnabled(false);
         editUser.setLayoutData(gridData);
         editUser.addSelectionListener(new SelectionAdapter() {

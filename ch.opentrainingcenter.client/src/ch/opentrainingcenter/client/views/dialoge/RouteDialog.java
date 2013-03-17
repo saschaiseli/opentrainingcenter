@@ -54,8 +54,8 @@ public class RouteDialog extends TitleAreaDialog {
 
     @Override
     protected Control createDialogArea(final Composite composite) {
-        setTitle("Neue Strecke");
-        setMessage("Eine neue Strecke erfassen um verschiedene Läufe,\nderselben Strecke miteinander zu vergleichen.");
+        setTitle(Messages.RouteDialog_0);
+        setMessage(Messages.RouteDialog_1);
         setTitleImage(Activator.getImageDescriptor(IImageKeys.ROUTE6464).createImage());
 
         final Composite container = new Composite(composite, SWT.NONE);
@@ -69,7 +69,7 @@ public class RouteDialog extends TitleAreaDialog {
 
         final Label labelName = new Label(container, SWT.NONE);
         labelName.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
-        labelName.setText("Name");
+        labelName.setText(Messages.RouteDialog_2);
 
         name = new Text(container, SWT.BORDER);
         final GridData gd_pulsText = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
@@ -78,7 +78,7 @@ public class RouteDialog extends TitleAreaDialog {
 
         final Label labelBeschreibung = new Label(container, SWT.NONE);
         labelBeschreibung.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
-        labelBeschreibung.setText("Beschreibung");
+        labelBeschreibung.setText(Messages.RouteDialog_3);
 
         beschreibung = new Text(container, SWT.MULTI | SWT.BORDER | SWT.WRAP | SWT.V_SCROLL);
         final GridData noteGd = new GridData();
@@ -104,7 +104,7 @@ public class RouteDialog extends TitleAreaDialog {
             boolean confirm = true;
 
             if (route != null) {
-                confirm = MessageDialog.openConfirm(parent, "Es ist bereits eine Route unter diesem Namen erfasst", Messages.HealthDialog_1);
+                confirm = MessageDialog.openConfirm(parent, Messages.RouteDialog_4, Messages.HealthDialog_1);
 
             }
             if (confirm) {
@@ -154,7 +154,7 @@ public class RouteDialog extends TitleAreaDialog {
                     return ValidationStatus.ok();
                 } else {
                     getButton(OK).setEnabled(false);
-                    setErrorMessage("Name der Strecke muss eingegeben sein");
+                    setErrorMessage(Messages.RouteDialog_5);
                     return ValidationStatus.error("Mist"); //$NON-NLS-1$
                 }
             }

@@ -88,7 +88,7 @@ public class RunTypeDialog extends TitleAreaDialog {
     }
 
     private void createColumns() {
-        final String[] titles = { Messages.RunTypeDialog2, Messages.RunTypeDialog3, Messages.RunTypeDialog4, "Strecke" };
+        final String[] titles = { Messages.RunTypeDialog2, Messages.RunTypeDialog3, Messages.RunTypeDialog4, Messages.RunTypeDialog_0 };
         final int[] bounds = { 80, 250, 250, 100 };
 
         // Flag

@@ -10,6 +10,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.importer.ConvertContainer;
 import ch.opentrainingcenter.core.importer.IFileCopy;
+import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.importer.IFileImport;
 import ch.opentrainingcenter.model.TrainingOverviewFactory;
 import ch.opentrainingcenter.model.importer.IGpsFileModel;
@@ -56,7 +57,7 @@ public class FileImport implements IFileImport {
         final List<ActivityT> activitiesToImport = new ArrayList<ActivityT>();
         for (final IGpsFileModel model : modelWrapper.getGpsFileModels()) {
             final File file = new File(filterPath, model.getFileName());
-            monitor.setTaskName("Importiere File" + file.getName());
+            monitor.setTaskName(Messages.FileImport_0 + file.getName());
             LOGGER.info("importiere File: " + file.getName()); //$NON-NLS-1$
             final List<ActivityT> activities = cc.getMatchingConverter(file).convertActivity(file);
 

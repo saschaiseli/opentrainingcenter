@@ -21,6 +21,7 @@ import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.helper.ColorFromPreferenceHelper;
+import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.model.ModelFactory;
 import ch.opentrainingcenter.model.planing.IPastPlanung;
 import ch.opentrainingcenter.model.planing.IPastPlanungModel;
@@ -84,7 +85,7 @@ public class PlanungPastViewer {
     // This will create the columns for the table
     private void createColumns() {
 
-        final String[] titles = { "Jahr", "KW", "Km/Woche", "Langer Lauf", "Intervall", "", "Km/Woche effektiv", "Langer Lauf effektiv", "Intervall effektiv",
+        final String[] titles = { Messages.PlanungPastViewer_0, Messages.PlanungPastViewer_1, Messages.PlanungPastViewer_2, Messages.PlanungPastViewer_3, Messages.PlanungPastViewer_4, Messages.PlanungPastViewer_5, Messages.PlanungPastViewer_6, Messages.PlanungPastViewer_7, Messages.PlanungPastViewer_8,
                 "" }; //$NON-NLS-1$
         final int[] bounds = { 50, 40, 100, 100, 65, 100, 150, 150, 150, 100 };
 

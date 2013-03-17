@@ -20,6 +20,7 @@ import org.joda.time.DateTime;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.core.cache.IRecordListener;
 import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
+import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.model.cache.TrainingsPlanCache;
 import ch.opentrainingcenter.model.planing.IPlanungModel;
 import ch.opentrainingcenter.model.planing.KwJahrKey;
@@ -90,7 +91,7 @@ public class PlanungFutureViewer {
 
     // This will create the columns for the table
     private void createColumns() {
-        final String[] titles = { "Jahr", "KW", "Km/Woche", "Langer Lauf", "Intervall" };
+        final String[] titles = { Messages.PlanungFutureViewer_0, Messages.PlanungFutureViewer_1, Messages.PlanungFutureViewer_2, Messages.PlanungFutureViewer_3, Messages.PlanungFutureViewer_4 };
         final int[] bounds = { 50, 40, 100, 100, 50 };
 
         // Jahr

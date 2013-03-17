@@ -105,7 +105,7 @@ public class InitialLoadRunnable implements IRunnableWithProgress {
         for (final IRoute route : routen) {
             final StreckeModel strecke = ch.opentrainingcenter.model.ModelFactory.createStreckeModel(route, athlete);
             cache.add(strecke);
-            monitor.subTask("Strecken laden: " + i++);
+            monitor.subTask(Messages.InitialLoadRunnable_5 + i++);
             LOG.info("Strecke dem Cache hinzugefügt: " + route + " Strecke: " + strecke); //$NON-NLS-1$ //$NON-NLS-2$
         }
     }

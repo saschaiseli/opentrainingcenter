@@ -49,7 +49,7 @@ class StatusLineWriter {
                     distance += item.getTraining().getLaengeInMeter();
                     dauer += item.getTraining().getDauerInSekunden();
                 }
-                final String msg = "Anzahl Läufe: " + count + " Distanz total: " + DistanceHelper.roundDistanceFromMeterToKm(distance) + "km Dauer total: "
+                final String msg = Messages.StatusLineWriter_19 + count + Messages.StatusLineWriter_20 + DistanceHelper.roundDistanceFromMeterToKm(distance) + Messages.StatusLineWriter_21
                         + TimeHelper.convertSecondsToHumanReadableZeit(dauer);
                 writeToStatusLine(msg);
             } else {

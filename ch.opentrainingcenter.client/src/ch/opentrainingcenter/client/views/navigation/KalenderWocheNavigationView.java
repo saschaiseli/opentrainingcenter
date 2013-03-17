@@ -163,9 +163,7 @@ public class KalenderWocheNavigationView extends ViewPart {
                 final TreeSelection selection = (TreeSelection) event.getSelection();
                 final Object[] array = selection.toArray();
                 status.writeStatusLine(array);
-                final Object first = selection.getFirstElement();
                 context.setSelection(selection.toArray());
-                // status.writeStatusLine(first);
             }
         });
 

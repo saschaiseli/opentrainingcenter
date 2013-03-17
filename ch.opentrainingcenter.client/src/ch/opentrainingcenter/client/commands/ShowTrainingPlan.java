@@ -6,6 +6,7 @@ import org.eclipse.core.commands.ExecutionException;
 import org.joda.time.DateTime;
 
 import ch.opentrainingcenter.client.action.job.ShowJahresplanung;
+import ch.opentrainingcenter.i18n.Messages;
 
 public class ShowTrainingPlan extends AbstractHandler {
 
@@ -20,7 +21,7 @@ public class ShowTrainingPlan extends AbstractHandler {
     public Object execute(final ExecutionEvent event) throws ExecutionException {
         final DateTime now = new DateTime();
         final int year = now.getYear();
-        final ShowJahresplanung job = new ShowJahresplanung("Lade Planung", year);
+        final ShowJahresplanung job = new ShowJahresplanung(Messages.ShowTrainingPlan_0, year);
         job.schedule();
         return null;
     }

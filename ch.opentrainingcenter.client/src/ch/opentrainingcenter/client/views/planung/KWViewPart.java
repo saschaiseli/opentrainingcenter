@@ -107,7 +107,8 @@ public class KWViewPart {
         });
 
         final Label laufLabel = new Label(composite, SWT.NONE);
-        laufLabel.setText("Langer Lauf: ");
+        final String text = Messages.KWViewPart_4;
+        laufLabel.setText(text + ": "); //$NON-NLS-1$
         final GridData gdLabelSpinner = new GridData();
         gdLabelSpinner.horizontalAlignment = SWT.RIGHT;
         gdLabelSpinner.horizontalIndent = 30;
@@ -118,7 +119,7 @@ public class KWViewPart {
         gdSpinner.horizontalIndent = 0;
 
         langerLaufSpinner = new Spinner(composite, SWT.BORDER);
-        langerLaufSpinner.setToolTipText("Langer Lauf");
+        langerLaufSpinner.setToolTipText(text);
         langerLaufSpinner.setMinimum(0);
         langerLaufSpinner.setMaximum(1000);
         langerLaufSpinner.setSelection(m.getLangerLauf());

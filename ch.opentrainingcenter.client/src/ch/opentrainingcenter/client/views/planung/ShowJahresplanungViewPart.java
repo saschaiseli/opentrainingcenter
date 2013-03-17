@@ -8,6 +8,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.part.ViewPart;
 
 import ch.opentrainingcenter.client.Activator;
+import ch.opentrainingcenter.i18n.Messages;
 
 public class ShowJahresplanungViewPart extends ViewPart {
     public final static String ID = "ch.opentrainingcenter.client.views.planung.ShowJahresplanungViewPart"; //$NON-NLS-1$
@@ -19,12 +20,12 @@ public class ShowJahresplanungViewPart extends ViewPart {
         parent.setLayout(layout);
         final Label futureLabel = new Label(parent, SWT.NONE);
 
-        futureLabel.setText("Zukünftige Pläne:");
+        futureLabel.setText(Messages.ShowJahresplanungViewPart_0);
         final PlanungFutureViewer future = new PlanungFutureViewer();
         future.createViewer(parent);
 
         final Label pastLabel = new Label(parent, SWT.NONE);
-        pastLabel.setText("Vergangene Pläne:");
+        pastLabel.setText(Messages.ShowJahresplanungViewPart_1);
         final PlanungPastViewer past = new PlanungPastViewer(store);
         past.createViewer(parent);
     }
