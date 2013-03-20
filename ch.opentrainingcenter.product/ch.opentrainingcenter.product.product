@@ -46,6 +46,7 @@
       <plugin id="ch.opentrainingcenter.importer.tcx"/>
       <plugin id="ch.opentrainingcenter.model"/>
       <plugin id="ch.opentrainingcenter.tcx"/>
+      <plugin id="ch.opentrainingcenter.route"/>
       <plugin id="ch.opentrainingcenter.transfer"/>
       <plugin id="com.eclipsesource.widgets.gmaps"/>
       <plugin id="com.ibm.icu"/>
