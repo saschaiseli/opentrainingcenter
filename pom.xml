@@ -41,6 +41,7 @@
 		<module>ch.opentrainingcenter.importer.tcx</module>
 		<module>ch.opentrainingcenter.tcx</module>
 		<module>ch.opentrainingcenter.transfer</module>
+		<module>ch.opentrainingcenter.route</module>
 		<module>com.eclipsesource.widgets.gmaps</module>
 		<module>h2</module>
 		<module>jfreechart</module>
@@ -56,7 +57,7 @@
 		<module>ch.opentrainingcenter.model.tests</module>
 		<module>ch.opentrainingcenter.importer.tests</module>
 		<module>ch.opentrainingcenter.importer.fitnesslog.tests</module>
-
+		<module>ch.opentrainingcenter.route.tests</module>
 	</modules>
 
 	<profiles>
