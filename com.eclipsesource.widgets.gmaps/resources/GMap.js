@@ -15,15 +15,15 @@ window.init = function( center, zoom, typeId, points ) {
   for(i=0;i<points.length;i++){
 	  theRoute[i]=new google.maps.LatLng(points[i][0], points[i][1]);
   }
+   
+  
+  routeAsPoligon = new google.maps.Polyline({
+	path: theRoute,
+    strokeColor: "#FF0000",
+    strokeOpacity: 1.0,
+    strokeWeight: 2
+  });
 
-  routeAsPoligon = new google.maps.Polygon({
-	    paths: theRoute,
-	    strokeColor: "#FF0000",
-	    strokeOpacity: 0.5,
-	    strokeWeight: 5,
-	    fillColor: "#FF0000",
-	    fillOpacity: 0.0
-	  });
 
   routeAsPoligon.setMap(gmap);
   _registerEventListener();
