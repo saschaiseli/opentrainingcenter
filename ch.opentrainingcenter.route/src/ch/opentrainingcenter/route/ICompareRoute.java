@@ -1,7 +1,8 @@
 package ch.opentrainingcenter.route;
 
-import java.awt.Shape;
+import ch.opentrainingcenter.model.geo.Track;
 
 public interface ICompareRoute {
-    boolean compareRoute(Shape reference, Shape object);
+
+    boolean compareRoute(Track reference, Track track);
 }
