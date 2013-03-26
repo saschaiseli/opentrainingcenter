@@ -1,25 +1,25 @@
 package ch.opentrainingcenter.model.geo;
 
 public class TrackPoint {
-    private final float distance;
-    private final float xCoordinates;
-    private final float yCoordinates;
+    private final double distance;
+    private final double xCoordinates;
+    private final double yCoordinates;
 
-    public TrackPoint(final float distance, final float xCoordinates, final float yCoordinates) {
+    public TrackPoint(final double distance, final double xCoordinates, final double yCoordinates) {
         this.distance = distance;
         this.xCoordinates = xCoordinates;
         this.yCoordinates = yCoordinates;
     }
 
-    public float getDistance() {
+    public double getDistance() {
         return distance;
     }
 
-    public float getxCoordinates() {
+    public double getxCoordinates() {
         return xCoordinates;
     }
 
-    public float getyCoordinates() {
+    public double getyCoordinates() {
         return yCoordinates;
     }
 

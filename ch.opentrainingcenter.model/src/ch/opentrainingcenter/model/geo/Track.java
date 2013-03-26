@@ -19,7 +19,7 @@ public class Track {
 
             @Override
             public int compare(final TrackPoint pointA, final TrackPoint pointB) {
-                return Float.compare(pointA.getDistance(), pointB.getDistance());
+                return Double.compare(pointA.getDistance(), pointB.getDistance());
             }
         });
         return Collections.unmodifiableList(points);
