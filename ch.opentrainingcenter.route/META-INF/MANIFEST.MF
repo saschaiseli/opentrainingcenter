@@ -5,6 +5,8 @@ Bundle-SymbolicName: ch.opentrainingcenter.route
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: ch.opentrainingcenter.route.Activator
 Require-Bundle: org.eclipse.core.runtime,
- ch.opentrainingcenter.model
+ ch.opentrainingcenter.model,
+ ch.opentrainingcenter.core,
+ logging
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
