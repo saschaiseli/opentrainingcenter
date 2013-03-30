@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Geocalc
+Bundle-SymbolicName: com.grum.geocalc
+Bundle-Version: 0.0.1
+Bundle-ClassPath: geocalc.jar
+Export-Package: com.grum.geocalc;version="0.0.1"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
