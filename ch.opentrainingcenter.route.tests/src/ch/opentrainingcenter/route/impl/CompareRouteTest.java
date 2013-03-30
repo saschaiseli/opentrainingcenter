@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import ch.opentrainingcenter.model.geo.Track;
 import ch.opentrainingcenter.model.geo.TrackPoint;
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 
 public class CompareRouteTest {
@@ -75,5 +76,10 @@ public class CompareRouteTest {
         final boolean result = route.compareRoute(reference, other);
 
         assertEquals("Die zweite Route ist zu kurz", false, result); //$NON-NLS-1$
+    }
+    
+    @Test
+    public void test(){
+    	assertTrue(true);
     }
 }
