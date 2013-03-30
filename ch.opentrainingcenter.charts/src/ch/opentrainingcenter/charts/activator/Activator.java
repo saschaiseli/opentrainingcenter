@@ -15,10 +15,7 @@ public class Activator implements BundleActivator {
 		Activator.context = bundleContext;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
-	 */
+
 	public void stop(BundleContext bundleContext) throws Exception {
 		Activator.context = null;
 	}
