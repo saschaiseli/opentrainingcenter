@@ -40,12 +40,12 @@ public class CompareRoute implements ICompareRoute {
         if (!isDistanceDifferenceTooBig(referenceDistance, otherDistance)) {
             result = true;
         }
-        result = comparePoints(reference, track);
+        // result = comparePoints(reference, track);
         return result;
     }
 
     protected boolean isDistanceDifferenceTooBig(final double referenceDistance, final double otherDistance) {
-        return Math.abs(referenceDistance - otherDistance) > referenceDistance * ((DISTANZ_TOLERANZ_PROZENT) / 100);
+        return Math.abs(referenceDistance - otherDistance) > referenceDistance * ((DISTANZ_TOLERANZ_PROZENT) / 100.0);
     }
 
     private boolean comparePoints(final Track reference, final Track track) {

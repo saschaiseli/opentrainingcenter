@@ -67,7 +67,7 @@ public class CompareRouteTest {
         final List<TrackPoint> pointsOther = new ArrayList<TrackPoint>();
         pointsOther.add(new TrackPoint(2, 46.94525943, 7.43019129));
         pointsOther.add(new TrackPoint(11, 46.94523915, 7.43013446));
-        pointsOther.add(new TrackPoint(48.1, 46.94507109, 7.42970087));
+        pointsOther.add(new TrackPoint(149.1, 46.94507109, 7.42970087));
         final Track other = new Track(pointsOther);
 
         route = new CompareRoute();
