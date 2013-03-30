@@ -5,6 +5,11 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.grum.geocalc.Coordinate;
+import com.grum.geocalc.DegreeCoordinate;
+import com.grum.geocalc.EarthCalc;
+import com.grum.geocalc.Point;
+
 import ch.opentrainingcenter.model.geo.Track;
 import ch.opentrainingcenter.model.geo.TrackPoint;
 import static org.junit.Assert.assertEquals;
@@ -135,5 +140,47 @@ public class TrackPointSupportTest {
         final boolean result = TrackPointSupport.comparePoints(a, b);
 
         assertEquals("Punkt zu weit weg", false, result);
+    }
+    @Test
+    public void testGetPointOnLineMitEinemPunkt(){
+    	Coordinate lat = new DegreeCoordinate(46.9450);
+    	Coordinate lng = new DegreeCoordinate(7.430);
+    	Point p1 = new Point(lat,lng);
+		Point p2= new Point(lat,lng);
+		Point pointOnLine = TrackPointSupport.getPointOnLine(p1, p2, 0);
+		
+		assertEquals("Muss gleich Punkt 1 sein.",p1.getLatitude(),pointOnLine.getLatitude(),0.00001);
+		assertEquals("Muss gleich Punkt 1 sein.",p1.getLongitude(),pointOnLine.getLongitude(),0.00001);
+    }
+    @Test
+    public void testGetPointOnLineMitZweiPunktDistanz0(){
+    	Point p1 = new Point(new DegreeCoordinate(46.9450),new DegreeCoordinate(7.430));
+		Point p2= new Point(new DegreeCoordinate(46.9450),new DegreeCoordinate(7.4306));
+		Point pointOnLine = TrackPointSupport.getPointOnLine(p1, p2, 0);
+		
+		assertEquals("Muss gleich Punkt 1 sein.",p1.getLatitude(),pointOnLine.getLatitude(),0.00001);
+		assertEquals("Muss gleich Punkt 1 sein.",p1.getLongitude(),pointOnLine.getLongitude(),0.00001);
+    }
+    
+    @Test
+    public void testGetPointOnLineMitZweiPunktDistanzLaengeZwischenDenPunkten(){
+    	Point p1 = new Point(new DegreeCoordinate(46.9450),new DegreeCoordinate(7.430));
+		Point p2= new Point(new DegreeCoordinate(46.9450),new DegreeCoordinate(7.4306));
+		double distance = EarthCalc.getDistance(p1, p2);
+		Point pointOnLine = TrackPointSupport.getPointOnLine(p1, p2, distance);
+		
+		assertEquals("Muss gleich Punkt 2 sein.",p2.getLatitude(),pointOnLine.getLatitude(),0.00001);
+		assertEquals("Muss gleich Punkt 2 sein.",p2.getLongitude(),pointOnLine.getLongitude(),0.00001);
+    }
+    
+    @Test
+    public void testGetPointOnLineMitZweiPunktDistanzZwischenDenPunkten(){
+    	Point p1 = new Point(new DegreeCoordinate(46.9450),new DegreeCoordinate(7.430));
+		Point p2= new Point(new DegreeCoordinate(46.9450),new DegreeCoordinate(7.4306));
+		double distance = EarthCalc.getDistance(p1, p2)/2.0;
+		Point pointOnLine = TrackPointSupport.getPointOnLine(p1, p2, distance);
+		
+		assertEquals("Latidute muss gleich wie p1 und p2 sein.",p2.getLatitude(),pointOnLine.getLatitude(),0.00001);
+		assertEquals("halbe distanz, daher die haelfte von y2-y1.",7.4303,pointOnLine.getLongitude(),0.00001);
     }
 }

@@ -4,6 +4,9 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.grum.geocalc.EarthCalc;
+import com.grum.geocalc.Point;
+
 import ch.opentrainingcenter.core.assertions.Assertions;
 import ch.opentrainingcenter.model.geo.Track;
 import ch.opentrainingcenter.model.geo.TrackPoint;
@@ -62,6 +65,16 @@ public final class TrackPointSupport {
         return result;
     }
 
+
+    
+    /**
+     * Berechnet den Punkt auf der Linie zwischen p1 und p2 mit der distanz von p1 aus.
+     */
+    public static Point getPointOnLine(Point p1, Point p2, double distance){
+    	double bearing = EarthCalc.getBearing(p1, p2);
+		return EarthCalc.pointRadialDistance(p1, bearing, distance);
+    }
+    
     /**
      * vergleich x und y coordinaten miteinander
      * 

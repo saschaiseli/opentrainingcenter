@@ -7,6 +7,7 @@ Bundle-Activator: ch.opentrainingcenter.route.Activator
 Require-Bundle: org.eclipse.core.runtime,
  ch.opentrainingcenter.model,
  ch.opentrainingcenter.core,
- logging
+ logging,
+ com.grum.geocalc
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
