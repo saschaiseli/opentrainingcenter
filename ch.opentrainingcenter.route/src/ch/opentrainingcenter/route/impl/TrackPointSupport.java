@@ -4,12 +4,13 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.grum.geocalc.EarthCalc;
-import com.grum.geocalc.Point;
-
 import ch.opentrainingcenter.core.assertions.Assertions;
 import ch.opentrainingcenter.model.geo.Track;
 import ch.opentrainingcenter.model.geo.TrackPoint;
+
+import com.grum.geocalc.DegreeCoordinate;
+import com.grum.geocalc.EarthCalc;
+import com.grum.geocalc.Point;
 
 public final class TrackPointSupport {
 
@@ -18,6 +19,60 @@ public final class TrackPointSupport {
 
     private TrackPointSupport() {
 
+    }
+
+    /**
+     * sucht in den Tracks den letzten Punkt, der noch gerade eine kleinere
+     * Distanz aufweist.
+     * 
+     * <pre>
+     * |-----------------4.4---------------|
+     * -----3.1-----------------4.8--------|
+     * ----MATCH---------------------------|
+     */
+    public static TrackPoint getFirstPoint(final TrackPoint reference, final List<TrackPoint> points) {
+        checkInput(reference, points);
+        TrackPoint previous = null;
+        for (final TrackPoint point : points) {
+            if (point.getDistance() > reference.getDistance()) {
+                if (previous == null) {
+                    return point;
+                } else {
+                    return previous;
+                }
+            }
+            previous = point;
+        }
+        return previous;
+    }
+
+    /**
+     * sucht in den Tracks den letzten Punkt, der noch gerade eine kleinere
+     * Distanz aufweist.
+     * 
+     * <pre>
+     * |-----------------4.4---------------|
+     * -----3.1-----------------4.8--------|
+     * -------------------------MATCH------|
+     */
+    public static TrackPoint getLastPoint(final TrackPoint reference, final List<TrackPoint> points) {
+        checkInput(reference, points);
+        TrackPoint previous = null;
+        for (final TrackPoint point : points) {
+            if (point.getDistance() > reference.getDistance()) {
+                previous = point;
+                break;
+            }
+        }
+        if (previous == null) {
+            previous = points.get(points.size() - 1);
+        }
+        return previous;
+    }
+
+    private static void checkInput(final TrackPoint reference, final List<TrackPoint> points) {
+        Assertions.notNull(reference, "Referenz Punkt darf nicht null sein"); //$NON-NLS-1$
+        Assertions.equals(points.isEmpty() || points.size() < 2, "Es müssen mindestens 2 Punkte im Track vorhanden sein"); //$NON-NLS-1$
     }
 
     /**
@@ -65,33 +120,19 @@ public final class TrackPointSupport {
         return result;
     }
 
-
-    
     /**
-     * Berechnet den Punkt auf der Linie zwischen p1 und p2 mit der distanz von p1 aus.
+     * Berechnet den Punkt auf der Linie zwischen p1 und p2 mit der distanz von
+     * p1 aus.
      */
-    public static Point getPointOnLine(Point p1, Point p2, double distance){
-    	double bearing = EarthCalc.getBearing(p1, p2);
-		return EarthCalc.pointRadialDistance(p1, bearing, distance);
-    }
-    
-    /**
-     * vergleich x und y coordinaten miteinander
-     * 
-     * @return true wenn der punkt nahe genug ist, ansonsten false.
-     */
-    public static boolean comparePoints(final TrackPoint point, final TrackPoint closestPoint) {
-        final double xAbweichung = Math.abs(point.getxCoordinates() - closestPoint.getxCoordinates());
-        final double yAbweichung = Math.abs(point.getyCoordinates() - closestPoint.getyCoordinates());
-        boolean result = false;
-        if (xAbweichung >= COORDINATEN_TOLERANCE || yAbweichung > COORDINATEN_TOLERANCE) {
-            LOG.info("Coordinaten Distanz am Punkt ist zu gross!!! xAbweichung: " + xAbweichung + " yAbweichung: " + yAbweichung); //$NON-NLS-1$ //$NON-NLS-2$
-            LOG.info("Point: " + point + " closestPoint: " + closestPoint); //$NON-NLS-1$ //$NON-NLS-2$
-        } else {
-            LOG.debug("Coordinaten Distanz am Punkt  passt!!! xAbweichung: " + xAbweichung + " yAbweichung: " + yAbweichung); //$NON-NLS-1$ //$NON-NLS-2$
-            LOG.debug("Point: " + point + " closestPoint: " + closestPoint); //$NON-NLS-1$ //$NON-NLS-2$
-            result = true;
+    public static Point getPointOnLine(final Point p1, final Point p2, final double distance) {
+        if (p1.equals(p2)) {
+            return p1;
         }
-        return result;
+        final double bearing = EarthCalc.getBearing(p1, p2);
+        return EarthCalc.pointRadialDistance(p1, bearing, distance);
+    }
+
+    public static Point createPoint(final TrackPoint firstPoint) {
+        return new Point(new DegreeCoordinate(firstPoint.getxCoordinates()), new DegreeCoordinate(firstPoint.getyCoordinates()));
     }
 }

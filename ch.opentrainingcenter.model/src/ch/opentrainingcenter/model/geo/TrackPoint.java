@@ -5,6 +5,14 @@ public class TrackPoint {
     private final double xCoordinates;
     private final double yCoordinates;
 
+    /**
+     * @param distance
+     *            Distance in meter
+     * @param xCoordinates
+     *            latitude
+     * @param yCoordinates
+     *            longitude
+     */
     public TrackPoint(final double distance, final double xCoordinates, final double yCoordinates) {
         this.distance = distance;
         this.xCoordinates = xCoordinates;
@@ -25,6 +33,6 @@ public class TrackPoint {
 
     @Override
     public String toString() {
-        return "TrackPoint [distance=" + distance + ", xCoordinates=" + xCoordinates + ", yCoordinates=" + yCoordinates + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+        return "TrackPoint [gps=" + yCoordinates + "," + xCoordinates + " distance=" + distance + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
     }
 }

@@ -4,7 +4,14 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * Entspricht einer (Jogging) Strecke. 
+ * 
+ * @author sascha
+ *
+ */
 public class Track {
+    
     private final List<TrackPoint> points;
 
     public Track(final List<TrackPoint> points) {
@@ -12,7 +19,7 @@ public class Track {
     }
 
     /**
-     * Eine nach der distanz sortierten liste
+     * Eine nach der Distanz sortierten <b>NICHT MODIFIZIERBARE</b> Liste
      */
     public List<TrackPoint> getPoints() {
         Collections.sort(points, new Comparator<TrackPoint>() {
