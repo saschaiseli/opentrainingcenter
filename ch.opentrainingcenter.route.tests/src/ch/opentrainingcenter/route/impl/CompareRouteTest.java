@@ -15,6 +15,7 @@ import ch.opentrainingcenter.model.geo.TrackPoint;
 public class CompareRouteTest {
     private CompareRoute route;
     private Track reference;
+    private final String kmlDumpPath = null;
 
     @Before
     public void setUp() {
@@ -40,7 +41,7 @@ public class CompareRouteTest {
         pointsOther.add(new TrackPoint(45.3550568, 46.94507109, 7.42970087));
         final Track other = new Track(pointsOther);
 
-        route = new CompareRoute();
+        route = new CompareRoute(true, kmlDumpPath);
 
         final boolean result = route.isDistanceDifferenceTooBig(reference, other);
 
@@ -56,7 +57,7 @@ public class CompareRouteTest {
         pointsOther.add(new TrackPoint(42.17, 46.94507109, 7.42970087));
         final Track other = new Track(pointsOther);
 
-        route = new CompareRoute();
+        route = new CompareRoute(true, kmlDumpPath);
 
         final boolean result = route.isDistanceDifferenceTooBig(reference, other);
 
@@ -72,7 +73,7 @@ public class CompareRouteTest {
         pointsOther.add(new TrackPoint(149.1, 46.94507109, 7.42970087));
         final Track other = new Track(pointsOther);
 
-        route = new CompareRoute();
+        route = new CompareRoute(true, kmlDumpPath);
 
         final boolean result = route.isDistanceDifferenceTooBig(reference, other);
 
@@ -81,7 +82,7 @@ public class CompareRouteTest {
 
     @Test
     public void testMitSelbenPunkten() {
-        route = new CompareRoute();
+        route = new CompareRoute(true, kmlDumpPath);
         final List<TrackPoint> pointsReference = new ArrayList<TrackPoint>();
         pointsReference.add(new TrackPoint(1.37483346, 46.94525943, 7.43019129));
         pointsReference.add(new TrackPoint(6.40480947, 46.94523915, 7.43013446));
@@ -100,7 +101,7 @@ public class CompareRouteTest {
      */
     @Test
     public void testMitMehrPunkten() {
-        route = new CompareRoute();
+        route = new CompareRoute(true, kmlDumpPath);
         final List<TrackPoint> pointsReference = new ArrayList<TrackPoint>();
         final TrackPoint r1 = new TrackPoint(1.37483346, 46.94525943, 7.43019129);
         final TrackPoint r2 = new TrackPoint(6.40480947, 46.94523915, 7.43013446);
@@ -127,7 +128,7 @@ public class CompareRouteTest {
      */
     @Test
     public void testMitMehrPunkten_2() {
-        route = new CompareRoute();
+        route = new CompareRoute(true, kmlDumpPath);
         final List<TrackPoint> pointsReference = new ArrayList<TrackPoint>();
         final TrackPoint r1 = new TrackPoint(1.37483346, 46.94525943, 7.43019129);
         final TrackPoint r2 = new TrackPoint(6.40480947, 46.94523915, 7.43013446);
@@ -155,7 +156,7 @@ public class CompareRouteTest {
 
     @Test
     public void testMitMehrPunkten_3() {
-        route = new CompareRoute();
+        route = new CompareRoute(true, kmlDumpPath);
         final List<TrackPoint> pointsReference = new ArrayList<TrackPoint>();
         final TrackPoint r1 = new TrackPoint(1.37483346, 46.94525943, 7.43019129);
         final TrackPoint r2 = new TrackPoint(6.40480947, 46.94523915, 7.43013446);
@@ -184,7 +185,7 @@ public class CompareRouteTest {
 
     @Test
     public void testMitMehrPunkten_3_andererWeg() {
-        route = new CompareRoute();
+        route = new CompareRoute(true, kmlDumpPath);
 
         final List<TrackPoint> referencePoints = new ArrayList<TrackPoint>();
         final TrackPoint r1 = new TrackPoint(1.37483347, 46.94525943, 7.43019129);

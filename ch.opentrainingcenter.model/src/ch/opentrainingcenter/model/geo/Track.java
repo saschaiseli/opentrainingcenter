@@ -5,13 +5,13 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * Entspricht einer (Jogging) Strecke. 
+ * Entspricht einer (Jogging) Strecke.
  * 
  * @author sascha
- *
+ * 
  */
 public class Track {
-    
+
     private final List<TrackPoint> points;
 
     public Track(final List<TrackPoint> points) {
@@ -30,5 +30,14 @@ public class Track {
             }
         });
         return Collections.unmodifiableList(points);
+    }
+
+    public String toKml() {
+        final StringBuffer kml = new StringBuffer("\n"); //$NON-NLS-1$
+        for (final TrackPoint point : points) {
+            kml.append(point.toKml());
+        }
+        kml.append("\n"); //$NON-NLS-1$
+        return kml.toString();
     }
 }

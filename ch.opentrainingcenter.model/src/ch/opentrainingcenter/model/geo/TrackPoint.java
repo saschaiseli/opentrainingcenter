@@ -31,6 +31,13 @@ public class TrackPoint {
         return yCoordinates;
     }
 
+    /**
+     * @return die koordinaten in form von 'yCoord, xCoord '
+     */
+    public String toKml() {
+        return yCoordinates + "," + xCoordinates + " "; //$NON-NLS-1$//$NON-NLS-2$
+    }
+
     @Override
     public String toString() {
         return "TrackPoint [gps=" + yCoordinates + "," + xCoordinates + " distance=" + distance + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$

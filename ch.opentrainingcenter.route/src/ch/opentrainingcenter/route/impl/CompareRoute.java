@@ -8,6 +8,7 @@ import ch.opentrainingcenter.core.assertions.Assertions;
 import ch.opentrainingcenter.model.geo.Track;
 import ch.opentrainingcenter.model.geo.TrackPoint;
 import ch.opentrainingcenter.route.ICompareRoute;
+import ch.opentrainingcenter.route.kml.KmlDumper;
 
 import com.grum.geocalc.EarthCalc;
 import com.grum.geocalc.Point;
@@ -38,44 +39,66 @@ public class CompareRoute implements ICompareRoute {
 
     private static final int DISTANZ_TOLERANZ_PROZENT = 5;
 
-    private static final int DISTANZ_DELTA_BEI_GLEICHER_DISTANZ = 20;
+    private static final int DISTANZ_DELTA_BEI_GLEICHER_DISTANZ = 250;
+
+    private final boolean debug;
+
+    private final KmlDumper kmlDumper;
+
+    public CompareRoute(final boolean debug, String kmlDumpPath) {
+        this.debug = debug;
+        kmlDumper = new KmlDumper(kmlDumpPath);
+    }
 
     @Override
     public boolean compareRoute(final Track reference, final Track track) {
+        if (debug) {
+            dump(reference, "Referenz", "ff0000ff"); //$NON-NLS-1$ //$NON-NLS-2$
+            dump(track, "Other", "ff0cc0ff"); //$NON-NLS-1$ //$NON-NLS-2$
+            kmlDumper.dump();
+        }
         checkParameters(reference, track);
         if (isDistanceDifferenceTooBig(reference, track)) {
             return false;
         }
-        final boolean result = compareTrackPoints(reference, track) && compareTrackPoints(track, reference);
-        return result;
+        final boolean resultA = compareTrackPoints(reference, track);
+        final boolean resultB = compareTrackPoints(track, reference);
+        LOGGER.info("Erster Vergleich: " + resultA); //$NON-NLS-1$
+        LOGGER.info("Umgekehrter Vergleich: " + resultB); //$NON-NLS-1$
+        return resultA && resultB;
+    }
+
+    private void dump(final Track track, final String title, final String lineColor) {
+        LOGGER.info("-----------------GPS DATEN " + title + "-------------------------"); //$NON-NLS-1$ //$NON-NLS-2$
+        LOGGER.info(track.toKml());
+        LOGGER.info("##################################################################"); //$NON-NLS-1$
+        kmlDumper.addLine(title, lineColor, track.toKml());
     }
 
     protected boolean compareTrackPoints(final Track reference, final Track track) {
         final List<TrackPoint> points = reference.getPoints();
         final List<TrackPoint> trackPoints = track.getPoints();
+        TrackPoint previousReference = null;
         for (final TrackPoint referencePoint : points) {
             final TrackPoint firstPoint = TrackPointSupport.getFirstPoint(referencePoint, trackPoints);
             final TrackPoint lastPoint = TrackPointSupport.getLastPoint(referencePoint, trackPoints);
-            if (isStartOrEnd(firstPoint, lastPoint)) {
-                continue;
-            }
             final Point p1 = TrackPointSupport.createPoint(firstPoint);
             final Point p2 = TrackPointSupport.createPoint(lastPoint);
-
-            final Point pointOnLine = TrackPointSupport.getPointOnLine(p1, p2, referencePoint.getDistance());
+            final double distance;
+            if (previousReference == null) {
+                distance = referencePoint.getDistance();
+            } else {
+                distance = referencePoint.getDistance() - previousReference.getDistance();
+            }
+            previousReference = referencePoint;
+            final Point pointOnLine = TrackPointSupport.getPointOnLine(p1, p2, distance);
             final double delta = EarthCalc.getDistance(TrackPointSupport.createPoint(referencePoint), pointOnLine);
             if (delta > DISTANZ_DELTA_BEI_GLEICHER_DISTANZ) {
                 logReason(referencePoint, firstPoint, lastPoint, pointOnLine, delta);
                 return false;
-            } else {
-                logReason(referencePoint, firstPoint, lastPoint, pointOnLine, delta);
             }
         }
         return true;
-    }
-
-    private boolean isStartOrEnd(final TrackPoint firstPoint, final TrackPoint lastPoint) {
-        return firstPoint == null || lastPoint == null;
     }
 
     private void logReason(final TrackPoint referencePoint, final TrackPoint firstPoint, final TrackPoint lastPoint, final Point pointOnLine, final double delta) {

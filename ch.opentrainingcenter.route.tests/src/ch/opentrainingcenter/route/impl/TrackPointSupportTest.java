@@ -293,7 +293,7 @@ public class TrackPointSupportTest {
         points.add(p3);
 
         final TrackPoint firstPoint = TrackPointSupport.getFirstPoint(reference, points);
-        assertPoint(p2, firstPoint);
+        assertPoint(p1, firstPoint);
     }
 
     /**
@@ -446,8 +446,8 @@ public class TrackPointSupportTest {
      *          2.5
      * ---------X--------------------- reference
      * ---X-----X-----X------------ track
-     *    1.5     2.5   3.5
-     *    p1      p2    p3
+     *    1.5   2.5   3.5
+     *    p1    p2    p3
      * </pre>
      */
     @Test

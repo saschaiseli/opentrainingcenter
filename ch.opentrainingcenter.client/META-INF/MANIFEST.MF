@@ -25,7 +25,8 @@ Require-Bundle: org.eclipse.ui,
  ch.opentrainingcenter.core,
  ch.opentrainingcenter.model,
  ch.opentrainingcenter.charts,
- ch.opentrainingcenter.i18n
+ ch.opentrainingcenter.i18n,
+ ch.opentrainingcenter.route
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Localization: plugin
 Export-Package: ch.opentrainingcenter.client,

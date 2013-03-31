@@ -250,6 +250,11 @@
             id="ch.opentrainingcenter.client.commands.AddRoute"
             name="neue Route hinzufügen">
       </command>
+      <command
+            description="%vergleicht2laeufe_desc"
+            id="ch.opentrainingcenter.client.commands.CompareRecords"
+            name="%vergleicht2laeufe">
+      </command>
    </extension>
    <extension
          id="opentrainingcenter"
@@ -455,6 +460,22 @@
                   <or>
                      <instanceof
                            value="ch.opentrainingcenter.model.navigation.ConcreteHealth">
+                     </instanceof>
+                  </or>
+               </iterate>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="ch.opentrainingcenter.client.commands.CompareRecords"
+               label="%vergleicht2laeufe"
+               style="push">
+            <visibleWhen
+                  checkEnabled="true">
+               <iterate
+                     operator="and">
+                  <or>
+                     <instanceof
+                           value="ch.opentrainingcenter.model.navigation.ConcreteImported">
                      </instanceof>
                   </or>
                </iterate>
@@ -704,6 +725,15 @@
       <handler
             class="ch.opentrainingcenter.client.commands.AddRoute"
             commandId="ch.opentrainingcenter.client.commands.AddRoute">
+      </handler>
+      <handler
+            class="ch.opentrainingcenter.client.commands.CompareRecords"
+            commandId="ch.opentrainingcenter.client.commands.CompareRecords">
+         <enabledWhen>
+            <count
+                  value="2">
+            </count>
+         </enabledWhen>
       </handler>
    </extension>
    <extension

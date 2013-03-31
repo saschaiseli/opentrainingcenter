@@ -38,6 +38,8 @@ public final class PreferenceConstants {
     public static final String ZIEL_NICHT_ERFUELLT_COLOR = "ZIEL_NICHT_ERFUELLT_COLOR"; //$NON-NLS-1$
     public static final String ZIEL_NICHT_BEKANNT_COLOR = "ZIEL_NICHT_BEKANNT_COLOR"; //$NON-NLS-1$
 
+    public static final String KML_DEBUG_PATH = "KML_DEBUG_PATH";
+
     private PreferenceConstants() {
 
     }

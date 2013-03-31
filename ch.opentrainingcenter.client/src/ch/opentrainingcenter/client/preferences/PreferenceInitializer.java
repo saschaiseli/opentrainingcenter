@@ -62,5 +62,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
         defaults.put(PreferenceConstants.RUHEPULS_COLOR, "255,0,26"); //$NON-NLS-1$
         defaults.put(PreferenceConstants.GEWICHT_COLOR, "240,173,50"); //$NON-NLS-1$
 
+        defaults.put(PreferenceConstants.KML_DEBUG_PATH, userHome + "/Dropbox/Public"); //$NON-NLS-1$
+
     }
 }
