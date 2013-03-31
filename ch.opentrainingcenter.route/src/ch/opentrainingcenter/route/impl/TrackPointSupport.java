@@ -34,14 +34,14 @@ public final class TrackPointSupport {
         checkInput(reference, points);
         TrackPoint previous = null;
         for (final TrackPoint point : points) {
-            if (point.getDistance() > reference.getDistance()) {
-                if (previous == null) {
-                    return point;
-                } else {
-                    return previous;
-                }
+            if (point.getDistance() < reference.getDistance()) {
+                previous = point;
+            } else {
+                break;
             }
-            previous = point;
+        }
+        if (previous == null) {
+            previous = points.get(0);
         }
         return previous;
     }

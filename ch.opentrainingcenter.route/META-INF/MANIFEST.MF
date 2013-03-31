@@ -11,3 +11,4 @@ Require-Bundle: org.eclipse.core.runtime,
  com.grum.geocalc
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Export-Package: ch.opentrainingcenter.route
