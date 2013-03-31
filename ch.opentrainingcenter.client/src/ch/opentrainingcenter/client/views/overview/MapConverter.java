@@ -1,8 +1,11 @@
 package ch.opentrainingcenter.client.views.overview;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ch.opentrainingcenter.i18n.Messages;
+import ch.opentrainingcenter.model.geo.Track;
+import ch.opentrainingcenter.model.geo.TrackPoint;
 import ch.opentrainingcenter.tcx.ActivityLapT;
 import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.tcx.PositionT;
@@ -12,6 +15,26 @@ import ch.opentrainingcenter.tcx.TrackpointT;
 public final class MapConverter {
 
     private MapConverter() {
+    }
+
+    public static Track convert(final ActivityT activity) {
+        final List<TrackPoint> points = new ArrayList<TrackPoint>();
+        final List<ActivityLapT> lap = activity.getLap();
+        for (final ActivityLapT activityLapT : lap) {
+            final List<TrackT> track = activityLapT.getTrack();
+            for (final TrackT trackT : track) {
+                final List<TrackpointT> trackpoint = trackT.getTrackpoint();
+                for (final TrackpointT point : trackpoint) {
+                    final PositionT position = point.getPosition();
+                    if (position != null) {
+                        points.add(new TrackPoint(point.getDistanceMeters(), position.getLatitudeDegrees(), position.getLongitudeDegrees()));
+                    }
+                }
+            }
+
+        }
+        final Track track = new Track(points);
+        return track;
     }
 
     public static String convertTrackpoints(final ActivityT activity) {

@@ -250,6 +250,19 @@
             id="ch.opentrainingcenter.client.commands.AddRoute"
             name="neue Route hinzufügen">
       </command>
+      <command
+            description="%vergleicht2laeufe_desc"
+            id="ch.opentrainingcenter.client.commands.CompareRecords"
+            name="%vergleicht2laeufe">
+      </command>
+<<<<<<< HEAD
+=======
+      <command
+            description="%speichervergleichslauf_desc"
+            id="ch.opentrainingcenter.client.commands.StoreCompareRecords"
+            name="%speichervergleichslauf">
+      </command>
+>>>>>>> refs/heads/kmldumper
    </extension>
    <extension
          id="opentrainingcenter"
@@ -455,6 +468,41 @@
                   <or>
                      <instanceof
                            value="ch.opentrainingcenter.model.navigation.ConcreteHealth">
+                     </instanceof>
+                  </or>
+               </iterate>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="ch.opentrainingcenter.client.commands.CompareRecords"
+               label="%vergleicht2laeufe"
+               style="push">
+            <visibleWhen
+                  checkEnabled="true">
+               <iterate
+                     operator="and">
+                  <or>
+                     <instanceof
+                           value="ch.opentrainingcenter.model.navigation.ConcreteImported">
+<<<<<<< HEAD
+=======
+                     </instanceof>
+                  </or>
+               </iterate>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="ch.opentrainingcenter.client.commands.StoreCompareRecords"
+               label="%speichervergleichslauf"
+               style="push">
+            <visibleWhen
+                  checkEnabled="true">
+               <iterate
+                     operator="and">
+                  <or>
+                     <instanceof
+                           value="ch.opentrainingcenter.model.navigation.ConcreteImported">
+>>>>>>> refs/heads/kmldumper
                      </instanceof>
                   </or>
                </iterate>
@@ -705,6 +753,27 @@
             class="ch.opentrainingcenter.client.commands.AddRoute"
             commandId="ch.opentrainingcenter.client.commands.AddRoute">
       </handler>
+      <handler
+            class="ch.opentrainingcenter.client.commands.CompareRecords"
+            commandId="ch.opentrainingcenter.client.commands.CompareRecords">
+         <enabledWhen>
+            <count
+                  value="2">
+            </count>
+         </enabledWhen>
+      </handler>
+<<<<<<< HEAD
+=======
+      <handler
+            class="ch.opentrainingcenter.client.commands.StoreCompareRecords"
+            commandId="ch.opentrainingcenter.client.commands.StoreCompareRecords">
+         <enabledWhen>
+            <count
+                  value="1">
+            </count>
+         </enabledWhen>
+      </handler>
+>>>>>>> refs/heads/kmldumper
    </extension>
    <extension
          point="org.eclipse.ui.viewActions">

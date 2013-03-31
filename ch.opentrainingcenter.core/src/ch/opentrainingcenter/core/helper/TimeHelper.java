@@ -12,6 +12,7 @@ import org.joda.time.Interval;
 
 public final class TimeHelper {
 
+    private static final String DATE_FILE_FORMAT_PATTERN = "yyyyMMddHHmmssSSS"; //$NON-NLS-1$
     private static final String DATE_TIME_FORMAT_PATTERN = "dd.MM.yyyy HH:mm:ss"; //$NON-NLS-1$
     private static final String DATE_FORMAT_PATTERN = "dd.MM.yyyy"; //$NON-NLS-1$
     private static final int SEKUNDE_IN_MS = 1000;
@@ -98,6 +99,23 @@ public final class TimeHelper {
         } else {
             return format.format(datum);
         }
+    }
+
+    /**
+     * konvertiere ein {@link Date} in ein lesbareres format.
+     * 
+     * wenn der parameter withDay true ist wird der wochentag noch mit
+     * ausgegeben
+     * 
+     * @param datum
+     *            {@link Date}
+     * @return das datum '201011231423'.
+     */
+    public static final String convertDateToFileName(final Date datum) {
+        final Calendar calendar = Calendar.getInstance();
+        calendar.setTime(datum);
+        final SimpleDateFormat format = new SimpleDateFormat(DATE_FILE_FORMAT_PATTERN);
+        return format.format(datum);
     }
 
     /**

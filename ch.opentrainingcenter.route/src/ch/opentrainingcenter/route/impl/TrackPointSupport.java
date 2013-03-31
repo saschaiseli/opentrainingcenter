@@ -2,8 +2,6 @@ package ch.opentrainingcenter.route.impl;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
-
 import ch.opentrainingcenter.core.assertions.Assertions;
 import ch.opentrainingcenter.model.geo.Track;
 import ch.opentrainingcenter.model.geo.TrackPoint;
@@ -13,9 +11,6 @@ import com.grum.geocalc.EarthCalc;
 import com.grum.geocalc.Point;
 
 public final class TrackPointSupport {
-
-    private static final Logger LOG = Logger.getLogger(TrackPointSupport.class);
-    private static final double COORDINATEN_TOLERANCE = 0.0005; // ca. 50m
 
     private TrackPointSupport() {
 
@@ -34,14 +29,14 @@ public final class TrackPointSupport {
         checkInput(reference, points);
         TrackPoint previous = null;
         for (final TrackPoint point : points) {
-            if (point.getDistance() > reference.getDistance()) {
-                if (previous == null) {
-                    return point;
-                } else {
-                    return previous;
-                }
+            if (point.getDistance() < reference.getDistance()) {
+                previous = point;
+            } else {
+                break;
             }
-            previous = point;
+        }
+        if (previous == null) {
+            previous = points.get(0);
         }
         return previous;
     }

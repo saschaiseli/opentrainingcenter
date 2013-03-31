@@ -11,6 +11,7 @@ import ch.opentrainingcenter.transfer.IHealth;
 import ch.opentrainingcenter.transfer.IImported;
 import ch.opentrainingcenter.transfer.IPlanungWoche;
 import ch.opentrainingcenter.transfer.IRoute;
+import ch.opentrainingcenter.transfer.IStrecke;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.IWeather;
 
@@ -201,4 +202,13 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
      * Liefert alle Strecken von dem Athleten
      */
     List<IRoute> getRoute(IAthlete athlete);
+
+    /**
+     * Speichert eine Strecke um Strecken geografisch miteinander zu
+     * vergleichen.
+     * 
+     * @param strecke
+     *            {@link IStrecke}
+     */
+    void saveStrecke(IStrecke strecke);
 }
