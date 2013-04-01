@@ -4,29 +4,29 @@ Bundle-Name: Client
 Bundle-SymbolicName: ch.opentrainingcenter.client;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: ch.opentrainingcenter.client.Activator
-Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime,
- ch.opentrainingcenter.tcx,
+Require-Bundle: ch.opentrainingcenter.tcx,
+ ch.opentrainingcenter.core,
+ ch.opentrainingcenter.model,
+ ch.opentrainingcenter.charts,
+ ch.opentrainingcenter.i18n,
+ ch.opentrainingcenter.route,
  ch.opentrainingcenter.transfer,
+ logging,
+ jodatime,
+ com.eclipsesource.widgets.gmaps,
+ org.eclipse.ui,
+ org.eclipse.core.runtime,
  org.eclipse.swt,
  org.eclipse.jface,
  org.eclipse.ui.workbench,
- logging,
  org.eclipse.ui.forms,
  org.eclipse.core.databinding,
  org.eclipse.core.databinding.beans,
  org.eclipse.jface.databinding,
  org.eclipse.core.databinding.property,
- com.eclipsesource.widgets.gmaps,
  org.eclipse.ui.ide,
  org.eclipse.core.resources,
- com.ibm.icu,
- jodatime,
- ch.opentrainingcenter.core,
- ch.opentrainingcenter.model,
- ch.opentrainingcenter.charts,
- ch.opentrainingcenter.i18n,
- ch.opentrainingcenter.route
+ com.ibm.icu
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Localization: plugin
 Export-Package: ch.opentrainingcenter.client,
