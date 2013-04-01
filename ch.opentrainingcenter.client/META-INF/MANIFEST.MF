@@ -26,17 +26,8 @@ Require-Bundle: ch.opentrainingcenter.tcx,
  org.eclipse.core.databinding.property,
  org.eclipse.ui.ide,
  org.eclipse.core.resources,
-<<<<<<< HEAD
- com.ibm.icu,
  jodatime,
- ch.opentrainingcenter.core,
- ch.opentrainingcenter.model,
- ch.opentrainingcenter.charts,
- ch.opentrainingcenter.i18n,
- ch.opentrainingcenter.route
-=======
  com.ibm.icu
->>>>>>> refs/heads/kmldumper
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Localization: plugin
 Export-Package: ch.opentrainingcenter.client,

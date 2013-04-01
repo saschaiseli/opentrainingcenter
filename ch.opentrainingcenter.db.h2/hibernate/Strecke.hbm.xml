@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 21.10.2011 12:19:41 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+	<class name="ch.opentrainingcenter.transfer.impl.Strecke" table="STRECKE"
+		schema="PUBLIC" catalog="OTC">
+		<id name="id" type="int">
+			<column name="ID" />
+			<generator class="sequence">
+				<param name="sequence">strecke_id_sequence</param>
+			</generator>
+		</id>
+		<many-to-one name="athlete"
+			class="ch.opentrainingcenter.transfer.impl.Athlete" fetch="select"
+			update="false" cascade="all">
+			<column name="ID_FK_ATHLETE" />
+		</many-to-one>
+		<property name="name" type="java.lang.String">
+			<column name="NAME" />
+		</property>
+		<list name="streckenPunkte" cascade="all">
+            <key column="ID_FK_STRECKE"/>
+            <index column="idx"/>
+            <one-to-many class="ch.opentrainingcenter.transfer.impl.StreckenPunkt"/>
+        </list>
+	</class>
+</hibernate-mapping>

@@ -255,14 +255,11 @@
             id="ch.opentrainingcenter.client.commands.CompareRecords"
             name="%vergleicht2laeufe">
       </command>
-<<<<<<< HEAD
-=======
       <command
             description="%speichervergleichslauf_desc"
             id="ch.opentrainingcenter.client.commands.StoreCompareRecords"
             name="%speichervergleichslauf">
       </command>
->>>>>>> refs/heads/kmldumper
    </extension>
    <extension
          id="opentrainingcenter"
@@ -484,8 +481,6 @@
                   <or>
                      <instanceof
                            value="ch.opentrainingcenter.model.navigation.ConcreteImported">
-<<<<<<< HEAD
-=======
                      </instanceof>
                   </or>
                </iterate>
@@ -502,7 +497,6 @@
                   <or>
                      <instanceof
                            value="ch.opentrainingcenter.model.navigation.ConcreteImported">
->>>>>>> refs/heads/kmldumper
                      </instanceof>
                   </or>
                </iterate>
@@ -762,8 +756,6 @@
             </count>
          </enabledWhen>
       </handler>
-<<<<<<< HEAD
-=======
       <handler
             class="ch.opentrainingcenter.client.commands.StoreCompareRecords"
             commandId="ch.opentrainingcenter.client.commands.StoreCompareRecords">
@@ -773,7 +765,6 @@
             </count>
          </enabledWhen>
       </handler>
->>>>>>> refs/heads/kmldumper
    </extension>
    <extension
          point="org.eclipse.ui.viewActions">

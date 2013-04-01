@@ -8,12 +8,8 @@ public final class CompareRouteFactory {
 
     }
 
-<<<<<<< HEAD
-    public static CompareRoute getRouteComparator(final boolean debug) {
-        return new CompareRoute(debug);
-=======
-    public static CompareRoute getRouteComparator(final boolean debug, String kmlDumpPath) {
+    public static CompareRoute getRouteComparator(final boolean debug, final String kmlDumpPath) {
         return new CompareRoute(debug, kmlDumpPath);
->>>>>>> refs/heads/kmldumper
+
     }
 }

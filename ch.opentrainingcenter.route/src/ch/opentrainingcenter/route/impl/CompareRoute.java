@@ -3,7 +3,6 @@ package ch.opentrainingcenter.route.impl;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.joda.time.DateTime;
 
 import ch.opentrainingcenter.core.assertions.Assertions;
 import ch.opentrainingcenter.model.geo.Track;
@@ -44,54 +43,28 @@ public class CompareRoute implements ICompareRoute {
 
     private final boolean debug;
 
-<<<<<<< HEAD
-    public CompareRoute(final boolean debug) {
-        this.debug = debug;
-=======
     private final KmlDumper kmlDumper;
 
     public CompareRoute(final boolean debug, final String kmlDumpPath) {
         this.debug = debug;
         kmlDumper = new KmlDumper(kmlDumpPath);
->>>>>>> refs/heads/kmldumper
     }
 
     @Override
     public boolean compareRoute(final Track reference, final Track track) {
         if (debug) {
-<<<<<<< HEAD
-            dump(reference, "Referenz"); //$NON-NLS-1$
-            dump(track, "Other"); //$NON-NLS-1$
-=======
             dump(reference, "Referenz", "ff0000ff"); //$NON-NLS-1$ //$NON-NLS-2$
             dump(track, "Other", "ff0cc0ff"); //$NON-NLS-1$ //$NON-NLS-2$
             kmlDumper.dump();
->>>>>>> refs/heads/kmldumper
         }
         checkParameters(reference, track);
         if (isDistanceDifferenceTooBig(reference, track)) {
             return false;
         }
-<<<<<<< HEAD
         final boolean resultA = compareTrackPoints(reference, track);
         final boolean resultB = compareTrackPoints(track, reference);
         LOGGER.info("Erster Vergleich: " + resultA); //$NON-NLS-1$
         LOGGER.info("Umgekehrter Vergleich: " + resultB); //$NON-NLS-1$
-        return resultA && resultB;
-    }
-
-    private void dump(final Track track, final String title) {
-        LOGGER.info("-----------------GPS DATEN " + title + "-------------------------"); //$NON-NLS-1$ //$NON-NLS-2$
-        LOGGER.info(track.toKml());
-        LOGGER.info("##################################################################"); //$NON-NLS-1$
-=======
-        final Long start = DateTime.now().getMillis();
-        final boolean resultA = compareTrackPoints(reference, track);
-        final boolean resultB = compareTrackPoints(track, reference);
-        final Long end = DateTime.now().getMillis();
-        LOGGER.info("Erster Vergleich: " + resultA); //$NON-NLS-1$
-        LOGGER.info("Umgekehrter Vergleich: " + resultB); //$NON-NLS-1$
-        LOGGER.info("Execution Time: " + (end - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$
         return resultA && resultB;
     }
 
@@ -100,7 +73,6 @@ public class CompareRoute implements ICompareRoute {
         LOGGER.info(track.toKml());
         LOGGER.info("##################################################################"); //$NON-NLS-1$
         kmlDumper.addLine(title, lineColor, track.toKml());
->>>>>>> refs/heads/kmldumper
     }
 
     protected boolean compareTrackPoints(final Track reference, final Track track) {
