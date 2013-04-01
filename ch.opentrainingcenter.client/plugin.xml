@@ -141,7 +141,7 @@
    <extension
          point="org.eclipse.ui.commands">
       <command
-            description="Öffnet einen einzelnen Lauf"
+            description="%opensinglerun"
             id="ch.opentrainingcenter.client.command.openSingleRun"
             name="openSingleRun">
       </command>
