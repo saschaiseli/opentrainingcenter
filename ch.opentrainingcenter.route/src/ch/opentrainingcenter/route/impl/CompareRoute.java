@@ -3,6 +3,7 @@ package ch.opentrainingcenter.route.impl;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 
 import ch.opentrainingcenter.core.assertions.Assertions;
 import ch.opentrainingcenter.model.geo.Track;
@@ -45,7 +46,7 @@ public class CompareRoute implements ICompareRoute {
 
     private final KmlDumper kmlDumper;
 
-    public CompareRoute(final boolean debug, String kmlDumpPath) {
+    public CompareRoute(final boolean debug, final String kmlDumpPath) {
         this.debug = debug;
         kmlDumper = new KmlDumper(kmlDumpPath);
     }
@@ -61,10 +62,13 @@ public class CompareRoute implements ICompareRoute {
         if (isDistanceDifferenceTooBig(reference, track)) {
             return false;
         }
+        final Long start = DateTime.now().getMillis();
         final boolean resultA = compareTrackPoints(reference, track);
         final boolean resultB = compareTrackPoints(track, reference);
+        final Long end = DateTime.now().getMillis();
         LOGGER.info("Erster Vergleich: " + resultA); //$NON-NLS-1$
         LOGGER.info("Umgekehrter Vergleich: " + resultB); //$NON-NLS-1$
+        LOGGER.info("Execution Time: " + (end - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$
         return resultA && resultB;
     }
 

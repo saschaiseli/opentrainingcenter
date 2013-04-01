@@ -14,12 +14,14 @@ import ch.opentrainingcenter.db.h2.internal.HealthDao;
 import ch.opentrainingcenter.db.h2.internal.ImportDao;
 import ch.opentrainingcenter.db.h2.internal.PlanungDao;
 import ch.opentrainingcenter.db.h2.internal.RouteDao;
+import ch.opentrainingcenter.db.h2.internal.StreckeDao;
 import ch.opentrainingcenter.db.h2.internal.WeatherDao;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IHealth;
 import ch.opentrainingcenter.transfer.IImported;
 import ch.opentrainingcenter.transfer.IPlanungWoche;
 import ch.opentrainingcenter.transfer.IRoute;
+import ch.opentrainingcenter.transfer.IStrecke;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.IWeather;
 
@@ -31,6 +33,7 @@ public class DatabaseAccess implements IDatabaseAccess {
     private final ImportDao importDao;
     private final PlanungDao planungsDao;
     private final RouteDao routeDao;
+    private final StreckeDao streckeDao;
     private final WeatherDao wetterDao;
 
     public DatabaseAccess() {
@@ -41,6 +44,7 @@ public class DatabaseAccess implements IDatabaseAccess {
         importDao = new ImportDao(dao);
         planungsDao = new PlanungDao(dao);
         routeDao = new RouteDao(dao);
+        streckeDao = new StreckeDao(dao);
         wetterDao = new WeatherDao(dao);
     }
 
@@ -177,6 +181,11 @@ public class DatabaseAccess implements IDatabaseAccess {
     @Override
     public void saveOrUpdate(final IRoute route) {
         routeDao.saveOrUpdate(route);
+    }
+
+    @Override
+    public void saveStrecke(final IStrecke strecke) {
+        streckeDao.save(strecke);
     }
 
 }

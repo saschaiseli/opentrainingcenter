@@ -1,12 +1,15 @@
 package ch.opentrainingcenter.transfer;
 
 import java.util.Date;
+import java.util.List;
 
 import ch.opentrainingcenter.transfer.impl.Athlete;
 import ch.opentrainingcenter.transfer.impl.Health;
 import ch.opentrainingcenter.transfer.impl.Imported;
 import ch.opentrainingcenter.transfer.impl.PlanungWoche;
 import ch.opentrainingcenter.transfer.impl.Route;
+import ch.opentrainingcenter.transfer.impl.Strecke;
+import ch.opentrainingcenter.transfer.impl.StreckenPunkt;
 import ch.opentrainingcenter.transfer.impl.Training;
 import ch.opentrainingcenter.transfer.impl.TrainingType;
 import ch.opentrainingcenter.transfer.impl.Weather;
@@ -60,5 +63,13 @@ public class CommonTransferFactory {
 
     public static IRoute createRoute(final String name, final String beschreibung, final IAthlete athlete) {
         return new Route(name, beschreibung, athlete);
+    }
+
+    public static IStrecke createStrecke(final String name, final List<IStreckenPunkt> streckenPunkte, final IAthlete athlete) {
+        return new Strecke(name, streckenPunkte, athlete);
+    }
+
+    public static IStreckenPunkt createStreckenPunkt(final double distance, final double longitude, final double latitude) {
+        return new StreckenPunkt(distance, longitude, latitude);
     }
 }

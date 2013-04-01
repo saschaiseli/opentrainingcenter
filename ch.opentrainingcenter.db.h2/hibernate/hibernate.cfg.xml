@@ -25,5 +25,7 @@ Enable Hibernate's automatic session context management
   <mapping resource="TrainingOverview.hbm.xml"/>
   <mapping resource="PlanungWoche.hbm.xml"/>
   <mapping resource="Route.hbm.xml"/>
+  <mapping resource="Strecke.hbm.xml"/>
+  <mapping resource="StreckenPunkte.hbm.xml"/>
  </session-factory>
 </hibernate-configuration>
