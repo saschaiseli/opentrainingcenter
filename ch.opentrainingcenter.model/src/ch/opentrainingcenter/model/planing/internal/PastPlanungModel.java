@@ -15,15 +15,15 @@ import ch.opentrainingcenter.model.planing.IPastPlanungModel;
 import ch.opentrainingcenter.model.planing.KwJahrKey;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
-import ch.opentrainingcenter.transfer.IImported;
 import ch.opentrainingcenter.transfer.IPlanungWoche;
+import ch.opentrainingcenter.transfer.ITraining;
 
 public class PastPlanungModel implements IPastPlanungModel {
 
     private final List<IPastPlanung> pastPlanungen;
     private final KwJahrKey now;
 
-    public PastPlanungModel(final List<IPlanungWoche> planungen, final List<IImported> records, final KwJahrKey now) {
+    public PastPlanungModel(final List<IPlanungWoche> planungen, final List<ITraining> records, final KwJahrKey now) {
         this.now = now;
         final IAthlete athlete;
         if (hasElements(planungen)) {
@@ -34,7 +34,7 @@ public class PastPlanungModel implements IPastPlanungModel {
             throw new IllegalArgumentException("Ohne Planung und Records kann das Model nicht erstellt werden"); //$NON-NLS-1$
         }
         pastPlanungen = new ArrayList<IPastPlanung>();
-        final Map<KwJahrKey, List<IImported>> recordMap = createRecordMap(records);
+        final Map<KwJahrKey, List<ITraining>> recordMap = createRecordMap(records);
         final Map<KwJahrKey, IPlanungWoche> planungMap = createPlanungMap(planungen);
         mapRecordsToEmptyPlanung(athlete, recordMap, planungMap);
         mapPlanungToEmptyRecords(athlete, recordMap, planungMap);
@@ -43,16 +43,16 @@ public class PastPlanungModel implements IPastPlanungModel {
         }
     }
 
-    private Map<KwJahrKey, List<IImported>> createRecordMap(final List<IImported> records) {
-        final Map<KwJahrKey, List<IImported>> result = new HashMap<KwJahrKey, List<IImported>>();
+    private Map<KwJahrKey, List<ITraining>> createRecordMap(final List<ITraining> records) {
+        final Map<KwJahrKey, List<ITraining>> result = new HashMap<KwJahrKey, List<ITraining>>();
         if (records != null) {
-            for (final IImported record : records) {
-                final DateTime dt = new DateTime(record.getActivityId());
+            for (final ITraining record : records) {
+                final DateTime dt = new DateTime(record.getDatum());
 
                 final KwJahrKey key = new KwJahrKey(TimeHelper.getJahr(dt.toDate(), Locale.GERMAN), dt.getWeekOfWeekyear());
                 if (!result.containsKey(key)) {
                     // noch kein ein wert vorhanden
-                    result.put(key, new ArrayList<IImported>());
+                    result.put(key, new ArrayList<ITraining>());
                 }
                 result.get(key).add(record);
             }
@@ -71,9 +71,9 @@ public class PastPlanungModel implements IPastPlanungModel {
         return result;
     }
 
-    private void mapRecordsToEmptyPlanung(final IAthlete athlete, final Map<KwJahrKey, List<IImported>> recordMap,
+    private void mapRecordsToEmptyPlanung(final IAthlete athlete, final Map<KwJahrKey, List<ITraining>> recordMap,
             final Map<KwJahrKey, IPlanungWoche> planungMap) {
-        for (final Map.Entry<KwJahrKey, List<IImported>> entry : recordMap.entrySet()) {
+        for (final Map.Entry<KwJahrKey, List<ITraining>> entry : recordMap.entrySet()) {
             final IPlanungWoche plan;
             final KwJahrKey key = entry.getKey();
             if (!planungMap.containsKey(key)) {
@@ -83,7 +83,7 @@ public class PastPlanungModel implements IPastPlanungModel {
         }
     }
 
-    private void mapPlanungToEmptyRecords(final IAthlete athlete, final Map<KwJahrKey, List<IImported>> recordMap,
+    private void mapPlanungToEmptyRecords(final IAthlete athlete, final Map<KwJahrKey, List<ITraining>> recordMap,
             final Map<KwJahrKey, IPlanungWoche> planungMap) {
         final KwJahrKeyComparator comparator = new KwJahrKeyComparator();
         for (final Map.Entry<KwJahrKey, IPlanungWoche> entry : planungMap.entrySet()) {
@@ -91,13 +91,13 @@ public class PastPlanungModel implements IPastPlanungModel {
             final KwJahrKey key = entry.getKey();
             if (!recordMap.containsKey(key) && comparator.compare(key, now) <= 0) {
                 plan = CommonTransferFactory.createIPlanungWocheEmpty(athlete, key.getJahr(), key.getKw());
-                pastPlanungen.add(new PastPlanungImpl(plan, new ArrayList<IImported>()));
+                pastPlanungen.add(new PastPlanungImpl(plan, new ArrayList<ITraining>()));
             }
         }
     }
 
-    private void mapPlanungToRecord(final Map<KwJahrKey, List<IImported>> recordMap, final Map<KwJahrKey, IPlanungWoche> planungMap) {
-        for (final Map.Entry<KwJahrKey, List<IImported>> entry : recordMap.entrySet()) {
+    private void mapPlanungToRecord(final Map<KwJahrKey, List<ITraining>> recordMap, final Map<KwJahrKey, IPlanungWoche> planungMap) {
+        for (final Map.Entry<KwJahrKey, List<ITraining>> entry : recordMap.entrySet()) {
             final IPlanungWoche plan;
             final KwJahrKey key = entry.getKey();
             if (planungMap.containsKey(key)) {

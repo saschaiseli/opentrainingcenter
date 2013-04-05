@@ -24,6 +24,7 @@ import org.xml.sax.SAXException;
 import ch.opentrainingcenter.core.importer.IConvert2Tcx;
 import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.tcx.TrainingCenterDatabaseT;
+import ch.opentrainingcenter.transfer.ITraining;
 
 public class ConvertTcx implements IConvert2Tcx {
     private static final String RESOURCES_FITNESSLOGBOOK_XSD = "resources/tcx.xsd";//$NON-NLS-1$
@@ -48,12 +49,6 @@ public class ConvertTcx implements IConvert2Tcx {
         logger.info("ConvertTcx erfolgreich instanziert....fertig");//$NON-NLS-1$
     }
 
-    @Override
-    public TrainingCenterDatabaseT convert(final File file) throws Exception {
-        final TrainingCenterDatabaseT database = unmarshall(file);
-        return database;
-    }
-
     @SuppressWarnings("unchecked")
     public TrainingCenterDatabaseT unmarshall(final File file) throws JAXBException, SAXException {
         final Unmarshaller unmarshaller = createUnmarshaller();
@@ -74,8 +69,10 @@ public class ConvertTcx implements IConvert2Tcx {
     }
 
     @Override
-    public List<ActivityT> convertActivity(final File file) throws Exception {
-        return convert(file).getActivities().getActivity();
+    public List<ITraining> convertActivity(final File file) throws Exception {
+        final List<ActivityT> activity = unmarshall(file).getActivities().getActivity();
+
+        return null;
     }
 
     @Override

@@ -12,8 +12,7 @@ import ch.opentrainingcenter.core.importer.ConvertContainer;
 import ch.opentrainingcenter.core.importer.FindGarminFiles;
 import ch.opentrainingcenter.core.importer.IConvert2Tcx;
 import ch.opentrainingcenter.core.importer.IImportedConverter;
-import ch.opentrainingcenter.tcx.ActivityT;
-import ch.opentrainingcenter.transfer.IImported;
+import ch.opentrainingcenter.transfer.ITraining;
 
 public class ImportedConverter implements IImportedConverter {
 
@@ -30,10 +29,10 @@ public class ImportedConverter implements IImportedConverter {
     }
 
     @Override
-    public ActivityT convertImportedToActivity(final IImported record) throws FileNotFoundException {
-        final String fileName = record.getComments();
+    public ITraining convertImportedToActivity(final ITraining record) throws FileNotFoundException {
+        final String fileName = record.getFileName();
         final File file = FindGarminFiles.loadAllGPSFile(fileName, gpsFileLocation);
-        final List<ActivityT> converted = convertActivity(file);
+        final List<ITraining> converted = convertActivity(file);
         if (converted.isEmpty()) {
             throw new FileNotFoundException("Das File " + fileName + " konnte nicht gefunden werden"); //$NON-NLS-1$ //$NON-NLS-2$
         } else {
@@ -41,11 +40,11 @@ public class ImportedConverter implements IImportedConverter {
         }
     }
 
-    private List<ActivityT> convertActivity(final File file) {
+    private List<ITraining> convertActivity(final File file) {
         final IConvert2Tcx converter = cc.getMatchingConverter(file);
-        final List<ActivityT> activities = new ArrayList<ActivityT>();
+        final List<ITraining> activities = new ArrayList<ITraining>();
         try {
-            final List<ActivityT> convertActivity = converter.convertActivity(file);
+            final List<ITraining> convertActivity = converter.convertActivity(file);
             activities.addAll(convertActivity);
         } catch (final Exception e1) {
             LOGGER.error("Fehler beim Importeren"); //$NON-NLS-1$

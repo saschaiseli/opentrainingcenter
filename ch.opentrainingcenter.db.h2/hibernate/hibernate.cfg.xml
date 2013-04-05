@@ -17,15 +17,14 @@ Enable Hibernate's automatic session context management
   <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
   <!-- Echo all executed SQL to stdout -->
   <property name="show_sql">true</property>
-  <mapping resource="Athlete.hbm.xml"/>
-  <mapping resource="Health.hbm.xml"/>
-  <mapping resource="Imported.hbm.xml"/>
-  <mapping resource="Weather.hbm.xml"/>
-  <mapping resource="TrainingType.hbm.xml"/>
-  <mapping resource="TrainingOverview.hbm.xml"/>
-  <mapping resource="PlanungWoche.hbm.xml"/>
-  <mapping resource="Route.hbm.xml"/>
-  <mapping resource="Strecke.hbm.xml"/>
-  <mapping resource="StreckenPunkte.hbm.xml"/>
+  <mapping class="ch.opentrainingcenter.transfer.impl.Athlete" resource="Athlete.hbm.xml"/>
+  <mapping class="ch.opentrainingcenter.transfer.impl.Health" resource="Health.hbm.xml"/>
+  <mapping class="ch.opentrainingcenter.transfer.impl.Weather" resource="Weather.hbm.xml"/>
+  <mapping class="ch.opentrainingcenter.transfer.impl.Training" resource="Training.hbm.xml"/>
+  <mapping class="ch.opentrainingcenter.transfer.impl.Trainingtype" resource="Trainingtype.hbm.xml"/>
+  <mapping class="ch.opentrainingcenter.transfer.impl.Tracktrainingproperty" resource="Tracktrainingproperty.hbm.xml"/>
+  <mapping class="ch.opentrainingcenter.transfer.impl.Streckenpunkte" resource="Streckenpunkte.hbm.xml"/>
+  <mapping class="ch.opentrainingcenter.transfer.impl.Planungwoche" resource="Planungwoche.hbm.xml"/>
+  <mapping class="ch.opentrainingcenter.transfer.impl.Route" resource="Route.hbm.xml"/>
  </session-factory>
 </hibernate-configuration>

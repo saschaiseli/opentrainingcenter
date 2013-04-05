@@ -1,5 +1,8 @@
 package ch.opentrainingcenter.model;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,8 +22,6 @@ import ch.opentrainingcenter.model.training.internal.SimpleTraining;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 @SuppressWarnings("nls")
 public class ModelFactoryTest {
@@ -38,8 +39,8 @@ public class ModelFactoryTest {
     public void before() {
         overview = Mockito.mock(ITraining.class);
         Mockito.when(overview.getLaengeInMeter()).thenReturn(distanz);
-        Mockito.when(overview.getDauerInSekunden()).thenReturn(dauer);
-        Mockito.when(overview.getDateOfStart()).thenReturn(date);
+        Mockito.when(overview.getDauer()).thenReturn(dauer);
+        Mockito.when(overview.getDatum()).thenReturn(date.getTime());
         Mockito.when(overview.getAverageHeartBeat()).thenReturn(avgHeart);
         Mockito.when(overview.getMaxHeartBeat()).thenReturn(maxHeart);
         Mockito.when(overview.getMaxSpeed()).thenReturn(maxSpeed);
@@ -65,7 +66,7 @@ public class ModelFactoryTest {
 
     @Test
     public void testSimpleTrainingMitTyp() {
-        final ISimpleTraining training = new SimpleTraining(overview.getLaengeInMeter(), overview.getDauerInSekunden(), overview.getDateOfStart(), overview
+        final ISimpleTraining training = new SimpleTraining(overview.getLaengeInMeter(), overview.getDauer(), new Date(overview.getDatum()), overview
                 .getAverageHeartBeat(), overview.getMaxHeartBeat(), overview.getMaxSpeed(), RunType.EXT_INTERVALL, "");
         assertTraining(training);
     }
@@ -74,8 +75,8 @@ public class ModelFactoryTest {
      * Nur für tests
      */
     protected static ISimpleTraining createSimpleTraining(final ITraining overview, final RunType runType, final String note) {
-        return new SimpleTraining(overview.getLaengeInMeter(), overview.getDauerInSekunden(), overview.getDateOfStart(), overview.getAverageHeartBeat(),
-                overview.getMaxHeartBeat(), overview.getMaxSpeed(), runType, note);
+        return new SimpleTraining(overview.getLaengeInMeter(), overview.getDauer(), new Date(overview.getDatum()), overview.getAverageHeartBeat(), overview
+                .getMaxHeartBeat(), overview.getMaxSpeed(), runType, note);
     }
 
     private void assertTraining(final ISimpleTraining training) {

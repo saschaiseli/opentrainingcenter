@@ -1,5 +1,9 @@
 package ch.opentrainingcenter.core.importer;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,25 +17,20 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import ch.opentrainingcenter.core.cache.Cache;
-import ch.opentrainingcenter.tcx.ActivityT;
-import ch.opentrainingcenter.tcx.ExtensionsT;
 import ch.opentrainingcenter.transfer.ActivityExtension;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
-import ch.opentrainingcenter.transfer.IImported;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import ch.opentrainingcenter.transfer.ITraining;
 
 @SuppressWarnings("nls")
 public class LoadActivityJobTest {
 
-    private IImported record;
+    private ITraining record;
     private Cache cache;
     private IImportedConverter loader;
 
     @Before
     public void before() throws IOException {
-        record = Mockito.mock(IImported.class);
+        record = Mockito.mock(ITraining.class);
         cache = Mockito.mock(Cache.class);
         loader = Mockito.mock(IImportedConverter.class);
     }
@@ -60,44 +59,31 @@ public class LoadActivityJobTest {
     @Test
     public void testConvertRecord() throws Exception {
         // prepare
-        final ActivityT activity = Mockito.mock(ActivityT.class);
+        final ITraining activity = Mockito.mock(ITraining.class);
         final String text = "eben geladen";
-        final ExtensionsT mock = Mockito.mock(ExtensionsT.class);
-        final List<Object> list = new ArrayList<Object>();
-        list.add(new ActivityExtension(text, CommonTransferFactory.createDefaultWeather(), null));
-        Mockito.when(mock.getAny()).thenReturn(list);
-        Mockito.when(activity.getExtensions()).thenReturn(mock);
+        Mockito.when(activity.getNote()).thenReturn(text);
 
-        Mockito.when(loader.convertImportedToActivity((IImported) Mockito.any())).thenReturn(activity);
+        Mockito.when(loader.convertImportedToActivity((ITraining) Mockito.any())).thenReturn(activity);
         final LoadActivityJob job = new LoadActivityJob("Junit", record, cache, loader);
         final IProgressMonitor monitor = Mockito.mock(IProgressMonitor.class);
         // execute
         job.run(monitor);
         // assert
-        final ActivityT loaded = job.getLoaded();
-        final ExtensionsT extensions = loaded.getExtensions();
-        ActivityExtension ae = new ActivityExtension();
-        if (extensions != null) {
-            final Object object = extensions.getAny().get(0);
-            if (object != null) {
-                ae = (ActivityExtension) object;
-            }
-        }
-        assertEquals("Activity geladen", text, ae.getNote());
+        final ITraining loaded = job.getLoaded();
+        assertEquals("Activity geladen", text, loaded.getNote());
     }
 
     @Test
     public void testKannRecordNichtLesen() throws Exception {
         // prepare
-        final ActivityT activity = Mockito.mock(ActivityT.class);
+        final ITraining activity = Mockito.mock(ITraining.class);
         final String text = "eben geladen";
-        final ExtensionsT mock = Mockito.mock(ExtensionsT.class);
+        Mockito.when(activity.getNote()).thenReturn(text);
+
         final List<Object> list = new ArrayList<Object>();
         list.add(new ActivityExtension(text, CommonTransferFactory.createDefaultWeather(), null));
-        Mockito.when(mock.getAny()).thenReturn(list);
-        Mockito.when(activity.getExtensions()).thenReturn(mock);
 
-        Mockito.when(loader.convertImportedToActivity((IImported) Mockito.any())).thenThrow(new LoadImportedException("junit"));
+        Mockito.when(loader.convertImportedToActivity((ITraining) Mockito.any())).thenThrow(new LoadImportedException("junit"));
         final LoadActivityJob job = new LoadActivityJob("Junit", record, cache, loader);
         final IProgressMonitor monitor = Mockito.mock(IProgressMonitor.class);
         // execute
@@ -110,32 +96,21 @@ public class LoadActivityJobTest {
     public void testLoadFromCache() throws Exception {
         // prepare
         final Date date = new Date();
-        Mockito.when(record.getActivityId()).thenReturn(date);
-        Mockito.when(cache.contains(date)).thenReturn(true);
+        Mockito.when(record.getDatum()).thenReturn(date.getTime());
+        Mockito.when(cache.contains(date.getTime())).thenReturn(true);
 
-        final ActivityT activity = Mockito.mock(ActivityT.class);
+        final ITraining activity = Mockito.mock(ITraining.class);
         final String text = "eben geladen";
-        final ExtensionsT mock = Mockito.mock(ExtensionsT.class);
-        final List<Object> list = new ArrayList<Object>();
-        list.add(new ActivityExtension(text, CommonTransferFactory.createDefaultWeather(), null));
-        Mockito.when(mock.getAny()).thenReturn(list);
-        Mockito.when(activity.getExtensions()).thenReturn(mock);
+        Mockito.when(activity.getNote()).thenReturn(text);
 
-        Mockito.when(cache.get(date)).thenReturn(activity);
+        Mockito.when(cache.get(date.getTime())).thenReturn(activity);
         final LoadActivityJob job = new LoadActivityJob("Junit", record, cache, loader);
         final IProgressMonitor monitor = Mockito.mock(IProgressMonitor.class);
         // execute
         job.run(monitor);
         // assert
-        final ActivityT loaded = job.getLoaded();
-        final ExtensionsT extensions = loaded.getExtensions();
-        ActivityExtension ae = new ActivityExtension();
-        if (extensions != null) {
-            final Object object = extensions.getAny().get(0);
-            if (object != null) {
-                ae = (ActivityExtension) object;
-            }
-        }
-        assertEquals("Activity geladen", text, ae.getNote());
+        final ITraining loaded = job.getLoaded();
+
+        assertEquals("Activity geladen", text, loaded.getNote());
     }
 }

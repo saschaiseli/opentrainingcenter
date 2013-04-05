@@ -7,19 +7,18 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
 import ch.opentrainingcenter.core.cache.Cache;
-import ch.opentrainingcenter.tcx.ActivityT;
-import ch.opentrainingcenter.transfer.IImported;
+import ch.opentrainingcenter.transfer.ITraining;
 
 public class LoadActivityJob extends Job {
 
     public static final Logger LOGGER = Logger.getLogger(LoadActivityJob.class);
 
-    private final IImported record;
+    private final ITraining record;
     private final IImportedConverter loader;
     private final Cache cache;
-    private ActivityT activity;
+    private ITraining activity;
 
-    public LoadActivityJob(final String name, final IImported record, final Cache cache, final IImportedConverter loader) {
+    public LoadActivityJob(final String name, final ITraining record, final Cache cache, final IImportedConverter loader) {
         super(name);
         this.record = record;
         this.loader = loader;
@@ -36,10 +35,10 @@ public class LoadActivityJob extends Job {
         }
     }
 
-    private ActivityT loadActivity(final IImported imported) throws LoadImportedException {
+    private ITraining loadActivity(final ITraining imported) throws LoadImportedException {
         // cache.setSelectedRun(imported);
-        ActivityT result = null;
-        if (!cache.contains(imported.getActivityId())) {
+        ITraining result = null;
+        if (!cache.contains(imported.getDatum())) {
             try {
                 result = loader.convertImportedToActivity(imported);
                 cache.add(result);
@@ -49,7 +48,7 @@ public class LoadActivityJob extends Job {
             }
         } else {
             // read from cache
-            result = cache.get(imported.getActivityId());
+            result = cache.get(imported.getDatum());
         }
         return result;
     }
@@ -57,7 +56,7 @@ public class LoadActivityJob extends Job {
     /**
      * Für Testzwecke..
      */
-    protected ActivityT getLoaded() {
+    protected ITraining getLoaded() {
         return activity;
     }
 

@@ -1,33 +1,31 @@
 package ch.opentrainingcenter.client.action;
 
-import java.util.Date;
 import java.util.List;
 
 import ch.opentrainingcenter.core.cache.Cache;
 import ch.opentrainingcenter.core.cache.IRecordListener;
 import ch.opentrainingcenter.core.helper.RunType;
-import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.transfer.ActivityExtension;
-import ch.opentrainingcenter.transfer.IImported;
+import ch.opentrainingcenter.transfer.ITraining;
 
 public class MockCache implements Cache {
 
-    private List<IImported> changedRecords;
+    private List<ITraining> changedRecords;
     private RunType type;
-    private List<Date> deletedIds;
+    private List<Long> deletedIds;
 
     @Override
-    public void add(final ActivityT activity) {
+    public void add(final ITraining activity) {
 
     }
 
     @Override
-    public void addAll(final List<ActivityT> activities) {
+    public void addAll(final List<ITraining> activities) {
 
     }
 
     @Override
-    public void remove(final List<Date> ids) {
+    public void remove(final List<Long> ids) {
         this.deletedIds = ids;
     }
 
@@ -37,28 +35,28 @@ public class MockCache implements Cache {
     }
 
     @Override
-    public void addListener(final IRecordListener<ActivityT> listener) {
+    public void addListener(final IRecordListener<ITraining> listener) {
 
     }
 
     @Override
-    public void removeListener(final IRecordListener<ActivityT> listener) {
+    public void removeListener(final IRecordListener<ITraining> listener) {
 
     }
 
     @Override
-    public boolean contains(final Date activityId) {
+    public boolean contains(final Long datum) {
 
         return false;
     }
 
     @Override
-    public ActivityT get(final Date activityId) {
+    public ITraining get(final Long activityId) {
 
         return null;
     }
 
-    public List<IImported> getChangedRecords() {
+    public List<ITraining> getChangedRecords() {
         return changedRecords;
     }
 
@@ -66,16 +64,16 @@ public class MockCache implements Cache {
         return type;
     }
 
-    public List<Date> getDeletedIds() {
+    public List<Long> getDeletedIds() {
         return deletedIds;
     }
 
     @Override
-    public void updateExtension(final Date activityId, final ActivityExtension extension) {
+    public void updateExtension(final Long activityId, final ActivityExtension extension) {
     }
 
     @Override
-    public void remove(final Date key) {
+    public void remove(final Long key) {
         // TODO Auto-generated method stub
 
     }

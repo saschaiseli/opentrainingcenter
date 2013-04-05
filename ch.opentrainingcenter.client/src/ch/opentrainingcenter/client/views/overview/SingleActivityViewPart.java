@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,7 +44,7 @@ import ch.opentrainingcenter.client.model.Units;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.core.cache.Cache;
 import ch.opentrainingcenter.core.cache.IRecordListener;
-import ch.opentrainingcenter.core.cache.TrainingCenterDataCache;
+import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.helper.TimeHelper;
@@ -54,12 +53,9 @@ import ch.opentrainingcenter.model.TrainingOverviewFactory;
 import ch.opentrainingcenter.model.strecke.StreckeModel;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
 import ch.opentrainingcenter.model.training.Wetter;
-import ch.opentrainingcenter.tcx.ActivityT;
-import ch.opentrainingcenter.tcx.ExtensionsT;
 import ch.opentrainingcenter.transfer.ActivityExtension;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
-import ch.opentrainingcenter.transfer.IImported;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.IWeather;
 
@@ -67,27 +63,27 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
 
     public static final String ID = "ch.opentrainingcenter.client.views.singlerun"; //$NON-NLS-1$
     private static final Logger LOGGER = Logger.getLogger(SingleActivityViewPart.class);
-    private final Cache cache = TrainingCenterDataCache.getInstance();
+    private final Cache cache = TrainingCache.getInstance();
     private final StreckeCache cacheStrecke = StreckeCache.getInstance();
     private final IDatabaseAccess databaseAccess = DatabaseAccessFactory.getDatabaseAccess();
     private final ISimpleTraining simpleTraining;
-    private final ActivityT activity;
+    private final ITraining training;
     private FormToolkit toolkit;
     private ScrolledForm form;
     private TableWrapData td;
 
-    private IRecordListener<ActivityT> listener;
+    private IRecordListener<ITraining> listener;
     private final ChartFactory factory;
 
     public SingleActivityViewPart() {
         final ApplicationContext context = ApplicationContext.getApplicationContext();
-        final Date selectedId = context.getSelectedId();
-        activity = cache.get(selectedId);
+        final Long selectedId = context.getSelectedId();
+        training = cache.get(selectedId);
 
         final IAthlete athlete = context.getAthlete();
-        simpleTraining = TrainingOverviewFactory.creatSimpleTraining(activity, athlete);
+        simpleTraining = TrainingOverviewFactory.creatSimpleTraining(training, athlete);
 
-        factory = new ChartFactory(Activator.getDefault().getPreferenceStore(), activity, athlete);
+        factory = new ChartFactory(Activator.getDefault().getPreferenceStore(), training, athlete);
 
         setPartName(simpleTraining.getFormattedDate());
     }
@@ -248,28 +244,22 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
             }
         });
 
-        listener = new IRecordListener<ActivityT>() {
+        listener = new IRecordListener<ITraining>() {
 
             @Override
-            public void recordChanged(final Collection<ActivityT> entry) {
+            public void recordChanged(final Collection<ITraining> entry) {
                 if (entry != null) {
-                    final ActivityT act = entry.iterator().next();
-                    if (act.getId().toGregorianCalendar().getTime().equals(simpleTraining.getDatum()) && act.getExtensions() != null) {
+                    final ITraining act = entry.iterator().next();
+                    if (act.getDatum() == simpleTraining.getDatum().getTime()) {
                         // nur wenn es dieser record ist!
-                        final ExtensionsT extensions = act.getExtensions();
-                        final Object any = extensions.getAny().get(0);
-                        if (any != null) {
-                            final ActivityExtension ae = (ActivityExtension) any;
-                            note.setText(ae.getNote());
-                        }
-
+                        note.setText(simpleTraining.getNote());
                     }
                 }
                 section.update();
             }
 
             @Override
-            public void deleteRecord(final Collection<ActivityT> entry) {
+            public void deleteRecord(final Collection<ITraining> entry) {
             }
         };
 
@@ -320,7 +310,7 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
     }
 
     private void safeStrecke(final String key) {
-        final IImported record = databaseAccess.getImportedRecord(activity.getId().toGregorianCalendar().getTime());
+        final ITraining record = databaseAccess.getImportedRecord(training.getDatum());
         final StreckeModel newModel = cacheStrecke.get(key);
         updateRoute(record, newModel.getId());
     }
@@ -329,10 +319,9 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         final Wetter wetter = simpleTraining.getWetter();
         if (index != wetter.getIndex()) {
             // änderungen
-            final IImported record = databaseAccess.getImportedRecord(activity.getId().toGregorianCalendar().getTime());
+            final ITraining record = databaseAccess.getImportedRecord(training.getDatum());
             if (record != null) {
                 final Wetter currentWeather = Wetter.getRunType(index);
-                final ITraining training = record.getTraining();
                 training.setWeather(CommonTransferFactory.createWeather(currentWeather.getIndex()));
                 simpleTraining.setWetter(wetter);
             }
@@ -343,9 +332,9 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
     private void safeNote(final String text) {
         if (!text.equals(simpleTraining.getNote())) {
             // änderungen
-            final IImported record = databaseAccess.getImportedRecord(activity.getId().toGregorianCalendar().getTime());
+            final ITraining record = databaseAccess.getImportedRecord(training.getDatum());
             if (record != null) {
-                record.getTraining().setNote(text);
+                record.setNote(text);
                 simpleTraining.setNote(text);
             }
             Display.getDefault().asyncExec(new Runnable() {
@@ -358,22 +347,21 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         }
     }
 
-    private void updateRoute(final IImported record, final int idRoute) {
+    private void updateRoute(final ITraining record, final int idRoute) {
         databaseAccess.updateRecordRoute(record, idRoute);
-        updateCache(databaseAccess.getImportedRecord(record.getActivityId()));
+        updateCache(databaseAccess.getImportedRecord(record.getDatum()));
     }
 
-    private void update(final IImported record) {
+    private void update(final ITraining record) {
         databaseAccess.updateRecord(record);
         updateCache(record);
     }
 
-    private void updateCache(final IImported record) {
-        final ITraining training = record.getTraining();
-        final String note = training.getNote();
-        final IWeather weather = training.getWeather();
+    private void updateCache(final ITraining record) {
+        final String note = record.getNote();
+        final IWeather weather = record.getWeather();
         final ActivityExtension extension = new ActivityExtension(note, weather, record.getRoute());
-        cache.updateExtension(record.getActivityId(), extension);
+        cache.updateExtension(record.getDatum(), extension);
     }
 
     private void addMapSection(final Composite body) {
@@ -402,7 +390,7 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         layout.bottomMargin = 5;
         client.setLayout(layout);
 
-        final String convertTrackpoints = MapConverter.convertTrackpoints(activity);
+        final String convertTrackpoints = MapConverter.convertTrackpoints(training);
         final String firstPointToPan = MapConverter.getFirstPointToPan(convertTrackpoints);
         final MapViewer mapViewer = new MapViewer(client, SWT.NONE, convertTrackpoints, firstPointToPan);
         td = new TableWrapData(TableWrapData.FILL_GRAB);

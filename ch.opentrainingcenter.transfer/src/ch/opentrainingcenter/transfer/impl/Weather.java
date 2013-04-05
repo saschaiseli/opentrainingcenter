@@ -1,9 +1,7 @@
 package ch.opentrainingcenter.transfer.impl;
 
-// default package
-// Generated 21.10.2011 12:19:41 by Hibernate Tools 3.4.0.CR1
+// Generated 04.04.2013 20:38:06 by Hibernate Tools 3.4.0.CR1
 
-import java.util.HashSet;
 import java.util.Set;
 
 import ch.opentrainingcenter.transfer.ITraining;
@@ -17,8 +15,9 @@ public class Weather implements java.io.Serializable, IWeather {
     private static final long serialVersionUID = 1L;
     private int id;
     private String wetter;
-    private String imageIcon;
-    private Set<ITraining> trainings = new HashSet<ITraining>(0);
+    private String imageicon;
+
+    // private Set<ITraining> trainings = new HashSet<ITraining>(0);
 
     public Weather() {
     }
@@ -27,22 +26,13 @@ public class Weather implements java.io.Serializable, IWeather {
         this.id = id;
     }
 
-    public Weather(final int id, final String wetter) {
+    public Weather(final int id, final String wetter, final String imageicon, final Set<ITraining> trainings) {
         this.id = id;
         this.wetter = wetter;
+        this.imageicon = imageicon;
+        // this.trainings = trainings;
     }
 
-    public Weather(final int id, final String wetter, final Set<ITraining> trainings) {
-        this.id = id;
-        this.wetter = wetter;
-        this.trainings = trainings;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see ch.opentrainingcenter.transfer.internal.IWeather#getId()
-     */
     @Override
     public int getId() {
         return this.id;
@@ -61,25 +51,21 @@ public class Weather implements java.io.Serializable, IWeather {
         this.wetter = wetter;
     }
 
-    @Override
-    public Set<ITraining> getTrainings() {
-        return this.trainings;
+    public String getImageicon() {
+        return this.imageicon;
     }
 
-    public void setTrainings(final Set<ITraining> importeds) {
-        this.trainings = importeds;
+    public void setImageicon(final String imageicon) {
+        this.imageicon = imageicon;
     }
 
-    public String getImageIcon() {
-        return imageIcon;
-    }
+    // @Override
+    // public Set<ITraining> getTrainings() {
+    // return this.trainings;
+    // }
+    //
+    // public void setTrainings(final Set<ITraining> trainings) {
+    // this.trainings = trainings;
+    // }
 
-    public void setImageIcon(final String imageIcon) {
-        this.imageIcon = imageIcon;
-    }
-
-    @Override
-    public String toString() {
-        return "Weather [id=" + id + ", wetter=" + wetter + "]"; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
-    }
 }

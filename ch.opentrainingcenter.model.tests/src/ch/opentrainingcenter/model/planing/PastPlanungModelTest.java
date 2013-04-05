@@ -1,5 +1,8 @@
 package ch.opentrainingcenter.model.planing;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -13,12 +16,9 @@ import org.mockito.Mockito;
 import ch.opentrainingcenter.core.helper.RunType;
 import ch.opentrainingcenter.model.planing.internal.PastPlanungModel;
 import ch.opentrainingcenter.transfer.IAthlete;
-import ch.opentrainingcenter.transfer.IImported;
 import ch.opentrainingcenter.transfer.IPlanungWoche;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.ITrainingType;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 @SuppressWarnings("nls")
 public class PastPlanungModelTest {
@@ -47,14 +47,14 @@ public class PastPlanungModelTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testPlanungNullRecordsLeer() {
-        final List<IImported> records = new ArrayList<IImported>();
+        final List<ITraining> records = new ArrayList<ITraining>();
         new PastPlanungModel(null, records, now);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testPlanungLeerRecordsLeer() {
         final List<IPlanungWoche> planungen = new ArrayList<IPlanungWoche>();
-        final List<IImported> records = new ArrayList<IImported>();
+        final List<ITraining> records = new ArrayList<ITraining>();
         new PastPlanungModel(planungen, records, now);
     }
 
@@ -82,7 +82,7 @@ public class PastPlanungModelTest {
 
     @Test
     public void testEinRecordKeinePlanung() {
-        final List<IImported> list = new ArrayList<IImported>();
+        final List<ITraining> list = new ArrayList<ITraining>();
         final Calendar cal = Calendar.getInstance(Locale.getDefault());
         cal.set(2012, 07, 28);
         list.add(createImported(cal.getTime(), 10300d, RunType.INT_INTERVALL));
@@ -109,7 +109,7 @@ public class PastPlanungModelTest {
 
     @Test
     public void testPopulateFehlerMitErstem1Januar2012() {
-        final List<IImported> list = new ArrayList<IImported>();
+        final List<ITraining> list = new ArrayList<ITraining>();
         final Calendar cal = Calendar.getInstance(Locale.GERMAN);
         cal.set(2012, 00, 01);
         list.add(createImported(cal.getTime(), 10300d, RunType.INT_INTERVALL));
@@ -129,7 +129,7 @@ public class PastPlanungModelTest {
 
     @Test
     public void testZweiRecordsKeinePlanung() {
-        final List<IImported> list = new ArrayList<IImported>();
+        final List<ITraining> list = new ArrayList<ITraining>();
         final Calendar cal = Calendar.getInstance(Locale.getDefault());
         cal.set(2012, 07, 28);
         list.add(createImported(cal.getTime(), 10300d, RunType.INT_INTERVALL));
@@ -158,7 +158,7 @@ public class PastPlanungModelTest {
 
     @Test
     public void testZweiRecordsInZweiWochenKeinePlanung() {
-        final List<IImported> list = new ArrayList<IImported>();
+        final List<ITraining> list = new ArrayList<ITraining>();
         final Calendar cal = Calendar.getInstance(Locale.getDefault());
         cal.set(2012, 07, 28);
         list.add(createImported(cal.getTime(), 10300d, RunType.INT_INTERVALL));
@@ -203,7 +203,7 @@ public class PastPlanungModelTest {
 
     @Test
     public void testEinRecordEinePlanungPassend() {
-        final List<IImported> list = new ArrayList<IImported>();
+        final List<ITraining> list = new ArrayList<ITraining>();
         final Calendar cal = Calendar.getInstance(Locale.getDefault());
         cal.set(2012, 07, 28);
         list.add(createImported(cal.getTime(), 10300d, RunType.INT_INTERVALL));
@@ -321,14 +321,11 @@ public class PastPlanungModelTest {
         return p;
     }
 
-    private IImported createImported(final Date date, final Double distanzInMeter, final RunType runType) {
-        final IImported rec = Mockito.mock(IImported.class);
+    private ITraining createImported(final Date date, final Double distanzInMeter, final RunType runType) {
+        final ITraining rec = Mockito.mock(ITraining.class);
         Mockito.when(rec.getAthlete()).thenReturn(athlete);
-        Mockito.when(rec.getActivityId()).thenReturn(date);
-
-        final ITraining training = Mockito.mock(ITraining.class);
-        Mockito.when(training.getLaengeInMeter()).thenReturn(distanzInMeter);
-        Mockito.when(rec.getTraining()).thenReturn(training);
+        Mockito.when(rec.getDatum()).thenReturn(date.getTime());
+        Mockito.when(rec.getLaengeInMeter()).thenReturn(distanzInMeter);
 
         final ITrainingType type = Mockito.mock(ITrainingType.class);
         Mockito.when(type.getId()).thenReturn(runType.getIndex());

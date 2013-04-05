@@ -2,26 +2,23 @@ package ch.opentrainingcenter.db.h2;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
 
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.db.h2.internal.AthleteDao;
 import ch.opentrainingcenter.db.h2.internal.Dao;
+import ch.opentrainingcenter.db.h2.internal.Dao.USAGE;
 import ch.opentrainingcenter.db.h2.internal.DatabaseCreator;
 import ch.opentrainingcenter.db.h2.internal.HealthDao;
-import ch.opentrainingcenter.db.h2.internal.ImportDao;
 import ch.opentrainingcenter.db.h2.internal.PlanungDao;
 import ch.opentrainingcenter.db.h2.internal.RouteDao;
-import ch.opentrainingcenter.db.h2.internal.StreckeDao;
+import ch.opentrainingcenter.db.h2.internal.TrainingDao;
 import ch.opentrainingcenter.db.h2.internal.WeatherDao;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IHealth;
-import ch.opentrainingcenter.transfer.IImported;
 import ch.opentrainingcenter.transfer.IPlanungWoche;
 import ch.opentrainingcenter.transfer.IRoute;
-import ch.opentrainingcenter.transfer.IStrecke;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.IWeather;
 
@@ -30,22 +27,30 @@ public class DatabaseAccess implements IDatabaseAccess {
     private final AthleteDao athleteDao;
     private final DatabaseCreator databaseCreator;
     private final HealthDao healthDao;
-    private final ImportDao importDao;
     private final PlanungDao planungsDao;
     private final RouteDao routeDao;
-    private final StreckeDao streckeDao;
     private final WeatherDao wetterDao;
+    private final TrainingDao trainingDao;
 
-    public DatabaseAccess() {
-        final Dao dao = new Dao();
+    /**
+     * Konstruktor für Tests
+     */
+    public DatabaseAccess(final Dao dao) {
         athleteDao = new AthleteDao(dao);
-        databaseCreator = new DatabaseCreator();
+        databaseCreator = new DatabaseCreator(dao);
         healthDao = new HealthDao(dao);
-        importDao = new ImportDao(dao);
         planungsDao = new PlanungDao(dao);
         routeDao = new RouteDao(dao);
-        streckeDao = new StreckeDao(dao);
+        trainingDao = new TrainingDao(dao);
         wetterDao = new WeatherDao(dao);
+    }
+
+    /**
+     * Mit diesem Konstruktur wird mit der eclipse platform der vm args
+     * parameters ausgelesen und ausgewertet.
+     */
+    public DatabaseAccess() {
+        this(new Dao(USAGE.DEVELOPING));
     }
 
     @Override
@@ -54,53 +59,43 @@ public class DatabaseAccess implements IDatabaseAccess {
     }
 
     @Override
-    public Map<Date, String> getImportedRecords(final IAthlete athlete) {
-        return importDao.getImportedRecords(athlete);
+    public List<ITraining> getAllImported(final IAthlete athlete) {
+        return trainingDao.getAllImported(athlete);
     }
 
     @Override
-    public List<IImported> getAllImported(final IAthlete athlete) {
-        return importDao.getAllImported(athlete);
+    public List<ITraining> getAllImported(final IAthlete athlete, final int limit) {
+        return trainingDao.getAllImported(athlete, limit);
     }
 
     @Override
-    public List<IImported> getAllImported(final IAthlete athlete, final int limit) {
-        return importDao.getAllImported(athlete, limit);
+    public ITraining getImportedRecord(final long key) {
+        return trainingDao.getImportedRecord(key);
     }
 
     @Override
-    public int importRecord(final int athleteId, final String fileName, final Date activityId, final ITraining overview, final int type, final int routeId) {
-        return importDao.importRecord(athleteId, fileName, activityId, overview, type, routeId);
+    public ITraining getNewestRun(final IAthlete athlete) {
+        return trainingDao.getNewestRun(athlete);
     }
 
     @Override
-    public IImported getImportedRecord(final Date key) {
-        return importDao.getImportedRecord(key);
+    public void removeImportedRecord(final long datum) {
+        trainingDao.removeImportedRecord(datum);
     }
 
     @Override
-    public IImported getNewestRun(final IAthlete athlete) {
-        return importDao.getNewestRun(athlete);
+    public void updateRecord(final ITraining record, final int index) {
+        trainingDao.updateRecord(record, index);
     }
 
     @Override
-    public void removeImportedRecord(final Date activityId) {
-        importDao.removeImportedRecord(activityId);
+    public void updateRecordRoute(final ITraining record, final int idRoute) {
+        trainingDao.updateRecordRoute(record, idRoute);
     }
 
     @Override
-    public void updateRecord(final IImported record, final int index) {
-        importDao.updateRecord(record, index);
-    }
-
-    @Override
-    public void updateRecordRoute(final IImported record, final int idRoute) {
-        importDao.updateRecordRoute(record, idRoute);
-    }
-
-    @Override
-    public void updateRecord(final IImported record) {
-        importDao.updateRecord(record);
+    public void updateRecord(final ITraining record) {
+        trainingDao.saveOrUpdate(record);
     }
 
     @Override
@@ -184,8 +179,7 @@ public class DatabaseAccess implements IDatabaseAccess {
     }
 
     @Override
-    public void saveStrecke(final IStrecke strecke) {
-        streckeDao.save(strecke);
+    public int saveTraining(final ITraining training) {
+        return trainingDao.saveOrUpdate(training);
     }
-
 }

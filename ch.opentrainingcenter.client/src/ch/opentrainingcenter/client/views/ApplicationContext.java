@@ -3,7 +3,6 @@ package ch.opentrainingcenter.client.views;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 import ch.opentrainingcenter.transfer.IAthlete;
@@ -18,7 +17,7 @@ public class ApplicationContext {
 
     private int selectedJahr;
 
-    private Date selectedId;
+    private Long selectedId;
 
     private IAthlete athlete;
 
@@ -31,11 +30,11 @@ public class ApplicationContext {
         return INSTANCE;
     }
 
-    public Date getSelectedId() {
+    public Long getSelectedId() {
         return selectedId;
     }
 
-    public void setSelectedId(final Date selectedId) {
+    public void setSelectedId(final Long selectedId) {
         this.selectedId = selectedId;
     }
 

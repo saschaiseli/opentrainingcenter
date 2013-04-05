@@ -10,13 +10,12 @@ import ch.opentrainingcenter.core.helper.TimeHelper;
 import ch.opentrainingcenter.model.ModelFactory;
 import ch.opentrainingcenter.model.training.IGoldMedalModel;
 import ch.opentrainingcenter.model.training.Intervall;
-import ch.opentrainingcenter.transfer.IImported;
 import ch.opentrainingcenter.transfer.ITraining;
 
 public class GoldMedalAction {
     private static final String UNKNOWN = "-"; //$NON-NLS-1$
 
-    public IGoldMedalModel getModel(final List<IImported> allImported) {
+    public IGoldMedalModel getModel(final List<ITraining> trainings) {
         final IGoldMedalModel result = ModelFactory.createGoldMedalModel();
         final List<Double> maxSpeed = new ArrayList<Double>();
         final List<Double> laenge = new ArrayList<Double>();
@@ -24,13 +23,12 @@ public class GoldMedalAction {
         final List<Integer> heart = new ArrayList<Integer>();
         final List<Integer> averageHeart = new ArrayList<Integer>();
         final DistanceIntervall di = new DistanceIntervall();
-        for (final IImported imported : allImported) {
-            final ITraining training = imported.getTraining();
-            final double pace = SpeedCalculator.calculatePace(0, training.getLaengeInMeter(), 0, training.getDauerInSekunden());
+        for (final ITraining training : trainings) {
+            final double pace = SpeedCalculator.calculatePace(0, training.getLaengeInMeter(), 0, training.getDauer());
             maxSpeed.add(pace);
             di.addPace(pace, training.getLaengeInMeter());
             laenge.add(training.getLaengeInMeter());
-            dauer.add(training.getDauerInSekunden());
+            dauer.add(training.getDauer());
             heart.add(training.getMaxHeartBeat());
             if (training.getAverageHeartBeat() > 0) {
                 averageHeart.add(training.getAverageHeartBeat());

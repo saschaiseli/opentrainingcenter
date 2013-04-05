@@ -1,5 +1,9 @@
 package ch.opentrainingcenter.model;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -18,9 +22,6 @@ import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.tcx.HeartRateInBeatsPerMinuteT;
 import ch.opentrainingcenter.tcx.IntensityT;
 import ch.opentrainingcenter.transfer.ITraining;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 @SuppressWarnings("nls")
 public class TrainingOverviewFactoryTest {
@@ -100,7 +101,7 @@ public class TrainingOverviewFactoryTest {
         Mockito.when(activity.getLap()).thenReturn(laps);
 
         final ITraining training = TrainingOverviewFactory.creatTrainingOverview(activity);
-        assertEquals("Totale Dauer: ", 2 * dauer, training.getDauerInSekunden(), 0.001);
+        assertEquals("Totale Dauer: ", 2 * dauer, training.getDauer(), 0.001);
         assertEquals("max Herzrfequenz:", maxHeart, training.getMaxHeartBeat());
     }
 
@@ -114,7 +115,7 @@ public class TrainingOverviewFactoryTest {
         Mockito.when(activity.getLap()).thenReturn(laps);
 
         final ITraining training = TrainingOverviewFactory.creatTrainingOverview(activity);
-        assertEquals("Totale Dauer: ", 2 * dauer, training.getDauerInSekunden(), 0.001);
+        assertEquals("Totale Dauer: ", 2 * dauer, training.getDauer(), 0.001);
         assertEquals("max Herzrfequenz:", maxHeart + 10, training.getMaxHeartBeat());
     }
 
@@ -154,7 +155,7 @@ public class TrainingOverviewFactoryTest {
 
     private void assertTraining(final ITraining training) {
         assertEquals("Distanz:", distanz, training.getLaengeInMeter(), 0.001);
-        assertEquals("Dauer:", dauer, training.getDauerInSekunden(), 0.001);
+        assertEquals("Dauer:", dauer, training.getDauer(), 0.001);
         assertEquals("Herzrfequenz:", avgHeart, training.getAverageHeartBeat());
         assertEquals("max Herzrfequenz:", maxHeart, training.getMaxHeartBeat());
         assertEquals("max Speed:", maxSpeed, training.getMaxSpeed(), 0.001);

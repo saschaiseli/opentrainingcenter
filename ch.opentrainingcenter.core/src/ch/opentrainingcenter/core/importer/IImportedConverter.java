@@ -1,7 +1,6 @@
 package ch.opentrainingcenter.core.importer;
 
-import ch.opentrainingcenter.tcx.ActivityT;
-import ch.opentrainingcenter.transfer.IImported;
+import ch.opentrainingcenter.transfer.ITraining;
 
 public interface IImportedConverter {
 
@@ -10,6 +9,6 @@ public interface IImportedConverter {
      * @return
      * @throws Exception
      */
-    ActivityT convertImportedToActivity(final IImported record) throws Exception;
+    ITraining convertImportedToActivity(final ITraining record) throws Exception;
 
 }

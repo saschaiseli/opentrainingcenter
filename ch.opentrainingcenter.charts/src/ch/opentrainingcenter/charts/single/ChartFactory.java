@@ -10,16 +10,16 @@ import org.jfree.experimental.chart.swt.ChartComposite;
 
 import ch.opentrainingcenter.charts.single.creators.internal.ChartCreatorImpl;
 import ch.opentrainingcenter.charts.single.creators.internal.DataSetCreatorImpl;
-import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.transfer.IAthlete;
+import ch.opentrainingcenter.transfer.ITraining;
 
 public class ChartFactory {
 
     private final DataSetCreatorImpl dataSetCreator;
     private final ChartCreatorImpl chartCreator;
 
-    public ChartFactory(final IPreferenceStore store, final ActivityT activity, final IAthlete athlete) {
-        dataSetCreator = new DataSetCreatorImpl(activity);
+    public ChartFactory(final IPreferenceStore store, final ITraining training, final IAthlete athlete) {
+        dataSetCreator = new DataSetCreatorImpl(training);
         chartCreator = new ChartCreatorImpl(store, athlete);
     }
 

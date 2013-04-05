@@ -7,7 +7,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.eclipse.core.runtime.ListenerList;
 
-
 public abstract class AbstractCache<K, V> implements ICache<K, V> {
 
     private final ConcurrentHashMap<K, V> cache = new ConcurrentHashMap<K, V>();
@@ -39,10 +38,12 @@ public abstract class AbstractCache<K, V> implements ICache<K, V> {
     @Override
     public void remove(final K key) {
         final V value = cache.remove(key);
-        final List<V> values = new ArrayList<V>();
-        values.add(value);
-        if (!values.isEmpty()) {
-            fireRecordDeleted(values);
+        if (value != null) {
+            final List<V> values = new ArrayList<V>();
+            values.add(value);
+            if (!values.isEmpty()) {
+                fireRecordDeleted(values);
+            }
         }
     }
 
@@ -89,7 +90,7 @@ public abstract class AbstractCache<K, V> implements ICache<K, V> {
 
     @Override
     public void removeListener(final IRecordListener<V> listener) {
-        if (listeners != null) {
+        if (listeners != null && listener != null) {
             listeners.remove(listener);
             if (listeners.isEmpty()) {
                 listeners = null;
@@ -120,5 +121,9 @@ public abstract class AbstractCache<K, V> implements ICache<K, V> {
             final IRecordListener<V> listener = (IRecordListener<V>) rls[i];
             listener.deleteRecord(values);
         }
+    }
+
+    void resetCache() {
+        cache.clear();
     }
 }

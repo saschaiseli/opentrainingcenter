@@ -7,7 +7,8 @@ Bundle-Activator: ch.opentrainingcenter.importer.tcx.Activator
 Require-Bundle: org.eclipse.core.runtime,
  ch.opentrainingcenter.tcx,
  logging,
- ch.opentrainingcenter.core
+ ch.opentrainingcenter.core,
+ ch.opentrainingcenter.transfer
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Eclipse-RegisterBuddy: logging

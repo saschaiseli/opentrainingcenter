@@ -19,7 +19,7 @@ import ch.opentrainingcenter.client.views.dialoge.ImportFileDialog;
 import ch.opentrainingcenter.client.views.dialoge.RunTypeDialog;
 import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.core.cache.Cache;
-import ch.opentrainingcenter.core.cache.TrainingCenterDataCache;
+import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.importer.ConvertContainer;
@@ -47,7 +47,7 @@ public class ImportManualGpsFiles extends AbstractHandler {
      */
     public ImportManualGpsFiles() {
         this.databaseAccess = DatabaseAccessFactory.getDatabaseAccess();
-        this.cache = TrainingCenterDataCache.getInstance();
+        this.cache = TrainingCache.getInstance();
         this.store = Activator.getDefault().getPreferenceStore();
         this.cc = new ConvertContainer(ExtensionHelper.getConverters());
     }

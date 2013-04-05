@@ -1,106 +1,73 @@
 package ch.opentrainingcenter.model.navigation;
 
-import java.util.Date;
-
 import ch.opentrainingcenter.transfer.IAthlete;
-import ch.opentrainingcenter.transfer.IImported;
 import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.ITrainingType;
 
-public abstract class ImportedDecorator implements IImported {
+public abstract class ImportedDecorator implements ITraining {
 
-    protected final IImported imported;
+    protected final ITraining training;
 
-    public ImportedDecorator(final IImported imported) {
-        this.imported = imported;
+    public ImportedDecorator(final ITraining training) {
+        this.training = training;
     }
 
     @Override
     public int getId() {
-        return imported.getId();
+        return training.getId();
     }
 
     @Override
     public void setId(final int id) {
-        imported.setId(id);
+        training.setId(id);
     }
 
     @Override
     public ITrainingType getTrainingType() {
-        return imported.getTrainingType();
+        return training.getTrainingType();
     }
 
     @Override
     public void setTrainingType(final ITrainingType type) {
-        imported.setTrainingType(type);
+        training.setTrainingType(type);
     }
 
     @Override
     public IAthlete getAthlete() {
-        return imported.getAthlete();
+        return training.getAthlete();
     }
 
     @Override
     public void setAthlete(final IAthlete athlete) {
-        imported.setAthlete(athlete);
+        training.setAthlete(athlete);
     }
 
     @Override
-    public Date getImportedDate() {
-        return imported.getImportedDate();
+    public String getFileName() {
+        return training.getFileName();
     }
 
     @Override
-    public void setImportedDate(final Date importedDate) {
-        imported.setImportedDate(importedDate);
-    }
-
-    @Override
-    public String getComments() {
-        return imported.getComments();
-    }
-
-    @Override
-    public void setComments(final String comments) {
-        imported.setComments(comments);
-    }
-
-    @Override
-    public void setActivityId(final Date time) {
-        imported.setActivityId(time);
-    }
-
-    @Override
-    public Date getActivityId() {
-        return imported.getActivityId();
-    }
-
-    @Override
-    public void setTraining(final ITraining overview) {
-        imported.setTraining(overview);
-    }
-
-    @Override
-    public ITraining getTraining() {
-        return imported.getTraining();
+    public void setFileName(final String fileName) {
+        training.setFileName(fileName);
     }
 
     @Override
     public void setRoute(final IRoute route) {
-        imported.setRoute(route);
+        training.setRoute(route);
     }
 
     @Override
     public IRoute getRoute() {
-        return imported.getRoute();
+        return training.getRoute();
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((imported == null) ? 0 : imported.hashCode());
+        result = prime * result + ((training == null) ? 0 : training.hashCode());
         return result;
     }
 
@@ -116,11 +83,11 @@ public abstract class ImportedDecorator implements IImported {
             return false;
         }
         final ImportedDecorator other = (ImportedDecorator) obj;
-        if (imported == null) {
-            if (other.imported != null) {
+        if (training == null) {
+            if (other.training != null) {
                 return false;
             }
-        } else if (!imported.equals(other.imported)) {
+        } else if (!training.equals(other.training)) {
             return false;
         }
         return true;

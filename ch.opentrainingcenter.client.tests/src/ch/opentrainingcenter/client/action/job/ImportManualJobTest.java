@@ -1,5 +1,8 @@
 package ch.opentrainingcenter.client.action.job;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,9 +22,7 @@ import ch.opentrainingcenter.core.importer.IConvert2Tcx;
 import ch.opentrainingcenter.importer.IFileImport;
 import ch.opentrainingcenter.model.importer.IGpsFileModel;
 import ch.opentrainingcenter.model.importer.IGpsFileModelWrapper;
-import ch.opentrainingcenter.tcx.ActivityT;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import ch.opentrainingcenter.transfer.ITraining;
 
 @SuppressWarnings("nls")
 public class ImportManualJobTest {
@@ -73,13 +74,13 @@ public class ImportManualJobTest {
 
         final IConvert2Tcx convert = Mockito.mock(IConvert2Tcx.class);
         Mockito.when(cc.getMatchingConverter(new File(""))).thenReturn(convert);
-        final List<ActivityT> activities = new ArrayList<ActivityT>();
-        final ActivityT element = Mockito.mock(ActivityT.class);
+        final List<ITraining> activities = new ArrayList<ITraining>();
+        final ITraining element = Mockito.mock(ITraining.class);
         activities.add(element);
         Mockito.when(convert.convertActivity(new File(""))).thenReturn(activities);
 
         final IProgressMonitor monitor = Mockito.mock(IProgressMonitor.class);
-        Mockito.when(importer.importFile(filterPath, modelWrapper, monitor)).thenReturn(new ArrayList<ActivityT>());
+        Mockito.when(importer.importFile(filterPath, modelWrapper, monitor)).thenReturn(new ArrayList<ITraining>());
 
         final IStatus status = job.run(monitor);
 

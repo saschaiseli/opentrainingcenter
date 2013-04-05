@@ -5,7 +5,7 @@ import java.util.List;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import ch.opentrainingcenter.model.importer.IGpsFileModelWrapper;
-import ch.opentrainingcenter.tcx.ActivityT;
+import ch.opentrainingcenter.transfer.ITraining;
 
 public interface IFileImport {
 
@@ -17,5 +17,5 @@ public interface IFileImport {
      * @return
      * @throws Exception
      */
-    List<ActivityT> importFile(final String filterPath, final IGpsFileModelWrapper modelWrapper, final IProgressMonitor monitor) throws Exception;
+    List<ITraining> importFile(final String filterPath, final IGpsFileModelWrapper modelWrapper, final IProgressMonitor monitor) throws Exception;
 }

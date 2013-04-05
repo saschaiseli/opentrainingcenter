@@ -1,5 +1,7 @@
 package ch.opentrainingcenter.core.importer;
 
+import static org.junit.Assert.assertNotNull;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -12,21 +14,19 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import ch.opentrainingcenter.core.importer.internal.ImportedConverter;
-import ch.opentrainingcenter.tcx.ActivityT;
-import ch.opentrainingcenter.transfer.IImported;
-import static org.junit.Assert.assertNotNull;
+import ch.opentrainingcenter.transfer.ITraining;
 
 @SuppressWarnings("nls")
 public class ImportedConverterTest {
     private ImportedConverter converter;
-    private IImported record;
+    private ITraining record;
     private File garminFile;
     private String dir;
     private ConvertContainer cc;
 
     @Before
     public void before() throws IOException {
-        record = Mockito.mock(IImported.class);
+        record = Mockito.mock(ITraining.class);
         cc = Mockito.mock(ConvertContainer.class);
         garminFile = File.createTempFile("garmin", ".gmn");
         dir = getDirectory(garminFile.getPath());
@@ -56,9 +56,9 @@ public class ImportedConverterTest {
     @Test(expected = FileNotFoundException.class)
     public void testConvertFileNotFound() throws Exception {
         // prepare
-        Mockito.when(record.getComments()).thenReturn(garminFile.getName());
+        Mockito.when(record.getFileName()).thenReturn(garminFile.getName());
         final IConvert2Tcx conv = Mockito.mock(IConvert2Tcx.class);
-        final List<ActivityT> values = new ArrayList<ActivityT>();
+        final List<ITraining> values = new ArrayList<ITraining>();
         Mockito.when(conv.convertActivity(garminFile)).thenReturn(values);
         Mockito.when(cc.getMatchingConverter(garminFile)).thenReturn(conv);
 
@@ -70,17 +70,17 @@ public class ImportedConverterTest {
     @Test
     public void testConvert() throws Exception {
         // prepare
-        Mockito.when(record.getComments()).thenReturn(garminFile.getName());
+        Mockito.when(record.getFileName()).thenReturn(garminFile.getName());
         final IConvert2Tcx conv = Mockito.mock(IConvert2Tcx.class);
-        final List<ActivityT> values = new ArrayList<ActivityT>();
-        final ActivityT act = Mockito.mock(ActivityT.class);
+        final List<ITraining> values = new ArrayList<ITraining>();
+        final ITraining act = Mockito.mock(ITraining.class);
         values.add(act);
         Mockito.when(conv.convertActivity(garminFile)).thenReturn(values);
         Mockito.when(cc.getMatchingConverter(garminFile)).thenReturn(conv);
 
         converter = new ImportedConverter(cc, dir);
         // execute
-        final ActivityT activity = converter.convertImportedToActivity(record);
+        final ITraining activity = converter.convertImportedToActivity(record);
 
         assertNotNull("Activity converted", activity);
     }

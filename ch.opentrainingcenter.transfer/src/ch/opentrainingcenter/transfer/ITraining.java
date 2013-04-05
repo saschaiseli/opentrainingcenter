@@ -1,6 +1,7 @@
 package ch.opentrainingcenter.transfer;
 
 import java.util.Date;
+import java.util.List;
 
 public interface ITraining {
 
@@ -8,9 +9,17 @@ public interface ITraining {
 
     int getId();
 
-    Date getDateOfStart();
+    long getDatum();
 
-    void setDateOfStart(Date dateOfStart);
+    void setDatum(long dateOfStart);
+
+    Date getDateOfImport();
+
+    void setDateOfImport(Date dateOfImport);
+
+    String getFileName();
+
+    void setFileName(String fileName);
 
     double getLaengeInMeter();
 
@@ -28,18 +37,12 @@ public interface ITraining {
 
     void setMaxSpeed(double maxSpeed);
 
-    double getDauerInSekunden();
+    double getDauer();
 
-    void setDauerInSekunden(double dauerInSekunden);
+    void setDauer(double dauerInSekunden);
 
-    /**
-     * @return eine Notiz zu dem Record.
-     */
     String getNote();
 
-    /**
-     * setzt eine notiz zu einem Lauf.
-     */
     void setNote(String note);
 
     IWeather getWeather();
@@ -49,4 +52,16 @@ public interface ITraining {
     IRoute getRoute();
 
     void setRoute(IRoute route);
+
+    IAthlete getAthlete();
+
+    void setAthlete(IAthlete athlete);
+
+    List<ITrackPointProperty> getTrackPoints();
+
+    void setTrackPoints(final List<ITrackPointProperty> trackPoints);
+
+    ITrainingType getTrainingType();
+
+    void setTrainingType(ITrainingType type);
 }

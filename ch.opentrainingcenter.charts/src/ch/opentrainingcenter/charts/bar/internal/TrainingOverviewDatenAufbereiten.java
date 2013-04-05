@@ -15,7 +15,7 @@ import ch.opentrainingcenter.core.helper.TimeHelper;
 import ch.opentrainingcenter.model.ModelFactory;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
 import ch.opentrainingcenter.transfer.IAthlete;
-import ch.opentrainingcenter.transfer.IImported;
+import ch.opentrainingcenter.transfer.ITraining;
 
 public class TrainingOverviewDatenAufbereiten {
 
@@ -48,10 +48,10 @@ public class TrainingOverviewDatenAufbereiten {
 
         final List<ISimpleTraining> allTrainings = new ArrayList<ISimpleTraining>();
 
-        final List<IImported> allImported = databaseAccess.getAllImported(athlete);
-        for (final IImported imp : allImported) {
-            final ISimpleTraining simpleTraining = ModelFactory.createSimpleTraining(imp.getTraining(), athlete);
-            simpleTraining.setType(RunType.getRunType(imp.getTrainingType().getId()));
+        final List<ITraining> allImported = databaseAccess.getAllImported(athlete);
+        for (final ITraining training : allImported) {
+            final ISimpleTraining simpleTraining = ModelFactory.createSimpleTraining(training, athlete);
+            simpleTraining.setType(RunType.getRunType(training.getTrainingType().getId()));
             allTrainings.add(simpleTraining);
         }
 

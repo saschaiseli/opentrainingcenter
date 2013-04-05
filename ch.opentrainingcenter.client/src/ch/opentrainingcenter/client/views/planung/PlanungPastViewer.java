@@ -29,8 +29,8 @@ import ch.opentrainingcenter.model.planing.KwJahrKey;
 import ch.opentrainingcenter.model.planing.PlanungStatus;
 import ch.opentrainingcenter.model.planing.PlanungWocheComparator;
 import ch.opentrainingcenter.transfer.IAthlete;
-import ch.opentrainingcenter.transfer.IImported;
 import ch.opentrainingcenter.transfer.IPlanungWoche;
+import ch.opentrainingcenter.transfer.ITraining;
 
 public class PlanungPastViewer {
 
@@ -64,7 +64,7 @@ public class PlanungPastViewer {
         final List<IPlanungWoche> planungsWoche = db.getPlanungsWoche(athlete);
         Collections.sort(planungsWoche, new PlanungWocheComparator());
 
-        final List<IImported> allImported = db.getAllImported(athlete);
+        final List<ITraining> allImported = db.getAllImported(athlete);
         final DateTime dt = new DateTime();
         final KwJahrKey now = new KwJahrKey(dt.getYear(), dt.getWeekOfWeekyear());
         final IPastPlanungModel model = ModelFactory.createPastPlanungModel(planungsWoche, allImported, now);
@@ -85,8 +85,9 @@ public class PlanungPastViewer {
     // This will create the columns for the table
     private void createColumns() {
 
-        final String[] titles = { Messages.PlanungPastViewer_0, Messages.PlanungPastViewer_1, Messages.PlanungPastViewer_2, Messages.PlanungPastViewer_3, Messages.PlanungPastViewer_4, Messages.PlanungPastViewer_5, Messages.PlanungPastViewer_6, Messages.PlanungPastViewer_7, Messages.PlanungPastViewer_8,
-                "" }; //$NON-NLS-1$
+        final String[] titles = { Messages.PlanungPastViewer_0, Messages.PlanungPastViewer_1, Messages.PlanungPastViewer_2, Messages.PlanungPastViewer_3,
+                Messages.PlanungPastViewer_4, Messages.PlanungPastViewer_5, Messages.PlanungPastViewer_6, Messages.PlanungPastViewer_7,
+                Messages.PlanungPastViewer_8, "" }; //$NON-NLS-1$
         final int[] bounds = { 50, 40, 100, 100, 65, 100, 150, 150, 150, 100 };
 
         // Jahr

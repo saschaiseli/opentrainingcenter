@@ -1,6 +1,5 @@
 package ch.opentrainingcenter.model;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -35,7 +34,7 @@ public final class TrainingOverviewFactory {
     private static ITraining create(final ActivityT activity) {
         // datum
         final XMLGregorianCalendar date = activity.getId();
-        final Date dateOfStart = date.toGregorianCalendar().getTime();
+        final Long dateOfStart = date.toGregorianCalendar().getTimeInMillis();
         final List<ActivityLapT> laps = activity.getLap();
         double distance = 0.0;
         double timeInSeconds = 0.0;
@@ -84,9 +83,9 @@ public final class TrainingOverviewFactory {
         return lap.getMaximumHeartRateBpm() != null;
     }
 
-    public static ISimpleTraining creatSimpleTraining(final ActivityT activity, final IAthlete athlete) {
-        if (activity != null) {
-            return ModelFactory.createSimpleTraining(create(activity), athlete);
+    public static ISimpleTraining creatSimpleTraining(final ITraining training, final IAthlete athlete) {
+        if (training != null) {
+            return ModelFactory.createSimpleTraining(training, athlete);
         } else {
             return null;
         }

@@ -1,5 +1,8 @@
 package ch.opentrainingcenter.client.action.job;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -13,10 +16,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ch.opentrainingcenter.core.importer.IConvert2Tcx;
-import ch.opentrainingcenter.tcx.ActivityT;
-import ch.opentrainingcenter.tcx.TrainingCenterDatabaseT;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import ch.opentrainingcenter.transfer.ITraining;
 
 @SuppressWarnings("nls")
 public class BackupJobTest {
@@ -52,12 +52,7 @@ public class BackupJobTest {
             }
 
             @Override
-            public List<ActivityT> convertActivity(final File file) throws Exception {
-                return null;
-            }
-
-            @Override
-            public TrainingCenterDatabaseT convert(final File file) throws Exception {
+            public List<ITraining> convertActivity(final File file) throws Exception {
                 return null;
             }
         });

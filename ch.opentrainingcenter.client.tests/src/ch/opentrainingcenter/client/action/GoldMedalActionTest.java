@@ -1,7 +1,9 @@
 package ch.opentrainingcenter.client.action;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.junit.Before;
@@ -10,29 +12,22 @@ import org.junit.Test;
 import ch.opentrainingcenter.model.training.IGoldMedalModel;
 import ch.opentrainingcenter.transfer.ActivityExtension;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
-import ch.opentrainingcenter.transfer.IImported;
 import ch.opentrainingcenter.transfer.ITraining;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 @SuppressWarnings("nls")
 public class GoldMedalActionTest {
     private GoldMedalAction action;
-    private List<IImported> allImported;
+    private List<ITraining> allImported;
 
     private ITraining trainingA;
-    private IImported impA;
-    private IImported impB;
     private ITraining trainingB;
 
     @Before
     public void setUp() {
         action = new GoldMedalAction();
-        allImported = new ArrayList<IImported>();
-        impA = CommonTransferFactory.createIImported();
-        trainingA = CommonTransferFactory.createTraining(new Date(), 0, 0, 0, 0, 0, new ActivityExtension());
-        impA.setTraining(trainingA);
-        allImported.add(impA);
+        allImported = new ArrayList<ITraining>();
+        trainingA = CommonTransferFactory.createTraining(1000L, 0d, 0d, 0, 0, 0d, new ActivityExtension());
+        allImported.add(trainingA);
     }
 
     @Test
@@ -45,7 +40,7 @@ public class GoldMedalActionTest {
     @Test
     public void testMaxHeartRate1() {
         trainingA.setMaxHeartBeat(-1);
-
+        allImported.add(trainingA);
         final IGoldMedalModel model = action.getModel(allImported);
 
         assertEquals("Bei einem negativen Wert soll nichts ausgegeben werden", "-", model.getHighestPulse());
@@ -54,7 +49,7 @@ public class GoldMedalActionTest {
     @Test
     public void testMaxHeartRate2() {
         trainingA.setMaxHeartBeat(0);
-
+        allImported.add(trainingA);
         final IGoldMedalModel model = action.getModel(allImported);
 
         assertEquals("Bei einem negativen Wert soll nichts ausgegeben werden", "-", model.getHighestPulse());
@@ -63,7 +58,7 @@ public class GoldMedalActionTest {
     @Test
     public void testMaxHeartRate3() {
         trainingA.setMaxHeartBeat(2);
-
+        allImported.add(trainingA);
         final IGoldMedalModel model = action.getModel(allImported);
 
         assertEquals("Wert muss ausgegeben werden", "2", model.getHighestPulse());
@@ -71,14 +66,12 @@ public class GoldMedalActionTest {
 
     @Test
     public void testMaxHeartRate4() {
-        impB = CommonTransferFactory.createIImported();
-        trainingB = CommonTransferFactory.createTraining(new Date(), 0, 0, 0, 0, 0, new ActivityExtension());
-        impB.setTraining(trainingB);
+        trainingB = CommonTransferFactory.createTraining(1234, 0, 0, 0, 0, 0, new ActivityExtension());
 
         trainingA.setMaxHeartBeat(2);
         trainingB.setMaxHeartBeat(4);
-
-        allImported.add(impB);
+        allImported.add(trainingA);
+        allImported.add(trainingB);
         final IGoldMedalModel model = action.getModel(allImported);
 
         assertEquals("Grösserer Wert muss ausgegeben werden", "4", model.getHighestPulse());
@@ -86,14 +79,12 @@ public class GoldMedalActionTest {
 
     @Test
     public void testMaxHeartRate5() {
-        impB = CommonTransferFactory.createIImported();
-        trainingB = CommonTransferFactory.createTraining(new Date(), 0, 0, 0, 0, 0, new ActivityExtension());
-        impB.setTraining(trainingB);
+        trainingB = CommonTransferFactory.createTraining(2345, 0, 0, 0, 0, 0, new ActivityExtension());
 
         trainingA.setMaxHeartBeat(-1);
         trainingB.setMaxHeartBeat(4);
-
-        allImported.add(impB);
+        allImported.add(trainingA);
+        allImported.add(trainingB);
         final IGoldMedalModel model = action.getModel(allImported);
 
         assertEquals("Grösserer Wert muss ausgegeben werden", "4", model.getHighestPulse());
@@ -102,7 +93,7 @@ public class GoldMedalActionTest {
     @Test
     public void testAverageHeartRate1() {
         trainingA.setAverageHeartBeat(-1);
-
+        allImported.add(trainingA);
         final IGoldMedalModel model = action.getModel(allImported);
 
         assertEquals("Bei einem negativen Wert soll nichts ausgegeben werden", "-", model.getHighestAveragePulse());
@@ -111,7 +102,7 @@ public class GoldMedalActionTest {
     @Test
     public void testAverageHeartRate2() {
         trainingA.setAverageHeartBeat(0);
-
+        allImported.add(trainingA);
         final IGoldMedalModel model = action.getModel(allImported);
 
         assertEquals("Bei einem negativen Wert soll nichts ausgegeben werden", "-", model.getHighestAveragePulse());
@@ -120,7 +111,7 @@ public class GoldMedalActionTest {
     @Test
     public void testAverageHeartRate3() {
         trainingA.setAverageHeartBeat(2);
-
+        allImported.add(trainingA);
         final IGoldMedalModel model = action.getModel(allImported);
 
         assertEquals("Wert muss ausgegeben werden", "2", model.getHighestAveragePulse());
@@ -128,14 +119,11 @@ public class GoldMedalActionTest {
 
     @Test
     public void testAverageHeartRate4() {
-        impB = CommonTransferFactory.createIImported();
-        trainingB = CommonTransferFactory.createTraining(new Date(), 0, 0, 0, 0, 0, new ActivityExtension());
-        impB.setTraining(trainingB);
-
+        trainingB = CommonTransferFactory.createTraining(463463, 0, 0, 0, 0, 0, new ActivityExtension());
         trainingA.setAverageHeartBeat(2);
         trainingB.setAverageHeartBeat(4);
-
-        allImported.add(impB);
+        allImported.add(trainingA);
+        allImported.add(trainingB);
         final IGoldMedalModel model = action.getModel(allImported);
 
         assertEquals("Grösserer Wert muss ausgegeben werden", "4", model.getHighestAveragePulse());
@@ -143,14 +131,11 @@ public class GoldMedalActionTest {
 
     @Test
     public void testAverageHeartRate5() {
-        impB = CommonTransferFactory.createIImported();
-        trainingB = CommonTransferFactory.createTraining(new Date(), 0, 0, 0, 0, 0, new ActivityExtension());
-        impB.setTraining(trainingB);
-
+        trainingB = CommonTransferFactory.createTraining(1234, 0, 0, 0, 0, 0, new ActivityExtension());
         trainingA.setAverageHeartBeat(-1);
         trainingB.setAverageHeartBeat(4);
-
-        allImported.add(impB);
+        allImported.add(trainingA);
+        allImported.add(trainingB);
         final IGoldMedalModel model = action.getModel(allImported);
 
         assertEquals("Grösserer Wert muss ausgegeben werden", "4", model.getHighestAveragePulse());
@@ -159,7 +144,7 @@ public class GoldMedalActionTest {
     @Test
     public void testLowestAverageHeartRate1() {
         trainingA.setAverageHeartBeat(-1);
-
+        allImported.add(trainingA);
         final IGoldMedalModel model = action.getModel(allImported);
 
         assertEquals("Bei einem negativen Wert soll nichts ausgegeben werden", "-", model.getLowestAveragePulse());
@@ -168,7 +153,7 @@ public class GoldMedalActionTest {
     @Test
     public void testLowestLowestAverageHeartRate2() {
         trainingA.setAverageHeartBeat(0);
-
+        allImported.add(trainingA);
         final IGoldMedalModel model = action.getModel(allImported);
 
         assertEquals("Bei einem negativen Wert soll nichts ausgegeben werden", "-", model.getLowestAveragePulse());
@@ -185,14 +170,10 @@ public class GoldMedalActionTest {
 
     @Test
     public void testLowestLowestAverageHeartRate4() {
-        impB = CommonTransferFactory.createIImported();
-        trainingB = CommonTransferFactory.createTraining(new Date(), 0, 0, 0, 0, 0, new ActivityExtension());
-        impB.setTraining(trainingB);
-
+        trainingB = CommonTransferFactory.createTraining(4567, 0, 0, 0, 0, 0, new ActivityExtension());
         trainingA.setAverageHeartBeat(2);
         trainingB.setAverageHeartBeat(4);
-
-        allImported.add(impB);
+        allImported.add(trainingB);
         final IGoldMedalModel model = action.getModel(allImported);
 
         assertEquals("Grösserer Wert muss ausgegeben werden", "2", model.getLowestAveragePulse());
@@ -200,14 +181,11 @@ public class GoldMedalActionTest {
 
     @Test
     public void testLowestLowestAverageHeartRate5() {
-        impB = CommonTransferFactory.createIImported();
-        trainingB = CommonTransferFactory.createTraining(new Date(), 0, 0, 0, 0, 0, new ActivityExtension());
-        impB.setTraining(trainingB);
+        trainingB = CommonTransferFactory.createTraining(234234, 0, 0, 0, 0, 0, new ActivityExtension());
 
         trainingA.setAverageHeartBeat(-1);
         trainingB.setAverageHeartBeat(4);
-
-        allImported.add(impB);
+        allImported.add(trainingB);
         final IGoldMedalModel model = action.getModel(allImported);
 
         assertEquals("Grösserer Wert muss ausgegeben werden", "4", model.getLowestAveragePulse());
@@ -215,8 +193,7 @@ public class GoldMedalActionTest {
 
     @Test
     public void testDauer1() {
-        trainingA.setDauerInSekunden(-1);
-
+        trainingA.setDauer(-1);
         final IGoldMedalModel model = action.getModel(allImported);
 
         assertEquals("Bei einem negativen Wert soll nichts ausgegeben werden", "--:--:--", model.getLongestRun());
@@ -233,7 +210,7 @@ public class GoldMedalActionTest {
 
     @Test
     public void testDauer3() {
-        trainingA.setDauerInSekunden(2);
+        trainingA.setDauer(2);
 
         final IGoldMedalModel model = action.getModel(allImported);
 
@@ -242,14 +219,11 @@ public class GoldMedalActionTest {
 
     @Test
     public void testDauer4() {
-        impB = CommonTransferFactory.createIImported();
-        trainingB = CommonTransferFactory.createTraining(new Date(), 0, 0, 0, 0, 0, new ActivityExtension());
-        impB.setTraining(trainingB);
+        trainingB = CommonTransferFactory.createTraining(353453, 0, 0, 0, 0, 0, new ActivityExtension());
 
-        trainingA.setDauerInSekunden(2);
-        trainingB.setDauerInSekunden(4);
-
-        allImported.add(impB);
+        trainingA.setDauer(2);
+        trainingB.setDauer(4);
+        allImported.add(trainingB);
         final IGoldMedalModel model = action.getModel(allImported);
 
         assertEquals("Grösserer Wert muss ausgegeben werden", "0:00:04", model.getLongestRun());
@@ -257,14 +231,11 @@ public class GoldMedalActionTest {
 
     @Test
     public void testDauer5() {
-        impB = CommonTransferFactory.createIImported();
-        trainingB = CommonTransferFactory.createTraining(new Date(), 0, 0, 0, 0, 0, new ActivityExtension());
-        impB.setTraining(trainingB);
+        trainingB = CommonTransferFactory.createTraining(1234, 0, 0, 0, 0, 0, new ActivityExtension());
 
-        trainingA.setDauerInSekunden(-1);
-        trainingB.setDauerInSekunden(4);
-
-        allImported.add(impB);
+        trainingA.setDauer(-1);
+        trainingB.setDauer(4);
+        allImported.add(trainingB);
         final IGoldMedalModel model = action.getModel(allImported);
 
         assertEquals("Grösserer Wert muss ausgegeben werden", "0:00:04", model.getLongestRun());
@@ -280,7 +251,7 @@ public class GoldMedalActionTest {
 
     @Test
     public void testPaceNegativ() {
-        trainingA.setDauerInSekunden(-60);
+        trainingA.setDauer(-60);
         trainingA.setLaengeInMeter(10000);
 
         final IGoldMedalModel model = action.getModel(allImported);
@@ -290,7 +261,7 @@ public class GoldMedalActionTest {
 
     @Test
     public void testPace2() {
-        trainingA.setDauerInSekunden(60);
+        trainingA.setDauer(60);
         trainingA.setLaengeInMeter(1000);
 
         final IGoldMedalModel model = action.getModel(allImported);
@@ -300,14 +271,10 @@ public class GoldMedalActionTest {
 
     @Test
     public void testPace4() {
-        impB = CommonTransferFactory.createIImported();
-        trainingB = CommonTransferFactory.createTraining(new Date(), 120, 1000, 0, 0, 0, new ActivityExtension());
-        impB.setTraining(trainingB);
-
-        trainingA.setDauerInSekunden(60);
+        trainingB = CommonTransferFactory.createTraining(42, 120, 1000, 0, 0, 0, new ActivityExtension());
+        trainingA.setDauer(60);
         trainingA.setLaengeInMeter(1000);
-
-        allImported.add(impB);
+        allImported.add(trainingB);
         final IGoldMedalModel model = action.getModel(allImported);
 
         assertEquals("kleinere Pace muss ausgegeben werden", "1.0", model.getSchnellstePace());
@@ -315,14 +282,11 @@ public class GoldMedalActionTest {
 
     @Test
     public void testPace5() {
-        impB = CommonTransferFactory.createIImported();
-        trainingB = CommonTransferFactory.createTraining(new Date(), 30, 1000, 0, 0, 0, new ActivityExtension());
-        impB.setTraining(trainingB);
+        trainingB = CommonTransferFactory.createTraining(42, 30, 1000, 0, 0, 0, new ActivityExtension());
 
-        trainingA.setDauerInSekunden(60);
+        trainingA.setDauer(60);
         trainingA.setLaengeInMeter(1000);
-
-        allImported.add(impB);
+        allImported.add(trainingB);
         final IGoldMedalModel model = action.getModel(allImported);
 
         assertEquals("kleinere Pace muss ausgegeben werden", "0.3", model.getSchnellstePace());
@@ -357,14 +321,11 @@ public class GoldMedalActionTest {
 
     @Test
     public void testLongestDistance4() {
-        impB = CommonTransferFactory.createIImported();
-        trainingB = CommonTransferFactory.createTraining(new Date(), 0, 0, 0, 0, 0, new ActivityExtension());
-        impB.setTraining(trainingB);
+        trainingB = CommonTransferFactory.createTraining(42, 0, 0, 0, 0, 0, new ActivityExtension());
 
         trainingA.setLaengeInMeter(2);
         trainingB.setLaengeInMeter(4);
-
-        allImported.add(impB);
+        allImported.add(trainingB);
         final IGoldMedalModel model = action.getModel(allImported);
 
         assertEquals("Grösserer Wert muss ausgegeben werden", "0.004", model.getLongestDistance());
@@ -372,14 +333,11 @@ public class GoldMedalActionTest {
 
     @Test
     public void testLongestDistance5() {
-        impB = CommonTransferFactory.createIImported();
-        trainingB = CommonTransferFactory.createTraining(new Date(), 0, 0, 0, 0, 0, new ActivityExtension());
-        impB.setTraining(trainingB);
+        trainingB = CommonTransferFactory.createTraining(42, 0, 0, 0, 0, 0, new ActivityExtension());
 
         trainingA.setLaengeInMeter(-1);
         trainingB.setLaengeInMeter(4);
-
-        allImported.add(impB);
+        allImported.add(trainingB);
         final IGoldMedalModel model = action.getModel(allImported);
 
         assertEquals("Grösserer Wert muss ausgegeben werden", "0.004", model.getLongestDistance());

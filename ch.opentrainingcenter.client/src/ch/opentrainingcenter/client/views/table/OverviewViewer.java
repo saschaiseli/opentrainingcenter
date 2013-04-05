@@ -1,6 +1,7 @@
 package ch.opentrainingcenter.client.views.table;
 
 import java.util.Collection;
+import java.util.Date;
 
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -19,13 +20,11 @@ import org.eclipse.ui.part.ViewPart;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.core.cache.Cache;
 import ch.opentrainingcenter.core.cache.IRecordListener;
-import ch.opentrainingcenter.core.cache.TrainingCenterDataCache;
+import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.core.helper.DistanceHelper;
 import ch.opentrainingcenter.core.helper.TimeHelper;
 import ch.opentrainingcenter.i18n.Messages;
-import ch.opentrainingcenter.tcx.ActivityT;
-import ch.opentrainingcenter.transfer.IImported;
 import ch.opentrainingcenter.transfer.ITraining;
 
 public class OverviewViewer extends ViewPart {
@@ -35,7 +34,7 @@ public class OverviewViewer extends ViewPart {
     private TableViewer viewer;
 
     public OverviewViewer() {
-        cache = TrainingCenterDataCache.getInstance();
+        cache = TrainingCache.getInstance();
     }
 
     @Override
@@ -81,15 +80,15 @@ public class OverviewViewer extends ViewPart {
         gridData.horizontalAlignment = GridData.FILL;
         viewer.getControl().setLayoutData(gridData);
 
-        cache.addListener(new IRecordListener<ActivityT>() {
+        cache.addListener(new IRecordListener<ITraining>() {
 
             @Override
-            public void recordChanged(final Collection<ActivityT> entry) {
+            public void recordChanged(final Collection<ITraining> entry) {
                 update();
             }
 
             @Override
-            public void deleteRecord(final Collection<ActivityT> entry) {
+            public void deleteRecord(final Collection<ITraining> entry) {
                 update();
             }
 
@@ -112,8 +111,8 @@ public class OverviewViewer extends ViewPart {
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(final Object element) {
-                final IImported record = (IImported) element;
-                return TimeHelper.convertDateToString(record.getActivityId(), true);
+                final ITraining record = (ITraining) element;
+                return TimeHelper.convertDateToString(new Date(record.getDatum()), true);
             }
         });
 
@@ -122,8 +121,8 @@ public class OverviewViewer extends ViewPart {
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(final Object element) {
-                final IImported record = (IImported) element;
-                return TimeHelper.convertSecondsToHumanReadableZeit(record.getTraining().getDauerInSekunden());
+                final ITraining record = (ITraining) element;
+                return TimeHelper.convertSecondsToHumanReadableZeit(record.getDauer());
             }
         });
 
@@ -132,8 +131,8 @@ public class OverviewViewer extends ViewPart {
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(final Object element) {
-                final IImported record = (IImported) element;
-                return DistanceHelper.roundDistanceFromMeterToKm(record.getTraining().getLaengeInMeter());
+                final ITraining record = (ITraining) element;
+                return DistanceHelper.roundDistanceFromMeterToKm(record.getLaengeInMeter());
             }
         });
 
@@ -142,9 +141,8 @@ public class OverviewViewer extends ViewPart {
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(final Object element) {
-                final IImported record = (IImported) element;
-                final ITraining training = record.getTraining();
-                return DistanceHelper.calculatePace(training.getLaengeInMeter(), training.getDauerInSekunden());
+                final ITraining record = (ITraining) element;
+                return DistanceHelper.calculatePace(record.getLaengeInMeter(), record.getDauer());
             }
         });
 
@@ -153,9 +151,8 @@ public class OverviewViewer extends ViewPart {
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(final Object element) {
-                final IImported record = (IImported) element;
-                final ITraining training = record.getTraining();
-                return String.valueOf(training.getAverageHeartBeat());
+                final ITraining record = (ITraining) element;
+                return String.valueOf(record.getAverageHeartBeat());
             }
         });
 

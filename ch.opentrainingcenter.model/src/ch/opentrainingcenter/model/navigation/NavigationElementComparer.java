@@ -29,7 +29,7 @@ public class NavigationElementComparer implements IElementComparer {
         if (a instanceof ConcreteImported && b instanceof ConcreteImported) {
             final ConcreteImported first = (ConcreteImported) a;
             final ConcreteImported second = (ConcreteImported) b;
-            return first.getActivityId().equals(second.getActivityId());
+            return first.getDatum() == second.getDatum();
         }
         return false;
     }
@@ -47,7 +47,7 @@ public class NavigationElementComparer implements IElementComparer {
         }
         if (element instanceof ConcreteImported) {
             final ConcreteImported first = (ConcreteImported) element;
-            return first.getActivityId().hashCode();
+            return (int) first.getDatum();
         }
         if (element instanceof Integer) {
             final Integer first = (Integer) element;

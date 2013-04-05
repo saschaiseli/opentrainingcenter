@@ -9,15 +9,14 @@ import org.eclipse.ui.PlatformUI;
 
 import ch.opentrainingcenter.client.views.overview.SingleActivityViewPart;
 import ch.opentrainingcenter.core.cache.Cache;
-import ch.opentrainingcenter.core.cache.TrainingCenterDataCache;
-import ch.opentrainingcenter.tcx.ActivityT;
-import ch.opentrainingcenter.transfer.IImported;
+import ch.opentrainingcenter.core.cache.TrainingCache;
+import ch.opentrainingcenter.transfer.ITraining;
 
 public class ImportActivityJobListener implements IJobChangeListener {
 
-    private final IImported record;
+    private final ITraining record;
 
-    public ImportActivityJobListener(final IImported record) {
+    public ImportActivityJobListener(final ITraining record) {
         this.record = record;
     }
 
@@ -36,9 +35,9 @@ public class ImportActivityJobListener implements IJobChangeListener {
             @Override
             public void run() {
                 try {
-                    final Cache cache = TrainingCenterDataCache.getInstance();
-                    final ActivityT activityT = cache.get(record.getActivityId());
-                    final String hash = getSecondaryId(activityT);
+                    final Cache cache = TrainingCache.getInstance();
+                    final ITraining training = cache.get(record.getDatum());
+                    final String hash = getSecondaryId(training);
                     try {
                         PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(SingleActivityViewPart.ID, hash,
                                 IWorkbenchPage.VIEW_ACTIVATE);
@@ -50,8 +49,8 @@ public class ImportActivityJobListener implements IJobChangeListener {
                 }
             }
 
-            private String getSecondaryId(final ActivityT activity) {
-                return String.valueOf(activity.getId().hashCode());
+            private String getSecondaryId(final ITraining training) {
+                return String.valueOf(training.getDatum());
             }
         });
     }

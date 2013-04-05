@@ -14,7 +14,7 @@ import ch.opentrainingcenter.core.cache.Cache;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.importer.IFileImport;
 import ch.opentrainingcenter.model.importer.IGpsFileModelWrapper;
-import ch.opentrainingcenter.tcx.ActivityT;
+import ch.opentrainingcenter.transfer.ITraining;
 
 public class ImportManualJob extends Job {
 
@@ -47,9 +47,9 @@ public class ImportManualJob extends Job {
     @Override
     protected IStatus run(final IProgressMonitor monitor) {
         monitor.beginTask(Messages.ImportManualGpsFiles4, modelWrapper.size());
-        final List<ActivityT> activitiesToImport = new ArrayList<ActivityT>();
+        final List<ITraining> activitiesToImport = new ArrayList<ITraining>();
         try {
-            final List<ActivityT> importFiles = importer.importFile(filterPath, modelWrapper, monitor);
+            final List<ITraining> importFiles = importer.importFile(filterPath, modelWrapper, monitor);
             activitiesToImport.addAll(importFiles);
         } catch (final Exception e) {
             LOGGER.error(e);

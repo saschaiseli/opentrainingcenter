@@ -1,7 +1,6 @@
 package ch.opentrainingcenter.client.commands;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -13,10 +12,10 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import ch.opentrainingcenter.core.cache.Cache;
-import ch.opentrainingcenter.core.cache.TrainingCenterDataCache;
+import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
-import ch.opentrainingcenter.transfer.IImported;
+import ch.opentrainingcenter.transfer.ITraining;
 
 public class DeleteImportedRecord extends AbstractHandler {
 
@@ -27,19 +26,19 @@ public class DeleteImportedRecord extends AbstractHandler {
     @Override
     public Object execute(final ExecutionEvent event) throws ExecutionException {
         final IDatabaseAccess db = DatabaseAccessFactory.getDatabaseAccess();
-        final Cache cache = TrainingCenterDataCache.getInstance();
+        final Cache cache = TrainingCache.getInstance();// TrainingCenterDataCache.getInstance();
 
         final ISelection selection = HandlerUtil.getCurrentSelection(event);
 
         final List<?> records = ((StructuredSelection) selection).toList();
 
-        final List<Date> deletedIds = new ArrayList<Date>();
+        final List<Long> deletedIds = new ArrayList<Long>();
         for (final Object obj : records) {
-            final IImported record = (IImported) obj;
+            final ITraining record = (ITraining) obj;
             final int dbId = record.getId();
-            LOGGER.info("Lösche den Lauf mit der ID " + record.getActivityId() + " und der DB Id: " + dbId); //$NON-NLS-1$ //$NON-NLS-2$
-            db.removeImportedRecord(record.getActivityId());
-            deletedIds.add(record.getActivityId());
+            LOGGER.info("Lösche den Lauf mit der ID " + record.getDatum() + " und der DB Id: " + dbId); //$NON-NLS-1$ //$NON-NLS-2$
+            db.removeImportedRecord(record.getDatum());
+            deletedIds.add(record.getDatum());
         }
         cache.remove(deletedIds);
         return null;

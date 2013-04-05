@@ -15,12 +15,11 @@ import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.views.overview.MapConverter;
 import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.core.cache.Cache;
-import ch.opentrainingcenter.core.cache.TrainingCenterDataCache;
+import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.model.geo.Track;
 import ch.opentrainingcenter.route.CompareRouteFactory;
 import ch.opentrainingcenter.route.ICompareRoute;
-import ch.opentrainingcenter.tcx.ActivityT;
-import ch.opentrainingcenter.transfer.IImported;
+import ch.opentrainingcenter.transfer.ITraining;
 
 public class CompareRecords extends AbstractHandler {
 
@@ -29,7 +28,7 @@ public class CompareRecords extends AbstractHandler {
 
     @Override
     public Object execute(final ExecutionEvent event) throws ExecutionException {
-        final Cache cache = TrainingCenterDataCache.getInstance();
+        final Cache cache = TrainingCache.getInstance();// TrainingCenterDataCache.getInstance();
 
         final ISelection selection = HandlerUtil.getCurrentSelection(event);
 
@@ -37,8 +36,8 @@ public class CompareRecords extends AbstractHandler {
 
         final List<Track> tracks = new ArrayList<Track>();
         for (final Object obj : records) {
-            final IImported record = (IImported) obj;
-            final ActivityT activity = cache.get(record.getActivityId());
+            final ITraining record = (ITraining) obj;
+            final ITraining activity = cache.get(record.getDatum());
             tracks.add(MapConverter.convert(activity));
         }
         final ICompareRoute comp = CompareRouteFactory.getRouteComparator(true, store.getString(PreferenceConstants.KML_DEBUG_PATH));

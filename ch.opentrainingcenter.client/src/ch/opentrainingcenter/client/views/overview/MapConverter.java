@@ -6,61 +6,33 @@ import java.util.List;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.model.geo.Track;
 import ch.opentrainingcenter.model.geo.TrackPoint;
-import ch.opentrainingcenter.tcx.ActivityLapT;
-import ch.opentrainingcenter.tcx.ActivityT;
-import ch.opentrainingcenter.tcx.PositionT;
-import ch.opentrainingcenter.tcx.TrackT;
-import ch.opentrainingcenter.tcx.TrackpointT;
+import ch.opentrainingcenter.transfer.IStreckenPunkt;
+import ch.opentrainingcenter.transfer.ITrackPointProperty;
+import ch.opentrainingcenter.transfer.ITraining;
 
 public final class MapConverter {
 
     private MapConverter() {
     }
 
-    public static Track convert(final ActivityT activity) {
-        final List<TrackPoint> points = new ArrayList<TrackPoint>();
-        final List<ActivityLapT> lap = activity.getLap();
-        for (final ActivityLapT activityLapT : lap) {
-            final List<TrackT> track = activityLapT.getTrack();
-            for (final TrackT trackT : track) {
-                final List<TrackpointT> trackpoint = trackT.getTrackpoint();
-                for (final TrackpointT point : trackpoint) {
-                    final PositionT position = point.getPosition();
-                    if (position != null) {
-                        points.add(new TrackPoint(point.getDistanceMeters(), position.getLatitudeDegrees(), position.getLongitudeDegrees()));
-                    }
-                }
-            }
-
+    public static Track convert(final ITraining training) {
+        final List<TrackPoint> trackPoints = new ArrayList<TrackPoint>();
+        final List<ITrackPointProperty> points = training.getTrackPoints();
+        for (final ITrackPointProperty point : points) {
+            trackPoints.add(new TrackPoint(point.getDistance(), point.getStreckenPunkt().getLatitude(), point.getStreckenPunkt().getLongitude()));
         }
-        final Track track = new Track(points);
+
+        final Track track = new Track(trackPoints);
         return track;
     }
 
-    public static String convertTrackpoints(final ActivityT activity) {
+    public static String convertTrackpoints(final ITraining training) {
         final StringBuffer str = new StringBuffer();
         str.append('[');
-        boolean pointAdded = false;
-        final List<ActivityLapT> lap = activity.getLap();
-        for (final ActivityLapT activityLapT : lap) {
-            final List<TrackT> track = activityLapT.getTrack();
-            for (final TrackT trackT : track) {
-                final List<TrackpointT> trackpoint = trackT.getTrackpoint();
-                for (final TrackpointT point : trackpoint) {
-                    final PositionT position = point.getPosition();
-                    if (position != null) {
-                        str.append('[').append(position.getLatitudeDegrees()).append(',').append(position.getLongitudeDegrees()).append("],"); //$NON-NLS-1$
-                        pointAdded = true;
-                    }
-                }
-            }
-
-        }
-        if (pointAdded) {
-            str.append(']');
-            str.replace(str.length() - 2, str.length() - 1, ""); //$NON-NLS-1$
-        } else {
-            return "[[46.954, 7.448]]"; //$NON-NLS-1$
+        final List<ITrackPointProperty> points = training.getTrackPoints();
+        for (final ITrackPointProperty point : points) {
+            final IStreckenPunkt geoPoint = point.getStreckenPunkt();
+            str.append('[').append(geoPoint.getLatitude()).append(',').append(geoPoint.getLongitude()).append("],"); //$NON-NLS-1$
         }
         return str.toString();
     }

@@ -1,16 +1,15 @@
 package ch.opentrainingcenter.transfer;
 
-import java.util.Set;
 
 public interface ITrainingType {
 
-    public abstract int getId();
+    int getId();
 
-    public abstract String getTitle();
+    String getTitle();
 
-    public abstract String getDescription();
+    String getDescription();
 
-    public abstract String getImageicon();
+    String getImageicon();
 
-    public abstract Set<IImported> getImporteds();
+    // Set<ITraining> getTrainings();
 }

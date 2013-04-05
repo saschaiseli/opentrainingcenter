@@ -2,16 +2,13 @@ package ch.opentrainingcenter.core.db;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.core.runtime.IExecutableExtensionFactory;
 
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IHealth;
-import ch.opentrainingcenter.transfer.IImported;
 import ch.opentrainingcenter.transfer.IPlanungWoche;
 import ch.opentrainingcenter.transfer.IRoute;
-import ch.opentrainingcenter.transfer.IStrecke;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.IWeather;
 
@@ -27,15 +24,7 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
 
     List<IAthlete> getAllAthletes();
 
-    /**
-     * Gibt eine nach datum sortierte Liste von allen importierted Records
-     * zurück.
-     * 
-     * @param athlete
-     *            der Athlete der die Records importierte
-     * @return eine Liste von {@link IImported}
-     */
-    List<IImported> getAllImported(IAthlete athlete);
+    int saveTraining(ITraining training);
 
     /**
      * Gibt eine nach datum sortierte Liste von allen importierted Records
@@ -43,15 +32,25 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
      * 
      * @param athlete
      *            der Athlete der die Records importierte
-     * @return eine Liste von {@link IImported}
+     * @return eine Liste von {@link ITraining}
      */
-    List<IImported> getAllImported(IAthlete athlete, int limit);
+    List<ITraining> getAllImported(IAthlete athlete);
+
+    /**
+     * Gibt eine nach datum sortierte Liste von allen importierted Records
+     * zurück.
+     * 
+     * @param athlete
+     *            der Athlete der die Records importierte
+     * @return eine Liste von {@link ITraining}
+     */
+    List<ITraining> getAllImported(IAthlete athlete, int limit);
 
     /**
      * @return den neusten Lauf. Nicht der Lauf der zuletzt importiert wurde,
      *         sondern der Lauf, der zuletzt gemacht wurde.
      */
-    IImported getNewestRun(IAthlete athlete);
+    ITraining getNewestRun(IAthlete athlete);
 
     /**
      * Gibt den sportler mit
@@ -77,45 +76,9 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
      *            laufes.
      * @return
      */
-    IImported getImportedRecord(Date key);
+    ITraining getImportedRecord(long key);
 
-    /**
-     * Gibt eine Liste von Filenamen zurück die diesem Athleten gehören. Das
-     * Resultat ist nicht ein absoluter File Pfad sondern einfach der Filename.
-     * Die Id der Map ist das Startdatum des Laufes. Dies ist sogleich die ID.
-     * 
-     * <pre>
-     * z.b.: 201011201234.gmn
-     * </pre>
-     * 
-     * @param athleteId
-     *            id des sportlers.
-     * @return eine liste mit den records von diesem sportler.
-     */
-    Map<Date, String> getImportedRecords(IAthlete athlete);
-
-    /**
-     * Importiert den Record in die Datenbank. Zweimaliges importieren wird
-     * ignoriert. Das heisst ein anderer Benutzer kann nicht denselben Record
-     * auch importieren. Massgebendes Kriterium hierfür ist der Filename und die
-     * id der Actitvity.
-     * 
-     * @param athleteId
-     *            die ID des Athleten
-     * @param name
-     *            der Filename des GPS Files.
-     * @param activityId
-     *            id der aktivität.
-     * @param type
-     *            der typ des trainings
-     * @param routeId
-     *            Die ID der Strecke.
-     * @return id des datenbankeintrages oder -1 wenn der record bereits in der
-     *         datenbank war.
-     */
-    int importRecord(int athleteId, String fileName, Date activityId, ITraining overview, int type, int routeId);
-
-    void removeImportedRecord(Date activityId);
+    void removeImportedRecord(long datum);
 
     /**
      * @param athlete
@@ -128,17 +91,17 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
     /**
      * updated training type
      */
-    void updateRecord(IImported record, int index);
+    void updateRecord(ITraining record, int index);
 
     /**
      * updated training type
      */
-    void updateRecordRoute(IImported record, int idRoute);
+    void updateRecordRoute(ITraining record, int idRoute);
 
     /**
      * updated ganzer record
      */
-    void updateRecord(IImported record);
+    void updateRecord(ITraining record);
 
     /**
      * @return alle in der Datenbank verfügbaren wetter
@@ -202,13 +165,4 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
      * Liefert alle Strecken von dem Athleten
      */
     List<IRoute> getRoute(IAthlete athlete);
-
-    /**
-     * Speichert eine Strecke um Strecken geografisch miteinander zu
-     * vergleichen.
-     * 
-     * @param strecke
-     *            {@link IStrecke}
-     */
-    void saveStrecke(IStrecke strecke);
 }

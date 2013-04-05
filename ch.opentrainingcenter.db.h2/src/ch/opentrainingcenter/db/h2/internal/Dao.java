@@ -1,37 +1,47 @@
 package ch.opentrainingcenter.db.h2.internal;
 
-import org.eclipse.core.runtime.Platform;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 public class Dao {
-    private static final String DEVELOPING_FLAG = "developing"; //$NON-NLS-1$
-    private static boolean DEVELOPING = false;
-    private Session session;
-    private SessionFactory sessionFactory;
 
-    static {
-        final String[] commandLineArgs = Platform.getCommandLineArgs();
-        for (final String cmdArg : commandLineArgs) {
-            if (cmdArg.contains(DEVELOPING_FLAG)) {
-                DEVELOPING = true;
-            }
-        }
+    public enum USAGE {
+        /**
+         * Use a production db configuration
+         */
+        PRODUCTION,
+        /**
+         * use the otc_dev database
+         */
+        DEVELOPING,
+        /**
+         * the content of the database will be deleted after each test.
+         */
+        TEST
     }
 
-    public Dao() {
+    private Session session;
+    private SessionFactory sessionFactory;
+    private final USAGE usage;
 
+    public Dao(final USAGE usage) {
+        this.usage = usage;
     }
 
     public Session getSession() {
         if (session == null) {
             final org.hibernate.cfg.Configuration c = new org.hibernate.cfg.Configuration();
-            if (DEVELOPING) {
-                sessionFactory = c.configure("hibernate_dev.cfg.xml").buildSessionFactory(); //$NON-NLS-1$
-            } else {
+            switch (usage) {
+            case PRODUCTION:
                 sessionFactory = c.configure("hibernate.cfg.xml").buildSessionFactory(); //$NON-NLS-1$
+                break;
+            case DEVELOPING:
+                sessionFactory = c.configure("hibernate_dev.cfg.xml").buildSessionFactory(); //$NON-NLS-1$
+                break;
+            default:
+                sessionFactory = c.configure("hibernate_junit.cfg.xml").buildSessionFactory(); //$NON-NLS-1$
             }
             session = sessionFactory.openSession();
         }

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 21.10.2011 12:19:41 by Hibernate Tools 3.4.0.CR1 -->
+<!-- Generated 04.04.2013 20:38:06 by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
 	<class name="ch.opentrainingcenter.transfer.impl.Route" table="ROUTE"
 		schema="PUBLIC" catalog="OTC">
@@ -16,17 +16,11 @@
 			update="false" cascade="all">
 			<column name="ID_FK_ATHLETE" />
 		</many-to-one>
-		<property name="name" type="java.lang.String">
+		<property name="name" type="string">
 			<column name="NAME" />
 		</property>
-		<property name="beschreibung" type="java.lang.String">
+		<property name="beschreibung" type="string">
 			<column name="BESCHREIBUNG" />
 		</property>
-		<set name="importeds" table="IMPORTED" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="ID_FK_ROUTE" />
-            </key>
-            <one-to-many class="ch.opentrainingcenter.transfer.impl.Imported" />
-        </set>
 	</class>
 </hibernate-mapping>

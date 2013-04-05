@@ -171,14 +171,14 @@
          install-size="0"
          version="0.0.0"
          unpack="false"/>
-
+<!--
    <plugin
          id="ch.opentrainingcenter.importer.fitnesslog"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
-
+-->
    <plugin
          id="org.eclipse.core.databinding.beans"
          download-size="0"

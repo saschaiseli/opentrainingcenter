@@ -18,7 +18,6 @@ import ch.opentrainingcenter.model.navigation.ConcreteImported;
 import ch.opentrainingcenter.model.navigation.INavigationItem;
 import ch.opentrainingcenter.model.navigation.INavigationParent;
 import ch.opentrainingcenter.transfer.IHealth;
-import ch.opentrainingcenter.transfer.IImported;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.ITrainingType;
 
@@ -130,18 +129,14 @@ public class StatusLineWriterTest {
 
     @Test
     public void testChildMitImported() {
-
-        final IImported imported = Mockito.mock(IImported.class);
-        Mockito.when(imported.getActivityId()).thenReturn(date);
-        final ITrainingType type = Mockito.mock(ITrainingType.class);
-        Mockito.when(type.getId()).thenReturn(42);
-        Mockito.when(imported.getTrainingType()).thenReturn(type);
         final ITraining training = Mockito.mock(ITraining.class);
         Mockito.when(training.getLaengeInMeter()).thenReturn(1042.4);
-        Mockito.when(training.getDauerInSekunden()).thenReturn(54321.6);
-
-        Mockito.when(imported.getTraining()).thenReturn(training);
-        final INavigationItem item = new ConcreteImported(imported);
+        Mockito.when(training.getDauer()).thenReturn(54321.6);
+        final ITrainingType type = Mockito.mock(ITrainingType.class);
+        Mockito.when(type.getId()).thenReturn(42);
+        Mockito.when(training.getTrainingType()).thenReturn(type);
+        Mockito.when(training.getDatum()).thenReturn(date.getTime());
+        final INavigationItem item = new ConcreteImported(training);
 
         // execute
         writer.writeStatusLine(item);
@@ -156,8 +151,8 @@ public class StatusLineWriterTest {
     @Test
     public void testParentMitImported() {
         final INavigationParent selection = ModelFactory.createNavigationParent();
-        final IImported imported = Mockito.mock(IImported.class);
-        Mockito.when(imported.getActivityId()).thenReturn(date);
+        final ITraining imported = Mockito.mock(ITraining.class);
+        Mockito.when(imported.getDatum()).thenReturn(date.getTime());
         final INavigationItem item = new ConcreteImported(imported);
 
         selection.add(item);
@@ -192,12 +187,12 @@ public class StatusLineWriterTest {
         final ConcreteImported imported = Mockito.mock(ConcreteImported.class);
         final ConcreteHealth health = Mockito.mock(ConcreteHealth.class);
 
-        Mockito.when(imported.getActivityId()).thenReturn(date);
+        Mockito.when(imported.getDatum()).thenReturn(date.getTime());
 
         final ConcreteImported item = new ConcreteImported(imported);
 
         Mockito.when(health.getDate()).thenReturn(date);
-        Mockito.when(item.getDate()).thenReturn(date);
+        // Mockito.when(item.getDate()).thenReturn(date);
 
         selection.add(health);
         selection.add(item);

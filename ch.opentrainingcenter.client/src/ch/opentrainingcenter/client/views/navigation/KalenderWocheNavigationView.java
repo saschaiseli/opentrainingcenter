@@ -39,7 +39,7 @@ import ch.opentrainingcenter.client.views.overview.SingleActivityViewPart;
 import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.core.cache.Cache;
 import ch.opentrainingcenter.core.cache.IRecordListener;
-import ch.opentrainingcenter.core.cache.TrainingCenterDataCache;
+import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.importer.ConvertContainer;
@@ -56,10 +56,9 @@ import ch.opentrainingcenter.model.navigation.IKalenderWocheNavigationModel;
 import ch.opentrainingcenter.model.navigation.INavigationItem;
 import ch.opentrainingcenter.model.navigation.NavigationElementComparer;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
-import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IHealth;
-import ch.opentrainingcenter.transfer.IImported;
+import ch.opentrainingcenter.transfer.ITraining;
 
 public class KalenderWocheNavigationView extends ViewPart {
 
@@ -69,7 +68,7 @@ public class KalenderWocheNavigationView extends ViewPart {
 
     private final IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 
-    private final Cache cache = TrainingCenterDataCache.getInstance();
+    private final Cache cache = TrainingCache.getInstance();
     private final HealthCache healthCache = HealthCache.getInstance();
     private final IKalenderWocheNavigationModel treeModel = ModelFactory.createKwModel();
 
@@ -98,7 +97,7 @@ public class KalenderWocheNavigationView extends ViewPart {
             @Override
             public void run() {
                 try {
-                    final List<IImported> imported = db.getAllImported(athlete);
+                    final List<ITraining> imported = db.getAllImported(athlete);
                     treeModel.reset();
                     treeModel.addItems(healthCache.getAll());
                     treeModel.addItems(DecoratImported.decorate(imported));
@@ -175,7 +174,7 @@ public class KalenderWocheNavigationView extends ViewPart {
                 final Object item = selection.getFirstElement();
 
                 if (item instanceof ConcreteImported) {
-                    openSingleRunView(((IImported) item));
+                    openSingleRunView(((ITraining) item));
                 }
 
                 if (item instanceof IHealth) {
@@ -204,25 +203,25 @@ public class KalenderWocheNavigationView extends ViewPart {
             }
         });
 
-        cache.addListener(new IRecordListener<ActivityT>() {
+        cache.addListener(new IRecordListener<ITraining>() {
 
             @Override
-            public void deleteRecord(final Collection<ActivityT> entry) {
+            public void deleteRecord(final Collection<ITraining> entry) {
 
                 updateModel();
                 final IWorkbenchPage wbp = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-                for (final ActivityT record : entry) {
+                for (final ITraining record : entry) {
                     final String secondaryViewId = getSecondaryId(record);
                     wbp.hideView(wbp.findViewReference(SingleActivityViewPart.ID, secondaryViewId));
                 }
             }
 
             @Override
-            public void recordChanged(final Collection<ActivityT> entry) {
+            public void recordChanged(final Collection<ITraining> entry) {
                 updateModel();
             }
         });
-        final IImported newestRun = db.getNewestRun(athlete);
+        final ITraining newestRun = db.getNewestRun(athlete);
         if (newestRun != null) {
             openSingleRunView(newestRun);
         }
@@ -245,8 +244,8 @@ public class KalenderWocheNavigationView extends ViewPart {
         });
     }
 
-    private String getSecondaryId(final ActivityT record) {
-        return String.valueOf(record.getId().hashCode());
+    private String getSecondaryId(final ITraining record) {
+        return String.valueOf(record.getDatum());
     }
 
     /**
@@ -254,8 +253,8 @@ public class KalenderWocheNavigationView extends ViewPart {
      * 
      * @param record
      */
-    private void openSingleRunView(final IImported record) {
-        context.setSelectedId(record.getActivityId());
+    private void openSingleRunView(final ITraining record) {
+        context.setSelectedId(record.getDatum());
         final IImportedConverter loader = ImporterFactory.createGpsFileLoader(cc, store.getString(PreferenceConstants.GPS_FILE_LOCATION_PROG));
         final LoadActivityJob job = new LoadActivityJob(Messages.NavigationView1, record, cache, loader);
         job.addJobChangeListener(new ImportActivityJobListener(record));

@@ -2,8 +2,6 @@ package ch.opentrainingcenter.transfer;
 
 import java.util.Set;
 
-import ch.opentrainingcenter.transfer.impl.Health;
-
 public interface IAthlete {
 
     int getId();
@@ -14,15 +12,15 @@ public interface IAthlete {
 
     void setName(String name);
 
-    Set<Health> getHealths();
+    Set<IHealth> getHealths();
 
-    void setHealths(Set<Health> healths);
+    void setHealths(Set<IHealth> healths);
 
-    Set<IImported> getImporteds();
+    Set<ITraining> getTrainings();
 
-    void setImporteds(Set<IImported> importeds);
+    void setTrainings(Set<ITraining> trainings);
 
-    void addImported(IImported record);
+    void addTraining(ITraining record);
 
     Integer getAge();
 

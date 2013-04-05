@@ -42,7 +42,9 @@
       <plugin id="ch.opentrainingcenter.core"/>
       <plugin id="ch.opentrainingcenter.db.h2"/>
       <plugin id="ch.opentrainingcenter.i18n"/>
+      <!--
       <plugin id="ch.opentrainingcenter.importer.fitnesslog"/>
+      --
       <plugin id="ch.opentrainingcenter.importer.tcx"/>
       <plugin id="ch.opentrainingcenter.model"/>
       <plugin id="ch.opentrainingcenter.tcx"/>

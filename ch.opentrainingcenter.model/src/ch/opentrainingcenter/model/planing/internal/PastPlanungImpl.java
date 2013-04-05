@@ -4,8 +4,8 @@ import java.util.List;
 
 import ch.opentrainingcenter.model.planing.IPastPlanung;
 import ch.opentrainingcenter.model.planing.PlanungStatus;
-import ch.opentrainingcenter.transfer.IImported;
 import ch.opentrainingcenter.transfer.IPlanungWoche;
+import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.ITrainingType;
 
 public class PastPlanungImpl implements IPastPlanung {
@@ -15,7 +15,7 @@ public class PastPlanungImpl implements IPastPlanung {
     private final int kmLangerLaufEffective;
     private final boolean interval;
 
-    public PastPlanungImpl(final IPlanungWoche planung, final List<IImported> effective) {
+    public PastPlanungImpl(final IPlanungWoche planung, final List<ITraining> effective) {
         this.planung = planung;
         if (effective == null || effective.isEmpty()) {
             kmEffective = 0;
@@ -30,13 +30,13 @@ public class PastPlanungImpl implements IPastPlanung {
 
     }
 
-    private int[] analyse(final List<IImported> effective) {
+    private int[] analyse(final List<ITraining> effective) {
         final int[] result = new int[3];
         double km = 0;
         int longest = 0;
         boolean inter = false;
-        for (final IImported record : effective) {
-            final double kmTotal = record.getTraining().getLaengeInMeter() / 1000;
+        for (final ITraining record : effective) {
+            final double kmTotal = record.getLaengeInMeter() / 1000;
             if (longest < kmTotal) {
                 longest = (int) kmTotal;
             }

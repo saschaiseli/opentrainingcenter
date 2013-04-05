@@ -5,13 +5,13 @@ import java.util.Collection;
 
 import ch.opentrainingcenter.core.cache.IRecordListener;
 
-public class MockRecordListener<ActivityT> implements IRecordListener<ActivityT> {
+public class MockRecordListener<ITraining> implements IRecordListener<ITraining> {
 
-    private final Collection<ActivityT> changedEntry = new ArrayList<ActivityT>();
-    private final Collection<ActivityT> deletedEntry = new ArrayList<ActivityT>();
+    private final Collection<ITraining> changedEntry = new ArrayList<ITraining>();
+    private final Collection<ITraining> deletedEntry = new ArrayList<ITraining>();
 
     @Override
-    public void recordChanged(final Collection<ActivityT> entry) {
+    public void recordChanged(final Collection<ITraining> entry) {
         this.changedEntry.clear();
         if (entry != null) {
             this.changedEntry.addAll(entry);
@@ -19,18 +19,17 @@ public class MockRecordListener<ActivityT> implements IRecordListener<ActivityT>
     }
 
     @Override
-    public void deleteRecord(final Collection<ActivityT> entry) {
-        this.deletedEntry.clear();
+    public void deleteRecord(final Collection<ITraining> entry) {
         if (entry != null) {
             this.deletedEntry.addAll(entry);
         }
     }
 
-    public Collection<ActivityT> getChangedEntry() {
+    public Collection<ITraining> getChangedEntry() {
         return changedEntry;
     }
 
-    public Collection<ActivityT> getDeletedEntry() {
+    public Collection<ITraining> getDeletedEntry() {
         return deletedEntry;
     }
 

@@ -1,6 +1,7 @@
 package ch.opentrainingcenter.client.views.navigation;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.eclipse.jface.action.IStatusLineManager;
@@ -12,7 +13,6 @@ import ch.opentrainingcenter.model.navigation.ConcreteHealth;
 import ch.opentrainingcenter.model.navigation.ConcreteImported;
 import ch.opentrainingcenter.model.navigation.INavigationItem;
 import ch.opentrainingcenter.model.navigation.INavigationParent;
-import ch.opentrainingcenter.transfer.IImported;
 import ch.opentrainingcenter.transfer.ITraining;
 
 class StatusLineWriter {
@@ -46,11 +46,11 @@ class StatusLineWriter {
                 double dauer = 0d;
                 for (final ConcreteImported item : items) {
                     count++;
-                    distance += item.getTraining().getLaengeInMeter();
-                    dauer += item.getTraining().getDauerInSekunden();
+                    distance += item.getLaengeInMeter();
+                    dauer += item.getDauer();
                 }
-                final String msg = Messages.StatusLineWriter_19 + count + Messages.StatusLineWriter_20 + DistanceHelper.roundDistanceFromMeterToKm(distance) + Messages.StatusLineWriter_21
-                        + TimeHelper.convertSecondsToHumanReadableZeit(dauer);
+                final String msg = Messages.StatusLineWriter_19 + count + Messages.StatusLineWriter_20 + DistanceHelper.roundDistanceFromMeterToKm(distance)
+                        + Messages.StatusLineWriter_21 + TimeHelper.convertSecondsToHumanReadableZeit(dauer);
                 writeToStatusLine(msg);
             } else {
                 writeToStatusLine(""); //$NON-NLS-1$
@@ -150,12 +150,11 @@ class StatusLineWriter {
         return Messages.StatusLineWriter_15 + size;
     }
 
-    private void writeToStatusLine(final IImported record) {
+    private void writeToStatusLine(final ITraining training) {
         final StringBuffer str = new StringBuffer();
-        final ITraining training = record.getTraining();
-        str.append(Messages.StatusLineWriter_16).append(TimeHelper.convertDateToString(record.getActivityId(), false));
+        str.append(Messages.StatusLineWriter_16).append(TimeHelper.convertDateToString(new Date(training.getDatum()), false));
         str.append(Messages.StatusLineWriter_17).append(DistanceHelper.roundDistanceFromMeterToKmMitEinheit(training.getLaengeInMeter()));
-        str.append(Messages.StatusLineWriter_18).append(TimeHelper.convertSecondsToHumanReadableZeit(training.getDauerInSekunden()));
+        str.append(Messages.StatusLineWriter_18).append(TimeHelper.convertSecondsToHumanReadableZeit(training.getDauer()));
         writeToStatusLine(str.toString());
     }
 

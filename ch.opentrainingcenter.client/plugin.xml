@@ -255,11 +255,6 @@
             id="ch.opentrainingcenter.client.commands.CompareRecords"
             name="%vergleicht2laeufe">
       </command>
-      <command
-            description="%speichervergleichslauf_desc"
-            id="ch.opentrainingcenter.client.commands.StoreCompareRecords"
-            name="%speichervergleichslauf">
-      </command>
    </extension>
    <extension
          id="opentrainingcenter"
@@ -473,22 +468,6 @@
          <command
                commandId="ch.opentrainingcenter.client.commands.CompareRecords"
                label="%vergleicht2laeufe"
-               style="push">
-            <visibleWhen
-                  checkEnabled="true">
-               <iterate
-                     operator="and">
-                  <or>
-                     <instanceof
-                           value="ch.opentrainingcenter.model.navigation.ConcreteImported">
-                     </instanceof>
-                  </or>
-               </iterate>
-            </visibleWhen>
-         </command>
-         <command
-               commandId="ch.opentrainingcenter.client.commands.StoreCompareRecords"
-               label="%speichervergleichslauf"
                style="push">
             <visibleWhen
                   checkEnabled="true">
@@ -753,15 +732,6 @@
          <enabledWhen>
             <count
                   value="2">
-            </count>
-         </enabledWhen>
-      </handler>
-      <handler
-            class="ch.opentrainingcenter.client.commands.StoreCompareRecords"
-            commandId="ch.opentrainingcenter.client.commands.StoreCompareRecords">
-         <enabledWhen>
-            <count
-                  value="1">
             </count>
          </enabledWhen>
       </handler>

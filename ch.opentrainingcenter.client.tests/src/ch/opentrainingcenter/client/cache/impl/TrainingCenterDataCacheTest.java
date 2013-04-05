@@ -1,8 +1,12 @@
 package ch.opentrainingcenter.client.cache.impl;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.xml.datatype.DatatypeConfigurationException;
@@ -15,34 +19,27 @@ import org.mockito.Mockito;
 import ch.opentrainingcenter.client.cache.ActivityTTestHelper;
 import ch.opentrainingcenter.client.cache.MockRecordListener;
 import ch.opentrainingcenter.client.views.ApplicationContext;
-import ch.opentrainingcenter.core.cache.TrainingCenterDataCache;
+import ch.opentrainingcenter.core.cache.Cache;
+import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
-import ch.opentrainingcenter.tcx.ActivityT;
-import ch.opentrainingcenter.tcx.ExtensionsT;
 import ch.opentrainingcenter.transfer.ActivityExtension;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
-import ch.opentrainingcenter.transfer.IImported;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.ITrainingType;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 @SuppressWarnings("nls")
 public class TrainingCenterDataCacheTest {
 
     private static IDatabaseAccess mockDataAccess;
-    private static TrainingCenterDataCache cache;
+    private static Cache cache;
 
-    final MockRecordListener<ActivityT> listener = new MockRecordListener<ActivityT>();
+    final MockRecordListener<ITraining> listener = new MockRecordListener<ITraining>();
 
     @Before
     public void before() {
         mockDataAccess = Mockito.mock(IDatabaseAccess.class);
-        cache = TrainingCenterDataCache.getInstanceForTests(mockDataAccess);
+        cache = TrainingCache.getInstance();
     }
 
     @After
@@ -57,21 +54,19 @@ public class TrainingCenterDataCacheTest {
 
     @Test
     public void testGetIfEmpty() {
-        final ActivityT activity = cache.get(new Date());
+        final ITraining activity = cache.get(42L);
         assertNull("Wenn nichts hinzugefügt wurde, kommt auch nix zurück.", activity);
     }
 
     @Test
     public void simpleAdd() throws DatatypeConfigurationException {
-        final ActivityT activity = ActivityTTestHelper.createActivity(2012);
+        final ITraining activity = ActivityTTestHelper.createActivity(2012);
 
         // execute
         cache.add(activity);
 
         // assert
-        final GregorianCalendar gregorianCalendar = activity.getId().toGregorianCalendar();
-        final Date date = gregorianCalendar.getTime();
-        final ActivityT activityFromCache = cache.get(date);
+        final ITraining activityFromCache = cache.get(activity.getDatum());
         assertNotNull("Activity muss im Cache gefunden werden: ", activityFromCache);
     }
 
@@ -81,16 +76,16 @@ public class TrainingCenterDataCacheTest {
 
         cache.addListener(listener);
 
-        final ActivityT activityA = ActivityTTestHelper.createActivity(2012);
-        final ActivityT activityB = ActivityTTestHelper.createActivity(2013);
+        final ITraining activityA = ActivityTTestHelper.createActivity(2012);
+        final ITraining activityB = ActivityTTestHelper.createActivity(2013);
 
-        final Date dateA = activityA.getId().toGregorianCalendar().getTime();
-        final Date dateB = activityB.getId().toGregorianCalendar().getTime();
+        final Long dateA = activityA.getDatum();
+        final Long dateB = activityB.getDatum();
 
         cache.add(activityA);
         cache.add(activityB);
 
-        final List<Date> deletedIds = new ArrayList<Date>();
+        final List<Long> deletedIds = new ArrayList<Long>();
         deletedIds.add(dateA);
         deletedIds.add(dateB);
         // execute
@@ -104,13 +99,13 @@ public class TrainingCenterDataCacheTest {
     public void testRemoveOne() throws DatatypeConfigurationException {
         // prepare
         cache.addListener(listener);
-        final ActivityT activityA = ActivityTTestHelper.createActivity(2012);
-        final ActivityT activityB = ActivityTTestHelper.createActivity(2013);
+        final ITraining activityA = ActivityTTestHelper.createActivity(2012);
+        final ITraining activityB = ActivityTTestHelper.createActivity(2013);
 
-        final Date dateA = activityA.getId().toGregorianCalendar().getTime();
-        final Date dateB = activityB.getId().toGregorianCalendar().getTime();
-        final IImported impA = createImported(dateA);
-        final IImported impB = createImported(dateB);
+        final Long dateA = activityA.getDatum();
+        final Long dateB = activityB.getDatum();
+        final ITraining impA = createImported(dateA);
+        final ITraining impB = createImported(dateB);
 
         Mockito.when(mockDataAccess.getImportedRecord(dateA)).thenReturn(impA);
         Mockito.when(mockDataAccess.getImportedRecord(dateB)).thenReturn(impB);
@@ -118,8 +113,8 @@ public class TrainingCenterDataCacheTest {
         cache.add(activityA);
         cache.add(activityB);
 
-        final List<Date> deletedIds = new ArrayList<Date>();
-        deletedIds.add(new Date());
+        final List<Long> deletedIds = new ArrayList<Long>();
+        deletedIds.add(42L);
         deletedIds.add(dateB);
         // execute
         cache.remove(deletedIds);
@@ -171,85 +166,76 @@ public class TrainingCenterDataCacheTest {
 
     @Test
     public void containsMitNull() {
-        assertFalse("Nichts im cache", cache.contains(null));
+        assertFalse("Nichts im cache", cache.contains(-42L));
     }
 
     @Test
     public void containsTest() throws DatatypeConfigurationException {
 
         // prepare
-        final ActivityT activityA = ActivityTTestHelper.createActivity(2012);
-        final ActivityT activityB = ActivityTTestHelper.createActivity(2013);
+        final ITraining activityA = ActivityTTestHelper.createActivity(2012);
+        final ITraining activityB = ActivityTTestHelper.createActivity(2013);
 
-        final Date dateA = activityA.getId().toGregorianCalendar().getTime();
-        final Date dateB = activityB.getId().toGregorianCalendar().getTime();
+        final Long dateA = activityA.getDatum();
+        final Long dateB = activityB.getDatum();
 
         cache.add(activityA);
         cache.add(activityB);
 
         assertTrue("Erster Record ist im Cache (" + dateA + ")", cache.contains(dateA));
         assertTrue("Zweiter Record ist im Cache (" + dateB + ")", cache.contains(dateB));
-        assertFalse("Wenn nichts gefunden", cache.contains(new Date()));
+        assertFalse("Wenn nichts gefunden", cache.contains(-42L));
     }
 
     @Test
     public void testNotesNull() throws DatatypeConfigurationException {
         // prepare
-        final ActivityT activityA = ActivityTTestHelper.createActivity(2012);
+        final ITraining activityA = ActivityTTestHelper.createActivity(2012);
 
-        final Date dateA = activityA.getId().toGregorianCalendar().getTime();
+        final Long dateA = activityA.getDatum();
 
         // execute
-        cache.updateExtension(dateA, new ActivityExtension("test", null, null));
+        cache.updateExtension(dateA, new ActivityExtension("", null, null));
         cache.add(activityA);
 
         // assert
-        final ActivityT activityTFromCache = cache.get(dateA);
-        final ExtensionsT extensions = activityTFromCache.getExtensions();
-        ActivityExtension ae = new ActivityExtension();
-        if (extensions != null) {
-            ae = (ActivityExtension) extensions.getAny().get(0);
-        }
-        assertEquals("Note ist nicht gesetzt, da Record erst später in cache kam", "", ae.getNote());
+        final ITraining activityTFromCache = cache.get(dateA);
+        assertEquals("Note ist nicht gesetzt, da Record erst später in cache kam", "", activityTFromCache.getNote());
     }
 
     @Test
     public void testNotes() throws DatatypeConfigurationException {
         // prepare
-        final ActivityT activityA = ActivityTTestHelper.createActivity(2012);
+        final ITraining activityA = ActivityTTestHelper.createActivity(2012);
 
-        final Date dateA = activityA.getId().toGregorianCalendar().getTime();
+        final Long dateA = activityA.getDatum();
         cache.add(activityA);
 
         // execute
         cache.updateExtension(dateA, new ActivityExtension("test", null, null));
 
         // assert
-        final ActivityT activityTFromCache = cache.get(dateA);
+        final ITraining activityTFromCache = cache.get(dateA);
 
-        final ExtensionsT extensions = activityTFromCache.getExtensions();
-        final ActivityExtension ae = (ActivityExtension) extensions.getAny().get(0);
-        assertEquals("Note muss korrekt gesetzt sein", "test", ae.getNote());
+        assertEquals("Note muss korrekt gesetzt sein", "test", activityTFromCache.getNote());
     }
 
     @Test
     public void testNotesNotification() throws DatatypeConfigurationException {
         // prepare
         cache.addListener(listener);
-        final ActivityT activityA = ActivityTTestHelper.createActivity(2012);
+        final ITraining activityA = ActivityTTestHelper.createActivity(2012);
 
-        final Date dateA = activityA.getId().toGregorianCalendar().getTime();
+        final Long dateA = activityA.getDatum();
         cache.add(activityA);
 
         // execute
         cache.updateExtension(dateA, new ActivityExtension("test", null, null));
 
         // assert
-        final ActivityT activityTFromCache = cache.get(dateA);
-        final ExtensionsT extensions = activityTFromCache.getExtensions();
-        final ActivityExtension ae = (ActivityExtension) extensions.getAny().get(0);
+        final ITraining activityTFromCache = cache.get(dateA);
 
-        assertEquals("Note muss korrekt gesetzt sein", "test", ae.getNote());
+        assertEquals("Note muss korrekt gesetzt sein", "test", activityTFromCache.getNote());
         assertEquals("Ein Record-Changed muss an Listener propagiert werden", 1, listener.getChangedEntry().size());
     }
 
@@ -269,8 +255,8 @@ public class TrainingCenterDataCacheTest {
     @Test
     public void testToString() throws DatatypeConfigurationException {
         // prepare
-        final ActivityT activityA = ActivityTTestHelper.createActivity(2012);
-        final ActivityT activityB = ActivityTTestHelper.createActivity(2013);
+        final ITraining activityA = ActivityTTestHelper.createActivity(2012);
+        final ITraining activityB = ActivityTTestHelper.createActivity(2013);
 
         cache.add(activityA);
         cache.add(activityB);
@@ -278,14 +264,11 @@ public class TrainingCenterDataCacheTest {
         assertEquals("Cache: Anzahl Elemente: 2", cache.toString());
     }
 
-    private IImported createImported(final Date date) {
-        final IImported result = CommonTransferFactory.createIImported();
-        result.setActivityId(date);
-        final ITrainingType type = CommonTransferFactory.createTrainingType(1, "junit", "description");
-        result.setTrainingType(type);
+    private ITraining createImported(final Long date) {
         final ITraining overview = CommonTransferFactory.createTraining(date, 1, 1, 1, 1, 1, new ActivityExtension());
-        result.setTraining(overview);
-        return result;
+        final ITrainingType type = CommonTransferFactory.createTrainingType(1, "junit", "description");
+        overview.setTrainingType(type);
+        return overview;
     }
 
 }

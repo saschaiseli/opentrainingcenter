@@ -5,4 +5,5 @@ Bundle-SymbolicName: ch.opentrainingcenter.db.h2.tests
 Bundle-Version: 1.0.0.qualifier
 Fragment-Host: ch.opentrainingcenter.db.h2;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Require-Bundle: junit;bundle-version="1.0.0"
+Require-Bundle: junit,
+ jodatime

@@ -15,7 +15,8 @@ import java.util.List;
 public interface ICache<K, V> {
 
     /**
-     * Fügt dem Cache ein Element hinzu.
+     * Fügt dem Cache ein Element hinzu. Wenn es schon im Cache ist, wird es
+     * aktualisiert.
      */
     void add(final V value);
 

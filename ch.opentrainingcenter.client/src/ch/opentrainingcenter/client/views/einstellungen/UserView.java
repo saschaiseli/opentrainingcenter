@@ -47,7 +47,7 @@ import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.client.views.ahtlete.SportlerValidator;
 import ch.opentrainingcenter.client.views.databinding.NumberValidator;
 import ch.opentrainingcenter.core.PreferenceConstants;
-import ch.opentrainingcenter.core.cache.TrainingCenterDataCache;
+import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.i18n.Messages;
@@ -308,7 +308,7 @@ public class UserView extends ViewPart {
                 LOGGER.info("save " + sportler); //$NON-NLS-1$
                 final IAthlete athlete = CommonTransferFactory.createAthlete(sportler.getName(), sportler.getAge(), sportler.getMaxHeartBeat());
                 try {
-                    TrainingCenterDataCache.getInstance().resetCache();
+                    TrainingCache.getInstance().resetCache();
                     DatabaseAccessFactory.getDatabaseAccess().save(athlete);
                     resetForm();
                     user.add(athlete.getName(), index);

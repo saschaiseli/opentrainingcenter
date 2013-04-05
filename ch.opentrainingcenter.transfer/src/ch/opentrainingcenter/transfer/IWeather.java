@@ -1,6 +1,5 @@
 package ch.opentrainingcenter.transfer;
 
-import java.util.Set;
 
 public interface IWeather {
 
@@ -8,6 +7,6 @@ public interface IWeather {
 
     String getWetter();
 
-    Set<ITraining> getTrainings();
+    // Set<ITraining> getTrainings();
 
 }

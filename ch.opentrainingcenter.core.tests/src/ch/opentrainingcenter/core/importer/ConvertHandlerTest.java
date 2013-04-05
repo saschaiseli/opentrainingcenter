@@ -1,5 +1,9 @@
 package ch.opentrainingcenter.core.importer;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -10,11 +14,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import ch.opentrainingcenter.tcx.ActivityT;
-import ch.opentrainingcenter.tcx.TrainingCenterDatabaseT;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import ch.opentrainingcenter.transfer.ITraining;
 
 @SuppressWarnings("nls")
 public class ConvertHandlerTest {
@@ -71,17 +71,12 @@ public class ConvertHandlerTest {
         }
 
         @Override
-        public TrainingCenterDatabaseT convert(final File file) throws Exception {
-            return null;
-        }
-
-        @Override
         public String getFilePrefix() {
             return prefix;
         }
 
         @Override
-        public List<ActivityT> convertActivity(final File file) throws Exception {
+        public List<ITraining> convertActivity(final File file) throws Exception {
             return null;
         }
 

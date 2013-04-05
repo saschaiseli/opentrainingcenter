@@ -21,13 +21,13 @@ import ch.opentrainingcenter.client.action.GoldMedalAction;
 import ch.opentrainingcenter.client.model.Units;
 import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.core.cache.IRecordListener;
-import ch.opentrainingcenter.core.cache.TrainingCenterDataCache;
+import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.model.training.IGoldMedalModel;
 import ch.opentrainingcenter.model.training.Intervall;
-import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.transfer.IAthlete;
+import ch.opentrainingcenter.transfer.ITraining;
 
 public class BestRunsView extends ViewPart {
 
@@ -70,18 +70,19 @@ public class BestRunsView extends ViewPart {
     private Section sectionOverall;
 
     public BestRunsView() {
-        TrainingCenterDataCache.getInstance().addListener(new IRecordListener<ActivityT>() {
+        TrainingCache.getInstance().addListener(new IRecordListener<ITraining>() {
 
             @Override
-            public void deleteRecord(final Collection<ActivityT> entry) {
+            public void recordChanged(final Collection<ITraining> entry) {
                 update();
             }
 
             @Override
-            public void recordChanged(final Collection<ActivityT> entry) {
+            public void deleteRecord(final Collection<ITraining> entry) {
                 update();
             }
         });
+
     }
 
     private void addPace(final Composite body, final IGoldMedalModel model) {

@@ -1,5 +1,8 @@
 package ch.opentrainingcenter.client.charts;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -18,12 +21,9 @@ import ch.opentrainingcenter.core.helper.TimeHelper;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
-import ch.opentrainingcenter.transfer.IImported;
 import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.ITrainingType;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 @SuppressWarnings("nls")
 public class TrainingOverViewDatenAufbereitenTest {
@@ -75,22 +75,20 @@ public class TrainingOverViewDatenAufbereitenTest {
     @Test
     public void testNONE() {
         // prepare
-        final List<IImported> values = new ArrayList<IImported>();
-        final IImported mockA = Mockito.mock(IImported.class);
+        final List<ITraining> values = new ArrayList<ITraining>();
+        final ITraining mockA = Mockito.mock(ITraining.class);
         final ITraining training = Mockito.mock(ITraining.class);
-        Mockito.when(mockA.getTraining()).thenReturn(training);
         final ITrainingType type = Mockito.mock(ITrainingType.class);
         Mockito.when(type.getId()).thenReturn(RunType.NONE.getIndex());
         Mockito.when(mockA.getTrainingType()).thenReturn(type);
         values.add(mockA);
 
-        final IImported mockB = Mockito.mock(IImported.class);
-        Mockito.when(mockB.getTraining()).thenReturn(training);
+        final ITraining mockB = Mockito.mock(ITraining.class);
         Mockito.when(mockB.getTrainingType()).thenReturn(type);
         values.add(mockB);
 
         final IAthlete athlete = CommonTransferFactory.createAthlete("name", 42, 42);
-        final IRoute route = CommonTransferFactory.createRoute(42, "name", "beschreibung", athlete);
+        final IRoute route = CommonTransferFactory.createRoute("name", "beschreibung", athlete);
         Mockito.when(training.getRoute()).thenReturn(route);
 
         Mockito.when(mockA.getRoute()).thenReturn(route);
@@ -109,17 +107,16 @@ public class TrainingOverViewDatenAufbereitenTest {
     @Test
     public void testEXT() {
         // prepare
-        final List<IImported> values = new ArrayList<IImported>();
-        final IImported mockA = Mockito.mock(IImported.class);
+        final List<ITraining> values = new ArrayList<ITraining>();
+        final ITraining mockA = Mockito.mock(ITraining.class);
         final ITraining training = Mockito.mock(ITraining.class);
-        Mockito.when(mockA.getTraining()).thenReturn(training);
         final ITrainingType type = Mockito.mock(ITrainingType.class);
         Mockito.when(type.getId()).thenReturn(RunType.EXT_INTERVALL.getIndex());
         Mockito.when(mockA.getTrainingType()).thenReturn(type);
 
         final IAthlete athlete = CommonTransferFactory.createAthlete("name", 42, 42);
 
-        final IRoute route = CommonTransferFactory.createRoute(42, "name", "beschreibung", athlete);
+        final IRoute route = CommonTransferFactory.createRoute("name", "beschreibung", athlete);
         Mockito.when(training.getRoute()).thenReturn(route);
         Mockito.when(mockA.getRoute()).thenReturn(route);
 
@@ -137,10 +134,9 @@ public class TrainingOverViewDatenAufbereitenTest {
     public void testINT_INTERVALL() {
         // prepare
 
-        final List<IImported> values = new ArrayList<IImported>();
-        final IImported mockA = Mockito.mock(IImported.class);
+        final List<ITraining> values = new ArrayList<ITraining>();
+        final ITraining mockA = Mockito.mock(ITraining.class);
         final ITraining training = Mockito.mock(ITraining.class);
-        Mockito.when(mockA.getTraining()).thenReturn(training);
         final ITrainingType type = Mockito.mock(ITrainingType.class);
         Mockito.when(type.getId()).thenReturn(RunType.INT_INTERVALL.getIndex());
         Mockito.when(mockA.getTrainingType()).thenReturn(type);
@@ -148,7 +144,7 @@ public class TrainingOverViewDatenAufbereitenTest {
         values.add(mockA);
 
         final IAthlete athlete = CommonTransferFactory.createAthlete("name", 42, 42);
-        final IRoute route = CommonTransferFactory.createRoute(42, "name", "beschreibung", athlete);
+        final IRoute route = CommonTransferFactory.createRoute("name", "beschreibung", athlete);
         Mockito.when(training.getRoute()).thenReturn(route);
 
         Mockito.when(mockA.getRoute()).thenReturn(route);
@@ -166,17 +162,16 @@ public class TrainingOverViewDatenAufbereitenTest {
     @Test
     public void testLONG_JOG() {
         // prepare
-        final List<IImported> values = new ArrayList<IImported>();
-        final IImported mockA = Mockito.mock(IImported.class);
+        final List<ITraining> values = new ArrayList<ITraining>();
+        final ITraining mockA = Mockito.mock(ITraining.class);
         final ITraining training = Mockito.mock(ITraining.class);
-        Mockito.when(mockA.getTraining()).thenReturn(training);
         final ITrainingType type = Mockito.mock(ITrainingType.class);
         Mockito.when(type.getId()).thenReturn(RunType.LONG_JOG.getIndex());
         Mockito.when(mockA.getTrainingType()).thenReturn(type);
 
         values.add(mockA);
         final IAthlete athlete = CommonTransferFactory.createAthlete("name", 42, 42);
-        final IRoute route = CommonTransferFactory.createRoute(42, "name", "beschreibung", athlete);
+        final IRoute route = CommonTransferFactory.createRoute("name", "beschreibung", athlete);
         Mockito.when(training.getRoute()).thenReturn(route);
 
         Mockito.when(mockA.getRoute()).thenReturn(route);
@@ -193,17 +188,16 @@ public class TrainingOverViewDatenAufbereitenTest {
     @Test
     public void testPOWER_LONG_JOG() {
         // prepare
-        final List<IImported> values = new ArrayList<IImported>();
-        final IImported mockA = Mockito.mock(IImported.class);
+        final List<ITraining> values = new ArrayList<ITraining>();
+        final ITraining mockA = Mockito.mock(ITraining.class);
         final ITraining training = Mockito.mock(ITraining.class);
-        Mockito.when(mockA.getTraining()).thenReturn(training);
         final ITrainingType type = Mockito.mock(ITrainingType.class);
         Mockito.when(type.getId()).thenReturn(RunType.POWER_LONG_JOG.getIndex());
         Mockito.when(mockA.getTrainingType()).thenReturn(type);
 
         values.add(mockA);
         final IAthlete athlete = CommonTransferFactory.createAthlete("name", 42, 42);
-        final IRoute route = CommonTransferFactory.createRoute(42, "name", "beschreibung", athlete);
+        final IRoute route = CommonTransferFactory.createRoute("name", "beschreibung", athlete);
         Mockito.when(training.getRoute()).thenReturn(route);
 
         Mockito.when(mockA.getRoute()).thenReturn(route);
@@ -220,17 +214,16 @@ public class TrainingOverViewDatenAufbereitenTest {
     @Test
     public void testTEMPO() {
         // prepare
-        final List<IImported> values = new ArrayList<IImported>();
-        final IImported mockA = Mockito.mock(IImported.class);
+        final List<ITraining> values = new ArrayList<ITraining>();
+        final ITraining mockA = Mockito.mock(ITraining.class);
         final ITraining training = Mockito.mock(ITraining.class);
-        Mockito.when(mockA.getTraining()).thenReturn(training);
         final ITrainingType type = Mockito.mock(ITrainingType.class);
         Mockito.when(type.getId()).thenReturn(RunType.TEMPO_JOG.getIndex());
         Mockito.when(mockA.getTrainingType()).thenReturn(type);
 
         values.add(mockA);
         final IAthlete athlete = CommonTransferFactory.createAthlete("name", 42, 42);
-        final IRoute route = CommonTransferFactory.createRoute(42, "name", "beschreibung", athlete);
+        final IRoute route = CommonTransferFactory.createRoute("name", "beschreibung", athlete);
         Mockito.when(training.getRoute()).thenReturn(route);
 
         Mockito.when(mockA.getRoute()).thenReturn(route);
@@ -253,16 +246,15 @@ public class TrainingOverViewDatenAufbereitenTest {
     @Test
     public void testTrainingPerDayValues() {
         // prepare
-        final List<IImported> values = new ArrayList<IImported>();
-        final IImported mockA = Mockito.mock(IImported.class);
+        final List<ITraining> values = new ArrayList<ITraining>();
+        final ITraining mockA = Mockito.mock(ITraining.class);
         final ITraining training = Mockito.mock(ITraining.class);
-        Mockito.when(mockA.getTraining()).thenReturn(training);
         final ITrainingType type = Mockito.mock(ITrainingType.class);
         Mockito.when(type.getId()).thenReturn(RunType.LONG_JOG.getIndex());
         Mockito.when(mockA.getTrainingType()).thenReturn(type);
 
         final IAthlete athlete = CommonTransferFactory.createAthlete("name", 42, 42);
-        final IRoute route = CommonTransferFactory.createRoute(42, "name", "beschreibung", athlete);
+        final IRoute route = CommonTransferFactory.createRoute("name", "beschreibung", athlete);
         Mockito.when(training.getRoute()).thenReturn(route);
 
         Mockito.when(mockA.getRoute()).thenReturn(route);
@@ -299,22 +291,21 @@ public class TrainingOverViewDatenAufbereitenTest {
     public void testToStringMitWerten() {
         // prepare
         final Date date = new Date();
-        final List<IImported> values = new ArrayList<IImported>();
-        final IImported mockA = Mockito.mock(IImported.class);
+        final List<ITraining> values = new ArrayList<ITraining>();
         final ITraining training = Mockito.mock(ITraining.class);
-        Mockito.when(training.getDateOfStart()).thenReturn(date);
+        Mockito.when(training.getDatum()).thenReturn(date.getTime());
         Mockito.when(training.getLaengeInMeter()).thenReturn(1042.0);
-        Mockito.when(mockA.getTraining()).thenReturn(training);
+
         final ITrainingType type = Mockito.mock(ITrainingType.class);
         Mockito.when(type.getId()).thenReturn(RunType.LONG_JOG.getIndex());
-        Mockito.when(mockA.getTrainingType()).thenReturn(type);
-        Mockito.when(mockA.getActivityId()).thenReturn(date);
-        values.add(mockA);
+        Mockito.when(training.getTrainingType()).thenReturn(type);
+        Mockito.when(training.getDatum()).thenReturn(date.getTime());
+        values.add(training);
         final IAthlete athlete = CommonTransferFactory.createAthlete("name", 42, 42);
-        final IRoute route = CommonTransferFactory.createRoute(42, "name", "beschreibung", athlete);
+        final IRoute route = CommonTransferFactory.createRoute("name", "beschreibung", athlete);
         Mockito.when(training.getRoute()).thenReturn(route);
 
-        Mockito.when(mockA.getRoute()).thenReturn(route);
+        Mockito.when(training.getRoute()).thenReturn(route);
 
         Mockito.when(databaseAccess.getAllImported((IAthlete) Mockito.any())).thenReturn(values);
         // execute

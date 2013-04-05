@@ -28,7 +28,6 @@ import ch.opentrainingcenter.model.training.internal.GoldMedalModel;
 import ch.opentrainingcenter.model.training.internal.SimpleTraining;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IHealth;
-import ch.opentrainingcenter.transfer.IImported;
 import ch.opentrainingcenter.transfer.IPlanungWoche;
 import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
@@ -71,7 +70,7 @@ public class ModelFactory {
      * @param athlete
      */
     public static ISimpleTraining createSimpleTraining(final ITraining overview, final IAthlete athlete) {
-        final SimpleTraining training = new SimpleTraining(overview.getLaengeInMeter(), overview.getDauerInSekunden(), overview.getDateOfStart(), overview
+        final SimpleTraining training = new SimpleTraining(overview.getLaengeInMeter(), overview.getDauer(), new Date(overview.getDatum()), overview
                 .getAverageHeartBeat(), overview.getMaxHeartBeat(), overview.getMaxSpeed(), RunType.NONE, overview.getNote());
         if (overview.getWeather() != null) {
             training.setWetter(Wetter.getRunType(overview.getWeather().getId()));
@@ -95,7 +94,7 @@ public class ModelFactory {
         return new KWTraining();
     }
 
-    public static IPastPlanungModel createPastPlanungModel(final List<IPlanungWoche> planungsWoche, final List<IImported> allImported, final KwJahrKey now) {
+    public static IPastPlanungModel createPastPlanungModel(final List<IPlanungWoche> planungsWoche, final List<ITraining> allImported, final KwJahrKey now) {
         return new PastPlanungModel(planungsWoche, allImported, now);
     }
 

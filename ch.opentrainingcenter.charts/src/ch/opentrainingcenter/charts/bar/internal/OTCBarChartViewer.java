@@ -64,7 +64,7 @@ import ch.opentrainingcenter.charts.single.creators.StatistikCreator;
 import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.core.cache.Cache;
 import ch.opentrainingcenter.core.cache.IRecordListener;
-import ch.opentrainingcenter.core.cache.TrainingCenterDataCache;
+import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.core.helper.ChartSerieType;
 import ch.opentrainingcenter.core.helper.ColorFromPreferenceHelper;
@@ -72,8 +72,8 @@ import ch.opentrainingcenter.core.helper.RunType;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.model.cache.TrainingsPlanCache;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
-import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.transfer.IAthlete;
+import ch.opentrainingcenter.transfer.ITraining;
 
 public class OTCBarChartViewer implements ISelectionProvider {
 
@@ -117,16 +117,16 @@ public class OTCBarChartViewer implements ISelectionProvider {
         daten = new TrainingOverviewDatenAufbereiten(statistik, DatabaseAccessFactory.getDatabaseAccess(), athlete);
         distanceSerie = new TimeSeries(DISTANZ);
         heartSerie = new TimeSeries(HEART);
-        cache = TrainingCenterDataCache.getInstance();
-        cache.addListener(new IRecordListener<ActivityT>() {
+        cache = TrainingCache.getInstance();
+        cache.addListener(new IRecordListener<ITraining>() {
 
             @Override
-            public void recordChanged(final Collection<ActivityT> entry) {
+            public void recordChanged(final Collection<ITraining> entry) {
                 update();
             }
 
             @Override
-            public void deleteRecord(final Collection<ActivityT> entry) {
+            public void deleteRecord(final Collection<ITraining> entry) {
                 update();
             }
 
