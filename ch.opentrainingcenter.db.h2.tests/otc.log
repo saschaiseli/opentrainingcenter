@@ -2441,3 +2441,110 @@
 2013-04-05 14:59:15,924 INFO  [main] ch.opentrainingcenter.db.h2.internal.RouteDao: Strecke überschreiben alt: ch.opentrainingcenter.transfer.impl.Route@76e30 neu: ch.opentrainingcenter.transfer.impl.Route@12800a
 2013-04-05 14:59:15,930 INFO  [main] ch.opentrainingcenter.db.h2.internal.RouteDao: load Route mit dem namen: name ch.opentrainingcenter.transfer.impl.Athlete@1cdac04
 2013-04-05 14:59:15,937 INFO  [main] ch.opentrainingcenter.db.h2.internal.TrainingDao: Neues Training abspeichern: ch.opentrainingcenter.transfer.impl.Training@1976b80
+2013-04-06 17:00:33,889 INFO  [main] ch.opentrainingcenter.db.h2.internal.PlanungDao: load IPlanungWoche from: ch.opentrainingcenter.transfer.impl.Athlete@162144c
+2013-04-06 17:00:33,936 INFO  [main] ch.opentrainingcenter.db.h2.internal.PlanungDao: load IPlanungWoche from: ch.opentrainingcenter.transfer.impl.Athlete@162144c
+2013-04-06 17:00:33,948 INFO  [main] ch.opentrainingcenter.db.h2.internal.PlanungDao: load IPlanungWoche from: ch.opentrainingcenter.transfer.impl.Athlete@162144c
+2013-04-06 17:00:33,960 INFO  [main] ch.opentrainingcenter.db.h2.internal.PlanungDao: load IPlanungWoche from: ch.opentrainingcenter.transfer.impl.Athlete@162144c
+2013-04-06 17:00:33,970 INFO  [main] ch.opentrainingcenter.db.h2.internal.PlanungDao: load IPlanungWoche from: ch.opentrainingcenter.transfer.impl.Athlete@162144c
+2013-04-06 17:00:34,144 INFO  [main] ch.opentrainingcenter.db.h2.internal.PlanungDao: load IPlanungWoche from: ch.opentrainingcenter.transfer.impl.Athlete@6df2a4
+2013-04-06 17:00:34,148 INFO  [main] ch.opentrainingcenter.db.h2.internal.PlanungDao: load IPlanungWoche from: ch.opentrainingcenter.transfer.impl.Athlete@6df2a4
+2013-04-06 17:00:34,152 INFO  [main] ch.opentrainingcenter.db.h2.internal.PlanungDao: load IPlanungWoche from: ch.opentrainingcenter.transfer.impl.Athlete@6df2a4
+2013-04-06 17:00:34,157 INFO  [main] ch.opentrainingcenter.db.h2.internal.PlanungDao: load IPlanungWoche from: ch.opentrainingcenter.transfer.impl.Athlete@6df2a4
+2013-04-06 17:00:34,161 INFO  [main] ch.opentrainingcenter.db.h2.internal.PlanungDao: load IPlanungWoche from: ch.opentrainingcenter.transfer.impl.Athlete@6df2a4
+2013-04-06 17:00:34,165 INFO  [main] ch.opentrainingcenter.db.h2.internal.PlanungDao: load IPlanungWoche from: ch.opentrainingcenter.transfer.impl.Athlete@6df2a4
+2013-04-06 17:00:34,172 INFO  [main] ch.opentrainingcenter.db.h2.internal.PlanungDao: load IPlanungWoche from: ch.opentrainingcenter.transfer.impl.Athlete@6df2a4
+2013-04-06 17:00:34,177 INFO  [main] ch.opentrainingcenter.db.h2.internal.PlanungDao: load IPlanungWoche from: ch.opentrainingcenter.transfer.impl.Athlete@6df2a4
+2013-04-06 17:00:34,182 INFO  [main] ch.opentrainingcenter.db.h2.internal.PlanungDao: load IPlanungWoche from: ch.opentrainingcenter.transfer.impl.Athlete@6df2a4
+2013-04-06 17:00:34,186 INFO  [main] ch.opentrainingcenter.db.h2.internal.PlanungDao: load IPlanungWoche from: ch.opentrainingcenter.transfer.impl.Athlete@6df2a4
+2013-04-06 17:00:34,502 INFO  [main] ch.opentrainingcenter.db.h2.internal.PlanungDao: load IPlanungWoche from: ch.opentrainingcenter.transfer.impl.Athlete@12ac818
+2013-04-06 17:00:34,516 INFO  [main] ch.opentrainingcenter.db.h2.internal.PlanungDao: load IPlanungWoche from: ch.opentrainingcenter.transfer.impl.Athlete@12ac818
+2013-04-06 17:00:34,520 INFO  [main] ch.opentrainingcenter.db.h2.internal.PlanungDao: load IPlanungWoche from: ch.opentrainingcenter.transfer.impl.Athlete@12ac818
+2013-04-06 17:00:34,528 INFO  [main] ch.opentrainingcenter.db.h2.internal.PlanungDao: load IPlanungWoche from: ch.opentrainingcenter.transfer.impl.Athlete@12ac818
+2013-04-06 17:00:34,539 INFO  [main] ch.opentrainingcenter.db.h2.internal.PlanungDao: load IPlanungWoche from: ch.opentrainingcenter.transfer.impl.Athlete@1a1b509
+2013-04-06 17:00:34,979 INFO  [main] ch.opentrainingcenter.db.h2.internal.PlanungDao: load IPlanungWoche from: ch.opentrainingcenter.transfer.impl.Athlete@1df2925
+2013-04-06 17:00:34,984 INFO  [main] ch.opentrainingcenter.db.h2.internal.PlanungDao: load IPlanungWoche from: ch.opentrainingcenter.transfer.impl.Athlete@1df2925
+2013-04-06 17:00:34,994 INFO  [main] ch.opentrainingcenter.db.h2.internal.PlanungDao: load IPlanungWoche from: ch.opentrainingcenter.transfer.impl.Athlete@1df2925
+2013-04-06 17:00:34,999 INFO  [main] ch.opentrainingcenter.db.h2.internal.PlanungDao: load IPlanungWoche from: ch.opentrainingcenter.transfer.impl.Athlete@1df2925
+2013-04-06 17:00:35,010 INFO  [main] ch.opentrainingcenter.db.h2.internal.PlanungDao: load IPlanungWoche from: ch.opentrainingcenter.transfer.impl.Athlete@1df2925
+2013-04-06 17:00:36,784 INFO  [main] ch.opentrainingcenter.db.h2.internal.HealthDao: save daily health: ch.opentrainingcenter.transfer.impl.Health@149dde5
+2013-04-06 17:00:36,785 INFO  [main] ch.opentrainingcenter.db.h2.internal.HealthDao: load health from: ch.opentrainingcenter.transfer.impl.Athlete@17cad35
+2013-04-06 17:00:36,817 INFO  [main] ch.opentrainingcenter.db.h2.internal.HealthDao: load health from: ch.opentrainingcenter.transfer.impl.Athlete@17cad35
+2013-04-06 17:00:36,819 INFO  [main] ch.opentrainingcenter.db.h2.internal.HealthDao: load health from: ch.opentrainingcenter.transfer.impl.Athlete@17cad35
+2013-04-06 17:00:38,806 INFO  [main] ch.opentrainingcenter.db.h2.internal.HealthDao: save daily health: ch.opentrainingcenter.transfer.impl.Health@8a85b4
+2013-04-06 17:00:38,807 INFO  [main] ch.opentrainingcenter.db.h2.internal.HealthDao: load health from: ch.opentrainingcenter.transfer.impl.Athlete@d75be7
+2013-04-06 17:00:38,820 INFO  [main] ch.opentrainingcenter.db.h2.internal.HealthDao: load health from: ch.opentrainingcenter.transfer.impl.Athlete@d75be7
+2013-04-06 17:00:39,058 INFO  [main] ch.opentrainingcenter.db.h2.internal.HealthDao: save daily health: ch.opentrainingcenter.transfer.impl.Health@bab673
+2013-04-06 17:00:39,059 INFO  [main] ch.opentrainingcenter.db.h2.internal.HealthDao: load health from: ch.opentrainingcenter.transfer.impl.Athlete@a6f12c
+2013-04-06 17:00:39,064 INFO  [main] ch.opentrainingcenter.db.h2.internal.HealthDao: load health from: ch.opentrainingcenter.transfer.impl.Athlete@a6f12c
+2013-04-06 17:00:39,066 INFO  [main] ch.opentrainingcenter.db.h2.internal.HealthDao: save daily health: ch.opentrainingcenter.transfer.impl.Health@b1345e
+2013-04-06 17:00:39,066 INFO  [main] ch.opentrainingcenter.db.h2.internal.HealthDao: load health from: ch.opentrainingcenter.transfer.impl.Athlete@a6f12c
+2013-04-06 17:00:39,080 INFO  [main] ch.opentrainingcenter.db.h2.internal.HealthDao: load health from: ch.opentrainingcenter.transfer.impl.Athlete@a6f12c
+2013-04-06 17:00:39,094 INFO  [main] ch.opentrainingcenter.db.h2.internal.HealthDao: load health from: ch.opentrainingcenter.transfer.impl.Athlete@a6f12c
+2013-04-06 17:00:39,293 INFO  [main] ch.opentrainingcenter.db.h2.internal.HealthDao: save daily health: ch.opentrainingcenter.transfer.impl.Health@5d2731
+2013-04-06 17:00:39,293 INFO  [main] ch.opentrainingcenter.db.h2.internal.HealthDao: load health from: ch.opentrainingcenter.transfer.impl.Athlete@c0cdfe
+2013-04-06 17:00:39,302 INFO  [main] ch.opentrainingcenter.db.h2.internal.HealthDao: load health from: ch.opentrainingcenter.transfer.impl.Athlete@c0cdfe
+2013-04-06 17:00:39,325 INFO  [main] ch.opentrainingcenter.db.h2.internal.HealthDao: load health from: ch.opentrainingcenter.transfer.impl.Athlete@c0cdfe
+2013-04-06 17:00:39,756 INFO  [main] ch.opentrainingcenter.db.h2.internal.RouteDao: load Route mit dem namen: testSaveRoute ch.opentrainingcenter.transfer.impl.Athlete@165965c
+2013-04-06 17:00:39,758 INFO  [main] ch.opentrainingcenter.db.h2.internal.RouteDao: Neue Strecke abspeichern: ch.opentrainingcenter.transfer.impl.Route@1040468
+2013-04-06 17:00:39,759 INFO  [main] ch.opentrainingcenter.db.h2.internal.RouteDao: load Route mit dem namen: testSaveRoute ch.opentrainingcenter.transfer.impl.Athlete@165965c
+2013-04-06 17:00:39,922 INFO  [main] ch.opentrainingcenter.db.h2.internal.RouteDao: load Route mit dem namen: testSaveRoute ch.opentrainingcenter.transfer.impl.Athlete@3b31a6
+2013-04-06 17:00:39,927 INFO  [main] ch.opentrainingcenter.db.h2.internal.RouteDao: Strecke überschreiben alt: ch.opentrainingcenter.transfer.impl.Route@1463027 neu: ch.opentrainingcenter.transfer.impl.Route@1c3caba
+2013-04-06 17:00:39,928 INFO  [main] ch.opentrainingcenter.db.h2.internal.RouteDao: load Route mit dem namen: testSaveRoute ch.opentrainingcenter.transfer.impl.Athlete@3b31a6
+2013-04-06 17:00:39,930 INFO  [main] ch.opentrainingcenter.db.h2.internal.RouteDao: load Route mit dem namen: testSaveRoute ch.opentrainingcenter.transfer.impl.Athlete@3b31a6
+2013-04-06 17:00:39,932 INFO  [main] ch.opentrainingcenter.db.h2.internal.RouteDao: Strecke überschreiben alt: ch.opentrainingcenter.transfer.impl.Route@1463027 neu: ch.opentrainingcenter.transfer.impl.Route@2c946e
+2013-04-06 17:00:39,933 INFO  [main] ch.opentrainingcenter.db.h2.internal.RouteDao: load Route mit dem namen: testSaveRoute ch.opentrainingcenter.transfer.impl.Athlete@3b31a6
+2013-04-06 17:00:39,935 INFO  [main] ch.opentrainingcenter.db.h2.internal.RouteDao: load Route mit dem namen: testSaveRoute ch.opentrainingcenter.transfer.impl.Athlete@3b31a6
+2013-04-06 17:00:40,081 INFO  [main] ch.opentrainingcenter.db.h2.internal.RouteDao: load Route mit dem namen: id2 ch.opentrainingcenter.transfer.impl.Athlete@1b4a1be
+2013-04-06 17:00:40,084 INFO  [main] ch.opentrainingcenter.db.h2.internal.RouteDao: Neue Strecke abspeichern: ch.opentrainingcenter.transfer.impl.Route@1c051a1
+2013-04-06 17:00:40,085 INFO  [main] ch.opentrainingcenter.db.h2.internal.RouteDao: load Route mit dem namen: id2 ch.opentrainingcenter.transfer.impl.Athlete@1b4a1be
+2013-04-06 17:00:40,087 INFO  [main] ch.opentrainingcenter.db.h2.internal.RouteDao: load Route mit dem namen: id2 ch.opentrainingcenter.transfer.impl.Athlete@1b4a1be
+2013-04-06 17:00:40,173 INFO  [main] ch.opentrainingcenter.db.h2.internal.RouteDao: load Route mit dem namen: id3 ch.opentrainingcenter.transfer.impl.Athlete@bb0357
+2013-04-06 17:00:40,175 INFO  [main] ch.opentrainingcenter.db.h2.internal.RouteDao: Neue Strecke abspeichern: ch.opentrainingcenter.transfer.impl.Route@10f8b48
+2013-04-06 17:00:40,176 INFO  [main] ch.opentrainingcenter.db.h2.internal.RouteDao: load Route mit dem namen: id3 ch.opentrainingcenter.transfer.impl.Athlete@bb0357
+2013-04-06 17:00:40,177 INFO  [main] ch.opentrainingcenter.db.h2.internal.RouteDao: load Route mit dem namen: id4 ch.opentrainingcenter.transfer.impl.Athlete@bb0357
+2013-04-06 17:00:40,609 INFO  [main] ch.opentrainingcenter.db.h2.internal.TrainingDao: Neues Training abspeichern: ch.opentrainingcenter.transfer.impl.Training@79f936
+2013-04-06 17:00:40,819 INFO  [main] ch.opentrainingcenter.db.h2.internal.RouteDao: load Route mit dem namen: name ch.opentrainingcenter.transfer.impl.Athlete@190423d
+2013-04-06 17:00:40,821 INFO  [main] ch.opentrainingcenter.db.h2.internal.RouteDao: Neue Strecke abspeichern: ch.opentrainingcenter.transfer.impl.Route@aba7ff
+2013-04-06 17:00:40,823 INFO  [main] ch.opentrainingcenter.db.h2.internal.RouteDao: load Route mit dem namen: name ch.opentrainingcenter.transfer.impl.Athlete@190423d
+2013-04-06 17:00:40,831 INFO  [main] ch.opentrainingcenter.db.h2.internal.TrainingDao: Neues Training abspeichern: ch.opentrainingcenter.transfer.impl.Training@13cd9c
+2013-04-06 17:00:40,982 INFO  [main] ch.opentrainingcenter.db.h2.internal.RouteDao: load Route mit dem namen: testTraining_3_route ch.opentrainingcenter.transfer.impl.Athlete@b49d39
+2013-04-06 17:00:40,984 INFO  [main] ch.opentrainingcenter.db.h2.internal.RouteDao: Neue Strecke abspeichern: ch.opentrainingcenter.transfer.impl.Route@1cf7975
+2013-04-06 17:00:40,986 INFO  [main] ch.opentrainingcenter.db.h2.internal.RouteDao: load Route mit dem namen: testTraining_3_route ch.opentrainingcenter.transfer.impl.Athlete@b49d39
+2013-04-06 17:00:41,015 INFO  [main] ch.opentrainingcenter.db.h2.internal.TrainingDao: Neues Training abspeichern: ch.opentrainingcenter.transfer.impl.Training@e8ea8a
+2013-04-06 17:00:41,233 INFO  [main] ch.opentrainingcenter.db.h2.internal.RouteDao: load Route mit dem namen: testTraining_4_route ch.opentrainingcenter.transfer.impl.Athlete@1d1d864
+2013-04-06 17:00:41,236 INFO  [main] ch.opentrainingcenter.db.h2.internal.RouteDao: Neue Strecke abspeichern: ch.opentrainingcenter.transfer.impl.Route@365ab4
+2013-04-06 17:00:41,240 INFO  [main] ch.opentrainingcenter.db.h2.internal.RouteDao: load Route mit dem namen: testTraining_4_route ch.opentrainingcenter.transfer.impl.Athlete@1d1d864
+2013-04-06 17:00:41,247 INFO  [main] ch.opentrainingcenter.db.h2.internal.RouteDao: load Route mit dem namen: testTraining_44_route ch.opentrainingcenter.transfer.impl.Athlete@1d1d864
+2013-04-06 17:00:41,251 INFO  [main] ch.opentrainingcenter.db.h2.internal.RouteDao: Neue Strecke abspeichern: ch.opentrainingcenter.transfer.impl.Route@e5472e
+2013-04-06 17:00:41,256 INFO  [main] ch.opentrainingcenter.db.h2.internal.RouteDao: load Route mit dem namen: testTraining_44_route ch.opentrainingcenter.transfer.impl.Athlete@1d1d864
+2013-04-06 17:00:41,268 INFO  [main] ch.opentrainingcenter.db.h2.internal.TrainingDao: Neues Training abspeichern: ch.opentrainingcenter.transfer.impl.Training@1495510
+2013-04-06 17:00:41,278 INFO  [main] ch.opentrainingcenter.db.h2.internal.TrainingDao: Training bereits einmal importziert: --> updaten
+2013-04-06 17:00:41,453 INFO  [main] ch.opentrainingcenter.db.h2.internal.TrainingDao: Neues Training abspeichern: ch.opentrainingcenter.transfer.impl.Training@114de27
+2013-04-06 17:00:41,464 INFO  [main] ch.opentrainingcenter.db.h2.internal.TrainingDao: Neues Training abspeichern: ch.opentrainingcenter.transfer.impl.Training@c491a2
+2013-04-06 17:00:41,715 INFO  [main] ch.opentrainingcenter.db.h2.internal.TrainingDao: Neues Training abspeichern: ch.opentrainingcenter.transfer.impl.Training@1198a9d
+2013-04-06 17:00:41,745 INFO  [main] ch.opentrainingcenter.db.h2.internal.TrainingDao: Neues Training abspeichern: ch.opentrainingcenter.transfer.impl.Training@b9a8d8
+2013-04-06 17:00:41,931 INFO  [main] ch.opentrainingcenter.db.h2.internal.TrainingDao: Neues Training abspeichern: ch.opentrainingcenter.transfer.impl.Training@14d25b2
+2013-04-06 17:00:41,938 INFO  [main] ch.opentrainingcenter.db.h2.internal.TrainingDao: Neues Training abspeichern: ch.opentrainingcenter.transfer.impl.Training@8277d2
+2013-04-06 17:00:41,947 INFO  [main] ch.opentrainingcenter.db.h2.internal.TrainingDao: Neues Training abspeichern: ch.opentrainingcenter.transfer.impl.Training@1cf5bdf
+2013-04-06 17:00:41,963 INFO  [main] ch.opentrainingcenter.db.h2.internal.TrainingDao: Neues Training abspeichern: ch.opentrainingcenter.transfer.impl.Training@1dcdd6e
+2013-04-06 17:00:41,977 INFO  [main] ch.opentrainingcenter.db.h2.internal.TrainingDao: Neues Training abspeichern: ch.opentrainingcenter.transfer.impl.Training@137f2bf
+2013-04-06 17:00:42,147 INFO  [main] ch.opentrainingcenter.db.h2.internal.TrainingDao: Neues Training abspeichern: ch.opentrainingcenter.transfer.impl.Training@175a3f2
+2013-04-06 17:00:42,164 INFO  [main] ch.opentrainingcenter.db.h2.internal.TrainingDao: Neues Training abspeichern: ch.opentrainingcenter.transfer.impl.Training@1f68ad9
+2013-04-06 17:00:42,180 INFO  [main] ch.opentrainingcenter.db.h2.internal.TrainingDao: Neues Training abspeichern: ch.opentrainingcenter.transfer.impl.Training@1678992
+2013-04-06 17:00:42,216 INFO  [main] ch.opentrainingcenter.db.h2.internal.TrainingDao: Neues Training abspeichern: ch.opentrainingcenter.transfer.impl.Training@38d6e4
+2013-04-06 17:00:42,230 INFO  [main] ch.opentrainingcenter.db.h2.internal.TrainingDao: Neues Training abspeichern: ch.opentrainingcenter.transfer.impl.Training@6130f
+2013-04-06 17:00:42,758 INFO  [main] ch.opentrainingcenter.db.h2.internal.TrainingDao: Neues Training abspeichern: ch.opentrainingcenter.transfer.impl.Training@44efd4
+2013-04-06 17:00:42,994 INFO  [main] ch.opentrainingcenter.db.h2.internal.TrainingDao: Neues Training abspeichern: ch.opentrainingcenter.transfer.impl.Training@b2393f
+2013-04-06 17:00:43,020 INFO  [main] ch.opentrainingcenter.db.h2.internal.TrainingDao: Training bereits einmal importziert: --> updaten
+2013-04-06 17:00:43,027 INFO  [main] ch.opentrainingcenter.db.h2.internal.TrainingDao: load ITrainingType
+2013-04-06 17:00:43,173 INFO  [main] ch.opentrainingcenter.db.h2.internal.RouteDao: load Route mit dem namen: nameA ch.opentrainingcenter.transfer.impl.Athlete@1f34710
+2013-04-06 17:00:43,174 INFO  [main] ch.opentrainingcenter.db.h2.internal.RouteDao: Neue Strecke abspeichern: ch.opentrainingcenter.transfer.impl.Route@15f18c
+2013-04-06 17:00:43,177 INFO  [main] ch.opentrainingcenter.db.h2.internal.RouteDao: load Route mit dem namen: nameA ch.opentrainingcenter.transfer.impl.Athlete@1f34710
+2013-04-06 17:00:43,178 INFO  [main] ch.opentrainingcenter.db.h2.internal.RouteDao: load Route mit dem namen: nameB ch.opentrainingcenter.transfer.impl.Athlete@1f34710
+2013-04-06 17:00:43,179 INFO  [main] ch.opentrainingcenter.db.h2.internal.RouteDao: Neue Strecke abspeichern: ch.opentrainingcenter.transfer.impl.Route@17537aa
+2013-04-06 17:00:43,181 INFO  [main] ch.opentrainingcenter.db.h2.internal.RouteDao: load Route mit dem namen: nameB ch.opentrainingcenter.transfer.impl.Athlete@1f34710
+2013-04-06 17:00:43,187 INFO  [main] ch.opentrainingcenter.db.h2.internal.TrainingDao: Neues Training abspeichern: ch.opentrainingcenter.transfer.impl.Training@1dc7d3a
+2013-04-06 17:00:43,394 INFO  [main] ch.opentrainingcenter.db.h2.internal.RouteDao: load Route mit dem namen: name ch.opentrainingcenter.transfer.impl.Athlete@1601df2
+2013-04-06 17:00:43,396 INFO  [main] ch.opentrainingcenter.db.h2.internal.RouteDao: Strecke überschreiben alt: ch.opentrainingcenter.transfer.impl.Route@8e579c neu: ch.opentrainingcenter.transfer.impl.Route@891668
+2013-04-06 17:00:43,397 INFO  [main] ch.opentrainingcenter.db.h2.internal.RouteDao: load Route mit dem namen: name ch.opentrainingcenter.transfer.impl.Athlete@1601df2
+2013-04-06 17:00:43,399 INFO  [main] ch.opentrainingcenter.db.h2.internal.TrainingDao: Neues Training abspeichern: ch.opentrainingcenter.transfer.impl.Training@195e9c4

@@ -18,15 +18,18 @@ public class Tracktrainingproperty implements java.io.Serializable, ITrackPointP
     private long zeit;
 
     private IStreckenPunkt streckenPunkt;
+    private int lap;
 
     public Tracktrainingproperty() {
     }
 
-    public Tracktrainingproperty(final double distance, final int heartbeat, final int altitude, final long zeit, final IStreckenPunkt streckenPunkt) {
+    public Tracktrainingproperty(final double distance, final int heartbeat, final int altitude, final long zeit, final int lap,
+            final IStreckenPunkt streckenPunkt) {
         this.distance = distance;
         this.heartbeat = heartbeat;
         this.altitude = altitude;
         this.zeit = zeit;
+        this.lap = lap;
         this.streckenPunkt = streckenPunkt;
     }
 
@@ -88,6 +91,16 @@ public class Tracktrainingproperty implements java.io.Serializable, ITrackPointP
     @Override
     public void setStreckenPunkt(final IStreckenPunkt streckenPunkt) {
         this.streckenPunkt = streckenPunkt;
+    }
+
+    @Override
+    public int getLap() {
+        return lap;
+    }
+
+    @Override
+    public void setLap(final int lap) {
+        this.lap = lap;
     }
 
 }

@@ -65,4 +65,16 @@ public interface ITrackPointProperty {
     int getId();
 
     void setId(int id);
+
+    /**
+     * @return Nummer der Runde. Wenn nicht Rundenbasiert gemessen wird, ist der
+     *         Wert immer 1
+     */
+    int getLap();
+
+    /**
+     * @param lap
+     *            die Nummer der Runde. (beginnt bei 1)
+     */
+    void setLap(int lap);
 }

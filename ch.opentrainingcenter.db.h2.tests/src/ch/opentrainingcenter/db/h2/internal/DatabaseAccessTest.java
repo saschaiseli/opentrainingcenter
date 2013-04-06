@@ -95,7 +95,8 @@ public class DatabaseAccessTest extends DatabaseTestBase {
 
         final List<ITrackPointProperty> trackPoints = new ArrayList<ITrackPointProperty>();
         final IStreckenPunkt streckenPunkt = CommonTransferFactory.createStreckenPunkt(1.1, 2.2, 3.3);
-        final ITrackPointProperty property = CommonTransferFactory.createTrackPointProperty(2.0, 100, 550, 2000, streckenPunkt);
+        final ITrackPointProperty property = CommonTransferFactory.createTrackPointProperty(2.0, 100, 550, 2000, 1, streckenPunkt);
+
         trackPoints.add(property);
         training.setTrackPoints(trackPoints);
 
@@ -116,13 +117,13 @@ public class DatabaseAccessTest extends DatabaseTestBase {
         assertEquals(100, prop.getHeartBeat());
         assertEquals(550, prop.getAltitude());
         assertEquals(2000, prop.getZeit());
+        assertEquals(1, prop.getLap());
 
         final IStreckenPunkt punkt = prop.getStreckenPunkt();
         assertNotNull(punkt);
         assertEquals(1.1, punkt.getDistance(), 0.00001);
         assertEquals(1.1, punkt.getLongitude(), 2.2);
         assertEquals(1.1, punkt.getLatitude(), 3.3);
-
     }
 
     @Test

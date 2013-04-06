@@ -23,6 +23,9 @@
 		<property name="zeit" type="java.lang.Long">
 			<column name="ZEIT" />
 		</property>
+		<property name="lap" type="java.lang.Integer">
+			<column name="LAP" />
+		</property>
 		<many-to-one name="streckenPunkt"
 			class="ch.opentrainingcenter.transfer.impl.Streckenpunkte" fetch="join" update="true" insert="true" cascade="all">
 			<column name="ID_FK_STRECKENPUNKT" />
