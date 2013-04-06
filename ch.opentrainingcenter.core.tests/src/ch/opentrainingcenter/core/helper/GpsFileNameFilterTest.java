@@ -6,7 +6,6 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.junit.Before;
@@ -35,7 +34,7 @@ public class GpsFileNameFilterTest {
             }
 
             @Override
-            public List<ITraining> convertActivity(final File file) throws Exception {
+            public ITraining convert(final File file) throws Exception {
                 return null;
             }
         });

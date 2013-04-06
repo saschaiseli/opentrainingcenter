@@ -76,7 +76,7 @@ public class ConvertHandlerTest {
         }
 
         @Override
-        public List<ITraining> convertActivity(final File file) throws Exception {
+        public ITraining convert(final File file) throws Exception {
             return null;
         }
 

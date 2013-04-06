@@ -6,7 +6,6 @@ import static org.junit.Assert.assertNotNull;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -52,7 +51,7 @@ public class BackupJobTest {
             }
 
             @Override
-            public List<ITraining> convertActivity(final File file) throws Exception {
+            public ITraining convert(final File file) throws Exception {
                 return null;
             }
         });

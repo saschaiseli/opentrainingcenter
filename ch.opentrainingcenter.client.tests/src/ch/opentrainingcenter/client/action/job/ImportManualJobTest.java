@@ -74,10 +74,8 @@ public class ImportManualJobTest {
 
         final IConvert2Tcx convert = Mockito.mock(IConvert2Tcx.class);
         Mockito.when(cc.getMatchingConverter(new File(""))).thenReturn(convert);
-        final List<ITraining> activities = new ArrayList<ITraining>();
         final ITraining element = Mockito.mock(ITraining.class);
-        activities.add(element);
-        Mockito.when(convert.convertActivity(new File(""))).thenReturn(activities);
+        Mockito.when(convert.convert(new File(""))).thenReturn(element);
 
         final IProgressMonitor monitor = Mockito.mock(IProgressMonitor.class);
         Mockito.when(importer.importFile(filterPath, modelWrapper, monitor)).thenReturn(new ArrayList<ITraining>());

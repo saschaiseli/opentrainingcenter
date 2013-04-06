@@ -3,7 +3,6 @@ package ch.opentrainingcenter.core.importer;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,13 +52,12 @@ public class ImportedConverterTest {
         new ImportedConverter(cc, null);
     }
 
-    @Test(expected = FileNotFoundException.class)
+    @Test
     public void testConvertFileNotFound() throws Exception {
         // prepare
         Mockito.when(record.getFileName()).thenReturn(garminFile.getName());
         final IConvert2Tcx conv = Mockito.mock(IConvert2Tcx.class);
-        final List<ITraining> values = new ArrayList<ITraining>();
-        Mockito.when(conv.convertActivity(garminFile)).thenReturn(values);
+        Mockito.when(conv.convert(garminFile)).thenReturn(null);
         Mockito.when(cc.getMatchingConverter(garminFile)).thenReturn(conv);
 
         converter = new ImportedConverter(cc, dir);
@@ -75,7 +73,7 @@ public class ImportedConverterTest {
         final List<ITraining> values = new ArrayList<ITraining>();
         final ITraining act = Mockito.mock(ITraining.class);
         values.add(act);
-        Mockito.when(conv.convertActivity(garminFile)).thenReturn(values);
+        Mockito.when(conv.convert(garminFile)).thenReturn(act);
         Mockito.when(cc.getMatchingConverter(garminFile)).thenReturn(conv);
 
         converter = new ImportedConverter(cc, dir);

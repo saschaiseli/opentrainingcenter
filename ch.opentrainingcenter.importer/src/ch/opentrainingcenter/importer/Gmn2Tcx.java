@@ -20,6 +20,7 @@ import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.importer.internal.xml.ConvertXml;
 import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.tcx.TrainingCenterDatabaseT;
+import ch.opentrainingcenter.transfer.ITraining;
 
 public class Gmn2Tcx implements IConvert2Tcx {
 
@@ -55,8 +56,7 @@ public class Gmn2Tcx implements IConvert2Tcx {
     // delegate = null;// new ConvertXml(new URL(locationOfScript));
     // }
 
-    @Override
-    public TrainingCenterDatabaseT convert(final java.io.File file) throws Exception {
+    protected TrainingCenterDatabaseT convert(final java.io.File file) throws Exception {
         final long start = System.currentTimeMillis();
         logger.debug("Start Time: " + start); //$NON-NLS-1$
         // convertForMe();
@@ -91,8 +91,9 @@ public class Gmn2Tcx implements IConvert2Tcx {
     }
 
     @Override
-    public List<ActivityT> convertActivity(final File file) throws Exception {
-        return convert(file).getActivities().getActivity();
+    public List<ITraining> convertActivity(final File file) throws Exception {
+        final List<ActivityT> activity = convert(file).getActivities().getActivity();
+        return null;
     }
 
     protected InputStream convert2Tcx(final java.io.File file) {

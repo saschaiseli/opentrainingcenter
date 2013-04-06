@@ -49,7 +49,7 @@ import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.helper.TimeHelper;
 import ch.opentrainingcenter.i18n.Messages;
-import ch.opentrainingcenter.model.TrainingOverviewFactory;
+import ch.opentrainingcenter.model.ModelFactory;
 import ch.opentrainingcenter.model.strecke.StreckeModel;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
 import ch.opentrainingcenter.model.training.Wetter;
@@ -81,7 +81,7 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         training = cache.get(selectedId);
 
         final IAthlete athlete = context.getAthlete();
-        simpleTraining = TrainingOverviewFactory.creatSimpleTraining(training, athlete);
+        simpleTraining = ModelFactory.createSimpleTraining(training, athlete);
 
         factory = new ChartFactory(Activator.getDefault().getPreferenceStore(), training, athlete);
 

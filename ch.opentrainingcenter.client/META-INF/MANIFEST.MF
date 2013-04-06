@@ -4,8 +4,7 @@ Bundle-Name: Client
 Bundle-SymbolicName: ch.opentrainingcenter.client;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: ch.opentrainingcenter.client.Activator
-Require-Bundle: ch.opentrainingcenter.tcx,
- ch.opentrainingcenter.core,
+Require-Bundle: ch.opentrainingcenter.core,
  ch.opentrainingcenter.model,
  ch.opentrainingcenter.charts,
  ch.opentrainingcenter.i18n,

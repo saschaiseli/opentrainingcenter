@@ -2548,3 +2548,7 @@
 2013-04-06 17:00:43,396 INFO  [main] ch.opentrainingcenter.db.h2.internal.RouteDao: Strecke überschreiben alt: ch.opentrainingcenter.transfer.impl.Route@8e579c neu: ch.opentrainingcenter.transfer.impl.Route@891668
 2013-04-06 17:00:43,397 INFO  [main] ch.opentrainingcenter.db.h2.internal.RouteDao: load Route mit dem namen: name ch.opentrainingcenter.transfer.impl.Athlete@1601df2
 2013-04-06 17:00:43,399 INFO  [main] ch.opentrainingcenter.db.h2.internal.TrainingDao: Neues Training abspeichern: ch.opentrainingcenter.transfer.impl.Training@195e9c4
+2013-04-06 17:26:34,524 INFO  [main] ch.opentrainingcenter.db.h2.internal.HealthDao: save daily health: ch.opentrainingcenter.transfer.impl.Health@1df0c24
+2013-04-06 17:26:34,527 INFO  [main] ch.opentrainingcenter.db.h2.internal.HealthDao: load health from: ch.opentrainingcenter.transfer.impl.Athlete@bf45f9
+2013-04-06 17:26:34,623 INFO  [main] ch.opentrainingcenter.db.h2.internal.HealthDao: load health from: ch.opentrainingcenter.transfer.impl.Athlete@bf45f9
+2013-04-06 17:26:34,653 INFO  [main] ch.opentrainingcenter.db.h2.internal.HealthDao: load health from: ch.opentrainingcenter.transfer.impl.Athlete@bf45f9

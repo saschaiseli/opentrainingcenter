@@ -56,10 +56,9 @@ public class FileImport implements IFileImport {
             final File file = new File(filterPath, model.getFileName());
             monitor.setTaskName(Messages.FileImport_0 + file.getName());
             LOGGER.info("importiere File: " + file.getName()); //$NON-NLS-1$
-            final List<ITraining> activities = cc.getMatchingConverter(file).convertActivity(file);
+            final ITraining activities = cc.getMatchingConverter(file).convert(file);
 
-            activitiesToImport.addAll(activities);// importRecords(model, file,
-                                                  // activities));
+            activitiesToImport.add(activities);
 
             fileCopy.copyFile(file, new File(locationBackupFiles, file.getName()));
             monitor.worked(1);

@@ -24,18 +24,22 @@ import org.xml.sax.SAXException;
 import ch.opentrainingcenter.core.importer.IConvert2Tcx;
 import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.tcx.TrainingCenterDatabaseT;
+import ch.opentrainingcenter.transfer.ActivityExtension;
 import ch.opentrainingcenter.transfer.ITraining;
 
 public class ConvertTcx implements IConvert2Tcx {
-    private static final String RESOURCES_FITNESSLOGBOOK_XSD = "resources/tcx.xsd";//$NON-NLS-1$
     private static final Logger logger = Logger.getLogger(ConvertTcx.class);
-    private final Bundle bundle;
+    private static final String RESOURCES_TCX_XSD = "resources/tcx.xsd";//$NON-NLS-1$
+
     private final String locationOfScript;
 
+    /**
+     * Contructor for Eclipse Extension
+     */
     public ConvertTcx() {
         logger.info("ConvertTcx erfolgreich instanziert....");//$NON-NLS-1$
-        bundle = Platform.getBundle(Activator.BUNDLE_ID);
-        final Path path = new Path(RESOURCES_FITNESSLOGBOOK_XSD);
+        final Bundle bundle = Platform.getBundle(Activator.BUNDLE_ID);
+        final Path path = new Path(RESOURCES_TCX_XSD);
         final URL url = FileLocator.find(bundle, path, Collections.EMPTY_MAP);
         URL fileUrl = null;
         try {
@@ -47,6 +51,13 @@ public class ConvertTcx implements IConvert2Tcx {
         final File f = new File(fileUrl.getPath());
         locationOfScript = f.getAbsolutePath();
         logger.info("ConvertTcx erfolgreich instanziert....fertig");//$NON-NLS-1$
+    }
+
+    /**
+     * Constructor für Tests
+     */
+    protected ConvertTcx(final String locationOfXsd) {
+        locationOfScript = locationOfXsd;
     }
 
     @SuppressWarnings("unchecked")
@@ -69,10 +80,22 @@ public class ConvertTcx implements IConvert2Tcx {
     }
 
     @Override
-    public List<ITraining> convertActivity(final File file) throws Exception {
-        final List<ActivityT> activity = unmarshall(file).getActivities().getActivity();
+    public ITraining convert(final File file) throws Exception {
+        final TrainingCenterDatabaseT completeFile = unmarshall(file);
+        final List<ActivityT> activities = completeFile.getActivities().getActivity();
+        final ActivityT activity = activities.get(0);
+        final ActivityExtension ext = new ActivityExtension();
+        final long dateOfStart = activity.getId().toGregorianCalendar().getTimeInMillis();
+        // final double timeInSeconds = activity.;
+        final double distance;
+        final int avgHeartRate;
+        final int maxHeartBeat;
 
-        return null;
+        final ITraining training = null;// CommonTransferFactory.createTraining(dateOfStart,
+                                        // timeInSeconds, distance,
+                                        // avgHeartRate, maxHeartBeat,
+                                        // maximumSpeed, ext);
+        return training;
     }
 
     @Override

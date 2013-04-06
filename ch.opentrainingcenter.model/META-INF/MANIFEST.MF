@@ -10,7 +10,6 @@ Require-Bundle: org.eclipse.core.runtime,
  jodatime,
  logging,
  org.eclipse.jface,
- ch.opentrainingcenter.tcx,
  ch.opentrainingcenter.i18n
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

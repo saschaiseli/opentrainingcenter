@@ -1,7 +1,6 @@
 package ch.opentrainingcenter.core.importer;
 
 import java.io.File;
-import java.util.List;
 
 import ch.opentrainingcenter.transfer.ITraining;
 
@@ -23,7 +22,7 @@ public interface IConvert2Tcx {
      * @throws Exception
      *             wenn etwas schiefgeht beim parsen lesen des files,...
      */
-    List<ITraining> convertActivity(final File file) throws Exception;
+    ITraining convert(final File file) throws Exception;
 
     /**
      * @return den prefix für ein GPS file. Bei Garmin wird demnach 'gmn'

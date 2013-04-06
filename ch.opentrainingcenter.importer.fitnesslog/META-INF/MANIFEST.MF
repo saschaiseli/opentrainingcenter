@@ -5,9 +5,9 @@ Bundle-SymbolicName: ch.opentrainingcenter.importer.fitnesslog;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: ch.opentrainingcenter.importer.fitnesslog.Activator
 Require-Bundle: org.eclipse.core.runtime,
- ch.opentrainingcenter.tcx,
  logging,
- ch.opentrainingcenter.core
+ ch.opentrainingcenter.core,
+ ch.opentrainingcenter.transfer
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Eclipse-RegisterBuddy: logging

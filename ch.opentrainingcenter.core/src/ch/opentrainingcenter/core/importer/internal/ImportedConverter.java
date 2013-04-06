@@ -44,8 +44,8 @@ public class ImportedConverter implements IImportedConverter {
         final IConvert2Tcx converter = cc.getMatchingConverter(file);
         final List<ITraining> activities = new ArrayList<ITraining>();
         try {
-            final List<ITraining> convertActivity = converter.convertActivity(file);
-            activities.addAll(convertActivity);
+            final ITraining convertActivity = converter.convert(file);
+            activities.add(convertActivity);
         } catch (final Exception e1) {
             LOGGER.error("Fehler beim Importeren"); //$NON-NLS-1$
         }

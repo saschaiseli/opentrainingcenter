@@ -22,8 +22,8 @@ import org.xml.sax.SAXException;
 import ch.opentrainingcenter.core.importer.IConvert2Tcx;
 import ch.opentrainingcenter.importer.fitnesslog.Activator;
 import ch.opentrainingcenter.importer.fitnesslog.model.FitnessWorkbook;
-import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.tcx.TrainingCenterDatabaseT;
+import ch.opentrainingcenter.transfer.ITraining;
 
 public class ConvertFitnesslog2Tcx implements IConvert2Tcx {
 
@@ -66,13 +66,6 @@ public class ConvertFitnesslog2Tcx implements IConvert2Tcx {
         locationOfScript = xsd.getAbsolutePath();
     }
 
-    @Override
-    public TrainingCenterDatabaseT convert(final File file) throws Exception {
-        final FitnessWorkbook workbook = unmarshall(file);
-        final ConvertWorkbook2Tcx convertWorkbook2Tcx = new ConvertWorkbook2Tcx();
-        return convertWorkbook2Tcx.convert(workbook);
-    }
-
     protected FitnessWorkbook unmarshall(final File file) throws JAXBException, SAXException {
         final Unmarshaller unmarshaller = createUnmarshaller();
         final FitnessWorkbook unmarshal = (FitnessWorkbook) unmarshaller.unmarshal(file);
@@ -91,8 +84,14 @@ public class ConvertFitnesslog2Tcx implements IConvert2Tcx {
     }
 
     @Override
-    public List<ActivityT> convertActivity(final File file) throws Exception {
-        return convert(file).getActivities().getActivity();
+    public List<ITraining> convertActivity(final File file) throws Exception {
+        return null;// convert(file).getActivities().getActivity();
+    }
+
+    private TrainingCenterDatabaseT convert(final File file) throws Exception {
+        final FitnessWorkbook workbook = unmarshall(file);
+        final ConvertWorkbook2Tcx convertWorkbook2Tcx = new ConvertWorkbook2Tcx();
+        return convertWorkbook2Tcx.convert(workbook);
     }
 
     @Override
