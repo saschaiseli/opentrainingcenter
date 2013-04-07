@@ -86,7 +86,9 @@ public class ConvertTcx implements IConvert2Tcx {
 
     @Override
     public ITraining convert(final File file) throws Exception {
+        LOGGER.info("Start unmarshalling TCX File"); //$NON-NLS-1$
         final TrainingCenterDatabaseT completeFile = unmarshall(file);
+        LOGGER.info("File unmarshalled"); //$NON-NLS-1$
         final List<ActivityT> activities = completeFile.getActivities().getActivity();
         final ActivityT activity = activities.get(0);
         final ITraining training = create(activity);
@@ -107,6 +109,7 @@ public class ConvertTcx implements IConvert2Tcx {
         double maximumSpeed = 0;
         int lapCount = 1;
         for (final ActivityLapT lap : laps) {
+            LOGGER.info("Runde " + lapCount + " wird konvertiert"); //$NON-NLS-1$//$NON-NLS-2$
             final List<ITrackPointProperty> trackPointsOfLap = getTrackPointsOfLap(lap, lapCount);
             trackPoints.addAll(trackPointsOfLap);
             lapCount++;
@@ -148,23 +151,34 @@ public class ConvertTcx implements IConvert2Tcx {
         for (final TrackT track : tracks) {
             final List<TrackpointT> trackpoints = track.getTrackpoint();
             for (final TrackpointT trackpoint : trackpoints) {
-                final int altitude = trackpoint.getAltitudeMeters().intValue();
-                final double distance = trackpoint.getDistanceMeters();
-                final HeartRateInBeatsPerMinuteT heartRateBpm = trackpoint.getHeartRateBpm();
-                int heartbeat = 0;
-                if (heartRateBpm != null) {
-                    heartbeat = heartRateBpm.getValue();
+                if (isTrackPointValid(trackpoint)) {
+                    final int altitude = trackpoint.getAltitudeMeters().intValue();
+                    final double distance = trackpoint.getDistanceMeters();
+                    final HeartRateInBeatsPerMinuteT heartRateBpm = trackpoint.getHeartRateBpm();
+                    int heartbeat = 0;
+                    if (heartRateBpm != null) {
+                        heartbeat = heartRateBpm.getValue();
+                    }
+                    final long time = trackpoint.getTime().toGregorianCalendar().getTime().getTime();
+                    final PositionT position = trackpoint.getPosition();
+                    IStreckenPunkt geoPunkt = null;
+                    final double longitude = position.getLongitudeDegrees();
+                    final double latitude = position.getLatitudeDegrees();
+                    geoPunkt = CommonTransferFactory.createStreckenPunkt(distance, longitude, latitude);
+                    property.add(CommonTransferFactory.createTrackPointProperty(distance, heartbeat, altitude, time, lapCount, geoPunkt));
                 }
-                final long time = trackpoint.getTime().toGregorianCalendar().getTime().getTime();
-                final PositionT position = trackpoint.getPosition();
-                IStreckenPunkt geoPunkt = null;
-                final double longitude = position.getLongitudeDegrees();
-                final double latitude = position.getLatitudeDegrees();
-                geoPunkt = CommonTransferFactory.createStreckenPunkt(distance, longitude, latitude);
-                property.add(CommonTransferFactory.createTrackPointProperty(distance, heartbeat, altitude, time, lapCount, geoPunkt));
             }
         }
         return property;
+    }
+
+    private boolean isTrackPointValid(final TrackpointT t) {
+        if (t.getAltitudeMeters() == null || t.getDistanceMeters() == null || t.getPosition() == null) {
+            LOGGER.info("Ungültiger Trackpoint um '" + t.getTime() + "' gefunden"); //$NON-NLS-1$ //$NON-NLS-2$
+            return false;
+        } else {
+            return true;
+        }
     }
 
     private static boolean hasCardio(final ActivityLapT lap) {

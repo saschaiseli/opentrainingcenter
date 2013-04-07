@@ -18,7 +18,7 @@ import ch.opentrainingcenter.transfer.ITraining;
 public class ConvertTcxTest {
     private static final double DELTA = 0.00000001;
     private ConvertTcx converter;
-    private File simple, simple_one_lap, simple_two_lap, simple_out_of_memory;
+    private File simple, simple_one_lap, simple_two_lap, simple_out_of_memory, simple_null_values;
 
     @Before
     public void setUp() {
@@ -27,6 +27,7 @@ public class ConvertTcxTest {
         simple_one_lap = new File("resources", "simple_one_lap.tcx");
         simple_two_lap = new File("resources", "simple_two_lap.tcx");
         simple_out_of_memory = new File("resources", "simple_out_of_memory.tcx");
+        simple_null_values = new File("resources", "simple_null_values.tcx");
     }
 
     @Test
@@ -86,6 +87,17 @@ public class ConvertTcxTest {
         assertPoint(points.get(3), 543, 0.576151550, 85, 2, 1364897192000L, 7.43025357, 46.94510135);
         assertPoint(points.get(4), 544, 1.55577779, 86, 2, 1364897193000L, 7.43026547, 46.94510487);
         assertPoint(points.get(5), 545, 2.89205694, 87, 2, 1364897194000L, 7.43028106, 46.94511082);
+    }
+
+    @Test
+    public void testTrainingEmptyTrackPoints() throws Exception {
+        final ITraining training = converter.convert(simple_null_values);
+        final List<ITrackPointProperty> points = training.getTrackPoints();
+        assertNotNull(points);
+        assertFalse("Liste der punkte darf nicht leer sein.", points.isEmpty());
+        assertEquals(1, points.size());
+
+        assertPoint(points.get(0), 543, 0.576151550, 85, 1, 1364897192000L, 7.43025357, 46.94510135);
     }
 
     @Test

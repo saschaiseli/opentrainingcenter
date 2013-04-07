@@ -52,7 +52,7 @@ public class ImportManualJob extends Job {
             final List<ITraining> importFiles = importer.importFile(filterPath, modelWrapper, monitor);
             activitiesToImport.addAll(importFiles);
         } catch (final Exception e) {
-            LOGGER.error(e);
+            LOGGER.error("Fehler beim Importieren: ", e); //$NON-NLS-1$
         }
         Display.getDefault().asyncExec(new Runnable() {
 
