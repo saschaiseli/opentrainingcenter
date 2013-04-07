@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TrainingCenterDatabase xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2">
+<Activities>
+	<Activity Sport="Running"><Id>2012-12-28T13:55:15Z</Id>
+		<Lap StartTime="2012-12-28T13:55:15Z">
+			<TotalTimeSeconds>4274.57</TotalTimeSeconds>
+			<DistanceMeters>12305.6787</DistanceMeters>
+			<MaximumSpeed>4.48573303</MaximumSpeed><Calories>916</Calories>
+			<AverageHeartRateBpm><Value>150</Value></AverageHeartRateBpm>
+			<MaximumHeartRateBpm><Value>184</Value></MaximumHeartRateBpm>
+			<Intensity>Active</Intensity><TriggerMethod>Manual</TriggerMethod>
+		</Lap>
+	</Activity>
+</Activities>
+</TrainingCenterDatabase>

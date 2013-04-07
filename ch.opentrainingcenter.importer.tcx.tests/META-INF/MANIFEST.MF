@@ -4,6 +4,6 @@ Bundle-Name: Tests
 Bundle-SymbolicName: ch.opentrainingcenter.importer.tcx.tests
 Bundle-Version: 1.0.0.qualifier
 Fragment-Host: ch.opentrainingcenter.importer.tcx
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: mockito,
  org.junit
