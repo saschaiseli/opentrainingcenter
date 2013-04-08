@@ -35,8 +35,10 @@ public class DataSetCreatorImpl implements DataSetCreator {
         final List<ITrackPointProperty> points = training.getTrackPoints();
         ITrackPointProperty previous = null;
         for (final ITrackPointProperty point : points) {
-            final PositionPace speedPoint = getSpeedPoint(point, previous);
-            positionPaces.add(speedPoint);
+            if (previous != null) {
+                final PositionPace speedPoint = getSpeedPoint(point, previous);
+                positionPaces.add(speedPoint);
+            }
             previous = point;
         }
         final SpeedCompressor compressor = new SpeedCompressor(8);

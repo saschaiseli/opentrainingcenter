@@ -6,16 +6,22 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.joda.time.DateTime;
 
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
+import ch.opentrainingcenter.core.helper.RunType;
 import ch.opentrainingcenter.core.importer.ConvertContainer;
 import ch.opentrainingcenter.core.importer.IFileCopy;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.importer.IFileImport;
 import ch.opentrainingcenter.model.importer.IGpsFileModel;
 import ch.opentrainingcenter.model.importer.IGpsFileModelWrapper;
+import ch.opentrainingcenter.model.strecke.StreckeModel;
+import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
+import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
+import ch.opentrainingcenter.transfer.ITrainingType;
 
 public class FileImport implements IFileImport {
 
@@ -54,40 +60,33 @@ public class FileImport implements IFileImport {
         final List<ITraining> activitiesToImport = new ArrayList<ITraining>();
         for (final IGpsFileModel model : modelWrapper.getGpsFileModels()) {
             final File file = new File(filterPath, model.getFileName());
-            monitor.setTaskName(Messages.FileImport_0 + file.getName());
-            LOGGER.info("importiere File: " + file.getName()); //$NON-NLS-1$
-            final ITraining activities = cc.getMatchingConverter(file).convert(file);
+            final String fileName = file.getName();
+            monitor.setTaskName(Messages.FileImport_0 + fileName);
+            LOGGER.info("importiere File: " + fileName); //$NON-NLS-1$
 
-            activitiesToImport.add(activities);
+            final ITraining training = cc.getMatchingConverter(file).convert(file);
+            training.setAthlete(athlete);
+            training.setFileName(fileName);
+            training.setDateOfImport(DateTime.now().toDate());
 
-            fileCopy.copyFile(file, new File(locationBackupFiles, file.getName()));
+            final StreckeModel route = model.getRoute();
+            if (route != null) {
+                final IRoute strecke = dbAccess.getRoute(route.getName(), athlete);
+                training.setRoute(strecke);
+            }
+            final RunType typ = model.getTyp();
+            final ITrainingType tt = CommonTransferFactory.createTrainingType(typ.getIndex(), typ.getTitle(), typ.getTitle());
+            training.setTrainingType(tt);
+            LOGGER.info("Save Training"); //$NON-NLS-1$
+            final long start = DateTime.now().getMillis();
+            dbAccess.saveTraining(training);
+            final long end = DateTime.now().getMillis();
+            LOGGER.info("Saved Training in " + (end - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$
+            activitiesToImport.add(training);
+
+            fileCopy.copyFile(file, new File(locationBackupFiles, fileName));
             monitor.worked(1);
         }
         return activitiesToImport;
     }
-
-    // private List<ITraining> importRecords(final IGpsFileModel model, final
-    // File file, final List<ActivityT> activities) {
-    // final List<ITraining> result = new ArrayList<ITraining>();
-    // for (final ITraining activity : activities) {
-    // final ITraining overview =
-    // TrainingOverviewFactory.creatTrainingOverview(activity);
-    //
-    // final StreckeModel route = model.getRoute();
-    // int routeId = 0;
-    // if (route != null) {
-    // routeId = route.getId();
-    // }
-    // final int id = dbAccess.importRecord(athlete.getId(), file.getName(),
-    // activity.getId().toGregorianCalendar().getTime(), overview,
-    // model.getId(),
-    // routeId);
-    // if (id > 0) {
-    // // neu hinzugefügt
-    // result.add(activity);
-    // }
-    // }
-    // return result;
-    // }
-
 }
