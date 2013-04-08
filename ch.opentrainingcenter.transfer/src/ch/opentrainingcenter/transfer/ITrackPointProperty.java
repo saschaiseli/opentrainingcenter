@@ -77,4 +77,8 @@ public interface ITrackPointProperty {
      *            die Nummer der Runde. (beginnt bei 1)
      */
     void setLap(int lap);
+
+    void setTraining(ITraining training);
+
+    ITraining getTraining();
 }

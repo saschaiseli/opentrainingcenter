@@ -108,6 +108,7 @@ public class ConvertTcx implements IConvert2Tcx {
         int lapWithCardio = 0;
         double maximumSpeed = 0;
         int lapCount = 1;
+
         for (final ActivityLapT lap : laps) {
             LOGGER.info("Runde " + lapCount + " wird konvertiert"); //$NON-NLS-1$//$NON-NLS-2$
             final List<ITrackPointProperty> trackPointsOfLap = getTrackPointsOfLap(lap, lapCount);
@@ -135,7 +136,6 @@ public class ConvertTcx implements IConvert2Tcx {
             avgHeartRate = 0;
         }
         final ActivityExtension activityExtension = new ActivityExtension();
-
         final ITraining training = CommonTransferFactory.createTraining(dateOfStart.getTime(), timeInSeconds, distance, avgHeartRate, maxHeartBeat,
                 maximumSpeed, activityExtension);
         training.setTrackPoints(trackPoints);

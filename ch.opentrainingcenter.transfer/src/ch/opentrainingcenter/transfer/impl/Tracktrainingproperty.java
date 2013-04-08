@@ -2,6 +2,7 @@ package ch.opentrainingcenter.transfer.impl;
 
 import ch.opentrainingcenter.transfer.IStreckenPunkt;
 import ch.opentrainingcenter.transfer.ITrackPointProperty;
+import ch.opentrainingcenter.transfer.ITraining;
 
 // Generated 04.04.2013 20:38:06 by Hibernate Tools 3.4.0.CR1
 
@@ -18,6 +19,7 @@ public class Tracktrainingproperty implements java.io.Serializable, ITrackPointP
     private long zeit;
 
     private IStreckenPunkt streckenPunkt;
+    private ITraining training;
     private int lap;
 
     public Tracktrainingproperty() {
@@ -101,6 +103,14 @@ public class Tracktrainingproperty implements java.io.Serializable, ITrackPointP
     @Override
     public void setLap(final int lap) {
         this.lap = lap;
+    }
+
+    public ITraining getTraining() {
+        return training;
+    }
+
+    public void setTraining(final ITraining training) {
+        this.training = training;
     }
 
     @SuppressWarnings("nls")
