@@ -157,6 +157,10 @@ public class TrainingDao {
             LOG.info("Neues Training abspeichern: " + training);
             exists = training;
         }
+        final ITrainingType tt = exists.getTrainingType();
+        if (tt != null) {
+            exists.setTrainingType(getTrainingType(tt.getId()));
+        }
         final Session session = dao.getSession();
         dao.begin();
         session.saveOrUpdate(exists);

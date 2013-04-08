@@ -37,7 +37,9 @@ public class DataSetCreatorImpl implements DataSetCreator {
         for (final ITrackPointProperty point : points) {
             if (previous != null) {
                 final PositionPace speedPoint = getSpeedPoint(point, previous);
-                positionPaces.add(speedPoint);
+                if (speedPoint != null) {
+                    positionPaces.add(speedPoint);
+                }
             }
             previous = point;
         }
