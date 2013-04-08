@@ -15,8 +15,8 @@ Enable Hibernate's automatic session context management
   <property name="current_session_context_class">thread</property>
   <!-- Disable the second-level cache -->
   <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
-  <property name="show_sql">false</property>
-  <property name="format_sql">false</property>
+  <property name="show_sql">true</property>
+  <property name="format_sql">true</property>
   
   <mapping class="ch.opentrainingcenter.transfer.impl.Athlete" resource="Athlete.hbm.xml"/>
   <mapping class="ch.opentrainingcenter.transfer.impl.Health" resource="Health.hbm.xml"/>
