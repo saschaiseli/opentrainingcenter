@@ -61,6 +61,7 @@ public class Trainingtype implements java.io.Serializable, ITrainingType {
     public void setImageicon(final String imageicon) {
         this.imageicon = imageicon;
     }
+
     //
     // @Override
     // public Set<ITraining> getTrainings() {
@@ -70,5 +71,11 @@ public class Trainingtype implements java.io.Serializable, ITrainingType {
     // public void setTrainings(final Set<ITraining> trainings) {
     // this.trainings = trainings;
     // }
+
+    @SuppressWarnings("nls")
+    @Override
+    public String toString() {
+        return "Trainingtype [title=" + title + ", description=" + description + ", imageicon=" + imageicon + "]";
+    }
 
 }

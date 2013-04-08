@@ -77,4 +77,11 @@ public class Health implements java.io.Serializable, IHealth {
     public void setDateofmeasure(final Date dateofmeasure) {
         this.dateofmeasure = dateofmeasure;
     }
+
+    @SuppressWarnings("nls")
+    @Override
+    public String toString() {
+        return "Health [athlete=" + athlete + ", weight=" + weight + ", cardio=" + cardio + ", dateofmeasure=" + dateofmeasure + "]";
+    }
+
 }

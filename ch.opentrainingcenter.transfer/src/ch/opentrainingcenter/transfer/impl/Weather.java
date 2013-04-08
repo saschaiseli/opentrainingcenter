@@ -67,5 +67,9 @@ public class Weather implements java.io.Serializable, IWeather {
     // public void setTrainings(final Set<ITraining> trainings) {
     // this.trainings = trainings;
     // }
-
+    @SuppressWarnings("nls")
+    @Override
+    public String toString() {
+        return "Weather [wetter=" + wetter + ", imageicon=" + imageicon + "]";
+    }
 }

@@ -103,4 +103,11 @@ public class Tracktrainingproperty implements java.io.Serializable, ITrackPointP
         this.lap = lap;
     }
 
+    @SuppressWarnings("nls")
+    @Override
+    public String toString() {
+        return "Tracktrainingproperty [distance=" + distance + ", heartbeat=" + heartbeat + ", altitude=" + altitude + ", streckenPunkt=" + streckenPunkt
+                + ", lap=" + lap + "]";
+    }
+
 }

@@ -133,7 +133,6 @@ public class Planungwoche implements java.io.Serializable, IPlanungWoche {
     @Override
     public void setLangerLauf(final int langerLauf) {
         this.langerLauf = langerLauf;
-
     }
 
 }

@@ -62,4 +62,9 @@ public class Streckenpunkte implements java.io.Serializable, IStreckenPunkt {
         this.latitude = latitude;
     }
 
+    @SuppressWarnings("nls")
+    @Override
+    public String toString() {
+        return "Streckenpunkte [distance=" + distance + ", longitude=" + longitude + ", latitude=" + latitude + "]";
+    }
 }

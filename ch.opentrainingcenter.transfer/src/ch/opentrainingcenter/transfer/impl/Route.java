@@ -69,4 +69,10 @@ public class Route implements java.io.Serializable, IRoute {
     public IAthlete getAthlete() {
         return athlete;
     }
+
+    @SuppressWarnings("nls")
+    @Override
+    public String toString() {
+        return "Route [name=" + name + ", beschreibung=" + beschreibung + ", athlete=" + athlete + "]";
+    }
 }

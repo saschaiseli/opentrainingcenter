@@ -146,4 +146,10 @@ public class Athlete implements java.io.Serializable, IAthlete {
         this.age = age;
     }
 
+    @SuppressWarnings("nls")
+    @Override
+    public String toString() {
+        return "Athlete [name=" + name + "]";
+    }
+
 }

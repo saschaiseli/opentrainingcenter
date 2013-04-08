@@ -230,6 +230,12 @@ public class Training implements java.io.Serializable, ITraining {
     @Override
     public void setFileName(final String fileName) {
         this.fileName = fileName;
+    }
 
+    @SuppressWarnings("nls")
+    @Override
+    public String toString() {
+        return "Training [datum=" + datum + ", dauer=" + dauer + ", laengeInMeter=" + laengeInMeter + ", athlete=" + athlete + ", trainingType=" + trainingType
+                + ", route=" + route + ", fileName=" + fileName + "]";
     }
 }
