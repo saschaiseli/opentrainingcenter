@@ -53,6 +53,7 @@
       <plugin id="com.eclipsesource.widgets.gmaps"/>
       <plugin id="com.ibm.icu"/>
       <plugin id="h2_lib"/>
+      <plugin id="geocalc"/>
       <plugin id="javax.servlet"/>
       <plugin id="jfreechart"/>
       <plugin id="jodatime"/>

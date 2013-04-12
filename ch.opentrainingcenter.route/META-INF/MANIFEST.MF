@@ -8,8 +8,8 @@ Require-Bundle: org.eclipse.core.runtime,
  ch.opentrainingcenter.model,
  ch.opentrainingcenter.core,
  logging,
- geocalc,
- jodatime
+ jodatime,
+ geocalc
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: ch.opentrainingcenter.route
