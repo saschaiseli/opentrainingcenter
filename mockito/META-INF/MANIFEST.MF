@@ -70,4 +70,4 @@ Export-Package: org.hamcrest,
  org.objenesis.instantiator.jrockit,
  org.objenesis.instantiator.sun,
  org.objenesis.strategy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7

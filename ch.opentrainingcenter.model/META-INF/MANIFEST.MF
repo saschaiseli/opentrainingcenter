@@ -12,7 +12,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.jface,
  ch.opentrainingcenter.i18n
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: ch.opentrainingcenter.model,
  ch.opentrainingcenter.model.cache,
  ch.opentrainingcenter.model.geo,

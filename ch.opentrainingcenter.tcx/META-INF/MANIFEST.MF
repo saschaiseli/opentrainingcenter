@@ -8,5 +8,5 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Name: Tcx
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: ch.opentrainingcenter.tcx
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 

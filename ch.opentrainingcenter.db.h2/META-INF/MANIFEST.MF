@@ -9,7 +9,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.hibernate,
  logging,
  ch.opentrainingcenter.core
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: ch.opentrainingcenter.db.h2;
   uses:="ch.opentrainingcenter.transfer.impl,
    ch.opentrainingcenter.transfer,
