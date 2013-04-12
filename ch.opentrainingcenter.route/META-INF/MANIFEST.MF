@@ -8,7 +8,7 @@ Require-Bundle: org.eclipse.core.runtime,
  ch.opentrainingcenter.model,
  ch.opentrainingcenter.core,
  logging,
- com.grum.geocalc,
+ geocalc,
  jodatime
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
