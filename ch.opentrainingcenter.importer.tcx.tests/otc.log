@@ -310,3 +310,50 @@
 2013-04-07 17:07:56,099 DEBUG [main] ch.opentrainingcenter.importer.tcx.ConvertTcx: lap: ACTIVE distance: 12305.6787
 2013-04-07 17:07:56,102 INFO  [main] ch.opentrainingcenter.importer.tcx.ConvertTcx: ConvertTcx erfolgreich instanziert....
 2013-04-07 17:07:56,105 INFO  [main] ch.opentrainingcenter.importer.tcx.ConvertTcx: ConvertTcx erfolgreich instanziert....fertig
+2013-04-20 08:31:31,934 INFO  [main] ch.opentrainingcenter.importer.tcx.ConvertTcx: ConvertTcx erfolgreich instanziert....
+2013-04-20 08:31:31,982 INFO  [main] ch.opentrainingcenter.importer.tcx.ConvertTcx: ConvertTcx erfolgreich instanziert....fertig
+2013-04-20 08:31:31,983 INFO  [main] ch.opentrainingcenter.importer.tcx.ConvertTcx: ConvertTcx erfolgreich instanziert....
+2013-04-20 08:31:31,984 INFO  [main] ch.opentrainingcenter.importer.tcx.ConvertTcx: ConvertTcx erfolgreich instanziert....fertig
+2013-04-20 08:31:31,984 INFO  [main] ch.opentrainingcenter.importer.tcx.ConvertTcx: Start unmarshalling TCX File
+2013-04-20 08:31:39,239 INFO  [main] ch.opentrainingcenter.importer.tcx.ConvertTcx: File unmarshalled
+2013-04-20 08:31:39,307 INFO  [main] ch.opentrainingcenter.importer.tcx.ConvertTcx: Runde 1 wird konvertiert
+2013-04-20 08:31:39,445 DEBUG [main] ch.opentrainingcenter.importer.tcx.ConvertTcx: lap: ACTIVE distance: 1913.7605
+2013-04-20 08:31:39,445 INFO  [main] ch.opentrainingcenter.importer.tcx.ConvertTcx: Runde 2 wird konvertiert
+2013-04-20 08:31:39,457 DEBUG [main] ch.opentrainingcenter.importer.tcx.ConvertTcx: lap: ACTIVE distance: 2443.549074
+2013-04-20 08:31:39,520 INFO  [main] ch.opentrainingcenter.importer.tcx.ConvertTcx: ConvertTcx erfolgreich instanziert....
+2013-04-20 08:31:39,520 INFO  [main] ch.opentrainingcenter.importer.tcx.ConvertTcx: ConvertTcx erfolgreich instanziert....fertig
+2013-04-20 08:31:39,520 INFO  [main] ch.opentrainingcenter.importer.tcx.ConvertTcx: Start unmarshalling TCX File
+2013-04-20 08:31:39,697 INFO  [main] ch.opentrainingcenter.importer.tcx.ConvertTcx: File unmarshalled
+2013-04-20 08:31:39,697 INFO  [main] ch.opentrainingcenter.importer.tcx.ConvertTcx: Runde 1 wird konvertiert
+2013-04-20 08:31:39,698 DEBUG [main] ch.opentrainingcenter.importer.tcx.ConvertTcx: lap: ACTIVE distance: 1913.7605
+2013-04-20 08:31:39,698 INFO  [main] ch.opentrainingcenter.importer.tcx.ConvertTcx: Runde 2 wird konvertiert
+2013-04-20 08:31:39,698 DEBUG [main] ch.opentrainingcenter.importer.tcx.ConvertTcx: lap: ACTIVE distance: 3827.521
+2013-04-20 08:31:39,699 INFO  [main] ch.opentrainingcenter.importer.tcx.ConvertTcx: ConvertTcx erfolgreich instanziert....
+2013-04-20 08:31:39,699 INFO  [main] ch.opentrainingcenter.importer.tcx.ConvertTcx: ConvertTcx erfolgreich instanziert....fertig
+2013-04-20 08:31:39,700 INFO  [main] ch.opentrainingcenter.importer.tcx.ConvertTcx: Start unmarshalling TCX File
+2013-04-20 08:31:39,844 INFO  [main] ch.opentrainingcenter.importer.tcx.ConvertTcx: File unmarshalled
+2013-04-20 08:31:39,845 INFO  [main] ch.opentrainingcenter.importer.tcx.ConvertTcx: Runde 1 wird konvertiert
+2013-04-20 08:31:39,845 INFO  [main] ch.opentrainingcenter.importer.tcx.ConvertTcx: Ungültiger Trackpoint um '2013-04-05T15:50:10Z' gefunden
+2013-04-20 08:31:39,845 DEBUG [main] ch.opentrainingcenter.importer.tcx.ConvertTcx: lap: ACTIVE distance: 1913.7605
+2013-04-20 08:31:39,854 INFO  [main] ch.opentrainingcenter.importer.tcx.ConvertTcx: ConvertTcx erfolgreich instanziert....
+2013-04-20 08:31:39,854 INFO  [main] ch.opentrainingcenter.importer.tcx.ConvertTcx: ConvertTcx erfolgreich instanziert....fertig
+2013-04-20 08:31:39,854 INFO  [main] ch.opentrainingcenter.importer.tcx.ConvertTcx: Start unmarshalling TCX File
+2013-04-20 08:31:40,071 INFO  [main] ch.opentrainingcenter.importer.tcx.ConvertTcx: File unmarshalled
+2013-04-20 08:31:40,071 INFO  [main] ch.opentrainingcenter.importer.tcx.ConvertTcx: Runde 1 wird konvertiert
+2013-04-20 08:31:40,072 DEBUG [main] ch.opentrainingcenter.importer.tcx.ConvertTcx: lap: ACTIVE distance: 12305.6787
+2013-04-20 08:31:40,072 INFO  [main] ch.opentrainingcenter.importer.tcx.ConvertTcx: ConvertTcx erfolgreich instanziert....
+2013-04-20 08:31:40,072 INFO  [main] ch.opentrainingcenter.importer.tcx.ConvertTcx: ConvertTcx erfolgreich instanziert....fertig
+2013-04-20 08:31:40,072 INFO  [main] ch.opentrainingcenter.importer.tcx.ConvertTcx: Start unmarshalling TCX File
+2013-04-20 08:31:40,468 INFO  [main] ch.opentrainingcenter.importer.tcx.ConvertTcx: File unmarshalled
+2013-04-20 08:31:40,468 INFO  [main] ch.opentrainingcenter.importer.tcx.ConvertTcx: Runde 1 wird konvertiert
+2013-04-20 08:31:40,503 DEBUG [main] ch.opentrainingcenter.importer.tcx.ConvertTcx: lap: ACTIVE distance: 1913.7605
+2013-04-20 08:31:40,523 INFO  [main] ch.opentrainingcenter.importer.tcx.ConvertTcx: Runde 2 wird konvertiert
+2013-04-20 08:31:40,527 DEBUG [main] ch.opentrainingcenter.importer.tcx.ConvertTcx: lap: ACTIVE distance: 2443.549074
+2013-04-20 08:31:40,528 INFO  [main] ch.opentrainingcenter.importer.tcx.ConvertTcx: ConvertTcx erfolgreich instanziert....
+2013-04-20 08:31:40,528 INFO  [main] ch.opentrainingcenter.importer.tcx.ConvertTcx: ConvertTcx erfolgreich instanziert....fertig
+2013-04-20 08:31:40,528 INFO  [main] ch.opentrainingcenter.importer.tcx.ConvertTcx: Start unmarshalling TCX File
+2013-04-20 08:31:40,705 INFO  [main] ch.opentrainingcenter.importer.tcx.ConvertTcx: File unmarshalled
+2013-04-20 08:31:40,706 INFO  [main] ch.opentrainingcenter.importer.tcx.ConvertTcx: Runde 1 wird konvertiert
+2013-04-20 08:31:40,707 DEBUG [main] ch.opentrainingcenter.importer.tcx.ConvertTcx: lap: ACTIVE distance: 1913.7605
+2013-04-20 08:31:40,707 INFO  [main] ch.opentrainingcenter.importer.tcx.ConvertTcx: ConvertTcx erfolgreich instanziert....
+2013-04-20 08:31:40,708 INFO  [main] ch.opentrainingcenter.importer.tcx.ConvertTcx: ConvertTcx erfolgreich instanziert....fertig
