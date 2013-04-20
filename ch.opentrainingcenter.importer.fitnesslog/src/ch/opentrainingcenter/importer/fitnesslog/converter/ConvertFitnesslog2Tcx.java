@@ -3,7 +3,6 @@ package ch.opentrainingcenter.importer.fitnesslog.converter;
 import java.io.File;
 import java.net.URL;
 import java.util.Collections;
-import java.util.List;
 
 import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
@@ -22,7 +21,6 @@ import org.xml.sax.SAXException;
 import ch.opentrainingcenter.core.importer.IConvert2Tcx;
 import ch.opentrainingcenter.importer.fitnesslog.Activator;
 import ch.opentrainingcenter.importer.fitnesslog.model.FitnessWorkbook;
-import ch.opentrainingcenter.tcx.TrainingCenterDatabaseT;
 import ch.opentrainingcenter.transfer.ITraining;
 
 public class ConvertFitnesslog2Tcx implements IConvert2Tcx {
@@ -84,15 +82,26 @@ public class ConvertFitnesslog2Tcx implements IConvert2Tcx {
     }
 
     @Override
-    public List<ITraining> convertActivity(final File file) throws Exception {
-        return null;// convert(file).getActivities().getActivity();
-    }
-
-    private TrainingCenterDatabaseT convert(final File file) throws Exception {
+    public ITraining convert(final File file) throws Exception {
         final FitnessWorkbook workbook = unmarshall(file);
         final ConvertWorkbook2Tcx convertWorkbook2Tcx = new ConvertWorkbook2Tcx();
-        return convertWorkbook2Tcx.convert(workbook);
+        convertWorkbook2Tcx.convert(workbook);
+        return null;
     }
+
+    // @Override
+    // public List<ITraining> convertActivity(final File file) throws Exception
+    // {
+    // return null;// convert(file).getActivities().getActivity();
+    // }
+    //
+    // private TrainingCenterDatabaseT convert(final File file) throws Exception
+    // {
+    // final FitnessWorkbook workbook = unmarshall(file);
+    // final ConvertWorkbook2Tcx convertWorkbook2Tcx = new
+    // ConvertWorkbook2Tcx();
+    // return convertWorkbook2Tcx.convert(workbook);
+    // }
 
     @Override
     public String getFilePrefix() {
