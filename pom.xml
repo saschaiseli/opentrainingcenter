@@ -36,14 +36,13 @@
 		<module>ch.opentrainingcenter.model</module>		
 		<module>ch.opentrainingcenter.db.h2</module>
 		<module>ch.opentrainingcenter.i18n</module>
-		<module>ch.opentrainingcenter.importer</module>
-		<module>ch.opentrainingcenter.importer.fitnesslog</module>
 		<module>ch.opentrainingcenter.importer.tcx</module>
 		<module>ch.opentrainingcenter.tcx</module>
 		<module>ch.opentrainingcenter.transfer</module>
 		<module>ch.opentrainingcenter.route</module>
 		<module>com.eclipsesource.widgets.gmaps</module>
 		<module>h2</module>
+		<module>geocalc</module>
 		<module>jfreechart</module>
 		<module>jodatime</module>
 		<module>logging</module>
@@ -54,9 +53,9 @@
 		<module>ch.opentrainingcenter.client.tests</module>
 		<module>ch.opentrainingcenter.core.tests</module>
 		<module>ch.opentrainingcenter.charts.tests</module>
+		<module>ch.opentrainingcenter.db.h2.tests</module>
+		<module>ch.opentrainingcenter.importer.tcx.tests</moduel>
 		<module>ch.opentrainingcenter.model.tests</module>
-		<module>ch.opentrainingcenter.importer.tests</module>
-		<module>ch.opentrainingcenter.importer.fitnesslog.tests</module>
 		<module>ch.opentrainingcenter.route.tests</module>
 	</modules>
 
