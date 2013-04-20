@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: geocalc
 Bundle-SymbolicName: geocalc
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.0.0
 Bundle-ClassPath: geocalc.jar
 Export-Package: com.grum.geocalc
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
