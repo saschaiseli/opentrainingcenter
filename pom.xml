@@ -54,7 +54,7 @@
 		<module>ch.opentrainingcenter.core.tests</module>
 		<module>ch.opentrainingcenter.charts.tests</module>
 		<module>ch.opentrainingcenter.db.h2.tests</module>
-		<module>ch.opentrainingcenter.importer.tcx.tests</moduel>
+		<module>ch.opentrainingcenter.importer.tcx.tests</module>
 		<module>ch.opentrainingcenter.model.tests</module>
 		<module>ch.opentrainingcenter.route.tests</module>
 	</modules>
