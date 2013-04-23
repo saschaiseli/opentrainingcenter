@@ -32,16 +32,16 @@ public class Dao {
 
     public Session getSession() {
         if (session == null) {
-            final org.hibernate.cfg.Configuration c = new org.hibernate.cfg.Configuration();
+            final org.hibernate.cfg.Configuration configuration = new org.hibernate.cfg.Configuration();
             switch (usage) {
             case PRODUCTION:
-                sessionFactory = c.configure("hibernate.cfg.xml").buildSessionFactory(); //$NON-NLS-1$
+                sessionFactory = configuration.configure("hibernate.cfg.xml").buildSessionFactory(); //$NON-NLS-1$
                 break;
             case DEVELOPING:
-                sessionFactory = c.configure("hibernate_dev.cfg.xml").buildSessionFactory(); //$NON-NLS-1$
+                sessionFactory = configuration.configure("hibernate_dev.cfg.xml").buildSessionFactory(); //$NON-NLS-1$
                 break;
             default:
-                sessionFactory = c.configure("hibernate_junit.cfg.xml").buildSessionFactory(); //$NON-NLS-1$
+                sessionFactory = configuration.configure("hibernate_junit.cfg.xml").buildSessionFactory(); //$NON-NLS-1$
             }
             session = sessionFactory.openSession();
         }

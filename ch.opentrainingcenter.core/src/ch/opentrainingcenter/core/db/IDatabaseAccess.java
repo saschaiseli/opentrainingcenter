@@ -165,4 +165,16 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
      * Liefert alle Strecken von dem Athleten
      */
     List<IRoute> getRoute(IAthlete athlete);
+
+    /**
+     * Setzt das developing flag. So kann in der entwicklung zum beispiel eine
+     * andere DB verwendet werden.
+     */
+    void setDeveloping(boolean developing);
+
+    /**
+     * Initialisiert den Database Access
+     */
+    void init();
+
 }

@@ -24,18 +24,42 @@ import ch.opentrainingcenter.transfer.IWeather;
 
 public class DatabaseAccess implements IDatabaseAccess {
 
-    private final AthleteDao athleteDao;
-    private final DatabaseCreator databaseCreator;
-    private final HealthDao healthDao;
-    private final PlanungDao planungsDao;
-    private final RouteDao routeDao;
-    private final WeatherDao wetterDao;
-    private final TrainingDao trainingDao;
+    private AthleteDao athleteDao;
+    private DatabaseCreator databaseCreator;
+    private HealthDao healthDao;
+    private PlanungDao planungsDao;
+    private RouteDao routeDao;
+    private WeatherDao wetterDao;
+    private TrainingDao trainingDao;
+    private boolean developing;
+    private Dao dao;
+
+    /**
+     * Mit diesem Konstruktur wird mit der eclipse platform der vm args
+     * parameters ausgelesen und ausgewertet.
+     */
+    public DatabaseAccess() {
+
+    }
 
     /**
      * Konstruktor für Tests
      */
     public DatabaseAccess(final Dao dao) {
+        this.dao = dao;
+        init();
+    }
+
+    @Override
+    public void setDeveloping(final boolean developing) {
+        this.developing = developing;
+    }
+
+    @Override
+    public void init() {
+        if (developing) {
+            this.dao = new Dao(USAGE.DEVELOPING);
+        }
         athleteDao = new AthleteDao(dao);
         databaseCreator = new DatabaseCreator(dao);
         healthDao = new HealthDao(dao);
@@ -43,14 +67,6 @@ public class DatabaseAccess implements IDatabaseAccess {
         routeDao = new RouteDao(dao);
         trainingDao = new TrainingDao(dao);
         wetterDao = new WeatherDao(dao);
-    }
-
-    /**
-     * Mit diesem Konstruktur wird mit der eclipse platform der vm args
-     * parameters ausgelesen und ausgewertet.
-     */
-    public DatabaseAccess() {
-        this(new Dao(USAGE.DEVELOPING));
     }
 
     @Override
@@ -182,4 +198,5 @@ public class DatabaseAccess implements IDatabaseAccess {
     public int saveTraining(final ITraining training) {
         return trainingDao.saveOrUpdate(training);
     }
+
 }

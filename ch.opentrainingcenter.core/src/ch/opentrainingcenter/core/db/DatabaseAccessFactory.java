@@ -9,21 +9,35 @@ public final class DatabaseAccessFactory {
 
     public static final Logger LOGGER = Logger.getLogger(DatabaseAccessFactory.class);
 
+    private static final String DEVELOPING_FLAG = "developing"; //$NON-NLS-1$
+
+    private static boolean DEVELOPING = false;
+
     private static DatabaseAccessFactory instance = null;
 
-    private final IDatabaseAccess dao;
+    private final IDatabaseAccess databaseAccess;
 
     public static IDatabaseAccess getDatabaseAccess() {
         if (instance == null) {
             instance = new DatabaseAccessFactory();
+            final String[] commandLineArgs = Platform.getCommandLineArgs();
+            for (final String cmdArg : commandLineArgs) {
+                if (cmdArg.contains(DEVELOPING_FLAG)) {
+                    DEVELOPING = true;
+                }
+            }
+            if (DEVELOPING) {
+                instance.databaseAccess.setDeveloping(true);
+            }
+            instance.databaseAccess.init();
         }
-        return instance.dao;
+        return instance.databaseAccess;
     }
 
     private DatabaseAccessFactory() {
         // test hier ob es datenbank gibt
         final IConfigurationElement[] daos = Platform.getExtensionRegistry().getConfigurationElementsFor("ch.opentrainingdatabase.db"); //$NON-NLS-1$
-        dao = (IDatabaseAccess) getDao(daos, IDatabaseAccess.EXTENSION_POINT_NAME);
+        databaseAccess = (IDatabaseAccess) getDao(daos, IDatabaseAccess.EXTENSION_POINT_NAME);
     }
 
     Object getDao(final IConfigurationElement[] confItems, final String extensionAttr) {
