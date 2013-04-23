@@ -83,12 +83,6 @@
          unpack="false"/>
 
    <plugin
-         id="ch.opentrainingcenter.db.h2"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
          id="org.eclipse.core.contenttype"
          download-size="0"
          install-size="0"
@@ -171,14 +165,7 @@
          install-size="0"
          version="0.0.0"
          unpack="false"/>
-<!--
-   <plugin
-         id="ch.opentrainingcenter.importer.fitnesslog"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
--->
+
    <plugin
          id="org.eclipse.core.databinding.beans"
          download-size="0"
@@ -427,5 +414,11 @@
          install-size="0"
          version="0.0.0"
          unpack="false"/>
+
+   <plugin
+         id="ch.opentrainingcenter.db"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
 
 </feature>

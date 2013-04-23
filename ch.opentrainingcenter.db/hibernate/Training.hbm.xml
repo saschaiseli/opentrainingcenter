@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 04.04.2013 20:38:06 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+	<class name="ch.opentrainingcenter.transfer.impl.Training" table="TRAINING"
+		schema="PUBLIC" catalog="OTC">
+		<id name="id" type="int">
+			<column name="ID_TRAINING" />
+			<generator class="sequence">
+				<param name="sequence">training_id_sequence</param>
+			</generator>
+		</id>
+
+		<many-to-one name="athlete"
+			class="ch.opentrainingcenter.transfer.impl.Athlete" fetch="select"
+			update="true">
+			<column name="ID_FK_ATHLETE" />
+		</many-to-one>
+
+		<many-to-one name="trainingType"
+			class="ch.opentrainingcenter.transfer.impl.Trainingtype" fetch="select"
+			update="true">
+			<column name="ID_FK_TRAININGTYPE" />
+		</many-to-one>
+		<many-to-one name="weather"
+			class="ch.opentrainingcenter.transfer.impl.Weather" fetch="select"
+			update="true">
+			<column name="ID_FK_WEATHER" />
+		</many-to-one>
+
+		<many-to-one name="route"
+			class="ch.opentrainingcenter.transfer.impl.Route" fetch="select"
+			update="false" cascade="all">
+			<column name="ID_FK_ROUTE" />
+		</many-to-one>
+
+		<property name="datum" type="java.lang.Long">
+			<column name="DATUM" />
+		</property>
+		<property name="dauer" type="java.lang.Double">
+			<column name="DAUER" precision="17" scale="0" />
+		</property>
+		<property name="laengeInMeter" type="java.lang.Double">
+			<column name="LAENGEINMETER" precision="17" scale="0" />
+		</property>
+		<property name="averageHeartBeat" type="java.lang.Integer">
+			<column name="AVERAGEHEARTBEAT" />
+		</property>
+		<property name="maxHeartBeat" type="java.lang.Integer">
+			<column name="MAXHEARTBEAT" />
+		</property>
+		<property name="maxSpeed" type="java.lang.Double">
+			<column name="MAXSPEED" precision="17" scale="0" />
+		</property>
+		<property name="note" type="string">
+			<column name="NOTE" />
+		</property>
+		<property name="dateOfImport" type="java.util.Date">
+			<column name="DATEOFIMPORT" />
+		</property>
+		<property name="fileName" type="string">
+			<column name="FILENAME" />
+		</property>
+		<list name="trackPoints" table="TRACKTRAININGPROPERTY"  cascade="all">
+			<key column="ID_TRAINING" />
+			<list-index column="idx"/>
+			<one-to-many class="ch.opentrainingcenter.transfer.impl.Tracktrainingproperty" />
+		</list>
+	</class>
+</hibernate-mapping>

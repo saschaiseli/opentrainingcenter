@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 04.04.2013 20:38:06 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+	<class name="ch.opentrainingcenter.transfer.impl.Tracktrainingproperty"
+		table="TRACKTRAININGPROPERTY" schema="PUBLIC" catalog="OTC">
+		<id name="id" type="int">
+			<column name="ID" />
+			<generator class="sequence">
+				<param name="sequence">trackpointproperty_id_sequence</param>
+			</generator>
+		</id>
+		<property name="distance" type="java.lang.Double">
+			<column name="DISTANCE" precision="17" scale="0" />
+		</property>
+		<property name="heartBeat" type="java.lang.Integer">
+			<column name="HEARTBEAT" />
+		</property>
+		<property name="altitude" type="java.lang.Integer">
+			<column name="ALTITUDE" />
+		</property>
+		<property name="zeit" type="java.lang.Long">
+			<column name="ZEIT" />
+		</property>
+		<property name="lap" type="java.lang.Integer">
+			<column name="LAP" />
+		</property>
+		<many-to-one name="streckenPunkt"
+			class="ch.opentrainingcenter.transfer.impl.Streckenpunkte" fetch="join"
+			update="true" insert="true" cascade="all">
+			<column name="ID_FK_STRECKENPUNKT" />
+		</many-to-one>
+		<many-to-one name="training"
+			class="ch.opentrainingcenter.transfer.impl.Training" fetch="join"
+			insert="true" not-null="true">
+			<column name="ID_TRAINING" />
+		</many-to-one>
+	</class>
+</hibernate-mapping>
