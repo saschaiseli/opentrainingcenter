@@ -29,7 +29,9 @@ public final class DatabaseAccessFactory {
             if (DEVELOPING) {
                 instance.databaseAccess.setDeveloping(true);
             }
-            instance.databaseAccess.init();
+            if (instance.databaseAccess != null) {
+                instance.databaseAccess.init();
+            }
         }
         return instance.databaseAccess;
     }

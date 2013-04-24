@@ -56,31 +56,10 @@ public class Dao {
             default:
                 sessionFactory = configuration.configure("hibernate_junit.cfg.xml").buildSessionFactory(); //$NON-NLS-1$
             }
-            try {
-                configuration.addFile(getFile("Athlete.hbm.xml"));//$NON-NLS-1$
-                configuration.addFile(getFile("Health.hbm.xml")); //$NON-NLS-1$
-                configuration.addFile(getFile("Weather.hbm.xml")); //$NON-NLS-1$
-                configuration.addFile(getFile("Training.hbm.xml")); //$NON-NLS-1$
-                configuration.addFile(getFile("Trainingtype.hbm.xml")); //$NON-NLS-1$
-                configuration.addFile(getFile("Tracktrainingproperty.hbm.xml")); //$NON-NLS-1$
-                configuration.addFile(getFile("Streckenpunkte.hbm.xml")); //$NON-NLS-1$
-                configuration.addFile(getFile("Planungwoche.hbm.xml")); //$NON-NLS-1$
-                configuration.addFile(getFile("Route.hbm.xml")); //$NON-NLS-1$
-            } catch (final MappingException e) {
-                e.printStackTrace();
-            } catch (final IOException e) {
-                e.printStackTrace();
-            }
             session = sessionFactory.openSession();
 
         }
         return session;
-    }
-
-    private File getFile(final String hibernateMappingFile) throws IOException {
-        final URL url = FileLocator.find(dbBundle, new Path("hibernate/" + hibernateMappingFile), null); //$NON-NLS-1$
-        final URL fileURL = FileLocator.toFileURL(url);
-        return new File(fileURL.getPath());
     }
 
     public Transaction begin() {
