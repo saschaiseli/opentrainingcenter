@@ -1,9 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: Tests
-Bundle-SymbolicName: ch.opentrainingcenter.db.h2.tests
-Bundle-Version: 1.0.0.qualifier
-Fragment-Host: ch.opentrainingcenter.db.h2
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Require-Bundle: org.junit,
- jodatime
