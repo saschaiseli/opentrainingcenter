@@ -34,7 +34,7 @@
 		<module>ch.opentrainingcenter.charts</module>
 		<module>ch.opentrainingcenter.core</module>
 		<module>ch.opentrainingcenter.model</module>		
-		<module>ch.opentrainingcenter.db.h2</module>
+		<module>ch.opentrainingcenter.db</module>
 		<module>ch.opentrainingcenter.i18n</module>
 		<module>ch.opentrainingcenter.importer.tcx</module>
 		<module>ch.opentrainingcenter.tcx</module>
@@ -53,7 +53,7 @@
 		<module>ch.opentrainingcenter.client.tests</module>
 		<module>ch.opentrainingcenter.core.tests</module>
 		<module>ch.opentrainingcenter.charts.tests</module>
-		<module>ch.opentrainingcenter.db.h2.tests</module>
+		<module>ch.opentrainingcenter.db.tests</module>
 		<module>ch.opentrainingcenter.importer.tcx.tests</module>
 		<module>ch.opentrainingcenter.model.tests</module>
 		<module>ch.opentrainingcenter.route.tests</module>
