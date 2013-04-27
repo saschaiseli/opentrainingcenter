@@ -16,9 +16,9 @@ import ch.opentrainingcenter.transfer.IPlanungWoche;
 public class PlanungDao {
     private static final Logger LOG = Logger.getLogger(PlanungDao.class);
 
-    private final Dao dao;
+    private final IDao dao;
 
-    public PlanungDao(final Dao dao) {
+    public PlanungDao(final IDao dao) {
         this.dao = dao;
     }
 

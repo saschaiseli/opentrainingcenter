@@ -9,25 +9,24 @@ import org.hibernate.Session;
 
 public class DatabaseCreator {
 
-    private final Dao dao;
+    private final IDao dao;
 
-    public DatabaseCreator(final Dao dao) {
+    public DatabaseCreator(final IDao dao) {
         this.dao = dao;
     }
 
-    public void createDatabase() {
+    public void createDatabase(final InputStream sqlStream) {
         try {
             final Session session = dao.getSession();
             dao.begin();
-
-            final InputStream sqlStream = this.getClass().getClassLoader().getResourceAsStream("otc.sql"); //$NON-NLS-1$
             final BufferedReader bufRead = new BufferedReader(new InputStreamReader(sqlStream));
             final StringBuilder builder = new StringBuilder();
             int nextchar;
             while ((nextchar = bufRead.read()) != -1) {
                 builder.append((char) nextchar);
             }
-            final Query query = session.createSQLQuery(builder.toString());
+            final String sql = builder.toString();
+            final Query query = session.createSQLQuery(sql);
             query.executeUpdate();
             dao.commit();
             session.flush();

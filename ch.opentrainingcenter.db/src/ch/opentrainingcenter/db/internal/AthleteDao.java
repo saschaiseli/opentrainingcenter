@@ -10,9 +10,9 @@ import ch.opentrainingcenter.transfer.IAthlete;
 
 public class AthleteDao {
 
-    private final Dao dao;
+    private final IDao dao;
 
-    public AthleteDao(final Dao dao) {
+    public AthleteDao(final IDao dao) {
         this.dao = dao;
     }
 

@@ -15,10 +15,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ch.opentrainingcenter.db.DatabaseAccess;
-import ch.opentrainingcenter.db.internal.AthleteDao;
-import ch.opentrainingcenter.db.internal.RouteDao;
-import ch.opentrainingcenter.db.internal.TrainingTypeDao;
-import ch.opentrainingcenter.db.internal.WeatherDao;
 import ch.opentrainingcenter.transfer.ActivityExtension;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
@@ -40,10 +36,8 @@ public class DatabaseAccessTest extends DatabaseTestBase {
     private RouteDao routeDao;
     private TrainingTypeDao trainingTypeDao;
 
-    @Override
     @Before
     public void setUp() {
-        super.setUp();
         access = new DatabaseAccess(dao);
         final WeatherDao weatherDao = new WeatherDao(dao);
         weatherA = weatherDao.getAllWeather().get(0);

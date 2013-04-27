@@ -15,9 +15,9 @@ import ch.opentrainingcenter.transfer.IHealth;
 public class HealthDao {
     private static final Logger LOG = Logger.getLogger(HealthDao.class);
 
-    private final Dao dao;
+    private final IDao dao;
 
-    public HealthDao(final Dao dao) {
+    public HealthDao(final IDao dao) {
         this.dao = dao;
     }
 

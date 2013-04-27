@@ -12,8 +12,6 @@ import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 
-import ch.opentrainingcenter.db.internal.AthleteDao;
-import ch.opentrainingcenter.db.internal.HealthDao;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IHealth;
@@ -25,10 +23,8 @@ public class HealthDaoTest extends DatabaseTestBase {
     private IAthlete athlete;
     private Date now;
 
-    @Override
     @Before
     public void setUp() {
-        super.setUp();
         healthDao = new HealthDao(dao);
         athleteDao = new AthleteDao(dao);
         athlete = CommonTransferFactory.createAthlete("healthdao", 22, 220);

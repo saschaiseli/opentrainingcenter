@@ -11,9 +11,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.hibernate,
  logging
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Export-Package: ch.opentrainingcenter.db;
- uses:="ch.opentrainingcenter.transfer.impl,
-   ch.opentrainingcenter.transfer,
-   org.hibernate"
+Export-Package: ch.opentrainingcenter.db;uses:="ch.opentrainingcenter.transfer.impl,ch.opentrainingcenter.transfer,org.hibernate",
+ ch.opentrainingcenter.db.internal
 Eclipse-RegisterBuddy: org.hibernate, logging
 Bundle-ActivationPolicy: lazy

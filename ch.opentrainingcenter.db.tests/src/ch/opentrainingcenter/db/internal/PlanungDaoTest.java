@@ -8,8 +8,6 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import ch.opentrainingcenter.db.internal.AthleteDao;
-import ch.opentrainingcenter.db.internal.PlanungDao;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IPlanungWoche;
@@ -21,10 +19,8 @@ public class PlanungDaoTest extends DatabaseTestBase {
     private IAthlete athlete;
     private IAthlete athleteOther;
 
-    @Override
     @Before
     public void setUp() {
-        super.setUp();
         planungDao = new PlanungDao(dao);
         athlete = CommonTransferFactory.createAthlete("junit", 22, 220);
         athleteOther = CommonTransferFactory.createAthlete("junit2", 223, 2203);

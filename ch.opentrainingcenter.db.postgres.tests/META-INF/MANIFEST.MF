@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Tests
+Bundle-SymbolicName: ch.opentrainingcenter.db.postgres.tests
+Bundle-Version: 1.0.0.qualifier
+Fragment-Host: ch.opentrainingcenter.db.postgres
+Require-Bundle: org.junit,
+ jodatime
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+ 

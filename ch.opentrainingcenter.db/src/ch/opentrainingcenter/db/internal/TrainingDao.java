@@ -20,9 +20,9 @@ public class TrainingDao {
 
     private static final Logger LOG = Logger.getLogger(TrainingDao.class);
 
-    private final Dao dao;
+    private final IDao dao;
 
-    public TrainingDao(final Dao dao) {
+    public TrainingDao(final IDao dao) {
         this.dao = dao;
     }
 

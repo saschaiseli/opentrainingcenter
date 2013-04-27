@@ -3,27 +3,34 @@ package ch.opentrainingcenter.db.internal;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 
+import ch.opentrainingcenter.core.db.DatabaseConnectionConfiguration;
 import ch.opentrainingcenter.db.DatabaseAccess;
+import ch.opentrainingcenter.db.USAGE;
 import ch.opentrainingcenter.db.internal.Dao;
-import ch.opentrainingcenter.db.internal.Dao.USAGE;
+import ch.opentrainingcenter.db.internal.IDao;
 
+/**
+ * Basis für Datebank Tests. Die Tests werden gegen eine h2 db gemacht.
+ * 
+ * @author sascha
+ * 
+ */
 @SuppressWarnings("nls")
 public class DatabaseTestBase {
 
-    protected Dao dao;
-
-    @Before
-    public void setUp() {
-        dao = new Dao(USAGE.TEST);
-
-    }
+    private static final String USER = "sa";
+    private static final String DRIVER = "org.h2.Driver";
+    private static final String URL = "jdbc:h2:file:~/.otc_junit/";
+    private static final String DIALECT = "org.hibernate.dialect.H2Dialect";
+    protected static IDao dao = null;
 
     @BeforeClass
-    public static void before() {
-        createDb();
+    public static void createDb() {
+        dao = new Dao(USAGE.TEST, new DatabaseConnectionConfiguration(DRIVER, URL + USAGE.TEST.getDbName(), USER, "", DIALECT));
+        final DatabaseAccess access = new DatabaseAccess(dao);
+        access.createDatabase();
     }
 
     @AfterClass
@@ -31,13 +38,7 @@ public class DatabaseTestBase {
         truncateDb();
     }
 
-    protected static void createDb() {
-        final DatabaseAccess access = new DatabaseAccess(new Dao(USAGE.TEST));
-        access.createDatabase();
-    }
-
     protected static void truncateDb() {
-        final Dao dao = new Dao(USAGE.TEST);
         try {
             final Session session = dao.getSession();
             dao.begin();

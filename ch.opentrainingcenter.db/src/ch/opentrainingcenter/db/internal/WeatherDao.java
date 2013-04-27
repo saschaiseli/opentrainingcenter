@@ -11,9 +11,9 @@ import ch.opentrainingcenter.transfer.IWeather;
 @SuppressWarnings("nls")
 public class WeatherDao {
 
-    private final Dao dao;
+    private final IDao dao;
 
-    public WeatherDao(final Dao dao) {
+    public WeatherDao(final IDao dao) {
         this.dao = dao;
     }
 

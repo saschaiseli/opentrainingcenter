@@ -14,167 +14,173 @@ import ch.opentrainingcenter.transfer.IWeather;
 
 public interface IDatabaseAccess extends IExecutableExtensionFactory {
 
-    String EXTENSION_POINT_NAME = "classImportedDao"; //$NON-NLS-1$
+	String EXTENSION_POINT_NAME = "classImportedDao"; //$NON-NLS-1$
 
-    /**
-     * Wenn die db nicht vorhanden ist, wird die ganze datenbank mit sql queries
-     * erstellt.
-     */
-    void createDatabase();
+	/**
+	 * Wenn die db nicht vorhanden ist, wird die ganze datenbank mit sql queries
+	 * erstellt.
+	 */
+	void createDatabase();
 
-    List<IAthlete> getAllAthletes();
+	List<IAthlete> getAllAthletes();
 
-    int saveTraining(ITraining training);
+	/**
+	 * Gibt eine nach datum sortierte Liste von allen importierted Records
+	 * zurück.
+	 * 
+	 * @param athlete
+	 *            der Athlete der die Records importierte
+	 * @return eine Liste von {@link ITraining}
+	 */
+	List<ITraining> getAllImported(IAthlete athlete);
 
-    /**
-     * Gibt eine nach datum sortierte Liste von allen importierted Records
-     * zurück.
-     * 
-     * @param athlete
-     *            der Athlete der die Records importierte
-     * @return eine Liste von {@link ITraining}
-     */
-    List<ITraining> getAllImported(IAthlete athlete);
+	/**
+	 * Gibt eine nach datum sortierte Liste von allen importierted Records
+	 * zurück.
+	 * 
+	 * @param athlete
+	 *            der Athlete der die Records importierte
+	 * @return eine Liste von {@link ITraining}
+	 */
+	List<ITraining> getAllImported(IAthlete athlete, int limit);
 
-    /**
-     * Gibt eine nach datum sortierte Liste von allen importierted Records
-     * zurück.
-     * 
-     * @param athlete
-     *            der Athlete der die Records importierte
-     * @return eine Liste von {@link ITraining}
-     */
-    List<ITraining> getAllImported(IAthlete athlete, int limit);
+	/**
+	 * Gibt den sportler mit
+	 * 
+	 * @param id
+	 * @return Gibt den sportler mit der angegeben id zurück oder null.
+	 */
+	IAthlete getAthlete(int id);
 
-    /**
-     * @return den neusten Lauf. Nicht der Lauf der zuletzt importiert wurde,
-     *         sondern der Lauf, der zuletzt gemacht wurde.
-     */
-    ITraining getNewestRun(IAthlete athlete);
+	/**
+	 * Sucht einen Athleten mit dem angegeben Namen. Der Name muss exakt
+	 * übereinstimmen, es gibt keine %LIKE% abfrage.
+	 * 
+	 * @param name
+	 *            den vollständigen namen.
+	 * @return einen Athleten oder null, wenn dieser nicht gefunden wird.
+	 */
+	IAthlete getAthlete(String name);
 
-    /**
-     * Gibt den sportler mit
-     * 
-     * @param id
-     * @return Gibt den sportler mit der angegeben id zurück oder null.
-     */
-    IAthlete getAthlete(int id);
+	/**
+	 * Gibt alle Gesundheitsdaten von dem Athleten zurück.
+	 */
+	List<IHealth> getHealth(IAthlete athlete);
 
-    /**
-     * Sucht einen Athleten mit dem angegeben Namen. Der Name muss exakt
-     * übereinstimmen, es gibt keine %LIKE% abfrage.
-     * 
-     * @param name
-     *            den vollständigen namen.
-     * @return einen Athleten oder null, wenn dieser nicht gefunden wird.
-     */
-    IAthlete getAthlete(String name);
+	/**
+	 * gibt die gesundheitsdaten des atheleten zu dem gegebenen datum zurück.
+	 * Wenn noch keine daten erfasst sind, wird null zurückgegeben.
+	 */
+	IHealth getHealth(IAthlete athlete, Date date);
 
-    /**
-     * @param key
-     *            das datum des importierten records. das datum ist die id des
-     *            laufes.
-     * @return
-     */
-    ITraining getImportedRecord(long key);
+	/**
+	 * @param key
+	 *            das datum des importierten records. das datum ist die id des
+	 *            laufes.
+	 * @return
+	 */
+	ITraining getImportedRecord(long key);
 
-    void removeImportedRecord(long datum);
+	/**
+	 * @return den neusten Lauf. Nicht der Lauf der zuletzt importiert wurde,
+	 *         sondern der Lauf, der zuletzt gemacht wurde.
+	 */
+	ITraining getNewestRun(IAthlete athlete);
 
-    /**
-     * @param athlete
-     * @return
-     * @throws DatabaseException
-     *             wenn das speichern fehlschlägt
-     */
-    int save(IAthlete athlete);
+	List<IPlanungWoche> getPlanungsWoche(IAthlete athlete);
 
-    /**
-     * updated training type
-     */
-    void updateRecord(ITraining record, int index);
+	/**
+	 * Gibt eine Liste mit den geplanten Trainings vom entsprechenden Athleten
+	 * zurück.
+	 * 
+	 * @param athlete
+	 *            Der Athlete
+	 * @param jahr
+	 *            das Jahr aus welchem die Pläne sind
+	 * @param kwStart
+	 *            Kalenderwoche des ersten Planes
+	 * @return eine Liste mit den Plänen, wenn nichts gefunden wurde, wird eine
+	 *         leere Liste zurückgegeben.
+	 */
+	List<IPlanungWoche> getPlanungsWoche(IAthlete athlete, int jahr, int kwStart);
 
-    /**
-     * updated training type
-     */
-    void updateRecordRoute(ITraining record, int idRoute);
+	/**
+	 * Liefert alle Strecken von dem Athleten
+	 */
+	List<IRoute> getRoute(IAthlete athlete);
 
-    /**
-     * updated ganzer record
-     */
-    void updateRecord(ITraining record);
+	/**
+	 * @param name
+	 *            eindeutige identifizierung der Route
+	 * @return die route oder null, wenn nichts unter diesem namen gefunden.
+	 */
+	IRoute getRoute(String name, IAthlete athlete);
 
-    /**
-     * @return alle in der Datenbank verfügbaren wetter
-     */
-    List<IWeather> getWeather();
+	/**
+	 * @return alle in der Datenbank verfügbaren wetter
+	 */
+	List<IWeather> getWeather();
 
-    /**
-     * speichert den täglichen ruhepuls und gewicht. daten werden überschrieben.
-     * die id wird zurückgegeben.
-     */
-    int saveOrUpdate(IHealth health);
+	/**
+	 * Initialisiert den Database Access
+	 */
+	void init();
 
-    /**
-     * gibt die gesundheitsdaten des atheleten zu dem gegebenen datum zurück.
-     * Wenn noch keine daten erfasst sind, wird null zurückgegeben.
-     */
-    IHealth getHealth(IAthlete athlete, Date date);
+	/**
+	 * Löscht einen Records mit der angegebenen ID.
+	 */
+	void removeHealth(int id);
 
-    /**
-     * Gibt alle Gesundheitsdaten von dem Athleten zurück.
-     */
-    List<IHealth> getHealth(IAthlete athlete);
+	void removeImportedRecord(long datum);
 
-    /**
-     * Löscht einen Records mit der angegebenen ID.
-     */
-    void removeHealth(int id);
+	/**
+	 * @param athlete
+	 * @return
+	 * @throws DatabaseException
+	 *             wenn das speichern fehlschlägt
+	 */
+	int save(IAthlete athlete);
 
-    /**
-     * Gibt eine Liste mit den geplanten Trainings vom entsprechenden Athleten
-     * zurück.
-     * 
-     * @param athlete
-     *            Der Athlete
-     * @param jahr
-     *            das Jahr aus welchem die Pläne sind
-     * @param kwStart
-     *            Kalenderwoche des ersten Planes
-     * @return eine Liste mit den Plänen, wenn nichts gefunden wurde, wird eine
-     *         leere Liste zurückgegeben.
-     */
-    List<IPlanungWoche> getPlanungsWoche(IAthlete athlete, int jahr, int kwStart);
+	/**
+	 * speichert den täglichen ruhepuls und gewicht. daten werden überschrieben.
+	 * die id wird zurückgegeben.
+	 */
+	int saveOrUpdate(IHealth health);
 
-    void saveOrUpdate(List<IPlanungWoche> planung);
+	/**
+	 * Speichert die Strecke ab.
+	 */
+	void saveOrUpdate(IRoute route);
 
-    List<IPlanungWoche> getPlanungsWoche(IAthlete athlete);
+	void saveOrUpdate(List<IPlanungWoche> planung);
 
-    /**
-     * @param name
-     *            eindeutige identifizierung der Route
-     * @return die route oder null, wenn nichts unter diesem namen gefunden.
-     */
-    IRoute getRoute(String name, IAthlete athlete);
+	int saveTraining(ITraining training);
 
-    /**
-     * Speichert die Strecke ab.
-     */
-    void saveOrUpdate(IRoute route);
+	/**
+	 * Setzt die Datenbankkonfiguration (driver, url, user, password,
+	 * dialect,..)
+	 */
+	void setConfiguration(DatabaseConnectionConfiguration config);
 
-    /**
-     * Liefert alle Strecken von dem Athleten
-     */
-    List<IRoute> getRoute(IAthlete athlete);
+	/**
+	 * Setzt das developing flag. So kann in der entwicklung zum beispiel eine
+	 * andere DB verwendet werden.
+	 */
+	void setDeveloping(boolean developing);
 
-    /**
-     * Setzt das developing flag. So kann in der entwicklung zum beispiel eine
-     * andere DB verwendet werden.
-     */
-    void setDeveloping(boolean developing);
+	/**
+	 * updated ganzer record
+	 */
+	void updateRecord(ITraining record);
 
-    /**
-     * Initialisiert den Database Access
-     */
-    void init();
+	/**
+	 * updated training type
+	 */
+	void updateRecord(ITraining record, int index);
+
+	/**
+	 * updated training type
+	 */
+	void updateRecordRoute(ITraining record, int idRoute);
 
 }

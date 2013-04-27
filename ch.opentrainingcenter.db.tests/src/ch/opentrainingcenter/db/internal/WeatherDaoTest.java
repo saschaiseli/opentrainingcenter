@@ -7,7 +7,6 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import ch.opentrainingcenter.db.internal.WeatherDao;
 import ch.opentrainingcenter.transfer.IWeather;
 
 @SuppressWarnings("nls")
@@ -15,10 +14,8 @@ public class WeatherDaoTest extends DatabaseTestBase {
 
     private WeatherDao weatherDao;
 
-    @Override
     @Before
     public void setUp() {
-        super.setUp();
         weatherDao = new WeatherDao(dao);
     }
 

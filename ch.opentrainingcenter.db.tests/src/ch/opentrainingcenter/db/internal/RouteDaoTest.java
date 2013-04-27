@@ -10,8 +10,6 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import ch.opentrainingcenter.db.internal.AthleteDao;
-import ch.opentrainingcenter.db.internal.RouteDao;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IRoute;
@@ -22,10 +20,8 @@ public class RouteDaoTest extends DatabaseTestBase {
     private RouteDao routeDao;
     private IAthlete athlete;
 
-    @Override
     @Before
     public void setUp() {
-        super.setUp();
         routeDao = new RouteDao(dao);
         athlete = CommonTransferFactory.createAthlete("junit", 22, 220);
 

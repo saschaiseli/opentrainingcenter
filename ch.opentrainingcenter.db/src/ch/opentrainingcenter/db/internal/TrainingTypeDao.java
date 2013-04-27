@@ -9,9 +9,9 @@ import ch.opentrainingcenter.transfer.ITrainingType;
 
 public class TrainingTypeDao {
 
-    private final Dao dao;
+    private final IDao dao;
 
-    public TrainingTypeDao(final Dao dao) {
+    public TrainingTypeDao(final IDao dao) {
         this.dao = dao;
     }
 

@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Postgres
+Bundle-SymbolicName: ch.opentrainingcenter.db.postgres;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: ch.opentrainingcenter.db.postgres.Activator
+Require-Bundle: postgres,
+ org.eclipse.core.runtime,
+ ch.opentrainingcenter.db,
+ ch.opentrainingcenter.core,
+ ch.opentrainingcenter.transfer,
+ logging,
+ org.hibernate
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Eclipse-RegisterBuddy: postgres, org.hibernate, logging
+Bundle-ActivationPolicy: lazy

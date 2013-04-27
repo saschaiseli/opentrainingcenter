@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 04.04.2013 20:38:06 by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="ch.opentrainingcenter.transfer.impl.Health" table="HEALTH" schema="PUBLIC" catalog="OTC">
+    <class name="ch.opentrainingcenter.transfer.impl.Health" table="HEALTH" schema="PUBLIC">
 		<id name="id" type="int">
 			<column name="ID" />
 			<generator class="sequence">

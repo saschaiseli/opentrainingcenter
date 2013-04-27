@@ -13,9 +13,9 @@ import ch.opentrainingcenter.transfer.IRoute;
 public class RouteDao {
     private static final Logger LOG = Logger.getLogger(RouteDao.class);
 
-    private final Dao dao;
+    private final IDao dao;
 
-    public RouteDao(final Dao dao) {
+    public RouteDao(final IDao dao) {
         this.dao = dao;
     }
 
