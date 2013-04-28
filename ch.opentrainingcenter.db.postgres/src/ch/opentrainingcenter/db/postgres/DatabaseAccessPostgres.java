@@ -3,6 +3,7 @@ package ch.opentrainingcenter.db.postgres;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
@@ -60,6 +61,20 @@ public class DatabaseAccessPostgres implements IDatabaseAccess {
     }
 
     @Override
+    public void init() {
+        if (developing) {
+            this.dao = new Dao(USAGE.DEVELOPING, config);
+        }
+        athleteDao = new AthleteDao(dao);
+        databaseCreator = new DatabaseCreator(dao);
+        healthDao = new HealthDao(dao);
+        planungsDao = new PlanungDao(dao);
+        routeDao = new RouteDao(dao);
+        trainingDao = new TrainingDao(dao);
+        wetterDao = new WeatherDao(dao);
+    }
+
+    @Override
     public Object create() throws CoreException {
         return new DatabaseAccess();
     }
@@ -80,9 +95,20 @@ public class DatabaseAccessPostgres implements IDatabaseAccess {
             Class.forName("org.postgresql.Driver");
             conn = DriverManager.getConnection("jdbc:postgresql://localhost/postgres", "postgres", "zx7eEr5!");
             stmt = conn.createStatement();
-            final String sqlDb = "CREATE DATABASE " + dao.getUsage().getDbName();
-            stmt.executeUpdate(sqlDb);
+            final ResultSet user = stmt.executeQuery("SELECT COUNT(*) FROM pg_user WHERE usename='otc_user'");
+            user.next();
+            final int count = user.getInt("count");
+            if (count == 0) {
+                stmt.execute("CREATE USER otc_user WITH PASSWORD 'otc_user'");
+            }
+            final ResultSet db = stmt.executeQuery("SELECT count(*) from pg_database where datname='otc_junit'");
+            db.next();
+            final int countDb = db.getInt("count");
+            if (countDb == 0) {
+                stmt.execute("CREATE DATABASE " + dao.getUsage().getDbName());
+            }
             stmt.execute("ALTER DATABASE OTC_JUNIT OWNER TO otc_user");
+            stmt.execute("ALTER SCHEMA PUBLIC OWNER TO otc_user");
         } catch (final SQLException se) {
             se.printStackTrace();
         } catch (final Exception e) {
@@ -170,20 +196,6 @@ public class DatabaseAccessPostgres implements IDatabaseAccess {
     @Override
     public List<IWeather> getWeather() {
         return wetterDao.getAllWeather();
-    }
-
-    @Override
-    public void init() {
-        if (developing) {
-            this.dao = new Dao(USAGE.DEVELOPING, config);
-        }
-        athleteDao = new AthleteDao(dao);
-        databaseCreator = new DatabaseCreator(dao);
-        healthDao = new HealthDao(dao);
-        planungsDao = new PlanungDao(dao);
-        routeDao = new RouteDao(dao);
-        trainingDao = new TrainingDao(dao);
-        wetterDao = new WeatherDao(dao);
     }
 
     @Override

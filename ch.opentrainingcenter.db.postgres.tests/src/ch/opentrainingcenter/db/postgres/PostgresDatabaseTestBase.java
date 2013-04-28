@@ -41,8 +41,7 @@ public class PostgresDatabaseTestBase {
             Class.forName("org.postgresql.Driver");
             conn = DriverManager.getConnection("jdbc:postgresql://localhost/otc_junit", "postgres", "zx7eEr5!");
             stmt = conn.createStatement();
-            final String sql = "drop schema public cascade;";
-            stmt.executeUpdate(sql);
+            stmt.execute("drop schema public cascade;");
             stmt.execute("CREATE SCHEMA PUBLIC;");
             stmt.execute("ALTER SCHEMA PUBLIC OWNER TO otc_user");
         } catch (final SQLException se) {
