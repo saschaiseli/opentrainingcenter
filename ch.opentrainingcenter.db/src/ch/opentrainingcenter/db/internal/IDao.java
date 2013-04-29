@@ -3,6 +3,7 @@ package ch.opentrainingcenter.db.internal;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import ch.opentrainingcenter.core.db.DatabaseConnectionConfiguration;
 import ch.opentrainingcenter.db.USAGE;
 
 public interface IDao {
@@ -18,5 +19,7 @@ public interface IDao {
     public abstract USAGE getUsage();
 
     public abstract void rollback();
+
+    public abstract DatabaseConnectionConfiguration getConfig();
 
 }

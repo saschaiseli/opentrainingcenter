@@ -13,4 +13,30 @@ public class DbConnection {
         this.password = password;
     }
 
+    public String getDriver() {
+        return driver;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getDatabaseName() {
+        final int lastSlash = url.lastIndexOf('/');
+        return url.substring(lastSlash + 1, url.length());
+    }
+
+    @Override
+    public String toString() {
+        return "DbConnection [driver=" + driver + ", url=" + url + ", username=" + username + ", password=" + password + "]";
+    }
+
 }

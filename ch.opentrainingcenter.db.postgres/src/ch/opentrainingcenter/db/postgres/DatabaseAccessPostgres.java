@@ -11,7 +11,9 @@ import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 
+import ch.opentrainingcenter.core.assertions.Assertions;
 import ch.opentrainingcenter.core.db.DatabaseConnectionConfiguration;
+import ch.opentrainingcenter.core.db.DatabaseConnectionConfiguration.DB_MODE;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.db.DatabaseAccess;
 import ch.opentrainingcenter.db.USAGE;
@@ -57,11 +59,19 @@ public class DatabaseAccessPostgres implements IDatabaseAccess {
      */
     public DatabaseAccessPostgres(final IDao dao) {
         this.dao = dao;
+        this.config = dao.getConfig();
         init();
     }
 
     @Override
+    public void setConfiguration(final DatabaseConnectionConfiguration config) {
+        Assertions.notNull(config);
+        this.config = config;
+    }
+
+    @Override
     public void init() {
+        Assertions.notNull(config);
         if (developing) {
             this.dao = new Dao(USAGE.DEVELOPING, config);
         }
@@ -92,23 +102,23 @@ public class DatabaseAccessPostgres implements IDatabaseAccess {
         Connection conn = null;
         Statement stmt = null;
         try {
-            Class.forName("org.postgresql.Driver");
-            conn = DriverManager.getConnection("jdbc:postgresql://localhost/postgres", "postgres", "zx7eEr5!");
+            Class.forName(config.getDriver(DB_MODE.ADMIN));
+            conn = DriverManager.getConnection(config.getUrl(DB_MODE.ADMIN), config.getUsername(DB_MODE.ADMIN), config.getPassword(DB_MODE.ADMIN));
             stmt = conn.createStatement();
-            final ResultSet user = stmt.executeQuery("SELECT COUNT(*) FROM pg_user WHERE usename='otc_user'");
+            final ResultSet user = stmt.executeQuery("SELECT COUNT(*) FROM pg_user WHERE usename='" + config.getUsername(DB_MODE.APPLICATION) + "'");
             user.next();
             final int count = user.getInt("count");
             if (count == 0) {
-                stmt.execute("CREATE USER otc_user WITH PASSWORD 'otc_user'");
+                stmt.execute("CREATE USER " + config.getUsername(DB_MODE.APPLICATION) + " WITH PASSWORD '" + config.getPassword(DB_MODE.APPLICATION) + "'");
             }
-            final ResultSet db = stmt.executeQuery("SELECT count(*) from pg_database where datname='otc_junit'");
+            final ResultSet db = stmt.executeQuery("SELECT count(*) from pg_database where datname='" + config.getDatabaseName(DB_MODE.APPLICATION) + "'");
             db.next();
             final int countDb = db.getInt("count");
             if (countDb == 0) {
                 stmt.execute("CREATE DATABASE " + dao.getUsage().getDbName());
             }
-            stmt.execute("ALTER DATABASE OTC_JUNIT OWNER TO otc_user");
-            stmt.execute("ALTER SCHEMA PUBLIC OWNER TO otc_user");
+            stmt.execute("ALTER DATABASE OTC_JUNIT OWNER TO " + config.getUsername(DB_MODE.APPLICATION));
+            stmt.execute("ALTER SCHEMA PUBLIC OWNER TO " + config.getUsername(DB_MODE.APPLICATION));
         } catch (final SQLException se) {
             se.printStackTrace();
         } catch (final Exception e) {
@@ -231,11 +241,6 @@ public class DatabaseAccessPostgres implements IDatabaseAccess {
     @Override
     public int saveTraining(final ITraining training) {
         return trainingDao.saveOrUpdate(training);
-    }
-
-    @Override
-    public void setConfiguration(final DatabaseConnectionConfiguration config) {
-        this.config = config;
     }
 
     @Override

@@ -9,7 +9,6 @@ import java.util.Date;
 
 import org.joda.time.DateTime;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import ch.opentrainingcenter.db.internal.AthleteDao;
@@ -19,7 +18,6 @@ import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IHealth;
 
 @SuppressWarnings("nls")
-@Ignore
 public class AthleteDaoTest extends PostgresDatabaseTestBase {
 
     private AthleteDao athleteDao;

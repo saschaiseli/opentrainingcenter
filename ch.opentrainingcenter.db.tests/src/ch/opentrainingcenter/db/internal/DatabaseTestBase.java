@@ -6,10 +6,9 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
 import ch.opentrainingcenter.core.db.DatabaseConnectionConfiguration;
+import ch.opentrainingcenter.core.db.DbConnection;
 import ch.opentrainingcenter.db.DatabaseAccess;
 import ch.opentrainingcenter.db.USAGE;
-import ch.opentrainingcenter.db.internal.Dao;
-import ch.opentrainingcenter.db.internal.IDao;
 
 /**
  * Basis für Datebank Tests. Die Tests werden gegen eine h2 db gemacht.
@@ -28,7 +27,7 @@ public class DatabaseTestBase {
 
     @BeforeClass
     public static void createDb() {
-        dao = new Dao(USAGE.TEST, new DatabaseConnectionConfiguration(DRIVER, URL + USAGE.TEST.getDbName(), USER, "", DIALECT));
+        dao = new Dao(USAGE.TEST, new DatabaseConnectionConfiguration(new DbConnection(DRIVER, URL + USAGE.TEST.getDbName(), USER, ""), DIALECT));
         final DatabaseAccess access = new DatabaseAccess(dao);
         access.createDatabase();
     }

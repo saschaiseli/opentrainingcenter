@@ -8,7 +8,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import ch.opentrainingcenter.db.internal.AthleteDao;
@@ -18,7 +17,6 @@ import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IRoute;
 
 @SuppressWarnings("nls")
-@Ignore
 public class RouteDaoTest extends PostgresDatabaseTestBase {
 
     private RouteDao routeDao;

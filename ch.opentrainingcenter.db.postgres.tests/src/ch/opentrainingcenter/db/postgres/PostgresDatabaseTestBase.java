@@ -9,19 +9,26 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
 import ch.opentrainingcenter.core.db.DatabaseConnectionConfiguration;
+import ch.opentrainingcenter.core.db.DbConnection;
 import ch.opentrainingcenter.db.USAGE;
 
 public class PostgresDatabaseTestBase {
 
     private static final String USER = "otc_user";
+    private static final String USER_ADMIN = "postgres";
+    private static final String PASS = "otc_user";
+    private static final String PASS_ADMIN = "postgres";
     private static final String DRIVER = "org.postgresql.Driver";
     private static final String URL = "jdbc:postgresql://localhost/otc_junit";
+    private static final String URL_ADMIN = "jdbc:postgresql://localhost/postgres";
     private static final String DIALECT = "org.hibernate.dialect.PostgreSQLDialect";
     protected static PostgresDao dao = null;
 
     @BeforeClass
     public static void createDb() {
-        final DatabaseConnectionConfiguration config = new DatabaseConnectionConfiguration(DRIVER, URL, USER, "otc_user", DIALECT);
+        final DbConnection appConnection = new DbConnection(DRIVER, URL, USER, PASS);
+        final DbConnection adminConnection = new DbConnection(DRIVER, URL_ADMIN, USER_ADMIN, PASS_ADMIN);
+        final DatabaseConnectionConfiguration config = new DatabaseConnectionConfiguration(appConnection, DIALECT, adminConnection);
         dao = new PostgresDao(USAGE.TEST, config);
         final DatabaseAccessPostgres access = new DatabaseAccessPostgres(dao);
         access.setConfiguration(config);
@@ -39,7 +46,7 @@ public class PostgresDatabaseTestBase {
         Statement stmt = null;
         try {
             Class.forName("org.postgresql.Driver");
-            conn = DriverManager.getConnection("jdbc:postgresql://localhost/otc_junit", "postgres", "blabla");
+            conn = DriverManager.getConnection(URL, USER_ADMIN, PASS_ADMIN);
             stmt = conn.createStatement();
             stmt.execute("drop schema public cascade;");
             stmt.execute("CREATE SCHEMA PUBLIC;");

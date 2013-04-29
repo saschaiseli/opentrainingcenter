@@ -1,21 +1,12 @@
 package ch.opentrainingcenter.db.internal;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
 import org.hibernate.HibernateException;
 import org.hibernate.MappingException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.osgi.framework.Bundle;
 
 import ch.opentrainingcenter.core.db.DatabaseConnectionConfiguration;
-import ch.opentrainingcenter.db.DbPluginActivator;
 import ch.opentrainingcenter.db.USAGE;
 
 public class Dao implements IDao {
@@ -24,12 +15,10 @@ public class Dao implements IDao {
     private SessionFactory sessionFactory;
     private final USAGE usage;
     private final DatabaseConnectionConfiguration config;
-    private final Bundle dbBundle;
 
     public Dao(final USAGE usage, final DatabaseConnectionConfiguration config) {
         this.usage = usage;
         this.config = config;
-        dbBundle = Platform.getBundle(DbPluginActivator.PLUGIN_ID);
     }
 
     /*
@@ -62,12 +51,6 @@ public class Dao implements IDao {
         getSession().getTransaction().commit();
     }
 
-    private File getFile(final String hibernateMappingFile) throws IOException {
-        final URL url = FileLocator.find(dbBundle, new Path("hibernate/" + hibernateMappingFile), null); //$NON-NLS-1$
-        final URL fileURL = FileLocator.toFileURL(url);
-        return new File(fileURL.getPath());
-    }
-
     /*
      * (non-Javadoc)
      * 
@@ -90,15 +73,6 @@ public class Dao implements IDao {
             }
             try {
                 configuration.addResource("Athlete.hbm.xml");//$NON-NLS-1$
-                // configuration.addClass(ch.opentrainingcenter.transfer.impl.Athlete.class);
-                // configuration.addClass(ch.opentrainingcenter.transfer.impl.Health.class);
-                // configuration.addClass(ch.opentrainingcenter.transfer.impl.Weather.class);
-                // configuration.addClass(ch.opentrainingcenter.transfer.impl.Training.class);
-                // configuration.addClass(ch.opentrainingcenter.transfer.impl.Trainingtype.class);
-                // configuration.addClass(ch.opentrainingcenter.transfer.impl.Tracktrainingproperty.class);
-                // configuration.addClass(ch.opentrainingcenter.transfer.impl.Streckenpunkte.class);
-                // configuration.addClass(ch.opentrainingcenter.transfer.impl.Planungwoche.class);
-                // configuration.addClass(ch.opentrainingcenter.transfer.impl.Route.class);
                 configuration.addResource("Health.hbm.xml"); //$NON-NLS-1$
                 configuration.addResource("Weather.hbm.xml"); //$NON-NLS-1$
                 configuration.addResource("Training.hbm.xml"); //$NON-NLS-1$
@@ -107,7 +81,6 @@ public class Dao implements IDao {
                 configuration.addResource("Streckenpunkte.hbm.xml"); //$NON-NLS-1$
                 configuration.addResource("Planungwoche.hbm.xml"); //$NON-NLS-1$
                 configuration.addResource("Route.hbm.xml"); //$NON-NLS-1$
-                //                configuration.addFile(getFile("Route.hbm.xml")); //$NON-NLS-1$
                 sessionFactory = configuration.buildSessionFactory();
             } catch (final MappingException e) {
                 e.printStackTrace();
@@ -145,5 +118,10 @@ public class Dao implements IDao {
         } catch (final HibernateException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    @Override
+    public DatabaseConnectionConfiguration getConfig() {
+        return config;
     }
 }
