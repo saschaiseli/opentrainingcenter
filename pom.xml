@@ -43,6 +43,7 @@
 		<module>ch.opentrainingcenter.route</module>
 		<module>com.eclipsesource.widgets.gmaps</module>
 		<module>h2</module>
+		<module>postgres</module>
 		<module>geocalc</module>
 		<module>jfreechart</module>
 		<module>jodatime</module>
