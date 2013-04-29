@@ -12,6 +12,7 @@ import java.util.List;
 
 import org.joda.time.DateTime;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import ch.opentrainingcenter.db.DatabaseAccess;
@@ -30,6 +31,7 @@ import ch.opentrainingcenter.transfer.ITrainingType;
 import ch.opentrainingcenter.transfer.IWeather;
 
 @SuppressWarnings("nls")
+@Ignore
 public class DatabaseAccessTest extends PostgresDatabaseTestBase {
 
     private DatabaseAccess access;

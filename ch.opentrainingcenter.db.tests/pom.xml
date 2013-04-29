@@ -10,7 +10,7 @@
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 	<groupId>ch.opentrainingcenter</groupId>
-	<artifactId>ch.opentrainingcenter.db.postgres.tests</artifactId>
+	<artifactId>ch.opentrainingcenter.db.tests</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>eclipse-test-plugin</packaging>
 

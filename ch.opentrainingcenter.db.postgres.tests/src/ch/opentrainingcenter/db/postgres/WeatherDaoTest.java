@@ -5,12 +5,14 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import ch.opentrainingcenter.db.internal.WeatherDao;
 import ch.opentrainingcenter.transfer.IWeather;
 
 @SuppressWarnings("nls")
+@Ignore
 public class WeatherDaoTest extends PostgresDatabaseTestBase {
 
     private WeatherDao weatherDao;

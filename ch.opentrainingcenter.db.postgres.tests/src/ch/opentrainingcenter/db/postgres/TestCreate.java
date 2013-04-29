@@ -14,12 +14,12 @@ import ch.opentrainingcenter.core.db.DatabaseConnectionConfiguration;
 import ch.opentrainingcenter.db.USAGE;
 import ch.opentrainingcenter.db.internal.Dao;
 
+@Ignore
 public class TestCreate {
 
     private DatabaseAccessPostgres access;
 
     @Test
-    @Ignore
     public void test1() {
         final String url = "jdbc:postgresql://localhost/postgres";
         final Properties props = new Properties();

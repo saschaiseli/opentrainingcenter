@@ -39,7 +39,7 @@ public class PostgresDatabaseTestBase {
         Statement stmt = null;
         try {
             Class.forName("org.postgresql.Driver");
-            conn = DriverManager.getConnection("jdbc:postgresql://localhost/otc_junit", "postgres", "zx7eEr5!");
+            conn = DriverManager.getConnection("jdbc:postgresql://localhost/otc_junit", "postgres", "blabla");
             stmt = conn.createStatement();
             stmt.execute("drop schema public cascade;");
             stmt.execute("CREATE SCHEMA PUBLIC;");

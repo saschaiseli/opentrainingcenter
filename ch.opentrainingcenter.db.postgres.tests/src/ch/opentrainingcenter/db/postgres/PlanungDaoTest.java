@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import ch.opentrainingcenter.db.internal.AthleteDao;
@@ -15,6 +16,7 @@ import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IPlanungWoche;
 
 @SuppressWarnings("nls")
+@Ignore
 public class PlanungDaoTest extends PostgresDatabaseTestBase {
 
     private PlanungDao planungDao;
