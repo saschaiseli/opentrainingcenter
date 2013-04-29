@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Postgres
+Bundle-Name: postgres
 Bundle-SymbolicName: ch.opentrainingcenter.db.postgres;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: ch.opentrainingcenter.db.postgres.Activator
