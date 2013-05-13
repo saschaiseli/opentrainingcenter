@@ -21,56 +21,40 @@ public class Dao implements IDao {
         this.config = config;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see ch.opentrainingcenter.db.internal.IDao#begin()
-     */
     @Override
     public Transaction begin() {
         return getSession().beginTransaction();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see ch.opentrainingcenter.db.internal.IDao#close()
-     */
     @Override
     public void close() {
         getSession().close();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see ch.opentrainingcenter.db.internal.IDao#commit()
-     */
     @Override
     public void commit() {
         getSession().getTransaction().commit();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see ch.opentrainingcenter.db.internal.IDao#getSession()
-     */
     @Override
     public Session getSession() {
         if (session == null) {
             final org.hibernate.cfg.Configuration configuration = new org.hibernate.cfg.Configuration();
             configuration.setProperties(config.getProperties());
-            switch (usage) {
-            case PRODUCTION:
-                sessionFactory = configuration.configure("hibernate.cfg.xml").buildSessionFactory(); //$NON-NLS-1$
-                break;
-            case DEVELOPING:
-                sessionFactory = configuration.configure("hibernate_dev.cfg.xml").buildSessionFactory(); //$NON-NLS-1$
-                break;
-            default:
-                configuration.configure("hibernate_junit.cfg.xml"); //$NON-NLS-1$
-            }
+            // switch (usage) {
+            // case PRODUCTION:
+            //                sessionFactory = configuration.configure("hibernate.cfg.xml").buildSessionFactory(); //$NON-NLS-1$
+            // break;
+            // case DEVELOPING:
+            //                sessionFactory = configuration.configure("hibernate_dev.cfg.xml").buildSessionFactory(); //$NON-NLS-1$
+            // break;
+            // default:
+            //                configuration.configure("hibernate_junit.cfg.xml"); //$NON-NLS-1$
+            // }
+            configuration.setProperty("current_session_context_class", "thread");
+            configuration.setProperty("cache.provider_class", "org.hibernate.cache.NoCacheProvider");
+            configuration.setProperty("show_sql", String.valueOf(usage.isShowSql()));
+            configuration.setProperty("format_sql", String.valueOf(usage.isFormatSql()));
             try {
                 configuration.addResource("Athlete.hbm.xml");//$NON-NLS-1$
                 configuration.addResource("Health.hbm.xml"); //$NON-NLS-1$
@@ -91,21 +75,11 @@ public class Dao implements IDao {
         return session;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see ch.opentrainingcenter.db.internal.IDao#getUsage()
-     */
     @Override
     public USAGE getUsage() {
         return usage;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see ch.opentrainingcenter.db.internal.IDao#rollback()
-     */
     @Override
     public void rollback() {
         try {
