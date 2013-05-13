@@ -46,7 +46,7 @@ public class PostgresDao implements IDao {
 
     @Override
     public Session getSession() {
-        if (session == null) {
+        if (session == null || !session.isOpen()) {
             final org.hibernate.cfg.Configuration configuration = new org.hibernate.cfg.Configuration();
             configuration.setProperties(config.getProperties());
             // switch (usage) {
