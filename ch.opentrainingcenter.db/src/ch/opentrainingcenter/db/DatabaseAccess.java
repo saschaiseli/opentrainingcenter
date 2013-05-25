@@ -54,6 +54,11 @@ public class DatabaseAccess implements IDatabaseAccess {
     }
 
     @Override
+    public String getName() {
+        return "H2 Database";
+    }
+
+    @Override
     public Object create() throws CoreException {
         return new DatabaseAccess();
     }

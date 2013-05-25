@@ -17,6 +17,11 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
     String EXTENSION_POINT_NAME = "classImportedDao"; //$NON-NLS-1$
 
     /**
+     * @return den namen der datenbank
+     */
+    String getName();
+
+    /**
      * Wenn die db nicht vorhanden ist, wird die ganze datenbank mit sql queries
      * erstellt.
      */

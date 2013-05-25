@@ -39,6 +39,12 @@ public final class PreferenceConstants {
     public static final String ZIEL_NICHT_BEKANNT_COLOR = "ZIEL_NICHT_BEKANNT_COLOR"; //$NON-NLS-1$
 
     public static final String KML_DEBUG_PATH = "KML_DEBUG_PATH";
+    public static final String DB_USER = "DB_USER";
+    public static final String DB_PASS = "DB_PASS";
+    public static final String DB_URL = "DB_URL";
+    public static final String DB = "DB";
+    public static final String DB_DRIVER = "DB_DRIVER";
+    public static final String DB_DIALECT = "DB_DIALECT";
 
     private PreferenceConstants() {
 

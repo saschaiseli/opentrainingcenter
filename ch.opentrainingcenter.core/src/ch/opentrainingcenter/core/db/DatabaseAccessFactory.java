@@ -27,7 +27,16 @@ public final class DatabaseAccessFactory {
                 }
             }
             if (instance.databaseAccess != null) {
+                final DbConnection dbConnection;
+                if (DEVELOPING) {
+                    dbConnection = new DbConnection("org.h2.Driver", "jdbc:h2:file:~/.otc_dev/otc", "sa", "");
+                } else {
+                    dbConnection = new DbConnection("org.h2.Driver", "jdbc:h2:file:~/.otc/otc", "sa", "");
+                }
                 instance.databaseAccess.setDeveloping(DEVELOPING);
+
+                final DatabaseConnectionConfiguration config = new DatabaseConnectionConfiguration(dbConnection, "org.hibernate.dialect.H2Dialect");
+                instance.databaseAccess.setConfiguration(config);
                 instance.databaseAccess.init();
             }
         }

@@ -263,4 +263,9 @@ public class DatabaseAccessPostgres implements IDatabaseAccess {
         trainingDao.updateRecordRoute(record, idRoute);
     }
 
+    @Override
+    public String getName() {
+        return "Postgres Database";
+    }
+
 }

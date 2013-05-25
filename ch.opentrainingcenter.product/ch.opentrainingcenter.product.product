@@ -41,7 +41,9 @@
       <plugin id="ch.opentrainingcenter.client"/>
       <plugin id="ch.opentrainingcenter.core"/>
       <plugin id="ch.opentrainingcenter.db"/>
+      <!--
       <plugin id="ch.opentrainingcenter.db.postgres"/>
+	  -->
       <plugin id="ch.opentrainingcenter.i18n"/>
       <plugin id="ch.opentrainingcenter.importer.tcx"/>
       <plugin id="ch.opentrainingcenter.model"/>

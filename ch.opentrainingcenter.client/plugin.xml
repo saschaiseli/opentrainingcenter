@@ -303,22 +303,27 @@
       <page
             class="ch.opentrainingcenter.client.preferences.SamplePreferencePage"
             id="ch.opentrainingcenter.client.preferences.SamplePreferencePage"
-            name="Allgemein">
+            name="%preferences_allgemein">
       </page>
       <page
             class="ch.opentrainingcenter.client.preferences.BackupPreferencePage"
             id="ch.opentrainingcenter.client.preferences.BackupPreferencePage"
-            name="Backup">
+            name="%preferences_backup">
       </page>
       <page
             class="ch.opentrainingcenter.client.preferences.ImportPreferencePage"
             id="ch.opentrainingcenter.client.preferences.ImportPreferencePage"
-            name="Import">
+            name="%preferences_import">
       </page>
       <page
             class="ch.opentrainingcenter.client.preferences.TrainingTargetPreferencePage"
             id="ch.opentrainingcenter.client.preferences.TrainingTargetPage"
-            name="Farben">
+            name="%preferences_farben">
+      </page>
+      <page
+            class="ch.opentrainingcenter.client.preferences.DatabasePreferencePage"
+            id="ch.opentrainingcenter.client.preferences.TrainingTargetPage"
+            name="%preferences_datenbank">
       </page>
    </extension>
    <extension

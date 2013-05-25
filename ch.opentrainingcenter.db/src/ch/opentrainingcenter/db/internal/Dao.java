@@ -6,6 +6,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
+import ch.opentrainingcenter.core.assertions.Assertions;
 import ch.opentrainingcenter.core.db.DatabaseConnectionConfiguration;
 import ch.opentrainingcenter.db.USAGE;
 
@@ -17,6 +18,7 @@ public class Dao implements IDao {
     private final DatabaseConnectionConfiguration config;
 
     public Dao(final USAGE usage, final DatabaseConnectionConfiguration config) {
+        Assertions.notNull(config, "Datenbankkonfiguration darf nicht null sein");
         this.usage = usage;
         this.config = config;
     }
