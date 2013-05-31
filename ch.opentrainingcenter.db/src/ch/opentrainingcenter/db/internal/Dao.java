@@ -60,13 +60,8 @@ public class Dao implements IDao {
 
     @Override
     public Session getSession() {
-        if (session == null) {
-            try {
-                session = sessionFactory.getCurrentSession();
-            } catch (final org.hibernate.HibernateException he) {
-                session = sessionFactory.openSession();
-            }
-            // session = sessionFactory.getCurrentSession();// openSession();
+        if (session == null || !session.isOpen()) {
+            session = sessionFactory.openSession();
         }
         return session;
     }
