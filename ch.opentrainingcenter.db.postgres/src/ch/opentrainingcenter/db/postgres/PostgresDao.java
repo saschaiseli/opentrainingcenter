@@ -22,6 +22,27 @@ public class PostgresDao implements IDao {
         Assertions.notNull(config);
         this.usage = usage;
         this.config = config;
+        final org.hibernate.cfg.Configuration configuration = new org.hibernate.cfg.Configuration();
+        configuration.setProperties(config.getProperties());
+        configuration.setProperty("current_session_context_class", "thread");
+        configuration.setProperty("cache.provider_class", "org.hibernate.cache.NoCacheProvider");
+        configuration.setProperty("show_sql", String.valueOf(usage.isShowSql()));
+        configuration.setProperty("format_sql", String.valueOf(usage.isFormatSql()));
+        try {
+            configuration.addResource("Athlete.hbm.xml");//$NON-NLS-1$
+            configuration.addResource("Health.hbm.xml"); //$NON-NLS-1$
+            configuration.addResource("Weather.hbm.xml"); //$NON-NLS-1$
+            configuration.addResource("Training.hbm.xml"); //$NON-NLS-1$
+            configuration.addResource("Trainingtype.hbm.xml"); //$NON-NLS-1$
+            configuration.addResource("Tracktrainingproperty.hbm.xml"); //$NON-NLS-1$
+            configuration.addResource("Streckenpunkte.hbm.xml"); //$NON-NLS-1$
+            configuration.addResource("Planungwoche.hbm.xml"); //$NON-NLS-1$
+            configuration.addResource("Route.hbm.xml"); //$NON-NLS-1$
+            sessionFactory = configuration.buildSessionFactory();
+
+        } catch (final MappingException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -42,28 +63,7 @@ public class PostgresDao implements IDao {
     @Override
     public Session getSession() {
         if (session == null || !session.isOpen()) {
-            final org.hibernate.cfg.Configuration configuration = new org.hibernate.cfg.Configuration();
-            configuration.setProperties(config.getProperties());
-            configuration.setProperty("current_session_context_class", "thread");
-            configuration.setProperty("cache.provider_class", "org.hibernate.cache.NoCacheProvider");
-            configuration.setProperty("show_sql", String.valueOf(usage.isShowSql()));
-            configuration.setProperty("format_sql", String.valueOf(usage.isFormatSql()));
-            try {
-                configuration.addResource("Athlete.hbm.xml");//$NON-NLS-1$
-                configuration.addResource("Health.hbm.xml"); //$NON-NLS-1$
-                configuration.addResource("Weather.hbm.xml"); //$NON-NLS-1$
-                configuration.addResource("Training.hbm.xml"); //$NON-NLS-1$
-                configuration.addResource("Trainingtype.hbm.xml"); //$NON-NLS-1$
-                configuration.addResource("Tracktrainingproperty.hbm.xml"); //$NON-NLS-1$
-                configuration.addResource("Streckenpunkte.hbm.xml"); //$NON-NLS-1$
-                configuration.addResource("Planungwoche.hbm.xml"); //$NON-NLS-1$
-                configuration.addResource("Route.hbm.xml"); //$NON-NLS-1$
-                sessionFactory = configuration.buildSessionFactory();
-            } catch (final MappingException e) {
-                e.printStackTrace();
-            }
             session = sessionFactory.openSession();
-
         }
         return session;
     }
