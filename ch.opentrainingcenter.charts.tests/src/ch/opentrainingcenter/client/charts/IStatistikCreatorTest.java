@@ -1,5 +1,11 @@
 package ch.opentrainingcenter.client.charts;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -15,11 +21,6 @@ import ch.opentrainingcenter.charts.bar.IStatistikCreator;
 import ch.opentrainingcenter.charts.single.creators.StatistikCreator;
 import ch.opentrainingcenter.model.ModelFactory;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 @SuppressWarnings("nls")
 public class IStatistikCreatorTest {
@@ -180,12 +181,15 @@ public class IStatistikCreatorTest {
         final Calendar cal = Calendar.getInstance();
         cal.set(Calendar.MONTH, monat - 1);
         cal.set(Calendar.YEAR, year);
+        cal.set(Calendar.DAY_OF_MONTH, 2);
         return createSimpleTraining(cal);
     }
 
     private ISimpleTraining createTraining(final int year) {
         final Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.MONTH, 2);
         cal.set(Calendar.YEAR, year);
+        cal.set(Calendar.DAY_OF_MONTH, 2);
         return createSimpleTraining(cal);
     }
 
