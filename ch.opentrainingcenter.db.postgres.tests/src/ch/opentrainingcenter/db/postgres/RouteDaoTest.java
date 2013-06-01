@@ -20,15 +20,18 @@ import ch.opentrainingcenter.transfer.IRoute;
 public class RouteDaoTest extends PostgresDatabaseTestBase {
 
     private RouteDao routeDao;
-    private IAthlete athlete;
+    private IAthlete athlete, athlete2;
 
     @Before
     public void setUp() {
         routeDao = new RouteDao(dao);
-        athlete = CommonTransferFactory.createAthlete("junit", 22, 220);
-
         final AthleteDao athleteDao = new AthleteDao(dao);
+
+        athlete = CommonTransferFactory.createAthlete("junit", 22, 220);
+        athlete2 = CommonTransferFactory.createAthlete("junit2", 22, 220);
+
         athleteDao.save(athlete);
+        athleteDao.save(athlete2);
     }
 
     @Test
@@ -36,10 +39,28 @@ public class RouteDaoTest extends PostgresDatabaseTestBase {
         final String beschreibung = "testet ob route gespeichert wird";
         final String name = "testSaveRoute";
         final IRoute route = CommonTransferFactory.createRoute(name, beschreibung, athlete);
-        final int id = routeDao.saveOrUpdate(route);
-        assertTrue(0 <= id);
+        final int id1 = routeDao.saveOrUpdate(route);
+        assertTrue(0 <= id1);
+        final int id2 = routeDao.saveOrUpdate(CommonTransferFactory.createRoute(name + 1, beschreibung + 1, athlete));
+        assertTrue(id2 > id1);
         final List<IRoute> routen = routeDao.getRoute(athlete);
         assertNotNull(routen);
+        assertEquals(name, routen.get(0).getName());
+        assertEquals(beschreibung, routen.get(0).getBeschreibung());
+    }
+
+    @Test
+    public void testSaveRouteMehrereAthleten() {
+        final String beschreibung = "testet ob route gespeichert wird";
+        final String name = "testSaveRoute";
+        final IRoute route = CommonTransferFactory.createRoute(name, beschreibung, athlete);
+        final int id1 = routeDao.saveOrUpdate(route);
+        assertTrue(0 <= id1);
+        final int id2 = routeDao.saveOrUpdate(CommonTransferFactory.createRoute(name + 1, beschreibung + 1, athlete2));
+        assertTrue(id2 > id1);
+        final List<IRoute> routen = routeDao.getRoute(athlete);
+        assertNotNull(routen);
+        assertEquals(1, routen.size());
         assertEquals(name, routen.get(0).getName());
         assertEquals(beschreibung, routen.get(0).getBeschreibung());
     }

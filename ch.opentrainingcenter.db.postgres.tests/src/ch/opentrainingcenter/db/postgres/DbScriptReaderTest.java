@@ -8,8 +8,6 @@ import java.util.List;
 
 import org.junit.Test;
 
-import ch.opentrainingcenter.db.DbScriptReader;
-
 public class DbScriptReaderTest {
 
     @Test(expected = IllegalArgumentException.class)

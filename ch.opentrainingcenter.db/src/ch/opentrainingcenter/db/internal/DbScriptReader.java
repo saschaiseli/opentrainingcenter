@@ -1,4 +1,4 @@
-package ch.opentrainingcenter.db;
+package ch.opentrainingcenter.db.internal;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -17,6 +17,7 @@ public final class DbScriptReader {
     /**
      * Liefert eine Liste von SQL Queries zurück. Wenn das File nicht gefunden
      * wird, wird eine {@link FileNotFoundException} geworfen.
+     * @param dao
      * 
      * @throws FileNotFoundException
      */

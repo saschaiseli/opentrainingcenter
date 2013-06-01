@@ -12,6 +12,7 @@ import ch.opentrainingcenter.core.db.SqlException;
 import ch.opentrainingcenter.db.internal.AthleteDao;
 import ch.opentrainingcenter.db.internal.Dao;
 import ch.opentrainingcenter.db.internal.DatabaseCreator;
+import ch.opentrainingcenter.db.internal.DbScriptReader;
 import ch.opentrainingcenter.db.internal.HealthDao;
 import ch.opentrainingcenter.db.internal.IDao;
 import ch.opentrainingcenter.db.internal.PlanungDao;

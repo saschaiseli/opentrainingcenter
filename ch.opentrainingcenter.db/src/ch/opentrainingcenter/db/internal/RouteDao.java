@@ -31,6 +31,7 @@ public class RouteDao {
         dao.begin();
         final Criteria criteria = session.createCriteria(IRoute.class);
         criteria.add(Restrictions.eq("name", name)); //$NON-NLS-1$
+        criteria.add(Restrictions.eq("athlete", athlete)); //$NON-NLS-1$
         final IRoute route;
         @SuppressWarnings("unchecked")
         final List<IRoute> routes = criteria.list();

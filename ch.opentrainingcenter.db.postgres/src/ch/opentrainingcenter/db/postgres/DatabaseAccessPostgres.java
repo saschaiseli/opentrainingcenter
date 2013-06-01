@@ -17,7 +17,6 @@ import ch.opentrainingcenter.core.db.DatabaseConnectionConfiguration.DB_MODE;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.db.SqlException;
 import ch.opentrainingcenter.db.DatabaseAccess;
-import ch.opentrainingcenter.db.DbScriptReader;
 import ch.opentrainingcenter.db.USAGE;
 import ch.opentrainingcenter.db.internal.AthleteDao;
 import ch.opentrainingcenter.db.internal.Dao;

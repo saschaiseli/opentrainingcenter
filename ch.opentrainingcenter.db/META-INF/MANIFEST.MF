@@ -16,11 +16,7 @@ Export-Package: ch.opentrainingcenter.db;
    ch.opentrainingcenter.transfer,
    org.osgi.framework,
    ch.opentrainingcenter.db.internal",
- ch.opentrainingcenter.db.internal;
-  uses:="ch.opentrainingcenter.core.db,
-   ch.opentrainingcenter.transfer,
-   org.hibernate,
-   ch.opentrainingcenter.db"
+ ch.opentrainingcenter.db.internal
 Eclipse-RegisterBuddy: org.hibernate, logging
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: hibernate/,
