@@ -25,7 +25,7 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
      * Wenn die db nicht vorhanden ist, wird die ganze datenbank mit sql queries
      * erstellt.
      */
-    void createDatabase();
+    void createDatabase() throws SqlException;
 
     /**
      * Setzt die Datenbankkonfiguration (driver, url, user, password,

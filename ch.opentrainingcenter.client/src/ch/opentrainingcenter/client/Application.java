@@ -13,6 +13,7 @@ import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.core.db.DatabaseHelper;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
+import ch.opentrainingcenter.core.db.SqlException;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.transfer.IAthlete;
 
@@ -48,7 +49,11 @@ public class Application implements IApplication {
             } else {
                 final boolean isExisting = DatabaseHelper.isDatabaseExisting(databaseAccess);
                 if (!isExisting) {
-                    databaseAccess.createDatabase();
+                    try {
+                        databaseAccess.createDatabase();
+                    } catch (final SqlException sqlException) {
+                        MessageDialog.openError(display.getActiveShell(), "DB Fehler", "Datenbank konnte nicht erstellt werden");
+                    }
                 }
             }
             final String athleteId = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.ATHLETE_ID);

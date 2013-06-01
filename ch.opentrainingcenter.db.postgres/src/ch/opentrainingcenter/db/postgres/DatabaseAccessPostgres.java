@@ -1,6 +1,6 @@
 package ch.opentrainingcenter.db.postgres;
 
-import java.io.InputStream;
+import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -15,7 +15,9 @@ import ch.opentrainingcenter.core.assertions.Assertions;
 import ch.opentrainingcenter.core.db.DatabaseConnectionConfiguration;
 import ch.opentrainingcenter.core.db.DatabaseConnectionConfiguration.DB_MODE;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
+import ch.opentrainingcenter.core.db.SqlException;
 import ch.opentrainingcenter.db.DatabaseAccess;
+import ch.opentrainingcenter.db.DbScriptReader;
 import ch.opentrainingcenter.db.USAGE;
 import ch.opentrainingcenter.db.internal.AthleteDao;
 import ch.opentrainingcenter.db.internal.Dao;
@@ -90,12 +92,15 @@ public class DatabaseAccessPostgres implements IDatabaseAccess {
     }
 
     @Override
-    public void createDatabase() {
+    public void createDatabase() throws SqlException {
         createDB();
-        final InputStream sqlStream = this.getClass().getClassLoader().getResourceAsStream("otc_postgres.sql"); //$NON-NLS-1$
         dao.begin();
         dao.getSession();
-        databaseCreator.createDatabase(sqlStream);
+        try {
+            databaseCreator.createDatabase(DbScriptReader.readDbScript("otc_postgres.sql"));
+        } catch (final FileNotFoundException fnne) {
+            throw new SqlException(fnne);
+        }
     }
 
     private void createDB() {

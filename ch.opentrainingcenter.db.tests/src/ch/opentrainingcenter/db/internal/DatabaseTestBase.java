@@ -7,6 +7,7 @@ import org.junit.BeforeClass;
 
 import ch.opentrainingcenter.core.db.DatabaseConnectionConfiguration;
 import ch.opentrainingcenter.core.db.DbConnection;
+import ch.opentrainingcenter.core.db.SqlException;
 import ch.opentrainingcenter.db.DatabaseAccess;
 import ch.opentrainingcenter.db.USAGE;
 
@@ -26,7 +27,7 @@ public class DatabaseTestBase {
     protected static IDao dao = null;
 
     @BeforeClass
-    public static void createDb() {
+    public static void createDb() throws SqlException {
         dao = new Dao(USAGE.TEST, new DatabaseConnectionConfiguration(new DbConnection(DRIVER, URL + USAGE.TEST.getDbName(), USER, ""), DIALECT));
         final DatabaseAccess access = new DatabaseAccess(dao);
         access.createDatabase();

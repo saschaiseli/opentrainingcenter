@@ -10,6 +10,7 @@ import org.junit.BeforeClass;
 
 import ch.opentrainingcenter.core.db.DatabaseConnectionConfiguration;
 import ch.opentrainingcenter.core.db.DbConnection;
+import ch.opentrainingcenter.core.db.SqlException;
 import ch.opentrainingcenter.db.USAGE;
 
 public class PostgresDatabaseTestBase {
@@ -25,7 +26,7 @@ public class PostgresDatabaseTestBase {
     protected static PostgresDao dao = null;
 
     @BeforeClass
-    public static void createDb() {
+    public static void createDb() throws SqlException {
         final DbConnection appConnection = new DbConnection(DRIVER, URL, USER, PASS);
         final DbConnection adminConnection = new DbConnection(DRIVER, URL_ADMIN, USER_ADMIN, PASS_ADMIN);
         final DatabaseConnectionConfiguration config = new DatabaseConnectionConfiguration(appConnection, DIALECT, adminConnection);

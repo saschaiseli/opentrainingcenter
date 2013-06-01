@@ -1,6 +1,6 @@
 package ch.opentrainingcenter.db;
 
-import java.io.InputStream;
+import java.io.FileNotFoundException;
 import java.util.Date;
 import java.util.List;
 
@@ -8,6 +8,7 @@ import org.eclipse.core.runtime.CoreException;
 
 import ch.opentrainingcenter.core.db.DatabaseConnectionConfiguration;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
+import ch.opentrainingcenter.core.db.SqlException;
 import ch.opentrainingcenter.db.internal.AthleteDao;
 import ch.opentrainingcenter.db.internal.Dao;
 import ch.opentrainingcenter.db.internal.DatabaseCreator;
@@ -64,9 +65,12 @@ public class DatabaseAccess implements IDatabaseAccess {
     }
 
     @Override
-    public void createDatabase() {
-        final InputStream sqlStream = this.getClass().getClassLoader().getResourceAsStream("otc.sql"); //$NON-NLS-1$
-        databaseCreator.createDatabase(sqlStream);
+    public void createDatabase() throws SqlException {
+        try {
+            databaseCreator.createDatabase(DbScriptReader.readDbScript("otc.sql"));
+        } catch (final FileNotFoundException fnne) {
+            throw new SqlException(fnne);
+        }
     }
 
     @Override

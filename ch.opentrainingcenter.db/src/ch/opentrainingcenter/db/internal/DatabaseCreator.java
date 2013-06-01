@@ -1,8 +1,6 @@
 package ch.opentrainingcenter.db.internal;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -15,19 +13,14 @@ public class DatabaseCreator {
         this.dao = dao;
     }
 
-    public void createDatabase(final InputStream sqlStream) {
+    public void createDatabase(final List<String> sqlQueries) {
         try {
             final Session session = dao.getSession();
             dao.begin();
-            final BufferedReader bufRead = new BufferedReader(new InputStreamReader(sqlStream));
-            final StringBuilder builder = new StringBuilder();
-            int nextchar;
-            while ((nextchar = bufRead.read()) != -1) {
-                builder.append((char) nextchar);
+            for (final String sql : sqlQueries) {
+                final Query query = session.createSQLQuery(sql);
+                query.executeUpdate();
             }
-            final String sql = builder.toString();
-            final Query query = session.createSQLQuery(sql);
-            query.executeUpdate();
             dao.commit();
             session.flush();
         } catch (final Exception e) {
