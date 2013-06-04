@@ -20,6 +20,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
     private IWorkbenchAction exitAction;
     private IAction windowsAction;
     private IWorkbenchAction aboutAction;
+    private IWorkbenchAction introAction;
 
     public ApplicationActionBarAdvisor(final IActionBarConfigurer configurer) {
         super(configurer);
@@ -40,6 +41,9 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 
         windowsAction = ActionFactory.PREFERENCES.create(window);
         register(windowsAction);
+
+        introAction = ActionFactory.INTRO.create(window);
+        register(introAction);
     }
 
     @Override
@@ -61,6 +65,8 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
         // Help
         helpMenu.add(aboutAction);
 
+        // Intro
+        helpMenu.add(introAction);
     }
 
     @Override

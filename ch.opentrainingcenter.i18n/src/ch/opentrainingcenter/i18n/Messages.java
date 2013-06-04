@@ -86,6 +86,16 @@ public final class Messages extends NLS {
     public static String CreateAthleteView7;
     public static String CreateAthleteView8;
     public static String CreateAthleteView9;
+    public static String DatabasePreferencePage_0;
+    public static String DatabasePreferencePage_1;
+    public static String DatabasePreferencePage_2;
+    public static String DatabasePreferencePage_3;
+    public static String DatabasePreferencePage_4;
+    public static String DatabasePreferencePage_5;
+    public static String DatabasePreferencePage_6;
+    public static String DatabasePreferencePage_7;
+    public static String DatabasePreferencePage_8;
+    public static String DatabasePreferencePage_9;
     public static String DeleteImportedRecord0;
     public static String HealthDialog_0;
     public static String HealthDialog_1;

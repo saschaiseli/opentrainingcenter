@@ -189,4 +189,5 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
      */
     void updateRecordRoute(ITraining record, int idRoute);
 
+    boolean validateConnection(final String url, final String driver, final String user, final String pass);
 }

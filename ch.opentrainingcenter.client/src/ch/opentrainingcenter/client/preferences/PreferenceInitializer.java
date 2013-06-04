@@ -31,7 +31,14 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 
         final String userHome = System.getProperty("user.home");//$NON-NLS-1$
         final Calendar cal = Calendar.getInstance(Locale.getDefault());
-        defaults.put(PreferenceConstants.GPS_FILE_LOCATION, userHome + File.separator + cal.get(Calendar.YEAR) + File.separator + (cal.get(Calendar.MONTH) + 1));
+        final int month = cal.get(Calendar.MONTH) + 1;
+        final String monthString;
+        if (month < 9) {
+            monthString = "0" + month; //$NON-NLS-1$
+        } else {
+            monthString = String.valueOf(month);
+        }
+        defaults.put(PreferenceConstants.GPS_FILE_LOCATION, userHome + File.separator + cal.get(Calendar.YEAR) + File.separator + monthString);
         defaults.put(PreferenceConstants.GPS_FILE_LOCATION_PROG, userHome + "/data/otc"); //$NON-NLS-1$
         defaults.putInt(PreferenceConstants.RECOM, 65);
         defaults.put(PreferenceConstants.RECOM_COLOR, "144,238,144"); //$NON-NLS-1$

@@ -2,6 +2,66 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension-point id="splashExtension" name="Splash Extensions" schema="schema/splashExtension.exsd"/>
+   <extension
+         id="opentrainingcenter"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="ch.opentrainingcenter.client.application"
+            name="Open Training Center">
+         <property
+               name="windowImages"
+               value="icons/16_16/icon_16_16.png,icons/32_32/icon_32_32.png,icons/48_48/icon_48_48.png,icons/64_64/icon_64_64.png,icons/128_128/icon_128_128.png">
+         </property>
+         <property
+               name="appName"
+               value="Open Training Center">
+         </property>
+         <property
+               name="preferenceCustomization"
+               value="plugin_customization.ini">
+         </property>
+         <property
+               name="aboutImage"
+               value="/icons/about.gif">
+         </property>
+         <property
+               name="aboutText"
+               value="%aboutText">
+         </property>
+         <property
+               name="startupForegroundColor"
+               value="FF97A3">
+         </property>
+         <property
+               name="startupMessageRect"
+               value="5,235,445,20">
+         </property>
+         <property
+               name="startupProgressRect"
+               value="5,275,445,15">
+         </property>
+         <property
+               name="introTitle"
+               value="Open Training Center">
+         </property>
+         <property
+               name="introBrandingImage"
+               value="product:icons/chart_bar.png">
+         </property>
+         <property
+               name="introDescription-overview"
+               value="%intro_desc_overview">
+         </property>
+         <property
+               name="introDescription-firststeps"
+               value="%intro_desc_firststeps">
+         </property>
+         <property
+               name="introDescription-webresources"
+               value="%intro_desc_webresources">
+         </property>
+      </product>
+   </extension>
 
    <extension
          id="application"
@@ -255,46 +315,6 @@
             id="ch.opentrainingcenter.client.commands.CompareRecords"
             name="%vergleicht2laeufe">
       </command>
-   </extension>
-   <extension
-         id="opentrainingcenter"
-         point="org.eclipse.core.runtime.products">
-      <product
-            application="ch.opentrainingcenter.client.application"
-            name="Open Training Center">
-         <property
-               name="windowImages"
-               value="icons/16_16/icon_16_16.png,icons/32_32/icon_32_32.png,icons/48_48/icon_48_48.png,icons/64_64/icon_64_64.png,icons/128_128/icon_128_128.png">
-         </property>
-         <property
-               name="appName"
-               value="Open Training Center">
-         </property>
-         <property
-               name="preferenceCustomization"
-               value="plugin_customization.ini">
-         </property>
-         <property
-               name="aboutImage"
-               value="/icons/about.gif">
-         </property>
-         <property
-               name="aboutText"
-               value="%aboutText">
-         </property>
-         <property
-               name="startupForegroundColor"
-               value="FF97A3">
-         </property>
-         <property
-               name="startupMessageRect"
-               value="5,235,445,20">
-         </property>
-         <property
-               name="startupProgressRect"
-               value="5,275,445,15">
-         </property>
-      </product>
    </extension>
    <extension
          id="prefPage"
@@ -593,6 +613,7 @@
             splashId="ch.opentrainingcenter.client.splash">
       </splashHandlerProductBinding>
    </extension>
+   <!--
    <extension
          id="Open_TrainingCenter"
          point="org.eclipse.core.runtime.products">
@@ -617,6 +638,7 @@
          </property>
       </product>
    </extension>
+   -->
    <extension
          point="org.eclipse.ui.handlers">
       <handler
@@ -751,7 +773,7 @@
                definitionId="additions"
                icon="icons/16_16/collapseall.gif"
                id="ch.opentrainingcenter.client.action2"
-               label="Collapse All"
+               label="%collapseall"
                menubarPath="additions"
                style="push"
                toolbarPath="additions"
@@ -762,4 +784,10 @@
    <extension
          point="org.eclipse.ui.perspectives">
    </extension>
+   <extension
+		point="org.eclipse.ui.intro">
+   		<introProductBinding
+      		introId="org.eclipse.ui.intro.universal"
+      		productId="ch.opentrainingcenter.client.opentrainingcenter"/>
+	</extension>
 </plugin>

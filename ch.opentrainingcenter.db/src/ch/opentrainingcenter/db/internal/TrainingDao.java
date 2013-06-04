@@ -164,7 +164,6 @@ public class TrainingDao {
         final Session session = dao.getSession();
         dao.begin();
         session.saveOrUpdate(exists);
-        dao.commit();
         session.flush();
         final int id = getImportedRecord(training.getDatum()).getId();
         return id;

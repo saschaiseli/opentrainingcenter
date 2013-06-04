@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import ch.opentrainingcenter.core.db.DatabaseHelper.DBSTATE;
 import ch.opentrainingcenter.transfer.IAthlete;
 
 /**
@@ -22,6 +23,8 @@ public class ApplicationContext {
     private IAthlete athlete;
 
     private final List<Object> selectedItems = new ArrayList<Object>();
+
+    private DBSTATE dbState;
 
     private ApplicationContext() {
     }
@@ -63,5 +66,13 @@ public class ApplicationContext {
 
     public void setSelectedJahr(final int selectedJahr) {
         this.selectedJahr = selectedJahr;
+    }
+
+    public DBSTATE getDbState() {
+        return dbState;
+    }
+
+    public void setDbState(final DBSTATE dbState) {
+        this.dbState = dbState;
     }
 }

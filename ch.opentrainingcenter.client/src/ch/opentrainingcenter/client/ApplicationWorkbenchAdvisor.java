@@ -10,6 +10,7 @@ import ch.opentrainingcenter.client.perspectives.MainPerspective;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
+import ch.opentrainingcenter.core.db.DatabaseHelper.DBSTATE;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.transfer.IAthlete;
 
@@ -28,8 +29,9 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 
     @Override
     public String getInitialWindowPerspectiveId() {
+        final DBSTATE dbState = ApplicationContext.getApplicationContext().getDbState();
         final String athleteId = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.ATHLETE_ID);
-        if (athleteId != null && athleteId.length() > 0) {
+        if (isDbOkAndAthleteSelected(dbState, athleteId)) {
             final IAthlete athlete = DatabaseAccessFactory.getDatabaseAccess().getAthlete(Integer.parseInt(athleteId));
             if (athlete == null) {
                 LOGGER.info(Messages.ApplicationWorkbenchAdvisorAthleteNotFound);
@@ -43,5 +45,9 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
             LOGGER.info(Messages.ApplicationWorkbenchAdvisorAthleteNotInPreferences);
             return EinstellungenPerspective.ID;
         }
+    }
+
+    private boolean isDbOkAndAthleteSelected(final DBSTATE dbState, final String athleteId) {
+        return DBSTATE.OK.equals(dbState) && athleteId != null && athleteId.length() > 0;
     }
 }

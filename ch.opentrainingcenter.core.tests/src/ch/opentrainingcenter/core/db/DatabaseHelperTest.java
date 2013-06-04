@@ -1,10 +1,13 @@
 package ch.opentrainingcenter.core.db;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import ch.opentrainingcenter.core.db.DatabaseHelper.DBSTATE;
 
 @SuppressWarnings("nls")
 public class DatabaseHelperTest {
@@ -54,7 +57,7 @@ public class DatabaseHelperTest {
         final RuntimeException exception = new RuntimeException(cause);
 
         Mockito.when(databaseAccess.getAthlete(1)).thenThrow(exception);
-        assertTrue("Datenbank ist gelockt", DatabaseHelper.isDatabaseLocked(databaseAccess));
+        assertEquals("Datenbank ist gelockt", DBSTATE.LOCKED, DatabaseHelper.getDatabaseState(databaseAccess));
     }
 
     @Test
@@ -64,7 +67,8 @@ public class DatabaseHelperTest {
         final RuntimeException exception = new RuntimeException(cause);
 
         Mockito.when(databaseAccess.getAthlete(1)).thenThrow(exception);
-        assertFalse("Keine Lock Exception, also ist die Datenbank auch nicht gelockt", DatabaseHelper.isDatabaseLocked(databaseAccess));
+        assertEquals("Keine Lock Exception, also ist die Datenbank auch nicht gelockt aber Problem ist vorhanden", DBSTATE.PROBLEM, DatabaseHelper
+                .getDatabaseState(databaseAccess));
     }
 
     @Test
@@ -74,13 +78,13 @@ public class DatabaseHelperTest {
         final RuntimeException exception = new RuntimeException(cause);
 
         Mockito.when(databaseAccess.getAthlete(1)).thenThrow(exception);
-        assertFalse("Keine Lock Exception,  also ist die Datenbank auch nicht gelockt", DatabaseHelper.isDatabaseLocked(databaseAccess));
+        assertEquals("Keine Lock Exception,  also ist die Datenbank auch nicht gelockt", DBSTATE.PROBLEM, DatabaseHelper.getDatabaseState(databaseAccess));
     }
 
     @Test
     public void testNichtGelockt2() {
         databaseAccess = Mockito.mock(IDatabaseAccess.class);
         Mockito.when(databaseAccess.getAthlete(1)).thenReturn(null);
-        assertFalse("Keine Lock Exception,  also ist die Datenbank auch nicht gelockt", DatabaseHelper.isDatabaseLocked(databaseAccess));
+        assertEquals("Keine Lock Exception,  also ist die Datenbank auch nicht gelockt", DBSTATE.OK, DatabaseHelper.getDatabaseState(databaseAccess));
     }
 }

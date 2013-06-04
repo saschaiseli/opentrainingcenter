@@ -17,6 +17,7 @@ public class Dao implements IDao {
     private final USAGE usage;
     private final DatabaseConnectionConfiguration config;
 
+    @SuppressWarnings("nls")
     public Dao(final USAGE usage, final DatabaseConnectionConfiguration config) {
         Assertions.notNull(config, "Datenbankkonfiguration darf nicht null sein");
         this.usage = usage;

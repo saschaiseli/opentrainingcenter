@@ -1,9 +1,15 @@
 package ch.opentrainingcenter.core.db;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
+
+import ch.opentrainingcenter.core.assertions.Assertions;
 
 public final class DatabaseAccessFactory {
 
@@ -13,59 +19,104 @@ public final class DatabaseAccessFactory {
 
     private static boolean DEVELOPING = false;
 
-    private static DatabaseAccessFactory instance = null;
+    private static DatabaseAccessFactory INSTANCE = null;
 
-    private final IDatabaseAccess databaseAccess;
+    private static final Map<String, IDatabaseAccess> dbAccesses;
 
-    public static IDatabaseAccess getDatabaseAccess() {
-        if (instance == null) {
-            instance = new DatabaseAccessFactory();
-            final String[] commandLineArgs = Platform.getCommandLineArgs();
-            for (final String cmdArg : commandLineArgs) {
-                if (cmdArg.contains(DEVELOPING_FLAG)) {
-                    DEVELOPING = true;
-                }
-            }
-            if (instance.databaseAccess != null) {
-                final DbConnection dbConnection;
-                if (DEVELOPING) {
-                    dbConnection = new DbConnection("org.h2.Driver", "jdbc:h2:file:~/.otc_dev/otc", "sa", "");
-                } else {
-                    dbConnection = new DbConnection("org.h2.Driver", "jdbc:h2:file:~/.otc/otc", "sa", "");
-                }
-                instance.databaseAccess.setDeveloping(DEVELOPING);
+    private static IDatabaseAccess databaseAccess;
 
-                final DatabaseConnectionConfiguration config = new DatabaseConnectionConfiguration(dbConnection, "org.hibernate.dialect.H2Dialect");
-                instance.databaseAccess.setConfiguration(config);
-                instance.databaseAccess.init();
-            }
-        }
-        return instance.databaseAccess;
+    static {
+        final IConfigurationElement[] daos = Platform.getExtensionRegistry().getConfigurationElementsFor("ch.opentrainingdatabase.db"); //$NON-NLS-1$
+        dbAccesses = getDao(daos, IDatabaseAccess.EXTENSION_POINT_NAME);
     }
 
     private DatabaseAccessFactory() {
-        // test hier ob es datenbank gibt
-        final IConfigurationElement[] daos = Platform.getExtensionRegistry().getConfigurationElementsFor("ch.opentrainingdatabase.db"); //$NON-NLS-1$
-        databaseAccess = (IDatabaseAccess) getDao(daos, IDatabaseAccess.EXTENSION_POINT_NAME);
+        final String[] commandLineArgs = Platform.getCommandLineArgs();
+        for (final String cmdArg : commandLineArgs) {
+            if (cmdArg.contains(DEVELOPING_FLAG)) {
+                DEVELOPING = true;
+            }
+        }
+
     }
 
-    Object getDao(final IConfigurationElement[] confItems, final String extensionAttr) {
+    /**
+     * Initialisiert die Datenbank Factory. Diese Methode muss vor dem
+     * getDatabaseAccess aufgerufen werden.
+     * 
+     * @param dbName
+     *            Name der Datenbank
+     * @param driver
+     *            Die Datenbank Treiber klasse
+     * @param url
+     *            URL zu der Datenbank
+     * @param dialect
+     *            Den verwendeten Hibernate Dialect
+     * @param user
+     *            Usernamen
+     * @param pw
+     *            Passwort
+     */
+    public static void init(final String dbName, final String driver, final String url, final String dialect, final String user, final String pw) {
+        if (INSTANCE == null) {
+            INSTANCE = new DatabaseAccessFactory();
+
+            final DbConnection dbConnection;
+            if (DEVELOPING) {
+                dbConnection = new DbConnection(driver, url + "_dev", user, pw); //$NON-NLS-1$
+            } else {
+                dbConnection = new DbConnection(driver, url, user, pw);
+            }
+            databaseAccess = getDbaccesses().get(dbName);
+            databaseAccess.setDeveloping(DEVELOPING);
+            final DatabaseConnectionConfiguration config = new DatabaseConnectionConfiguration(dbConnection, dialect);
+            databaseAccess.setConfiguration(config);
+            databaseAccess.init();
+        }
+    }
+
+    /**
+     * @return Database Access. Zuerst muss die Methode init aufgerufen werden,
+     *         sonst gibt es eine {@link IllegalArgumentException}.
+     */
+    public static IDatabaseAccess getDatabaseAccess() {
+        Assertions.notNull(INSTANCE, "Datenbank muss bereits initialisiert sein"); //$NON-NLS-1$
+        return databaseAccess;
+    }
+
+    public static Map<String, IDatabaseAccess> getDbaccesses() {
+        return dbAccesses;
+    }
+
+    static Map<String, IDatabaseAccess> getDao(final IConfigurationElement[] confItems, final String extensionAttr) {
         LOGGER.info("Anzahl Configuration Elements: " + confItems.length); //$NON-NLS-1$
+        final Map<String, IDatabaseAccess> result = new HashMap<>();
         for (final IConfigurationElement element : confItems) {
             try {
                 LOGGER.info("Element: " + element.getName());//$NON-NLS-1$
                 LOGGER.info("Namespaceidentifier: " + element.getNamespaceIdentifier()); //$NON-NLS-1$
-                final Object createExecutableExtension = element.createExecutableExtension(extensionAttr);
+                final IDatabaseAccess db = (IDatabaseAccess) element.createExecutableExtension(extensionAttr);
+                result.put(db.getName(), db);
                 LOGGER.info("Extension gefunden."); //$NON-NLS-1$
-                return createExecutableExtension;
             } catch (final CoreException e) {
                 LOGGER.error("Extension nicht gefunden: ", e); //$NON-NLS-1$
             }
         }
-        return null;
+        return Collections.unmodifiableMap(result);
     }
 
+    /**
+     * Für Testzwecke
+     */
     static DatabaseAccessFactory getInstance() {
-        return instance;
+        return INSTANCE;
     }
+
+    /**
+     * Für Testzwecke
+     */
+    static void reset() {
+        INSTANCE = null;
+    }
+
 }

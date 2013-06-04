@@ -19,6 +19,7 @@ import ch.opentrainingcenter.client.splash.OtcSplashHandler;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
+import ch.opentrainingcenter.core.db.DatabaseHelper.DBSTATE;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.transfer.IAthlete;
 
@@ -55,27 +56,35 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
         configurer.setShowStatusLine(true);
         configurer.setShowProgressIndicator(true);
         configurer.setShowStatusLine(true);
-        final String id = store.getString(PreferenceConstants.ATHLETE_ID);
-        if (id != null && id.length() > 0) {
-            final IAthlete athlete = databaseAccess.getAthlete(Integer.parseInt(id));
-            configurer.setTitle(Application.WINDOW_TITLE + " / " + athlete.getName()); //$NON-NLS-1$
-            context.setAthlete(athlete);
-        } else {
-            configurer.setTitle(Application.WINDOW_TITLE);
-        }
+
         final PreferenceManager pm = PlatformUI.getWorkbench().getPreferenceManager();
         pm.remove("org.eclipse.ui.preferencePages.Workbench"); //$NON-NLS-1$
 
         final OtcSplashHandler splashHandler = Activator.getSplashHandler();
 
-        final IProgressMonitor monitor = splashHandler.getBundleProgressMonitor();
-        try {
-            new InitialLoadRunnable().run(monitor);
-        } catch (final InvocationTargetException e) {
-            LOG.error("Fehler im InitialLoad", e); //$NON-NLS-1$
-        } catch (final InterruptedException e) {
-            LOG.error("Fehler im InitialLoad", e); //$NON-NLS-1$
+        final String id = store.getString(PreferenceConstants.ATHLETE_ID);
+        final DBSTATE dbState = ApplicationContext.getApplicationContext().getDbState();
+        if (DBSTATE.OK.equals(dbState)) {
+            if (id != null && id.length() > 0) {
+                final IAthlete athlete = databaseAccess.getAthlete(Integer.parseInt(id));
+                configurer.setTitle(Application.WINDOW_TITLE + " / " + athlete.getName()); //$NON-NLS-1$
+                context.setAthlete(athlete);
+            } else {
+                configurer.setTitle(Application.WINDOW_TITLE);
+            }
+
+            final IProgressMonitor monitor = splashHandler.getBundleProgressMonitor();
+            try {
+                new InitialLoadRunnable().run(monitor);
+            } catch (final InvocationTargetException e) {
+                LOG.error("Fehler im InitialLoad", e); //$NON-NLS-1$
+            } catch (final InterruptedException e) {
+                LOG.error("Fehler im InitialLoad", e); //$NON-NLS-1$
+            }
+        } else {
+            configurer.setTitle(Application.WINDOW_TITLE);
         }
+
     }
 
     @Override

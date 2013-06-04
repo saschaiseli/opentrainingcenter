@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.CoreException;
 
 import ch.opentrainingcenter.core.assertions.Assertions;
@@ -16,10 +17,8 @@ import ch.opentrainingcenter.core.db.DatabaseConnectionConfiguration;
 import ch.opentrainingcenter.core.db.DatabaseConnectionConfiguration.DB_MODE;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.db.SqlException;
-import ch.opentrainingcenter.db.DatabaseAccess;
 import ch.opentrainingcenter.db.USAGE;
 import ch.opentrainingcenter.db.internal.AthleteDao;
-import ch.opentrainingcenter.db.internal.Dao;
 import ch.opentrainingcenter.db.internal.DatabaseCreator;
 import ch.opentrainingcenter.db.internal.HealthDao;
 import ch.opentrainingcenter.db.internal.IDao;
@@ -35,7 +34,7 @@ import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.IWeather;
 
 public class DatabaseAccessPostgres implements IDatabaseAccess {
-
+    private static final Logger LOG = Logger.getLogger(DatabaseAccessPostgres.class);
     private AthleteDao athleteDao;
     private DatabaseCreator databaseCreator;
     private HealthDao healthDao;
@@ -52,7 +51,6 @@ public class DatabaseAccessPostgres implements IDatabaseAccess {
      * parameters ausgelesen und ausgewertet.
      */
     public DatabaseAccessPostgres() {
-
     }
 
     /**
@@ -74,7 +72,7 @@ public class DatabaseAccessPostgres implements IDatabaseAccess {
     public void init() {
         Assertions.notNull(config);
         if (developing) {
-            this.dao = new Dao(USAGE.DEVELOPING, config);
+            this.dao = new PostgresDao(USAGE.DEVELOPING, config);
         }
         athleteDao = new AthleteDao(dao);
         databaseCreator = new DatabaseCreator(dao);
@@ -87,7 +85,7 @@ public class DatabaseAccessPostgres implements IDatabaseAccess {
 
     @Override
     public Object create() throws CoreException {
-        return new DatabaseAccess();
+        return new DatabaseAccessPostgres();
     }
 
     @Override
@@ -96,12 +94,13 @@ public class DatabaseAccessPostgres implements IDatabaseAccess {
         dao.begin();
         dao.getSession();
         try {
-            databaseCreator.createDatabase(DbScriptReader.readDbScript("otc_postgres.sql"));
+            databaseCreator.createDatabase(DbScriptReader.readDbScript("otc_postgres.sql")); //$NON-NLS-1$
         } catch (final FileNotFoundException fnne) {
             throw new SqlException(fnne);
         }
     }
 
+    @SuppressWarnings("nls")
     private void createDB() {
         Connection conn = null;
         Statement stmt = null;
@@ -132,6 +131,7 @@ public class DatabaseAccessPostgres implements IDatabaseAccess {
                 if (stmt != null)
                     stmt.close();
             } catch (final SQLException se2) {
+                // egal
             }
             try {
                 if (conn != null)
@@ -269,7 +269,23 @@ public class DatabaseAccessPostgres implements IDatabaseAccess {
 
     @Override
     public String getName() {
-        return "Postgres Database";
+        return "Postgres Database"; //$NON-NLS-1$
     }
 
+    @SuppressWarnings("nls")
+    @Override
+    public boolean validateConnection(final String url, final String driver, final String user, final String pass) {
+        final String connectionUrl = url + ";user=" + user + ";password=" + pass;
+        boolean result = false;
+        try {
+            Class.forName(driver);
+            final Connection con = DriverManager.getConnection(connectionUrl);
+            con.createStatement();
+            result = true;
+            LOG.info("Connection to database '" + connectionUrl + "' successfully");
+        } catch (final ClassNotFoundException | SQLException e) {
+            LOG.info("Connection to database '" + url + "' failed");
+        }
+        return result;
+    }
 }

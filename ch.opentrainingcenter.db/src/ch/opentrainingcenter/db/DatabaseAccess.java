@@ -1,9 +1,13 @@
 package ch.opentrainingcenter.db;
 
 import java.io.FileNotFoundException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.CoreException;
 
 import ch.opentrainingcenter.core.db.DatabaseConnectionConfiguration;
@@ -28,6 +32,7 @@ import ch.opentrainingcenter.transfer.IWeather;
 
 public class DatabaseAccess implements IDatabaseAccess {
 
+    private static final Logger LOG = Logger.getLogger(DatabaseAccess.class);
     private AthleteDao athleteDao;
     private DatabaseCreator databaseCreator;
     private HealthDao healthDao;
@@ -44,7 +49,6 @@ public class DatabaseAccess implements IDatabaseAccess {
      * parameters ausgelesen und ausgewertet.
      */
     public DatabaseAccess() {
-
     }
 
     /**
@@ -57,7 +61,7 @@ public class DatabaseAccess implements IDatabaseAccess {
 
     @Override
     public String getName() {
-        return "H2 Database";
+        return "H2 Database"; //$NON-NLS-1$
     }
 
     @Override
@@ -65,6 +69,7 @@ public class DatabaseAccess implements IDatabaseAccess {
         return new DatabaseAccess();
     }
 
+    @SuppressWarnings("nls")
     @Override
     public void createDatabase() throws SqlException {
         try {
@@ -216,6 +221,23 @@ public class DatabaseAccess implements IDatabaseAccess {
     @Override
     public void updateRecordRoute(final ITraining record, final int idRoute) {
         trainingDao.updateRecordRoute(record, idRoute);
+    }
+
+    @SuppressWarnings("nls")
+    @Override
+    public boolean validateConnection(final String url, final String driver, final String user, final String pass) {
+
+        boolean result = false;
+        try {
+            Class.forName(driver);
+            final Connection con = DriverManager.getConnection(url, user, pass);
+            con.createStatement();
+            result = true;
+            LOG.info("Connection to database '" + url + "' successfully");
+        } catch (final ClassNotFoundException | SQLException e) {
+            LOG.info("Connection to database '" + url + "' failed");
+        }
+        return result;
     }
 
 }

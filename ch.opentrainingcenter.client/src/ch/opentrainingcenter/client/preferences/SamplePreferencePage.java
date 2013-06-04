@@ -2,6 +2,7 @@ package ch.opentrainingcenter.client.preferences;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -16,8 +17,10 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
 import ch.opentrainingcenter.client.Activator;
+import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
+import ch.opentrainingcenter.core.db.DatabaseHelper.DBSTATE;
 import ch.opentrainingcenter.core.helper.GpsFileNameFilter;
 import ch.opentrainingcenter.core.importer.ExtensionHelper;
 import ch.opentrainingcenter.core.importer.ImporterFactory;
@@ -44,7 +47,11 @@ public class SamplePreferencePage extends FieldEditorPreferencePage implements I
     public SamplePreferencePage() {
         super(GRID);
         setDescription(Messages.SamplePreferencePage_1);
-        allAthletes = DatabaseAccessFactory.getDatabaseAccess().getAllAthletes();
+        if (DBSTATE.OK.equals(ApplicationContext.getApplicationContext().getDbState())) {
+            allAthletes = DatabaseAccessFactory.getDatabaseAccess().getAllAthletes();
+        } else {
+            allAthletes = Collections.emptyList();
+        }
     }
 
     /**

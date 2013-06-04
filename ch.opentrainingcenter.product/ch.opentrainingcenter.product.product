@@ -31,10 +31,8 @@
       </win>
    </launcher>
 
-
    <vm>
    </vm>
-
 
    <plugins>
       <plugin id="ch.opentrainingcenter.charts"/>
@@ -43,18 +41,17 @@
       <plugin id="ch.opentrainingcenter.db"/>
       <!--
       <plugin id="ch.opentrainingcenter.db.postgres"/>
-	  -->
+      -->
       <plugin id="ch.opentrainingcenter.i18n"/>
       <plugin id="ch.opentrainingcenter.importer.tcx"/>
       <plugin id="ch.opentrainingcenter.model"/>
-      <plugin id="ch.opentrainingcenter.tcx"/>
       <plugin id="ch.opentrainingcenter.route"/>
+      <plugin id="ch.opentrainingcenter.tcx"/>
       <plugin id="ch.opentrainingcenter.transfer"/>
       <plugin id="com.eclipsesource.widgets.gmaps"/>
       <plugin id="com.ibm.icu"/>
-      <plugin id="h2_lib"/>
-      <plugin id="postgres"/>
       <plugin id="geocalc"/>
+      <plugin id="h2_lib"/>
       <plugin id="javax.servlet"/>
       <plugin id="jfreechart"/>
       <plugin id="jodatime"/>
@@ -108,9 +105,12 @@
       <plugin id="org.eclipse.ui"/>
       <plugin id="org.eclipse.ui.forms"/>
       <plugin id="org.eclipse.ui.ide"/>
+      <plugin id="org.eclipse.ui.intro"/>
+      <plugin id="org.eclipse.ui.universal" fragment=""/>
       <plugin id="org.eclipse.ui.views"/>
       <plugin id="org.eclipse.ui.workbench"/>
       <plugin id="org.hibernate"/>
+      <plugin id="postgres"/>
    </plugins>
 
    <configurations>
