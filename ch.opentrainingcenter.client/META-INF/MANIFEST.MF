@@ -26,9 +26,7 @@ Require-Bundle: ch.opentrainingcenter.core,
  org.eclipse.ui.ide,
  org.eclipse.core.resources,
  jodatime,
- com.ibm.icu,
- org.eclipse.ui.intro,
- org.eclipse.ui.intro.universal
+ com.ibm.icu
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-Localization: plugin
 Export-Package: ch.opentrainingcenter.client,

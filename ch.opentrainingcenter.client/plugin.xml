@@ -784,10 +784,4 @@
    <extension
          point="org.eclipse.ui.perspectives">
    </extension>
-   <extension
-		point="org.eclipse.ui.intro">
-   		<introProductBinding
-      		introId="org.eclipse.ui.intro.universal"
-      		productId="ch.opentrainingcenter.client.opentrainingcenter"/>
-	</extension>
 </plugin>
