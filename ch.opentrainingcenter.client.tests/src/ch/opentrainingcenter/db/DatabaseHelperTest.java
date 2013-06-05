@@ -1,12 +1,14 @@
 package ch.opentrainingcenter.db;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
 import org.mockito.Mockito;
 
 import ch.opentrainingcenter.core.db.DatabaseHelper;
+import ch.opentrainingcenter.core.db.DatabaseHelper.DBSTATE;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.transfer.IAthlete;
-import static org.junit.Assert.assertEquals;
 
 @SuppressWarnings("nls")
 public class DatabaseHelperTest {
@@ -56,7 +58,7 @@ public class DatabaseHelperTest {
         final IDatabaseAccess databaseAccess = Mockito.mock(IDatabaseAccess.class);
         final IAthlete athlete = Mockito.mock(IAthlete.class);
         Mockito.when(databaseAccess.getAthlete(1)).thenReturn(athlete);
-        assertEquals("Datenbank nicht gelockt, wenn athlete gefunden wird", false, DatabaseHelper.getDatabaseState(databaseAccess));
+        assertEquals("Datenbank nicht gelockt, wenn athlete gefunden wird", DBSTATE.OK, DatabaseHelper.getDatabaseState(databaseAccess));
     }
 
     @Test
@@ -67,7 +69,7 @@ public class DatabaseHelperTest {
         Mockito.when(exception.getCause()).thenReturn(throwable);
         Mockito.when(throwable.getMessage()).thenReturn("Andere Meldung");
         Mockito.when(databaseAccess.getAthlete(1)).thenThrow(exception);
-        assertEquals("Datenbank nicht gelockt", false, DatabaseHelper.getDatabaseState(databaseAccess));
+        assertEquals("Datenbank nicht gelockt", DBSTATE.PROBLEM, DatabaseHelper.getDatabaseState(databaseAccess));
     }
 
     @Test
@@ -78,7 +80,7 @@ public class DatabaseHelperTest {
         Mockito.when(exception.getCause()).thenReturn(throwable);
         Mockito.when(throwable.getMessage()).thenReturn(null);
         Mockito.when(databaseAccess.getAthlete(1)).thenThrow(exception);
-        assertEquals("Datenbank nicht gelockt", false, DatabaseHelper.getDatabaseState(databaseAccess));
+        assertEquals("Datenbank nicht gelockt", DBSTATE.PROBLEM, DatabaseHelper.getDatabaseState(databaseAccess));
     }
 
     @Test
@@ -89,6 +91,6 @@ public class DatabaseHelperTest {
         Mockito.when(exception.getCause()).thenReturn(throwable);
         Mockito.when(throwable.getMessage()).thenReturn("Locked by another process");
         Mockito.when(databaseAccess.getAthlete(1)).thenThrow(exception);
-        assertEquals("Datenbank gelockt", true, DatabaseHelper.getDatabaseState(databaseAccess));
+        assertEquals("Datenbank gelockt", DBSTATE.LOCKED, DatabaseHelper.getDatabaseState(databaseAccess));
     }
 }
