@@ -30,7 +30,6 @@ public class DatabaseAccessFactoryTest {
     public void testGetDAo() throws CoreException {
         DatabaseAccessFactory.init("H2 Database", "org.h2.Driver", "jdbc:h2:file:~/.otc_dev/otc", "", "sa", "");
         DatabaseAccessFactory.getDatabaseAccess();
-        final DatabaseAccessFactory instance = DatabaseAccessFactory.getInstance();
         final String extensionAttr = "attr";
 
         final IConfigurationElement[] confItems = new IConfigurationElement[1];
@@ -43,7 +42,7 @@ public class DatabaseAccessFactoryTest {
         Mockito.when(mockA.createExecutableExtension(extensionAttr)).thenReturn(mockAccess);
 
         confItems[0] = mockA;
-        final Map<String, IDatabaseAccess> dao = instance.getDao(confItems, extensionAttr);
+        final Map<String, IDatabaseAccess> dao = DatabaseAccessFactory.getDao(confItems, extensionAttr);
 
         assertNotNull("Es muss ein dao auch zurückgegeben werden", dao);
         assertEquals("Es muss ein dao zurückgegeben werden", 1, dao.size());
@@ -53,7 +52,6 @@ public class DatabaseAccessFactoryTest {
     public void testGetDAoMitCoreException() throws CoreException {
         DatabaseAccessFactory.init("H2 Database", "org.h2.Driver", "jdbc:h2:file:~/.otc_dev/otc", "", "sa", "");
         DatabaseAccessFactory.getDatabaseAccess();
-        final DatabaseAccessFactory instance = DatabaseAccessFactory.getInstance();
         final String extensionAttr = "attr";
 
         final IConfigurationElement[] confItems = new IConfigurationElement[1];
@@ -65,7 +63,7 @@ public class DatabaseAccessFactoryTest {
         Mockito.when(mockA.createExecutableExtension(extensionAttr)).thenThrow(ce);
 
         confItems[0] = mockA;
-        final Map<String, IDatabaseAccess> daos = instance.getDao(confItems, extensionAttr);
+        final Map<String, IDatabaseAccess> daos = DatabaseAccessFactory.getDao(confItems, extensionAttr);
         assertTrue("Extension wurde nicht gefunden", daos.isEmpty());
     }
 }
