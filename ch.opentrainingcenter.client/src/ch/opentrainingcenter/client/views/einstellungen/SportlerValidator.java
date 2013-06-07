@@ -1,4 +1,4 @@
-package ch.opentrainingcenter.client.views.ahtlete;
+package ch.opentrainingcenter.client.views.einstellungen;
 
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;

@@ -82,7 +82,42 @@ public class BestRunsView extends ViewPart {
                 update();
             }
         });
+    }
 
+    @Override
+    public void createPartControl(final Composite parent) {
+
+        LOGGER.debug("create single activity view"); //$NON-NLS-1$
+        toolkit = new FormToolkit(parent.getDisplay());
+        final ScrolledForm form = toolkit.createScrolledForm(parent);
+
+        toolkit.decorateFormHeading(form.getForm());
+
+        final TableWrapLayout layout = new TableWrapLayout();
+        layout.numColumns = 1;
+        layout.makeColumnsEqualWidth = false;
+
+        final Composite body = form.getBody();
+        body.setLayout(layout);
+
+        td = new TableWrapData(TableWrapData.FILL_GRAB);
+        td.colspan = 1;
+        td.grabHorizontal = true;
+        td.grabVertical = true;
+        body.setLayoutData(td);
+        form.setText(Messages.BestRunsView0);
+        final String athleteId = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.ATHLETE_ID);
+        if (athleteId != null && athleteId.length() > 0) {
+            athlete = DatabaseAccessFactory.getDatabaseAccess().getAthlete(Integer.parseInt(athleteId));
+        } else {
+            athlete = null;
+        }
+        action = new GoldMedalAction();
+        final IGoldMedalModel model = action.getModel(DatabaseAccessFactory.getDatabaseAccess().getAllImported(athlete));
+
+        addText(body, model);
+
+        addPace(body, model);
     }
 
     private void addPace(final Composite body, final IGoldMedalModel model) {
@@ -161,42 +196,6 @@ public class BestRunsView extends ViewPart {
         gd.verticalIndent = 4;
         einheit.setLayoutData(gd);
         return valueLabel;
-    }
-
-    @Override
-    public void createPartControl(final Composite parent) {
-
-        LOGGER.debug("create single activity view"); //$NON-NLS-1$
-        toolkit = new FormToolkit(parent.getDisplay());
-        final ScrolledForm form = toolkit.createScrolledForm(parent);
-        // form.setSize(1000, 2000);
-        // gridlayout definieren
-
-        final TableWrapLayout layout = new TableWrapLayout();
-        layout.numColumns = 1;
-        layout.makeColumnsEqualWidth = false;
-
-        final Composite body = form.getBody();
-        body.setLayout(layout);
-
-        td = new TableWrapData(TableWrapData.FILL_GRAB);
-        td.colspan = 1;
-        td.grabHorizontal = true;
-        td.grabVertical = true;
-        body.setLayoutData(td);
-        form.setText(Messages.BestRunsView0);
-        final String athleteId = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.ATHLETE_ID);
-        if (athleteId != null && athleteId.length() > 0) {
-            athlete = DatabaseAccessFactory.getDatabaseAccess().getAthlete(Integer.parseInt(athleteId));
-        } else {
-            athlete = null;
-        }
-        action = new GoldMedalAction();
-        final IGoldMedalModel model = action.getModel(DatabaseAccessFactory.getDatabaseAccess().getAllImported(athlete));
-
-        addText(body, model);
-
-        addPace(body, model);
     }
 
     @Override

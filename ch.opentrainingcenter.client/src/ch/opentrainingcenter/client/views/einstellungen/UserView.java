@@ -49,7 +49,6 @@ import org.eclipse.ui.part.ViewPart;
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.Application;
 import ch.opentrainingcenter.client.views.ApplicationContext;
-import ch.opentrainingcenter.client.views.ahtlete.SportlerValidator;
 import ch.opentrainingcenter.client.views.databinding.NumberValidator;
 import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.core.cache.TrainingCache;

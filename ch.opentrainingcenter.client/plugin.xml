@@ -126,14 +126,6 @@
             name="OTC">
       </category>
       <view
-            category="ch.opentrainingcenter.client.otccategory"
-            class="ch.opentrainingcenter.client.views.ahtlete.CreateAthleteView"
-            icon="icons/16_16/einstellungen.png"
-            id="ch.opentrainingcenter.client.athlete.createathlete"
-            name="%einstellungen"
-            restorable="true">
-      </view>
-      <view
             class="ch.opentrainingcenter.client.views.statistics.StatisticView"
             icon="icons/16_16/chart_16_16.png"
             id="ch.opentrainingcenter.client.views.statistics.StatisticView"

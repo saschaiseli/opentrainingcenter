@@ -93,6 +93,9 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         LOGGER.debug("create single activity view"); //$NON-NLS-1$
         toolkit = new FormToolkit(parent.getDisplay());
         form = toolkit.createScrolledForm(parent);
+
+        toolkit.decorateFormHeading(form.getForm());
+
         form.setText(Messages.SingleActivityViewPart0 + TimeHelper.convertDateToString(simpleTraining.getDatum(), true));
         final Composite body = form.getBody();
 

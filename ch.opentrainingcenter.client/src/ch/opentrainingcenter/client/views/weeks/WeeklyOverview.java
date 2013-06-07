@@ -21,8 +21,8 @@ public class WeeklyOverview extends ViewPart {
         LOGGER.debug("create single activity view"); //$NON-NLS-1$
         final FormToolkit toolkit = new FormToolkit(parent.getDisplay());
         final ScrolledForm form = toolkit.createScrolledForm(parent);
-        // form.setSize(1000, 2000);
-        // gridlayout definieren
+
+        toolkit.decorateFormHeading(form.getForm());
 
         final TableWrapLayout layout = new TableWrapLayout();
         layout.numColumns = 1;

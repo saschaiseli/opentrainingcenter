@@ -6,9 +6,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.jface.preference.IPreferenceStore;
 
-import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.cache.HealthCache;
 import ch.opentrainingcenter.client.cache.StreckeCache;
 import ch.opentrainingcenter.client.views.ApplicationContext;
@@ -30,8 +28,6 @@ import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
 
 public class InitialLoadRunnable implements IRunnableWithProgress {
-
-    private final IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 
     private static final Logger LOG = Logger.getLogger(InitialLoadRunnable.class);
 
