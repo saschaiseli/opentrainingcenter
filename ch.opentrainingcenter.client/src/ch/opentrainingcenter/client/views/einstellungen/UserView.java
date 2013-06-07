@@ -1,7 +1,10 @@
 package ch.opentrainingcenter.client.views.einstellungen;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -13,7 +16,7 @@ import org.eclipse.core.databinding.beans.BeanProperties;
 import org.eclipse.core.databinding.observable.ChangeEvent;
 import org.eclipse.core.databinding.observable.IChangeListener;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.core.databinding.validation.ValidationStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -29,11 +32,13 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.events.ExpansionAdapter;
 import org.eclipse.ui.forms.events.ExpansionEvent;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
@@ -64,7 +69,7 @@ public class UserView extends ViewPart {
     private final IDatabaseAccess databaseAccess = DatabaseAccessFactory.getDatabaseAccess();
     private final IPreferenceStore store = Activator.getDefault().getPreferenceStore();
     private Text nameTf;
-    private Text ageTf;
+    private DateTime birthday;
     private Text pulseTf;
     private Label errorLabel;
     private FormToolkit toolkit;
@@ -105,7 +110,8 @@ public class UserView extends ViewPart {
     }
 
     private void createSelectSportler(final Composite body) {
-        selectSportler = toolkit.createSection(body, Section.DESCRIPTION | Section.TITLE_BAR | Section.TWISTIE | Section.EXPANDED);
+        selectSportler = toolkit.createSection(body, Section.DESCRIPTION | ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE
+                | ExpandableComposite.EXPANDED);
         selectSportler.addExpansionListener(new ExpansionAdapter() {
             @Override
             public void expansionStateChanged(final ExpansionEvent e) {
@@ -192,7 +198,9 @@ public class UserView extends ViewPart {
 
                 final IAthlete athlete = databaseAccess.getAthlete(dbId);
                 nameTf.setText(athlete.getName());
-                ageTf.setText(athlete.getBirthday().toString());
+                final Date date = athlete.getBirthday();
+                final org.joda.time.DateTime dt = new org.joda.time.DateTime(date.getTime());
+                birthday.setDate(dt.getYear(), dt.getMonthOfYear(), dt.getDayOfMonth());
                 pulseTf.setText(athlete.getMaxHeartRate().toString());
             }
         });
@@ -206,7 +214,7 @@ public class UserView extends ViewPart {
 
             @Override
             public void widgetDefaultSelected(final SelectionEvent e) {
-
+                // do nothing
             }
         });
 
@@ -219,7 +227,7 @@ public class UserView extends ViewPart {
 
             @Override
             public void focusGained(final FocusEvent e) {
-
+                // do nothing
             }
         });
 
@@ -270,13 +278,13 @@ public class UserView extends ViewPart {
         // alter
         final Label ageLabel = new Label(overViewComposite, SWT.NONE);
         ageLabel.setText(Messages.CreateAthleteView11);
-        ageTf = new Text(overViewComposite, SWT.BORDER);
+        birthday = new DateTime(overViewComposite, SWT.CALENDAR | SWT.BORDER);
 
         gridData = new GridData();
         gridData.horizontalAlignment = SWT.FILL;
         gridData.grabExcessHorizontalSpace = true;
         gridData.horizontalIndent = 5;
-        ageTf.setLayoutData(gridData);
+        birthday.setLayoutData(gridData);
 
         // pulse
         final Label pulseLabel = new Label(overViewComposite, SWT.NONE);
@@ -306,7 +314,11 @@ public class UserView extends ViewPart {
             @Override
             public void widgetSelected(final SelectionEvent e) {
                 LOGGER.info("save " + sportler); //$NON-NLS-1$
-                final IAthlete athlete = CommonTransferFactory.createAthlete(sportler.getName(), sportler.getBirthday(), sportler.getMaxHeartBeat());
+                final Calendar cal = Calendar.getInstance(Locale.getDefault());
+                cal.set(Calendar.YEAR, birthday.getYear());
+                cal.set(Calendar.MONTH, birthday.getMonth() + 1);
+                cal.set(Calendar.DAY_OF_MONTH, birthday.getDay());
+                final IAthlete athlete = CommonTransferFactory.createAthlete(sportler.getName(), cal.getTime(), sportler.getMaxHeartBeat());
                 try {
                     TrainingCache.getInstance().resetCache();
                     DatabaseAccessFactory.getDatabaseAccess().save(athlete);
@@ -340,7 +352,8 @@ public class UserView extends ViewPart {
 
     private void resetForm() {
         nameTf.setText(""); //$NON-NLS-1$
-        ageTf.setText(""); //$NON-NLS-1$
+        final org.joda.time.DateTime dt = org.joda.time.DateTime.now();
+        birthday.setDate(dt.getYear(), dt.getMonthOfYear(), dt.getDayOfMonth());
         pulseTf.setText(""); //$NON-NLS-1$
         errorLabel.setText(""); //$NON-NLS-1$
     }
@@ -359,17 +372,19 @@ public class UserView extends ViewPart {
         // Add some decorations
         ControlDecorationSupport.create(bindName, SWT.TOP | SWT.RIGHT);
 
-        // Bind the age including a validator
-        widgetValue = WidgetProperties.text(SWT.Modify).observe(ageTf);
-        modelValue = BeanProperties.value(Sportler.class, "age").observe(sportler); //$NON-NLS-1$
-        // Add an validator so that age can only be a number
-        final UpdateValueStrategy strategy = new UpdateValueStrategy();
-        strategy.setBeforeSetValidator(new NumberValidator(12, 99, Messages.CreateAthleteView19));
+        // // Bind the age including a validator
+        // widgetValue = WidgetProperties.text(SWT.Modify).observe(birthday);
+        //        modelValue = BeanProperties.value(Sportler.class, "birthday").observe(sportler); //$NON-NLS-1$
+        // // Add an validator so that age can only be a number
+        // final UpdateValueStrategy strategy = new UpdateValueStrategy();
+        // strategy.setBeforeSetValidator(new NumberValidator(12, 99,
+        // Messages.CreateAthleteView19));
         // strategy.setBeforeSetValidator(validator);
 
-        final Binding bindValue = ctx.bindValue(widgetValue, modelValue, strategy, null);
-        // Add some decorations
-        ControlDecorationSupport.create(bindValue, SWT.TOP | SWT.RIGHT);
+        // final Binding bindValue = ctx.bindValue(widgetValue, modelValue,
+        // strategy, null);
+        // // Add some decorations
+        // ControlDecorationSupport.create(bindValue, SWT.TOP | SWT.RIGHT);
 
         // pulse
         widgetValue = WidgetProperties.text(SWT.Modify).observe(pulseTf);
@@ -392,7 +407,7 @@ public class UserView extends ViewPart {
 
             @Override
             public void handleChange(final ChangeEvent event) {
-                if (ValidationStatus.OK_STATUS.getMessage().equals(errorLabel.getText())) {
+                if (Status.OK_STATUS.getMessage().equals(errorLabel.getText())) {
                     createButton.setEnabled(true);
                 } else {
                     createButton.setEnabled(false);
