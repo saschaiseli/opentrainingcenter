@@ -24,8 +24,8 @@ public class PlanungDaoTest extends PostgresDatabaseTestBase {
     @Before
     public void setUp() {
         planungDao = new PlanungDao(dao);
-        athlete = CommonTransferFactory.createAthlete("junit", 22, 220);
-        athleteOther = CommonTransferFactory.createAthlete("junit2", 223, 2203);
+        athlete = CommonTransferFactory.createAthlete("junit", 220);
+        athleteOther = CommonTransferFactory.createAthlete("junit2", 2203);
 
         final AthleteDao athleteDao = new AthleteDao(dao);
         athleteDao.save(athlete);

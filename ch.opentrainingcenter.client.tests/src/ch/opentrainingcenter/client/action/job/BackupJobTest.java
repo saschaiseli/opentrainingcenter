@@ -59,18 +59,22 @@ public class BackupJobTest {
 
             @Override
             public void worked(final int work) {
+                // do nothing
             }
 
             @Override
             public void subTask(final String name) {
+                // do nothing
             }
 
             @Override
             public void setTaskName(final String name) {
+                // do nothing
             }
 
             @Override
             public void setCanceled(final boolean value) {
+                // do nothing
             }
 
             @Override
@@ -80,14 +84,17 @@ public class BackupJobTest {
 
             @Override
             public void internalWorked(final double work) {
+                // do nothing
             }
 
             @Override
             public void done() {
+                // do nothing
             }
 
             @Override
             public void beginTask(final String name, final int totalWork) {
+                // do nothing
             }
         };
 

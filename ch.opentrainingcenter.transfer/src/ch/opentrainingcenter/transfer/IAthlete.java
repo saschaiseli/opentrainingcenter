@@ -1,5 +1,6 @@
 package ch.opentrainingcenter.transfer;
 
+import java.util.Date;
 import java.util.Set;
 
 public interface IAthlete {
@@ -22,9 +23,9 @@ public interface IAthlete {
 
     void addTraining(ITraining record);
 
-    Integer getAge();
+    Date getBirthday();
 
-    void setAge(Integer age);
+    void setBirthday(Date birthday);
 
     Integer getMaxHeartRate();
 

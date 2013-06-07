@@ -2,6 +2,8 @@ package ch.opentrainingcenter.transfer;
 
 import java.util.Date;
 
+import org.joda.time.DateTime;
+
 import ch.opentrainingcenter.transfer.impl.Athlete;
 import ch.opentrainingcenter.transfer.impl.Health;
 import ch.opentrainingcenter.transfer.impl.Planungwoche;
@@ -17,8 +19,12 @@ public class CommonTransferFactory {
 
     }
 
-    public static IAthlete createAthlete(final String name, final Integer age, final Integer maxHeartBeat) {
-        return new Athlete(name, age, maxHeartBeat);
+    public static IAthlete createAthlete(final String name, final Integer maxHeartBeat) {
+        return createAthlete(name, DateTime.now().toDate(), maxHeartBeat);
+    }
+
+    public static IAthlete createAthlete(final String name, final Date birthday, final Integer maxHeartBeat) {
+        return new Athlete(name, birthday, maxHeartBeat);
     }
 
     public static ITrainingType createTrainingType(final int id, final String title, final String description) {

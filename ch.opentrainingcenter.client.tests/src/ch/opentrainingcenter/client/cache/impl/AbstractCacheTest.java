@@ -1,5 +1,9 @@
 package ch.opentrainingcenter.client.cache.impl;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -10,9 +14,6 @@ import org.junit.Test;
 
 import ch.opentrainingcenter.core.cache.AbstractCache;
 import ch.opentrainingcenter.core.cache.IRecordListener;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 @SuppressWarnings("nls")
 public class AbstractCacheTest {
@@ -171,6 +172,7 @@ public class AbstractCacheTest {
 
             @Override
             public void deleteRecord(final Collection<CacheElement> entry) {
+                // do nothing
             }
         });
 

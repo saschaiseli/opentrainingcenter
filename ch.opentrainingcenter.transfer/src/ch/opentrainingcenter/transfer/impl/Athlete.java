@@ -2,6 +2,7 @@ package ch.opentrainingcenter.transfer.impl;
 
 // Generated 04.04.2013 20:38:06 by Hibernate Tools 3.4.0.CR1
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,7 +19,7 @@ public class Athlete implements java.io.Serializable, IAthlete {
     private static final long serialVersionUID = 1L;
     private int id;
     private String name;
-    private int age;
+    private Date birthday;
     private Integer maxheartrate;
     private Set<IRoute> routes = new HashSet<IRoute>(0);
     private Set<IHealth> healths = new HashSet<IHealth>(0);
@@ -28,16 +29,16 @@ public class Athlete implements java.io.Serializable, IAthlete {
     public Athlete() {
     }
 
-    public Athlete(final int id, final int age) {
+    public Athlete(final int id, final Date birthday) {
         this.id = id;
-        this.age = age;
+        this.birthday = birthday;
     }
 
-    public Athlete(final int id, final String name, final int age, final Integer maxheartrate, final Set<IRoute> routes, final Set<IHealth> healths,
+    public Athlete(final int id, final String name, final Date birthday, final Integer maxheartrate, final Set<IRoute> routes, final Set<IHealth> healths,
             final Set<ITraining> trainings, final Set<IPlanungWoche> planungwoches) {
         this.id = id;
         this.name = name;
-        this.age = age;
+        this.birthday = birthday;
         this.maxheartrate = maxheartrate;
         this.routes = routes;
         this.healths = healths;
@@ -45,9 +46,9 @@ public class Athlete implements java.io.Serializable, IAthlete {
         this.planungwoches = planungwoches;
     }
 
-    public Athlete(final String name, final Integer age, final Integer maxHeartBeat) {
+    public Athlete(final String name, final Date birthday, final Integer maxHeartBeat) {
         this.name = name;
-        this.age = age;
+        this.birthday = birthday;
         maxheartrate = maxHeartBeat;
     }
 
@@ -72,12 +73,13 @@ public class Athlete implements java.io.Serializable, IAthlete {
     }
 
     @Override
-    public Integer getAge() {
-        return this.age;
+    public Date getBirthday() {
+        return this.birthday;
     }
 
-    public void setAge(final int age) {
-        this.age = age;
+    @Override
+    public void setBirthday(final Date birthday) {
+        this.birthday = birthday;
     }
 
     public Integer getMaxheartrate() {
@@ -139,11 +141,6 @@ public class Athlete implements java.io.Serializable, IAthlete {
     public void setTrainings(final Set<ITraining> trainings) {
         this.trainings = trainings;
 
-    }
-
-    @Override
-    public void setAge(final Integer age) {
-        this.age = age;
     }
 
     @SuppressWarnings("nls")

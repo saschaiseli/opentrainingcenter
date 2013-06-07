@@ -1,12 +1,13 @@
 package ch.opentrainingcenter.client.views.databinding;
 
-import org.eclipse.core.databinding.validation.ValidationStatus;
+import static org.junit.Assert.assertEquals;
+
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.junit.Before;
 import org.junit.Test;
 
 import ch.opentrainingcenter.i18n.Messages;
-import static org.junit.Assert.assertEquals;
 
 public class NumberValidatorTest {
     private static final double MIN = 0;
@@ -28,12 +29,12 @@ public class NumberValidatorTest {
 
     @Test
     public void testValidateNullDouble() {
-        Double val=null;
+        final Double val = null;
         final IStatus status = validator.validate(val);
 
         assertEquals("Leer text muss im Status sein", JUNIT_LEER, status.getMessage()); //$NON-NLS-1$
     }
-    
+
     @Test
     public void testValidateLeer() {
         final IStatus status = validator.validate(""); //$NON-NLS-1$
@@ -59,6 +60,6 @@ public class NumberValidatorTest {
     public void testValidateOk() {
         final IStatus status = validator.validate(10.0d);
 
-        assertEquals("okey status", ValidationStatus.OK_STATUS, status); //$NON-NLS-1$
+        assertEquals("okey status", Status.OK_STATUS, status); //$NON-NLS-1$
     }
 }

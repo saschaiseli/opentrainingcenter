@@ -18,12 +18,14 @@ public class DatabaseCreator {
             final Session session = dao.getSession();
             dao.begin();
             for (final String sql : sqlQueries) {
+                System.out.println(sql);
                 final Query query = session.createSQLQuery(sql);
                 query.executeUpdate();
             }
             dao.commit();
             session.flush();
         } catch (final Exception e) {
+            System.err.println(e);
             dao.rollback();
         }
     }

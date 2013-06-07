@@ -6,7 +6,8 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: ch.opentrainingcenter.activator.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.hibernate,
- logging
+ logging,
+ jodatime
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: ch.opentrainingcenter.transfer

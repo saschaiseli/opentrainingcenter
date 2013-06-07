@@ -11,6 +11,7 @@ import java.util.List;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 
+import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -149,7 +150,7 @@ public class TrainingCenterDataCacheTest {
     public void testAthlete() {
         assertNull("Athlete ist initial null", ApplicationContext.getApplicationContext().getAthlete());
         // prepare
-        final IAthlete athlete = CommonTransferFactory.createAthlete("Junit", 37, Integer.valueOf(200));
+        final IAthlete athlete = CommonTransferFactory.createAthlete("Junit", DateTime.now().toDate(), Integer.valueOf(200));
         ApplicationContext.getApplicationContext().setAthlete(athlete);
 
         // execute

@@ -62,7 +62,7 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
 
     @Test
     public void testTraining_2() {
-        final IAthlete athlete = CommonTransferFactory.createAthlete("testTraining_2", 22, 222);
+        final IAthlete athlete = CommonTransferFactory.createAthlete("testTraining_2", DateTime.now().toDate(), 222);
         final IRoute route = CommonTransferFactory.createRoute("name", "beschreibung", athlete);
         athleteDao.save(athlete);
         routeDao.saveOrUpdate(route);
@@ -85,7 +85,7 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
 
     @Test
     public void testTraining_3() {
-        final IAthlete athlete = CommonTransferFactory.createAthlete("testTraining_3", 22, 222);
+        final IAthlete athlete = CommonTransferFactory.createAthlete("testTraining_3", DateTime.now().toDate(), 222);
         final IRoute route = CommonTransferFactory.createRoute("testTraining_3_route", "beschreibung", athlete);
         athleteDao.save(athlete);
         routeDao.saveOrUpdate(route);
@@ -130,7 +130,7 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
 
     @Test
     public void testTraining_4_update_note_weather_route() {
-        final IAthlete athlete = CommonTransferFactory.createAthlete("testTraining_3", 22, 222);
+        final IAthlete athlete = CommonTransferFactory.createAthlete("testTraining_3", DateTime.now().toDate(), 222);
         athleteDao.save(athlete);
 
         final IRoute routeA = CommonTransferFactory.createRoute("testTraining_4_route", "beschreibungA", athlete);
@@ -161,10 +161,10 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
 
     @Test
     public void testTraining_5_getAllImported() {
-        final IAthlete athleteA = CommonTransferFactory.createAthlete("testTraining_5_A", 22, 222);
+        final IAthlete athleteA = CommonTransferFactory.createAthlete("testTraining_5_A", 222);
         athleteDao.save(athleteA);
 
-        final IAthlete athleteB = CommonTransferFactory.createAthlete("testTraining_5_B", 42, 242);
+        final IAthlete athleteB = CommonTransferFactory.createAthlete("testTraining_5_B", 242);
         athleteDao.save(athleteB);
 
         final ActivityExtension activityExtension = new ActivityExtension("note1", weatherA, null);
@@ -186,7 +186,7 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
 
     @Test
     public void testTraining_6_getAllImported_Sort() {
-        final IAthlete athleteA = CommonTransferFactory.createAthlete("testTraining_6", 22, 222);
+        final IAthlete athleteA = CommonTransferFactory.createAthlete("testTraining_6", 222);
         athleteDao.save(athleteA);
 
         final ActivityExtension activityExtension = new ActivityExtension("note1", weatherA, null);
@@ -211,7 +211,7 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
 
     @Test
     public void testTraining_7_getAllImported_Sort_And_Limit() {
-        final IAthlete athleteA = CommonTransferFactory.createAthlete("testTraining_7", 22, 222);
+        final IAthlete athleteA = CommonTransferFactory.createAthlete("testTraining_7", 222);
         athleteDao.save(athleteA);
 
         final ActivityExtension activityExtension = new ActivityExtension("note1", weatherA, null);
@@ -244,7 +244,7 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
 
     @Test
     public void testTraining_8_getNewest() {
-        final IAthlete athleteA = CommonTransferFactory.createAthlete("testTraining_7", 22, 222);
+        final IAthlete athleteA = CommonTransferFactory.createAthlete("testTraining_7", 222);
         athleteDao.save(athleteA);
 
         final ActivityExtension activityExtension = new ActivityExtension("note1", weatherA, null);
@@ -273,7 +273,7 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
 
     @Test
     public void testTraining_9_getNewestEmpty() {
-        final IAthlete athleteA = CommonTransferFactory.createAthlete("testTraining_9", 22, 222);
+        final IAthlete athleteA = CommonTransferFactory.createAthlete("testTraining_9", 222);
         athleteDao.save(athleteA);
         final ITraining newest = access.getNewestRun(athleteA);
         assertNull(newest);
@@ -281,7 +281,7 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
 
     @Test
     public void testTraining_10_remove() {
-        final IAthlete athleteA = CommonTransferFactory.createAthlete("testTraining_9", 22, 222);
+        final IAthlete athleteA = CommonTransferFactory.createAthlete("testTraining_9", 222);
         athleteDao.save(athleteA);
 
         final ActivityExtension activityExtension = new ActivityExtension("note1", weatherA, null);
@@ -300,7 +300,7 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
 
     @Test
     public void testTraining_11_updateRecord() {
-        final IAthlete athleteA = CommonTransferFactory.createAthlete("testTraining_9", 22, 222);
+        final IAthlete athleteA = CommonTransferFactory.createAthlete("testTraining_9", 222);
         athleteDao.save(athleteA);
         final List<ITrainingType> types = trainingTypeDao.getTrainingType();
         final ActivityExtension activityExtension = new ActivityExtension("note1", weatherA, null);
@@ -332,7 +332,7 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
 
     @Test
     public void testTraining_12_updateRoute() {
-        final IAthlete athlete = CommonTransferFactory.createAthlete("testTraining_2", 22, 222);
+        final IAthlete athlete = CommonTransferFactory.createAthlete("testTraining_2", 222);
         final IRoute routeA = CommonTransferFactory.createRoute("nameA", "beschreibungA", athlete);
         final IRoute routeB = CommonTransferFactory.createRoute("nameB", "beschreibungB", athlete);
         athleteDao.save(athlete);
@@ -365,7 +365,7 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
 
     @Test
     public void testTraining_13() {
-        final IAthlete athlete = CommonTransferFactory.createAthlete("testTraining_2", 22, 222);
+        final IAthlete athlete = CommonTransferFactory.createAthlete("testTraining_2", 222);
         final IRoute route = CommonTransferFactory.createRoute("name", "beschreibung", athlete);
         athleteDao.save(athlete);
         routeDao.saveOrUpdate(route);

@@ -14,7 +14,7 @@ import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.ChangeEvent;
 import org.eclipse.core.databinding.observable.IChangeListener;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.core.databinding.validation.ValidationStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -29,10 +29,12 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.events.ExpansionAdapter;
 import org.eclipse.ui.forms.events.ExpansionEvent;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
@@ -61,7 +63,7 @@ public class CreateAthleteView extends ViewPart {
     private final IDatabaseAccess databaseAccess = DatabaseAccessFactory.getDatabaseAccess();
     private final IPreferenceStore store = Activator.getDefault().getPreferenceStore();
     private Text nameTf;
-    private Text ageTf;
+    private DateTime ageTf;
     private Text pulseTf;
     private Combo genderCombo;
     private Label errorLabel;
@@ -102,7 +104,8 @@ public class CreateAthleteView extends ViewPart {
     }
 
     private void createSelectSportler(final Composite body) {
-        selectSportler = toolkit.createSection(body, Section.DESCRIPTION | Section.TITLE_BAR | Section.TWISTIE | Section.EXPANDED);
+        selectSportler = toolkit.createSection(body, Section.DESCRIPTION | ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE
+                | ExpandableComposite.EXPANDED);
         selectSportler.addExpansionListener(new ExpansionAdapter() {
             @Override
             public void expansionStateChanged(final ExpansionEvent e) {
@@ -173,7 +176,7 @@ public class CreateAthleteView extends ViewPart {
 
             @Override
             public void widgetDefaultSelected(final SelectionEvent e) {
-
+                // do nothing
             }
         });
 
@@ -186,7 +189,7 @@ public class CreateAthleteView extends ViewPart {
 
             @Override
             public void focusGained(final FocusEvent e) {
-
+                // do nothing
             }
         });
 
@@ -220,7 +223,8 @@ public class CreateAthleteView extends ViewPart {
 
     private void createAddSportler(final Composite body) {
 
-        overviewSection = toolkit.createSection(body, Section.DESCRIPTION | Section.TITLE_BAR | Section.TWISTIE | Section.EXPANDED);
+        overviewSection = toolkit.createSection(body, Section.DESCRIPTION | ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE
+                | ExpandableComposite.EXPANDED);
         overviewSection.addExpansionListener(new ExpansionAdapter() {
             @Override
             public void expansionStateChanged(final ExpansionEvent e) {
@@ -252,7 +256,7 @@ public class CreateAthleteView extends ViewPart {
         // alter
         final Label ageLabel = new Label(overViewComposite, SWT.NONE);
         ageLabel.setText(Messages.CreateAthleteView11);
-        ageTf = new Text(overViewComposite, SWT.BORDER);
+        ageTf = new DateTime(overViewComposite, SWT.BORDER);
 
         gridData = new GridData();
         gridData.horizontalAlignment = SWT.FILL;
@@ -301,7 +305,7 @@ public class CreateAthleteView extends ViewPart {
             @Override
             public void widgetSelected(final SelectionEvent e) {
                 LOGGER.info("save " + sportler); //$NON-NLS-1$
-                final IAthlete athlete = CommonTransferFactory.createAthlete(sportler.getName(), sportler.getAge(), sportler.getMaxHeartBeat());
+                final IAthlete athlete = CommonTransferFactory.createAthlete(sportler.getName(), sportler.getBirthday(), sportler.getMaxHeartBeat());
                 try {
                     DatabaseAccessFactory.getDatabaseAccess().save(athlete);
                     resetForm();
@@ -326,7 +330,7 @@ public class CreateAthleteView extends ViewPart {
 
     private void resetForm() {
         nameTf.setText(""); //$NON-NLS-1$
-        ageTf.setText(""); //$NON-NLS-1$
+        ageTf.setDate(1974, 1, 1);
         pulseTf.setText(""); //$NON-NLS-1$
         errorLabel.setText(""); //$NON-NLS-1$
     }
@@ -385,7 +389,7 @@ public class CreateAthleteView extends ViewPart {
 
             @Override
             public void handleChange(final ChangeEvent event) {
-                if (ValidationStatus.OK_STATUS.getMessage().equals(errorLabel.getText())) {
+                if (Status.OK_STATUS.getMessage().equals(errorLabel.getText())) {
                     okButton.setEnabled(true);
                 } else {
                     okButton.setEnabled(false);
@@ -396,5 +400,6 @@ public class CreateAthleteView extends ViewPart {
 
     @Override
     public void setFocus() {
+        //
     }
 }

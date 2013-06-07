@@ -13,8 +13,8 @@
         <property name="name" type="string">
             <column name="NAME" />
         </property>
-        <property name="age" type="int">
-            <column name="AGE" not-null="true" />
+        <property name="birthday" type="java.util.Date">
+            <column name="BIRTHDAY" not-null="true" />
         </property>
         <property name="maxheartrate" type="java.lang.Integer">
             <column name="MAXHEARTRATE" />

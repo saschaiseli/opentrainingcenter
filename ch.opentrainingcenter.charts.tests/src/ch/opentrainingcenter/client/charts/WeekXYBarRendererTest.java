@@ -1,5 +1,8 @@
 package ch.opentrainingcenter.client.charts;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.awt.Color;
 import java.math.BigDecimal;
 
@@ -7,6 +10,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.jfree.data.xy.IntervalXYDataset;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 
 import ch.opentrainingcenter.charts.bar.internal.WeekXYBarRenderer;
@@ -14,8 +18,6 @@ import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.core.cache.ICache;
 import ch.opentrainingcenter.model.planing.IPlanungModel;
 import ch.opentrainingcenter.model.planing.KwJahrKey;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 @SuppressWarnings("nls")
 public class WeekXYBarRendererTest {
@@ -35,7 +37,7 @@ public class WeekXYBarRendererTest {
         Mockito.when(store.getString(PreferenceConstants.ZIEL_NICHT_BEKANNT_COLOR)).thenReturn("123,123,123");
         final IPlanungModel model = Mockito.mock(IPlanungModel.class);
         Mockito.when(model.getKmProWoche()).thenReturn(Integer.valueOf(100));
-        Mockito.when(cache.get((KwJahrKey) Mockito.any())).thenReturn(model);
+        Mockito.when(cache.get((KwJahrKey) Matchers.any())).thenReturn(model);
     }
 
     @Test

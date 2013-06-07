@@ -27,8 +27,8 @@ public class RouteDaoTest extends PostgresDatabaseTestBase {
         routeDao = new RouteDao(dao);
         final AthleteDao athleteDao = new AthleteDao(dao);
 
-        athlete = CommonTransferFactory.createAthlete("junit", 22, 220);
-        athlete2 = CommonTransferFactory.createAthlete("junit2", 22, 220);
+        athlete = CommonTransferFactory.createAthlete("junit", 220);
+        athlete2 = CommonTransferFactory.createAthlete("junit2", 220);
 
         athleteDao.save(athlete);
         athleteDao.save(athlete2);

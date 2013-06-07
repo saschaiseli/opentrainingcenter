@@ -17,6 +17,7 @@ public final class DbScriptReader {
     /**
      * Liefert eine Liste von SQL Queries zurück. Wenn das File nicht gefunden
      * wird, wird eine {@link FileNotFoundException} geworfen.
+     * 
      * @param dao
      * 
      * @throws FileNotFoundException
@@ -45,7 +46,7 @@ public final class DbScriptReader {
     }
 
     private static List<String> convertToList(final String sql) {
-        final String[] split = sql.split(";");
+        final String[] split = sql.split(";"); //$NON-NLS-1$
         final List<String> result = new ArrayList<>();
         for (final String item : Arrays.asList(split)) {
             result.add(item);

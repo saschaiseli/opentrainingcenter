@@ -23,7 +23,7 @@ public class RouteDaoTest extends DatabaseTestBase {
     @Before
     public void setUp() {
         routeDao = new RouteDao(dao);
-        athlete = CommonTransferFactory.createAthlete("junit", 22, 220);
+        athlete = CommonTransferFactory.createAthlete("junit", 220);
 
         final AthleteDao athleteDao = new AthleteDao(dao);
         athleteDao.save(athlete);

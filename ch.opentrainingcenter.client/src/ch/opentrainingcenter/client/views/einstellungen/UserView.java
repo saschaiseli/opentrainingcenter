@@ -192,7 +192,7 @@ public class UserView extends ViewPart {
 
                 final IAthlete athlete = databaseAccess.getAthlete(dbId);
                 nameTf.setText(athlete.getName());
-                ageTf.setText(athlete.getAge().toString());
+                ageTf.setText(athlete.getBirthday().toString());
                 pulseTf.setText(athlete.getMaxHeartRate().toString());
             }
         });
@@ -306,7 +306,7 @@ public class UserView extends ViewPart {
             @Override
             public void widgetSelected(final SelectionEvent e) {
                 LOGGER.info("save " + sportler); //$NON-NLS-1$
-                final IAthlete athlete = CommonTransferFactory.createAthlete(sportler.getName(), sportler.getAge(), sportler.getMaxHeartBeat());
+                final IAthlete athlete = CommonTransferFactory.createAthlete(sportler.getName(), sportler.getBirthday(), sportler.getMaxHeartBeat());
                 try {
                     TrainingCache.getInstance().resetCache();
                     DatabaseAccessFactory.getDatabaseAccess().save(athlete);

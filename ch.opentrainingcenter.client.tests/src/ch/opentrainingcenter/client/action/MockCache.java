@@ -16,12 +16,13 @@ public class MockCache implements Cache {
 
     @Override
     public void add(final ITraining activity) {
+        // do nothing
 
     }
 
     @Override
     public void addAll(final List<ITraining> activities) {
-
+        // do nothing
     }
 
     @Override
@@ -31,17 +32,17 @@ public class MockCache implements Cache {
 
     @Override
     public void notifyListeners() {
-
+        // do nothing
     }
 
     @Override
     public void addListener(final IRecordListener<ITraining> listener) {
-
+        // do nothing
     }
 
     @Override
     public void removeListener(final IRecordListener<ITraining> listener) {
-
+        // do nothing
     }
 
     @Override
@@ -70,17 +71,16 @@ public class MockCache implements Cache {
 
     @Override
     public void updateExtension(final Long activityId, final ActivityExtension extension) {
+        // do nothing
     }
 
     @Override
     public void remove(final Long key) {
-        // TODO Auto-generated method stub
-
+        // do nothing
     }
 
     @Override
     public void resetCache() {
-        // TODO Auto-generated method stub
-
+        // do nothing
     }
 }

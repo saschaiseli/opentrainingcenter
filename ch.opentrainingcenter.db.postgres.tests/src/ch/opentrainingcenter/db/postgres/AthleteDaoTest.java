@@ -34,7 +34,7 @@ public class AthleteDaoTest extends PostgresDatabaseTestBase {
     @Test
     public void testSave() {
 
-        final IAthlete athlete = CommonTransferFactory.createAthlete("junit", 22, 300);
+        final IAthlete athlete = CommonTransferFactory.createAthlete("junit", DateTime.now().toDate(), 300);
         final int id = athleteDao.save(athlete);
 
         assertEquals(athlete, athleteDao.getAthlete(id));
@@ -42,7 +42,7 @@ public class AthleteDaoTest extends PostgresDatabaseTestBase {
 
     @Test
     public void testGetMitHealth() {
-        final IAthlete athlete = CommonTransferFactory.createAthlete("junit", 22, 300);
+        final IAthlete athlete = CommonTransferFactory.createAthlete("junit", DateTime.now().toDate(), 300);
         final IHealth h = CommonTransferFactory.createHealth(athlete, 12.0, 13, now);
 
         athleteDao.save(athlete);

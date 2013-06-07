@@ -3,11 +3,12 @@ package ch.opentrainingcenter.model.sportler;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.Date;
 
 public class Sportler implements PropertyChangeListener {
 
     private String name;
-    private Integer age;
+    private Date birthday;
     private Integer maxHeartBeat;
 
     private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
@@ -24,12 +25,12 @@ public class Sportler implements PropertyChangeListener {
         propertyChangeSupport.firePropertyChange("name", this.name, this.name = name); //$NON-NLS-1$
     }
 
-    public Integer getAge() {
-        return age;
+    public Date getBirthday() {
+        return birthday;
     }
 
-    public void setAge(final Integer age) {
-        propertyChangeSupport.firePropertyChange("age", this.age, this.age = age); //$NON-NLS-1$
+    public void setBirthday(final Date birthday) {
+        propertyChangeSupport.firePropertyChange("birthday", this.birthday, this.birthday = birthday); //$NON-NLS-1$
     }
 
     public Integer getMaxHeartBeat() {
@@ -59,7 +60,7 @@ public class Sportler implements PropertyChangeListener {
 
     @Override
     public String toString() {
-        return "Sportler [name=" + name + ", age=" + age + ", maxHeartBeat=" + maxHeartBeat + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+        return "Sportler [name=" + name + ", birthday=" + birthday + ", maxHeartBeat=" + maxHeartBeat + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
     }
 
 }
