@@ -26,7 +26,6 @@ public class DatabaseConnectionConfiguration {
         APPLICATION
     }
 
-    private final String dialect;
     private final DbConnection adminConnection;
     private final DbConnection dbConnection;
 
@@ -36,24 +35,21 @@ public class DatabaseConnectionConfiguration {
      * @param dialect
      *            HibernateDialect für die Connection
      */
-    public DatabaseConnectionConfiguration(final DbConnection dbConnection, final String dialect) {
-        this(dbConnection, dialect, null);
+    public DatabaseConnectionConfiguration(final DbConnection dbConnection) {
+        this(dbConnection, null);
     }
 
     /**
      * @param dbConnection
      *            Database Connection for the Application
-     * @param dialect
-     *            HibernateDialect
      * @param adminConnection
      *            Admin Datenbank Connection um User, Schema und DB zu
      *            erstellen. Kann null sein. In diesem Fall werden zum
      *            Einrichten der Datenbank die ersten Parameter verwendet.
      */
-    public DatabaseConnectionConfiguration(final DbConnection dbConnection, final String dialect, final DbConnection adminConnection) {
+    public DatabaseConnectionConfiguration(final DbConnection dbConnection, final DbConnection adminConnection) {
         this.adminConnection = adminConnection;
         this.dbConnection = dbConnection;
-        this.dialect = dialect;
     }
 
     /**
@@ -66,13 +62,14 @@ public class DatabaseConnectionConfiguration {
      * <property name="hibernate.dialect">org.hibernate.dialect.H2Dialect</property>
      * </pre>
      */
+    @SuppressWarnings("nls")
     public Properties getProperties() {
         final Properties props = new Properties();
         props.put("hibernate.connection.driver_class", dbConnection.getDriver());
         props.put("hibernate.connection.url", dbConnection.getUrl());
         props.put("hibernate.connection.username", dbConnection.getUsername());
         props.put("hibernate.connection.password", dbConnection.getPassword());
-        props.put("hibernate.dialect", dialect);
+        props.put("hibernate.dialect", dbConnection.getDialect());
         return props;
     }
 
@@ -117,7 +114,7 @@ public class DatabaseConnectionConfiguration {
     }
 
     public String getDialect() {
-        return dialect;
+        return dbConnection.getDialect();
     }
 
     public String getDatabaseName(final DB_MODE mode) {

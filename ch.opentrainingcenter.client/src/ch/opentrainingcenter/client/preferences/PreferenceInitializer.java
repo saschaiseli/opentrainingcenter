@@ -75,8 +75,6 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
         defaults.put(PreferenceConstants.DB_USER, "sa"); //$NON-NLS-1$
         defaults.put(PreferenceConstants.DB_PASS, ""); //$NON-NLS-1$
         defaults.put(PreferenceConstants.DB_URL, "jdbc:h2:file:~/.otc/otc"); //$NON-NLS-1$
-        defaults.put(PreferenceConstants.DB_DIALECT, "org.hibernate.dialect.H2Dialect");//$NON-NLS-1$
-        defaults.put(PreferenceConstants.DB_DRIVER, "org.h2.Driver"); //$NON-NLS-1$
         defaults.put(PreferenceConstants.DB, "H2 Database"); //$NON-NLS-1$
     }
 }

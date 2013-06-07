@@ -43,14 +43,12 @@ public class Application implements IApplication {
             // welcome page anzeigen
             return PlatformUI.createAndRunWorkbench(display, new ApplicationWorkbenchAdvisor());
         } else {
-            final String driver = store.getString(PreferenceConstants.DB_DRIVER);
             final String url = store.getString(PreferenceConstants.DB_URL);
-            final String dialect = store.getString(PreferenceConstants.DB_DIALECT);
             final String user = store.getString(PreferenceConstants.DB_USER);
             final String pw = store.getString(PreferenceConstants.DB_PASS);
             final String dbName = store.getString(PreferenceConstants.DB);
             // db initialisieren
-            DatabaseAccessFactory.init(dbName, driver, url, dialect, user, pw);
+            DatabaseAccessFactory.init(dbName, url, user, pw);
             databaseAccess = DatabaseAccessFactory.getDatabaseAccess();
         }
         final DBSTATE dbState = DatabaseHelper.getDatabaseState(databaseAccess);

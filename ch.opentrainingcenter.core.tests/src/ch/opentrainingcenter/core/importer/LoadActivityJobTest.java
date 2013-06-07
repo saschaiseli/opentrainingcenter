@@ -14,6 +14,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 
 import ch.opentrainingcenter.core.cache.Cache;
@@ -63,7 +64,7 @@ public class LoadActivityJobTest {
         final String text = "eben geladen";
         Mockito.when(activity.getNote()).thenReturn(text);
 
-        Mockito.when(loader.convertImportedToActivity((ITraining) Mockito.any())).thenReturn(activity);
+        Mockito.when(loader.convertImportedToActivity((ITraining) Matchers.any())).thenReturn(activity);
         final LoadActivityJob job = new LoadActivityJob("Junit", record, cache, loader);
         final IProgressMonitor monitor = Mockito.mock(IProgressMonitor.class);
         // execute
@@ -83,7 +84,7 @@ public class LoadActivityJobTest {
         final List<Object> list = new ArrayList<Object>();
         list.add(new ActivityExtension(text, CommonTransferFactory.createDefaultWeather(), null));
 
-        Mockito.when(loader.convertImportedToActivity((ITraining) Mockito.any())).thenThrow(new LoadImportedException("junit"));
+        Mockito.when(loader.convertImportedToActivity((ITraining) Matchers.any())).thenThrow(new LoadImportedException("junit"));
         final LoadActivityJob job = new LoadActivityJob("Junit", record, cache, loader);
         final IProgressMonitor monitor = Mockito.mock(IProgressMonitor.class);
         // execute

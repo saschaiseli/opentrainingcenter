@@ -28,7 +28,7 @@ public class DatabaseTestBase {
 
     @BeforeClass
     public static void createDb() throws SqlException {
-        dao = new Dao(USAGE.TEST, new DatabaseConnectionConfiguration(new DbConnection(DRIVER, URL + USAGE.TEST.getDbName(), USER, ""), DIALECT));
+        dao = new Dao(USAGE.TEST, new DatabaseConnectionConfiguration(new DbConnection(DRIVER, DIALECT, URL + USAGE.TEST.getDbName(), USER, "")));
         final DatabaseAccess access = new DatabaseAccess(dao);
         access.createDatabase();
     }

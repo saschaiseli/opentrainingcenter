@@ -28,13 +28,13 @@ public class DatabaseAccessFactoryTest {
 
     @Test
     public void testGetDAo() throws CoreException {
-        DatabaseAccessFactory.init("H2 Database", "org.h2.Driver", "jdbc:h2:file:~/.otc_dev/otc", "", "sa", "");
+        DatabaseAccessFactory.init("H2 Database", "jdbc:h2:file:~/.otc_dev/otc", "sa", "");
         DatabaseAccessFactory.getDatabaseAccess();
         final String extensionAttr = "attr";
 
         final IConfigurationElement[] confItems = new IConfigurationElement[1];
         final IConfigurationElement mockA = Mockito.mock(IConfigurationElement.class);
-        Mockito.when(mockA.getName()).thenReturn("Junit");
+        Mockito.when(mockA.getName()).thenReturn("H2 Database");
         Mockito.when(mockA.getNamespaceIdentifier()).thenReturn("namespace");
 
         final IDatabaseAccess mockAccess = Mockito.mock(IDatabaseAccess.class);
@@ -50,13 +50,13 @@ public class DatabaseAccessFactoryTest {
 
     @Test
     public void testGetDAoMitCoreException() throws CoreException {
-        DatabaseAccessFactory.init("H2 Database", "org.h2.Driver", "jdbc:h2:file:~/.otc_dev/otc", "", "sa", "");
+        DatabaseAccessFactory.init("H2 Database", "jdbc:h2:file:~/.otc_dev/otc", "sa", "");
         DatabaseAccessFactory.getDatabaseAccess();
         final String extensionAttr = "attr";
 
         final IConfigurationElement[] confItems = new IConfigurationElement[1];
         final IConfigurationElement mockA = Mockito.mock(IConfigurationElement.class);
-        Mockito.when(mockA.getName()).thenReturn("Junit");
+        Mockito.when(mockA.getName()).thenReturn("H2 Database");
         Mockito.when(mockA.getNamespaceIdentifier()).thenReturn("namespace");
         final CoreException ce = new CoreException(Status.CANCEL_STATUS);
 

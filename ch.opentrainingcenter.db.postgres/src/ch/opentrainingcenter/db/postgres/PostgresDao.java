@@ -11,6 +11,7 @@ import ch.opentrainingcenter.core.db.DatabaseConnectionConfiguration;
 import ch.opentrainingcenter.db.USAGE;
 import ch.opentrainingcenter.db.internal.IDao;
 
+@SuppressWarnings("nls")
 public class PostgresDao implements IDao {
 
     private Session session;

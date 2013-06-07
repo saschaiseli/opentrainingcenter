@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import ch.opentrainingcenter.db.internal.DbScriptReader;
 
+@SuppressWarnings("nls")
 public class DbScriptReaderTest {
 
     @Test(expected = IllegalArgumentException.class)

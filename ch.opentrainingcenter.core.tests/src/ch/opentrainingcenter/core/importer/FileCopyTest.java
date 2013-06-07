@@ -1,5 +1,7 @@
 package ch.opentrainingcenter.core.importer;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -10,12 +12,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
 import ch.opentrainingcenter.core.helper.GpsFileNameFilter;
-import static org.junit.Assert.assertEquals;
 
 @SuppressWarnings("nls")
 public class FileCopyTest {
@@ -23,11 +23,6 @@ public class FileCopyTest {
     private File source;
     private File destination;
     private final IFileCopy fileCopy = ImporterFactory.createFileCopy();
-
-    @Before
-    public void setUp() {
-
-    }
 
     @After
     public void after() {

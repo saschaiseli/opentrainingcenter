@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@SuppressWarnings("nls")
 public final class DbScriptReader {
     private DbScriptReader() {
 
@@ -17,6 +18,7 @@ public final class DbScriptReader {
     /**
      * Liefert eine Liste von SQL Queries zurück. Wenn das File nicht gefunden
      * wird, wird eine {@link FileNotFoundException} geworfen.
+     * 
      * @param dao
      * 
      * @throws FileNotFoundException

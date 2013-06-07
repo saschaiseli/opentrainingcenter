@@ -21,6 +21,8 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
      */
     String getName();
 
+    DbConnection getDbConnection();
+
     /**
      * Wenn die db nicht vorhanden ist, wird die ganze datenbank mit sql queries
      * erstellt.
@@ -189,5 +191,5 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
      */
     void updateRecordRoute(ITraining record, int idRoute);
 
-    boolean validateConnection(final String url, final String driver, final String user, final String pass);
+    boolean validateConnection(final String url, final String user, final String pass);
 }

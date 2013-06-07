@@ -15,6 +15,7 @@ import org.eclipse.core.runtime.CoreException;
 import ch.opentrainingcenter.core.assertions.Assertions;
 import ch.opentrainingcenter.core.db.DatabaseConnectionConfiguration;
 import ch.opentrainingcenter.core.db.DatabaseConnectionConfiguration.DB_MODE;
+import ch.opentrainingcenter.core.db.DbConnection;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.db.SqlException;
 import ch.opentrainingcenter.db.USAGE;
@@ -35,6 +36,7 @@ import ch.opentrainingcenter.transfer.IWeather;
 
 public class DatabaseAccessPostgres implements IDatabaseAccess {
     private static final Logger LOG = Logger.getLogger(DatabaseAccessPostgres.class);
+    private final DbConnection dbConnection;
     private AthleteDao athleteDao;
     private DatabaseCreator databaseCreator;
     private HealthDao healthDao;
@@ -50,13 +52,17 @@ public class DatabaseAccessPostgres implements IDatabaseAccess {
      * Mit diesem Konstruktur wird mit der eclipse platform der vm args
      * parameters ausgelesen und ausgewertet.
      */
+    @SuppressWarnings("nls")
     public DatabaseAccessPostgres() {
+        dbConnection = new DbConnection("org.postgresql.Driver", "org.hibernate.dialect.PostgreSQLDialect");
     }
 
     /**
      * Konstruktor für Tests
      */
+    @SuppressWarnings("nls")
     public DatabaseAccessPostgres(final IDao dao) {
+        dbConnection = new DbConnection("org.postgresql.Driver", "org.hibernate.dialect.PostgreSQLDialect");
         this.dao = dao;
         this.config = dao.getConfig();
         init();
@@ -274,11 +280,11 @@ public class DatabaseAccessPostgres implements IDatabaseAccess {
 
     @SuppressWarnings("nls")
     @Override
-    public boolean validateConnection(final String url, final String driver, final String user, final String pass) {
+    public boolean validateConnection(final String url, final String user, final String pass) {
         final String connectionUrl = url + ";user=" + user + ";password=" + pass;
         boolean result = false;
         try {
-            Class.forName(driver);
+            Class.forName(dbConnection.getDriver());
             final Connection con = DriverManager.getConnection(connectionUrl);
             con.createStatement();
             result = true;
@@ -288,4 +294,10 @@ public class DatabaseAccessPostgres implements IDatabaseAccess {
         }
         return result;
     }
+
+    @Override
+    public DbConnection getDbConnection() {
+        return dbConnection;
+    }
+
 }

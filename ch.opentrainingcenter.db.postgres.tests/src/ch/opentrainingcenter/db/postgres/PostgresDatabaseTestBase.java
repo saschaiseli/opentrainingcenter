@@ -13,6 +13,7 @@ import ch.opentrainingcenter.core.db.DbConnection;
 import ch.opentrainingcenter.core.db.SqlException;
 import ch.opentrainingcenter.db.USAGE;
 
+@SuppressWarnings("nls")
 public class PostgresDatabaseTestBase {
 
     private static final String USER = "otc_user";
@@ -27,9 +28,9 @@ public class PostgresDatabaseTestBase {
 
     @BeforeClass
     public static void createDb() throws SqlException {
-        final DbConnection appConnection = new DbConnection(DRIVER, URL, USER, PASS);
-        final DbConnection adminConnection = new DbConnection(DRIVER, URL_ADMIN, USER_ADMIN, PASS_ADMIN);
-        final DatabaseConnectionConfiguration config = new DatabaseConnectionConfiguration(appConnection, DIALECT, adminConnection);
+        final DbConnection appConnection = new DbConnection(DRIVER, DIALECT, URL, USER, PASS);
+        final DbConnection adminConnection = new DbConnection(DRIVER, DIALECT, URL_ADMIN, USER_ADMIN, PASS_ADMIN);
+        final DatabaseConnectionConfiguration config = new DatabaseConnectionConfiguration(appConnection, adminConnection);
         dao = new PostgresDao(USAGE.TEST, config);
         final DatabaseAccessPostgres access = new DatabaseAccessPostgres(dao);
         access.setConfiguration(config);
@@ -61,6 +62,7 @@ public class PostgresDatabaseTestBase {
                 if (stmt != null)
                     stmt.close();
             } catch (final SQLException se2) {
+                se2.printStackTrace();
             }
             try {
                 if (conn != null)

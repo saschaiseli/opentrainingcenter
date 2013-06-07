@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+@SuppressWarnings("nls")
 public class DbScriptReaderTest {
 
     @Test(expected = IllegalArgumentException.class)

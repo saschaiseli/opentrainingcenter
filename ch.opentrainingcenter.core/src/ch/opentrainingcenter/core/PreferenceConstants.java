@@ -43,8 +43,6 @@ public final class PreferenceConstants {
     public static final String DB_PASS = "DB_PASS";
     public static final String DB_URL = "DB_URL";
     public static final String DB = "DB";
-    public static final String DB_DRIVER = "DB_DRIVER";
-    public static final String DB_DIALECT = "DB_DIALECT";
 
     private PreferenceConstants() {
 

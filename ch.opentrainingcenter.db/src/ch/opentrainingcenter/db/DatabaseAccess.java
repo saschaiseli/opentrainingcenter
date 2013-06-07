@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.CoreException;
 
 import ch.opentrainingcenter.core.db.DatabaseConnectionConfiguration;
+import ch.opentrainingcenter.core.db.DbConnection;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.db.SqlException;
 import ch.opentrainingcenter.db.internal.AthleteDao;
@@ -43,18 +44,21 @@ public class DatabaseAccess implements IDatabaseAccess {
     private boolean developing;
     private IDao dao;
     private DatabaseConnectionConfiguration config;
+    private DbConnection dbConnection;
 
     /**
      * Mit diesem Konstruktur wird mit der eclipse platform der vm args
      * parameters ausgelesen und ausgewertet.
      */
     public DatabaseAccess() {
+        dbConnection = new DbConnection("org.h2.Driver", "org.hibernate.dialect.H2Dialect"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**
      * Konstruktor für Tests
      */
     public DatabaseAccess(final IDao dao) {
+        super();
         this.dao = dao;
         init();
     }
@@ -225,11 +229,11 @@ public class DatabaseAccess implements IDatabaseAccess {
 
     @SuppressWarnings("nls")
     @Override
-    public boolean validateConnection(final String url, final String driver, final String user, final String pass) {
+    public boolean validateConnection(final String url, final String user, final String pass) {
 
         boolean result = false;
         try {
-            Class.forName(driver);
+            Class.forName(dbConnection.getDriver());
             final Connection con = DriverManager.getConnection(url, user, pass);
             con.createStatement();
             result = true;
@@ -238,6 +242,11 @@ public class DatabaseAccess implements IDatabaseAccess {
             LOG.info("Connection to database '" + url + "' failed");
         }
         return result;
+    }
+
+    @Override
+    public DbConnection getDbConnection() {
+        return dbConnection;
     }
 
 }

@@ -42,15 +42,12 @@ public class DatabasePreferencePage extends FieldEditorPreferencePage implements
     protected void createFieldEditors() {
         final Composite parent = getFieldEditorParent();
 
-        final StringFieldEditor dbDriver = new StringFieldEditor(PreferenceConstants.DB_DRIVER, Messages.DatabasePreferencePage_1, parent);
         final StringFieldEditor dbUrl = new StringFieldEditor(PreferenceConstants.DB_URL, Messages.DatabasePreferencePage_2, parent);
         final StringFieldEditor dbUser = new StringFieldEditor(PreferenceConstants.DB_USER, Messages.DatabasePreferencePage_3, parent);
         final StringFieldEditor dbPass = new StringFieldEditor(PreferenceConstants.DB_PASS, Messages.DatabasePreferencePage_4, parent);
 
         addField(dbUser);
         addField(dbPass);
-        addField(dbDriver);
-        addField(new StringFieldEditor(PreferenceConstants.DB_DIALECT, Messages.DatabasePreferencePage_5, parent));
         addField(dbUrl);
 
         final Map<String, IDatabaseAccess> model = DatabaseAccessFactory.getDbaccesses();
@@ -75,11 +72,10 @@ public class DatabasePreferencePage extends FieldEditorPreferencePage implements
 
             @Override
             public void widgetSelected(final SelectionEvent e) {
-                final String driver = dbDriver.getStringValue();
                 final String url = dbUrl.getStringValue();
                 final String user = dbUser.getStringValue();
                 final String password = dbPass.getStringValue();
-                connectionTest = DatabaseAccessFactory.getDatabaseAccess().validateConnection(url, driver, user, password);
+                connectionTest = DatabaseAccessFactory.getDatabaseAccess().validateConnection(url, user, password);
                 if (!connectionTest) {
                     setErrorMessage(Messages.DatabasePreferencePage_9);
                 } else {

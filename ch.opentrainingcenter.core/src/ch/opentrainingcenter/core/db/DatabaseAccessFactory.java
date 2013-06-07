@@ -46,32 +46,36 @@ public final class DatabaseAccessFactory {
      * 
      * @param dbName
      *            Name der Datenbank
-     * @param driver
-     *            Die Datenbank Treiber klasse
      * @param url
      *            URL zu der Datenbank
-     * @param dialect
-     *            Den verwendeten Hibernate Dialect
      * @param user
      *            Usernamen
      * @param pw
      *            Passwort
      */
-    public static void init(final String dbName, final String driver, final String url, final String dialect, final String user, final String pw) {
+    public static void init(final String dbName, final String url, final String user, final String pw) {
         if (INSTANCE == null) {
             INSTANCE = new DatabaseAccessFactory();
 
-            final DbConnection dbConnection;
-            if (DEVELOPING) {
-                dbConnection = new DbConnection(driver, url + "_dev", user, pw); //$NON-NLS-1$
-            } else {
-                dbConnection = new DbConnection(driver, url, user, pw);
-            }
             databaseAccess = getDbaccesses().get(dbName);
-            databaseAccess.setDeveloping(DEVELOPING);
-            final DatabaseConnectionConfiguration config = new DatabaseConnectionConfiguration(dbConnection, dialect);
-            databaseAccess.setConfiguration(config);
-            databaseAccess.init();
+            if (databaseAccess != null) {
+                final DbConnection dbConnection = databaseAccess.getDbConnection();
+                if (DEVELOPING) {
+                    dbConnection.setUrl(url + "_dev"); //$NON-NLS-1$
+                } else {
+                    dbConnection.setUrl(url);
+                }
+                dbConnection.setUsername(user);
+                dbConnection.setPassword(pw);
+
+                databaseAccess.setDeveloping(DEVELOPING);
+                final DatabaseConnectionConfiguration config = new DatabaseConnectionConfiguration(dbConnection);
+                databaseAccess.setConfiguration(config);
+                databaseAccess.init();
+            } else {
+                throw new IllegalArgumentException("Datenbank mit dem Namen: '" + dbName + "' nicht gefunden"); //$NON-NLS-1$ //$NON-NLS-2$
+            }
+
         }
     }
 
