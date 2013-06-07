@@ -92,7 +92,7 @@ public final class DatabaseAccessFactory {
         return dbAccesses;
     }
 
-    static Map<String, IDatabaseAccess> getDao(final IConfigurationElement[] confItems, final String extensionAttr) {
+    private static Map<String, IDatabaseAccess> getDao(final IConfigurationElement[] confItems, final String extensionAttr) {
         LOGGER.info("Anzahl Configuration Elements: " + confItems.length); //$NON-NLS-1$
         final Map<String, IDatabaseAccess> result = new HashMap<>();
         for (final IConfigurationElement element : confItems) {
