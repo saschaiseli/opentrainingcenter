@@ -146,13 +146,8 @@ public class TrainingCenterDataCacheTest {
     }
 
     @Test
-    public void testAthleteInitial() {
-        // assert
-        assertNull("Athlete ist initial null", ApplicationContext.getApplicationContext().getAthlete());
-    }
-
-    @Test
     public void testAthlete() {
+        assertNull("Athlete ist initial null", ApplicationContext.getApplicationContext().getAthlete());
         // prepare
         final IAthlete athlete = CommonTransferFactory.createAthlete("Junit", 37, Integer.valueOf(200));
         ApplicationContext.getApplicationContext().setAthlete(athlete);

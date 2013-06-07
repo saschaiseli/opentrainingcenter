@@ -112,13 +112,6 @@ public final class DatabaseAccessFactory {
     /**
      * Für Testzwecke
      */
-    static DatabaseAccessFactory getInstance() {
-        return INSTANCE;
-    }
-
-    /**
-     * Für Testzwecke
-     */
     static void reset() {
         INSTANCE = null;
     }

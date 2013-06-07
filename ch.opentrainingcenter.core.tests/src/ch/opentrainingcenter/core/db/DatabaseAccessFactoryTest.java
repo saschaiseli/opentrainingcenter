@@ -26,11 +26,13 @@ public class DatabaseAccessFactoryTest {
         DatabaseAccessFactory.getDatabaseAccess();
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testInitialisierungExtensionNotFound() throws CoreException {
+        DatabaseAccessFactory.init("blabla", null, null, null);
+    }
+
     @Test
     public void testGetDAo() throws CoreException {
-        DatabaseAccessFactory.init("H2 Database", "jdbc:h2:file:~/.otc_dev/otc", "sa", "");
-        DatabaseAccessFactory.getDatabaseAccess();
-        final String extensionAttr = "attr";
 
         final IConfigurationElement[] confItems = new IConfigurationElement[1];
         final IConfigurationElement mockA = Mockito.mock(IConfigurationElement.class);
@@ -39,7 +41,11 @@ public class DatabaseAccessFactoryTest {
 
         final IDatabaseAccess mockAccess = Mockito.mock(IDatabaseAccess.class);
         Mockito.when(mockAccess.getName()).thenReturn("H2 Database");
+        final String extensionAttr = "attr";
         Mockito.when(mockA.createExecutableExtension(extensionAttr)).thenReturn(mockAccess);
+
+        DatabaseAccessFactory.init("H2 Database", "jdbc:h2:file:~/.otc_dev/otc", "sa", "");
+        DatabaseAccessFactory.getDatabaseAccess();
 
         confItems[0] = mockA;
         final Map<String, IDatabaseAccess> dao = DatabaseAccessFactory.getDao(confItems, extensionAttr);
@@ -50,15 +56,16 @@ public class DatabaseAccessFactoryTest {
 
     @Test
     public void testGetDAoMitCoreException() throws CoreException {
-        DatabaseAccessFactory.init("H2 Database", "jdbc:h2:file:~/.otc_dev/otc", "sa", "");
-        DatabaseAccessFactory.getDatabaseAccess();
-        final String extensionAttr = "attr";
 
+        final String extensionAttr = "attr";
         final IConfigurationElement[] confItems = new IConfigurationElement[1];
         final IConfigurationElement mockA = Mockito.mock(IConfigurationElement.class);
         Mockito.when(mockA.getName()).thenReturn("H2 Database");
         Mockito.when(mockA.getNamespaceIdentifier()).thenReturn("namespace");
         final CoreException ce = new CoreException(Status.CANCEL_STATUS);
+
+        DatabaseAccessFactory.init("H2 Database", "jdbc:h2:file:~/.otc_dev/otc", "sa", "");
+        DatabaseAccessFactory.getDatabaseAccess();
 
         Mockito.when(mockA.createExecutableExtension(extensionAttr)).thenThrow(ce);
 
