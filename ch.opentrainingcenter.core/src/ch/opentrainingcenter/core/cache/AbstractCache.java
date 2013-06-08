@@ -5,10 +5,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.ListenerList;
 
 public abstract class AbstractCache<K, V> implements ICache<K, V> {
 
+    private static final Logger LOG = Logger.getLogger(AbstractCache.class);
     private final ConcurrentHashMap<K, V> cache = new ConcurrentHashMap<K, V>();
 
     protected ListenerList listeners;
@@ -25,6 +27,7 @@ public abstract class AbstractCache<K, V> implements ICache<K, V> {
     @Override
     public void add(final V value) {
         cache.put(getKey(value), value);
+        LOG.info("Cache Size: (Element added)" + cache.size());
         final List<V> v = new ArrayList<V>();
         v.add(value);
         fireRecordAdded(v);
@@ -38,6 +41,7 @@ public abstract class AbstractCache<K, V> implements ICache<K, V> {
     @Override
     public void remove(final K key) {
         final V value = cache.remove(key);
+        LOG.info("Cache Size: (Element removed)" + cache.size());
         if (value != null) {
             final List<V> values = new ArrayList<V>();
             values.add(value);

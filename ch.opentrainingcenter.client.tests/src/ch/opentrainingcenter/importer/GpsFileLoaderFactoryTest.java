@@ -1,15 +1,14 @@
 package ch.opentrainingcenter.importer;
 
+import static org.junit.Assert.assertNotNull;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.importer.ConvertContainer;
-import ch.opentrainingcenter.core.importer.IImportedConverter;
-import ch.opentrainingcenter.core.importer.ImporterFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
-import static org.junit.Assert.assertNotNull;
 
 @SuppressWarnings("nls")
 public class GpsFileLoaderFactoryTest {
@@ -18,17 +17,6 @@ public class GpsFileLoaderFactoryTest {
     @Before
     public void before() {
         cc = Mockito.mock(ConvertContainer.class);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testGpsFileLoaderNullStore() {
-        ImporterFactory.createGpsFileLoader(cc, null);
-    }
-
-    @Test
-    public void testGpsFileLoader() {
-        final IImportedConverter fileLoader = ImporterFactory.createGpsFileLoader(cc, "");
-        assertNotNull(fileLoader);
     }
 
     @Test

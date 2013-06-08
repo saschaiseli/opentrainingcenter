@@ -37,7 +37,8 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
 
     /**
      * Initialisiert den Database Access. Zu diesem Zeitpunkt muss die
-     * Konfiguraiton definiert sein.
+     * Konfiguraiton definiert sein. Diese Initialisierung muss in Tests nicht
+     * gemacht werden. Dafür kann der Konstruktor verwendet werden.
      */
     void init();
 

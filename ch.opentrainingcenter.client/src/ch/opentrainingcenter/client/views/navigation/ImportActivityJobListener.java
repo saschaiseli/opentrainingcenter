@@ -12,6 +12,7 @@ import ch.opentrainingcenter.core.cache.Cache;
 import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.transfer.ITraining;
 
+@Deprecated
 public class ImportActivityJobListener implements IJobChangeListener {
 
     private final ITraining record;

@@ -47,10 +47,10 @@ public class ImportManualJob extends Job {
     @Override
     protected IStatus run(final IProgressMonitor monitor) {
         monitor.beginTask(Messages.ImportManualGpsFiles4, modelWrapper.size());
-        final List<ITraining> activitiesToImport = new ArrayList<ITraining>();
+        final List<ITraining> trainings = new ArrayList<ITraining>();
         try {
             final List<ITraining> importFiles = importer.importFile(filterPath, modelWrapper, monitor);
-            activitiesToImport.addAll(importFiles);
+            trainings.addAll(importFiles);
         } catch (final Exception e) {
             LOGGER.error("Fehler beim Importieren: ", e); //$NON-NLS-1$
         }
@@ -59,7 +59,7 @@ public class ImportManualJob extends Job {
             @Override
             public void run() {
                 try {
-                    cache.addAll(activitiesToImport);
+                    cache.addAll(trainings);
                 } catch (final Exception e) {
                     LOGGER.error(e);
                 }

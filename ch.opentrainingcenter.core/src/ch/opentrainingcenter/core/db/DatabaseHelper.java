@@ -23,7 +23,7 @@ public class DatabaseHelper {
                 LOGGER.error("Database existiert noch nicht"); //$NON-NLS-1$
                 return false;
             } else {
-                LOGGER.error("Fehler mit der Datenbank: " + message);
+                LOGGER.error("Fehler mit der Datenbank: " + message, e);
             }
         }
         return true;

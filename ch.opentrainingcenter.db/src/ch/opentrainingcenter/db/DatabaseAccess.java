@@ -60,7 +60,27 @@ public class DatabaseAccess implements IDatabaseAccess {
     public DatabaseAccess(final IDao dao) {
         super();
         this.dao = dao;
-        init();
+        createDaos(dao);
+    }
+
+    private void createDaos(final IDao dao) {
+        athleteDao = new AthleteDao(dao);
+        databaseCreator = new DatabaseCreator(dao);
+        healthDao = new HealthDao(dao);
+        planungsDao = new PlanungDao(dao);
+        routeDao = new RouteDao(dao);
+        trainingDao = new TrainingDao(dao);
+        wetterDao = new WeatherDao(dao);
+    }
+
+    @Override
+    public void init() {
+        if (developing) {
+            this.dao = new Dao(USAGE.DEVELOPING, config);
+        } else {
+            this.dao = new Dao(USAGE.PRODUCTION, config);
+        }
+        createDaos(dao);
     }
 
     @Override
@@ -151,20 +171,6 @@ public class DatabaseAccess implements IDatabaseAccess {
     @Override
     public List<IWeather> getWeather() {
         return wetterDao.getAllWeather();
-    }
-
-    @Override
-    public void init() {
-        if (developing) {
-            this.dao = new Dao(USAGE.DEVELOPING, config);
-        }
-        athleteDao = new AthleteDao(dao);
-        databaseCreator = new DatabaseCreator(dao);
-        healthDao = new HealthDao(dao);
-        planungsDao = new PlanungDao(dao);
-        routeDao = new RouteDao(dao);
-        trainingDao = new TrainingDao(dao);
-        wetterDao = new WeatherDao(dao);
     }
 
     @Override

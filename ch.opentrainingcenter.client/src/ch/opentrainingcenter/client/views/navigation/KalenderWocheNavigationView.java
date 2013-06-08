@@ -3,6 +3,7 @@ package ch.opentrainingcenter.client.views.navigation;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -25,6 +26,7 @@ import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchPartSite;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
@@ -42,11 +44,6 @@ import ch.opentrainingcenter.core.cache.IRecordListener;
 import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
-import ch.opentrainingcenter.core.importer.ConvertContainer;
-import ch.opentrainingcenter.core.importer.ExtensionHelper;
-import ch.opentrainingcenter.core.importer.IImportedConverter;
-import ch.opentrainingcenter.core.importer.ImporterFactory;
-import ch.opentrainingcenter.core.importer.LoadActivityJob;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.model.ModelFactory;
 import ch.opentrainingcenter.model.navigation.ConcreteHealth;
@@ -62,6 +59,7 @@ import ch.opentrainingcenter.transfer.ITraining;
 
 public class KalenderWocheNavigationView extends ViewPart {
 
+    private static final Logger LOG = Logger.getLogger(KalenderWocheNavigationView.class);
     public static final String ID = "ch.opentrainingcenter.client.kalenderNavigationView"; //$NON-NLS-1$
 
     private final IDatabaseAccess db = DatabaseAccessFactory.getDatabaseAccess();
@@ -73,8 +71,6 @@ public class KalenderWocheNavigationView extends ViewPart {
     private final IKalenderWocheNavigationModel treeModel = ModelFactory.createKwModel();
 
     private final ApplicationContext context = ApplicationContext.getApplicationContext();
-
-    private final ConvertContainer cc = new ConvertContainer(ExtensionHelper.getConverters());
 
     private TreeViewer viewer;
     private StatusLineWriter status;
@@ -174,7 +170,9 @@ public class KalenderWocheNavigationView extends ViewPart {
                 final Object item = selection.getFirstElement();
 
                 if (item instanceof ConcreteImported) {
-                    openSingleRunView(((ITraining) item));
+                    final ITraining selectedTraining = (ITraining) item;
+                    cache.add(selectedTraining);
+                    openSingleRunView(selectedTraining);
                 }
 
                 if (item instanceof IHealth) {
@@ -254,11 +252,30 @@ public class KalenderWocheNavigationView extends ViewPart {
      * @param record
      */
     private void openSingleRunView(final ITraining record) {
+        Display.getDefault().asyncExec(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    final Cache cache = TrainingCache.getInstance();
+                    final ITraining training = cache.get(record.getDatum());
+                    final String hash = getSecondaryId(training);
+                    try {
+                        PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(SingleActivityViewPart.ID, hash,
+                                IWorkbenchPage.VIEW_ACTIVATE);
+                    } catch (final PartInitException e) {
+                        LOG.error(e);
+                    }
+                } catch (final Exception e) {
+                    LOG.error(e);
+                }
+            }
+
+            private String getSecondaryId(final ITraining training) {
+                return String.valueOf(training.getDatum());
+            }
+        });
         context.setSelectedId(record.getDatum());
-        final IImportedConverter loader = ImporterFactory.createGpsFileLoader(cc, store.getString(PreferenceConstants.GPS_FILE_LOCATION_PROG));
-        final LoadActivityJob job = new LoadActivityJob(Messages.NavigationView1, record, cache, loader);
-        job.addJobChangeListener(new ImportActivityJobListener(record));
-        job.schedule();
         viewer.setSelection(new StructuredSelection(new ConcreteImported(record)), true);
     }
 
