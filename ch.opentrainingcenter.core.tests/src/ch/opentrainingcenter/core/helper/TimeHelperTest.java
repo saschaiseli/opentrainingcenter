@@ -1,13 +1,14 @@
 package ch.opentrainingcenter.core.helper;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
 
 @SuppressWarnings("nls")
 public class TimeHelperTest {
@@ -185,6 +186,58 @@ public class TimeHelperTest {
         final DateTime end = new DateTime(2013, 1, 13, 0, 0);
         assertDatum(start, interval.getStart());
         assertDatum(end, interval.getEnd());
+    }
+
+    @Test
+    public void testConvertDateToStringOhneTag() {
+        final DateTime dateTime = new DateTime(2013, 1, 13, 0, 0);
+
+        final String converted = TimeHelper.convertDateToString(dateTime.toDate(), false);
+        assertEquals("13.01.2013 00:00:00", converted);
+    }
+
+    @Test
+    public void testConvertDateToStringMitTag() {
+        final DateTime dateTime = new DateTime(2013, 1, 13, 0, 0);
+        final Date datum = dateTime.toDate();
+
+        final Calendar calendar = Calendar.getInstance();
+        calendar.setTime(datum);
+        final String tag = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());
+        final String converted = TimeHelper.convertDateToString(datum, true);
+        assertEquals(tag + " 13.01.2013 00:00:00", converted);
+    }
+
+    @Test
+    public void testConvertToFileName() {
+        final DateTime dateTime = new DateTime(2013, 1, 13, 0, 0);
+        final Date datum = dateTime.toDate();
+        final String fileName = TimeHelper.convertDateToFileName(datum);
+        assertEquals("20130113000000000", fileName);
+    }
+
+    @Test
+    public void testConvertToString() {
+        final DateTime dateTime = new DateTime(2013, 1, 13, 0, 0);
+        final Date datum = dateTime.toDate();
+        final String fileName = TimeHelper.convertDateToString(datum);
+        assertEquals("13.01.2013", fileName);
+    }
+
+    @Test
+    public void testGetJahr2013() {
+        final DateTime dateTime = new DateTime(2013, 1, 13, 0, 0);
+        final Date datum = dateTime.toDate();
+        final int jahr = TimeHelper.getJahr(datum, Locale.GERMAN);
+        assertEquals(2013, jahr);
+    }
+
+    @Test
+    public void testGetJahr2012() {
+        final DateTime dateTime = new DateTime(2012, 1, 1, 0, 0);
+        final Date datum = dateTime.toDate();
+        final int jahr = TimeHelper.getJahr(datum, Locale.GERMAN);
+        assertEquals(2011, jahr);
     }
 
     private void assertDatum(final DateTime startExpected, final DateTime start) {

@@ -5,8 +5,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import javax.xml.datatype.XMLGregorianCalendar;
-
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 
@@ -45,50 +43,17 @@ public final class TimeHelper {
     }
 
     /**
-     * 
-     */
-    public static final String convertGregorianDateToString(final XMLGregorianCalendar datum) {
-        return convertGregorianDateToString(datum, false);
-    }
-
-    /**
-     * konvertiere ein {@link XMLGregorianCalendar} in ein lesbareres format.
-     * 
-     * wenn der parameter withDay true ist wird der wochentag noch mit
-     * ausgegeben
-     * 
-     * @param datum
-     *            {@link XMLGregorianCalendar}
-     * @param withDay
-     *            flag ob der wochenag auch mitgegeben werden soll.
-     * @return das datum '2010.11.23 14:23' und wenn das flag with Day ist wird
-     *         noch der ausgeschreibene wochentag vorangestellt.
-     */
-    public static final String convertGregorianDateToString(final XMLGregorianCalendar datum, final boolean withDay) {
-        final Date time = datum.toGregorianCalendar().getTime();
-        final Calendar calendar = Calendar.getInstance();
-        calendar.setTime(time);
-        calendar.get(Calendar.DAY_OF_WEEK);
-        final SimpleDateFormat format = new SimpleDateFormat(DATE_TIME_FORMAT_PATTERN);
-        if (withDay) {
-            return calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()) + "dd.MM.yyyy HH:mm:ss" + format.format(time); //$NON-NLS-1$
-        } else {
-            return format.format(time);
-        }
-    }
-
-    /**
      * konvertiere ein {@link Date} in ein lesbareres format.
      * 
      * wenn der parameter withDay true ist wird der wochentag noch mit
      * ausgegeben
      * 
      * @param datum
-     *            {@link XMLGregorianCalendar}
+     *            {@link Date}
      * @param withDay
      *            flag ob der wochenag auch mitgegeben werden soll.
-     * @return das datum '2010.11.23 14:23' und wenn das flag with Day ist wird
-     *         noch der ausgeschreibene wochentag vorangestellt.
+     * @return das datum '13.01.2013 00:00:00' und wenn das flag with Day ist
+     *         wird noch der ausgeschreibene wochentag vorangestellt.
      */
     public static final String convertDateToString(final Date datum, final boolean withDay) {
         final Calendar calendar = Calendar.getInstance();

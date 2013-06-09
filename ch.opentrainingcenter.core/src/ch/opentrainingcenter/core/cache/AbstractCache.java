@@ -45,9 +45,7 @@ public abstract class AbstractCache<K, V> implements ICache<K, V> {
         if (value != null) {
             final List<V> values = new ArrayList<V>();
             values.add(value);
-            if (!values.isEmpty()) {
-                fireRecordDeleted(values);
-            }
+            fireRecordDeleted(values);
         }
     }
 

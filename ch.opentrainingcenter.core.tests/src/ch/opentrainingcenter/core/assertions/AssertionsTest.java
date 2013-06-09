@@ -1,8 +1,9 @@
 package ch.opentrainingcenter.core.assertions;
 
-import org.junit.Test;
-
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
 
 @SuppressWarnings("nls")
 public class AssertionsTest {
@@ -29,5 +30,28 @@ public class AssertionsTest {
         } catch (final IllegalArgumentException ex) {
             assertEquals("Message muss in Exception drin sein", "Objekt " + obj + " darf nicht null sein!!", ex.getMessage());
         }
+    }
+
+    @Test()
+    public void testNotNullTrue() {
+        Assertions.notNull("obj");
+        assertTrue(true);
+    }
+
+    @Test()
+    public void testNotNullDefaultMessageTrue() {
+        Assertions.notNull("obj", "Message");
+        assertTrue(true);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testEqualsTrue() {
+        Assertions.equals(true, "blabla");
+    }
+
+    @Test
+    public void testEqualsFalse() {
+        Assertions.equals(false, "blabla");
+        assertTrue(true);
     }
 }

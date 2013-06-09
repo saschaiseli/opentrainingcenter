@@ -95,10 +95,12 @@ public class KWTraining implements IKalenderWocheNavigationModel {
     public INavigationItem getImportedItem(final Date date) {
         final KalenderWoche kw = new KalenderWoche(date);
         final Map<Integer, INavigationParent> jahresWerte = map.get(kw.getJahr());
-        final INavigationParent naviParent = jahresWerte.get(kw.getKw());
-        for (final INavigationItem item : naviParent.getChilds()) {
-            if (item instanceof ConcreteImported && item.getDate().compareTo(date) == 0) {
-                return item;
+        if (jahresWerte != null) {
+            final INavigationParent naviParent = jahresWerte.get(kw.getKw());
+            for (final INavigationItem item : naviParent.getChilds()) {
+                if (item instanceof ConcreteImported && item.getDate().compareTo(date) == 0) {
+                    return item;
+                }
             }
         }
         return null;

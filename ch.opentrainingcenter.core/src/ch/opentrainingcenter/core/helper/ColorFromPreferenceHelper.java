@@ -21,7 +21,7 @@ public final class ColorFromPreferenceHelper {
      * schwarz zurück!
      * 
      * @param store
-     *            TODO
+     *            PreferenceStore
      * @param preferenceKey
      *            Key der auf die Preferences zugreift.
      * @param alpha
@@ -34,6 +34,9 @@ public final class ColorFromPreferenceHelper {
         final String cBelow = store.getString(key);
         if (cBelow != null) {
             final String[] splitBelow = cBelow.split(","); //$NON-NLS-1$
+            if (splitBelow.length != 3) {
+                throw new IllegalArgumentException("Farbe: '" + cBelow + "' kann nicht konvertiert werden");
+            }
             return new Color(Integer.valueOf(splitBelow[0]), Integer.valueOf(splitBelow[1]), Integer.valueOf(splitBelow[2]), alpha);
         } else {
             LOGGER.error("Farbe nicht gefunden: " + key); //$NON-NLS-1$
@@ -46,6 +49,9 @@ public final class ColorFromPreferenceHelper {
         final Device device = Display.getCurrent();
         if (cBelow != null) {
             final String[] splitBelow = cBelow.split(","); //$NON-NLS-1$
+            if (splitBelow.length != 3) {
+                throw new IllegalArgumentException("Farbe: '" + cBelow + "' kann nicht konvertiert werden");
+            }
             return new org.eclipse.swt.graphics.Color(device, Integer.valueOf(splitBelow[0]), Integer.valueOf(splitBelow[1]), Integer.valueOf(splitBelow[2]));
         } else {
             LOGGER.error("Farbe nicht gefunden: " + key); //$NON-NLS-1$
