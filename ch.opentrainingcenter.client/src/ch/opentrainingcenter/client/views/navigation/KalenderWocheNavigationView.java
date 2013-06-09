@@ -257,9 +257,7 @@ public class KalenderWocheNavigationView extends ViewPart {
             @Override
             public void run() {
                 try {
-                    final Cache cache = TrainingCache.getInstance();
-                    final ITraining training = cache.get(record.getDatum());
-                    final String hash = getSecondaryId(training);
+                    final String hash = String.valueOf(record.getDatum());
                     try {
                         PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(SingleActivityViewPart.ID, hash,
                                 IWorkbenchPage.VIEW_ACTIVATE);
@@ -269,10 +267,6 @@ public class KalenderWocheNavigationView extends ViewPart {
                 } catch (final Exception e) {
                     LOG.error(e);
                 }
-            }
-
-            private String getSecondaryId(final ITraining training) {
-                return String.valueOf(training.getDatum());
             }
         });
         context.setSelectedId(record.getDatum());
