@@ -1,6 +1,8 @@
 package ch.opentrainingcenter.client.action.job;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -59,7 +61,18 @@ public class ImportManualJob extends Job {
             @Override
             public void run() {
                 try {
-                    cache.addAll(trainings);
+                    if (trainings.size() > 11) {
+                        Collections.sort(trainings, new Comparator<ITraining>() {
+
+                            @Override
+                            public int compare(final ITraining o1, final ITraining o2) {
+                                return Long.valueOf(o1.getDatum()).compareTo(Long.valueOf(o2.getDatum()));
+                            }
+                        });
+                        cache.addAll(trainings.subList(0, 10));
+                    } else {
+                        cache.addAll(trainings);
+                    }
                 } catch (final Exception e) {
                     LOGGER.error(e);
                 }
