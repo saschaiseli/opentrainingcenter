@@ -24,6 +24,7 @@ public class AbstractCacheTest {
         private final Collection<ITraining> changed = new ArrayList<>();
         private final Collection<ITraining> deleted = new ArrayList<>();
         private int recordChangeCallCounter = 0;
+        private int deleteCallCounter = 0;
 
         @Override
         public void recordChanged(final Collection<ITraining> entry) {
@@ -36,6 +37,7 @@ public class AbstractCacheTest {
         @Override
         public void deleteRecord(final Collection<ITraining> entry) {
             deleted.addAll(entry);
+            deleteCallCounter++;
         }
 
         public Collection<ITraining> getChanged() {
@@ -50,12 +52,16 @@ public class AbstractCacheTest {
             changed.clear();
             deleted.clear();
             recordChangeCallCounter = 0;
+            deleteCallCounter = 0;
         }
 
         public int getRecordChangeCallCounter() {
             return recordChangeCallCounter;
         }
 
+        public int getDeleteCallCounter() {
+            return deleteCallCounter;
+        }
     }
 
     private TrainingCache cache;
@@ -239,5 +245,19 @@ public class AbstractCacheTest {
 
         assertEquals(2, a.getRecordChangeCallCounter());
         assertEquals(1, b.getRecordChangeCallCounter());
+    }
+
+    @Test
+    public void testFireEventEvenNoElementInCacheWasDeleted() {
+        final JunitListener a = new JunitListener();
+        final JunitListener b = new JunitListener();
+
+        cache.addListener(a);
+        cache.addListener(b);
+
+        cache.remove(42L);
+
+        assertEquals(1, a.getDeleteCallCounter());
+        assertEquals(1, b.getDeleteCallCounter());
     }
 }

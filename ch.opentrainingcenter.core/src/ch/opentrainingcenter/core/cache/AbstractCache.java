@@ -42,11 +42,11 @@ public abstract class AbstractCache<K, V> implements ICache<K, V> {
     public void remove(final K key) {
         final V value = cache.remove(key);
         LOG.info("Cache Size: (Element removed)" + cache.size());
+        final List<V> values = new ArrayList<V>();
         if (value != null) {
-            final List<V> values = new ArrayList<V>();
             values.add(value);
-            fireRecordDeleted(values);
         }
+        fireRecordDeleted(values);
     }
 
     @Override
