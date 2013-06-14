@@ -7,6 +7,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -64,6 +65,34 @@ public class AbstractCacheTest {
         }
     }
 
+    private TestCache testCache;
+
+    public class TestCache extends AbstractCache<Integer, CacheElement> {
+
+        @Override
+        public Integer getKey(final CacheElement value) {
+            return value.getK();
+        }
+    }
+
+    public class CacheElement {
+        private final int k;
+        private final String v;
+
+        public CacheElement(final int k, final String v) {
+            this.k = k;
+            this.v = v;
+        }
+
+        public String getV() {
+            return v;
+        }
+
+        public int getK() {
+            return k;
+        }
+    }
+
     private TrainingCache cache;
     private JunitListener listener;
 
@@ -72,6 +101,7 @@ public class AbstractCacheTest {
         cache = (TrainingCache) TrainingCache.getInstance();
         cache.resetCache();
         listener = new JunitListener();
+        testCache = new TestCache();
     }
 
     @After
@@ -260,4 +290,136 @@ public class AbstractCacheTest {
         assertEquals(1, a.getDeleteCallCounter());
         assertEquals(1, b.getDeleteCallCounter());
     }
+
+    // some old tests
+
+    @Test
+    public void testSimpleAdd() {
+        final CacheElement value = new CacheElement(42, "FirstElement");
+        testCache.add(value);
+        assertEquals("Element muss im cache gefunden werden", value, testCache.get(42));
+    }
+
+    @Test
+    public void testAdd() {
+        final CacheElement value1 = new CacheElement(42, "1Element");
+        final CacheElement value2 = new CacheElement(43, "2Element");
+        final CacheElement value3 = new CacheElement(44, "3Element");
+        final List<CacheElement> list = new ArrayList<CacheElement>();
+        list.add(value1);
+        list.add(value2);
+        list.add(value3);
+        testCache.addAll(list);
+        for (final CacheElement cacheElement : list) {
+            assertEquals("Element muss im cache gefunden werden", cacheElement, testCache.get(cacheElement.getK()));
+            assertTrue("Element muss im cache gefunden werden", testCache.contains(cacheElement.getK()));
+        }
+    }
+
+    @Test
+    public void testSimpleRemove() {
+        final CacheElement value = new CacheElement(42, "FirstElement");
+        testCache.add(value);
+        assertEquals("Element muss im cache gefunden werden", value, testCache.get(42));
+        testCache.remove(42);
+        assertNull("Element nicht mehr im cache", testCache.get(42));
+    }
+
+    @Test
+    public void testRemove() {
+        final CacheElement value1 = new CacheElement(42, "1Element");
+        final CacheElement value2 = new CacheElement(43, "2Element");
+        final CacheElement value3 = new CacheElement(44, "3Element");
+        final List<CacheElement> list = new ArrayList<CacheElement>();
+        list.add(value1);
+        list.add(value2);
+        list.add(value3);
+        testCache.addAll(list);
+        assertEquals("3 Elemente sind nun im cache", 3, testCache.size());
+        testCache.remove(Arrays.asList(new Integer[] { 42, 43, 44 }));
+        for (final CacheElement cacheElement : list) {
+            assertNull("Element nicht mehr im cache", testCache.get(cacheElement.getK()));
+        }
+        assertEquals("Cache ist leer", 0, testCache.size());
+    }
+
+    @Test
+    public void testAddListener() {
+        final List<CacheElement> changed = new ArrayList<AbstractCacheTest.CacheElement>();
+        final List<CacheElement> deleted = new ArrayList<AbstractCacheTest.CacheElement>();
+        testCache.addListener(new IRecordListener<AbstractCacheTest.CacheElement>() {
+
+            @Override
+            public void recordChanged(final Collection<CacheElement> entry) {
+                changed.addAll(entry);
+            }
+
+            @Override
+            public void deleteRecord(final Collection<CacheElement> entry) {
+                deleted.addAll(entry);
+            }
+        });
+        final CacheElement value1 = new CacheElement(42, "1Element");
+        testCache.add(value1);
+        assertEquals("Listener wurde notifiziert", value1, changed.get(0));
+        testCache.remove(42);
+        assertEquals("Listener wurde notifiziert", value1, deleted.get(0));
+    }
+
+    @Test
+    public void testAddListeners() {
+        final List<CacheElement> changed = new ArrayList<AbstractCacheTest.CacheElement>();
+        final List<CacheElement> deleted = new ArrayList<AbstractCacheTest.CacheElement>();
+        testCache.addListener(new IRecordListener<AbstractCacheTest.CacheElement>() {
+
+            @Override
+            public void recordChanged(final Collection<CacheElement> entry) {
+                changed.addAll(entry);
+            }
+
+            @Override
+            public void deleteRecord(final Collection<CacheElement> entry) {
+                deleted.addAll(entry);
+            }
+        });
+
+        testCache.addListener(new IRecordListener<AbstractCacheTest.CacheElement>() {
+
+            @Override
+            public void recordChanged(final Collection<CacheElement> entry) {
+                changed.addAll(entry);
+            }
+
+            @Override
+            public void deleteRecord(final Collection<CacheElement> entry) {
+                deleted.addAll(entry);
+            }
+        });
+        final CacheElement value1 = new CacheElement(42, "1Element");
+        testCache.add(value1);
+        assertEquals("2 Listener wurde notifiziert", 2, changed.size());
+        testCache.remove(42);
+        assertEquals("2 Listener wurde notifiziert", 2, deleted.size());
+    }
+
+    @Test
+    public void testNotifyListeners2() {
+        final Object[] value = new Object[1];
+        testCache.addListener(new IRecordListener<AbstractCacheTest.CacheElement>() {
+
+            @Override
+            public void recordChanged(final Collection<CacheElement> entry) {
+                value[0] = entry;
+            }
+
+            @Override
+            public void deleteRecord(final Collection<CacheElement> entry) {
+                // do nothing
+            }
+        });
+
+        testCache.notifyListeners();
+        assertNull("Listener wurde mit null notifiziert", value[0]);
+    }
+
 }

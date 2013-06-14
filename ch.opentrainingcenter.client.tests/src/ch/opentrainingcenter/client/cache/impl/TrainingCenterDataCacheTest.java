@@ -108,8 +108,8 @@ public class TrainingCenterDataCacheTest {
         final ITraining impA = createImported(dateA);
         final ITraining impB = createImported(dateB);
 
-        Mockito.when(mockDataAccess.getImportedRecord(dateA)).thenReturn(impA);
-        Mockito.when(mockDataAccess.getImportedRecord(dateB)).thenReturn(impB);
+        Mockito.when(mockDataAccess.getTrainingById(dateA)).thenReturn(impA);
+        Mockito.when(mockDataAccess.getTrainingById(dateB)).thenReturn(impB);
 
         cache.add(activityA);
         cache.add(activityB);
