@@ -17,9 +17,11 @@ public class KalenderWocheTreeLabelProvider extends LabelProvider {
             return parent.getName();
         } else if (element instanceof Integer) {
             return String.valueOf(element);
-        } else {
+        } else if (element instanceof INavigationItem) {
             final INavigationItem item = (INavigationItem) element;
             return item.getName();
+        } else {
+            throw new IllegalArgumentException("Der Typ '" + element + "' ist nicht definiert");
         }
     }
 
