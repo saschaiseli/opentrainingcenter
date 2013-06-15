@@ -8,7 +8,8 @@ import ch.opentrainingcenter.model.navigation.IKalenderWocheNavigationModel;
 import ch.opentrainingcenter.model.navigation.INavigationParent;
 
 public class KalenderWocheTreeContentProvider implements IStructuredContentProvider, ITreeContentProvider {
-    IKalenderWocheNavigationModel model;
+
+    private IKalenderWocheNavigationModel model;
 
     @Override
     public void dispose() {
@@ -47,6 +48,13 @@ public class KalenderWocheTreeContentProvider implements IStructuredContentProvi
     @Override
     public Object[] getElements(final Object inputElement) {
         return model.getParents().toArray();
+    }
+
+    /**
+     * for tests only
+     */
+    IKalenderWocheNavigationModel getModel() {
+        return model;
     }
 
 }
