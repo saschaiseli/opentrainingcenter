@@ -12,7 +12,7 @@ public class PairComparatorTest {
         final Pair<Long, Double> c = new Pair<>(3L, 43D);
         final Pair<Long, Double> d = new Pair<>(3L, 44D);
 
-        final PairComparator comp = new PairComparator();
+        final PairComparator<Double> comp = new PairComparator<>();
 
         assertEquals("a ist kleiner als b", -1, comp.compare(a, b));
         assertEquals("b ist kleiner als d", -1, comp.compare(b, d));
