@@ -9,6 +9,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import ch.opentrainingcenter.model.ModelFactory;
@@ -71,6 +72,7 @@ public class KalenderWocheTreeLabelProviderTest {
     }
 
     @Test
+    @Ignore
     public void testGetImageObjectINavigationParent() {
         final INavigationParent element = ModelFactory.createNavigationParent();
         final Image result = provider.getImage(element);
@@ -78,12 +80,14 @@ public class KalenderWocheTreeLabelProviderTest {
     }
 
     @Test
+    @Ignore
     public void testGetImageObjectInteger() {
         final Image result = provider.getImage(Integer.valueOf(42));
         assertEquals(PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_FOLDER), result);
     }
 
     @Test
+    @Ignore
     public void testGetImageObjectOther() {
         final Image result = provider.getImage(Boolean.FALSE);
         assertEquals(PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_FILE), result);

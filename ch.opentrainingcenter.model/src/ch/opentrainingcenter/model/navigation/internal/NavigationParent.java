@@ -20,7 +20,7 @@ public class NavigationParent implements INavigationParent {
     @Override
     public String getName() {
         final StringBuffer result = new StringBuffer("KW"); //$NON-NLS-1$
-        result.append(kw.getKw());
+        result.append(kw != null ? kw.getKw() : "");//$NON-NLS-1$
         return result.toString();
     }
 
