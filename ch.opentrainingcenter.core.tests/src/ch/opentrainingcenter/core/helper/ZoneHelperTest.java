@@ -13,21 +13,12 @@ import ch.opentrainingcenter.core.helper.ZoneHelper.Zone;
 import ch.opentrainingcenter.transfer.IAthlete;
 
 public class ZoneHelperTest {
-    private Zone recom;
-    private Zone ga1;
-    private Zone ga12;
-    private Zone ga2;
-    private Zone wsa;
+
     private IPreferenceStore store;
     private ZoneHelper zoneHelper;
 
     @Before
     public void before() {
-        recom = Zone.RECOM;
-        ga1 = Zone.GA1;
-        ga12 = Zone.GA12;
-        ga2 = Zone.GA2;
-        wsa = Zone.WSA;
         store = Mockito.mock(IPreferenceStore.class);
         zoneHelper = new ZoneHelper(store);
     }

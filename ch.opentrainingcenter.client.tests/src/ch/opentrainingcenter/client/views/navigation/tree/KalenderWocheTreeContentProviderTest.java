@@ -11,7 +11,6 @@ import java.util.Locale;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Matchers;
 
 import ch.opentrainingcenter.model.ModelFactory;
 import ch.opentrainingcenter.model.navigation.IKalenderWocheNavigationModel;
@@ -67,7 +66,7 @@ public class KalenderWocheTreeContentProviderTest {
 
     @Test
     public void testGetParent() {
-        assertNull("Keine Parents", provider.getParent(Matchers.any()));
+        assertNull("Keine Parents", provider.getParent(new Object()));
     }
 
     @Test
