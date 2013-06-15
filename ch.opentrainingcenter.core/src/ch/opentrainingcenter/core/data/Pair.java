@@ -28,4 +28,9 @@ public class Pair<K extends Number, V> {
     public void setFirst(final K first) {
         this.first = first;
     }
+
+    @Override
+    public String toString() {
+        return "Pair [first=" + first + ", second=" + second + "]";
+    }
 }

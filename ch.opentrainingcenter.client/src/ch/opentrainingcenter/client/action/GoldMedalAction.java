@@ -43,20 +43,39 @@ public class GoldMedalAction {
         result.setSchnellstePace(calculateBestePace(maxSpeed));
         // längster lauf
         final Pair<Long, Double> max = Collections.max(laenge, new PairComparator<Double>());
-        result.setLongestDistance(new Pair<Long, String>(max.getFirst(), DistanceHelper.roundDistanceFromMeterToKm(max.getSecond())));
+        if (max.getSecond() != null && max.getSecond().doubleValue() > 0) {
+            result.setLongestDistance(new Pair<Long, String>(max.getFirst(), DistanceHelper.roundDistanceFromMeterToKm(max.getSecond())));
+        } else {
+            result.setLongestDistance(emptyPair);
+        }
         // längster lauf zeit
         final Pair<Long, Double> longRun = Collections.max(dauer, new PairComparator<Double>());
         final String seconds = TimeHelper.convertSecondsToHumanReadableZeit(longRun.getSecond());
         result.setLongestRun(!dauer.isEmpty() ? new Pair<Long, String>(longRun.getFirst(), seconds) : emptyPair);
         // höchster puls
-        final Pair<Long, Integer> highPuls = Collections.max(heart, new PairComparator<Integer>());
-        result.setHighestPulse(!heart.isEmpty() ? new Pair<Long, String>(highPuls.getFirst(), String.valueOf(highPuls.getSecond())) : emptyPair);
+        if (!heart.isEmpty()) {
+            final Pair<Long, Integer> highPuls = Collections.max(heart, new PairComparator<Integer>());
+            if (highPuls.getSecond() != null && highPuls.getSecond().intValue() > 0) {
+                result.setHighestPulse(new Pair<Long, String>(highPuls.getFirst(), String.valueOf(highPuls.getSecond())));
+            }
+        } else {
+            result.setHighestPulse(emptyPair);
+        }
         // durchschnittlicher puls
-        final Pair<Long, Integer> avgHeart = Collections.max(averageHeart, new PairComparator<Integer>());
-        result.setHighestAveragePulse(!averageHeart.isEmpty() ? new Pair<Long, String>(avgHeart.getFirst(), avgHeart.getSecond().toString()) : emptyPair);
+        if (!averageHeart.isEmpty()) {
+            final Pair<Long, Integer> avgHeart = Collections.max(averageHeart, new PairComparator<Integer>());
+            if (avgHeart.getSecond() != null && avgHeart.getSecond().intValue() > 0) {
+                result.setHighestAveragePulse(new Pair<Long, String>(avgHeart.getFirst(), avgHeart.getSecond().toString()));
+            }
 
-        final Pair<Long, Integer> lowestPuls = Collections.min(averageHeart, new PairComparator<Integer>());
-        result.setLowestAveragePulse(!averageHeart.isEmpty() ? new Pair<Long, String>(lowestPuls.getFirst(), lowestPuls.getSecond().toString()) : emptyPair);
+            final Pair<Long, Integer> lowestPuls = Collections.min(averageHeart, new PairComparator<Integer>());
+            if (lowestPuls.getSecond() != null && lowestPuls.getSecond().intValue() > 0) {
+                result.setLowestAveragePulse(new Pair<Long, String>(lowestPuls.getFirst(), lowestPuls.getSecond().toString()));
+            }
+        } else {
+            result.setHighestAveragePulse(emptyPair);
+            result.setLowestAveragePulse(emptyPair);
+        }
 
         result.setSchnellstePace(Intervall.KLEINER_10, getPace(di, Intervall.KLEINER_10));
         result.setSchnellstePace(Intervall.VON10_BIS_15, getPace(di, Intervall.VON10_BIS_15));

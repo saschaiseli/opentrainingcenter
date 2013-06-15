@@ -43,7 +43,7 @@ public class GoldMedalActionTest {
         allImported.add(trainingA);
         final IGoldMedalModel model = action.getModel(allImported);
 
-        assertEquals("Bei einem negativen Wert soll nichts ausgegeben werden", "-", model.getHighestPulse());
+        assertEquals("Bei einem negativen Wert soll nichts ausgegeben werden", "-", model.getHighestPulse().getSecond());
     }
 
     @Test
@@ -52,7 +52,7 @@ public class GoldMedalActionTest {
         allImported.add(trainingA);
         final IGoldMedalModel model = action.getModel(allImported);
 
-        assertEquals("Bei einem negativen Wert soll nichts ausgegeben werden", "-", model.getHighestPulse());
+        assertEquals("Bei einem negativen Wert soll nichts ausgegeben werden", "-", model.getHighestPulse().getSecond());
     }
 
     @Test
@@ -61,7 +61,7 @@ public class GoldMedalActionTest {
         allImported.add(trainingA);
         final IGoldMedalModel model = action.getModel(allImported);
 
-        assertEquals("Wert muss ausgegeben werden", "2", model.getHighestPulse());
+        assertEquals("Wert muss ausgegeben werden", "2", model.getHighestPulse().getSecond());
     }
 
     @Test
@@ -74,7 +74,7 @@ public class GoldMedalActionTest {
         allImported.add(trainingB);
         final IGoldMedalModel model = action.getModel(allImported);
 
-        assertEquals("Grösserer Wert muss ausgegeben werden", "4", model.getHighestPulse());
+        assertEquals("Grösserer Wert muss ausgegeben werden", "4", model.getHighestPulse().getSecond());
     }
 
     @Test
@@ -87,7 +87,7 @@ public class GoldMedalActionTest {
         allImported.add(trainingB);
         final IGoldMedalModel model = action.getModel(allImported);
 
-        assertEquals("Grösserer Wert muss ausgegeben werden", "4", model.getHighestPulse());
+        assertEquals("Grösserer Wert muss ausgegeben werden", "4", model.getHighestPulse().getSecond());
     }
 
     @Test
@@ -96,7 +96,7 @@ public class GoldMedalActionTest {
         allImported.add(trainingA);
         final IGoldMedalModel model = action.getModel(allImported);
 
-        assertEquals("Bei einem negativen Wert soll nichts ausgegeben werden", "-", model.getHighestAveragePulse());
+        assertEquals("Bei einem negativen Wert soll nichts ausgegeben werden", "-", model.getHighestAveragePulse().getSecond());
     }
 
     @Test
@@ -105,7 +105,7 @@ public class GoldMedalActionTest {
         allImported.add(trainingA);
         final IGoldMedalModel model = action.getModel(allImported);
 
-        assertEquals("Bei einem negativen Wert soll nichts ausgegeben werden", "-", model.getHighestAveragePulse());
+        assertEquals("Bei einem negativen Wert soll nichts ausgegeben werden", "-", model.getHighestAveragePulse().getSecond());
     }
 
     @Test
@@ -114,7 +114,7 @@ public class GoldMedalActionTest {
         allImported.add(trainingA);
         final IGoldMedalModel model = action.getModel(allImported);
 
-        assertEquals("Wert muss ausgegeben werden", "2", model.getHighestAveragePulse());
+        assertEquals("Wert muss ausgegeben werden", "2", model.getHighestAveragePulse().getSecond());
     }
 
     @Test
@@ -126,7 +126,7 @@ public class GoldMedalActionTest {
         allImported.add(trainingB);
         final IGoldMedalModel model = action.getModel(allImported);
 
-        assertEquals("Grösserer Wert muss ausgegeben werden", "4", model.getHighestAveragePulse());
+        assertEquals("Grösserer Wert muss ausgegeben werden", "4", model.getHighestAveragePulse().getSecond());
     }
 
     @Test
@@ -138,7 +138,7 @@ public class GoldMedalActionTest {
         allImported.add(trainingB);
         final IGoldMedalModel model = action.getModel(allImported);
 
-        assertEquals("Grösserer Wert muss ausgegeben werden", "4", model.getHighestAveragePulse());
+        assertEquals("Grösserer Wert muss ausgegeben werden", "4", model.getHighestAveragePulse().getSecond());
     }
 
     @Test
@@ -147,7 +147,7 @@ public class GoldMedalActionTest {
         allImported.add(trainingA);
         final IGoldMedalModel model = action.getModel(allImported);
 
-        assertEquals("Bei einem negativen Wert soll nichts ausgegeben werden", "-", model.getLowestAveragePulse());
+        assertEquals("Bei einem negativen Wert soll nichts ausgegeben werden", "-", model.getLowestAveragePulse().getSecond());
     }
 
     @Test
@@ -156,7 +156,7 @@ public class GoldMedalActionTest {
         allImported.add(trainingA);
         final IGoldMedalModel model = action.getModel(allImported);
 
-        assertEquals("Bei einem negativen Wert soll nichts ausgegeben werden", "-", model.getLowestAveragePulse());
+        assertEquals("Bei einem negativen Wert soll nichts ausgegeben werden", "-", model.getLowestAveragePulse().getSecond());
     }
 
     @Test
@@ -165,7 +165,7 @@ public class GoldMedalActionTest {
 
         final IGoldMedalModel model = action.getModel(allImported);
 
-        assertEquals("Wert muss ausgegeben werden", "2", model.getLowestAveragePulse());
+        assertEquals("Wert muss ausgegeben werden", "2", model.getLowestAveragePulse().getSecond());
     }
 
     @Test
@@ -176,7 +176,7 @@ public class GoldMedalActionTest {
         allImported.add(trainingB);
         final IGoldMedalModel model = action.getModel(allImported);
 
-        assertEquals("Grösserer Wert muss ausgegeben werden", "2", model.getLowestAveragePulse());
+        assertEquals("Grösserer Wert muss ausgegeben werden", "2", model.getLowestAveragePulse().getSecond());
     }
 
     @Test
@@ -188,7 +188,7 @@ public class GoldMedalActionTest {
         allImported.add(trainingB);
         final IGoldMedalModel model = action.getModel(allImported);
 
-        assertEquals("Grösserer Wert muss ausgegeben werden", "4", model.getLowestAveragePulse());
+        assertEquals("Grösserer Wert muss ausgegeben werden", "4", model.getLowestAveragePulse().getSecond());
     }
 
     @Test
@@ -196,7 +196,7 @@ public class GoldMedalActionTest {
         trainingA.setDauer(-1);
         final IGoldMedalModel model = action.getModel(allImported);
 
-        assertEquals("Bei einem negativen Wert soll nichts ausgegeben werden", "--:--:--", model.getLongestRun());
+        assertEquals("Bei einem negativen Wert soll nichts ausgegeben werden", "--:--:--", model.getLongestRun().getSecond());
     }
 
     @Test
@@ -205,7 +205,7 @@ public class GoldMedalActionTest {
 
         final IGoldMedalModel model = action.getModel(allImported);
 
-        assertEquals("Bei einem negativen Wert soll nichts ausgegeben werden", "0:00:00", model.getLongestRun());
+        assertEquals("Bei einem negativen Wert soll nichts ausgegeben werden", "0:00:00", model.getLongestRun().getSecond());
     }
 
     @Test
@@ -214,7 +214,7 @@ public class GoldMedalActionTest {
 
         final IGoldMedalModel model = action.getModel(allImported);
 
-        assertEquals("Wert muss ausgegeben werden", "0:00:02", model.getLongestRun());
+        assertEquals("Wert muss ausgegeben werden", "0:00:02", model.getLongestRun().getSecond());
     }
 
     @Test
@@ -226,7 +226,7 @@ public class GoldMedalActionTest {
         allImported.add(trainingB);
         final IGoldMedalModel model = action.getModel(allImported);
 
-        assertEquals("Grösserer Wert muss ausgegeben werden", "0:00:04", model.getLongestRun());
+        assertEquals("Grösserer Wert muss ausgegeben werden", "0:00:04", model.getLongestRun().getSecond());
     }
 
     @Test
@@ -238,7 +238,7 @@ public class GoldMedalActionTest {
         allImported.add(trainingB);
         final IGoldMedalModel model = action.getModel(allImported);
 
-        assertEquals("Grösserer Wert muss ausgegeben werden", "0:00:04", model.getLongestRun());
+        assertEquals("Grösserer Wert muss ausgegeben werden", "0:00:04", model.getLongestRun().getSecond());
     }
 
     @Test
@@ -246,7 +246,7 @@ public class GoldMedalActionTest {
 
         final IGoldMedalModel model = action.getModel(allImported);
 
-        assertEquals("Wenn nichts sinnvolles berechnet werden kann, soll auch nichts angezeigt werden", "-", model.getSchnellstePace());
+        assertEquals("Wenn nichts sinnvolles berechnet werden kann, soll auch nichts angezeigt werden", "-", model.getSchnellstePace().getSecond());
     }
 
     @Test
@@ -256,7 +256,7 @@ public class GoldMedalActionTest {
 
         final IGoldMedalModel model = action.getModel(allImported);
 
-        assertEquals("Bei einem negativen Wert soll nichts ausgegeben werden", "-", model.getSchnellstePace());
+        assertEquals("Bei einem negativen Wert soll nichts ausgegeben werden", "-", model.getSchnellstePace().getSecond());
     }
 
     @Test
@@ -266,7 +266,7 @@ public class GoldMedalActionTest {
 
         final IGoldMedalModel model = action.getModel(allImported);
 
-        assertEquals("Bei einem negativen Wert soll nichts ausgegeben werden", "1.0", model.getSchnellstePace());
+        assertEquals("Bei einem negativen Wert soll nichts ausgegeben werden", "1.0", model.getSchnellstePace().getSecond());
     }
 
     @Test
@@ -277,7 +277,7 @@ public class GoldMedalActionTest {
         allImported.add(trainingB);
         final IGoldMedalModel model = action.getModel(allImported);
 
-        assertEquals("kleinere Pace muss ausgegeben werden", "1.0", model.getSchnellstePace());
+        assertEquals("kleinere Pace muss ausgegeben werden", "1.0", model.getSchnellstePace().getSecond());
     }
 
     @Test
@@ -289,7 +289,7 @@ public class GoldMedalActionTest {
         allImported.add(trainingB);
         final IGoldMedalModel model = action.getModel(allImported);
 
-        assertEquals("kleinere Pace muss ausgegeben werden", "0.3", model.getSchnellstePace());
+        assertEquals("kleinere Pace muss ausgegeben werden", "0.3", model.getSchnellstePace().getSecond());
     }
 
     @Test
@@ -298,7 +298,7 @@ public class GoldMedalActionTest {
 
         final IGoldMedalModel model = action.getModel(allImported);
 
-        assertEquals("Bei einem negativen Wert soll nichts ausgegeben werden", "-", model.getLongestDistance());
+        assertEquals("Bei einem negativen Wert soll nichts ausgegeben werden", "-", model.getLongestDistance().getSecond());
     }
 
     @Test
@@ -307,7 +307,7 @@ public class GoldMedalActionTest {
 
         final IGoldMedalModel model = action.getModel(allImported);
 
-        assertEquals("Bei einem negativen Wert soll nichts ausgegeben werden", "-", model.getLongestDistance());
+        assertEquals("Bei einem negativen Wert soll nichts ausgegeben werden", "-", model.getLongestDistance().getSecond());
     }
 
     @Test
@@ -316,7 +316,7 @@ public class GoldMedalActionTest {
 
         final IGoldMedalModel model = action.getModel(allImported);
 
-        assertEquals("Wert muss ausgegeben werden", "0.002", model.getLongestDistance());
+        assertEquals("Wert muss ausgegeben werden", "0.002", model.getLongestDistance().getSecond());
     }
 
     @Test
@@ -328,7 +328,7 @@ public class GoldMedalActionTest {
         allImported.add(trainingB);
         final IGoldMedalModel model = action.getModel(allImported);
 
-        assertEquals("Grösserer Wert muss ausgegeben werden", "0.004", model.getLongestDistance());
+        assertEquals("Grösserer Wert muss ausgegeben werden", "0.004", model.getLongestDistance().getSecond());
     }
 
     @Test
@@ -340,6 +340,6 @@ public class GoldMedalActionTest {
         allImported.add(trainingB);
         final IGoldMedalModel model = action.getModel(allImported);
 
-        assertEquals("Grösserer Wert muss ausgegeben werden", "0.004", model.getLongestDistance());
+        assertEquals("Grösserer Wert muss ausgegeben werden", "0.004", model.getLongestDistance().getSecond());
     }
 }
