@@ -2,6 +2,8 @@ package ch.opentrainingcenter.client.action.job;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,9 +14,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import ch.opentrainingcenter.core.cache.Cache;
 import ch.opentrainingcenter.core.importer.ConvertContainer;
@@ -35,11 +35,11 @@ public class ImportManualJobTest {
 
     @Before
     public void before() throws IOException {
-        cc = Mockito.mock(ConvertContainer.class);
-        modelWrapper = Mockito.mock(IGpsFileModelWrapper.class);
+        cc = mock(ConvertContainer.class);
+        modelWrapper = mock(IGpsFileModelWrapper.class);
         filterPath = "";
-        cache = Mockito.mock(Cache.class);
-        importer = Mockito.mock(IFileImport.class);
+        cache = mock(Cache.class);
+        importer = mock(IFileImport.class);
     }
 
     @Test
@@ -50,35 +50,33 @@ public class ImportManualJobTest {
     }
 
     @Test
-    @Ignore
     public void testRun() {
         job = new ImportManualJob("junit", modelWrapper, filterPath, importer, cache);
 
-        final IProgressMonitor monitor = Mockito.mock(IProgressMonitor.class);
+        final IProgressMonitor monitor = mock(IProgressMonitor.class);
         final IStatus status = job.run(monitor);
 
         assertEquals(Status.OK_STATUS, status);
     }
 
     @Test(timeout = 3000)
-    @Ignore
     public void testRunMitFileModel() throws Exception {
         job = new ImportManualJob("junit", modelWrapper, filterPath, importer, cache);
 
         final List<IGpsFileModel> models = new ArrayList<IGpsFileModel>();
-        final IGpsFileModel model = Mockito.mock(IGpsFileModel.class);
+        final IGpsFileModel model = mock(IGpsFileModel.class);
         models.add(model);
-        Mockito.when(model.getFileName()).thenReturn("gmn");
+        when(model.getFileName()).thenReturn("gmn");
 
-        Mockito.when(modelWrapper.getGpsFileModels()).thenReturn(models);
+        when(modelWrapper.getGpsFileModels()).thenReturn(models);
 
-        final IConvert2Tcx convert = Mockito.mock(IConvert2Tcx.class);
-        Mockito.when(cc.getMatchingConverter(new File(""))).thenReturn(convert);
-        final ITraining element = Mockito.mock(ITraining.class);
-        Mockito.when(convert.convert(new File(""))).thenReturn(element);
+        final IConvert2Tcx convert = mock(IConvert2Tcx.class);
+        when(cc.getMatchingConverter(new File(""))).thenReturn(convert);
+        final ITraining element = mock(ITraining.class);
+        when(convert.convert(new File(""))).thenReturn(element);
 
-        final IProgressMonitor monitor = Mockito.mock(IProgressMonitor.class);
-        Mockito.when(importer.importFile(filterPath, modelWrapper, monitor)).thenReturn(new ArrayList<ITraining>());
+        final IProgressMonitor monitor = mock(IProgressMonitor.class);
+        when(importer.importFile(filterPath, modelWrapper, monitor)).thenReturn(new ArrayList<ITraining>());
 
         final IStatus status = job.run(monitor);
 
