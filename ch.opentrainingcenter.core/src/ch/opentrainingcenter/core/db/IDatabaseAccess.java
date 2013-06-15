@@ -99,7 +99,7 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
      *            laufes.
      * @return
      */
-    ITraining getImportedRecord(long key);
+    ITraining getTrainingById(long key);
 
     /**
      * @return den neusten Lauf. Nicht der Lauf der zuletzt importiert wurde,
@@ -193,4 +193,5 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
     void updateRecordRoute(ITraining record, int idRoute);
 
     boolean validateConnection(final String url, final String user, final String pass);
+
 }

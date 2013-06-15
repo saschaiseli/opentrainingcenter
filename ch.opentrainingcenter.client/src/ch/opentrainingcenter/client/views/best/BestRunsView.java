@@ -8,8 +8,14 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.forms.events.HyperlinkEvent;
+import org.eclipse.ui.forms.events.IHyperlinkListener;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
+import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.forms.widgets.TableWrapData;
@@ -19,9 +25,13 @@ import org.eclipse.ui.part.ViewPart;
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.action.GoldMedalAction;
 import ch.opentrainingcenter.client.model.Units;
+import ch.opentrainingcenter.client.views.ApplicationContext;
+import ch.opentrainingcenter.client.views.overview.SingleActivityViewPart;
 import ch.opentrainingcenter.core.PreferenceConstants;
+import ch.opentrainingcenter.core.assertions.Assertions;
 import ch.opentrainingcenter.core.cache.IRecordListener;
 import ch.opentrainingcenter.core.cache.TrainingCache;
+import ch.opentrainingcenter.core.data.Pair;
 import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.model.training.IGoldMedalModel;
@@ -39,35 +49,35 @@ public class BestRunsView extends ViewPart {
 
     private TableWrapData td;
 
-    private Label bestPace;
+    private Hyperlink bestPace;
 
-    private Label longestDistance;
+    private Hyperlink longestRun;
 
-    private Label longestRun;
+    private Hyperlink highestPulse;
 
-    private Label highestPulse;
+    private Hyperlink highAvPulse;
 
-    private Label highAvPulse;
-
-    private Label lowestAvPulse;
+    private Hyperlink lowestAvPulse;
 
     private GoldMedalAction action;
 
     private IAthlete athlete;
 
-    private Label bestKl10;
+    private Hyperlink bestKl10;
 
-    private Label best10;
+    private Hyperlink best10;
 
-    private Label best15;
+    private Hyperlink best15;
 
-    private Label best20;
+    private Hyperlink best20;
 
-    private Label best25;
+    private Hyperlink best25;
 
     private Section sectionPace;
 
     private Section sectionOverall;
+
+    private Hyperlink longestDistance;
 
     public BestRunsView() {
         TrainingCache.getInstance().addListener(new IRecordListener<ITraining>() {
@@ -87,7 +97,7 @@ public class BestRunsView extends ViewPart {
     @Override
     public void createPartControl(final Composite parent) {
 
-        LOGGER.debug("create single activity view"); //$NON-NLS-1$
+        LOGGER.debug("create BestRunsView view"); //$NON-NLS-1$
         toolkit = new FormToolkit(parent.getDisplay());
         final ScrolledForm form = toolkit.createScrolledForm(parent);
 
@@ -137,11 +147,11 @@ public class BestRunsView extends ViewPart {
         final GridLayout layoutClient = new GridLayout(3, false);
         overViewComposite.setLayout(layoutClient);
 
-        bestKl10 = createLabel(overViewComposite, Messages.BestRunsView10 + Messages.BestRunsView11, model.getSchnellstePace(Intervall.KLEINER_10), Units.PACE);
-        best10 = createLabel(overViewComposite, Messages.BestRunsView12 + Messages.BestRunsView13, model.getSchnellstePace(Intervall.VON10_BIS_15), Units.PACE);
-        best15 = createLabel(overViewComposite, Messages.BestRunsView14 + Messages.BestRunsView15, model.getSchnellstePace(Intervall.VON15_BIS_20), Units.PACE);
-        best20 = createLabel(overViewComposite, Messages.BestRunsView16 + Messages.BestRunsView17, model.getSchnellstePace(Intervall.VON20_BIS_25), Units.PACE);
-        best25 = createLabel(overViewComposite, Messages.BestRunsView18 + Messages.BestRunsView19, model.getSchnellstePace(Intervall.PLUS25), Units.PACE);
+        bestKl10 = createLink(overViewComposite, Messages.BestRunsView10 + Messages.BestRunsView11, model.getSchnellstePace(Intervall.KLEINER_10), Units.PACE);
+        best10 = createLink(overViewComposite, Messages.BestRunsView12 + Messages.BestRunsView13, model.getSchnellstePace(Intervall.VON10_BIS_15), Units.PACE);
+        best15 = createLink(overViewComposite, Messages.BestRunsView14 + Messages.BestRunsView15, model.getSchnellstePace(Intervall.VON15_BIS_20), Units.PACE);
+        best20 = createLink(overViewComposite, Messages.BestRunsView16 + Messages.BestRunsView17, model.getSchnellstePace(Intervall.VON20_BIS_25), Units.PACE);
+        best25 = createLink(overViewComposite, Messages.BestRunsView18 + Messages.BestRunsView19, model.getSchnellstePace(Intervall.PLUS25), Units.PACE);
         sectionPace.setClient(overViewComposite);
 
     }
@@ -163,30 +173,57 @@ public class BestRunsView extends ViewPart {
         final GridLayout layoutClient = new GridLayout(3, false);
         overViewComposite.setLayout(layoutClient);
 
-        bestPace = createLabel(overViewComposite, Messages.BestRunsView3, model.getSchnellstePace(), Units.PACE);
-        longestDistance = createLabel(overViewComposite, Messages.BestRunsView4, model.getLongestDistance(), Units.KM);
-        longestRun = createLabel(overViewComposite, Messages.BestRunsView5, model.getLongestRun(), Units.HOUR_MINUTE_SEC);
-        highestPulse = createLabel(overViewComposite, Messages.BestRunsView6, model.getHighestPulse(), Units.BEATS_PER_MINUTE);
-        highAvPulse = createLabel(overViewComposite, Messages.BestRunsView7, model.getHighestAveragePulse(), Units.BEATS_PER_MINUTE);
-        lowestAvPulse = createLabel(overViewComposite, Messages.BestRunsView20, model.getLowestAveragePulse(), Units.BEATS_PER_MINUTE);
+        bestPace = createLink(overViewComposite, Messages.BestRunsView3, model.getSchnellstePace(), Units.PACE);
+        longestDistance = createLink(overViewComposite, Messages.BestRunsView4, model.getLongestDistance(), Units.KM);
+        longestRun = createLink(overViewComposite, Messages.BestRunsView5, model.getLongestRun(), Units.HOUR_MINUTE_SEC);
+        highestPulse = createLink(overViewComposite, Messages.BestRunsView6, model.getHighestPulse(), Units.BEATS_PER_MINUTE);
+        highAvPulse = createLink(overViewComposite, Messages.BestRunsView7, model.getHighestAveragePulse(), Units.BEATS_PER_MINUTE);
+        lowestAvPulse = createLink(overViewComposite, Messages.BestRunsView20, model.getLowestAveragePulse(), Units.BEATS_PER_MINUTE);
 
         sectionOverall.setClient(overViewComposite);
     }
 
-    private Label createLabel(final Composite parent, final String label, final String value, final Units unit) {
+    private Hyperlink createLink(final Composite parent, final String label, final Pair<Long, String> pair, final Units unit) {
         // Label
+        Assertions.notNull(pair, "datentupel darf nicht null sein");
+        Assertions.notNull(pair.getSecond(), "Label darf nicht null sein");
         final Label dauerLabel = toolkit.createLabel(parent, label + ": "); //$NON-NLS-1$
         GridData gd = new GridData();
         gd.verticalIndent = 4;
         dauerLabel.setLayoutData(gd);
 
-        // value
-        final Label valueLabel = toolkit.createLabel(parent, value);
+        final Hyperlink link = toolkit.createHyperlink(parent, pair.getSecond(), SWT.UNDERLINE_LINK);
         gd = new GridData();
         gd.horizontalAlignment = SWT.RIGHT;
         gd.horizontalIndent = 10;
         gd.verticalIndent = 4;
-        valueLabel.setLayoutData(gd);
+        link.setLayoutData(gd);
+        link.setData(pair);
+        link.setToolTipText("Den Lauf öffnen");
+        link.addHyperlinkListener(new IHyperlinkListener() {
+
+            @Override
+            public void linkExited(final HyperlinkEvent e) {
+                // do nothing
+            }
+
+            @Override
+            public void linkEntered(final HyperlinkEvent e) {
+                // do nothing
+            }
+
+            @Override
+            public void linkActivated(final HyperlinkEvent e) {
+                final String hash = String.valueOf(pair.getFirst());
+                try {
+                    ApplicationContext.getApplicationContext().setSelectedId(pair.getFirst());
+                    PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+                            .showView(SingleActivityViewPart.ID, hash, IWorkbenchPage.VIEW_ACTIVATE);
+                } catch (final PartInitException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
 
         // einheit
         final Label einheit = toolkit.createLabel(parent, unit.getName());
@@ -195,32 +232,31 @@ public class BestRunsView extends ViewPart {
         gd.horizontalIndent = 10;
         gd.verticalIndent = 4;
         einheit.setLayoutData(gd);
-        return valueLabel;
+        return link;
     }
 
     @Override
     public void setFocus() {
-        // TODO Auto-generated method stub
-
+        // do nothing
     }
 
     private void update() {
         final IGoldMedalModel model = action.getModel(DatabaseAccessFactory.getDatabaseAccess().getAllImported(athlete));
-        bestPace.setText(model.getSchnellstePace());
-        longestDistance.setText(model.getLongestDistance());
-        longestRun.setText(model.getLongestRun());
-        highestPulse.setText(model.getHighestPulse());
-        highAvPulse.setText(model.getHighestAveragePulse());
-        lowestAvPulse.setText(model.getLowestAveragePulse());
+        bestPace.setText(model.getSchnellstePace().getSecond());
+        longestDistance.setText(model.getLongestDistance().getSecond());
+        longestDistance.setText(model.getLongestDistance().getSecond());
+        longestRun.setText(model.getLongestRun().getSecond());
+        highestPulse.setText(model.getHighestPulse().getSecond());
+        highAvPulse.setText(model.getHighestAveragePulse().getSecond());
+        lowestAvPulse.setText(model.getLowestAveragePulse().getSecond());
 
-        bestKl10.setText(model.getSchnellstePace(Intervall.KLEINER_10));
-        best10.setText(model.getSchnellstePace(Intervall.VON10_BIS_15));
-        best15.setText(model.getSchnellstePace(Intervall.VON15_BIS_20));
-        best20.setText(model.getSchnellstePace(Intervall.VON20_BIS_25));
-        best25.setText(model.getSchnellstePace(Intervall.PLUS25));
+        bestKl10.setText(model.getSchnellstePace(Intervall.KLEINER_10).getSecond());
+        best10.setText(model.getSchnellstePace(Intervall.VON10_BIS_15).getSecond());
+        best15.setText(model.getSchnellstePace(Intervall.VON15_BIS_20).getSecond());
+        best20.setText(model.getSchnellstePace(Intervall.VON20_BIS_25).getSecond());
+        best25.setText(model.getSchnellstePace(Intervall.PLUS25).getSecond());
 
         sectionOverall.redraw();
         sectionPace.redraw();
     }
-
 }

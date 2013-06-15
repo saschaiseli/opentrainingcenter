@@ -184,7 +184,7 @@ public class DatabaseAccessPostgres implements IDatabaseAccess {
     }
 
     @Override
-    public ITraining getImportedRecord(final long key) {
+    public ITraining getTrainingById(final long key) {
         return trainingDao.getImportedRecord(key);
     }
 

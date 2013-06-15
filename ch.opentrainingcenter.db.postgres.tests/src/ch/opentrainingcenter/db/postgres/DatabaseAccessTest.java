@@ -74,7 +74,7 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
 
         access.saveTraining(training);
 
-        final ITraining result = access.getImportedRecord(now);
+        final ITraining result = access.getTrainingById(now);
 
         assertNotNull(result);
 
@@ -104,7 +104,7 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
 
         access.saveTraining(training);
 
-        final ITraining result = access.getImportedRecord(now);
+        final ITraining result = access.getTrainingById(now);
 
         assertNotNull(result);
 
@@ -151,7 +151,7 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
 
         access.saveTraining(training);
 
-        final ITraining result = access.getImportedRecord(now);
+        final ITraining result = access.getTrainingById(now);
 
         assertEquals("note2", result.getNote());
         assertEquals(weatherB, result.getWeather());
@@ -291,10 +291,10 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
 
         access.saveTraining(trainingA);
 
-        ITraining record = access.getImportedRecord(now);
+        ITraining record = access.getTrainingById(now);
         assertNotNull(record);
         access.removeImportedRecord(now);
-        record = access.getImportedRecord(now);
+        record = access.getTrainingById(now);
         assertNull(record);
     }
 
@@ -311,7 +311,7 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
 
         access.saveTraining(trainingA);
 
-        ITraining result = access.getImportedRecord(now);
+        ITraining result = access.getTrainingById(now);
 
         assertEquals(0, result.getTrainingType().getId());
 
@@ -319,13 +319,13 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
 
         access.saveTraining(trainingA);
 
-        result = access.getImportedRecord(now);
+        result = access.getTrainingById(now);
 
         assertEquals(1, result.getTrainingType().getId());
 
         access.updateRecord(trainingA, 2);
 
-        result = access.getImportedRecord(now);
+        result = access.getTrainingById(now);
 
         assertEquals(2, result.getTrainingType().getId());
     }
@@ -345,7 +345,7 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
 
         access.saveTraining(training);
 
-        ITraining result = access.getImportedRecord(now);
+        ITraining result = access.getTrainingById(now);
 
         assertNotNull(result);
 
@@ -355,11 +355,11 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
 
         training.setRoute(routeB);
         access.updateRecordRoute(training, idB);
-        result = access.getImportedRecord(now);
+        result = access.getTrainingById(now);
         assertEquals(routeB, result.getRoute());
 
         access.updateRecordRoute(training, idA);
-        result = access.getImportedRecord(now);
+        result = access.getTrainingById(now);
         assertEquals(routeA, result.getRoute());
     }
 
@@ -378,7 +378,7 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
         training.setFileName("22342342skflsdjfs.gpx");
         access.saveTraining(training);
 
-        final ITraining result = access.getImportedRecord(now);
+        final ITraining result = access.getTrainingById(now);
 
         assertEquals(new Date(now), result.getDateOfImport());
         assertEquals(training.getFileName(), result.getFileName());

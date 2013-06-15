@@ -1,104 +1,128 @@
 package ch.opentrainingcenter.model.training.internal;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.util.HashMap;
 import java.util.Map;
 
+import ch.opentrainingcenter.core.assertions.Assertions;
+import ch.opentrainingcenter.core.data.Pair;
 import ch.opentrainingcenter.model.training.IGoldMedalModel;
 import ch.opentrainingcenter.model.training.Intervall;
 
 public class GoldMedalModel implements IGoldMedalModel {
 
-    private static final String UNKNOWN = "-"; //$NON-NLS-1$
+    private static final Pair<Long, String> EMPTY_PAIR = new Pair<>(null, "-");
+    private static final Map<Intervall, Pair<Long, String>> schnellstePaces = new HashMap<>();
 
-    private String schnellstePace;
-    private final Map<Intervall, String> schnellstePaces = new HashMap<Intervall, String>();
-    private double longestDistance;
-    private String longestRun;
-    private int highestPulse;
-    private int highestAveragePulse;
-    private int lowestAveragePulse;
+    static {
+        for (final Intervall intervall : Intervall.values()) {
+            schnellstePaces.put(intervall, EMPTY_PAIR);
+        }
+    }
+
+    private Pair<Long, String> schnellstePace = EMPTY_PAIR;
+    private Pair<Long, String> longestDistance = EMPTY_PAIR;
+    private Pair<Long, String> longestRun = EMPTY_PAIR;
+    private Pair<Long, String> highestPulse = EMPTY_PAIR;
+    private Pair<Long, String> highestAveragePulse = EMPTY_PAIR;
+    private Pair<Long, String> lowestAveragePulse = EMPTY_PAIR;
 
     @Override
-    public String getSchnellstePace() {
+    public Pair<Long, String> getSchnellstePace() {
         return schnellstePace;
     }
 
     @Override
-    public void setSchnellstePace(final String schnellstePace) {
-        this.schnellstePace = schnellstePace;
+    public void setSchnellstePace(final Pair<Long, String> schnellstePace) {
+        Assertions.notNull(schnellstePace);
+        this.schnellstePace = getValidatedPair(schnellstePace);
     }
 
     @Override
-    public String getSchnellstePace(final Intervall intervall) {
+    public Pair<Long, String> getSchnellstePace(final Intervall intervall) {
+        Assertions.notNull(intervall);
         return schnellstePaces.get(intervall);
     }
 
     @Override
-    public void setSchnellstePace(final Intervall intervall, final String schnellstePace) {
-        schnellstePaces.put(intervall, schnellstePace);
+    public void setSchnellstePace(final Intervall intervall, final Pair<Long, String> schnellstePace) {
+        Assertions.notNull(intervall);
+        Assertions.notNull(schnellstePace);
+        schnellstePaces.put(intervall, getValidatedPair(schnellstePace));
     }
 
     @Override
-    public String getLongestDistance() {
-        if (longestDistance > 0) {
-            return getFormattedString(longestDistance);
-        } else {
-            return UNKNOWN;
-        }
+    public Pair<Long, String> getLongestDistance() {
+        return longestDistance;
     }
 
     @Override
-    public void setLongestDistance(final double longestDistance) {
-        this.longestDistance = longestDistance;
+    public void setLongestDistance(final Pair<Long, String> longestDistance) {
+        Assertions.notNull(longestDistance);
+        this.longestDistance = getValidatedPair(longestDistance);
     }
 
     @Override
-    public String getLongestRun() {
+    public Pair<Long, String> getLongestRun() {
         return longestRun;
     }
 
     @Override
-    public void setLongestRun(final String longestRun) {
-        this.longestRun = longestRun;
+    public void setLongestRun(final Pair<Long, String> longestRun) {
+        Assertions.notNull(longestRun);
+        this.longestRun = getValidatedPair(longestRun);
     }
 
     @Override
-    public String getHighestPulse() {
-        return highestPulse > 0 ? String.valueOf(highestPulse) : UNKNOWN;
+    public Pair<Long, String> getHighestPulse() {
+        return highestPulse;
     }
 
     @Override
-    public void setHighestPulse(final int highestPulse) {
-        this.highestPulse = highestPulse;
+    public void setHighestPulse(final Pair<Long, String> highestPulse) {
+        Assertions.notNull(highestPulse);
+        this.highestPulse = getValidatedPair(highestPulse);
     }
 
     @Override
-    public String getHighestAveragePulse() {
-        return highestAveragePulse > 0 ? String.valueOf(highestAveragePulse) : UNKNOWN;
+    public Pair<Long, String> getHighestAveragePulse() {
+        return highestAveragePulse;
     }
 
     @Override
-    public void setHighestAveragePulse(final int highestAveragePulse) {
-        this.highestAveragePulse = highestAveragePulse;
+    public void setHighestAveragePulse(final Pair<Long, String> highestAveragePulse) {
+        Assertions.notNull(highestAveragePulse);
+        this.highestAveragePulse = getValidatedPair(highestAveragePulse);
     }
 
     @Override
-    public String getLowestAveragePulse() {
-        return lowestAveragePulse > 0 ? String.valueOf(lowestAveragePulse) : UNKNOWN;
+    public Pair<Long, String> getLowestAveragePulse() {
+        return lowestAveragePulse;
     }
 
     @Override
-    public void setLowestAveragePulse(final int lowestAveragePulse) {
-        this.lowestAveragePulse = lowestAveragePulse;
+    public void setLowestAveragePulse(final Pair<Long, String> lowestAveragePulse) {
+        Assertions.notNull(lowestAveragePulse);
+        this.lowestAveragePulse = getValidatedPair(lowestAveragePulse);
     }
 
-    private String getFormattedString(double value) {
-        final DecimalFormat format = new DecimalFormat("0.000"); //$NON-NLS-1$
-        final DecimalFormatSymbols dfs = new DecimalFormatSymbols();
-        dfs.setDecimalSeparator('.');
-        format.setDecimalFormatSymbols(dfs);
-        return format.format(value);
+    private Pair<Long, String> getValidatedPair(final Pair<Long, String> value) {
+        if (value.getFirst() == null || value.getSecond() == null) {
+            return EMPTY_PAIR;
+        } else {
+            return value;
+        }
     }
+
+    @Override
+    public Pair<Long, String> getEmpty() {
+        return EMPTY_PAIR;
+    }
+
+    // private String getFormattedString(final double value) {
+    //        final DecimalFormat format = new DecimalFormat("0.000"); //$NON-NLS-1$
+    // final DecimalFormatSymbols dfs = new DecimalFormatSymbols();
+    // dfs.setDecimalSeparator('.');
+    // format.setDecimalFormatSymbols(dfs);
+    // return format.format(value);
+    // }
 }

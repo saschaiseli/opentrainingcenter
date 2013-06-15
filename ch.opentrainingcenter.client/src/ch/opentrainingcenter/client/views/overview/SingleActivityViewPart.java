@@ -78,8 +78,11 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
     public SingleActivityViewPart() {
         final ApplicationContext context = ApplicationContext.getApplicationContext();
         final Long selectedId = context.getSelectedId();
-        training = cache.get(selectedId);
-
+        if (cache.get(selectedId) == null) {
+            training = databaseAccess.getTrainingById(selectedId);
+        } else {
+            training = cache.get(selectedId);
+        }
         final IAthlete athlete = context.getAthlete();
         simpleTraining = ModelFactory.createSimpleTraining(training, athlete);
 
@@ -313,7 +316,7 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
     }
 
     private void safeStrecke(final String key) {
-        final ITraining record = databaseAccess.getImportedRecord(training.getDatum());
+        final ITraining record = databaseAccess.getTrainingById(training.getDatum());
         final StreckeModel newModel = cacheStrecke.get(key);
         updateRoute(record, newModel.getId());
     }
@@ -322,7 +325,7 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         final Wetter wetter = simpleTraining.getWetter();
         if (index != wetter.getIndex()) {
             // änderungen
-            final ITraining record = databaseAccess.getImportedRecord(training.getDatum());
+            final ITraining record = databaseAccess.getTrainingById(training.getDatum());
             if (record != null) {
                 final Wetter currentWeather = Wetter.getRunType(index);
                 training.setWeather(CommonTransferFactory.createWeather(currentWeather.getIndex()));
@@ -335,7 +338,7 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
     private void safeNote(final String text) {
         if (!text.equals(simpleTraining.getNote())) {
             // änderungen
-            final ITraining record = databaseAccess.getImportedRecord(training.getDatum());
+            final ITraining record = databaseAccess.getTrainingById(training.getDatum());
             if (record != null) {
                 record.setNote(text);
                 simpleTraining.setNote(text);
@@ -352,7 +355,7 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
 
     private void updateRoute(final ITraining record, final int idRoute) {
         databaseAccess.updateRecordRoute(record, idRoute);
-        updateCache(databaseAccess.getImportedRecord(record.getDatum()));
+        updateCache(databaseAccess.getTrainingById(record.getDatum()));
     }
 
     private void update(final ITraining record) {

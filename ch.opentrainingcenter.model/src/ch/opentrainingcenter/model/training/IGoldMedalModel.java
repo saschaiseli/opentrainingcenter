@@ -1,33 +1,37 @@
 package ch.opentrainingcenter.model.training;
 
+import ch.opentrainingcenter.core.data.Pair;
 
 public interface IGoldMedalModel {
 
-    String getSchnellstePace();
+    Pair<Long, String> getEmpty();
 
-    void setSchnellstePace(final String schnellstePace);
+    Pair<Long, String> getSchnellstePace();
 
-    String getSchnellstePace(final Intervall intervall);
+    void setSchnellstePace(final Pair<Long, String> schnellstePace);
 
-    void setSchnellstePace(final Intervall intervall, final String schnellstePace);
+    Pair<Long, String> getSchnellstePace(final Intervall intervall);
 
-    String getLongestDistance();
+    void setSchnellstePace(final Intervall intervall, final Pair<Long, String> schnellstePace);
 
-    void setLongestDistance(final double longestDistance);
+    Pair<Long, String> getLongestDistance();
 
-    String getLongestRun();
+    void setLongestDistance(final Pair<Long, String> longestDistance);
 
-    void setLongestRun(final String longestRun);
+    Pair<Long, String> getLongestRun();
 
-    String getHighestPulse();
+    void setLongestRun(final Pair<Long, String> longestRun);
 
-    void setHighestPulse(final int highestPulse);
+    Pair<Long, String> getHighestPulse();
 
-    String getHighestAveragePulse();
+    void setHighestPulse(final Pair<Long, String> highestPulse);
 
-    void setHighestAveragePulse(final int highestAveragePulse);
+    Pair<Long, String> getHighestAveragePulse();
 
-    String getLowestAveragePulse();
+    void setHighestAveragePulse(final Pair<Long, String> highestAveragePulse);
 
-    void setLowestAveragePulse(final int lowestAveragePulse);
+    Pair<Long, String> getLowestAveragePulse();
+
+    void setLowestAveragePulse(final Pair<Long, String> lowestAveragePulse);
+
 }
