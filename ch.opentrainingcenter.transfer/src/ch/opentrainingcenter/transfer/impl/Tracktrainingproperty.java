@@ -105,10 +105,12 @@ public class Tracktrainingproperty implements java.io.Serializable, ITrackPointP
         this.lap = lap;
     }
 
+    @Override
     public ITraining getTraining() {
         return training;
     }
 
+    @Override
     public void setTraining(final ITraining training) {
         this.training = training;
     }
@@ -116,8 +118,8 @@ public class Tracktrainingproperty implements java.io.Serializable, ITrackPointP
     @SuppressWarnings("nls")
     @Override
     public String toString() {
-        return "Tracktrainingproperty [distance=" + distance + ", heartbeat=" + heartbeat + ", altitude=" + altitude + ", streckenPunkt=" + streckenPunkt
-                + ", lap=" + lap + "]";
+        return "Tracktrainingproperty [id=" + id + ", distance=" + distance + ", heartbeat=" + heartbeat + ", altitude=" + altitude + ", zeit=" + zeit
+                + ", streckenPunkt=" + streckenPunkt + ", training=" + training + ", lap=" + lap + "]";
     }
 
 }

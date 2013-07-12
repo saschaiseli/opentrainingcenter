@@ -19,6 +19,9 @@ public class GoldMedalAction {
 
     public IGoldMedalModel getModel(final List<ITraining> trainings) {
         final IGoldMedalModel result = ModelFactory.createGoldMedalModel();
+        if (trainings == null || trainings.isEmpty()) {
+            return result;
+        }
         final List<Pair<Long, Double>> maxSpeed = new ArrayList<>();
         final List<Pair<Long, Double>> laenge = new ArrayList<>();
         final List<Pair<Long, Double>> dauer = new ArrayList<>();

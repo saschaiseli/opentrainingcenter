@@ -32,7 +32,7 @@ public class GoldMedalActionTest {
 
     @Test
     public void testEmptyList() {
-        final IGoldMedalModel model = action.getModel(allImported);
+        final IGoldMedalModel model = action.getModel(new ArrayList<ITraining>());
 
         assertNotNull(model);
     }

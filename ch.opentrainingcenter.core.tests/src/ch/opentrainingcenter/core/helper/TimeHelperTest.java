@@ -240,6 +240,13 @@ public class TimeHelperTest {
         assertEquals(2011, jahr);
     }
 
+    @Test
+    public void testConvertMillisToTime() {
+        Locale.setDefault(Locale.CANADA_FRENCH);
+        final String time = TimeHelper.convertTimeToString(0);
+        assertEquals("00:00:00", time);
+    }
+
     private void assertDatum(final DateTime startExpected, final DateTime start) {
         assertEquals(startExpected.getDayOfMonth(), start.getDayOfMonth());
         assertEquals(startExpected.getMonthOfYear(), start.getMonthOfYear());

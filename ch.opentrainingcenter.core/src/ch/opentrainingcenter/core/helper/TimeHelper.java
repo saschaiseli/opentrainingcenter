@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
@@ -12,6 +13,7 @@ public final class TimeHelper {
 
     private static final String DATE_FILE_FORMAT_PATTERN = "yyyyMMddHHmmssSSS"; //$NON-NLS-1$
     private static final String DATE_TIME_FORMAT_PATTERN = "dd.MM.yyyy HH:mm:ss"; //$NON-NLS-1$
+    private static final String TIME_FORMAT_PATTERN = "HH:mm:ss"; //$NON-NLS-1$
     private static final String DATE_FORMAT_PATTERN = "dd.MM.yyyy"; //$NON-NLS-1$
     private static final int SEKUNDE_IN_MS = 1000;
     private static final String UNKNOWN_DATE = "--:--:--"; //$NON-NLS-1$
@@ -91,6 +93,17 @@ public final class TimeHelper {
         calendar.setTime(datum);
         final SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT_PATTERN);
         return format.format(datum);
+    }
+
+    /**
+     * @return zeit als String in der Form HH:mm:ss
+     */
+    public static final String convertTimeToString(final long timeInMillis) {
+        final Calendar calendar = Calendar.getInstance(Locale.GERMAN);
+        calendar.setTimeInMillis(timeInMillis);
+        final SimpleDateFormat format = new SimpleDateFormat(TIME_FORMAT_PATTERN);
+        format.setTimeZone(TimeZone.getTimeZone("GMT+0"));
+        return format.format(calendar.getTime());
     }
 
     public static int getKalenderWoche(final Date date, final Locale locale) {

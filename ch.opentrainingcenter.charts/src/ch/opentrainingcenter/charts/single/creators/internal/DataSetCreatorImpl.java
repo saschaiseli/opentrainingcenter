@@ -71,13 +71,15 @@ public class DataSetCreatorImpl implements DataSetCreator {
 
     private XYDataset createDataSet(final ChartType type) {
         final List<ITrackPointProperty> points = training.getTrackPoints();
-        final XYSeries series = new XYSeries(Messages.SingleActivityViewPart18);
+        final XYSeries visibleSeries = new XYSeries("b");
+        final XYSeries timeSeries = new XYSeries("t");
         for (final ITrackPointProperty point : points) {
-            addPoint(type, series, point);
+            addPoint(type, visibleSeries, point);
+            addPoint(ChartType.TIME_DISTANCE, timeSeries, point);
         }
         final XYSeriesCollection dataset = new XYSeriesCollection();
-        dataset.addSeries(series);
-
+        dataset.addSeries(visibleSeries);
+        dataset.addSeries(timeSeries);
         return dataset;
     }
 
@@ -85,6 +87,10 @@ public class DataSetCreatorImpl implements DataSetCreator {
         switch (type) {
         case HEART_DISTANCE: {
             serie.add(point.getDistance(), point.getHeartBeat());
+            break;
+        }
+        case TIME_DISTANCE: {
+            serie.add(point.getDistance(), point.getZeit());
             break;
         }
         case ALTITUDE_DISTANCE: {

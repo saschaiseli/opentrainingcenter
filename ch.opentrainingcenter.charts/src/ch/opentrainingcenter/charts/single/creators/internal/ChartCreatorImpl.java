@@ -33,9 +33,9 @@ public class ChartCreatorImpl implements ChartCreator {
     }
 
     @Override
-    public JFreeChart createChart(final XYDataset dataset, final ChartType type) {
-        final JFreeChart chart = ChartFactory.createXYLineChart(type.getTitel(), // chart
-                // title
+    public JFreeChart createChart(XYDataset dataset, final ChartType type) {
+        dataset = DatasetFilter.filter(dataset);
+        final JFreeChart chart = ChartFactory.createXYLineChart(type.getTitel(), //
                 type.getxAchse(), // x axis label
                 type.getyAchse(), // y axis label
                 dataset, // data
@@ -43,28 +43,30 @@ public class ChartCreatorImpl implements ChartCreator {
                 true, // tooltips
                 false // urls
                 );
-
-        // NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
         chart.setBackgroundPaint(Color.white);
-        // get a reference to the plot for further customisation...
         final XYPlot plot = chart.getXYPlot();
         plot.setBackgroundPaint(Color.white);
         plot.setDomainGridlinePaint(Color.lightGray);
         plot.setRangeGridlinePaint(Color.lightGray);
 
+        plot.setDomainCrosshairVisible(true);
+        plot.setDomainCrosshairLockedOnData(true);
+        plot.setRangeCrosshairVisible(true);
+        plot.setRangeCrosshairLockedOnData(true);
+
         final XYLineAndShapeRenderer renderer = new XYSplineRenderer();
         renderer.setSeriesLinesVisible(0, true);
         renderer.setSeriesShapesVisible(0, false);
+        plot.setRenderer(0, renderer);
+
         setLowerAndUpperBounds(plot);
         if (ChartType.HEART_DISTANCE.equals(type)) {
             addIntervallMarker(plot);
         }
-        plot.setRenderer(renderer);
 
         // change the auto tick unit selection to integer units only...
         final NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
         rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-
         return chart;
     }
 
