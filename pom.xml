@@ -17,7 +17,8 @@
 		<sonar.phase>generate-sources</sonar.phase>
 		<sonar.exclusions>rcp-parent, org.hibernate, logging, jfreechart,
 			com.eclipsesource.widgets.gmaps,junit,h2_lib,
-			ch.opentrainingcenter.tcx/**/*.java,**/Messages.java,ch/**/Messages.java, com/**/*.java,ch/opentrainingcenter/importer/fitnesslog/model/*.java</sonar.exclusions>
+			ch.opentrainingcenter.tcx/**/*.java,**/Messages.java,ch/**/Messages.java,
+			com/**/*.java,ch/opentrainingcenter/importer/fitnesslog/model/*.java</sonar.exclusions>
 	</properties>
 
 	<repositories>
@@ -33,7 +34,7 @@
 		<module>ch.opentrainingcenter.client</module>
 		<module>ch.opentrainingcenter.charts</module>
 		<module>ch.opentrainingcenter.core</module>
-		<module>ch.opentrainingcenter.model</module>		
+		<module>ch.opentrainingcenter.model</module>
 		<module>ch.opentrainingcenter.db</module>
 		<module>ch.opentrainingcenter.db.postgres</module>
 		<module>ch.opentrainingcenter.i18n</module>
@@ -103,13 +104,31 @@
 							<ws>gtk</ws>
 							<arch>x86</arch>
 						</environment>
-						<!-- <environment> <os>macosx</os> <ws>carbon</ws> <arch>x86</arch> 
-							</environment> <environment> <os>macosx</os> <ws>cocoa</ws> <arch>x86</arch> 
-							</environment> <environment> <os>macosx</os> <ws>cocoa</ws> <arch>x86_64</arch> 
-							</environment> <environment> <os>win32</os> <ws>win32</ws> <arch>x86</arch> 
-							</environment> <environment> <os>win32</os> <ws>win32</ws> <arch>x86_64</arch> 
-							</environment> -->
-					</environments>
+						<environment>
+							<os>macosx</os>
+							<ws>carbon</ws>
+							<arch>x86</arch>
+						</environment>
+						<environment>
+							<os>macosx</os>
+							<ws>cocoa</ws>
+							<arch>x86</arch>
+						</environment>
+						<environment>
+							<os>macosx</os>
+							<ws>cocoa</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>win32</os>
+							<ws>win32</ws>
+							<arch>x86</arch>
+						</environment>
+						<environment>
+							<os>win32</os>
+							<ws>win32</ws>
+							<arch>x86_64</arch>
+						</environment>
 				</configuration>
 			</plugin>
 		</plugins>
