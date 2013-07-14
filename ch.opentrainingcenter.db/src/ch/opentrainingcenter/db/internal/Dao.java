@@ -1,5 +1,6 @@
 package ch.opentrainingcenter.db.internal;
 
+import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.MappingException;
 import org.hibernate.Session;
@@ -12,6 +13,7 @@ import ch.opentrainingcenter.db.USAGE;
 
 public class Dao implements IDao {
 
+    private static final Logger LOG = Logger.getLogger(Dao.class);
     private Session session;
     private SessionFactory sessionFactory;
     private final USAGE usage;
@@ -40,7 +42,7 @@ public class Dao implements IDao {
             configuration.addResource("Route.hbm.xml"); //$NON-NLS-1$
             sessionFactory = configuration.buildSessionFactory();
         } catch (final MappingException e) {
-            e.printStackTrace();
+            LOG.error(e);
         }
     }
 

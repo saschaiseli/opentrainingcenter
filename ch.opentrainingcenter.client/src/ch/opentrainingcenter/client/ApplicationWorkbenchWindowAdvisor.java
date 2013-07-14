@@ -18,8 +18,8 @@ import ch.opentrainingcenter.client.splash.InitialLoadRunnable;
 import ch.opentrainingcenter.client.splash.OtcSplashHandler;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.core.PreferenceConstants;
+import ch.opentrainingcenter.core.db.DBSTATE;
 import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
-import ch.opentrainingcenter.core.db.DatabaseHelper.DBSTATE;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.transfer.IAthlete;
 

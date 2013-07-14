@@ -11,9 +11,8 @@ import org.eclipse.ui.PlatformUI;
 
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.core.PreferenceConstants;
+import ch.opentrainingcenter.core.db.DBSTATE;
 import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
-import ch.opentrainingcenter.core.db.DatabaseHelper;
-import ch.opentrainingcenter.core.db.DatabaseHelper.DBSTATE;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.db.SqlException;
 import ch.opentrainingcenter.i18n.Messages;
@@ -51,7 +50,7 @@ public class Application implements IApplication {
             DatabaseAccessFactory.init(dbName, url, user, pw);
             databaseAccess = DatabaseAccessFactory.getDatabaseAccess();
         }
-        final DBSTATE dbState = DatabaseHelper.getDatabaseState(databaseAccess);
+        final DBSTATE dbState = databaseAccess.getDatabaseState();
         ApplicationContext.getApplicationContext().setDbState(dbState);
         try {
             if (DBSTATE.LOCKED.equals(dbState)) {
@@ -66,7 +65,7 @@ public class Application implements IApplication {
                 ApplicationContext.getApplicationContext().setDbState(dbState);
                 return PlatformUI.createAndRunWorkbench(display, new ApplicationWorkbenchAdvisor());
             } else {
-                final boolean isExisting = DatabaseHelper.isDatabaseExisting(databaseAccess);
+                final boolean isExisting = databaseAccess.isDatabaseExisting();
                 if (!isExisting) {
                     try {
                         databaseAccess.createDatabase();

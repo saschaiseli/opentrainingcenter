@@ -3,6 +3,8 @@ package ch.opentrainingcenter.client.preferences;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.preference.ComboFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -10,8 +12,10 @@ import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
@@ -25,7 +29,14 @@ public class DatabasePreferencePage extends FieldEditorPreferencePage implements
 
     public static final Logger LOGGER = Logger.getLogger(DatabasePreferencePage.class);
     private IPreferenceStore store;
-    private boolean connectionTest = false;
+    private IDatabaseAccess access;
+    private boolean connectionSuccess = false;
+    private Group groupAdminDb;
+    private ComboFieldEditor dbChooser;
+    private Composite dbAdminComposite;
+    private StringFieldEditor dbAdminUrl;
+    private StringFieldEditor dbAdminUser;
+    private StringFieldEditor dbAdminPass;
 
     public DatabasePreferencePage() {
         super(GRID);
@@ -41,16 +52,32 @@ public class DatabasePreferencePage extends FieldEditorPreferencePage implements
     @Override
     protected void createFieldEditors() {
         final Composite parent = getFieldEditorParent();
+        parent.setLayout(GridLayoutFactory.swtDefaults().create());
+        final GridData gd = new GridData();
+        gd.horizontalAlignment = SWT.FILL;
+        gd.verticalAlignment = SWT.FILL;
+        gd.grabExcessHorizontalSpace = true;
+        gd.grabExcessVerticalSpace = true;
+        parent.setLayoutData(gd);
 
-        final StringFieldEditor dbUrl = new StringFieldEditor(PreferenceConstants.DB_URL, Messages.DatabasePreferencePage_2, parent);
-        final StringFieldEditor dbUser = new StringFieldEditor(PreferenceConstants.DB_USER, Messages.DatabasePreferencePage_3, parent);
-        final StringFieldEditor dbPass = new StringFieldEditor(PreferenceConstants.DB_PASS, Messages.DatabasePreferencePage_4, parent);
+        // ------------ Normale DB Connection
+        final Group groupDb = new Group(parent, SWT.NONE);
+        groupDb.setText("Datenbank");
+        groupDb.setLayout(GridLayoutFactory.swtDefaults().create());
+
+        final Composite dbComposite = new Composite(groupDb, SWT.NONE);
+        dbComposite.setLayout(GridLayoutFactory.swtDefaults().create());
+
+        final StringFieldEditor dbUrl = new StringFieldEditor(PreferenceConstants.DB_URL, Messages.DatabasePreferencePage_2, dbComposite);
+        final StringFieldEditor dbUser = new StringFieldEditor(PreferenceConstants.DB_USER, Messages.DatabasePreferencePage_3, dbComposite);
+        final StringFieldEditor dbPass = new StringFieldEditor(PreferenceConstants.DB_PASS, Messages.DatabasePreferencePage_4, dbComposite);
 
         addField(dbUser);
         addField(dbPass);
         addField(dbUrl);
 
         final Map<String, IDatabaseAccess> model = DatabaseAccessFactory.getDbaccesses();
+        initDatabaseAccess(model, store.getString(PreferenceConstants.DB));
         final String[][] entries = new String[model.size() + 1][model.size() + 1];
         entries[0] = new String[] { "", "" }; //$NON-NLS-1$//$NON-NLS-2$
         int i = 1;
@@ -59,9 +86,48 @@ public class DatabasePreferencePage extends FieldEditorPreferencePage implements
             i++;
         }
 
-        final ComboFieldEditor dbChooser = new ComboFieldEditor(PreferenceConstants.DB, Messages.DatabasePreferencePage_6, entries, parent);
-        dbChooser.setEnabled(false, parent);
+        dbChooser = new ComboFieldEditor(PreferenceConstants.DB, Messages.DatabasePreferencePage_6, entries, dbComposite) {
+
+            @Override
+            protected void fireValueChanged(final String property, final Object oldValue, final Object newValue) {
+                super.fireValueChanged(property, oldValue, newValue);
+                connectionSuccess = false;
+                checkState();
+                if (newValue != null) {
+                    final String dbKey = (String) newValue;
+                    initDatabaseAccess(model, dbKey);
+                }
+                boolean withAdmin = false;
+                if (access != null) {
+                    withAdmin = access.isUsingAdminDbConnection();
+                }
+                handleAdminConposite(withAdmin);
+            }
+
+        };
+
         addField(dbChooser);
+
+        // ------------ Admin DB Connection
+
+        groupAdminDb = new Group(parent, SWT.NONE);
+        groupAdminDb.setText("Admin Datenbank");
+        groupAdminDb.setLayout(GridLayoutFactory.swtDefaults().create());
+
+        dbAdminComposite = new Composite(groupAdminDb, SWT.NONE);
+        dbAdminComposite.setLayout(GridLayoutFactory.swtDefaults().create());
+
+        dbAdminUrl = new StringFieldEditor(PreferenceConstants.DB_ADMIN_URL, "Admin URL", dbAdminComposite);
+        dbAdminUser = new StringFieldEditor(PreferenceConstants.DB_ADMIN_USER, "Admin User", dbAdminComposite);
+        dbAdminPass = new StringFieldEditor(PreferenceConstants.DB_ADMIN_PASS, "Admin Passwort", dbAdminComposite);
+
+        addField(dbAdminUser);
+        addField(dbAdminPass);
+        addField(dbAdminUrl);
+
+        // -- layout
+        GridDataFactory.defaultsFor(groupDb).grab(true, true).span(2, 1).indent(5, 5).applyTo(groupDb);
+        GridDataFactory.defaultsFor(groupAdminDb).grab(true, true).span(2, 1).indent(5, 5).applyTo(groupAdminDb);
 
         setErrorMessage(Messages.DatabasePreferencePage_7);
 
@@ -72,16 +138,28 @@ public class DatabasePreferencePage extends FieldEditorPreferencePage implements
 
             @Override
             public void widgetSelected(final SelectionEvent e) {
-                final String url = dbUrl.getStringValue();
-                final String user = dbUser.getStringValue();
-                final String password = dbPass.getStringValue();
-                connectionTest = DatabaseAccessFactory.getDatabaseAccess().validateConnection(url, user, password);
-                if (!connectionTest) {
+                connectionSuccess = false;
+                if (access != null) {
+                    final String url = dbUrl.getStringValue();
+                    final String user = dbUser.getStringValue();
+                    final String password = dbPass.getStringValue();
+
+                    connectionSuccess = access.validateConnection(url, user, password);
+
+                    final String adminUrl = dbAdminUrl.getStringValue();
+                    final String adminUser = dbAdminUser.getStringValue();
+                    final String adminPassword = dbAdminPass.getStringValue();
+                    if (access.isUsingAdminDbConnection()) {
+                        connectionSuccess = access.validateConnection(adminUrl, adminUser, adminPassword);
+                    }
+                }
+                if (!connectionSuccess) {
                     setErrorMessage(Messages.DatabasePreferencePage_9);
                 } else {
-                    // do nothing
+                    dbChooser.store();
                 }
                 checkState();
+                dbUrl.setFocus();
             }
 
             @Override
@@ -89,11 +167,29 @@ public class DatabasePreferencePage extends FieldEditorPreferencePage implements
                 // do nothing
             }
         });
+        if (access != null) {
+            handleAdminConposite(access.isUsingAdminDbConnection());
+        }
+    }
+
+    private void initDatabaseAccess(final Map<String, IDatabaseAccess> model, final String dbKey) {
+        access = model.get(dbKey);
+    }
+
+    private void handleAdminConposite(final boolean withAdmin) {
+        groupAdminDb.setEnabled(withAdmin);
+        dbAdminComposite.setEnabled(withAdmin);
+        dbAdminUrl.setEnabled(withAdmin, dbAdminComposite);
+        dbAdminUser.setEnabled(withAdmin, dbAdminComposite);
+        dbAdminPass.setEnabled(withAdmin, dbAdminComposite);
+        dbAdminUrl.setEmptyStringAllowed(!withAdmin);
+        dbAdminUser.setEmptyStringAllowed(!withAdmin);
+        dbAdminPass.setEmptyStringAllowed(!withAdmin);
     }
 
     @Override
     protected void checkState() {
-        setValid(connectionTest);
+        setValid(connectionSuccess);
     }
 
     @Override

@@ -61,7 +61,7 @@ public final class DatabaseAccessFactory {
             if (databaseAccess != null) {
                 final DbConnection dbConnection = databaseAccess.getDbConnection();
                 if (DEVELOPING) {
-                    dbConnection.setUrl(url + "_dev"); //$NON-NLS-1$
+                    dbConnection.setUrl(url);// + "_dev"); //$NON-NLS-1$
                 } else {
                     dbConnection.setUrl(url);
                 }

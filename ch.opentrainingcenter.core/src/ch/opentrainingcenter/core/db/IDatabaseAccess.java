@@ -24,6 +24,22 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
     DbConnection getDbConnection();
 
     /**
+     * @return {@link DBSTATE}
+     */
+    DBSTATE getDatabaseState();
+
+    /**
+     * @return true, wenn zum erstellen der datenbank eine admin connection
+     *         gebraucht wird.
+     */
+    boolean isUsingAdminDbConnection();
+
+    /**
+     * @return true wenn die Datenbank existiert, ansonsten false
+     */
+    boolean isDatabaseExisting();
+
+    /**
      * Wenn die db nicht vorhanden ist, wird die ganze datenbank mit sql queries
      * erstellt.
      */

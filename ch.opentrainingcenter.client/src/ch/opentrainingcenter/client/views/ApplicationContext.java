@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import ch.opentrainingcenter.core.db.DatabaseHelper.DBSTATE;
+import ch.opentrainingcenter.core.db.DBSTATE;
 import ch.opentrainingcenter.transfer.IAthlete;
 
 /**

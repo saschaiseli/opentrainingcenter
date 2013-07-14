@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.CoreException;
 
 import ch.opentrainingcenter.core.assertions.Assertions;
+import ch.opentrainingcenter.core.db.DBSTATE;
 import ch.opentrainingcenter.core.db.DatabaseConnectionConfiguration;
 import ch.opentrainingcenter.core.db.DatabaseConnectionConfiguration.DB_MODE;
 import ch.opentrainingcenter.core.db.DbConnection;
@@ -92,6 +93,49 @@ public class DatabaseAccessPostgres implements IDatabaseAccess {
     @Override
     public Object create() throws CoreException {
         return new DatabaseAccessPostgres();
+    }
+
+    @Override
+    public DBSTATE getDatabaseState() {
+        try {
+            getAthlete(1);
+        } catch (final Exception e) {
+            final Throwable cause = e.getCause();
+            final String message = cause != null ? cause.getMessage() : e.getMessage();
+            if (message != null && message.contains("Locked by another process")) { //$NON-NLS-1$
+                LOG.error("Database Locked by another process"); //$NON-NLS-1$
+                return DBSTATE.LOCKED;
+            } else if (message != null && message.contains("Wrong user name or password")) { //$NON-NLS-1$
+                LOG.error("Wrong user name or password"); //$NON-NLS-1$
+                return DBSTATE.CONFIG_PROBLEM;
+            } else {
+                LOG.error("Fehler mit der Datenbank: " + message); //$NON-NLS-1$
+                return DBSTATE.PROBLEM;
+            }
+        }
+        return DBSTATE.OK;
+    }
+
+    @Override
+    public boolean isDatabaseExisting() {
+        try {
+            getAthlete(1);
+        } catch (final Exception e) {
+            final Throwable cause = e.getCause();
+            final String message = cause != null ? cause.getMessage() : e.getMessage();
+            if (message != null && message.contains("FATAL: database") && message.contains("does not exist")) { //$NON-NLS-1$
+                LOG.error("Database existiert noch nicht"); //$NON-NLS-1$
+                return false;
+            } else {
+                LOG.error("Fehler mit der Datenbank: " + message, e);
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public boolean isUsingAdminDbConnection() {
+        return true;
     }
 
     @Override
@@ -285,7 +329,7 @@ public class DatabaseAccessPostgres implements IDatabaseAccess {
         boolean result = false;
         try {
             Class.forName(dbConnection.getDriver());
-            final Connection con = DriverManager.getConnection(connectionUrl);
+            final Connection con = DriverManager.getConnection(url, user, pass);
             con.createStatement();
             result = true;
             LOG.info("Connection to database '" + connectionUrl + "' successfully");

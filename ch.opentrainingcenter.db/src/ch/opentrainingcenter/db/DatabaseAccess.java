@@ -10,6 +10,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.CoreException;
 
+import ch.opentrainingcenter.core.db.DBSTATE;
 import ch.opentrainingcenter.core.db.DatabaseConnectionConfiguration;
 import ch.opentrainingcenter.core.db.DbConnection;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
@@ -91,6 +92,49 @@ public class DatabaseAccess implements IDatabaseAccess {
     @Override
     public Object create() throws CoreException {
         return new DatabaseAccess();
+    }
+
+    @Override
+    public boolean isDatabaseExisting() {
+        try {
+            getAthlete(1);
+        } catch (final Exception e) {
+            final Throwable cause = e.getCause();
+            final String message = cause != null ? cause.getMessage() : e.getMessage();
+            if (message != null && message.contains("Table \"ATHLETE\" not found; SQL statement:")) { //$NON-NLS-1$
+                LOG.error("Database existiert noch nicht"); //$NON-NLS-1$
+                return false;
+            } else {
+                LOG.error("Fehler mit der Datenbank: " + message, e);
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public DBSTATE getDatabaseState() {
+        try {
+            getAthlete(1);
+        } catch (final Exception e) {
+            final Throwable cause = e.getCause();
+            final String message = cause != null ? cause.getMessage() : e.getMessage();
+            if (message != null && message.contains("Locked by another process")) { //$NON-NLS-1$
+                LOG.error("Database Locked by another process"); //$NON-NLS-1$
+                return DBSTATE.LOCKED;
+            } else if (message != null && message.contains("Wrong user name or password")) { //$NON-NLS-1$
+                LOG.error("Wrong user name or password"); //$NON-NLS-1$
+                return DBSTATE.CONFIG_PROBLEM;
+            } else {
+                LOG.error("Fehler mit der Datenbank: " + message); //$NON-NLS-1$
+                return DBSTATE.PROBLEM;
+            }
+        }
+        return DBSTATE.OK;
+    }
+
+    @Override
+    public boolean isUsingAdminDbConnection() {
+        return false;
     }
 
     @SuppressWarnings("nls")
