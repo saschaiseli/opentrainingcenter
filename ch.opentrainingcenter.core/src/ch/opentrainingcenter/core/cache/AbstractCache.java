@@ -27,7 +27,7 @@ public abstract class AbstractCache<K, V> implements ICache<K, V> {
     @Override
     public void add(final V value) {
         cache.put(getKey(value), value);
-        LOG.info("Cache Size: (Element added)" + cache.size());
+        LOG.info("Cache Size: (Element added)" + cache.size()); //$NON-NLS-1$
         final List<V> v = new ArrayList<V>();
         v.add(value);
         fireRecordAdded(v);
@@ -41,7 +41,7 @@ public abstract class AbstractCache<K, V> implements ICache<K, V> {
     @Override
     public void remove(final K key) {
         final V value = cache.remove(key);
-        LOG.info("Cache Size: (Element removed)" + cache.size());
+        LOG.info("Cache Size: (Element removed)" + cache.size()); //$NON-NLS-1$
         final List<V> values = new ArrayList<V>();
         if (value != null) {
             values.add(value);

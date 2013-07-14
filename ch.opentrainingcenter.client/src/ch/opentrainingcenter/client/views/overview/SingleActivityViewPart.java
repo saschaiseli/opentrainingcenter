@@ -343,24 +343,33 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
                 record.setNote(text);
                 simpleTraining.setNote(text);
             }
-            Display.getDefault().asyncExec(new Runnable() {
-
-                @Override
-                public void run() {
-                    update(record);
-                }
-            });
+            update(record);
         }
     }
 
     private void updateRoute(final ITraining record, final int idRoute) {
-        databaseAccess.updateRecordRoute(record, idRoute);
-        updateCache(databaseAccess.getTrainingById(record.getDatum()));
+        Display.getDefault().asyncExec(new Runnable() {
+
+            @Override
+            public void run() {
+                databaseAccess.updateRecordRoute(record, idRoute);
+                updateCache(databaseAccess.getTrainingById(record.getDatum()));
+
+            }
+        });
     }
 
     private void update(final ITraining record) {
-        databaseAccess.updateRecord(record);
-        updateCache(record);
+        Display.getDefault().asyncExec(new Runnable() {
+
+            @Override
+            public void run() {
+                databaseAccess.updateRecord(record);
+                updateCache(record);
+
+            }
+        });
+
     }
 
     private void updateCache(final ITraining record) {
