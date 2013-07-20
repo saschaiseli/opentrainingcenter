@@ -121,9 +121,9 @@ public class CompareRoute implements ICompareRoute {
 
     private void checkParameters(final Track reference, final Track track) {
         Assertions.notNull(reference, "Referenz Track darf nicht null sein!"); //$NON-NLS-1$
-        Assertions.equals(reference.getPoints().isEmpty(), "Jeder Track muss mindestens ein Punkt haben"); //$NON-NLS-1$
+        Assertions.isValid(reference.getPoints().isEmpty(), "Jeder Track muss mindestens ein Punkt haben"); //$NON-NLS-1$
         Assertions.notNull(track, "Track zum Vergleichen darf nicht null sein!"); //$NON-NLS-1$
-        Assertions.equals(track.getPoints().isEmpty(), "Jeder Track muss mindestens ein Punkt haben"); //$NON-NLS-1$
+        Assertions.isValid(track.getPoints().isEmpty(), "Jeder Track muss mindestens ein Punkt haben"); //$NON-NLS-1$
     }
 
     private double calculateDistanz(final Track track) {

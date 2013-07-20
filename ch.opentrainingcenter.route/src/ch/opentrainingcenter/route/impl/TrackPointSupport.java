@@ -67,7 +67,7 @@ public final class TrackPointSupport {
 
     private static void checkInput(final TrackPoint reference, final List<TrackPoint> points) {
         Assertions.notNull(reference, "Referenz Punkt darf nicht null sein"); //$NON-NLS-1$
-        Assertions.equals(points.isEmpty() || points.size() < 2, "Es müssen mindestens 2 Punkte im Track vorhanden sein"); //$NON-NLS-1$
+        Assertions.isValid(points.isEmpty() || points.size() < 2, "Es müssen mindestens 2 Punkte im Track vorhanden sein"); //$NON-NLS-1$
     }
 
     /**
@@ -82,7 +82,7 @@ public final class TrackPointSupport {
         TrackPoint result;
         Assertions.notNull(track);
         final List<TrackPoint> points = track.getPoints();
-        Assertions.equals(points.isEmpty(), "Es müssen punkte im track vorhanden sein"); //$NON-NLS-1$
+        Assertions.isValid(points.isEmpty(), "Es müssen punkte im track vorhanden sein"); //$NON-NLS-1$
         // final double position = handleNegativePosition(currentPosition);
         int index = 0;
         int i = 0;

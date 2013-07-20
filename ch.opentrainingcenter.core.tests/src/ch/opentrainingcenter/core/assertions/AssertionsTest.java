@@ -46,12 +46,12 @@ public class AssertionsTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testEqualsTrue() {
-        Assertions.equals(true, "blabla");
+        Assertions.isValid(true, "blabla");
     }
 
     @Test
     public void testEqualsFalse() {
-        Assertions.equals(false, "blabla");
+        Assertions.isValid(false, "blabla");
         assertTrue(true);
     }
 }
