@@ -22,7 +22,7 @@ public class Assertions {
      * Wenn expression true ist, wird eine IllegalArgumentException mit der
      * Meldung geworfen!
      */
-    public static void equals(final boolean expression, final String message) {
+    public static void isValid(final boolean expression, final String message) {
         if (expression) {
             // ja log and throw pattern :-)
             LOG.error(message);

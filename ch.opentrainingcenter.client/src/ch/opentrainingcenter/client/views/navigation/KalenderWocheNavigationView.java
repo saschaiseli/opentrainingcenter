@@ -139,10 +139,7 @@ public class KalenderWocheNavigationView extends ViewPart {
 
             @Override
             public void menuShown(final MenuEvent e) {
-                final List<?> selectionList = context.getSelection();
-                if (selectionList != null && selectionList.get(0) instanceof ConcreteImported) {
-                    // menu disablen wenn je nach runtype
-                }
+
             }
 
             @Override
