@@ -62,7 +62,7 @@ public class DatabasePreferencePage extends FieldEditorPreferencePage implements
 
         // ------------ Normale DB Connection
         final Group groupDb = new Group(parent, SWT.NONE);
-        groupDb.setText("Datenbank");
+        groupDb.setText(Messages.DatabasePreferencePage_10);
         groupDb.setLayout(GridLayoutFactory.swtDefaults().create());
 
         final Composite dbComposite = new Composite(groupDb, SWT.NONE);
@@ -111,15 +111,15 @@ public class DatabasePreferencePage extends FieldEditorPreferencePage implements
         // ------------ Admin DB Connection
 
         groupAdminDb = new Group(parent, SWT.NONE);
-        groupAdminDb.setText("Admin Datenbank");
+        groupAdminDb.setText(Messages.DatabasePreferencePage_11);
         groupAdminDb.setLayout(GridLayoutFactory.swtDefaults().create());
 
         dbAdminComposite = new Composite(groupAdminDb, SWT.NONE);
         dbAdminComposite.setLayout(GridLayoutFactory.swtDefaults().create());
 
-        dbAdminUrl = new StringFieldEditor(PreferenceConstants.DB_ADMIN_URL, "Admin URL", dbAdminComposite);
-        dbAdminUser = new StringFieldEditor(PreferenceConstants.DB_ADMIN_USER, "Admin User", dbAdminComposite);
-        dbAdminPass = new StringFieldEditor(PreferenceConstants.DB_ADMIN_PASS, "Admin Passwort", dbAdminComposite);
+        dbAdminUrl = new StringFieldEditor(PreferenceConstants.DB_ADMIN_URL, Messages.DatabasePreferencePage_12, dbAdminComposite);
+        dbAdminUser = new StringFieldEditor(PreferenceConstants.DB_ADMIN_USER, Messages.DatabasePreferencePage_13, dbAdminComposite);
+        dbAdminPass = new StringFieldEditor(PreferenceConstants.DB_ADMIN_PASS, Messages.DatabasePreferencePage_14, dbAdminComposite);
 
         addField(dbAdminUser);
         addField(dbAdminPass);

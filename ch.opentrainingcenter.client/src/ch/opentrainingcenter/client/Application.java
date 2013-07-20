@@ -70,7 +70,7 @@ public class Application implements IApplication {
                     try {
                         databaseAccess.createDatabase();
                     } catch (final SqlException sqlException) {
-                        MessageDialog.openError(display.getActiveShell(), "DB Fehler", "Datenbank konnte nicht erstellt werden");
+                        MessageDialog.openError(display.getActiveShell(), Messages.Application_0, Messages.Application_1);
                     }
                 }
             }

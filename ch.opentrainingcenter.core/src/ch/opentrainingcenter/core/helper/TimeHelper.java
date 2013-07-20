@@ -102,7 +102,7 @@ public final class TimeHelper {
         final Calendar calendar = Calendar.getInstance(Locale.GERMAN);
         calendar.setTimeInMillis(timeInMillis);
         final SimpleDateFormat format = new SimpleDateFormat(TIME_FORMAT_PATTERN);
-        format.setTimeZone(TimeZone.getTimeZone("GMT+0"));
+        format.setTimeZone(TimeZone.getTimeZone("GMT+0")); //$NON-NLS-1$
         return format.format(calendar.getTime());
     }
 

@@ -38,17 +38,17 @@ public final class PreferenceConstants {
     public static final String ZIEL_NICHT_ERFUELLT_COLOR = "ZIEL_NICHT_ERFUELLT_COLOR"; //$NON-NLS-1$
     public static final String ZIEL_NICHT_BEKANNT_COLOR = "ZIEL_NICHT_BEKANNT_COLOR"; //$NON-NLS-1$
 
-    public static final String KML_DEBUG_PATH = "KML_DEBUG_PATH";
+    public static final String KML_DEBUG_PATH = "KML_DEBUG_PATH";//$NON-NLS-1$
 
-    public static final String DB_USER = "DB_USER";
-    public static final String DB_PASS = "DB_PASS";
-    public static final String DB_URL = "DB_URL";
+    public static final String DB_USER = "DB_USER";//$NON-NLS-1$
+    public static final String DB_PASS = "DB_PASS";//$NON-NLS-1$
+    public static final String DB_URL = "DB_URL";//$NON-NLS-1$
 
-    public static final String DB_ADMIN_USER = "DB_ADMIN_USER";
-    public static final String DB_ADMIN_PASS = "DB_ADMIN_PASS";
-    public static final String DB_ADMIN_URL = "DB_ADMIN_URL";
+    public static final String DB_ADMIN_USER = "DB_ADMIN_USER";//$NON-NLS-1$
+    public static final String DB_ADMIN_PASS = "DB_ADMIN_PASS";//$NON-NLS-1$
+    public static final String DB_ADMIN_URL = "DB_ADMIN_URL";//$NON-NLS-1$
 
-    public static final String DB = "DB";
+    public static final String DB = "DB";//$NON-NLS-1$
 
     private PreferenceConstants() {
 

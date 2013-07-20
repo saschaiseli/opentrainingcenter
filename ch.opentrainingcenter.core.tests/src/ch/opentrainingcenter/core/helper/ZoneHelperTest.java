@@ -12,6 +12,7 @@ import org.mockito.Mockito;
 import ch.opentrainingcenter.core.helper.ZoneHelper.Zone;
 import ch.opentrainingcenter.transfer.IAthlete;
 
+@SuppressWarnings("nls")
 public class ZoneHelperTest {
 
     private IPreferenceStore store;

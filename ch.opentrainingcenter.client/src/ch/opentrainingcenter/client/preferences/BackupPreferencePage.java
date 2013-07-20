@@ -26,7 +26,7 @@ public class BackupPreferencePage extends FieldEditorPreferencePage implements I
     protected void createFieldEditors() {
         final Composite fieldEditorParent = getFieldEditorParent();
         addField(new DirectoryFieldEditor(PreferenceConstants.BACKUP_FILE_LOCATION, Messages.BackupPreferencePage1, fieldEditorParent));
-        addField(new DirectoryFieldEditor(PreferenceConstants.KML_DEBUG_PATH, "Ort für KML Debug Files", fieldEditorParent));
+        addField(new DirectoryFieldEditor(PreferenceConstants.KML_DEBUG_PATH, Messages.BackupPreferencePage_0, fieldEditorParent));
     }
 
 }

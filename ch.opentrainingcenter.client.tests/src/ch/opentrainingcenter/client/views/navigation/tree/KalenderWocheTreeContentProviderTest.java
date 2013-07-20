@@ -19,6 +19,7 @@ import ch.opentrainingcenter.model.navigation.INavigationParent;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IHealth;
 
+@SuppressWarnings("nls")
 public class KalenderWocheTreeContentProviderTest {
     private KalenderWocheTreeContentProvider provider;
 

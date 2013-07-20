@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+@SuppressWarnings("nls")
 public class PairComparatorTest {
     @Test
     public void compareTest() {

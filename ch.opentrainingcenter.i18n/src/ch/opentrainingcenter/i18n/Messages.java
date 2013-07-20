@@ -8,6 +8,10 @@ public final class Messages extends NLS {
     public static String AddEditHandler_0;
     public static String AddEditHandler_1;
     public static String AddTrainingPlan_0;
+    public static String AnnotationHelper_0;
+    public static String AnnotationHelper_1;
+    public static String Application_0;
+    public static String Application_1;
     public static String Application0;
     public static String Application1;
     public static String Application2;
@@ -24,8 +28,10 @@ public final class Messages extends NLS {
     public static String ApplicationWorkbenchAdvisorAthleteNotInPreferences;
     public static String BackupGpsFiles0;
     public static String BackupGpsFiles1;
+    public static String BackupPreferencePage_0;
     public static String BackupPreferencePage0;
     public static String BackupPreferencePage1;
+    public static String BestRunsView_0;
     public static String BestRunsView0;
     public static String BestRunsView1;
     public static String BestRunsView10;
@@ -89,6 +95,11 @@ public final class Messages extends NLS {
     public static String CreateAthleteView9;
     public static String DatabasePreferencePage_0;
     public static String DatabasePreferencePage_1;
+    public static String DatabasePreferencePage_10;
+    public static String DatabasePreferencePage_11;
+    public static String DatabasePreferencePage_12;
+    public static String DatabasePreferencePage_13;
+    public static String DatabasePreferencePage_14;
     public static String DatabasePreferencePage_2;
     public static String DatabasePreferencePage_3;
     public static String DatabasePreferencePage_4;

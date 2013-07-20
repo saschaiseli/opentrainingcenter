@@ -18,6 +18,7 @@ import org.mockito.Mockito;
 
 import ch.opentrainingcenter.transfer.ITraining;
 
+@SuppressWarnings("nls")
 public class AbstractCacheTest {
 
     class JunitListener implements IRecordListener<ITraining> {

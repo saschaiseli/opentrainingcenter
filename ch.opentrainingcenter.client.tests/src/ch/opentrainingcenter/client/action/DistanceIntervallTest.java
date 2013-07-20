@@ -8,7 +8,6 @@ import org.junit.Test;
 
 import ch.opentrainingcenter.model.training.Intervall;
 
-@SuppressWarnings("nls")
 public class DistanceIntervallTest {
 
     private DistanceIntervall intervall;

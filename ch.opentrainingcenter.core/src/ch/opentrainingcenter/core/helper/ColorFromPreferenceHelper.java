@@ -35,7 +35,7 @@ public final class ColorFromPreferenceHelper {
         if (cBelow != null) {
             final String[] splitBelow = cBelow.split(","); //$NON-NLS-1$
             if (splitBelow.length != 3) {
-                throw new IllegalArgumentException("Farbe: '" + cBelow + "' kann nicht konvertiert werden");
+                throw new IllegalArgumentException("Farbe: '" + cBelow + "' kann nicht konvertiert werden"); //$NON-NLS-1$ //$NON-NLS-2$
             }
             return new Color(Integer.valueOf(splitBelow[0]), Integer.valueOf(splitBelow[1]), Integer.valueOf(splitBelow[2]), alpha);
         } else {
@@ -50,7 +50,7 @@ public final class ColorFromPreferenceHelper {
         if (cBelow != null) {
             final String[] splitBelow = cBelow.split(","); //$NON-NLS-1$
             if (splitBelow.length != 3) {
-                throw new IllegalArgumentException("Farbe: '" + cBelow + "' kann nicht konvertiert werden");
+                throw new IllegalArgumentException("Farbe: '" + cBelow + "' kann nicht konvertiert werden"); //$NON-NLS-1$ //$NON-NLS-2$
             }
             return new org.eclipse.swt.graphics.Color(device, Integer.valueOf(splitBelow[0]), Integer.valueOf(splitBelow[1]), Integer.valueOf(splitBelow[2]));
         } else {

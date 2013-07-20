@@ -47,7 +47,7 @@ public class DynamicChartInfos {
      *         null zurückgegeben.
      */
     public Pair<Number, Number> getXValue(final int key) {
-        Assertions.notNull(renderInfos, "Renderinfos dürfen nicht null sein");
+        Assertions.notNull(renderInfos, "Renderinfos dürfen nicht null sein"); //$NON-NLS-1$
         if (result.isEmpty()) {
             assignValuesToMap();
         }
@@ -98,7 +98,7 @@ public class DynamicChartInfos {
      * Zeit im Dataset ist, wird null zurückgegeben.
      */
     public String getYValue(final int key) {
-        Assertions.notNull(renderInfos, "Renderinfos dürfen nicht null sein");
+        Assertions.notNull(renderInfos, "Renderinfos dürfen nicht null sein"); //$NON-NLS-1$
         if (time.isEmpty()) {
             assignValuesToMap();
         }

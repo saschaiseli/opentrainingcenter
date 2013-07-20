@@ -171,14 +171,14 @@ public class ChartFactory {
             private void addImageAnnotation(final XYPlot plot, final Pair<Number, Number> xy) {
                 try {
                     final Bundle bundle = Platform.getBundle(Activator.PLUGIN_ID);
-                    final Path path = new Path("icons/man_lj_32_32.gif");
+                    final Path path = new Path("icons/man_lj_32_32.gif"); //$NON-NLS-1$
                     final URL url = FileLocator.find(bundle, path, Collections.EMPTY_MAP);
                     final URL fileURL = FileLocator.toFileURL(url);
                     final BufferedImage bimg = ImageIO.read(fileURL);
                     final XYImageAnnotation a = new XYImageAnnotation(xy.getFirst().doubleValue(), xy.getSecond().doubleValue(), bimg, RectangleAnchor.CENTER);
                     plot.addAnnotation(a);
                 } catch (final IOException e) {
-                    System.out.println("e: " + e.getMessage());
+                    System.out.println("e: " + e.getMessage()); //$NON-NLS-1$
                 }
             }
 

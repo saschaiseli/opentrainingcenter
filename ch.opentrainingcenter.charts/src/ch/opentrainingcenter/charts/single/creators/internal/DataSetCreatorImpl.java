@@ -71,8 +71,8 @@ public class DataSetCreatorImpl implements DataSetCreator {
 
     private XYDataset createDataSet(final ChartType type) {
         final List<ITrackPointProperty> points = training.getTrackPoints();
-        final XYSeries visibleSeries = new XYSeries("b");
-        final XYSeries timeSeries = new XYSeries("t");
+        final XYSeries visibleSeries = new XYSeries("b"); //$NON-NLS-1$
+        final XYSeries timeSeries = new XYSeries("t"); //$NON-NLS-1$
         for (final ITrackPointProperty point : points) {
             addPoint(type, visibleSeries, point);
             addPoint(ChartType.TIME_DISTANCE, timeSeries, point);

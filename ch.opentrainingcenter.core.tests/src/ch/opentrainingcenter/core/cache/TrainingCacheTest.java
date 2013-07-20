@@ -14,6 +14,7 @@ import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.IWeather;
 
+@SuppressWarnings("nls")
 public class TrainingCacheTest {
 
     @Test

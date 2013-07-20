@@ -22,6 +22,7 @@ public final class DbScriptReader {
      * 
      * @throws FileNotFoundException
      */
+    @SuppressWarnings("nls")
     public static final List<String> readDbScript(final String sqlFileName) throws FileNotFoundException {
         if (sqlFileName == null || sqlFileName.length() == 0) {
             throw new IllegalArgumentException("Ungültige Angabe des SQL Files. '" + sqlFileName + "'");

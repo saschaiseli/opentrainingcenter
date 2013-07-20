@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
 
+@SuppressWarnings("nls")
 public class ColorFromPreferenceHelperTest {
 
     @Test

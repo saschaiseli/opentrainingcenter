@@ -7,6 +7,7 @@ import org.jfree.data.Range;
 import org.jfree.ui.TextAnchor;
 
 import ch.opentrainingcenter.core.data.Pair;
+import ch.opentrainingcenter.i18n.Messages;
 
 public class AnnotationHelper {
 
@@ -20,11 +21,11 @@ public class AnnotationHelper {
         final double upperBound = range.getUpperBound();
         final double diff = upperBound - lowerBound;
 
-        final XYTextAnnotation xValue = new XYTextAnnotation("Meter: " + xy.getFirst(), x * 1.01, lowerBound + (diff * 0.05));
+        final XYTextAnnotation xValue = new XYTextAnnotation(Messages.AnnotationHelper_0 + xy.getFirst(), x * 1.01, lowerBound + (diff * 0.05));
         xValue.setTextAnchor(TextAnchor.CENTER_LEFT);
         plot.addAnnotation(xValue);
         if (zeit != null) {
-            final XYTextAnnotation time = new XYTextAnnotation("Zeit:     " + zeit, x * 1.01, lowerBound + (diff * 0.085));
+            final XYTextAnnotation time = new XYTextAnnotation(Messages.AnnotationHelper_1 + zeit, x * 1.01, lowerBound + (diff * 0.085));
             time.setTextAnchor(TextAnchor.CENTER_LEFT);
             plot.addAnnotation(time);
         }

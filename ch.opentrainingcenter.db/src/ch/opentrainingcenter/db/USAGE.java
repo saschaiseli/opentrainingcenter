@@ -4,15 +4,15 @@ public enum USAGE {
     /**
      * Use a production db configuration
      */
-    PRODUCTION("otc", false, false),
+    PRODUCTION("otc", false, false), //$NON-NLS-1$
     /**
      * use the otc_dev database
      */
-    DEVELOPING("otc_dev", true, true),
+    DEVELOPING("otc_dev", true, true), //$NON-NLS-1$
     /**
      * the content of the database will be deleted after each test.
      */
-    TEST("otc_junit", true, true);
+    TEST("otc_junit", true, true); //$NON-NLS-1$
 
     private final String dbName;
     private final boolean showSql;

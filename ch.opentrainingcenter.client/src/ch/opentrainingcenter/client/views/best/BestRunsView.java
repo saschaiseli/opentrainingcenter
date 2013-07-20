@@ -185,8 +185,8 @@ public class BestRunsView extends ViewPart {
 
     private Hyperlink createLink(final Composite parent, final String label, final Pair<Long, String> pair, final Units unit) {
         // Label
-        Assertions.notNull(pair, "datentupel darf nicht null sein");
-        Assertions.notNull(pair.getSecond(), "Label darf nicht null sein");
+        Assertions.notNull(pair, "datentupel darf nicht null sein"); //$NON-NLS-1$
+        Assertions.notNull(pair.getSecond(), "Label darf nicht null sein"); //$NON-NLS-1$
         final Label dauerLabel = toolkit.createLabel(parent, label + ": "); //$NON-NLS-1$
         GridData gd = new GridData();
         gd.verticalIndent = 4;
@@ -199,7 +199,7 @@ public class BestRunsView extends ViewPart {
         gd.verticalIndent = 4;
         link.setLayoutData(gd);
         link.setData(pair);
-        link.setToolTipText("Den Lauf öffnen");
+        link.setToolTipText(Messages.BestRunsView_0);
         link.addHyperlinkListener(new IHyperlinkListener() {
 
             @Override

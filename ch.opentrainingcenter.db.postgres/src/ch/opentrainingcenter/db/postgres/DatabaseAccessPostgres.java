@@ -123,11 +123,11 @@ public class DatabaseAccessPostgres implements IDatabaseAccess {
         } catch (final Exception e) {
             final Throwable cause = e.getCause();
             final String message = cause != null ? cause.getMessage() : e.getMessage();
-            if (message != null && message.contains("FATAL: database") && message.contains("does not exist")) { //$NON-NLS-1$
+            if (message != null && message.contains("FATAL: database") && message.contains("does not exist")) { //$NON-NLS-1$ //$NON-NLS-2$
                 LOG.error("Database existiert noch nicht"); //$NON-NLS-1$
                 return false;
             } else {
-                LOG.error("Fehler mit der Datenbank: " + message, e);
+                LOG.error("Fehler mit der Datenbank: " + message, e); //$NON-NLS-1$
             }
         }
         return true;

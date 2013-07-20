@@ -10,7 +10,7 @@ import ch.opentrainingcenter.model.training.Intervall;
 
 public class GoldMedalModel implements IGoldMedalModel {
 
-    private static final Pair<Long, String> EMPTY_PAIR = new Pair<>(null, "-");
+    private static final Pair<Long, String> EMPTY_PAIR = new Pair<>(null, "-"); //$NON-NLS-1$
     private static final Map<Intervall, Pair<Long, String>> schnellstePaces = new HashMap<>();
 
     static {

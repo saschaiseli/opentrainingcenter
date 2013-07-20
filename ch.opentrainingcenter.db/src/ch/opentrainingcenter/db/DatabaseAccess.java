@@ -105,7 +105,7 @@ public class DatabaseAccess implements IDatabaseAccess {
                 LOG.error("Database existiert noch nicht"); //$NON-NLS-1$
                 return false;
             } else {
-                LOG.error("Fehler mit der Datenbank: " + message, e);
+                LOG.error("Fehler mit der Datenbank: " + message, e); //$NON-NLS-1$
             }
         }
         return true;

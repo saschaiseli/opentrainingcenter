@@ -31,6 +31,6 @@ public class Pair<K extends Number, V> {
 
     @Override
     public String toString() {
-        return "Pair [first=" + first + ", second=" + second + "]";
+        return "Pair [first=" + first + ", second=" + second + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 }

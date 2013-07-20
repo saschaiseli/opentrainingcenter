@@ -5,6 +5,7 @@ import org.mockito.Mockito;
 
 import ch.opentrainingcenter.transfer.IAthlete;
 
+@SuppressWarnings("nls")
 public class StreckeModelTest {
 
     @Test(expected = IllegalArgumentException.class)

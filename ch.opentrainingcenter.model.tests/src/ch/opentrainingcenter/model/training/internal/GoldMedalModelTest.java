@@ -9,6 +9,7 @@ import org.junit.Test;
 import ch.opentrainingcenter.core.data.Pair;
 import ch.opentrainingcenter.model.training.Intervall;
 
+@SuppressWarnings("nls")
 public class GoldMedalModelTest {
 
     GoldMedalModel model;

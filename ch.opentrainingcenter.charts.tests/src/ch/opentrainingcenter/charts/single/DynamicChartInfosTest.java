@@ -24,7 +24,7 @@ import org.mockito.Mockito;
 
 import ch.opentrainingcenter.core.data.Pair;
 
-@SuppressWarnings({ "rawtypes", "unchecked" })
+@SuppressWarnings({ "rawtypes", "unchecked", "nls" })
 public class DynamicChartInfosTest {
 
     private DynamicChartInfos infos;

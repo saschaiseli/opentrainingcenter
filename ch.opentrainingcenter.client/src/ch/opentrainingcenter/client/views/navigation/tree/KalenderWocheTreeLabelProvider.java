@@ -21,7 +21,7 @@ public class KalenderWocheTreeLabelProvider extends LabelProvider {
             final INavigationItem item = (INavigationItem) element;
             return item.getName();
         } else {
-            throw new IllegalArgumentException("Der Typ '" + element + "' ist nicht definiert");
+            throw new IllegalArgumentException("Der Typ '" + element + "' ist nicht definiert"); //$NON-NLS-1$ //$NON-NLS-2$
         }
     }
 
