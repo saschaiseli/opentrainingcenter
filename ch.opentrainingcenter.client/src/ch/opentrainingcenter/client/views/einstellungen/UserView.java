@@ -90,7 +90,6 @@ public class UserView extends ViewPart {
         LOGGER.debug("Create User View"); //$NON-NLS-1$
         toolkit = new FormToolkit(this.parent.getDisplay());
         form = toolkit.createScrolledForm(this.parent);
-        // form.setSize(1000, 2000);
         // gridlayout definieren
 
         final TableWrapLayout layout = new TableWrapLayout();

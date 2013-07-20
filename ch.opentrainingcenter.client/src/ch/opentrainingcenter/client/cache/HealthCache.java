@@ -12,9 +12,9 @@ import ch.opentrainingcenter.model.navigation.ConcreteHealth;
  * @author sascha
  * 
  */
-public class HealthCache extends AbstractCache<Integer, ConcreteHealth> {
+public final class HealthCache extends AbstractCache<Integer, ConcreteHealth> {
 
-    private static HealthCache INSTANCE = new HealthCache();
+    private static final HealthCache INSTANCE = new HealthCache();
 
     private HealthCache() {
         // do not create instance. this cache is a singleton

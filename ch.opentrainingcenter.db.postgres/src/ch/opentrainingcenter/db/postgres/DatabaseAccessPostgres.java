@@ -37,6 +37,8 @@ import ch.opentrainingcenter.transfer.IWeather;
 
 public class DatabaseAccessPostgres implements IDatabaseAccess {
     private static final Logger LOG = Logger.getLogger(DatabaseAccessPostgres.class);
+    private final static String DRIVER = "org.postgresql.Driver"; //$NON-NLS-1$
+    private final static String DIALECT = "org.hibernate.dialect.PostgreSQLDialect"; //$NON-NLS-1$
     private final DbConnection dbConnection;
     private AthleteDao athleteDao;
     private DatabaseCreator databaseCreator;
@@ -53,17 +55,16 @@ public class DatabaseAccessPostgres implements IDatabaseAccess {
      * Mit diesem Konstruktur wird mit der eclipse platform der vm args
      * parameters ausgelesen und ausgewertet.
      */
-    @SuppressWarnings("nls")
     public DatabaseAccessPostgres() {
-        dbConnection = new DbConnection("org.postgresql.Driver", "org.hibernate.dialect.PostgreSQLDialect");
+
+        dbConnection = new DbConnection(DRIVER, DIALECT);
     }
 
     /**
      * Konstruktor für Tests
      */
-    @SuppressWarnings("nls")
     public DatabaseAccessPostgres(final IDao dao) {
-        dbConnection = new DbConnection("org.postgresql.Driver", "org.hibernate.dialect.PostgreSQLDialect");
+        dbConnection = new DbConnection(DRIVER, DIALECT);
         this.dao = dao;
         this.config = dao.getConfig();
         init();
@@ -154,17 +155,19 @@ public class DatabaseAccessPostgres implements IDatabaseAccess {
     private void createDB() {
         Connection conn = null;
         Statement stmt = null;
+        ResultSet db = null;
+        ResultSet user = null;
         try {
             Class.forName(config.getDriver(DB_MODE.ADMIN));
             conn = DriverManager.getConnection(config.getUrl(DB_MODE.ADMIN), config.getUsername(DB_MODE.ADMIN), config.getPassword(DB_MODE.ADMIN));
             stmt = conn.createStatement();
-            final ResultSet user = stmt.executeQuery("SELECT COUNT(*) FROM pg_user WHERE usename='" + config.getUsername(DB_MODE.APPLICATION) + "'");
+            user = stmt.executeQuery("SELECT COUNT(*) FROM pg_user WHERE usename='" + config.getUsername(DB_MODE.APPLICATION) + "'");
             user.next();
             final int count = user.getInt("count");
             if (count == 0) {
                 stmt.execute("CREATE USER " + config.getUsername(DB_MODE.APPLICATION) + " WITH PASSWORD '" + config.getPassword(DB_MODE.APPLICATION) + "'");
             }
-            final ResultSet db = stmt.executeQuery("SELECT count(*) from pg_database where datname='" + config.getDatabaseName(DB_MODE.APPLICATION) + "'");
+            db = stmt.executeQuery("SELECT count(*) from pg_database where datname='" + config.getDatabaseName(DB_MODE.APPLICATION) + "'");
             db.next();
             final int countDb = db.getInt("count");
             if (countDb == 0) {
@@ -173,22 +176,44 @@ public class DatabaseAccessPostgres implements IDatabaseAccess {
             stmt.execute("ALTER DATABASE OTC_JUNIT OWNER TO " + config.getUsername(DB_MODE.APPLICATION));
             stmt.execute("ALTER SCHEMA PUBLIC OWNER TO " + config.getUsername(DB_MODE.APPLICATION));
         } catch (final SQLException se) {
-            se.printStackTrace();
+            LOG.error(se);
         } catch (final Exception e) {
-            e.printStackTrace();
+            LOG.error(e);
         } finally {
-            try {
-                if (stmt != null)
-                    stmt.close();
-            } catch (final SQLException se2) {
-                // egal
+            close(stmt);
+            close(db);
+            close(user);
+            close(conn);
+        }
+    }
+
+    private void close(final Connection conn) {
+        try {
+            if (conn != null) {
+                conn.close();
             }
-            try {
-                if (conn != null)
-                    conn.close();
-            } catch (final SQLException se) {
-                se.printStackTrace();
+        } catch (final SQLException se) {
+            LOG.error(se);
+        }
+    }
+
+    private void close(final ResultSet db) {
+        try {
+            if (db != null) {
+                db.close();
             }
+        } catch (final SQLException se) {
+            LOG.error(se);
+        }
+    }
+
+    private void close(final Statement stmt) {
+        try {
+            if (stmt != null) {
+                stmt.close();
+            }
+        } catch (final SQLException se) {
+            LOG.error(se);
         }
     }
 

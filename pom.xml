@@ -20,7 +20,7 @@
 			ch.opentrainingcenter.tcx/**/*.java,
 			**/Messages.java,
 			ch/**/Messages.java,
-			ch.opentrainingcenter/**/tests/*.java,
+			**/*Test.java,
 			com/**/*.java,ch/opentrainingcenter/importer/fitnesslog/model/*.java</sonar.exclusions>
 	</properties>
 

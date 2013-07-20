@@ -393,12 +393,6 @@ public class OTCBarChartViewer implements ISelectionProvider {
             final StandardXYToolTipGenerator generator = new StandardXYToolTipGenerator(label, new SimpleDateFormat(chartSerieType.getFormatPattern()),
                     new DecimalFormat("0.000")); //$NON-NLS-1$
             renderer.setBaseToolTipGenerator(generator);
-
-            // final ItemLabelPosition position = new
-            // ItemLabelPosition(ItemLabelAnchor.CENTER, TextAnchor.CENTER,
-            // TextAnchor.CENTER, -Math.PI / 2.0);
-            // renderer.setBasePositiveItemLabelPosition(position);
-
             renderer.setBaseItemLabelFont(new Font("Default", Font.PLAIN, 7)); //$NON-NLS-1$
             renderer.setBaseItemLabelGenerator(null);
 

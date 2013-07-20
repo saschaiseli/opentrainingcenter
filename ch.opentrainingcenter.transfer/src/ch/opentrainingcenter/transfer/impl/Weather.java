@@ -2,9 +2,6 @@ package ch.opentrainingcenter.transfer.impl;
 
 // Generated 04.04.2013 20:38:06 by Hibernate Tools 3.4.0.CR1
 
-import java.util.Set;
-
-import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.IWeather;
 
 /**
@@ -17,20 +14,11 @@ public class Weather implements java.io.Serializable, IWeather {
     private String wetter;
     private String imageicon;
 
-    // private Set<ITraining> trainings = new HashSet<ITraining>(0);
-
     public Weather() {
     }
 
     public Weather(final int id) {
         this.id = id;
-    }
-
-    public Weather(final int id, final String wetter, final String imageicon, final Set<ITraining> trainings) {
-        this.id = id;
-        this.wetter = wetter;
-        this.imageicon = imageicon;
-        // this.trainings = trainings;
     }
 
     @Override
@@ -59,14 +47,6 @@ public class Weather implements java.io.Serializable, IWeather {
         this.imageicon = imageicon;
     }
 
-    // @Override
-    // public Set<ITraining> getTrainings() {
-    // return this.trainings;
-    // }
-    //
-    // public void setTrainings(final Set<ITraining> trainings) {
-    // this.trainings = trainings;
-    // }
     @SuppressWarnings("nls")
     @Override
     public String toString() {

@@ -4,9 +4,9 @@ import ch.opentrainingcenter.core.cache.AbstractCache;
 import ch.opentrainingcenter.model.planing.IPlanungModel;
 import ch.opentrainingcenter.model.planing.KwJahrKey;
 
-public class TrainingsPlanCache extends AbstractCache<KwJahrKey, IPlanungModel> {
+public final class TrainingsPlanCache extends AbstractCache<KwJahrKey, IPlanungModel> {
 
-    private static TrainingsPlanCache INSTANCE = new TrainingsPlanCache();
+    private static final TrainingsPlanCache INSTANCE = new TrainingsPlanCache();
 
     private TrainingsPlanCache() {
         // do not create instance. this cache is a singleton

@@ -35,16 +35,10 @@ import ch.opentrainingcenter.transfer.ITraining;
 public class PlanungPastViewer {
 
     private TableViewer viewer;
-    // private final Color erfuellt;
-    // private final Color nichtErfuellt;
     private final IPreferenceStore store;
 
     public PlanungPastViewer(final IPreferenceStore store) {
         this.store = store;
-        // erfuellt = ColorFromPreferenceHelper.getSwtColor(store,
-        // PreferenceConstants.ZIEL_ERFUELLT_COLOR);
-        // nichtErfuellt = ColorFromPreferenceHelper.getSwtColor(store,
-        // PreferenceConstants.ZIEL_NICHT_ERFUELLT_COLOR);
     }
 
     void createViewer(final Composite parent) {
