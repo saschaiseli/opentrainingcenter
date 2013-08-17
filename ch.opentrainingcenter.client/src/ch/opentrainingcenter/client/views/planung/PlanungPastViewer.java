@@ -265,7 +265,7 @@ public class PlanungPastViewer {
      */
     private PlanungStatus getStatus(final int ziel, final int effective) {
         PlanungStatus status = PlanungStatus.NICHT_ERFOLGREICH;
-        if (ziel < effective) {
+        if (ziel <= effective) {
             status = PlanungStatus.ERFOLGREICH;
         }
         return status;
