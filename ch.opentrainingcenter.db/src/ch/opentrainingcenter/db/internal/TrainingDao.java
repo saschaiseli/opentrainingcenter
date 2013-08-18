@@ -152,7 +152,7 @@ public class TrainingDao {
     public int saveOrUpdate(final ITraining training) {
         ITraining exists = getImportedRecord(training.getDatum());
         if (exists != null) {
-            LOG.info("Training bereits einmal importziert: --> updaten");
+            LOG.info("Training bereits einmal importiert: --> updaten");
         } else {
             LOG.info("Neues Training abspeichern: " + training);
             exists = training;
