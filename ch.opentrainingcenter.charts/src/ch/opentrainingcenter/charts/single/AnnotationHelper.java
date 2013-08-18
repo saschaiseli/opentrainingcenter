@@ -9,7 +9,11 @@ import org.jfree.ui.TextAnchor;
 import ch.opentrainingcenter.core.data.Pair;
 import ch.opentrainingcenter.i18n.Messages;
 
-public class AnnotationHelper {
+public final class AnnotationHelper {
+
+    private AnnotationHelper() {
+        // do not instanciate
+    }
 
     static void addCrossAnnotation(final XYPlot plot, final Pair<Number, Number> xy, final double xMax, final double yMax, final String zeit) {
         final double x = xy.getFirst().doubleValue();

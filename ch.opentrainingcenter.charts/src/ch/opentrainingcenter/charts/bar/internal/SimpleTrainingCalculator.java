@@ -26,8 +26,8 @@ public final class SimpleTrainingCalculator {
      *  Input:   <JAHR,<KalenderWoche,List<ISimpleTraining>>>
      *  Output:  Jedes ISimpleTraining der Liste ist die Summe der Trainings pro KW mit dem Datum des letzten Laufes
      *  
-     * Input:   <JAHR,<Monat,List<ISimpleTraining>>>
-     * Output:  Jedes ISimpleTraining der Liste ist die Summe der Trainings pro Monat mit dem Datum des letzten Laufes
+     *  Input:   <JAHR,<Monat,List<ISimpleTraining>>>
+     *  Output:  Jedes ISimpleTraining der Liste ist die Summe der Trainings pro Monat mit dem Datum des letzten Laufes
      * </pre>
      */
     public static List<ISimpleTraining> createSum(final Map<Integer, Map<Integer, List<ISimpleTraining>>> trainings, final RunType filter) {

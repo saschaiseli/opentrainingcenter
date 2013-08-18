@@ -50,7 +50,7 @@ public class TrainingOverviewDatenAufbereiten {
 
         final List<ITraining> allImported = databaseAccess.getAllImported(athlete);
         for (final ITraining training : allImported) {
-            final ISimpleTraining simpleTraining = ModelFactory.createSimpleTraining(training, athlete);
+            final ISimpleTraining simpleTraining = ModelFactory.convertToSimpleTraining(training);
             simpleTraining.setType(RunType.getRunType(training.getTrainingType().getId()));
             allTrainings.add(simpleTraining);
         }

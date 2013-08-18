@@ -4,7 +4,11 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
-public class DatasetFilter {
+public final class DatasetFilter {
+
+    private DatasetFilter() {
+        // do not instanciate
+    }
 
     public static XYDataset filter(XYDataset dataset) {
         final int seriesCount = dataset.getSeriesCount();
