@@ -1,10 +1,10 @@
 package ch.opentrainingcenter.transfer;
 
+/**
+ * Definition eines Punktes auf der Karte (Long/Latitude)
+ * 
+ */
 public interface IStreckenPunkt {
-
-    double getDistance();
-
-    void setDistance(double distance);
 
     double getLongitude();
 

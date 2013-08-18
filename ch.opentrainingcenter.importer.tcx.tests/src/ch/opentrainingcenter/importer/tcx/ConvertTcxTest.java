@@ -122,6 +122,5 @@ public class ConvertTcxTest {
         final IStreckenPunkt geo = point.getStreckenPunkt();
         assertEquals("Longitude: ", longitude, geo.getLongitude(), DELTA);
         assertEquals("Latitude: ", latitude, geo.getLatitude(), DELTA);
-        assertEquals("Laenge muss gleich wie andere sein", point.getDistance(), geo.getDistance(), DELTA);
     }
 }

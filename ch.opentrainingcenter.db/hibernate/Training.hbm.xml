@@ -62,6 +62,12 @@
 		<property name="fileName" type="string">
 			<column name="FILENAME" />
 		</property>
+		<property name="upMeter" type="java.lang.Integer">
+			<column name="UPMETER" />
+		</property>
+		<property name="downMeter" type="java.lang.Integer">
+			<column name="DOWNMETER" />
+		</property>
 		<list name="trackPoints" table="TRACKTRAININGPROPERTY"  cascade="all">
 			<key column="ID_TRAINING" />
 			<list-index column="idx"/>

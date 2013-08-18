@@ -142,4 +142,24 @@ public class ConcreteImported extends ImportedDecorator implements INavigationIt
     public void setTrackPoints(final List<ITrackPointProperty> trackPoints) {
         training.setTrackPoints(trackPoints);
     }
+
+    @Override
+    public Integer getUpMeter() {
+        return training.getUpMeter();
+    }
+
+    @Override
+    public void setUpMeter(final Integer upMeter) {
+        training.setUpMeter(upMeter);
+    }
+
+    @Override
+    public Integer getDownMeter() {
+        return training.getDownMeter();
+    }
+
+    @Override
+    public void setDownMeter(final Integer downMeter) {
+        training.setDownMeter(downMeter);
+    }
 }

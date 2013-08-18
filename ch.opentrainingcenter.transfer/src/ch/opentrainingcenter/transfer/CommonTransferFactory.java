@@ -77,7 +77,7 @@ public class CommonTransferFactory {
     }
 
     public static IStreckenPunkt createStreckenPunkt(final double distance, final double longitude, final double latitude) {
-        return new Streckenpunkte(distance, longitude, latitude);
+        return new Streckenpunkte(longitude, latitude);
     }
 
     public static ITrackPointProperty createTrackPointProperty(final double distance, final int heartbeat, final int altitude, final long time, final int lap,

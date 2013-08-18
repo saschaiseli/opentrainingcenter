@@ -38,43 +38,19 @@ public class Training implements java.io.Serializable, ITraining {
     private List<ITrackPointProperty> trackPoints = new ArrayList<ITrackPointProperty>();
     private Date dateOfImport;
     private String fileName;
+    private Integer upMeter;
+    private Integer downMeter;
 
     public Training() {
     }
 
-    /**
-     * @param datum
-     * @param dauer
-     * @param laengeinmeter
-     * @param averageheartbeat
-     * @param maxheartbeat
-     * @param maxspeed
-     * @param note
-     * @param trainingtype
-     * @param weather
-     * @param athlete
-     */
-    public Training(final long datum, final double dauer, final double laengeinmeter, final int averageheartbeat, final int maxheartbeat,
-            final double maxspeed, final String note, final ITrainingType trainingtype, final IWeather weather, final IAthlete athlete) {
-        this.trainingType = trainingtype;
-        this.weather = weather;
-        this.athlete = athlete;
-        this.datum = datum;
-        this.dauer = dauer;
-        this.laengeInMeter = laengeinmeter;
-        this.averageHeartBeat = averageheartbeat;
-        this.maxHeartBeat = maxheartbeat;
-        this.maxSpeed = maxspeed;
-        this.note = note;
-    }
-
-    public Training(final long dateOfStart, final double timeInSeconds, final double distance, final int avgHeartRate, final int maxHeartBeat,
+    public Training(final long dateOfStart, final double timeInSeconds, final double distance, final int avgHeartRate, final int mxHeartBeat,
             final double maximumSpeed, final ActivityExtension activityExtension) {
         datum = dateOfStart;
         dauer = timeInSeconds;
         laengeInMeter = distance;
         averageHeartBeat = avgHeartRate;
-        this.maxHeartBeat = maxHeartBeat;
+        maxHeartBeat = mxHeartBeat;
         maxSpeed = maximumSpeed;
         note = activityExtension.getNote();
         route = activityExtension.getRoute();
@@ -237,5 +213,25 @@ public class Training implements java.io.Serializable, ITraining {
     public String toString() {
         return "Training [datum=" + datum + ", dauer=" + dauer + ", laengeInMeter=" + laengeInMeter + ", athlete=" + athlete + ", trainingType=" + trainingType
                 + ", route=" + route + ", fileName=" + fileName + "]";
+    }
+
+    @Override
+    public Integer getUpMeter() {
+        return upMeter;
+    }
+
+    @Override
+    public void setUpMeter(final Integer upMeter) {
+        this.upMeter = upMeter;
+    }
+
+    @Override
+    public Integer getDownMeter() {
+        return downMeter;
+    }
+
+    @Override
+    public void setDownMeter(final Integer downMeter) {
+        this.downMeter = downMeter;
     }
 }

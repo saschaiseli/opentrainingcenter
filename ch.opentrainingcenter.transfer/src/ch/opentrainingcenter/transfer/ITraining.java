@@ -64,4 +64,24 @@ public interface ITraining {
     ITrainingType getTrainingType();
 
     void setTrainingType(ITrainingType type);
+
+    /**
+     * Inkrementierte Meter die der Lauf nach oben geht.
+     */
+    Integer getUpMeter();
+
+    /**
+     * Inkrementierte Meter die der Lauf nach oben geht.
+     */
+    void setUpMeter(Integer upMeter);
+
+    /**
+     * Inkrementierte Meter die der Lauf nach unten geht.
+     */
+    Integer getDownMeter();
+
+    /**
+     * Inkrementierte Meter die der Lauf nach unten geht.
+     */
+    void setDownMeter(Integer downMeter);
 }

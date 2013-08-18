@@ -53,7 +53,7 @@ public class ModelFactoryTest {
 
     @Test
     public void testSimpleTraining() {
-        final ISimpleTraining training = ModelFactory.createSimpleTraining(overview, athlete);
+        final ISimpleTraining training = ModelFactory.convertToSimpleTraining(overview);
         assertTraining(training);
     }
 

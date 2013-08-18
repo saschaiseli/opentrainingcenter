@@ -11,15 +11,13 @@ public class Streckenpunkte implements java.io.Serializable, IStreckenPunkt {
 
     private static final long serialVersionUID = 1L;
     private int id;
-    private Double distance;
     private Double longitude;
     private Double latitude;
 
     public Streckenpunkte() {
     }
 
-    public Streckenpunkte(final Double distance, final Double longitude, final Double latitude) {
-        this.distance = distance;
+    public Streckenpunkte(final Double longitude, final Double latitude) {
         this.longitude = longitude;
         this.latitude = latitude;
     }
@@ -30,16 +28,6 @@ public class Streckenpunkte implements java.io.Serializable, IStreckenPunkt {
 
     public void setId(final int id) {
         this.id = id;
-    }
-
-    @Override
-    public double getDistance() {
-        return this.distance;
-    }
-
-    @Override
-    public void setDistance(final double distance) {
-        this.distance = distance;
     }
 
     @Override
@@ -65,6 +53,6 @@ public class Streckenpunkte implements java.io.Serializable, IStreckenPunkt {
     @SuppressWarnings("nls")
     @Override
     public String toString() {
-        return "Streckenpunkte [distance=" + distance + ", longitude=" + longitude + ", latitude=" + latitude + "]";
+        return "Streckenpunkte [longitude=" + longitude + ", latitude=" + latitude + "]";
     }
 }

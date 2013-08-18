@@ -66,17 +66,15 @@ public class ModelFactory {
 
     /**
      * Erstellt ein SimpleTraining mit dem Lauf Typ NONE
-     * 
-     * @param athlete
      */
-    public static ISimpleTraining createSimpleTraining(final ITraining overview, final IAthlete athlete) {
+    public static ISimpleTraining convertToSimpleTraining(final ITraining overview) {
         final SimpleTraining training = new SimpleTraining(overview.getLaengeInMeter(), overview.getDauer(), new Date(overview.getDatum()), overview
                 .getAverageHeartBeat(), overview.getMaxHeartBeat(), overview.getMaxSpeed(), RunType.NONE, overview.getNote());
         if (overview.getWeather() != null) {
             training.setWetter(Wetter.getRunType(overview.getWeather().getId()));
         }
         if (overview.getRoute() != null) {
-            training.setStrecke(ModelFactory.createStreckeModel(overview.getRoute(), athlete));
+            training.setStrecke(ModelFactory.createStreckeModel(overview.getRoute(), overview.getAthlete()));
         }
         return training;
     }
