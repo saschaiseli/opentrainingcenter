@@ -84,7 +84,7 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
             training = cache.get(selectedId);
         }
         final IAthlete athlete = context.getAthlete();
-        simpleTraining = ModelFactory.createSimpleTraining(training, athlete);
+        simpleTraining = ModelFactory.convertToSimpleTraining(training);
 
         factory = new ChartFactory(Activator.getDefault().getPreferenceStore(), training, athlete);
 

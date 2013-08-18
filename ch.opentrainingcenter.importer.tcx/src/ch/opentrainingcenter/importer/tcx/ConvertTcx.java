@@ -24,6 +24,8 @@ import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
 import org.xml.sax.SAXException;
 
+import ch.opentrainingcenter.core.helper.AltitudeCalculator;
+import ch.opentrainingcenter.core.helper.AltitudeCalculator.Ascending;
 import ch.opentrainingcenter.core.importer.IConvert2Tcx;
 import ch.opentrainingcenter.tcx.ActivityLapT;
 import ch.opentrainingcenter.tcx.ActivityT;
@@ -139,6 +141,9 @@ public class ConvertTcx implements IConvert2Tcx {
         final ITraining training = CommonTransferFactory.createTraining(dateOfStart.getTime(), timeInSeconds, distance, avgHeartRate, maxHeartBeat,
                 maximumSpeed, activityExtension);
         training.setTrackPoints(trackPoints);
+        final Ascending ascending = AltitudeCalculator.calculateAscending(trackPoints);
+        training.setUpMeter(ascending.getUp());
+        training.setDownMeter(ascending.getDown());
         if (trackPoints.isEmpty()) {
             training.setNote(NO_DATA);
         }

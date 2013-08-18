@@ -64,7 +64,6 @@ public class MapConverterTest {
         final ITrackPointProperty mock = Mockito.mock(ITrackPointProperty.class);
         Mockito.when(mock.getDistance()).thenReturn(dist);
         final IStreckenPunkt streckenPunkt = Mockito.mock(IStreckenPunkt.class);
-        Mockito.when(streckenPunkt.getDistance()).thenReturn(dist);
         Mockito.when(streckenPunkt.getLongitude()).thenReturn(longitude);
         Mockito.when(streckenPunkt.getLatitude()).thenReturn(latitude);
         Mockito.when(mock.getStreckenPunkt()).thenReturn(streckenPunkt);

@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.apache.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
@@ -15,6 +16,7 @@ import ch.opentrainingcenter.db.USAGE;
 
 @SuppressWarnings("nls")
 public class PostgresDatabaseTestBase {
+    private static final Logger LOGGER = Logger.getLogger(PostgresDatabaseTestBase.class);
 
     private static final String USER = "otc_user";
     private static final String USER_ADMIN = "postgres";
@@ -54,21 +56,21 @@ public class PostgresDatabaseTestBase {
             stmt.execute("CREATE SCHEMA PUBLIC;");
             stmt.execute("ALTER SCHEMA PUBLIC OWNER TO otc_user");
         } catch (final SQLException se) {
-            se.printStackTrace();
+            LOGGER.error(se);
         } catch (final Exception e) {
-            e.printStackTrace();
+            LOGGER.error(e);
         } finally {
             try {
                 if (stmt != null)
                     stmt.close();
             } catch (final SQLException se2) {
-                se2.printStackTrace();
+                LOGGER.error(se2);
             }
             try {
                 if (conn != null)
                     conn.close();
             } catch (final SQLException se) {
-                se.printStackTrace();
+                LOGGER.error(se);
             }
         }
     }

@@ -119,7 +119,6 @@ public class DatabaseAccessTest extends DatabaseTestBase {
 
         final IStreckenPunkt punkt = prop.getStreckenPunkt();
         assertNotNull(punkt);
-        assertEquals(1.1, punkt.getDistance(), 0.00001);
         assertEquals(1.1, punkt.getLongitude(), 2.2);
         assertEquals(1.1, punkt.getLatitude(), 3.3);
     }

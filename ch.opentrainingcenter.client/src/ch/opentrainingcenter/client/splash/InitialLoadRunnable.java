@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.joda.time.DateTime;
 
 import ch.opentrainingcenter.client.cache.HealthCache;
 import ch.opentrainingcenter.client.cache.StreckeCache;
@@ -16,6 +17,8 @@ import ch.opentrainingcenter.core.cache.ICache;
 import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
+import ch.opentrainingcenter.core.helper.AltitudeCalculator;
+import ch.opentrainingcenter.core.helper.AltitudeCalculator.Ascending;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.model.cache.TrainingsPlanCache;
 import ch.opentrainingcenter.model.navigation.ConcreteHealth;
@@ -41,6 +44,7 @@ public class InitialLoadRunnable implements IRunnableWithProgress {
             loadAllHealths(monitor, athlete, db);
             loadAllPlaene(monitor, athlete, db);
             loadAllRouten(monitor, athlete, db);
+            doMaintenance(monitor, athlete, db);
         }
     }
 
@@ -84,6 +88,24 @@ public class InitialLoadRunnable implements IRunnableWithProgress {
             cache.add(strecke);
             monitor.subTask(Messages.InitialLoadRunnable_5 + i++);
             LOG.info("Strecke dem Cache hinzugefügt: " + route + " Strecke: " + strecke); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+    }
+
+    private void doMaintenance(final IProgressMonitor monitor, final IAthlete athlete, final IDatabaseAccess db) {
+        int i = 0;
+        final List<ITraining> trainings = db.getAllImported(athlete);
+        for (final ITraining training : trainings) {
+            if (training.getUpMeter() == null && training.getTrackPoints() != null) {
+                final DateTime start = DateTime.now();
+                final Ascending ascending = AltitudeCalculator.calculateAscending(training.getTrackPoints());
+                final DateTime end = DateTime.now();
+                training.setUpMeter(ascending.getUp());
+                training.setDownMeter(ascending.getDown());
+                db.saveTraining(training);
+                final long time = end.getMillis() - start.getMillis();
+                monitor.subTask("Berechne Steigungen " + i++ + " Zeit: " + time);//$NON-NLS-1$ //$NON-NLS-2$
+                LOG.info("Berechne Steigungen " + i + " Zeit: " + time); //$NON-NLS-1$ //$NON-NLS-2$ 
+            }
         }
     }
 }

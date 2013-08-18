@@ -11,9 +11,6 @@
 				<param name="sequence">streckenpunkte_id_sequence</param>
 			</generator>
 		</id>
-		<property name="distance" type="java.lang.Double">
-			<column name="DISTANCE" precision="17" scale="0" />
-		</property>
 		<property name="longitude" type="java.lang.Double">
 			<column name="LONGITUDE" precision="17" scale="0" />
 		</property>
