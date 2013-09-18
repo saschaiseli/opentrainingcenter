@@ -14,6 +14,8 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.SWTError;
+import org.eclipse.swt.SWTException;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.MouseEvent;
@@ -108,7 +110,6 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
 
         addOverviewSection(body);
         addNoteSection(body);
-
         addMapSection(body);
         addHeartSection(body);
         addSpeedSection(body);
@@ -160,8 +161,8 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart6, simpleTraining.getMaxHeartBeat(), Units.BEATS_PER_MINUTE);
         addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart7, simpleTraining.getPace(), Units.PACE);
         addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart8, simpleTraining.getMaxSpeed(), Units.PACE);
-        addLabelAndValue(overViewComposite, "Steigung", "" + simpleTraining.getUpMeter(), Units.METER);
-        addLabelAndValue(overViewComposite, "Nach unten", "" + simpleTraining.getDownMeter(), Units.METER);
+        addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_4, "" + simpleTraining.getUpMeter(), Units.METER); //$NON-NLS-1$
+        addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_8, "" + simpleTraining.getDownMeter(), Units.METER); //$NON-NLS-1$
         overviewSection.setClient(overViewComposite);
     }
 
@@ -413,9 +414,12 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         td = new TableWrapData(TableWrapData.FILL_GRAB);
         td.heightHint = 550;
         td.grabHorizontal = true;
-        mapViewer.getComposite().setLayoutData(td);
-
-        mapSection.setClient(client);
+        try {
+            mapViewer.getComposite().setLayoutData(td);
+            mapSection.setClient(client);
+        } catch (final SWTException | SWTError e) {
+            System.out.println("Map...."); //$NON-NLS-1$
+        }
     }
 
     /**

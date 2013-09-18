@@ -142,6 +142,8 @@ public final class Messages extends NLS {
     public static String InitialLoadRunnable_3;
     public static String InitialLoadRunnable_4;
     public static String InitialLoadRunnable_5;
+    public static String InitialLoadRunnable_6;
+    public static String InitialLoadRunnable_7;
     public static String MapConverter0;
     public static String MapConverter1;
     public static String NavigationParent_0;
@@ -172,6 +174,7 @@ public final class Messages extends NLS {
     public static String OTCBarChartViewer7;
     public static String OTCBarChartViewer8;
     public static String OTCBarChartViewer9;
+    public static String OTCKonstanten_0;
     public static String OtcSplashHandler0;
     public static String OtcSplashHandler1;
     public static String OverviewViewer0;
@@ -219,8 +222,10 @@ public final class Messages extends NLS {
     public static String SingleActivityViewPart_1;
     public static String SingleActivityViewPart_2;
     public static String SingleActivityViewPart_3;
+    public static String SingleActivityViewPart_4;
     public static String SingleActivityViewPart_6;
     public static String SingleActivityViewPart_7;
+    public static String SingleActivityViewPart_8;
     public static String SingleActivityViewPart0;
     public static String SingleActivityViewPart1;
     public static String SingleActivityViewPart10;
@@ -260,6 +265,7 @@ public final class Messages extends NLS {
     public static String TrainingTargetPreferencePage7;
     public static String TrainingTargetPreferencePage8;
     public static String TrainingTargetPreferencePage9;
+    public static String Units_0;
     public static String Units0;
     public static String Units1;
     public static String Units2;

@@ -31,7 +31,7 @@
 
 		<many-to-one name="route"
 			class="ch.opentrainingcenter.transfer.impl.Route" fetch="select"
-			update="false" cascade="all">
+			update="true">
 			<column name="ID_FK_ROUTE" />
 		</many-to-one>
 

@@ -319,7 +319,9 @@ public class UserView extends ViewPart {
                 final IAthlete athlete = CommonTransferFactory.createAthlete(sportler.getName(), cal.getTime(), sportler.getMaxHeartBeat());
                 try {
                     TrainingCache.getInstance().resetCache();
-                    DatabaseAccessFactory.getDatabaseAccess().save(athlete);
+                    final IDatabaseAccess db = DatabaseAccessFactory.getDatabaseAccess();
+                    db.save(athlete);
+                    db.saveOrUpdate(CommonTransferFactory.createRoute(athlete));
                     resetForm();
                     user.add(athlete.getName(), index);
                     indexOfSelectBoxMappedToDatabaseId.put(index, athlete.getId());

@@ -117,7 +117,7 @@ CREATE sequence ROUTE_ID_SEQUENCE;
 CREATE sequence STRECKENPUNKTE_ID_SEQUENCE; 
 
 INSERT INTO PUBLIC.ATHLETE (ID,NAME,BIRTHDAY,MAXHEARTRATE) values(0,'Sascha','1974-08-29', 200);
-INSERT INTO PUBLIC.ROUTE (ID,NAME,BESCHREIBUNG) values(0,'Unbekannt','');
+INSERT INTO PUBLIC.ROUTE (ID,ID_FK_ATHLETE,NAME,BESCHREIBUNG) values(0,0,'Unbekannt','');
 
 INSERT INTO PUBLIC.TRAININGTYPE (ID,TITLE,DESCRIPTION, IMAGEICON) values(0,'NONE','Unbekannter Typ','icons/man_u_32_32.png');
 INSERT INTO PUBLIC.TRAININGTYPE (ID,TITLE,DESCRIPTION, IMAGEICON) values(1,'EXT_INTERVALL','Gleich wie intensives Intervalltraining. Der Unterschied liegt in der Länge der Intervalle und der damit verbundenen geringeren Laufgeschwindigkeit. Beispiel: 5 Minuten schnell, 2 Minuten Trabpause, 5 Minuten schnell etc. Extensive Intervalle werden bereits schon in der Aufbauetappe des Jahresplanes integriert.','icons/man_ei_32_32.png');

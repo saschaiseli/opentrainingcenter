@@ -36,33 +36,16 @@ public class ImportFileDialog implements IFilterDialog {
         dialog.setText(Messages.ImportManualGpsFilesFileDialog);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see ch.opentrainingcenter.client.views.dialoge.IFilterDialog#open()
-     */
     @Override
     public String open() {
         return dialog.open();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * ch.opentrainingcenter.client.views.dialoge.IFilterDialog#getFileNames()
-     */
     @Override
     public String[] getFileNames() {
         return dialog.getFileNames();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * ch.opentrainingcenter.client.views.dialoge.IFilterDialog#getFilterPath()
-     */
     @Override
     public String getFilterPath() {
         return dialog.getFilterPath();

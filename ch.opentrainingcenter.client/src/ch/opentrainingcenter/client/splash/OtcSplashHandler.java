@@ -55,7 +55,7 @@ public class OtcSplashHandler extends BasicSplashHandler {
         if (version.getQualifier().equalsIgnoreCase("qualifier")) { //$NON-NLS-1$
             buildId = "DEV"; //$NON-NLS-1$
         } else {
-            buildId = version.getQualifier();
+            buildId = version.getMajor() + "." + version.getMinor() + " / " + version.getQualifier(); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         final String buildIdLocString = product.getProperty("buildIdLocation"); //$NON-NLS-1$

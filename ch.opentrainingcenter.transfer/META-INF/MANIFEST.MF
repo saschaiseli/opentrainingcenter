@@ -7,7 +7,8 @@ Bundle-Activator: ch.opentrainingcenter.activator.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.hibernate,
  logging,
- jodatime
+ jodatime,
+ ch.opentrainingcenter.i18n
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: ch.opentrainingcenter.transfer

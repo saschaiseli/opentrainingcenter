@@ -7,7 +7,7 @@ public enum Units {
     PACE(Messages.Units1), //
     KM(Messages.Units2), //
     HOUR_MINUTE_SEC(Messages.Units3), //
-    METER("m"), //
+    METER(Messages.Units_0), //
     NONE(Messages.Units4);
 
     private String name;

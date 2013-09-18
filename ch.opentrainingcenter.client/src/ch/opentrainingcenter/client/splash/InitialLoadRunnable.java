@@ -15,6 +15,7 @@ import ch.opentrainingcenter.client.views.IImageKeys;
 import ch.opentrainingcenter.core.cache.Cache;
 import ch.opentrainingcenter.core.cache.ICache;
 import ch.opentrainingcenter.core.cache.TrainingCache;
+import ch.opentrainingcenter.core.data.OTCKonstanten;
 import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.helper.AltitudeCalculator;
@@ -92,8 +93,28 @@ public class InitialLoadRunnable implements IRunnableWithProgress {
     }
 
     private void doMaintenance(final IProgressMonitor monitor, final IAthlete athlete, final IDatabaseAccess db) {
-        int i = 0;
         final List<ITraining> trainings = db.getAllImported(athlete);
+        calculateHoehenmeter(monitor, db, trainings);
+
+        final IRoute defaultRoute = db.getRoute(OTCKonstanten.DEFAULT_ROUTE_NAME, athlete);
+        setDefaultStrecke(monitor, db, trainings, defaultRoute);
+    }
+
+    private void setDefaultStrecke(final IProgressMonitor monitor, final IDatabaseAccess db, final List<ITraining> trainings, final IRoute defaultRoute) {
+        int i = 0;
+        for (final ITraining training : trainings) {
+            if (training.getRoute() == null) {
+                training.setRoute(defaultRoute);
+                db.saveTraining(training);
+                monitor.subTask(Messages.InitialLoadRunnable_6 + i);
+                LOG.info("Setzte default Strecke bei Training: " + i); //$NON-NLS-1$ 
+                i++;
+            }
+        }
+    }
+
+    private void calculateHoehenmeter(final IProgressMonitor monitor, final IDatabaseAccess db, final List<ITraining> trainings) {
+        int i = 0;
         for (final ITraining training : trainings) {
             if (training.getUpMeter() == null && training.getTrackPoints() != null) {
                 final DateTime start = DateTime.now();
@@ -103,8 +124,9 @@ public class InitialLoadRunnable implements IRunnableWithProgress {
                 training.setDownMeter(ascending.getDown());
                 db.saveTraining(training);
                 final long time = end.getMillis() - start.getMillis();
-                monitor.subTask("Berechne Steigungen " + i++ + " Zeit: " + time);//$NON-NLS-1$ //$NON-NLS-2$
+                monitor.subTask(Messages.InitialLoadRunnable_7 + i);
                 LOG.info("Berechne Steigungen " + i + " Zeit: " + time); //$NON-NLS-1$ //$NON-NLS-2$ 
+                i++;
             }
         }
     }

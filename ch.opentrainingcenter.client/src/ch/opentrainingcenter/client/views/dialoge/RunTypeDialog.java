@@ -136,14 +136,7 @@ public class RunTypeDialog extends TitleAreaDialog {
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(final Object element) {
-                final IGpsFileModel record = (IGpsFileModel) element;
-                final String route;
-                if (record.getRoute() != null) {
-                    route = record.getRoute().getName();
-                } else {
-                    route = ""; //$NON-NLS-1$
-                }
-                return route;
+                return strecken.get(0).getName();
             }
         });
         col.setEditingSupport(new StreckeEditingSupport(viewer, strecken));

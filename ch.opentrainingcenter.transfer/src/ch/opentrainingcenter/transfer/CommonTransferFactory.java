@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.joda.time.DateTime;
 
+import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.transfer.impl.Athlete;
 import ch.opentrainingcenter.transfer.impl.Health;
 import ch.opentrainingcenter.transfer.impl.Planungwoche;
@@ -70,6 +71,10 @@ public class CommonTransferFactory {
 
     public static IPlanungWoche createIPlanungWocheEmpty(final IAthlete athlete, final int jahr, final int kw) {
         return new Planungwoche(athlete, jahr, kw, 0, false, 0);
+    }
+
+    public static IRoute createRoute(final IAthlete athlete) {
+        return createRoute(Messages.OTCKonstanten_0, "", athlete); //$NON-NLS-1$
     }
 
     public static IRoute createRoute(final String name, final String beschreibung, final IAthlete athlete) {
