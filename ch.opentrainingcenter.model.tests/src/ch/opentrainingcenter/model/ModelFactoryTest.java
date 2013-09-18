@@ -2,6 +2,8 @@ package ch.opentrainingcenter.model;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -9,7 +11,6 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import ch.opentrainingcenter.core.helper.DistanceHelper;
 import ch.opentrainingcenter.core.helper.RunType;
@@ -37,18 +38,19 @@ public class ModelFactoryTest {
 
     @Before
     public void before() {
-        overview = Mockito.mock(ITraining.class);
-        Mockito.when(overview.getLaengeInMeter()).thenReturn(distanz);
-        Mockito.when(overview.getDauer()).thenReturn(dauer);
-        Mockito.when(overview.getDatum()).thenReturn(date.getTime());
-        Mockito.when(overview.getAverageHeartBeat()).thenReturn(avgHeart);
-        Mockito.when(overview.getMaxHeartBeat()).thenReturn(maxHeart);
-        Mockito.when(overview.getMaxSpeed()).thenReturn(maxSpeed);
-        final IRoute route = Mockito.mock(IRoute.class);
-        athlete = Mockito.mock(IAthlete.class);
-        Mockito.when(route.getAthlete()).thenReturn(athlete);
-        Mockito.when(route.getName()).thenReturn("blabla");
-        Mockito.when(overview.getRoute()).thenReturn(route);
+        overview = mock(ITraining.class);
+        when(overview.getLaengeInMeter()).thenReturn(distanz);
+        when(overview.getDauer()).thenReturn(dauer);
+        when(overview.getDatum()).thenReturn(date.getTime());
+        when(overview.getAverageHeartBeat()).thenReturn(avgHeart);
+        when(overview.getMaxHeartBeat()).thenReturn(maxHeart);
+        when(overview.getMaxSpeed()).thenReturn(maxSpeed);
+        final IRoute route = mock(IRoute.class);
+        athlete = mock(IAthlete.class);
+        when(route.getAthlete()).thenReturn(athlete);
+        when(route.getName()).thenReturn("blabla");
+        when(overview.getRoute()).thenReturn(route);
+        when(overview.getAthlete()).thenReturn(athlete);
     }
 
     @Test
@@ -101,13 +103,13 @@ public class ModelFactoryTest {
     @Test
     public void testGpsFileModelWrapper() {
         final List<IGpsFileModel> list = new ArrayList<IGpsFileModel>();
-        final IGpsFileModel fileModelImp = Mockito.mock(IGpsFileModel.class);
+        final IGpsFileModel fileModelImp = mock(IGpsFileModel.class);
         list.add(fileModelImp);
-        Mockito.when(fileModelImp.isImportFile()).thenReturn(true);
+        when(fileModelImp.isImportFile()).thenReturn(true);
 
-        final IGpsFileModel fileModelNotImp = Mockito.mock(IGpsFileModel.class);
+        final IGpsFileModel fileModelNotImp = mock(IGpsFileModel.class);
         list.add(fileModelNotImp);
-        Mockito.when(fileModelNotImp.isImportFile()).thenReturn(false);
+        when(fileModelNotImp.isImportFile()).thenReturn(false);
 
         final IGpsFileModelWrapper model = ModelFactory.createGpsFileModelWrapper(list);
 

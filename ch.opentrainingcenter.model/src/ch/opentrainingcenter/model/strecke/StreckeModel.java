@@ -21,8 +21,8 @@ public class StreckeModel implements PropertyChangeListener {
     }
 
     public StreckeModel(final int id, final IAthlete athlete, final String name, final String beschreibung) {
-        Assertions.notNull(athlete);
-        Assertions.notNull(name);
+        Assertions.notNull(athlete, "Athlete im StreckeModel Konstruktor darf nicht null sein"); //$NON-NLS-1$
+        Assertions.notNull(name, "name im StreckeModel Konstruktor darf nicht null sein"); //$NON-NLS-1$
         this.id = id;
         this.athlete = athlete;
         this.name = name;
