@@ -76,6 +76,8 @@ public class ModelFactory {
         if (overview.getRoute() != null) {
             training.setStrecke(ModelFactory.createStreckeModel(overview.getRoute(), overview.getAthlete()));
         }
+        training.setUpMeter(overview.getUpMeter());
+        training.setDownMeter(overview.getDownMeter());
         return training;
     }
 

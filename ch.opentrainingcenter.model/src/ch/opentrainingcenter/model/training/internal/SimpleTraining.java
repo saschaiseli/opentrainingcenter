@@ -23,6 +23,8 @@ public class SimpleTraining implements ISimpleTraining {
     private RunType type;
     private Wetter wetter;
     private StreckeModel strecke;
+    private int upMeter;
+    private int downMeter;
 
     public SimpleTraining(final double distanzInMeter, final double dauerInSekunden, final Date datum, final int avgHeartRate, final int maxHeartRate,
             final double speed, final RunType type, final String note) {
@@ -134,12 +136,33 @@ public class SimpleTraining implements ISimpleTraining {
         this.strecke = strecke;
     }
 
+    @Override
+    public int getUpMeter() {
+        return upMeter;
+    }
+
+    @Override
+    public void setUpMeter(final int upMeter) {
+        this.upMeter = upMeter;
+    }
+
+    @Override
+    public int getDownMeter() {
+        return downMeter;
+    }
+
+    @Override
+    public void setDownMeter(final int downMeter) {
+        this.downMeter = downMeter;
+    }
+
     @SuppressWarnings("nls")
     @Override
     public String toString() {
         return "SimpleTraining [distanzInMeter=" + distanzInMeter + ", dauerInSekunden=" + dauerInSekunden + ", datum=" + datum + ", avgHeartRate="
                 + avgHeartRate + ", maxHeartRate=" + maxHeartRate + ", readableZeit=" + readableZeit + ", laengeInKilometer=" + laengeInKilometer + ", pace="
-                + pace + ", speed=" + speed + ", note=" + note + ", type=" + type + ", wetter=" + wetter + ", strecke=" + strecke + "]";
+                + pace + ", speed=" + speed + ", note=" + note + ", type=" + type + ", wetter=" + wetter + ", strecke=" + strecke + ", upMeter=" + upMeter
+                + ", downMeter=" + downMeter + "]";
     }
 
 }

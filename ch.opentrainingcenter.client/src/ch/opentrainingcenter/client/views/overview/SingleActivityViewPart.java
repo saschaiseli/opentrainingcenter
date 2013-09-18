@@ -160,6 +160,8 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart6, simpleTraining.getMaxHeartBeat(), Units.BEATS_PER_MINUTE);
         addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart7, simpleTraining.getPace(), Units.PACE);
         addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart8, simpleTraining.getMaxSpeed(), Units.PACE);
+        addLabelAndValue(overViewComposite, "Steigung", "" + simpleTraining.getUpMeter(), Units.METER);
+        addLabelAndValue(overViewComposite, "Nach unten", "" + simpleTraining.getDownMeter(), Units.METER);
         overviewSection.setClient(overViewComposite);
     }
 

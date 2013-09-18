@@ -42,4 +42,12 @@ public interface ISimpleTraining {
     StreckeModel getStrecke();
 
     void setStrecke(StreckeModel strecke);
+
+    int getUpMeter();
+
+    void setUpMeter(int upMeter);
+
+    int getDownMeter();
+
+    void setDownMeter(int downMeter);
 }
