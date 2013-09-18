@@ -1,5 +1,6 @@
 package ch.opentrainingcenter.core.db;
 
+import java.io.File;
 import java.util.Date;
 import java.util.List;
 
@@ -209,5 +210,10 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
     void updateRecordRoute(ITraining record, int idRoute);
 
     boolean validateConnection(final String url, final String user, final String pass);
+
+    /**
+     * @return ein File mit dem Backup der kompletten Datenbank.
+     */
+    File backUpDatabase(final String path);
 
 }

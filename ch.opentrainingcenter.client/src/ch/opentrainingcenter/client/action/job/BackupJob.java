@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
+import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.helper.GpsFileNameFilter;
 import ch.opentrainingcenter.core.importer.IConvert2Tcx;
 import ch.opentrainingcenter.i18n.Messages;
@@ -33,17 +34,20 @@ public class BackupJob extends Job {
 
     private final String source;
 
-    public BackupJob(final String name, final String source, final File destFolder, final Map<String, IConvert2Tcx> converters) {
+    private final IDatabaseAccess db;
+
+    public BackupJob(final String name, final String source, final File destFolder, final Map<String, IConvert2Tcx> converters, final IDatabaseAccess db) {
         super(name);
         this.source = source;
         this.destFolder = destFolder;
+        this.db = db;
         final File f = new File(this.source);
         fileToCopy = f.list(new GpsFileNameFilter(converters));
     }
 
     @Override
     protected IStatus run(final IProgressMonitor monitor) {
-        monitor.beginTask(Messages.BackupGpsFiles1, getFileToCopy().length);
+        monitor.beginTask(Messages.BackupGpsFiles1, fileToCopy.length);
 
         final String zipFileName = createZipFileName();
         final File zipFile = new File(destFolder, zipFileName);
@@ -55,18 +59,17 @@ public class BackupJob extends Job {
             LOG.error(e.getMessage());
         }
         final byte[] buf = new byte[BYTE];
-        for (final String fileName : getFileToCopy()) {
+        for (final String fileName : fileToCopy) {
             final File file = new File(source + File.separator + fileName);
             try {
                 addToZip(out, buf, file);
-            } catch (final FileNotFoundException e) {
-                LOG.error("Fehler beim Zippen: Konnte file nicht finden: " + e.getMessage()); //$NON-NLS-1$
             } catch (final IOException e) {
-                LOG.error("IOException beim Zippen: " + e.getMessage()); //$NON-NLS-1$
+                LOG.error("Fehler beim Zippen: Konnte file nicht finden: " + e.getMessage()); //$NON-NLS-1$
             }
             monitor.worked(1);
         }
         try {
+            addToZip(out, buf, db.backUpDatabase(source));
             out.close();
         } catch (final IOException e) {
             LOG.error(e.getMessage());

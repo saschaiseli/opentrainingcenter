@@ -12,6 +12,8 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.action.job.BackupJob;
 import ch.opentrainingcenter.core.PreferenceConstants;
+import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
+import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.importer.ExtensionHelper;
 import ch.opentrainingcenter.i18n.Messages;
 
@@ -35,7 +37,8 @@ public class BackupGpsFiles extends AbstractHandler {
             destFolder.mkdir();
             LOG.info("Pfad zu Backupfolder erstellt"); //$NON-NLS-1$
         }
-        final Job job = new BackupJob(Messages.BackupGpsFiles0, source, destFolder, ExtensionHelper.getConverters());
+        final IDatabaseAccess db = DatabaseAccessFactory.getDatabaseAccess();
+        final Job job = new BackupJob(Messages.BackupGpsFiles0, source, destFolder, ExtensionHelper.getConverters(), db);
         job.schedule();
         return null;
     }

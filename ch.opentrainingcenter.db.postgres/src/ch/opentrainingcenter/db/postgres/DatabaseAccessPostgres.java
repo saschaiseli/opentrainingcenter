@@ -1,5 +1,6 @@
 package ch.opentrainingcenter.db.postgres;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -35,10 +36,11 @@ import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.IWeather;
 
+@SuppressWarnings("nls")
 public class DatabaseAccessPostgres implements IDatabaseAccess {
     private static final Logger LOG = Logger.getLogger(DatabaseAccessPostgres.class);
-    private final static String DRIVER = "org.postgresql.Driver"; //$NON-NLS-1$
-    private final static String DIALECT = "org.hibernate.dialect.PostgreSQLDialect"; //$NON-NLS-1$
+    private final static String DRIVER = "org.postgresql.Driver";
+    private final static String DIALECT = "org.hibernate.dialect.PostgreSQLDialect";
     private final DbConnection dbConnection;
     private AthleteDao athleteDao;
     private DatabaseCreator databaseCreator;
@@ -103,14 +105,14 @@ public class DatabaseAccessPostgres implements IDatabaseAccess {
         } catch (final Exception e) {
             final Throwable cause = e.getCause();
             final String message = cause != null ? cause.getMessage() : e.getMessage();
-            if (message != null && message.contains("Locked by another process")) { //$NON-NLS-1$
-                LOG.error("Database Locked by another process"); //$NON-NLS-1$
+            if (message != null && message.contains("Locked by another process")) {
+                LOG.error("Database Locked by another process");
                 return DBSTATE.LOCKED;
-            } else if (message != null && message.contains("Wrong user name or password")) { //$NON-NLS-1$
-                LOG.error("Wrong user name or password"); //$NON-NLS-1$
+            } else if (message != null && message.contains("Wrong user name or password")) {
+                LOG.error("Wrong user name or password");
                 return DBSTATE.CONFIG_PROBLEM;
             } else {
-                LOG.error("Fehler mit der Datenbank: " + message); //$NON-NLS-1$
+                LOG.error("Fehler mit der Datenbank: " + message);
                 return DBSTATE.PROBLEM;
             }
         }
@@ -124,11 +126,11 @@ public class DatabaseAccessPostgres implements IDatabaseAccess {
         } catch (final Exception e) {
             final Throwable cause = e.getCause();
             final String message = cause != null ? cause.getMessage() : e.getMessage();
-            if (message != null && message.contains("FATAL: database") && message.contains("does not exist")) { //$NON-NLS-1$ //$NON-NLS-2$
-                LOG.error("Database existiert noch nicht"); //$NON-NLS-1$
+            if (message != null && message.contains("FATAL: database") && message.contains("does not exist")) { //$NON-NLS-2$
+                LOG.error("Database existiert noch nicht");
                 return false;
             } else {
-                LOG.error("Fehler mit der Datenbank: " + message, e); //$NON-NLS-1$
+                LOG.error("Fehler mit der Datenbank: " + message, e);
             }
         }
         return true;
@@ -145,13 +147,17 @@ public class DatabaseAccessPostgres implements IDatabaseAccess {
         dao.begin();
         dao.getSession();
         try {
-            databaseCreator.createDatabase(DbScriptReader.readDbScript("otc_postgres.sql")); //$NON-NLS-1$
+            databaseCreator.createDatabase(DbScriptReader.readDbScript("otc_postgres.sql"));
         } catch (final FileNotFoundException fnne) {
             throw new SqlException(fnne);
         }
     }
 
-    @SuppressWarnings("nls")
+    @Override
+    public File backUpDatabase(final String path) {
+        return new File(path, "pleaseBackUpYourself.sql");
+    }
+
     private void createDB() {
         Connection conn = null;
         Statement stmt = null;
@@ -344,10 +350,9 @@ public class DatabaseAccessPostgres implements IDatabaseAccess {
 
     @Override
     public String getName() {
-        return "Postgres Database"; //$NON-NLS-1$
+        return "Postgres Database";
     }
 
-    @SuppressWarnings("nls")
     @Override
     public boolean validateConnection(final String url, final String user, final String pass) {
         final String connectionUrl = url + ";user=" + user + ";password=" + pass;

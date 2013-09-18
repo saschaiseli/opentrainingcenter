@@ -1,5 +1,6 @@
 package ch.opentrainingcenter.db;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -32,6 +33,7 @@ import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.IWeather;
 
+@SuppressWarnings("nls")
 public class DatabaseAccess implements IDatabaseAccess {
 
     private static final Logger LOG = Logger.getLogger(DatabaseAccess.class);
@@ -137,7 +139,6 @@ public class DatabaseAccess implements IDatabaseAccess {
         return false;
     }
 
-    @SuppressWarnings("nls")
     @Override
     public void createDatabase() throws SqlException {
         try {
@@ -145,6 +146,11 @@ public class DatabaseAccess implements IDatabaseAccess {
         } catch (final FileNotFoundException fnne) {
             throw new SqlException(fnne);
         }
+    }
+
+    @Override
+    public File backUpDatabase(final String path) {
+        return databaseCreator.backUpDatabase(path);
     }
 
     @Override

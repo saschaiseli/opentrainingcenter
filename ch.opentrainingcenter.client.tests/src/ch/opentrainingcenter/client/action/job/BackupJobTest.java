@@ -2,6 +2,8 @@ package ch.opentrainingcenter.client.action.job;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,7 +15,9 @@ import org.eclipse.core.runtime.Status;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
+import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.importer.IConvert2Tcx;
 import ch.opentrainingcenter.transfer.ITraining;
 
@@ -33,6 +37,10 @@ public class BackupJobTest {
     private File f;
 
     private File tmp;
+
+    private IDatabaseAccess db;
+
+    private File file;
 
     @Before
     public void setUp() throws IOException {
@@ -97,7 +105,9 @@ public class BackupJobTest {
                 // do nothing
             }
         };
-
+        db = mock(IDatabaseAccess.class);
+        file = File.createTempFile("backup", ".sql");
+        when(db.backUpDatabase(Mockito.anyString())).thenReturn(file);
     }
 
     @After
@@ -113,7 +123,7 @@ public class BackupJobTest {
     @Test
     public void testConstructor() throws IOException {
         tmpFile = File.createTempFile("testConstructor", ".gmn");
-        job = new BackupJob("junit", destFolder.getAbsolutePath(), destFolder, converters);
+        job = new BackupJob("junit", destFolder.getAbsolutePath(), destFolder, converters, db);
         final String[] fileToCopy = job.getFileToCopy();
         assertNotNull("array mit den files zum kopieren darf nicht null sein", fileToCopy);
     }
@@ -121,14 +131,14 @@ public class BackupJobTest {
     @Test
     public void testRun() throws IOException {
         tmpFile = File.createTempFile("testRun", ".gmn");
-        job = new BackupJob("junit", destFolder.getAbsolutePath(), destFolder, converters);
+        job = new BackupJob("junit", destFolder.getAbsolutePath(), destFolder, converters, db);
         assertEquals(Status.OK_STATUS, job.run(monitor));
     }
 
     @Test
     public void testRunZipErstellt() throws IOException {
         tmpFile = File.createTempFile("testRunZipErstellt", ".gmn");
-        job = new BackupJob("junit", destFolder.getAbsolutePath(), destFolder, converters);
+        job = new BackupJob("junit", destFolder.getAbsolutePath(), destFolder, converters, db);
         assertEquals(Status.OK_STATUS, job.run(monitor));
 
         final String zipFile = job.createZipFileName();

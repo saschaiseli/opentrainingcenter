@@ -22,7 +22,7 @@ public class GpsFileNameFilter implements FilenameFilter {
 
     @Override
     public boolean accept(final File dir, final String name) {
-        LOG.debug("Filename zum filtern" + name); //$NON-NLS-1$
+        LOG.debug("Filename zum filtern: " + name); //$NON-NLS-1$
         for (final String suffix : cc.getSupportedFileSuffixes()) {
             if (name != null && name.endsWith(suffix.replace("*.", ""))) { //$NON-NLS-1$ //$NON-NLS-2$
                 return true;
