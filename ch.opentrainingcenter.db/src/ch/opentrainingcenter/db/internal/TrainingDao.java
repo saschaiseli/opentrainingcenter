@@ -4,11 +4,13 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.joda.time.DateTime;
 
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IRoute;
@@ -32,6 +34,12 @@ public class TrainingDao {
 
         final Criteria criteria = session.createCriteria(ITraining.class);//
 
+        criteria.setFetchMode("athlete", FetchMode.JOIN);
+        criteria.setFetchMode("trainingType", FetchMode.JOIN);
+        criteria.setFetchMode("weather", FetchMode.JOIN);
+        criteria.setFetchMode("route", FetchMode.JOIN);
+        criteria.setFetchMode("trackPoints", FetchMode.SELECT);
+
         criteria.add(Restrictions.eq("athlete", athlete));
         criteria.addOrder(Order.desc("datum"));
 
@@ -46,20 +54,26 @@ public class TrainingDao {
 
     public List<ITraining> getAllImported(final IAthlete athlete, final int limit) {
         final Session session = dao.getSession();
+        final long start = DateTime.now().getMillis();
         dao.begin();
-
         final Criteria criteria = session.createCriteria(ITraining.class);
 
         criteria.add(Restrictions.eq("athlete", athlete));
         criteria.addOrder(Order.desc("datum"));
         criteria.setMaxResults(limit);
+        criteria.setFetchMode("athlete", FetchMode.JOIN);
+        criteria.setFetchMode("trainingType", FetchMode.JOIN);
+        criteria.setFetchMode("weather", FetchMode.JOIN);
+        criteria.setFetchMode("route", FetchMode.JOIN);
+        criteria.setFetchMode("trackPoints", FetchMode.SELECT);
 
         @SuppressWarnings("unchecked")
         final List<ITraining> list = criteria.list();
 
         dao.commit();
         session.flush();
-
+        final long time = DateTime.now().getMillis() - start;
+        LOG.info("getAllImported(final IAthlete athlete, final int limit): Time[ms]: " + time);
         return list;
     }
 

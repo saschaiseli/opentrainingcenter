@@ -8,7 +8,7 @@ public enum USAGE {
     /**
      * use the otc_dev database
      */
-    DEVELOPING("otc_dev", true, true), //$NON-NLS-1$
+    DEVELOPING("otc_dev", false, false), //$NON-NLS-1$
     /**
      * the content of the database will be deleted after each test.
      */

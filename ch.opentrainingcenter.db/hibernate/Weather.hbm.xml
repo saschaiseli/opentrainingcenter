@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 04.04.2013 20:38:06 by Hibernate Tools 3.4.0.CR1 -->
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
     <class name="ch.opentrainingcenter.transfer.impl.Weather" table="WEATHER" schema="PUBLIC">
         <id name="id" type="int">
@@ -14,13 +13,5 @@
         <property name="imageicon" type="string">
             <column name="IMAGEICON" />
         </property>
-        <!-- 
-        <set name="trainings" table="TRAINING" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="ID_FK_WEATHER" />
-            </key>
-            <one-to-many class="ch.opentrainingcenter.transfer.impl.Training" />
-        </set>
-         -->
     </class>
 </hibernate-mapping>

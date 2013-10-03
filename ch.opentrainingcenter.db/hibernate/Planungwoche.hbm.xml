@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 04.04.2013 20:38:06 by Hibernate Tools 3.4.0.CR1 -->
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
     <class name="ch.opentrainingcenter.transfer.impl.Planungwoche" table="PLANUNGWOCHE" schema="PUBLIC">
 		<id name="id" type="int">
@@ -10,7 +9,7 @@
 				<param name="sequence">planungwoche_id_sequence</param>
 			</generator>
 		</id>
-        <many-to-one name="athlete" class="ch.opentrainingcenter.transfer.impl.Athlete" fetch="select">
+        <many-to-one name="athlete" class="ch.opentrainingcenter.transfer.impl.Athlete" fetch="join">
             <column name="ID_FK_ATHLETE" />
         </many-to-one>
         <property name="kw" type="java.lang.Integer">

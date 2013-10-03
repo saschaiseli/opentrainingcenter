@@ -28,8 +28,9 @@ public class Dao implements IDao {
         configuration.setProperties(config.getProperties());
         configuration.setProperty("current_session_context_class", "thread");
         configuration.setProperty("cache.provider_class", "org.hibernate.cache.NoCacheProvider");
-        configuration.setProperty("show_sql", String.valueOf(usage.isShowSql()));
-        configuration.setProperty("format_sql", String.valueOf(usage.isFormatSql()));
+        configuration.setProperty("hibernate.show_sql", String.valueOf(usage.isShowSql()));
+        configuration.setProperty("hibernate.format_sql", String.valueOf(usage.isFormatSql()));
+        configuration.setProperty("hibernate.connection.pool_size", String.valueOf(10));
         try {
             configuration.addResource("Athlete.hbm.xml");//$NON-NLS-1$
             configuration.addResource("Health.hbm.xml"); //$NON-NLS-1$
@@ -40,6 +41,9 @@ public class Dao implements IDao {
             configuration.addResource("Streckenpunkte.hbm.xml"); //$NON-NLS-1$
             configuration.addResource("Planungwoche.hbm.xml"); //$NON-NLS-1$
             configuration.addResource("Route.hbm.xml"); //$NON-NLS-1$
+            LOG.info("Hibernate Config: show_sql=" + configuration.getProperty("hibernate.show_sql"));
+            LOG.info("Hibernate Config: format_sql=" + configuration.getProperty("hibernate.format_sql"));
+            LOG.info("Hibernate Config: pool_size=" + configuration.getProperty("hibernate.pool_size"));
             sessionFactory = configuration.buildSessionFactory();
         } catch (final MappingException e) {
             LOG.error(e);
