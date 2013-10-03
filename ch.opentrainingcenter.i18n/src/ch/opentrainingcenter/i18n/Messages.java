@@ -93,6 +93,8 @@ public final class Messages extends NLS {
     public static String CreateAthleteView7;
     public static String CreateAthleteView8;
     public static String CreateAthleteView9;
+    public static String CreateHeapDump_0;
+    public static String CreateHeapDump_1;
     public static String DatabasePreferencePage_0;
     public static String DatabasePreferencePage_1;
     public static String DatabasePreferencePage_10;
