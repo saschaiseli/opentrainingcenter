@@ -283,7 +283,6 @@ public class DatabaseAccess implements IDatabaseAccess {
         trainingDao.updateRecordRoute(record, idRoute);
     }
 
-    @SuppressWarnings("nls")
     @Override
     public boolean validateConnection(final String url, final String user, final String pass) {
 
