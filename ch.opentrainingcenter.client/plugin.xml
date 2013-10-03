@@ -307,6 +307,11 @@
             id="ch.opentrainingcenter.client.commands.CompareRecords"
             name="%vergleicht2laeufe">
       </command>
+      <command
+            description="%heapdump_desc"
+            id="ch.opentrainingcenter.client.commands.CreateHeapDump"
+            name="%heapdump">
+      </command>
    </extension>
    <extension
          id="prefPage"
@@ -754,6 +759,10 @@
             </count>
          </enabledWhen>
       </handler>
+      <handler
+            class="ch.opentrainingcenter.client.commands.CreateHeapDump"
+            commandId="ch.opentrainingcenter.client.commands.CreateHeapDump">
+      </handler>
    </extension>
    <extension
          point="org.eclipse.ui.viewActions">
@@ -775,5 +784,17 @@
    </extension>
    <extension
          point="org.eclipse.ui.perspectives">
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="ch.opentrainingcenter.client.commands.CreateHeapDump"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+1">
+      </key>
+      <scheme
+            id="myscheme"
+            name="myscheme">
+      </scheme>
    </extension>
 </plugin>
