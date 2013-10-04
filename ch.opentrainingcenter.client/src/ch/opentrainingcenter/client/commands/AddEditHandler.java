@@ -12,6 +12,9 @@ import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.transfer.ITraining;
 
+/**
+ * Handler um dem Lauf eine Notiz zu editieren.
+ */
 public class AddEditHandler extends AbstractHandler {
 
     public static final String ID = "ch.opentrainingcenter.client.action.AddEditHandler"; //$NON-NLS-1$

@@ -35,6 +35,10 @@ import ch.opentrainingcenter.model.strecke.StreckeModel;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IRoute;
 
+/**
+ * Importiert GPS Files.
+ * 
+ */
 public class ImportManualGpsFiles extends AbstractHandler {
 
     private final IDatabaseAccess databaseAccess;

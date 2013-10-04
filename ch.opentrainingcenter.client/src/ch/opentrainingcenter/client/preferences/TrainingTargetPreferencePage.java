@@ -18,6 +18,8 @@ import ch.opentrainingcenter.i18n.Messages;
 
 public class TrainingTargetPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
+    private static final int INDENT = 5;
+
     public TrainingTargetPreferencePage() {
         super(FieldEditorPreferencePage.GRID);
         setDescription(Messages.TrainingTargetPreferencePage0);
@@ -70,8 +72,8 @@ public class TrainingTargetPreferencePage extends FieldEditorPreferencePage impl
         addField(new ColorFieldEditor(PreferenceConstants.GEWICHT_COLOR, Messages.TrainingTargetPreferencePage_1, vital));
 
         // -- layout
-        GridDataFactory.defaultsFor(groupTrainingTarget).grab(true, true).span(2, 1).indent(5, 5).applyTo(groupTrainingTarget);
-        GridDataFactory.defaultsFor(groupChartColors).grab(true, true).span(2, 1).indent(5, 5).applyTo(groupChartColors);
-        GridDataFactory.defaultsFor(groupVitalColors).grab(true, true).span(2, 1).indent(5, 5).applyTo(groupVitalColors);
+        GridDataFactory.defaultsFor(groupTrainingTarget).grab(true, true).span(2, 1).indent(INDENT, INDENT).applyTo(groupTrainingTarget);
+        GridDataFactory.defaultsFor(groupChartColors).grab(true, true).span(2, 1).indent(INDENT, INDENT).applyTo(groupChartColors);
+        GridDataFactory.defaultsFor(groupVitalColors).grab(true, true).span(2, 1).indent(INDENT, INDENT).applyTo(groupVitalColors);
     }
 }

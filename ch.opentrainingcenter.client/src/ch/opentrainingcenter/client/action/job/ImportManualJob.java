@@ -18,8 +18,13 @@ import ch.opentrainingcenter.importer.IFileImport;
 import ch.opentrainingcenter.model.importer.IGpsFileModelWrapper;
 import ch.opentrainingcenter.transfer.ITraining;
 
+/**
+ * Importiert ein GPS File
+ * 
+ */
 public class ImportManualJob extends Job {
 
+    private static final int MAX_SIZE_OF_PRELOAD = 11;
     private static final Logger LOGGER = Logger.getLogger(ImportManualJob.class);
     private final IGpsFileModelWrapper modelWrapper;
     private final String filterPath;
@@ -61,7 +66,7 @@ public class ImportManualJob extends Job {
             @Override
             public void run() {
                 try {
-                    if (trainings.size() > 11) {
+                    if (trainings.size() > MAX_SIZE_OF_PRELOAD) {
                         Collections.sort(trainings, new Comparator<ITraining>() {
 
                             @Override
@@ -69,7 +74,7 @@ public class ImportManualJob extends Job {
                                 return Long.valueOf(o1.getDatum()).compareTo(Long.valueOf(o2.getDatum()));
                             }
                         });
-                        cache.addAll(trainings.subList(0, 10));
+                        cache.addAll(trainings.subList(0, MAX_SIZE_OF_PRELOAD - 1));
                     } else {
                         cache.addAll(trainings);
                     }

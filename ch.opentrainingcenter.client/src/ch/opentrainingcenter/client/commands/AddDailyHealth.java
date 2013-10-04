@@ -8,6 +8,9 @@ import org.eclipse.ui.PlatformUI;
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.views.dialoge.HealthDialog;
 
+/**
+ * Handler um die täglichen Wrte (Gewicht & Puls) hinzuzufügen.
+ */
 public class AddDailyHealth extends OtcAbstractHandler {
 
     public static final String ID = "ch.opentrainingcenter.client.commands.AddDailyHealth"; //$NON-NLS-1$

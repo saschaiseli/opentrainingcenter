@@ -35,7 +35,7 @@ public class CreateHeapDump extends AbstractHandler {
     // field to store the hotspot diagnostic MBean
     private static volatile HotSpotDiagnosticMXBean hotspotMBean;
 
-    private static final Object lock = new Object();
+    private static final Object LOCK = new Object();
 
     @Override
     public Object execute(final ExecutionEvent event) throws ExecutionException {
@@ -62,7 +62,7 @@ public class CreateHeapDump extends AbstractHandler {
     // initialize the hotspot diagnostic MBean field
     private static void initHotspotMBean() {
         if (hotspotMBean == null) {
-            synchronized (lock) {
+            synchronized (LOCK) {
                 if (hotspotMBean == null) {
                     hotspotMBean = getHotspotMBean();
                 }

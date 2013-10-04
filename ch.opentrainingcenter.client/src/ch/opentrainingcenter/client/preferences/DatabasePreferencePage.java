@@ -27,6 +27,7 @@ import ch.opentrainingcenter.i18n.Messages;
 
 public class DatabasePreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
+    private static final int INTENT = 5;
     public static final Logger LOGGER = Logger.getLogger(DatabasePreferencePage.class);
     private IPreferenceStore store;
     private IDatabaseAccess access;
@@ -126,8 +127,8 @@ public class DatabasePreferencePage extends FieldEditorPreferencePage implements
         addField(dbAdminUrl);
 
         // -- layout
-        GridDataFactory.defaultsFor(groupDb).grab(true, true).span(2, 1).indent(5, 5).applyTo(groupDb);
-        GridDataFactory.defaultsFor(groupAdminDb).grab(true, true).span(2, 1).indent(5, 5).applyTo(groupAdminDb);
+        GridDataFactory.defaultsFor(groupDb).grab(true, true).span(2, 1).indent(INTENT, INTENT).applyTo(groupDb);
+        GridDataFactory.defaultsFor(groupAdminDb).grab(true, true).span(2, 1).indent(INTENT, INTENT).applyTo(groupAdminDb);
 
         setErrorMessage(Messages.DatabasePreferencePage_7);
 

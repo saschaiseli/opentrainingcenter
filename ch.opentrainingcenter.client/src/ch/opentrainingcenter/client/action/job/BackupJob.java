@@ -22,6 +22,10 @@ import ch.opentrainingcenter.core.helper.GpsFileNameFilter;
 import ch.opentrainingcenter.core.importer.IConvert2Tcx;
 import ch.opentrainingcenter.i18n.Messages;
 
+/**
+ * Erstellt ein Backup mit allen importierten Daten.
+ * 
+ */
 public class BackupJob extends Job {
 
     private static final Logger LOG = Logger.getLogger(BackupJob.class.getName());
@@ -46,7 +50,7 @@ public class BackupJob extends Job {
     }
 
     @Override
-    protected IStatus run(final IProgressMonitor monitor) {
+    protected final IStatus run(final IProgressMonitor monitor) {
         monitor.beginTask(Messages.BackupGpsFiles1, fileToCopy.length);
 
         final String zipFileName = createZipFileName();

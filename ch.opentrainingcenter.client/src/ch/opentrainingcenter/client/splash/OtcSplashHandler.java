@@ -17,6 +17,8 @@ import ch.opentrainingcenter.client.Activator;
 
 public class OtcSplashHandler extends BasicSplashHandler {
 
+    private static final int WHITE = 0xD2D7FF;
+    private static final int FOREGROUND = 16;
     public static final String ID = "ch.opentrainingcenter.client.splash"; //$NON-NLS-1$
 
     public OtcSplashHandler() {
@@ -44,9 +46,9 @@ public class OtcSplashHandler extends BasicSplashHandler {
 
         int foregroundColorInteger;
         try {
-            foregroundColorInteger = Integer.parseInt(foregroundColorString, 16);
+            foregroundColorInteger = Integer.parseInt(foregroundColorString, FOREGROUND);
         } catch (final Exception ex) {
-            foregroundColorInteger = 0xD2D7FF; // off white
+            foregroundColorInteger = WHITE; // off white
         }
 
         setForeground(new RGB((foregroundColorInteger & 0xFF0000) >> 16, (foregroundColorInteger & 0xFF00) >> 8, foregroundColorInteger & 0xFF));
@@ -57,17 +59,18 @@ public class OtcSplashHandler extends BasicSplashHandler {
         } else {
             buildId = version.getMajor() + "." + version.getMinor() + " / " + version.getQualifier(); //$NON-NLS-1$ //$NON-NLS-2$
         }
+        if (product != null) {
+            final String buildIdLocString = product.getProperty("buildIdLocation"); //$NON-NLS-1$
+            final Point buildIdPoint = StringConverter.asPoint(buildIdLocString, new Point(5, 10));
+            getContent().addPaintListener(new PaintListener() {
 
-        final String buildIdLocString = product.getProperty("buildIdLocation"); //$NON-NLS-1$
-        final Point buildIdPoint = StringConverter.asPoint(buildIdLocString, new Point(5, 10));
-        getContent().addPaintListener(new PaintListener() {
-
-            @Override
-            public void paintControl(final PaintEvent e) {
-                e.gc.setForeground(getForeground());
-                e.gc.drawText(buildId, buildIdPoint.x, buildIdPoint.y, true);
-            }
-        });
+                @Override
+                public void paintControl(final PaintEvent e) {
+                    e.gc.setForeground(getForeground());
+                    e.gc.drawText(buildId, buildIdPoint.x, buildIdPoint.y, true);
+                }
+            });
+        }
 
         getContent();
     }

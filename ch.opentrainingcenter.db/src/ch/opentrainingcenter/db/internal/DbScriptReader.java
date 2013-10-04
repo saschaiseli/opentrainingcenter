@@ -9,7 +9,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 public final class DbScriptReader {
+
+    private static final Logger LOGGER = Logger.getLogger(DbScriptReader.class);
+
     private DbScriptReader() {
 
     }
@@ -24,6 +29,7 @@ public final class DbScriptReader {
      */
     @SuppressWarnings("nls")
     public static final List<String> readDbScript(final String sqlFileName) throws FileNotFoundException {
+        final List<String> result = new ArrayList<>();
         if (sqlFileName == null || sqlFileName.length() == 0) {
             throw new IllegalArgumentException("Ungültige Angabe des SQL Files. '" + sqlFileName + "'");
         }
@@ -34,16 +40,15 @@ public final class DbScriptReader {
         final BufferedReader reader = new BufferedReader(new InputStreamReader(in));
         final StringBuilder strBuilder = new StringBuilder();
         int nextchar;
-        String sql = null;
         try {
             while ((nextchar = reader.read()) != -1) {
                 strBuilder.append((char) nextchar);
             }
-            sql = strBuilder.toString();
+            result.addAll(convertToList(strBuilder.toString()));
         } catch (final IOException e) {
-            e.printStackTrace();
+            LOGGER.warn("Kein DB Script gefunden: ", e);
         }
-        return convertToList(sql);
+        return result;
     }
 
     private static List<String> convertToList(final String sql) {

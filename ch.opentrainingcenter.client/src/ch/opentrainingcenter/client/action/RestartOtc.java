@@ -8,6 +8,10 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 
+/**
+ * Action um OTC neu zu starten.
+ * 
+ */
 public class RestartOtc extends Action implements ISelectionListener, IWorkbenchAction {
 
     public static final String ID = "ch.opentrainingcenter.client.RestartOtc"; //$NON-NLS-1$

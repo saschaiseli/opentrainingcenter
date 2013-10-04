@@ -12,6 +12,10 @@ import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.client.views.planung.ShowJahresplanungViewPart;
 import ch.opentrainingcenter.i18n.Messages;
 
+/**
+ * Lädt und zeigt alle Jahrespläne.
+ * 
+ */
 public class ShowJahresplanung extends Job {
 
     public ShowJahresplanung(final String title, final int jahr) {

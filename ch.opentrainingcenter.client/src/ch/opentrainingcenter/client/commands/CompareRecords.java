@@ -21,6 +21,9 @@ import ch.opentrainingcenter.route.CompareRouteFactory;
 import ch.opentrainingcenter.route.ICompareRoute;
 import ch.opentrainingcenter.transfer.ITraining;
 
+/**
+ * Vergleicht selektierte Läufe auf ihre geografische Ähnlichkeit.
+ */
 public class CompareRecords extends AbstractHandler {
 
     public static final String ID = "ch.opentrainingcenter.client.commands.CompareRecords"; //$NON-NLS-1$
@@ -28,7 +31,7 @@ public class CompareRecords extends AbstractHandler {
 
     @Override
     public Object execute(final ExecutionEvent event) throws ExecutionException {
-        final Cache cache = TrainingCache.getInstance();// TrainingCenterDataCache.getInstance();
+        final Cache cache = TrainingCache.getInstance();
 
         final ISelection selection = HandlerUtil.getCurrentSelection(event);
 

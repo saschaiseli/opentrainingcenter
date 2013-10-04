@@ -17,6 +17,9 @@ import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.transfer.ITraining;
 
+/**
+ * Handler um selektierte Trainings zu löschen.
+ */
 public class DeleteImportedRecord extends AbstractHandler {
 
     private static final Logger LOGGER = Logger.getLogger(DeleteImportedRecord.class.getName());
@@ -26,7 +29,7 @@ public class DeleteImportedRecord extends AbstractHandler {
     @Override
     public Object execute(final ExecutionEvent event) throws ExecutionException {
         final IDatabaseAccess db = DatabaseAccessFactory.getDatabaseAccess();
-        final Cache cache = TrainingCache.getInstance();// TrainingCenterDataCache.getInstance();
+        final Cache cache = TrainingCache.getInstance();
 
         final ISelection selection = HandlerUtil.getCurrentSelection(event);
 

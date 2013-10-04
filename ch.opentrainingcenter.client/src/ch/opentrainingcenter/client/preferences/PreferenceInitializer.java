@@ -19,6 +19,14 @@ import ch.opentrainingcenter.core.importer.IConvert2Tcx;
  */
 public class PreferenceInitializer extends AbstractPreferenceInitializer {
 
+    private static final int ANZAHL_PLAENE = 6;
+    private static final int RECM = 65;
+    private static final int GA1 = 75;
+    private static final int GA12 = 85;
+    private static final int GA2 = 95;
+    private static final int WETTKAMPF = 100;
+    private static final int EINSTELLIGER_MONAT = 9;
+
     /*
      * (non-Javadoc)
      * 
@@ -29,26 +37,26 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
     public void initializeDefaultPreferences() {
         final IEclipsePreferences defaults = DefaultScope.INSTANCE.getNode(Application.ID);
 
-        final String userHome = System.getProperty("user.home");//$NON-NLS-1$
+        final String userHome = System.getProperty("user.home"); //$NON-NLS-1$
         final Calendar cal = Calendar.getInstance(Locale.getDefault());
         final int month = cal.get(Calendar.MONTH) + 1;
         final String monthString;
-        if (month < 9) {
+        if (month < EINSTELLIGER_MONAT) {
             monthString = "0" + month; //$NON-NLS-1$
         } else {
             monthString = String.valueOf(month);
         }
         defaults.put(PreferenceConstants.GPS_FILE_LOCATION, userHome + File.separator + cal.get(Calendar.YEAR) + File.separator + monthString);
         defaults.put(PreferenceConstants.GPS_FILE_LOCATION_PROG, userHome + "/data/otc"); //$NON-NLS-1$
-        defaults.putInt(PreferenceConstants.RECOM, 65);
+        defaults.putInt(PreferenceConstants.RECOM, RECM);
         defaults.put(PreferenceConstants.RECOM_COLOR, "144,238,144"); //$NON-NLS-1$
-        defaults.putInt(PreferenceConstants.GA1, 75);
+        defaults.putInt(PreferenceConstants.GA1, GA1);
         defaults.put(PreferenceConstants.GA1_COLOR, "246,246,108"); //$NON-NLS-1$
-        defaults.putInt(PreferenceConstants.GA12, 85);
+        defaults.putInt(PreferenceConstants.GA12, GA12);
         defaults.put(PreferenceConstants.GA12_COLOR, "253,152,90"); //$NON-NLS-1$
-        defaults.putInt(PreferenceConstants.GA2, 95);
+        defaults.putInt(PreferenceConstants.GA2, GA2);
         defaults.put(PreferenceConstants.GA2_COLOR, "193,103,73"); //$NON-NLS-1$
-        defaults.putInt(PreferenceConstants.WSA, 100);
+        defaults.putInt(PreferenceConstants.WSA, WETTKAMPF);
         defaults.put(PreferenceConstants.WSA_COLOR, "255,64,34"); //$NON-NLS-1$
 
         defaults.put(PreferenceConstants.BACKUP_FILE_LOCATION, System.getProperty("user.home") + File.separator + ".otc/backup"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -58,7 +66,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
         }
 
         // training target
-        defaults.putInt(PreferenceConstants.WEEK_FOR_PLAN, 6);
+        defaults.putInt(PreferenceConstants.WEEK_FOR_PLAN, ANZAHL_PLAENE);
         defaults.put(PreferenceConstants.ZIEL_ERFUELLT_COLOR, "108,233,144"); //$NON-NLS-1$
         defaults.put(PreferenceConstants.ZIEL_NICHT_ERFUELLT_COLOR, "212,62,59"); //$NON-NLS-1$
         defaults.put(PreferenceConstants.ZIEL_NICHT_BEKANNT_COLOR, "173,216,230"); //$NON-NLS-1$

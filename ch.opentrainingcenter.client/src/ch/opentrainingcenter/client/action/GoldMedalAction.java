@@ -14,6 +14,11 @@ import ch.opentrainingcenter.model.training.IGoldMedalModel;
 import ch.opentrainingcenter.model.training.Intervall;
 import ch.opentrainingcenter.transfer.ITraining;
 
+/**
+ * Sucht die besten Resultate in den verschiedenen Kategorien
+ * {@link DistanceIntervall}
+ * 
+ */
 public class GoldMedalAction {
     private static final String UNKNOWN = "-"; //$NON-NLS-1$
 
@@ -54,7 +59,12 @@ public class GoldMedalAction {
         // längster lauf zeit
         final Pair<Long, Double> longRun = Collections.max(dauer, new PairComparator<Double>());
         final String seconds = TimeHelper.convertSecondsToHumanReadableZeit(longRun.getSecond());
-        result.setLongestRun(!dauer.isEmpty() ? new Pair<Long, String>(longRun.getFirst(), seconds) : emptyPair);
+        if (dauer.isEmpty()) {
+            result.setLongestRun(emptyPair);
+        } else {
+            result.setLongestRun(new Pair<Long, String>(longRun.getFirst(), seconds));
+        }
+
         // höchster puls
         if (!heart.isEmpty()) {
             final Pair<Long, Integer> highPuls = Collections.max(heart, new PairComparator<Integer>());

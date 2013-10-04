@@ -4,6 +4,9 @@ import org.eclipse.core.commands.HandlerEvent;
 
 import ch.opentrainingcenter.client.perspectives.MainPerspective;
 
+/**
+ * Handler um zur Main Perspektive zu wechseln.
+ */
 public class SwitchToMain extends SwitchToPerspective {
 
     @Override

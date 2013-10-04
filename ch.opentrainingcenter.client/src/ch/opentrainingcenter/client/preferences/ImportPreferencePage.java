@@ -36,7 +36,7 @@ public class ImportPreferencePage extends FieldEditorPreferencePage implements I
         final ConvertContainer cc = new ConvertContainer(ExtensionHelper.getConverters());
         for (final IConvert2Tcx tcx : cc.getAllConverter()) {
             final String paramName = PreferenceConstants.FILE_SUFFIX_FOR_BACKUP + tcx.getFilePrefix();
-            final String label = tcx.getName() + "   (*." + tcx.getFilePrefix() + ")";//$NON-NLS-1$ //$NON-NLS-2$
+            final String label = tcx.getName() + "   (*." + tcx.getFilePrefix() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
 
             final BooleanFieldEditor formatOnSave = new BooleanFieldEditor(paramName, label, getFieldEditorParent());
             addField(formatOnSave);

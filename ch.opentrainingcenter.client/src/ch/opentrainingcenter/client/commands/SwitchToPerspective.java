@@ -11,6 +11,9 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.WorkbenchException;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+/**
+ * Abstrakter Handler um in eine andere Perspektive zu wechseln.
+ */
 public abstract class SwitchToPerspective extends AbstractHandler {
 
     @Override

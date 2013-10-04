@@ -17,6 +17,10 @@ import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.importer.ExtensionHelper;
 import ch.opentrainingcenter.i18n.Messages;
 
+/**
+ * Macht ein Backup aller importierten Daten. Sammelt sie und packt sie in ein
+ * ZIP File, danach wird das ZIP File an einen zu definierenden Ort kopiert.
+ */
 public class BackupGpsFiles extends AbstractHandler {
 
     public static final String ID = "ch.opentrainingcenter.client.commands.BackupGpsFiles"; //$NON-NLS-1$

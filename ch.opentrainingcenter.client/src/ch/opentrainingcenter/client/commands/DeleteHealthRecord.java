@@ -16,6 +16,9 @@ import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.transfer.IHealth;
 
+/**
+ * Handler um die selektierten Tageswerte zu löschen.
+ */
 public class DeleteHealthRecord extends AbstractHandler {
     private static final Logger LOGGER = Logger.getLogger(DeleteHealthRecord.class.getName());
 

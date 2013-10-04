@@ -2,6 +2,9 @@ package ch.opentrainingcenter.client.commands.runtype;
 
 import ch.opentrainingcenter.core.helper.RunType;
 
+/**
+ * Extensives Intervall.
+ */
 public class ExtIntervall extends ChangeRunType {
 
     public static final String ID = "ch.opentrainingcenter.client.commands.ExtIntervall"; //$NON-NLS-1$

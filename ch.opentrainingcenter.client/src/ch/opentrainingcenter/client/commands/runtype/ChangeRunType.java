@@ -15,6 +15,9 @@ import ch.opentrainingcenter.core.helper.RunType;
 import ch.opentrainingcenter.model.navigation.ConcreteImported;
 import ch.opentrainingcenter.transfer.ITraining;
 
+/**
+ * Lauf Typ.
+ */
 public abstract class ChangeRunType extends AbstractHandler {
 
     private final Cache cache = TrainingCache.getInstance();

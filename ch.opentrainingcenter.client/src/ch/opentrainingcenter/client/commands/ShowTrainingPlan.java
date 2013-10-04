@@ -8,6 +8,9 @@ import org.joda.time.DateTime;
 import ch.opentrainingcenter.client.action.job.ShowJahresplanung;
 import ch.opentrainingcenter.i18n.Messages;
 
+/**
+ * Handler um Trainingspläne anzuzeigen.
+ */
 public class ShowTrainingPlan extends AbstractHandler {
 
     public static final String ID = "ch.opentrainingcenter.client.commands.ShowTrainingPlan"; //$NON-NLS-1$

@@ -12,6 +12,9 @@ import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.transfer.IAthlete;
 
+/**
+ * Fügt eine neue Route hinzu.
+ */
 public class AddRoute extends OtcAbstractHandler {
 
     public static final String ID = "ch.opentrainingcenter.client.commands.AddRoute"; //$NON-NLS-1$
