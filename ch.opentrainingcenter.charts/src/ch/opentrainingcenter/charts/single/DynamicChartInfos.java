@@ -77,17 +77,21 @@ public class DynamicChartInfos {
         }
     }
 
-    private long addTimeIfPresent(long startTime, final Rectangle2D rect, final int itemIndex) {
+    private long addTimeIfPresent(final long startTime, final Rectangle2D rect, final int itemIndex) {
         if (dataset.getSeriesCount() > 1) {
             // ansonsten wurde im dataset die zeit nicht hinzugefügt
             long runningTime;
             final Number y = dataset.getY(1, itemIndex);
             if (y != null) {
+                final long result;
                 if (startTime == Long.MIN_VALUE) {
-                    startTime = y.longValue();
+                    result = y.longValue();
+                } else {
+                    result = startTime;
                 }
-                runningTime = y.longValue() - startTime;
+                runningTime = y.longValue() - result;
                 time.put(rect.getX(), runningTime);
+                return result;
             }
         }
         return startTime;

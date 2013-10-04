@@ -72,9 +72,9 @@ public class RouteDialog extends TitleAreaDialog {
         labelName.setText(Messages.RouteDialog_2);
 
         name = new Text(container, SWT.BORDER);
-        final GridData gd_pulsText = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-        gd_pulsText.widthHint = 80;
-        name.setLayoutData(gd_pulsText);
+        final GridData gdPulsText = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+        gdPulsText.widthHint = 80;
+        name.setLayoutData(gdPulsText);
 
         final Label labelBeschreibung = new Label(container, SWT.NONE);
         labelBeschreibung.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));

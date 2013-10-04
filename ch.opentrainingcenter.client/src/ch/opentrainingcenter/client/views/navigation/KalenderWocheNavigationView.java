@@ -92,16 +92,12 @@ public class KalenderWocheNavigationView extends ViewPart {
 
             @Override
             public void run() {
-                try {
-                    final List<ITraining> imported = db.getAllImported(athlete);
-                    treeModel.reset();
-                    treeModel.addItems(healthCache.getAll());
-                    treeModel.addItems(DecoratImported.decorate(imported));
-                    if (viewer != null) {
-                        viewer.refresh();
-                    }
-                } catch (final Exception e) {
-                    e.printStackTrace();
+                final List<ITraining> imported = db.getAllImported(athlete);
+                treeModel.reset();
+                treeModel.addItems(healthCache.getAll());
+                treeModel.addItems(DecoratImported.decorate(imported));
+                if (viewer != null) {
+                    viewer.refresh();
                 }
             }
         });
@@ -253,15 +249,12 @@ public class KalenderWocheNavigationView extends ViewPart {
 
             @Override
             public void run() {
+
+                final String hash = String.valueOf(record.getDatum());
                 try {
-                    final String hash = String.valueOf(record.getDatum());
-                    try {
-                        PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(SingleActivityViewPart.ID, hash,
-                                IWorkbenchPage.VIEW_ACTIVATE);
-                    } catch (final PartInitException e) {
-                        LOG.error(e);
-                    }
-                } catch (final Exception e) {
+                    PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+                            .showView(SingleActivityViewPart.ID, hash, IWorkbenchPage.VIEW_ACTIVATE);
+                } catch (final PartInitException e) {
                     LOG.error(e);
                 }
             }

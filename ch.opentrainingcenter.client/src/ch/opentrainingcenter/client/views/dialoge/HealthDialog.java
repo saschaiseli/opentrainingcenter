@@ -134,18 +134,18 @@ public class HealthDialog extends TitleAreaDialog {
         ruhePuls.setText(Messages.HealthDialog2);
 
         pulsText = new Text(containerTextFields, SWT.BORDER);
-        final GridData gd_pulsText = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-        gd_pulsText.widthHint = 80;
-        pulsText.setLayoutData(gd_pulsText);
+        final GridData gdPulsText = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+        gdPulsText.widthHint = 80;
+        pulsText.setLayoutData(gdPulsText);
 
         final Label gewichtLabel = new Label(containerTextFields, SWT.NONE);
         gewichtLabel.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
         gewichtLabel.setText(Messages.HealthDialog3);
 
         gewichtText = new Text(containerTextFields, SWT.BORDER);
-        final GridData gd_gewichtText = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-        gd_gewichtText.widthHint = 80;
-        gewichtText.setLayoutData(gd_gewichtText);
+        final GridData gdGewichtText = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+        gdGewichtText.widthHint = 80;
+        gewichtText.setLayoutData(gdGewichtText);
 
         errorLabel = new Label(c, SWT.NONE);
         errorLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -222,23 +222,11 @@ public class HealthDialog extends TitleAreaDialog {
             @Override
             protected IStatus validate() {
                 LOG.debug("validate"); //$NON-NLS-1$
-                boolean pulsValid = false;
-                boolean gewichtValid = false;
                 final Object pulsVal = textPulsObservable.getValue();
+                final boolean pulsValid = pulsValid(pulsVal);
+
                 final Object gewichtVal = textGewichtObservable.getValue();
-                try {
-                    final Integer puls = Integer.valueOf(pulsVal.toString());
-                    pulsValid = pulsValid(puls);
-                } catch (final NumberFormatException nfe) {
-
-                }
-
-                try {
-                    final Double gewicht = Double.valueOf(gewichtVal.toString());
-                    gewichtValid = gewichtValid(gewicht);
-                } catch (final NumberFormatException nfe) {
-
-                }
+                final boolean gewichtValid = gewichtValid(gewichtVal);
 
                 if (pulsValid || gewichtValid) {
                     getButton(OK).setEnabled(true);
@@ -251,12 +239,26 @@ public class HealthDialog extends TitleAreaDialog {
                 }
             }
 
-            private boolean gewichtValid(final Double gewicht) {
-                return gewicht != null && gewicht.doubleValue() > 0;
+            private boolean gewichtValid(final Object gewichtObj) {
+                final boolean gewichtValid;
+                try {
+                    final Double gewicht = Double.valueOf(gewichtObj.toString());
+                    gewichtValid = gewicht != null && gewicht.doubleValue() > 0;
+                } catch (final NumberFormatException nfe) {
+                    return false;
+                }
+                return gewichtValid;
             }
 
-            private boolean pulsValid(final Integer puls) {
-                return puls != null && puls > 0;
+            private boolean pulsValid(final Object pulsObject) {
+                final boolean pulsValid;
+                try {
+                    final Integer puls = Integer.valueOf(pulsObject.toString());
+                    pulsValid = puls != null && puls > 0;
+                } catch (final NumberFormatException nfe) {
+                    return false;
+                }
+                return pulsValid;
             }
         };
 

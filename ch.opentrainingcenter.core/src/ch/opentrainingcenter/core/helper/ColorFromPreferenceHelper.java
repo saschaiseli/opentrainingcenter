@@ -1,7 +1,6 @@
 package ch.opentrainingcenter.core.helper;
 
 import java.awt.Color;
-import java.awt.Paint;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -28,7 +27,6 @@ public final class ColorFromPreferenceHelper {
      *            alpha wert 0...255 Transparency (0 transparent, 255 maximale
      *            Farbe)
      * 
-     * @return {@link Paint}
      */
     public static Color getColor(final IPreferenceStore store, final String key, final int alpha) {
         final String cBelow = store.getString(key);

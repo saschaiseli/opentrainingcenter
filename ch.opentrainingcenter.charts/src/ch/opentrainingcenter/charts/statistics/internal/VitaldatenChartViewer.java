@@ -132,7 +132,7 @@ public abstract class VitaldatenChartViewer extends ViewPart implements ISelecti
         for (final ConcreteHealth health : all) {
             final TimeZone zone = Calendar.getInstance(Locale.getDefault()).getTimeZone();
             final RegularTimePeriod period = RegularTimePeriod.createInstance(Day.class, health.getDateofmeasure(), zone);
-            final Number value = getValue(health);// health.getCardio();
+            final Number value = getValue(health);
             final TimeSeriesDataItem item = new TimeSeriesDataItem(period, value);
             serie.add(item);
         }

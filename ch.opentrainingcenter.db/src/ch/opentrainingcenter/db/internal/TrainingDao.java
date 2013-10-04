@@ -32,7 +32,7 @@ public class TrainingDao {
         final Session session = dao.getSession();
         dao.begin();
 
-        final Criteria criteria = session.createCriteria(ITraining.class);//
+        final Criteria criteria = session.createCriteria(ITraining.class);
 
         criteria.setFetchMode("athlete", FetchMode.JOIN);
         criteria.setFetchMode("trainingType", FetchMode.JOIN);

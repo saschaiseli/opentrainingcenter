@@ -1,6 +1,7 @@
 package ch.opentrainingcenter.importer.impl;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.joda.time.DateTime;
 
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
+import ch.opentrainingcenter.core.exceptions.ConvertException;
 import ch.opentrainingcenter.core.helper.RunType;
 import ch.opentrainingcenter.core.importer.ConvertContainer;
 import ch.opentrainingcenter.core.importer.IFileCopy;
@@ -55,16 +57,31 @@ public class FileImport implements IFileImport {
         this.fileCopy = fileCopy;
     }
 
+    @SuppressWarnings("nls")
     @Override
-    public List<ITraining> importFile(final String filterPath, final IGpsFileModelWrapper modelWrapper, final IProgressMonitor monitor) throws Exception {
+    public List<ITraining> importFile(final String filterPath, final IGpsFileModelWrapper modelWrapper, final IProgressMonitor monitor) {
         final List<ITraining> activitiesToImport = new ArrayList<ITraining>();
         for (final IGpsFileModel model : modelWrapper.getGpsFileModels()) {
             final File file = new File(filterPath, model.getFileName());
             final String fileName = file.getName();
             monitor.setTaskName(Messages.FileImport_0 + fileName);
-            LOGGER.info("importiere File: " + fileName); //$NON-NLS-1$
+            LOGGER.info("importiere File: " + fileName);
 
-            final ITraining training = cc.getMatchingConverter(file).convert(file);
+            try {
+                fileCopy.copyFile(file, new File(locationBackupFiles, fileName));
+            } catch (final IOException e) {
+                LOGGER.error(String.format("File %s konnte nicht kopiert werden", fileName), e); //$NON-NLS-1$
+                continue;
+            }
+
+            final ITraining training;
+            try {
+                training = cc.getMatchingConverter(file).convert(file);
+            } catch (final ConvertException e) {
+                LOGGER.error(String.format("File %s konnte nicht importiert werden", fileName), e);
+                continue;
+            }
+
             training.setAthlete(athlete);
             training.setFileName(fileName);
             training.setDateOfImport(DateTime.now().toDate());
@@ -77,14 +94,12 @@ public class FileImport implements IFileImport {
             final RunType typ = model.getTyp();
             final ITrainingType tt = CommonTransferFactory.createTrainingType(typ.getIndex(), typ.getTitle(), typ.getTitle());
             training.setTrainingType(tt);
-            LOGGER.info("Save Training"); //$NON-NLS-1$
+            LOGGER.info("Save Training");
             final long start = DateTime.now().getMillis();
             dbAccess.saveTraining(training);
-            final long end = DateTime.now().getMillis();
-            LOGGER.info("Saved Training in " + (end - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$
+            LOGGER.info("Saved Training in " + (DateTime.now().getMillis() - start) + "ms");
             activitiesToImport.add(training);
 
-            fileCopy.copyFile(file, new File(locationBackupFiles, fileName));
             monitor.worked(1);
         }
         return activitiesToImport;

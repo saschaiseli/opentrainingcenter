@@ -18,6 +18,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
+import ch.opentrainingcenter.core.exceptions.ConvertException;
 import ch.opentrainingcenter.core.importer.IConvert2Tcx;
 import ch.opentrainingcenter.transfer.ITraining;
 
@@ -59,7 +60,7 @@ public class BackupJobTest {
             }
 
             @Override
-            public ITraining convert(final File file) throws Exception {
+            public ITraining convert(final File file) throws ConvertException {
                 return null;
             }
         });

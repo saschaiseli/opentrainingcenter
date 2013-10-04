@@ -10,7 +10,7 @@ import ch.opentrainingcenter.model.navigation.KalenderWoche;
 
 public class NavigationParent implements INavigationParent {
 
-    List<INavigationItem> items = new ArrayList<INavigationItem>();
+    private final List<INavigationItem> items = new ArrayList<INavigationItem>();
     private KalenderWoche kw = null;
 
     public NavigationParent() {
@@ -20,7 +20,7 @@ public class NavigationParent implements INavigationParent {
     @Override
     public String getName() {
         final StringBuffer result = new StringBuffer("KW"); //$NON-NLS-1$
-        result.append(kw != null ? kw.getKw() : "");//$NON-NLS-1$
+        result.append(kw != null ? kw.getKw() : ""); //$NON-NLS-1$
         return result.toString();
     }
 

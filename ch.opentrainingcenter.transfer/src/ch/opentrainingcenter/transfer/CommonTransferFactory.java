@@ -15,7 +15,8 @@ import ch.opentrainingcenter.transfer.impl.Training;
 import ch.opentrainingcenter.transfer.impl.Trainingtype;
 import ch.opentrainingcenter.transfer.impl.Weather;
 
-public class CommonTransferFactory {
+public final class CommonTransferFactory {
+
     private CommonTransferFactory() {
 
     }

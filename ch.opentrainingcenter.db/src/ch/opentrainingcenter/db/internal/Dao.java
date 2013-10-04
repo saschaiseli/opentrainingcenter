@@ -32,7 +32,7 @@ public class Dao implements IDao {
         configuration.setProperty("hibernate.format_sql", String.valueOf(usage.isFormatSql()));
         configuration.setProperty("hibernate.connection.pool_size", String.valueOf(10));
         try {
-            configuration.addResource("Athlete.hbm.xml");//$NON-NLS-1$
+            configuration.addResource("Athlete.hbm.xml"); //$NON-NLS-1$
             configuration.addResource("Health.hbm.xml"); //$NON-NLS-1$
             configuration.addResource("Weather.hbm.xml"); //$NON-NLS-1$
             configuration.addResource("Training.hbm.xml"); //$NON-NLS-1$
@@ -53,6 +53,7 @@ public class Dao implements IDao {
     @Override
     public Transaction begin() {
         return getSession().beginTransaction();
+
     }
 
     @Override
@@ -83,12 +84,12 @@ public class Dao implements IDao {
         try {
             getSession().getTransaction().rollback();
         } catch (final HibernateException e) {
-            System.out.println(e.getMessage());
+            LOG.error(e);
         }
         try {
             getSession().close();
         } catch (final HibernateException e) {
-            System.out.println(e.getMessage());
+            LOG.error(e);
         }
     }
 

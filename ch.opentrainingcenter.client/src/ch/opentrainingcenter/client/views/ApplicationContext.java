@@ -12,7 +12,7 @@ import ch.opentrainingcenter.transfer.IAthlete;
  * App Context
  * 
  */
-public class ApplicationContext {
+public final class ApplicationContext {
 
     private static final ApplicationContext INSTANCE = new ApplicationContext();
 

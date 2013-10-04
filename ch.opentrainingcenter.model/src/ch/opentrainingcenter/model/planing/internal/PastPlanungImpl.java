@@ -25,7 +25,11 @@ public class PastPlanungImpl implements IPastPlanung {
             final int[] analyse = analyse(effective);
             kmEffective = analyse[0];
             kmLangerLaufEffective = analyse[1];
-            interval = analyse[2] == 1 ? true : false;
+            if (analyse[2] == 1) {
+                interval = true;
+            } else {
+                interval = false;
+            }
         }
 
     }

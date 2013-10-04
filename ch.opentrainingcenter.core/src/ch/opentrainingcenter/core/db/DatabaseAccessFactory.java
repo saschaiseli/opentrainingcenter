@@ -17,24 +17,24 @@ public final class DatabaseAccessFactory {
 
     private static final String DEVELOPING_FLAG = "developing"; //$NON-NLS-1$
 
-    private static boolean DEVELOPING = false;
+    private static boolean developing = false;
 
-    private static DatabaseAccessFactory INSTANCE = null;
+    private static DatabaseAccessFactory instance = null;
 
-    private static final Map<String, IDatabaseAccess> dbAccesses;
+    private static final Map<String, IDatabaseAccess> DB_ACCESS;
 
     private static IDatabaseAccess databaseAccess;
 
     static {
         final IConfigurationElement[] daos = Platform.getExtensionRegistry().getConfigurationElementsFor("ch.opentrainingdatabase.db"); //$NON-NLS-1$
-        dbAccesses = getDao(daos, IDatabaseAccess.EXTENSION_POINT_NAME);
+        DB_ACCESS = getDao(daos, IDatabaseAccess.EXTENSION_POINT_NAME);
     }
 
     private DatabaseAccessFactory() {
         final String[] commandLineArgs = Platform.getCommandLineArgs();
         for (final String cmdArg : commandLineArgs) {
             if (cmdArg.contains(DEVELOPING_FLAG)) {
-                DEVELOPING = true;
+                developing = true;
             }
         }
 
@@ -54,13 +54,13 @@ public final class DatabaseAccessFactory {
      *            Passwort
      */
     public static void init(final String dbName, final String url, final String user, final String pw) {
-        if (INSTANCE == null) {
-            INSTANCE = new DatabaseAccessFactory();
+        if (instance == null) {
+            instance = new DatabaseAccessFactory();
 
             databaseAccess = getDbaccesses().get(dbName);
             if (databaseAccess != null) {
                 final DbConnection dbConnection = databaseAccess.getDbConnection();
-                if (DEVELOPING) {
+                if (developing) {
                     dbConnection.setUrl(url + "_dev"); //$NON-NLS-1$
                 } else {
                     dbConnection.setUrl(url);
@@ -68,7 +68,7 @@ public final class DatabaseAccessFactory {
                 dbConnection.setUsername(user);
                 dbConnection.setPassword(pw);
 
-                databaseAccess.setDeveloping(DEVELOPING);
+                databaseAccess.setDeveloping(developing);
                 final DatabaseConnectionConfiguration config = new DatabaseConnectionConfiguration(dbConnection);
                 databaseAccess.setConfiguration(config);
                 databaseAccess.init();
@@ -84,12 +84,12 @@ public final class DatabaseAccessFactory {
      *         sonst gibt es eine {@link IllegalArgumentException}.
      */
     public static IDatabaseAccess getDatabaseAccess() {
-        Assertions.notNull(INSTANCE, "Datenbank muss bereits initialisiert sein"); //$NON-NLS-1$
+        Assertions.notNull(instance, "Datenbank muss bereits initialisiert sein"); //$NON-NLS-1$
         return databaseAccess;
     }
 
     public static Map<String, IDatabaseAccess> getDbaccesses() {
-        return dbAccesses;
+        return DB_ACCESS;
     }
 
     private static Map<String, IDatabaseAccess> getDao(final IConfigurationElement[] confItems, final String extensionAttr) {
@@ -97,7 +97,7 @@ public final class DatabaseAccessFactory {
         final Map<String, IDatabaseAccess> result = new HashMap<>();
         for (final IConfigurationElement element : confItems) {
             try {
-                LOGGER.info("Element: " + element.getName());//$NON-NLS-1$
+                LOGGER.info("Element: " + element.getName()); //$NON-NLS-1$
                 LOGGER.info("Namespaceidentifier: " + element.getNamespaceIdentifier()); //$NON-NLS-1$
                 final IDatabaseAccess db = (IDatabaseAccess) element.createExecutableExtension(extensionAttr);
                 result.put(db.getName(), db);
@@ -113,7 +113,7 @@ public final class DatabaseAccessFactory {
      * Für Testzwecke
      */
     static void reset() {
-        INSTANCE = null;
+        instance = null;
     }
 
 }

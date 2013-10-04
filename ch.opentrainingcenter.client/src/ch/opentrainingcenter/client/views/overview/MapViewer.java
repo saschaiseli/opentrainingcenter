@@ -9,21 +9,22 @@ import com.eclipsesource.widgets.gmaps.GMap;
 import com.eclipsesource.widgets.gmaps.LatLng;
 
 public class MapViewer extends Composite {
+    public static final String ID = "ch.opentrainingcenter.client.views.overview.MapViewer"; //$NON-NLS-1$
 
-    private final static Logger LOGGER = Logger.getLogger(MapViewer.class);
-    public final static String ID = "ch.opentrainingcenter.client.views.overview.MapViewer"; //$NON-NLS-1$
-    private GMap gmap;
-    private final String INIT_CENTER;
-    static final private int INIT_ZOOM = 16;
-    static final private int INIT_TYPE = GMap.TYPE_HYBRID;
+    private static final Logger LOGGER = Logger.getLogger(MapViewer.class);
+    private static final int INIT_ZOOM = 16;
+    private static final int INIT_TYPE = GMap.TYPE_HYBRID;
+    private final String initCenter;
     private final Composite parent;
     private final String path;
+
+    private GMap gmap;
 
     public MapViewer(final Composite parent, final int style, final String path, final String initCenter) {
         super(parent, style);
         this.parent = parent;
         this.path = path;
-        INIT_CENTER = initCenter;
+        this.initCenter = initCenter;
     }
 
     public Composite getComposite() {
@@ -35,7 +36,7 @@ public class MapViewer extends Composite {
 
     private void createMap(final Composite o) {
         gmap = new GMap(o, SWT.BORDER, path);
-        gmap.setCenter(stringToLatLng(INIT_CENTER));
+        gmap.setCenter(stringToLatLng(initCenter));
         gmap.setZoom(INIT_ZOOM);
         gmap.setType(INIT_TYPE);
     }
@@ -43,13 +44,14 @@ public class MapViewer extends Composite {
     private LatLng stringToLatLng(final String input) {
         LatLng result = null;
         if (input != null) {
-            final String temp[] = input.split(","); //$NON-NLS-1$
+            final String[] temp = input.split(","); //$NON-NLS-1$
             if (temp.length == 2) {
                 try {
                     final double lat = Double.parseDouble(temp[0]);
                     final double lon = Double.parseDouble(temp[1]);
                     result = new LatLng(lat, lon);
                 } catch (final NumberFormatException ex) {
+                    LOGGER.error("Koordinaten stringToLatLng", ex); //$NON-NLS-1$
                 }
             }
         }

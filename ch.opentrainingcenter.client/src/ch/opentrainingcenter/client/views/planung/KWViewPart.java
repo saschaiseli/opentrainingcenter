@@ -92,7 +92,7 @@ public class KWViewPart {
         buttonInterval.setSelection(interval);
 
         buttonInterval.addSelectionListener(new SelectionListener() {
-            boolean toggle = buttonInterval.getSelection();
+            private boolean toggle = buttonInterval.getSelection();
 
             @Override
             public void widgetSelected(final SelectionEvent e) {

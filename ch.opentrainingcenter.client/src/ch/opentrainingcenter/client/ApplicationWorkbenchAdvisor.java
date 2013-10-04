@@ -47,6 +47,12 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
         }
     }
 
+    @Override
+    public void eventLoopException(final Throwable exception) {
+        LOGGER.error("Exception in UI", exception); //$NON-NLS-1$
+        super.eventLoopException(exception);
+    }
+
     private boolean isDbOkAndAthleteSelected(final DBSTATE dbState, final String athleteId) {
         return DBSTATE.OK.equals(dbState) && athleteId != null && athleteId.length() > 0;
     }

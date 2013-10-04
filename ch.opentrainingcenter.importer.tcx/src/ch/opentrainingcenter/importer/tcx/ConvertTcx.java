@@ -24,6 +24,7 @@ import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
 import org.xml.sax.SAXException;
 
+import ch.opentrainingcenter.core.exceptions.ConvertException;
 import ch.opentrainingcenter.core.helper.AltitudeCalculator;
 import ch.opentrainingcenter.core.helper.AltitudeCalculator.Ascending;
 import ch.opentrainingcenter.core.importer.IConvert2Tcx;
@@ -42,7 +43,7 @@ import ch.opentrainingcenter.transfer.ITraining;
 
 public class ConvertTcx implements IConvert2Tcx {
     private static final Logger LOGGER = Logger.getLogger(ConvertTcx.class);
-    private static final String RESOURCES_TCX_XSD = "resources/tcx.xsd";//$NON-NLS-1$
+    private static final String RESOURCES_TCX_XSD = "resources/tcx.xsd"; //$NON-NLS-1$
     protected static final String NO_DATA = "NO GPS DATA"; //$NON-NLS-1$
 
     private final String locationOfScript;
@@ -51,7 +52,7 @@ public class ConvertTcx implements IConvert2Tcx {
      * Contructor for Eclipse Extension
      */
     public ConvertTcx() {
-        LOGGER.info("ConvertTcx erfolgreich instanziert....");//$NON-NLS-1$
+        LOGGER.info("ConvertTcx erfolgreich instanziert...."); //$NON-NLS-1$
         final Bundle bundle = Platform.getBundle(Activator.BUNDLE_ID);
         final Path path = new Path(RESOURCES_TCX_XSD);
         final URL url = FileLocator.find(bundle, path, Collections.EMPTY_MAP);
@@ -59,12 +60,12 @@ public class ConvertTcx implements IConvert2Tcx {
         try {
             fileUrl = FileLocator.toFileURL(url);
         } catch (final IOException e) {
-            LOGGER.error("Fehler beim Instanzieren von ConvertTcx: " + e.getMessage());//$NON-NLS-1$
+            LOGGER.error("Fehler beim Instanzieren von ConvertTcx: " + e.getMessage()); //$NON-NLS-1$
             throw new RuntimeException(e);
         }
         final File f = new File(fileUrl.getPath());
         locationOfScript = f.getAbsolutePath();
-        LOGGER.info("ConvertTcx erfolgreich instanziert....fertig");//$NON-NLS-1$
+        LOGGER.info("ConvertTcx erfolgreich instanziert....fertig"); //$NON-NLS-1$
     }
 
     @SuppressWarnings("unchecked")
@@ -87,9 +88,14 @@ public class ConvertTcx implements IConvert2Tcx {
     }
 
     @Override
-    public ITraining convert(final File file) throws Exception {
+    public ITraining convert(final File file) throws ConvertException {
         LOGGER.info("Start unmarshalling TCX File"); //$NON-NLS-1$
-        final TrainingCenterDatabaseT completeFile = unmarshall(file);
+        TrainingCenterDatabaseT completeFile;
+        try {
+            completeFile = unmarshall(file);
+        } catch (JAXBException | SAXException e) {
+            throw new ConvertException(e);
+        }
         LOGGER.info("File unmarshalled"); //$NON-NLS-1$
         final List<ActivityT> activities = completeFile.getActivities().getActivity();
         final ActivityT activity = activities.get(0);
@@ -125,7 +131,11 @@ public class ConvertTcx implements IConvert2Tcx {
                 continue;
             }
             lapWithCardio++;
-            averageHeartRateBpm += lap.getAverageHeartRateBpm() != null ? lap.getAverageHeartRateBpm().getValue() : 0;
+            if (lap.getAverageHeartRateBpm() != null) {
+                averageHeartRateBpm += lap.getAverageHeartRateBpm().getValue();
+            } else {
+                averageHeartRateBpm += 0;
+            }
             if (maxHeartBeat < lap.getMaximumHeartRateBpm().getValue()) {
                 maxHeartBeat = lap.getMaximumHeartRateBpm().getValue();
             }

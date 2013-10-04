@@ -30,7 +30,7 @@ public final class TimeHelper {
      * @return Zeit im Format HH:MM:ss. Wenn Zeit negativ ist, wird --:--:--
      *         zurückgegeben.
      */
-    public static final String convertSecondsToHumanReadableZeit(final double sec) {
+    public static String convertSecondsToHumanReadableZeit(final double sec) {
         if (sec < 0) {
             return UNKNOWN_DATE;
         }
@@ -57,7 +57,7 @@ public final class TimeHelper {
      * @return das datum '13.01.2013 00:00:00' und wenn das flag with Day ist
      *         wird noch der ausgeschreibene wochentag vorangestellt.
      */
-    public static final String convertDateToString(final Date datum, final boolean withDay) {
+    public static String convertDateToString(final Date datum, final boolean withDay) {
         final Calendar calendar = Calendar.getInstance();
         calendar.setTime(datum);
         final SimpleDateFormat format = new SimpleDateFormat(DATE_TIME_FORMAT_PATTERN);
@@ -78,7 +78,7 @@ public final class TimeHelper {
      *            {@link Date}
      * @return das datum '201011231423'.
      */
-    public static final String convertDateToFileName(final Date datum) {
+    public static String convertDateToFileName(final Date datum) {
         final Calendar calendar = Calendar.getInstance();
         calendar.setTime(datum);
         final SimpleDateFormat format = new SimpleDateFormat(DATE_FILE_FORMAT_PATTERN);
@@ -88,7 +88,7 @@ public final class TimeHelper {
     /**
      * @return datum als String in der Form dd.mm.yyyy
      */
-    public static final String convertDateToString(final Date datum) {
+    public static String convertDateToString(final Date datum) {
         final Calendar calendar = Calendar.getInstance(Locale.getDefault());
         calendar.setTime(datum);
         final SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT_PATTERN);
@@ -98,7 +98,7 @@ public final class TimeHelper {
     /**
      * @return zeit als String in der Form HH:mm:ss
      */
-    public static final String convertTimeToString(final long timeInMillis) {
+    public static String convertTimeToString(final long timeInMillis) {
         final Calendar calendar = Calendar.getInstance(Locale.GERMAN);
         calendar.setTimeInMillis(timeInMillis);
         final SimpleDateFormat format = new SimpleDateFormat(TIME_FORMAT_PATTERN);
@@ -132,7 +132,11 @@ public final class TimeHelper {
     }
 
     private static String addZero(final int i) {
-        return i < 10 ? "0" + i : "" + i; //$NON-NLS-1$ //$NON-NLS-2$
+        if (i < 10) {
+            return "0" + i; //$NON-NLS-1$
+        } else {
+            return "" + i; //$NON-NLS-1$
+        }
     }
 
     /**

@@ -18,4 +18,5 @@ Export-Package: ch.opentrainingcenter.core,
  ch.opentrainingcenter.core.data,
  ch.opentrainingcenter.core.db,
  ch.opentrainingcenter.core.helper,
+ ch.opentrainingcenter.core.exceptions,
  ch.opentrainingcenter.core.importer

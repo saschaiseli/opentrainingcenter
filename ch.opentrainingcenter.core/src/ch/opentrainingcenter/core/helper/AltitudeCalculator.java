@@ -9,7 +9,7 @@ import ch.opentrainingcenter.transfer.ITrackPointProperty;
  * Hilfsklasse um die erreichten höhenmeter zu berechnen
  * 
  */
-public class AltitudeCalculator {
+public final class AltitudeCalculator {
 
     public static class Ascending {
 
@@ -40,17 +40,22 @@ public class AltitudeCalculator {
 
         @Override
         public boolean equals(final Object obj) {
-            if (this == obj)
+            if (this == obj) {
                 return true;
-            if (obj == null)
+            }
+            if (obj == null) {
                 return false;
-            if (getClass() != obj.getClass())
+            }
+            if (getClass() != obj.getClass()) {
                 return false;
+            }
             final Ascending other = (Ascending) obj;
-            if (down != other.down)
+            if (down != other.down) {
                 return false;
-            if (up != other.up)
+            }
+            if (up != other.up) {
                 return false;
+            }
             return true;
         }
 
@@ -59,6 +64,10 @@ public class AltitudeCalculator {
         public String toString() {
             return "Ascending [up=" + up + ", down=" + down + "]";
         }
+    }
+
+    private AltitudeCalculator() {
+
     }
 
     /**

@@ -35,17 +35,13 @@ public class ImportActivityJobListener implements IJobChangeListener {
 
             @Override
             public void run() {
+                final Cache cache = TrainingCache.getInstance();
+                final ITraining training = cache.get(record.getDatum());
+                final String hash = getSecondaryId(training);
                 try {
-                    final Cache cache = TrainingCache.getInstance();
-                    final ITraining training = cache.get(record.getDatum());
-                    final String hash = getSecondaryId(training);
-                    try {
-                        PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(SingleActivityViewPart.ID, hash,
-                                IWorkbenchPage.VIEW_ACTIVATE);
-                    } catch (final PartInitException e) {
-                        e.printStackTrace();
-                    }
-                } catch (final Exception e) {
+                    PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+                            .showView(SingleActivityViewPart.ID, hash, IWorkbenchPage.VIEW_ACTIVATE);
+                } catch (final PartInitException e) {
                     e.printStackTrace();
                 }
             }

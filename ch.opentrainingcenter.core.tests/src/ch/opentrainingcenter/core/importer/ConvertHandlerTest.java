@@ -14,6 +14,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import ch.opentrainingcenter.core.exceptions.ConvertException;
 import ch.opentrainingcenter.transfer.ITraining;
 
 @SuppressWarnings("nls")
@@ -76,7 +77,7 @@ public class ConvertHandlerTest {
         }
 
         @Override
-        public ITraining convert(final File file) throws Exception {
+        public ITraining convert(final File file) throws ConvertException {
             return null;
         }
 

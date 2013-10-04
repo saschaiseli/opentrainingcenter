@@ -32,7 +32,11 @@ import ch.opentrainingcenter.transfer.IPlanungWoche;
 import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
 
-public class ModelFactory {
+public final class ModelFactory {
+
+    private ModelFactory() {
+
+    }
 
     public static IPlanungWocheModel createPlanungWochenModel(final List<IPlanungModel> planungen, final IAthlete athlete, final int jahr, final int kw,
             final int anzahl) {

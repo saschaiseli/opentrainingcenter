@@ -47,7 +47,7 @@ public class OtcSplashHandler extends BasicSplashHandler {
         int foregroundColorInteger;
         try {
             foregroundColorInteger = Integer.parseInt(foregroundColorString, FOREGROUND);
-        } catch (final Exception ex) {
+        } catch (final NumberFormatException ex) {
             foregroundColorInteger = WHITE; // off white
         }
 

@@ -11,11 +11,11 @@ import ch.opentrainingcenter.model.training.Intervall;
 public class GoldMedalModel implements IGoldMedalModel {
 
     private static final Pair<Long, String> EMPTY_PAIR = new Pair<>(null, "-"); //$NON-NLS-1$
-    private static final Map<Intervall, Pair<Long, String>> schnellstePaces = new HashMap<>();
+    private static final Map<Intervall, Pair<Long, String>> SCHNELLSTE_PACES = new HashMap<>();
 
     static {
         for (final Intervall intervall : Intervall.values()) {
-            schnellstePaces.put(intervall, EMPTY_PAIR);
+            SCHNELLSTE_PACES.put(intervall, EMPTY_PAIR);
         }
     }
 
@@ -40,14 +40,14 @@ public class GoldMedalModel implements IGoldMedalModel {
     @Override
     public Pair<Long, String> getSchnellstePace(final Intervall intervall) {
         Assertions.notNull(intervall);
-        return schnellstePaces.get(intervall);
+        return SCHNELLSTE_PACES.get(intervall);
     }
 
     @Override
     public void setSchnellstePace(final Intervall intervall, final Pair<Long, String> schnellstePace) {
         Assertions.notNull(intervall);
         Assertions.notNull(schnellstePace);
-        schnellstePaces.put(intervall, getValidatedPair(schnellstePace));
+        SCHNELLSTE_PACES.put(intervall, getValidatedPair(schnellstePace));
     }
 
     @Override
@@ -117,12 +117,4 @@ public class GoldMedalModel implements IGoldMedalModel {
     public Pair<Long, String> getEmpty() {
         return EMPTY_PAIR;
     }
-
-    // private String getFormattedString(final double value) {
-    //        final DecimalFormat format = new DecimalFormat("0.000"); //$NON-NLS-1$
-    // final DecimalFormatSymbols dfs = new DecimalFormatSymbols();
-    // dfs.setDecimalSeparator('.');
-    // format.setDecimalFormatSymbols(dfs);
-    // return format.format(value);
-    // }
 }

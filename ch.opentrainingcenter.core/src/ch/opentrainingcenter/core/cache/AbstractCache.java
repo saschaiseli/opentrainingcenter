@@ -12,8 +12,7 @@ public abstract class AbstractCache<K, V> implements ICache<K, V> {
 
     private static final Logger LOG = Logger.getLogger(AbstractCache.class);
     private final ConcurrentHashMap<K, V> cache = new ConcurrentHashMap<K, V>();
-
-    protected ListenerList listeners;
+    private ListenerList listeners;
 
     public abstract K getKey(V value);
 

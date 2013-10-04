@@ -10,7 +10,7 @@ import org.eclipse.core.runtime.Platform;
 
 public final class ExtensionHelper {
 
-    private static final String IMPORT_EXTENSION_POINT = "ch.opentrainingcenter.myimporter";//$NON-NLS-1$
+    private static final String IMPORT_EXTENSION_POINT = "ch.opentrainingcenter.myimporter"; //$NON-NLS-1$
 
     public static final Logger LOGGER = Logger.getLogger(ExtensionHelper.class);
 

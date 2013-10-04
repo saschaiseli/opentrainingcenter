@@ -208,8 +208,7 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
 
             @Override
             public void mouseExit(final MouseEvent e) {
-                final String text = note.getText();
-                safeNote(text);
+                safeNote(note.getText());
             }
 
             @Override
@@ -223,8 +222,7 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
             @Override
             public void focusLost(final FocusEvent e) {
                 // speichern
-                final String text = note.getText();
-                safeNote(text);
+                safeNote(note.getText());
             }
 
             @Override
@@ -297,7 +295,11 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         final StreckeModel strecke = simpleTraining.getStrecke();
         if (allNamen.size() > 0) {
             streckeCombo.setItems(allNamen.toArray(new String[1]));
-            streckeCombo.select(strecke != null ? mapDbIndex.get(strecke.getId()) : 0);
+            if (strecke != null) {
+                streckeCombo.select(mapDbIndex.get(strecke.getId()));
+            } else {
+                streckeCombo.select(0);
+            }
         }
         streckeCombo.addSelectionListener(new SelectionListener() {
 

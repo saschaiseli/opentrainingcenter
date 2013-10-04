@@ -22,7 +22,7 @@ public class WeatherDao {
         final Session session = dao.getSession();
         dao.begin();
 
-        final Criteria criteria = session.createCriteria(IWeather.class);//
+        final Criteria criteria = session.createCriteria(IWeather.class);
 
         criteria.addOrder(Order.desc("id"));
 

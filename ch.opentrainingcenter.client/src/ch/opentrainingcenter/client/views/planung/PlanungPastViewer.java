@@ -26,6 +26,7 @@ import ch.opentrainingcenter.model.ModelFactory;
 import ch.opentrainingcenter.model.planing.IPastPlanung;
 import ch.opentrainingcenter.model.planing.IPastPlanungModel;
 import ch.opentrainingcenter.model.planing.KwJahrKey;
+import ch.opentrainingcenter.model.planing.PastPlanungSupport;
 import ch.opentrainingcenter.model.planing.PlanungStatus;
 import ch.opentrainingcenter.model.planing.PlanungWocheComparator;
 import ch.opentrainingcenter.transfer.IAthlete;
@@ -121,16 +122,9 @@ public class PlanungPastViewer {
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(final Object element) {
-                final String result;
-                final IPastPlanung woche = (IPastPlanung) element;
-                final int kmProWoche = woche.getPlanung().getKmProWoche();
-                if (kmProWoche > 0) {
-                    result = String.valueOf(kmProWoche);
-                } else {
-                    result = String.valueOf(""); //$NON-NLS-1$
-                }
-                return result;
+                return PastPlanungSupport.getKmProWoche((IPastPlanung) element);
             }
+
         });
 
         // Langer Lauf
@@ -138,15 +132,7 @@ public class PlanungPastViewer {
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(final Object element) {
-                final String result;
-                final IPastPlanung woche = (IPastPlanung) element;
-                final int langerLauf = woche.getPlanung().getLangerLauf();
-                if (langerLauf > 0) {
-                    result = String.valueOf(langerLauf);
-                } else {
-                    result = String.valueOf(""); //$NON-NLS-1$
-                }
-                return result;
+                return PastPlanungSupport.getLangerLauf((IPastPlanung) element);
             }
         });
 
@@ -155,15 +141,7 @@ public class PlanungPastViewer {
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(final Object element) {
-                final IPastPlanung woche = (IPastPlanung) element;
-                final int kmProWoche = woche.getPlanung().getKmProWoche();
-                final String result;
-                if (kmProWoche > 0) {
-                    result = String.valueOf(woche.getPlanung().isInterval());
-                } else {
-                    result = String.valueOf(""); //$NON-NLS-1$
-                }
-                return result;
+                return PastPlanungSupport.getIntervall((IPastPlanung) element);
             }
         });
 

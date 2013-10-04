@@ -103,7 +103,7 @@ public final class SimpleTrainingCalculator {
                 result = geschw;
             }
         } catch (final NumberFormatException nfe) {
-            // do nothing
+            LOGGER.warn("do nothing", nfe); //$NON-NLS-1$
         }
         return result;
     }

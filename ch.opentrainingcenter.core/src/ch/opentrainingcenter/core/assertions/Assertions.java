@@ -2,9 +2,13 @@ package ch.opentrainingcenter.core.assertions;
 
 import org.apache.log4j.Logger;
 
-public class Assertions {
+public final class Assertions {
 
     private static final Logger LOG = Logger.getLogger(Assertions.class);
+
+    private Assertions() {
+
+    }
 
     public static void notNull(final Object object) {
         notNull(object, "Objekt " + object + " darf nicht null sein!!"); //$NON-NLS-1$ //$NON-NLS-2$

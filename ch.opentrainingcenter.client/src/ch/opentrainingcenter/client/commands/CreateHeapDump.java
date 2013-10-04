@@ -1,6 +1,7 @@
 package ch.opentrainingcenter.client.commands;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.management.ManagementFactory;
 
 import javax.management.MBeanServer;
@@ -41,26 +42,25 @@ public class CreateHeapDump extends AbstractHandler {
     public Object execute(final ExecutionEvent event) throws ExecutionException {
         final String fileName = String.format("%s%s%s%s%s", System.getProperty("user.home"), File.separator, "otc_", DateTime.now().getMillis(), ".hprof"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
         LOGGER.info(String.format("create heapdump: %s", fileName)); //$NON-NLS-1$
-        dumpHeap(fileName, true);
+        try {
+            dumpHeap(fileName, true);
+        } catch (final IOException e) {
+            LOGGER.error("Heapdump konnte nicht erstellt werden", e); //$NON-NLS-1$
+        }
         final Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
         MessageDialog.openInformation(shell, Messages.CreateHeapDump_0, String.format(Messages.CreateHeapDump_1, fileName));
         return null;
     }
 
-    static void dumpHeap(final String fileName, final boolean live) {
+    static void dumpHeap(final String fileName, final boolean live) throws IOException {
         // initialize hotspot diagnostic MBean
         initHotspotMBean();
-        try {
-            hotspotMBean.dumpHeap(fileName, live);
-        } catch (final RuntimeException re) {
-            throw re;
-        } catch (final Exception exp) {
-            throw new RuntimeException(exp);
-        }
+        hotspotMBean.dumpHeap(fileName, live);
+
     }
 
     // initialize the hotspot diagnostic MBean field
-    private static void initHotspotMBean() {
+    private static void initHotspotMBean() throws IOException {
         if (hotspotMBean == null) {
             synchronized (LOCK) {
                 if (hotspotMBean == null) {
@@ -70,15 +70,9 @@ public class CreateHeapDump extends AbstractHandler {
         }
     }
 
-    private static HotSpotDiagnosticMXBean getHotspotMBean() {
-        try {
-            final MBeanServer server = ManagementFactory.getPlatformMBeanServer();
-            final HotSpotDiagnosticMXBean bean = ManagementFactory.newPlatformMXBeanProxy(server, HOTSPOT_BEAN_NAME, HotSpotDiagnosticMXBean.class);
-            return bean;
-        } catch (final RuntimeException re) {
-            throw re;
-        } catch (final Exception exp) {
-            throw new RuntimeException(exp);
-        }
+    private static HotSpotDiagnosticMXBean getHotspotMBean() throws IOException {
+        final MBeanServer server = ManagementFactory.getPlatformMBeanServer();
+        final HotSpotDiagnosticMXBean bean = ManagementFactory.newPlatformMXBeanProxy(server, HOTSPOT_BEAN_NAME, HotSpotDiagnosticMXBean.class);
+        return bean;
     }
 }

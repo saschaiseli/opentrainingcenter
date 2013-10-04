@@ -22,15 +22,15 @@ public final class PreferenceConstants {
 
     public static final String DISTANCE_CHART_COLOR = "DISTANCE_CHART_COLOR"; //$NON-NLS-1$
     public static final String DISTANCE_HEART_COLOR = "DISTANCE_HEART_COLOR"; //$NON-NLS-1$
-    public static final String RECOM = "RECOM";//$NON-NLS-1$
+    public static final String RECOM = "RECOM"; //$NON-NLS-1$
     public static final String RECOM_COLOR = RECOM + COLOR_POSTFIX;
-    public static final String GA1 = "GA1";//$NON-NLS-1$
+    public static final String GA1 = "GA1"; //$NON-NLS-1$
     public static final String GA1_COLOR = GA1 + COLOR_POSTFIX;
-    public static final String GA12 = "GA12";//$NON-NLS-1$
+    public static final String GA12 = "GA12"; //$NON-NLS-1$
     public static final String GA12_COLOR = GA12 + COLOR_POSTFIX;
-    public static final String GA2 = "GA2";//$NON-NLS-1$
+    public static final String GA2 = "GA2"; //$NON-NLS-1$
     public static final String GA2_COLOR = GA2 + COLOR_POSTFIX;
-    public static final String WSA = "WSA";//$NON-NLS-1$
+    public static final String WSA = "WSA"; //$NON-NLS-1$
     public static final String WSA_COLOR = WSA + COLOR_POSTFIX;
     public static final String RUHEPULS_COLOR = "RUHEPULS"; //$NON-NLS-1$
     public static final String GEWICHT_COLOR = "GEWICHT"; //$NON-NLS-1$
@@ -38,17 +38,17 @@ public final class PreferenceConstants {
     public static final String ZIEL_NICHT_ERFUELLT_COLOR = "ZIEL_NICHT_ERFUELLT_COLOR"; //$NON-NLS-1$
     public static final String ZIEL_NICHT_BEKANNT_COLOR = "ZIEL_NICHT_BEKANNT_COLOR"; //$NON-NLS-1$
 
-    public static final String KML_DEBUG_PATH = "KML_DEBUG_PATH";//$NON-NLS-1$
+    public static final String KML_DEBUG_PATH = "KML_DEBUG_PATH"; //$NON-NLS-1$
 
-    public static final String DB_USER = "DB_USER";//$NON-NLS-1$
-    public static final String DB_PASS = "DB_PASS";//$NON-NLS-1$
-    public static final String DB_URL = "DB_URL";//$NON-NLS-1$
+    public static final String DB_USER = "DB_USER"; //$NON-NLS-1$
+    public static final String DB_PASS = "DB_PASS"; //$NON-NLS-1$
+    public static final String DB_URL = "DB_URL"; //$NON-NLS-1$
 
-    public static final String DB_ADMIN_USER = "DB_ADMIN_USER";//$NON-NLS-1$
-    public static final String DB_ADMIN_PASS = "DB_ADMIN_PASS";//$NON-NLS-1$
-    public static final String DB_ADMIN_URL = "DB_ADMIN_URL";//$NON-NLS-1$
+    public static final String DB_ADMIN_USER = "DB_ADMIN_USER"; //$NON-NLS-1$
+    public static final String DB_ADMIN_PASS = "DB_ADMIN_PASS"; //$NON-NLS-1$
+    public static final String DB_ADMIN_URL = "DB_ADMIN_URL"; //$NON-NLS-1$
 
-    public static final String DB = "DB";//$NON-NLS-1$
+    public static final String DB = "DB"; //$NON-NLS-1$
 
     private PreferenceConstants() {
 

@@ -4,7 +4,11 @@ import java.util.List;
 
 import org.jfree.data.xy.XYSeries;
 
-public class SpeedChartSupport {
+public final class SpeedChartSupport {
+
+    private SpeedChartSupport() {
+
+    }
 
     public static XYSeries putPointsInSerie(final XYSeries serie, final List<PositionPace> positionPaces) {
         for (final PositionPace positionPace : positionPaces) {

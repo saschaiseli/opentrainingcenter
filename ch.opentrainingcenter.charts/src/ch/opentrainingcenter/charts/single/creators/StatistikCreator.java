@@ -63,7 +63,13 @@ public class StatistikCreator implements IStatistikCreator {
             cal.setTime(datum);
             final int year;
             // da monat mit 0 beginnt muss noch eins addiert werden.
-            final int week = inner == Calendar.MONTH ? cal.get(inner) + 1 : cal.get(inner);
+            final int week;
+            if (inner == Calendar.MONTH) {
+                week = cal.get(inner) + 1;
+            } else {
+                week = cal.get(inner);
+            }
+
             if (isLaeufeProKW(outer, inner) && isKWFehler(datum)) {
                 year = cal.get(outer) - 1;
             } else {

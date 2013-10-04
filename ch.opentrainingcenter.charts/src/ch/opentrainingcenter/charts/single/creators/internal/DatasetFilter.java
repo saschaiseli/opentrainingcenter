@@ -10,7 +10,7 @@ public final class DatasetFilter {
         // do not instanciate
     }
 
-    public static XYDataset filter(XYDataset dataset) {
+    public static XYDataset filter(final XYDataset dataset) {
         final int seriesCount = dataset.getSeriesCount();
         if (seriesCount > 1) {
             final XYSeriesCollection newData = new XYSeriesCollection();
@@ -20,7 +20,7 @@ public final class DatasetFilter {
                 series.add(dataset.getX(0, i), dataset.getY(0, i));
             }
             newData.addSeries(series);
-            dataset = newData;
+            return newData;
         }
         return dataset;
     }

@@ -2,10 +2,10 @@ package ch.opentrainingcenter.client.views.dialoge;
 
 public interface IFilterDialog {
 
-    public abstract String open();
+    String open();
 
-    public abstract String[] getFileNames();
+    String[] getFileNames();
 
-    public abstract String getFilterPath();
+    String getFilterPath();
 
 }

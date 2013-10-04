@@ -41,7 +41,7 @@ public final class ZoneHelper {
      * @return die farbe aus der preferences page
      */
     public Color getZonenFarbe(final Zone zone) {
-        return ColorFromPreferenceHelper.getColor(store, zone.getName() + "_color", 80);//  //$NON-NLS-1$
+        return ColorFromPreferenceHelper.getColor(store, zone.getName() + "_color", 80); //$NON-NLS-1$
     }
 
     public double getZonenWert(final IAthlete athlete, final Zone zone) {

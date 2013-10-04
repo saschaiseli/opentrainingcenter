@@ -11,7 +11,7 @@ import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.i18n.Messages;
 
 public class ShowJahresplanungViewPart extends ViewPart {
-    public final static String ID = "ch.opentrainingcenter.client.views.planung.ShowJahresplanungViewPart"; //$NON-NLS-1$
+    public static final String ID = "ch.opentrainingcenter.client.views.planung.ShowJahresplanungViewPart"; //$NON-NLS-1$
     private final IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 
     @Override

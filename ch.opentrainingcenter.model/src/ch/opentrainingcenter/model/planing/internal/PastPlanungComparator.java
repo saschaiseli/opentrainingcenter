@@ -8,7 +8,7 @@ import ch.opentrainingcenter.transfer.IPlanungWoche;
 
 public class PastPlanungComparator implements Comparator<IPastPlanung> {
 
-    private static final KwJahrKeyComparator comparator = new KwJahrKeyComparator();
+    private static final KwJahrKeyComparator COMPARATOR = new KwJahrKeyComparator();
 
     @Override
     public int compare(final IPastPlanung o1, final IPastPlanung o2) {
@@ -18,7 +18,7 @@ public class PastPlanungComparator implements Comparator<IPastPlanung> {
 
             final IPlanungWoche p2 = o2.getPlanung();
             final KwJahrKey k2 = new KwJahrKey(p2.getJahr(), p2.getKw());
-            return comparator.compare(k2, k1);
+            return COMPARATOR.compare(k2, k1);
         }
         return 0;
     }

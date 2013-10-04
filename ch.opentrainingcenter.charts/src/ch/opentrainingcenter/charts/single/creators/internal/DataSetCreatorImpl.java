@@ -85,21 +85,19 @@ public class DataSetCreatorImpl implements DataSetCreator {
 
     private void addPoint(final ChartType type, final XYSeries serie, final ITrackPointProperty point) {
         switch (type) {
-        case HEART_DISTANCE: {
+        case HEART_DISTANCE:
             serie.add(point.getDistance(), point.getHeartBeat());
             break;
-        }
-        case TIME_DISTANCE: {
+        case TIME_DISTANCE:
             serie.add(point.getDistance(), point.getZeit());
             break;
-        }
-        case ALTITUDE_DISTANCE: {
+        case ALTITUDE_DISTANCE:
             serie.add(point.getDistance(), point.getAltitude());
             break;
-        }
-        case SPEED_DISTANCE: {
+        case SPEED_DISTANCE:
             throw new IllegalArgumentException("Do not use this method for speed "); //$NON-NLS-1$
-        }
+        default:
+            throw new IllegalArgumentException(String.format("Keine Verwendung für %s", type)); //$NON-NLS-1$
         }
     }
 }

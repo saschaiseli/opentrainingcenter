@@ -15,7 +15,7 @@ import ch.opentrainingcenter.model.navigation.KalenderWoche;
 
 public class KWTraining implements IKalenderWocheNavigationModel {
 
-    Map<Integer, Map<Integer, INavigationParent>> map = new TreeMap<Integer, Map<Integer, INavigationParent>>(new Comparator<Integer>() {
+    private final Map<Integer, Map<Integer, INavigationParent>> map = new TreeMap<Integer, Map<Integer, INavigationParent>>(new Comparator<Integer>() {
 
         @Override
         public int compare(final Integer o1, final Integer o2) {

@@ -8,18 +8,18 @@ import ch.opentrainingcenter.db.USAGE;
 
 public interface IDao {
 
-    public abstract Transaction begin();
+    Transaction begin();
 
-    public abstract void close();
+    void close();
 
-    public abstract void commit();
+    void commit();
 
-    public abstract Session getSession();
+    Session getSession();
 
-    public abstract USAGE getUsage();
+    USAGE getUsage();
 
-    public abstract void rollback();
+    void rollback();
 
-    public abstract DatabaseConnectionConfiguration getConfig();
+    DatabaseConnectionConfiguration getConfig();
 
 }

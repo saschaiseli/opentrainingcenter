@@ -36,7 +36,7 @@ public enum Wetter {
     }
 
     public static String[] getItems() {
-        final String items[] = new String[Wetter.values().length];
+        final String[] items = new String[Wetter.values().length];
         for (int i = 0; i < Wetter.values().length; i++) {
             items[i] = Wetter.getRunType(i).getWetter();
         }

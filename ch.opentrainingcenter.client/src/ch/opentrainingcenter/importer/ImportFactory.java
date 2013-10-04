@@ -6,7 +6,7 @@ import ch.opentrainingcenter.core.importer.ImporterFactory;
 import ch.opentrainingcenter.importer.impl.FileImport;
 import ch.opentrainingcenter.transfer.IAthlete;
 
-public class ImportFactory {
+public final class ImportFactory {
 
     private ImportFactory() {
 

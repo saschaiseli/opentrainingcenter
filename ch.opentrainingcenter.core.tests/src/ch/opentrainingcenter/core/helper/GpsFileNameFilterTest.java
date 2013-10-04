@@ -11,6 +11,7 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
+import ch.opentrainingcenter.core.exceptions.ConvertException;
 import ch.opentrainingcenter.core.importer.IConvert2Tcx;
 import ch.opentrainingcenter.transfer.ITraining;
 
@@ -34,7 +35,7 @@ public class GpsFileNameFilterTest {
             }
 
             @Override
-            public ITraining convert(final File file) throws Exception {
+            public ITraining convert(final File file) throws ConvertException {
                 return null;
             }
         });

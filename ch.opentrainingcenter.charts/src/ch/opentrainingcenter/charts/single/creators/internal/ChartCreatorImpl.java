@@ -33,8 +33,8 @@ public class ChartCreatorImpl implements ChartCreator {
     }
 
     @Override
-    public JFreeChart createChart(XYDataset dataset, final ChartType type) {
-        dataset = DatasetFilter.filter(dataset);
+    public JFreeChart createChart(final XYDataset datasetIn, final ChartType type) {
+        final XYDataset dataset = DatasetFilter.filter(datasetIn);
         final JFreeChart chart = ChartFactory.createXYLineChart(type.getTitel(), //
                 type.getxAchse(), // x axis label
                 type.getyAchse(), // y axis label

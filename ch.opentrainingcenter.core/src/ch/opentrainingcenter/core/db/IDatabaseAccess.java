@@ -168,8 +168,6 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
     /**
      * @param athlete
      * @return
-     * @throws DatabaseException
-     *             wenn das speichern fehlschlägt
      */
     int save(IAthlete athlete);
 
