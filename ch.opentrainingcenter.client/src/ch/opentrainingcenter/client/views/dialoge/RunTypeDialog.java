@@ -82,8 +82,6 @@ public class RunTypeDialog extends TitleAreaDialog {
         gridData.grabExcessVerticalSpace = true;
         gridData.horizontalAlignment = GridData.FILL;
         viewer.getControl().setLayoutData(gridData);
-        // Make the selection available to other views
-        // workbench.getSite().setSelectionProvider(viewer);
         return viewer.getControl();
     }
 

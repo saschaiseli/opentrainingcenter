@@ -192,9 +192,4 @@ public class DatabasePreferencePage extends FieldEditorPreferencePage implements
     protected void checkState() {
         setValid(connectionSuccess);
     }
-
-    @Override
-    public boolean isValid() {
-        return super.isValid();
-    }
 }

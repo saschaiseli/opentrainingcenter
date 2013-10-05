@@ -1,6 +1,5 @@
 package ch.opentrainingcenter.transfer;
 
-
 public interface ITrainingType {
 
     int getId();
@@ -10,6 +9,4 @@ public interface ITrainingType {
     String getDescription();
 
     String getImageicon();
-
-    // Set<ITraining> getTrainings();
 }

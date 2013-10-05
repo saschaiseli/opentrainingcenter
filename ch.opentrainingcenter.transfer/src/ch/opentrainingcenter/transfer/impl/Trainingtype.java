@@ -15,8 +15,6 @@ public class Trainingtype implements java.io.Serializable, ITrainingType {
     private String description;
     private String imageicon;
 
-    // private Set<ITraining> trainings = new HashSet<ITraining>(0);
-
     public Trainingtype() {
     }
 
@@ -61,16 +59,6 @@ public class Trainingtype implements java.io.Serializable, ITrainingType {
     public void setImageicon(final String imageicon) {
         this.imageicon = imageicon;
     }
-
-    //
-    // @Override
-    // public Set<ITraining> getTrainings() {
-    // return this.trainings;
-    // }
-    //
-    // public void setTrainings(final Set<ITraining> trainings) {
-    // this.trainings = trainings;
-    // }
 
     @SuppressWarnings("nls")
     @Override

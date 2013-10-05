@@ -58,8 +58,8 @@ public class PastPlanungImpl implements IPastPlanung {
 
     // 1 --> Extensives 2 ist intensives intervall
     private boolean isInterval(final int id) {
-        final boolean ext = 1 == id;// RunType.EXT_INTERVALL.equals(RunType.getRunType(id));
-        final boolean in = 2 == id;// RunType.INT_INTERVALL.equals(RunType.getRunType(id));
+        final boolean ext = 1 == id;
+        final boolean in = 2 == id;
         return ext || in;
     }
 

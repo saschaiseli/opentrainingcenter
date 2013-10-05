@@ -83,15 +83,15 @@ public class DynamicChartInfos {
             long runningTime;
             final Number y = dataset.getY(1, itemIndex);
             if (y != null) {
-                final long result;
+                final long currentStart;
                 if (startTime == Long.MIN_VALUE) {
-                    result = y.longValue();
+                    currentStart = y.longValue();
                 } else {
-                    result = startTime;
+                    currentStart = startTime;
                 }
-                runningTime = y.longValue() - result;
+                runningTime = y.longValue() - currentStart;
                 time.put(rect.getX(), runningTime);
-                return result;
+                return currentStart;
             }
         }
         return startTime;
@@ -111,14 +111,14 @@ public class DynamicChartInfos {
         if (higherEntry != null) {
             value = higherEntry.getValue();
         }
-        final String result;
+        final String yValue;
         if (value != null) {
             cal.setTimeInMillis(value.longValue());
-            result = TimeHelper.convertTimeToString(value.longValue());
+            yValue = TimeHelper.convertTimeToString(value.longValue());
         } else {
-            result = null;
+            yValue = null;
         }
-        return result;
+        return yValue;
     }
 
     /**

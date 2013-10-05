@@ -8,6 +8,7 @@ import java.util.Collections;
 
 import javax.imageio.ImageIO;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
@@ -35,6 +36,8 @@ import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.ITraining;
 
 public class ChartFactory {
+
+    private static final Logger LOGGER = Logger.getLogger(ChartFactory.class);
 
     private final DataSetCreatorImpl dataSetCreator;
     private final ChartCreatorImpl chartCreator;
@@ -93,77 +96,6 @@ public class ChartFactory {
                 if (xy != null) {
                     final String yValue = infos.getYValue(index);
                     AnnotationHelper.addCrossAnnotation(plot, xy, Double.MAX_VALUE, Double.MAX_VALUE, yValue);
-
-                    // experimental
-
-                    // final Image image =
-                    // Activator.getImageDescriptor("icons/man_lj_32_32.png").createImage();
-                    // ImageUtil.
-                    // BufferedImage bimg = new BufferedImage(11, 11,
-                    // BufferedImage.TYPE_INT_ARGB);
-                    // BufferedImage img = null;
-
-                    // addImageAnnotation(plot, xy);
-
-                    // final Graphics2D g2 = bimg.createGraphics();
-                    // g2.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION,
-                    // RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
-                    // final RenderingHints rh = new
-                    // RenderingHints(RenderingHints.KEY_ANTIALIASING,
-                    // RenderingHints.VALUE_ANTIALIAS_ON);
-                    // g2.setRenderingHints(rh);
-                    //
-                    // // clear
-                    // g2.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
-                    // g2.fillRect(0, 0, 11, 11);
-
-                    // reset composite
-                    // g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
-                    // draw
-                    // g2.setPaint(Color.RED);
-                    // g2.fillOval(50, 50, 100, 100);
-
-                    // // g2.setBackground(new Color(0, 0, 0, 0));
-                    // //
-                    // g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_IN,
-                    // // 0.0f));
-                    // g2.setColor(Color.magenta);
-                    // g2.fill(circle);
-                    // // Draw it
-
-                    // g2.setComposite(original);
-                    // g2.drawImage(bimg, null, 0, 0);
-                    // g2.dispose();
-                    // final Polygon polygon = new Polygon();
-                    // polygon.addPoint(10, 0);
-                    // polygon.addPoint(0, 10);
-                    // polygon.addPoint(-10, 0);
-                    // polygon.addPoint(-10, -10);
-                    // g2.setBackground(Color.cyan);
-                    // g2.drawPolygon(polygon);
-
-                    // final Ellipse2D.Double shape = new
-                    // Ellipse2D.Double(xy.getFirst().doubleValue() - 3d,
-                    // xy.getSecond().doubleValue() - 3d, 2, 2);
-                    // final int radius = 10;
-                    // final int x = xy.getFirst().intValue();
-                    // final int y = xy.getSecond().intValue();
-                    // final XYPointerAnnotation pointAnnotation = new
-                    // XYPointerAnnotation("Bam!", x, y, 0);
-                    // chart.getXYPlot().addAnnotation(pointAnnotation);
-                    //
-                    // final XYShapeAnnotation shapeAnnotation = new
-                    // XYShapeAnnotation(new Ellipse2D.Double(x - radius, y -
-                    // radius, radius + radius, radius
-                    // + radius));
-                    // final XYShapeAnnotation shapeAnnotation = new
-                    // XYShapeAnnotation(shape, new BasicStroke(0.5f),
-                    // Color.BLACK, Color.GREEN);
-                    // chartComposite.getChart().getXYPlot().addAnnotation(shapeAnnotation);
-
-                    // chartComposite.getChart().getXYPlot().getRenderer().drawRangeLine(g2,
-                    // plot, axis, dataArea, value, paint, stroke);
-                    // chartComposite.getChart().getXYPlot().add
                 }
             }
 
@@ -178,7 +110,7 @@ public class ChartFactory {
                     final XYImageAnnotation a = new XYImageAnnotation(xy.getFirst().doubleValue(), xy.getSecond().doubleValue(), bimg, RectangleAnchor.CENTER);
                     plot.addAnnotation(a);
                 } catch (final IOException e) {
-                    System.out.println("e: " + e.getMessage()); //$NON-NLS-1$
+                    LOGGER.error("Fehler beim Hinzufügen einer ImageAnnotation", e); //$NON-NLS-1$
                 }
             }
 

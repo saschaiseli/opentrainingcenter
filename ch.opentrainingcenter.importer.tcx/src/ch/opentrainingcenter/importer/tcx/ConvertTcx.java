@@ -46,7 +46,7 @@ public class ConvertTcx implements IConvert2Tcx {
     private static final String RESOURCES_TCX_XSD = "resources/tcx.xsd"; //$NON-NLS-1$
     protected static final String NO_DATA = "NO GPS DATA"; //$NON-NLS-1$
 
-    private final String locationOfScript;
+    private final String locationOfSchema;
 
     /**
      * Contructor for Eclipse Extension
@@ -60,11 +60,10 @@ public class ConvertTcx implements IConvert2Tcx {
         try {
             fileUrl = FileLocator.toFileURL(url);
         } catch (final IOException e) {
-            LOGGER.error("Fehler beim Instanzieren von ConvertTcx: " + e.getMessage()); //$NON-NLS-1$
-            throw new RuntimeException(e);
+            LOGGER.error(String.format("ConvertTcx failed. Schema '%s' nicht gefunden", url.toString())); //$NON-NLS-1$
         }
         final File f = new File(fileUrl.getPath());
-        locationOfScript = f.getAbsolutePath();
+        locationOfSchema = f.getAbsolutePath();
         LOGGER.info("ConvertTcx erfolgreich instanziert....fertig"); //$NON-NLS-1$
     }
 
@@ -82,7 +81,7 @@ public class ConvertTcx implements IConvert2Tcx {
 
         final SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 
-        final Schema schema = schemaFactory.newSchema(new File(locationOfScript));
+        final Schema schema = schemaFactory.newSchema(new File(locationOfSchema));
         unmarshaller.setSchema(schema);
         return unmarshaller;
     }

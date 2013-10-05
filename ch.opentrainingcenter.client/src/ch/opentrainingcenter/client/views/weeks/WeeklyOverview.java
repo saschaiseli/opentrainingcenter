@@ -36,11 +36,7 @@ public class WeeklyOverview extends ViewPart {
         form.setText(Messages.WeeklyOverview0);
     }
 
-    /**
-     * Passing the focus request to the viewer's control.
-     */
     @Override
     public void setFocus() {
-        // this.getControl().setFocus();
     }
 }

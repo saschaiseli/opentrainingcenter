@@ -80,7 +80,6 @@ public class PlanungFutureViewer {
         viewer.setInput(planungsWoche);
 
         final GridData gridData = new GridData();
-        // gridData.verticalAlignment = GridData.FILL;
         gridData.horizontalSpan = 2;
         gridData.grabExcessHorizontalSpace = false;
         gridData.grabExcessVerticalSpace = false;
@@ -91,7 +90,8 @@ public class PlanungFutureViewer {
 
     // This will create the columns for the table
     private void createColumns() {
-        final String[] titles = { Messages.PlanungFutureViewer_0, Messages.PlanungFutureViewer_1, Messages.PlanungFutureViewer_2, Messages.PlanungFutureViewer_3, Messages.PlanungFutureViewer_4 };
+        final String[] titles = { Messages.PlanungFutureViewer_0, Messages.PlanungFutureViewer_1, Messages.PlanungFutureViewer_2,
+                Messages.PlanungFutureViewer_3, Messages.PlanungFutureViewer_4 };
         final int[] bounds = { 50, 40, 100, 100, 50 };
 
         // Jahr
@@ -143,7 +143,6 @@ public class PlanungFutureViewer {
                 return String.valueOf(woche.isInterval());
             }
         });
-
     }
 
     private TableViewerColumn createTableViewerColumn(final String title, final int bound) {

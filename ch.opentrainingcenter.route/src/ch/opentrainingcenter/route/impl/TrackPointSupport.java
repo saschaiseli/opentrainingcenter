@@ -83,7 +83,6 @@ public final class TrackPointSupport {
         Assertions.notNull(track);
         final List<TrackPoint> points = track.getPoints();
         Assertions.isValid(points.isEmpty(), "Es müssen punkte im track vorhanden sein"); //$NON-NLS-1$
-        // final double position = handleNegativePosition(currentPosition);
         int index = 0;
         int i = 0;
         for (final TrackPoint point : points) {

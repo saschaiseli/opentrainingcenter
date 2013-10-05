@@ -403,7 +403,6 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         mapSection.setDescription(Messages.SingleActivityViewPart17);
 
         final Composite client = toolkit.createComposite(mapSection);
-        // client.setBackground(getViewSite().getWorkbenchWindow().getShell().getDisplay().getSystemColor(SWT.COLOR_CYAN));
         final TableWrapLayout layout = new TableWrapLayout();
         layout.numColumns = 1;
         layout.topMargin = -60;
@@ -420,7 +419,7 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
             mapViewer.getComposite().setLayoutData(td);
             mapSection.setClient(client);
         } catch (final SWTException | SWTError e) {
-            System.out.println("Map...."); //$NON-NLS-1$
+            LOGGER.error("Map kann nicht angezeigt werden", e); //$NON-NLS-1$
         }
     }
 

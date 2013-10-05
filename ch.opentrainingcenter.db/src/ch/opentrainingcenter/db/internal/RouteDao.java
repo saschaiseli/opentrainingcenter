@@ -46,7 +46,6 @@ public class RouteDao {
     }
 
     public int saveOrUpdate(final IRoute route) {
-
         IRoute exists = getRoute(route.getName(), route.getAthlete());
         if (exists != null) {
             LOG.info("Strecke überschreiben alt: " + exists + " neu: " + route); //$NON-NLS-1$ //$NON-NLS-2$
@@ -60,8 +59,7 @@ public class RouteDao {
         session.saveOrUpdate(exists);
         dao.commit();
         session.flush();
-        final int id = getRoute(route.getName(), route.getAthlete()).getId();
-        return id;
+        return getRoute(route.getName(), route.getAthlete()).getId();
     }
 
     public List<IRoute> getRoute(final IAthlete athlete) {

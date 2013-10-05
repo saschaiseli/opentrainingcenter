@@ -8,7 +8,7 @@ import ch.opentrainingcenter.core.helper.RunType;
 import ch.opentrainingcenter.model.ModelFactory;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
 
-public class SimpleTrainingDescriptor {
+public final class SimpleTrainingDescriptor {
 
     private int year;
     private int monat;

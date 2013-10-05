@@ -372,20 +372,6 @@ public class UserView extends ViewPart {
         // Add some decorations
         ControlDecorationSupport.create(bindName, SWT.TOP | SWT.RIGHT);
 
-        // // Bind the age including a validator
-        // widgetValue = WidgetProperties.text(SWT.Modify).observe(birthday);
-        //        modelValue = BeanProperties.value(Sportler.class, "birthday").observe(sportler); //$NON-NLS-1$
-        // // Add an validator so that age can only be a number
-        // final UpdateValueStrategy strategy = new UpdateValueStrategy();
-        // strategy.setBeforeSetValidator(new NumberValidator(12, 99,
-        // Messages.CreateAthleteView19));
-        // strategy.setBeforeSetValidator(validator);
-
-        // final Binding bindValue = ctx.bindValue(widgetValue, modelValue,
-        // strategy, null);
-        // // Add some decorations
-        // ControlDecorationSupport.create(bindValue, SWT.TOP | SWT.RIGHT);
-
         // pulse
         widgetValue = WidgetProperties.text(SWT.Modify).observe(pulseTf);
         modelValue = BeanProperties.value(Sportler.class, "maxHeartBeat").observe(sportler); //$NON-NLS-1$

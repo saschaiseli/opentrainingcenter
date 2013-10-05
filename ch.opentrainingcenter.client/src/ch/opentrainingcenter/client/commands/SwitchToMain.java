@@ -1,7 +1,5 @@
 package ch.opentrainingcenter.client.commands;
 
-import org.eclipse.core.commands.HandlerEvent;
-
 import ch.opentrainingcenter.client.perspectives.MainPerspective;
 
 /**
@@ -23,10 +21,4 @@ public class SwitchToMain extends SwitchToPerspective {
     boolean isPerspectiveValidToShow() {
         return true;
     }
-
-    @Override
-    protected void fireHandlerChanged(final HandlerEvent handlerEvent) {
-        super.fireHandlerChanged(handlerEvent);
-    }
-
 }

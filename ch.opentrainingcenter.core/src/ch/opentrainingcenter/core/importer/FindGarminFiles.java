@@ -52,10 +52,6 @@ public final class FindGarminFiles {
      * GPS Files ablegt.
      */
     private static List<File> getGarminFiles(final String defaultLocation) {
-
-        // final String defaultLocation =
-        // store.getString(PreferenceConstants.GPS_FILE_LOCATION_PROG);
-
         final File f = new File(defaultLocation);
         final File[] listFiles = f.listFiles();
         if (listFiles != null && listFiles.length > 0) {

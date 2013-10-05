@@ -161,8 +161,6 @@ public class JahresplanungViewPart extends ViewPart {
         gdSave.horizontalIndent = 10;
         gdSave.verticalIndent = 20;
         save.setLayoutData(gdSave);
-
-        // composite.setBackground(getViewSite().getWorkbenchWindow().getShell().getDisplay().getSystemColor(SWT.COLOR_CYAN));
         monat.setClient(composite);
     }
 

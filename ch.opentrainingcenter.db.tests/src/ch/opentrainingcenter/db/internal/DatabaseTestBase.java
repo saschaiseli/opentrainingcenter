@@ -24,6 +24,7 @@ public class DatabaseTestBase {
     private static final String DRIVER = "org.h2.Driver";
     private static final String URL = "jdbc:h2:file:~/.otc_junit/";
     private static final String DIALECT = "org.hibernate.dialect.H2Dialect";
+
     protected static IDao dao = null;
 
     @BeforeClass

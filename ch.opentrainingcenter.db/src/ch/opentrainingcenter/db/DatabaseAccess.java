@@ -107,7 +107,7 @@ public class DatabaseAccess implements IDatabaseAccess {
                 LOG.error("Database existiert noch nicht"); //$NON-NLS-1$
                 return false;
             } else {
-                LOG.error("Fehler mit der Datenbank: " + message, e); //$NON-NLS-1$
+                LOG.error(String.format("Fehler mit der Datenbank: %s", message), e); //$NON-NLS-1$
             }
         }
         return true;
@@ -127,7 +127,7 @@ public class DatabaseAccess implements IDatabaseAccess {
                 LOG.error("Wrong user name or password"); //$NON-NLS-1$
                 return DBSTATE.CONFIG_PROBLEM;
             } else {
-                LOG.error("Fehler mit der Datenbank: " + message); //$NON-NLS-1$
+                LOG.error(String.format("Fehler mit der Datenbank: %s", message), e); //$NON-NLS-1$
                 return DBSTATE.PROBLEM;
             }
         }
@@ -287,14 +287,23 @@ public class DatabaseAccess implements IDatabaseAccess {
     public boolean validateConnection(final String url, final String user, final String pass) {
 
         boolean result = false;
+        Connection con = null;
         try {
             Class.forName(dbConnection.getDriver());
-            final Connection con = DriverManager.getConnection(url, user, pass);
+            con = DriverManager.getConnection(url, user, pass);
             con.createStatement();
             result = true;
-            LOG.info("Connection to database '" + url + "' successfully");
+            LOG.info(String.format("Connection to database '%s' successfully", url));
         } catch (final ClassNotFoundException | SQLException e) {
-            LOG.info("Connection to database '" + url + "' failed");
+            LOG.error(String.format("Connection to database '%s' failed", url), e);
+        } finally {
+            if (con != null) {
+                try {
+                    con.close();
+                } catch (final SQLException e) {
+                    LOG.error(String.format("Close connection to database '%s' failed", url), e);
+                }
+            }
         }
         return result;
     }

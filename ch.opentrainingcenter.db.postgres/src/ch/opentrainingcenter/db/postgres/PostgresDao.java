@@ -1,5 +1,6 @@
 package ch.opentrainingcenter.db.postgres;
 
+import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.MappingException;
 import org.hibernate.Session;
@@ -14,6 +15,7 @@ import ch.opentrainingcenter.db.internal.IDao;
 @SuppressWarnings("nls")
 public class PostgresDao implements IDao {
 
+    private static final Logger LOG = Logger.getLogger(PostgresDao.class);
     private Session session;
     private SessionFactory sessionFactory;
     private final USAGE usage;
@@ -27,8 +29,8 @@ public class PostgresDao implements IDao {
         configuration.setProperties(config.getProperties());
         configuration.setProperty("current_session_context_class", "thread");
         configuration.setProperty("cache.provider_class", "org.hibernate.cache.NoCacheProvider");
-        configuration.setProperty("show_sql", String.valueOf(usage.isShowSql()));
-        configuration.setProperty("format_sql", String.valueOf(usage.isFormatSql()));
+        configuration.setProperty("hibernate.show_sql", String.valueOf(usage.isShowSql()));
+        configuration.setProperty("hibernate.format_sql", String.valueOf(usage.isFormatSql()));
         try {
             configuration.addResource("Athlete.hbm.xml");//$NON-NLS-1$
             configuration.addResource("Health.hbm.xml"); //$NON-NLS-1$
@@ -42,7 +44,7 @@ public class PostgresDao implements IDao {
             sessionFactory = configuration.buildSessionFactory();
 
         } catch (final MappingException e) {
-            e.printStackTrace();
+            LOG.error(e);
         }
     }
 
@@ -79,12 +81,12 @@ public class PostgresDao implements IDao {
         try {
             getSession().getTransaction().rollback();
         } catch (final HibernateException e) {
-            System.out.println(e.getMessage());
+            LOG.error(e);
         }
         try {
             getSession().close();
         } catch (final HibernateException e) {
-            System.out.println(e.getMessage());
+            LOG.error(e);
         }
     }
 

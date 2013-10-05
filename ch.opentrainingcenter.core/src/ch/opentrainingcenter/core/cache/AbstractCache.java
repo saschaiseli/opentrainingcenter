@@ -124,7 +124,7 @@ public abstract class AbstractCache<K, V> implements ICache<K, V> {
         }
     }
 
-    void resetCache() {
+    public void resetCache() {
         cache.clear();
     }
 }

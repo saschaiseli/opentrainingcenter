@@ -36,8 +36,7 @@ public class HealthDao {
         session.saveOrUpdate(exists);
         dao.commit();
         session.flush();
-        final int id = getHealth(health.getAthlete(), health.getDateofmeasure()).getId();
-        return id;
+        return getHealth(health.getAthlete(), health.getDateofmeasure()).getId();
     }
 
     /**

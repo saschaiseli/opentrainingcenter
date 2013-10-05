@@ -71,9 +71,5 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 
     @Override
     protected void fillCoolBar(final ICoolBarManager coolBar) {
-        // final IToolBarManager toolbar = new ToolBarManager(SWT.FLAT |
-        // SWT.RIGHT);
-        //        coolBar.add(new ToolBarContributionItem(toolbar, "main")); //$NON-NLS-1$
-        // toolbar.add(backupGpsFiles);
     }
 }

@@ -39,7 +39,6 @@ public class KWViewPart {
         final boolean interval = model.isInterval();
 
         composite = new Composite(parent, SWT.NONE);
-        // c.setBackground(getViewSite().getWorkbenchWindow().getShell().getDisplay().getSystemColor(SWT.COLOR_CYAN));
         final GridLayout layout = new GridLayout(6, false);
         composite.setLayout(layout);
 

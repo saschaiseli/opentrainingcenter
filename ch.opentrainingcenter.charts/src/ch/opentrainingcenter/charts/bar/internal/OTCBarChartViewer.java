@@ -1,6 +1,5 @@
 package ch.opentrainingcenter.charts.bar.internal;
 
-//import static org.jfree.chart.labels.ItemLabelAnchor.*;
 import java.awt.Color;
 import java.awt.Font;
 import java.text.DecimalFormat;
@@ -408,7 +407,6 @@ public class OTCBarChartViewer implements ISelectionProvider {
 
         final DateAxis axis = (DateAxis) plot.getDomainAxis();
         axis.setTickMarkPosition(DateTickMarkPosition.MIDDLE);
-        // axis.setDateFormatOverride(new SimpleDateFormat("w"));
         return chart;
     }
 
@@ -435,8 +433,6 @@ public class OTCBarChartViewer implements ISelectionProvider {
 
     @Override
     public ISelection getSelection() {
-        // return selectedObject != null ? new
-        // StructuredSelection(selectedObject) : StructuredSelection.EMPTY;
         return null;
     }
 

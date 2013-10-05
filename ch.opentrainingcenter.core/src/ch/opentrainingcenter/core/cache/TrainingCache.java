@@ -28,11 +28,6 @@ public class TrainingCache extends AbstractCache<Long, ITraining> implements Cac
     }
 
     @Override
-    public void resetCache() {
-        super.resetCache();
-    }
-
-    @Override
     public String toString() {
         return "Cache: Anzahl Elemente: " + size(); //$NON-NLS-1$
     }
