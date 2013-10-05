@@ -72,8 +72,7 @@ public class PlanungWocheModel implements IPlanungWocheModel {
     @Override
     public IPlanungModel getPlanung(final int j, final int k) {
         final KwJahrKey key = new KwJahrKey(j, k);
-        final IPlanungModel result = jahresplanung.get(key);
-        return result;
+        return jahresplanung.get(key);
     }
 
     @Override

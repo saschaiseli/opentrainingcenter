@@ -99,8 +99,7 @@ public class ConvertTcx implements IConvert2Tcx {
         LOGGER.info("File unmarshalled"); //$NON-NLS-1$
         final List<ActivityT> activities = completeFile.getActivities().getActivity();
         final ActivityT activity = activities.get(0);
-        final ITraining training = create(activity);
-        return training;
+        return create(activity);
     }
 
     private ITraining create(final ActivityT activity) {

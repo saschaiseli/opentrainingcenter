@@ -10,6 +10,10 @@ import ch.opentrainingcenter.transfer.IStreckenPunkt;
 import ch.opentrainingcenter.transfer.ITrackPointProperty;
 import ch.opentrainingcenter.transfer.ITraining;
 
+/**
+ * Konvertiert die Trainingsdaten in ein Format, dass der MapViewer anzeigen
+ * kann.
+ */
 public final class MapConverter {
 
     private MapConverter() {
@@ -21,9 +25,7 @@ public final class MapConverter {
         for (final ITrackPointProperty point : points) {
             trackPoints.add(new TrackPoint(point.getDistance(), point.getStreckenPunkt().getLatitude(), point.getStreckenPunkt().getLongitude()));
         }
-
-        final Track track = new Track(trackPoints);
-        return track;
+        return new Track(trackPoints);
     }
 
     /**
@@ -64,8 +66,7 @@ public final class MapConverter {
      */
     public static String getFirstPointToPan(final String convertedPoints) {
         if (convertedPoints != null && convertedPoints.length() > 10) {
-            final String coords = convertedPoints.substring(2, convertedPoints.indexOf(']'));
-            return coords;
+            return convertedPoints.substring(2, convertedPoints.indexOf(']'));
         }
         return Messages.MapConverter1;
     }
