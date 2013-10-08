@@ -16,8 +16,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MenuEvent;
-import org.eclipse.swt.events.MenuListener;
+import org.eclipse.swt.events.MenuAdapter;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
@@ -109,8 +108,6 @@ public class KalenderWocheNavigationView extends ViewPart {
 
     @Override
     public void createPartControl(final Composite parent) {
-        parent.getShell().setMaximized(true);
-
         status = new StatusLineWriter(getViewSite().getActionBars().getStatusLineManager());
         viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
         viewer.setContentProvider(new KalenderWocheTreeContentProvider());
@@ -131,16 +128,8 @@ public class KalenderWocheNavigationView extends ViewPart {
 
         final Tree tree = viewer.getTree();
         final Menu menu = menuManager.createContextMenu(tree);
-        menu.addMenuListener(new MenuListener() {
 
-            @Override
-            public void menuShown(final MenuEvent e) {
-
-            }
-
-            @Override
-            public void menuHidden(final MenuEvent e) {
-            }
+        menu.addMenuListener(new MenuAdapter() {
         });
         tree.setMenu(menu);
 

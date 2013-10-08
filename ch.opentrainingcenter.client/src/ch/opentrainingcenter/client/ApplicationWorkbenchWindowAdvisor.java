@@ -29,6 +29,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
     private final IPreferenceStore store;
     private final IDatabaseAccess databaseAccess;
     private final ApplicationContext context = ApplicationContext.getApplicationContext();
+    private IWorkbenchWindowConfigurer configurer;
 
     public ApplicationWorkbenchWindowAdvisor(final IWorkbenchWindowConfigurer configurer) {
         this(configurer, Activator.getDefault().getPreferenceStore(), DatabaseAccessFactory.getDatabaseAccess());
@@ -50,7 +51,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 
     @Override
     public void preWindowOpen() {
-        final IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
+        configurer = getWindowConfigurer();
         configurer.setShowPerspectiveBar(false);
         configurer.setShowCoolBar(true);
         configurer.setShowStatusLine(true);
@@ -85,6 +86,12 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
             configurer.setTitle(Application.WINDOW_TITLE);
         }
 
+    }
+
+    @Override
+    public void postWindowOpen() {
+        super.postWindowOpen();
+        configurer.getWindow().getShell().setMaximized(true);
     }
 
     @Override

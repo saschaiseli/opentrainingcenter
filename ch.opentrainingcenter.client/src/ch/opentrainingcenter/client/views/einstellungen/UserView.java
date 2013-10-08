@@ -372,6 +372,7 @@ public class UserView extends ViewPart {
         pulseScale.setSelection(0);
         scaledPulse.setText(NLS.bind(Messages.UserView_2, 0));
         lError.setText(""); //$NON-NLS-1$
+        user.setFocus();
     }
 
     private void bindValues() {
