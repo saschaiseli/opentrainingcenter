@@ -366,6 +366,9 @@ public final class Messages extends NLS {
     public static String UserView_3;
     public static String UserView_4;
     public static String UserView_5;
+    public static String UserView_6;
+    public static String UserView_7;
+    public static String UserView_8;
     public static String RunType0;
     public static String RunType1;
     public static String RunType2;

@@ -6,8 +6,10 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.osgi.util.NLS;
 import org.joda.time.DateTime;
 
+import ch.opentrainingcenter.client.cache.AthleteCache;
 import ch.opentrainingcenter.client.cache.HealthCache;
 import ch.opentrainingcenter.client.cache.StreckeCache;
 import ch.opentrainingcenter.client.views.ApplicationContext;
@@ -38,15 +40,15 @@ public class InitialLoadRunnable implements IRunnableWithProgress {
     @Override
     public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
         final IAthlete athlete = ApplicationContext.getApplicationContext().getAthlete();
+        final IDatabaseAccess db = DatabaseAccessFactory.getDatabaseAccess();
         if (athlete != null) {
-
-            final IDatabaseAccess db = DatabaseAccessFactory.getDatabaseAccess();
             loadFirstRecords(monitor, athlete, db);
             loadAllHealths(monitor, athlete, db);
             loadAllPlaene(monitor, athlete, db);
             loadAllRouten(monitor, athlete, db);
             doMaintenance(monitor, athlete, db);
         }
+        loadAllAthleten(monitor, db);
     }
 
     private void loadFirstRecords(final IProgressMonitor monitor, final IAthlete athlete, final IDatabaseAccess db) {
@@ -64,7 +66,7 @@ public class InitialLoadRunnable implements IRunnableWithProgress {
             final IPlanungModel model = ch.opentrainingcenter.model.ModelFactory.createPlanungModel(athlete, plan.getJahr(), plan.getKw(),
                     plan.getKmProWoche(), plan.isInterval(), plan.getLangerLauf());
             planCache.add(model);
-            monitor.subTask(Messages.InitialLoadRunnable_3 + i++);
+            monitor.subTask(NLS.bind(Messages.InitialLoadRunnable_3, i++));
             LOG.info(Messages.InitialLoadRunnable_4);
         }
     }
@@ -75,7 +77,7 @@ public class InitialLoadRunnable implements IRunnableWithProgress {
         final ICache<Integer, ConcreteHealth> healthCache = HealthCache.getInstance();
         for (final IHealth health : healths) {
             healthCache.add(ch.opentrainingcenter.model.ModelFactory.createConcreteHealth(health, IImageKeys.CARDIO3232));
-            monitor.subTask(Messages.InitialLoadRunnable_1 + i++);
+            monitor.subTask(NLS.bind(Messages.InitialLoadRunnable_1, i++));
             LOG.info(Messages.InitialLoadRunnable_2);
         }
     }
@@ -87,8 +89,19 @@ public class InitialLoadRunnable implements IRunnableWithProgress {
         for (final IRoute route : routen) {
             final StreckeModel strecke = ch.opentrainingcenter.model.ModelFactory.createStreckeModel(route, athlete);
             cache.add(strecke);
-            monitor.subTask(Messages.InitialLoadRunnable_5 + i++);
-            LOG.info("Strecke dem Cache hinzugefügt: " + route + " Strecke: " + strecke); //$NON-NLS-1$ //$NON-NLS-2$
+            monitor.subTask(NLS.bind(Messages.InitialLoadRunnable_5, i++));
+            LOG.info(String.format("Strecke dem Cache hinzugefügt: %s Strecke: %s", route, strecke)); //$NON-NLS-1$ 
+        }
+    }
+
+    private void loadAllAthleten(final IProgressMonitor monitor, final IDatabaseAccess db) {
+        int i = 0;
+        final ICache<String, IAthlete> cache = AthleteCache.getInstance();
+        final List<IAthlete> athletes = db.getAllAthletes();
+        for (final IAthlete athlete : athletes) {
+            cache.add(athlete);
+            monitor.subTask(NLS.bind("Athlete in Cache laden {0}", i++)); //$NON-NLS-1$
+            LOG.info(String.format("Athlete dem Cache hinzugefügt: %s", athlete)); //$NON-NLS-1$ 
         }
     }
 

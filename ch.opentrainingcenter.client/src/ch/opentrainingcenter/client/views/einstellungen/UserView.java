@@ -8,23 +8,17 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.eclipse.core.databinding.AggregateValidationStatus;
-import org.eclipse.core.databinding.Binding;
-import org.eclipse.core.databinding.DataBindingContext;
-import org.eclipse.core.databinding.UpdateValueStrategy;
-import org.eclipse.core.databinding.beans.BeanProperties;
-import org.eclipse.core.databinding.observable.ChangeEvent;
-import org.eclipse.core.databinding.observable.IChangeListener;
-import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
-import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.fieldassist.ControlDecoration;
+import org.eclipse.jface.fieldassist.FieldDecoration;
+import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -51,13 +45,13 @@ import org.eclipse.ui.part.ViewPart;
 
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.Application;
+import ch.opentrainingcenter.client.cache.AthleteCache;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.i18n.Messages;
-import ch.opentrainingcenter.model.sportler.Sportler;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
 
@@ -68,10 +62,10 @@ public class UserView extends ViewPart {
     private static final Logger LOGGER = Logger.getLogger(UserView.class);
     private static final ApplicationContext ctx = ApplicationContext.getApplicationContext();
 
-    private final Sportler sportler = new Sportler();
     private final IDatabaseAccess databaseAccess = DatabaseAccessFactory.getDatabaseAccess();
+    private final AthleteCache athleteCache = AthleteCache.getInstance();
     private final IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-    private Text nameTf;
+    private Text userName;
     private DateTime birthday;
     private Scale pulseScale;
     private Label lError;
@@ -82,6 +76,7 @@ public class UserView extends ViewPart {
     private Section selectSportler;
     private Section overviewSection;
     private final Map<Integer, Integer> dbIdMap = new HashMap<Integer, Integer>();
+
     private Button btnSave;
 
     private int index;
@@ -89,6 +84,8 @@ public class UserView extends ViewPart {
     private Composite parent;
 
     private Label scaledPulse;
+
+    private ControlDecoration deco;
 
     @Override
     public void createPartControl(final Composite parentComposite) {
@@ -203,16 +200,9 @@ public class UserView extends ViewPart {
                 if (dbIdMap.containsKey(selectionIndex)) {
                     final int dbId = dbIdMap.get(selectionIndex);
                     final IAthlete athlete = databaseAccess.getAthlete(dbId);
-                    nameTf.setText(athlete.getName());
-                    final Date date = athlete.getBirthday();
-                    final org.joda.time.DateTime dt = new org.joda.time.DateTime(date.getTime());
-                    birthday.setDate(dt.getYear(), dt.getMonthOfYear(), dt.getDayOfMonth());
-                    final int maxHeart = athlete.getMaxHeartRate().intValue();
-                    pulseScale.setSelection(maxHeart);
-                    pulseScale.setToolTipText(NLS.bind(Messages.UserView_3, maxHeart));
-                    scaledPulse.setText(NLS.bind(Messages.UserView_2, maxHeart));
+                    setAthleteForm(athlete);
                 } else {
-                    resetForm();
+                    resetAthleteForm();
                 }
             }
         });
@@ -257,8 +247,33 @@ public class UserView extends ViewPart {
         gd.minimumWidth = 30;
         GridDataFactory.createFrom(gd).applyTo(lName);
 
-        nameTf = new Text(overViewComposite, SWT.BORDER);
-        GridDataFactory.swtDefaults().align(SWT.FILL, SWT.FILL).span(2, 1).grab(true, true).applyTo(nameTf);
+        userName = new Text(overViewComposite, SWT.BORDER);
+        deco = new ControlDecoration(userName, SWT.LEFT | SWT.TOP);
+        final FieldDecoration fieldDecoration = FieldDecorationRegistry.getDefault().getFieldDecoration(FieldDecorationRegistry.DEC_ERROR);
+        deco.setImage(fieldDecoration.getImage());
+        deco.setShowOnlyOnFocus(false);
+        deco.hide();
+
+        userName.addModifyListener(new ModifyListener() {
+
+            @Override
+            public void modifyText(final ModifyEvent e) {
+                final String name = userName.getText();
+                if (name != null && name.length() >= 5) {
+                    final IAthlete exists = athleteCache.get(name);
+
+                    if (exists != null) {
+                        handleDecoration(NLS.bind(Messages.UserView_6, name));
+                    } else {
+                        handleDecoration(null);
+                    }
+                } else {
+                    handleDecoration(Messages.UserView_7);
+                }
+            }
+        });
+
+        GridDataFactory.swtDefaults().align(SWT.FILL, SWT.FILL).span(2, 1).grab(true, true).applyTo(userName);
 
         // ---------------------------------------------------------------------
         // pulse
@@ -284,7 +299,6 @@ public class UserView extends ViewPart {
                 final int newValue = pulseScale.getSelection();
                 scaledPulse.setText(NLS.bind(Messages.UserView_2, newValue));
                 pulseScale.setToolTipText(NLS.bind(Messages.UserView_3, pulseScale.getSelection()));
-                sportler.setMaxHeartBeat(newValue);
             }
         });
 
@@ -316,28 +330,33 @@ public class UserView extends ViewPart {
 
             @Override
             public void widgetSelected(final SelectionEvent e) {
-                LOGGER.info("save " + sportler); //$NON-NLS-1$
+                final String name = userName.getText();
+                LOGGER.info(String.format("save %s", name)); //$NON-NLS-1$
+
+                final int maxPulse = pulseScale.getSelection();
                 final Calendar cal = Calendar.getInstance(Locale.getDefault());
                 cal.set(Calendar.YEAR, birthday.getYear());
                 cal.set(Calendar.MONTH, birthday.getMonth() + 1);
                 cal.set(Calendar.DAY_OF_MONTH, birthday.getDay());
-                sportler.setMaxHeartBeat(pulseScale.getSelection());
 
                 TrainingCache.getInstance().resetCache();
 
-                final IAthlete exists = databaseAccess.getAthlete(sportler.getName());
-                boolean confirm = true;
+                final IAthlete exists = databaseAccess.getAthlete(name);
 
                 if (exists != null) {
-                    confirm = MessageDialog.openConfirm(parent.getShell(), Messages.UserView_4, NLS.bind(Messages.UserView_5, sportler.getName()));
+                    final boolean confirm;
+                    confirm = MessageDialog.openConfirm(parent.getShell(), Messages.UserView_4, NLS.bind(Messages.UserView_5, name));
                     if (confirm) {
                         exists.setBirthday(cal.getTime());
-                        exists.setMaxHeartRate(sportler.getMaxHeartBeat());
+                        exists.setMaxHeartRate(maxPulse);
                         save(exists);
+                        athleteCache.add(exists);
                     }
                 } else {
-                    final IAthlete athlete = CommonTransferFactory.createAthlete(sportler.getName(), cal.getTime(), sportler.getMaxHeartBeat());
+                    // neuen hinzufügen
+                    final IAthlete athlete = CommonTransferFactory.createAthlete(name, cal.getTime(), maxPulse);
                     save(athlete);
+                    athleteCache.add(athlete);
                 }
             }
 
@@ -345,16 +364,14 @@ public class UserView extends ViewPart {
                 databaseAccess.save(athlete);
                 databaseAccess.saveOrUpdate(CommonTransferFactory.createRoute(athlete));
                 if (!dbIdMap.containsValue(athlete.getId())) {
-                    user.add(sportler.getName(), index);
+                    user.add(userName.getText(), index);
                     dbIdMap.put(index, athlete.getId());
                     index++;
                 }
-                resetForm();
+                resetAthleteForm();
             }
         });
         GridDataFactory.fillDefaults().align(SWT.RIGHT, SWT.FILL).span(3, 1).grab(false, true).applyTo(btnSave);
-
-        bindValues();
 
         overviewSection.setClient(overViewComposite);
     }
@@ -365,43 +382,45 @@ public class UserView extends ViewPart {
         }
     }
 
-    private void resetForm() {
-        nameTf.setText(""); //$NON-NLS-1$
+    private void setAthleteForm(final IAthlete athlete) {
+        userName.setText(athlete.getName());
+        final Date date = athlete.getBirthday();
+        final org.joda.time.DateTime dt = new org.joda.time.DateTime(date.getTime());
+        birthday.setDate(dt.getYear(), dt.getMonthOfYear(), dt.getDayOfMonth());
+        final int maxHeart = athlete.getMaxHeartRate().intValue();
+        pulseScale.setSelection(maxHeart);
+        pulseScale.setToolTipText(NLS.bind(Messages.UserView_3, maxHeart));
+        scaledPulse.setText(NLS.bind(Messages.UserView_2, maxHeart));
+
+        userName.setEnabled(false);
+        pulseScale.setEnabled(false);
+        deco.hide();
+    }
+
+    private void resetAthleteForm() {
+        userName.setText(""); //$NON-NLS-1$
         final org.joda.time.DateTime dt = org.joda.time.DateTime.now();
         birthday.setDate(dt.getYear(), dt.getMonthOfYear(), dt.getDayOfMonth());
         pulseScale.setSelection(0);
         scaledPulse.setText(NLS.bind(Messages.UserView_2, 0));
         lError.setText(""); //$NON-NLS-1$
         user.setFocus();
+
+        userName.setEnabled(true);
+        pulseScale.setEnabled(true);
+        handleDecoration(Messages.UserView_8);
     }
 
-    private void bindValues() {
-        final DataBindingContext ctx = new DataBindingContext();
-
-        // name
-        final IObservableValue widgetValue = WidgetProperties.text(SWT.Modify).observe(nameTf);
-        final IObservableValue modelValue = BeanProperties.value(Sportler.class, "name").observe(sportler); //$NON-NLS-1$
-        final UpdateValueStrategy strategyName = new UpdateValueStrategy();
-        strategyName.setBeforeSetValidator(new SportlerValidator(5));
-        final Binding bindName = ctx.bindValue(widgetValue, modelValue, strategyName, null);
-
-        ControlDecorationSupport.create(bindName, SWT.TOP | SWT.RIGHT);
-        // -----------------------
-
-        final IObservableValue errorObservable = WidgetProperties.text().observe(lError);
-        // This one listenes to all changes
-        ctx.bindValue(errorObservable, new AggregateValidationStatus(ctx.getBindings(), AggregateValidationStatus.MAX_SEVERITY), null, null);
-        errorObservable.addChangeListener(new IChangeListener() {
-
-            @Override
-            public void handleChange(final ChangeEvent event) {
-                if (Status.OK_STATUS.getMessage().equals(lError.getText())) {
-                    btnSave.setEnabled(true);
-                } else {
-                    btnSave.setEnabled(false);
-                }
-            }
-        });
+    private void handleDecoration(final String message) {
+        if (message == null) {
+            // alles ok, kann gespeichert werden
+            deco.hide();
+            btnSave.setEnabled(true);
+        } else {
+            deco.show();
+            deco.setDescriptionText(message);
+            btnSave.setEnabled(false);
+        }
     }
 
     @Override
