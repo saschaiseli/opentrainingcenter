@@ -328,6 +328,11 @@ public final class Messages extends NLS {
     public static String LIGHTCLOUDY;
     public static String CLOUDY;
     public static String FileImport_0;
+    public static String FileImport_1;
+    public static String FileImport_2;
+    public static String FileImport_3;
+    public static String FileImport_4;
+    public static String FileImport_5;
     public static String HEAVYCLOUDY;
     public static String LIGHTRAIN;
     public static String RAIN;
@@ -358,6 +363,9 @@ public final class Messages extends NLS {
     public static String UserView_0;
     public static String UserView_1;
     public static String UserView_2;
+    public static String UserView_3;
+    public static String UserView_4;
+    public static String UserView_5;
     public static String RunType0;
     public static String RunType1;
     public static String RunType2;

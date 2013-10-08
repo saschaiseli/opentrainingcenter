@@ -1,6 +1,5 @@
 package ch.opentrainingcenter.db.internal;
 
-import java.io.Serializable;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -60,12 +59,20 @@ public class AthleteDao {
     }
 
     public final int save(final IAthlete athlete) {
+        IAthlete exists = getAthlete(athlete.getName());
+        if (exists != null) {
+            exists.setBirthday(athlete.getBirthday());
+            exists.setMaxHeartRate(athlete.getMaxHeartRate());
+            athlete.setId(exists.getId());
+        } else {
+            exists = athlete;
+        }
         final Session session = dao.getSession();
         dao.begin();
-        final Serializable save = session.save(athlete);
+        session.saveOrUpdate(exists);
         dao.commit();
         session.flush();
-        return (Integer) save;
+        return getAthlete(athlete.getName()).getId();
     }
 
 }

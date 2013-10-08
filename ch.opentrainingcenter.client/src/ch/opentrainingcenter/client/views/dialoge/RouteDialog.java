@@ -105,7 +105,6 @@ public class RouteDialog extends TitleAreaDialog {
 
             if (route != null) {
                 confirm = MessageDialog.openConfirm(parent, Messages.RouteDialog_4, Messages.HealthDialog_1);
-
             }
             if (confirm) {
                 route = CommonTransferFactory.createRoute(model.getName(), model.getBeschreibung(), model.getAthlete());

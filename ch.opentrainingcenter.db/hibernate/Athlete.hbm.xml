@@ -18,7 +18,7 @@
         <property name="maxheartrate" type="java.lang.Integer">
             <column name="MAXHEARTRATE" />
         </property>
-        <set name="routes" table="ROUTE" inverse="true" lazy="true" fetch="select">
+        <set name="routes" table="ROUTE" inverse="true" cascade="all" lazy="true" fetch="select">
             <key>
                 <column name="ID_FK_ATHLETE" />
             </key>

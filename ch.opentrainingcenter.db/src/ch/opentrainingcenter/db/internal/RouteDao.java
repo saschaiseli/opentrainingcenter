@@ -10,6 +10,7 @@ import org.hibernate.criterion.Restrictions;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IRoute;
 
+@SuppressWarnings("nls")
 public class RouteDao {
     private static final Logger LOG = Logger.getLogger(RouteDao.class);
 
@@ -25,13 +26,14 @@ public class RouteDao {
      * 
      * @param athlete
      */
+
     public IRoute getRoute(final String name, final IAthlete athlete) {
-        LOG.info("load Route mit dem namen: " + name + " " + athlete); //$NON-NLS-1$ //$NON-NLS-2$
+        LOG.info("load Route mit dem namen: " + name + " " + athlete);
         final Session session = dao.getSession();
         dao.begin();
         final Criteria criteria = session.createCriteria(IRoute.class);
-        criteria.add(Restrictions.eq("name", name)); //$NON-NLS-1$
-        criteria.add(Restrictions.eq("athlete", athlete)); //$NON-NLS-1$
+        criteria.add(Restrictions.eq("name", name));
+        criteria.add(Restrictions.eq("athlete", athlete));
         final IRoute route;
         @SuppressWarnings("unchecked")
         final List<IRoute> routes = criteria.list();
@@ -48,10 +50,10 @@ public class RouteDao {
     public int saveOrUpdate(final IRoute route) {
         IRoute exists = getRoute(route.getName(), route.getAthlete());
         if (exists != null) {
-            LOG.info("Strecke überschreiben alt: " + exists + " neu: " + route); //$NON-NLS-1$ //$NON-NLS-2$
+            LOG.info("Strecke überschreiben alt: " + exists + " neu: " + route); //$NON-NLS-2$
             exists.setBeschreibung(route.getBeschreibung());
         } else {
-            LOG.info("Neue Strecke abspeichern: " + route); //$NON-NLS-1$
+            LOG.info("Neue Strecke abspeichern: " + route);
             exists = route;
         }
         final Session session = dao.getSession();
@@ -66,7 +68,7 @@ public class RouteDao {
         final Session session = dao.getSession();
         dao.begin();
         final Criteria criteria = session.createCriteria(IRoute.class);
-        criteria.add(Restrictions.eq("athlete", athlete)); //$NON-NLS-1$
+        criteria.add(Restrictions.eq("athlete", athlete));
 
         @SuppressWarnings("unchecked")
         final List<IRoute> routen = criteria.list();

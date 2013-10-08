@@ -57,7 +57,6 @@ public class FileImport implements IFileImport {
         this.fileCopy = fileCopy;
     }
 
-    @SuppressWarnings("nls")
     @Override
     public List<ITraining> importFile(final String filterPath, final IGpsFileModelWrapper modelWrapper, final IProgressMonitor monitor) {
         final List<ITraining> activitiesToImport = new ArrayList<ITraining>();
@@ -65,7 +64,7 @@ public class FileImport implements IFileImport {
             final File file = new File(filterPath, model.getFileName());
             final String fileName = file.getName();
             monitor.setTaskName(Messages.FileImport_0 + fileName);
-            LOGGER.info("importiere File: " + fileName);
+            LOGGER.info(Messages.FileImport_1 + fileName);
 
             try {
                 fileCopy.copyFile(file, new File(locationBackupFiles, fileName));
@@ -78,7 +77,7 @@ public class FileImport implements IFileImport {
             try {
                 training = cc.getMatchingConverter(file).convert(file);
             } catch (final ConvertException e) {
-                LOGGER.error(String.format("File %s konnte nicht importiert werden", fileName), e);
+                LOGGER.error(String.format(Messages.FileImport_2, fileName), e);
                 continue;
             }
 
@@ -94,10 +93,10 @@ public class FileImport implements IFileImport {
             final RunType typ = model.getTyp();
             final ITrainingType tt = CommonTransferFactory.createTrainingType(typ.getIndex(), typ.getTitle(), typ.getTitle());
             training.setTrainingType(tt);
-            LOGGER.info("Save Training");
+            LOGGER.info(Messages.FileImport_3);
             final long start = DateTime.now().getMillis();
             dbAccess.saveTraining(training);
-            LOGGER.info("Saved Training in " + (DateTime.now().getMillis() - start) + "ms");
+            LOGGER.info(Messages.FileImport_4 + (DateTime.now().getMillis() - start) + Messages.FileImport_5);
             activitiesToImport.add(training);
 
             monitor.worked(1);
