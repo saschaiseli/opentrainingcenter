@@ -1,11 +1,10 @@
 package ch.opentrainingcenter.client.views.einstellungen;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -15,6 +14,13 @@ import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -24,7 +30,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Event;
@@ -71,14 +76,10 @@ public class UserView extends ViewPart {
     private FormToolkit toolkit;
     private ScrolledForm form;
     private TableWrapData td;
-    private Combo user;
     private Section selectSportler;
     private Section overviewSection;
-    private final Map<Integer, Integer> dbIdMap = new HashMap<Integer, Integer>();
 
     private Button btnSave;
-
-    private int index;
 
     private Composite parent;
 
@@ -87,6 +88,8 @@ public class UserView extends ViewPart {
     private ControlDecoration deco;
 
     private final IAthlete currentAthlete;
+
+    private final List<Object> allAthletes = new ArrayList<>();
 
     public UserView() {
         currentAthlete = ctx.getAthlete();
@@ -136,7 +139,8 @@ public class UserView extends ViewPart {
         final GridLayout layoutClient = new GridLayout(2, false);
         sportlerComposite.setLayout(layoutClient);
 
-        final List<IAthlete> allAthletes = databaseAccess.getAllAthletes();
+        allAthletes.add(new Object());
+        allAthletes.addAll(athleteCache.getAll());
 
         final Label sportlerLabel = new Label(sportlerComposite, SWT.NONE);
         sportlerLabel.setText(Messages.CreateAthleteView3);
@@ -147,20 +151,33 @@ public class UserView extends ViewPart {
         gridData.verticalIndent = 25;
         sportlerLabel.setLayoutData(gridData);
         //
-        user = new Combo(sportlerComposite, SWT.NONE);
-        index = 0;
-        user.add(" ", index++); //$NON-NLS-1$
-        for (final IAthlete athlete : allAthletes) {
-            user.add(athlete.getName(), index);
-            dbIdMap.put(index, athlete.getId());
-            index++;
+
+        final ComboViewer viewer = new ComboViewer(sportlerComposite, SWT.BORDER | SWT.READ_ONLY);
+        viewer.setContentProvider(ArrayContentProvider.getInstance());
+        viewer.setLabelProvider(new LabelProvider() {
+            @Override
+            public String getText(final Object element) {
+                if (element instanceof IAthlete) {
+                    final IAthlete athlete = (IAthlete) element;
+                    return athlete.getName();
+                }
+                return Messages.UserView_9;
+            }
+        });
+        viewer.setInput(allAthletes);
+        if (currentAthlete != null) {
+            viewer.setSelection(new StructuredSelection(currentAthlete));
+        } else {
+            viewer.setSelection(new StructuredSelection(allAthletes.get(0)));
         }
+        getSite().setSelectionProvider(viewer);
+
         gridData = new GridData();
         gridData.horizontalAlignment = SWT.FILL;
         gridData.grabExcessHorizontalSpace = true;
         gridData.verticalIndent = 25;
         gridData.horizontalIndent = 5;
-        user.setLayoutData(gridData);
+        viewer.getCombo().setLayoutData(gridData);
 
         // Buttons
         final Button btnSelectUser = new Button(sportlerComposite, SWT.PUSH);
@@ -177,33 +194,31 @@ public class UserView extends ViewPart {
 
             @Override
             public void widgetSelected(final SelectionEvent e) {
-                final int index = user.getSelectionIndex();
-                if (dbIdMap.containsKey(index)) {
-                    final int dbId = dbIdMap.get(index);
-                    final IAthlete athlete = databaseAccess.getAthlete(dbId);
+                final IStructuredSelection selection = (IStructuredSelection) viewer.getSelection();
+                if (selection != null) {
+                    final IAthlete athlete = (IAthlete) selection.getFirstElement();
                     final boolean confirm = MessageDialog.openConfirm(parent.getShell(), Messages.UserView_0, Messages.UserView_1);
                     if (confirm) {
-                        store.setValue(PreferenceConstants.ATHLETE_ID, String.valueOf(dbId));
-                        LOGGER.info(NLS.bind("Benutzer {0} wird im Cache gesetzt", athlete)); //$NON-NLS-1$
+                        store.setValue(PreferenceConstants.ATHLETE_ID, String.valueOf(athlete.getId()));
+                        LOGGER.info(NLS.bind("Benutzer {0} wird in Preferences gesetzt", athlete)); //$NON-NLS-1$
                         ctx.setAthlete(athlete);
                         getViewSite().getWorkbenchWindow().getShell().setText(Application.WINDOW_TITLE + Messages.CreateAthleteView7 + athlete.getName());
                         PlatformUI.getWorkbench().restart();
                     }
                 }
-                user.setFocus();
+                sportlerComposite.setFocus();
             }
         });
 
-        user.addSelectionListener(new SelectionAdapter() {
+        viewer.addSelectionChangedListener(new ISelectionChangedListener() {
 
             @Override
-            public void widgetSelected(final SelectionEvent e) {
-                btnSelectUser.setEnabled(user.getSelectionIndex() > 0);
-                final int selectionIndex = user.getSelectionIndex();
-                if (dbIdMap.containsKey(selectionIndex)) {
-                    final int dbId = dbIdMap.get(selectionIndex);
-                    final IAthlete athlete = databaseAccess.getAthlete(dbId);
-                    setAthleteForm(athlete);
+            public void selectionChanged(final SelectionChangedEvent event) {
+                final IStructuredSelection selection = (IStructuredSelection) event.getSelection();
+                if (selection.getFirstElement() instanceof IAthlete) {
+                    btnSelectUser.setEnabled(true);
+                    final IAthlete selectedAthlete = (IAthlete) selection.getFirstElement();
+                    setAthleteForm(selectedAthlete);
                 } else {
                     resetAthleteForm();
                 }
@@ -357,17 +372,13 @@ public class UserView extends ViewPart {
                     final IAthlete athlete = CommonTransferFactory.createAthlete(name, cal.getTime(), maxPulse);
                     save(athlete);
                     athleteCache.add(athlete);
+                    allAthletes.add(athlete);
                 }
             }
 
             private void save(final IAthlete athlete) {
                 databaseAccess.save(athlete);
                 databaseAccess.saveOrUpdate(CommonTransferFactory.createRoute(athlete));
-                if (!dbIdMap.containsValue(athlete.getId())) {
-                    user.add(userName.getText(), index);
-                    dbIdMap.put(index, athlete.getId());
-                    index++;
-                }
                 if (currentAthlete == null) {
                     resetAthleteForm();
                 }
@@ -407,7 +418,7 @@ public class UserView extends ViewPart {
         pulseScale.setSelection(0);
         scaledPulse.setText(NLS.bind(Messages.UserView_2, 0));
         lError.setText(""); //$NON-NLS-1$
-        user.setFocus();
+        parent.setFocus();
 
         userName.setEnabled(true);
         pulseScale.setEnabled(true);

@@ -342,6 +342,7 @@ public final class Messages extends NLS {
     public static String RouteDialog_3;
     public static String RouteDialog_4;
     public static String RouteDialog_5;
+    public static String RoutenView_0;
     public static String HEAVYRAIN;
     public static String LIGHTSNOW;
     public static String PlanungFutureViewer_0;
@@ -369,6 +370,7 @@ public final class Messages extends NLS {
     public static String UserView_6;
     public static String UserView_7;
     public static String UserView_8;
+    public static String UserView_9;
     public static String RunType0;
     public static String RunType1;
     public static String RunType2;
