@@ -48,7 +48,6 @@ import ch.opentrainingcenter.client.Application;
 import ch.opentrainingcenter.client.cache.AthleteCache;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.core.PreferenceConstants;
-import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.i18n.Messages;
@@ -86,6 +85,12 @@ public class UserView extends ViewPart {
     private Label scaledPulse;
 
     private ControlDecoration deco;
+
+    private final IAthlete currentAthlete;
+
+    public UserView() {
+        currentAthlete = ctx.getAthlete();
+    }
 
     @Override
     public void createPartControl(final Composite parentComposite) {
@@ -158,16 +163,17 @@ public class UserView extends ViewPart {
         user.setLayoutData(gridData);
 
         // Buttons
-        final Button selectUser = new Button(sportlerComposite, SWT.PUSH);
-        selectUser.setText(Messages.CreateAthleteView4);
-        selectUser.setEnabled(false);
+        final Button btnSelectUser = new Button(sportlerComposite, SWT.PUSH);
+        btnSelectUser.setText(Messages.CreateAthleteView4);
+        btnSelectUser.setEnabled(false);
         gridData = new GridData();
         gridData.horizontalAlignment = SWT.RIGHT;
         gridData.horizontalSpan = 2;
         gridData.verticalIndent = 25;
         gridData.grabExcessHorizontalSpace = false;
-        selectUser.setLayoutData(gridData);
-        selectUser.addSelectionListener(new SelectionAdapter() {
+        btnSelectUser.setLayoutData(gridData);
+        btnSelectUser.setEnabled(false);
+        btnSelectUser.addSelectionListener(new SelectionAdapter() {
 
             @Override
             public void widgetSelected(final SelectionEvent e) {
@@ -178,24 +184,21 @@ public class UserView extends ViewPart {
                     final boolean confirm = MessageDialog.openConfirm(parent.getShell(), Messages.UserView_0, Messages.UserView_1);
                     if (confirm) {
                         store.setValue(PreferenceConstants.ATHLETE_ID, String.valueOf(dbId));
-                        LOGGER.info(Messages.CreateAthleteView5 + athlete + " wird im Cache gesetzt."); //$NON-NLS-1$
+                        LOGGER.info(NLS.bind("Benutzer {0} wird im Cache gesetzt", athlete)); //$NON-NLS-1$
                         ctx.setAthlete(athlete);
                         getViewSite().getWorkbenchWindow().getShell().setText(Application.WINDOW_TITLE + Messages.CreateAthleteView7 + athlete.getName());
                         PlatformUI.getWorkbench().restart();
                     }
-                } else {
-                    ctx.setAthlete(null);
-                    getViewSite().getWorkbenchWindow().getShell().setText(Application.WINDOW_TITLE);
                 }
+                user.setFocus();
             }
-
         });
 
         user.addSelectionListener(new SelectionAdapter() {
 
             @Override
             public void widgetSelected(final SelectionEvent e) {
-                enableOrDisableButtonIfNoUserIsSelected(selectUser);
+                btnSelectUser.setEnabled(user.getSelectionIndex() > 0);
                 final int selectionIndex = user.getSelectionIndex();
                 if (dbIdMap.containsKey(selectionIndex)) {
                     final int dbId = dbIdMap.get(selectionIndex);
@@ -229,7 +232,7 @@ public class UserView extends ViewPart {
                 form.reflow(true);
             }
         });
-        overviewSection.setExpanded(ctx.getAthlete() == null);
+        overviewSection.setExpanded(true);
         td = new TableWrapData();
         td.colspan = 1;
         overviewSection.setLayoutData(td);
@@ -261,7 +264,6 @@ public class UserView extends ViewPart {
                 final String name = userName.getText();
                 if (name != null && name.length() >= 5) {
                     final IAthlete exists = athleteCache.get(name);
-
                     if (exists != null) {
                         handleDecoration(NLS.bind(Messages.UserView_6, name));
                     } else {
@@ -339,9 +341,7 @@ public class UserView extends ViewPart {
                 cal.set(Calendar.MONTH, birthday.getMonth() + 1);
                 cal.set(Calendar.DAY_OF_MONTH, birthday.getDay());
 
-                TrainingCache.getInstance().resetCache();
-
-                final IAthlete exists = databaseAccess.getAthlete(name);
+                final IAthlete exists = athleteCache.get(name);
 
                 if (exists != null) {
                     final boolean confirm;
@@ -368,18 +368,21 @@ public class UserView extends ViewPart {
                     dbIdMap.put(index, athlete.getId());
                     index++;
                 }
-                resetAthleteForm();
+                if (currentAthlete == null) {
+                    resetAthleteForm();
+                }
             }
         });
         GridDataFactory.fillDefaults().align(SWT.RIGHT, SWT.FILL).span(3, 1).grab(false, true).applyTo(btnSave);
 
-        overviewSection.setClient(overViewComposite);
-    }
-
-    private void enableOrDisableButtonIfNoUserIsSelected(final Button selectUser) {
-        if (user.getSelectionIndex() >= 0) {
-            selectUser.setEnabled(true);
+        if (ctx.getAthlete() != null) {
+            setAthleteForm(ctx.getAthlete());
+            userName.setEnabled(false);
+            pulseScale.setEnabled(true);
+            birthday.setEnabled(true);
+            btnSave.setEnabled(true);
         }
+        overviewSection.setClient(overViewComposite);
     }
 
     private void setAthleteForm(final IAthlete athlete) {
