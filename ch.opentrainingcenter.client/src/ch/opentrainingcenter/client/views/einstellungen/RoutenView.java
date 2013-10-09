@@ -191,7 +191,6 @@ public class RoutenView extends ViewPart implements ISelectionListener {
     private void defineTable(final Table table) {
         table.setHeaderVisible(true);
         table.setLinesVisible(true);
-        table.setEnabled(athlete != null);
     }
 
     private void createTrackColumns() {
@@ -338,6 +337,9 @@ public class RoutenView extends ViewPart implements ISelectionListener {
                 tracks.addAll(databaseAccess.getAllImported(selectedAthlete));
                 LOGGER.info(String.format("Neuer Athlete selektiert: %s mit %s Routen und %s Tracks", firstElement, routen.size(), tracks.size())); //$NON-NLS-1$      
             }
+            final boolean enabled = athlete != null && athlete.equals(selectedAthlete);
+            viewerRouten.getTable().setEnabled(enabled);
+            viewerTracks.getTable().setEnabled(enabled);
             viewerRouten.refresh();
             viewerTracks.refresh();
         } else {
