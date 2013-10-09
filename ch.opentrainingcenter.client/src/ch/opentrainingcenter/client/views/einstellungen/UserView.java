@@ -195,6 +195,7 @@ public class UserView extends ViewPart {
             @Override
             public void widgetSelected(final SelectionEvent e) {
                 final IStructuredSelection selection = (IStructuredSelection) viewer.getSelection();
+                boolean restart = false;
                 if (selection != null) {
                     final IAthlete athlete = (IAthlete) selection.getFirstElement();
                     final boolean confirm = MessageDialog.openConfirm(parent.getShell(), Messages.UserView_0, Messages.UserView_1);
@@ -203,10 +204,14 @@ public class UserView extends ViewPart {
                         LOGGER.info(NLS.bind("Benutzer {0} wird in Preferences gesetzt", athlete)); //$NON-NLS-1$
                         ctx.setAthlete(athlete);
                         getViewSite().getWorkbenchWindow().getShell().setText(Application.WINDOW_TITLE + Messages.CreateAthleteView7 + athlete.getName());
-                        PlatformUI.getWorkbench().restart();
+                        restart = true;
                     }
                 }
-                sportlerComposite.setFocus();
+                if (restart) {
+                    PlatformUI.getWorkbench().restart();
+                } else {
+                    sportlerComposite.setFocus();
+                }
             }
         });
 
