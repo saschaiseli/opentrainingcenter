@@ -1,6 +1,5 @@
 package ch.opentrainingcenter.client.commands;
 
-import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -11,10 +10,16 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.WorkbenchException;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+import ch.opentrainingcenter.client.Activator;
+
 /**
  * Abstrakter Handler um in eine andere Perspektive zu wechseln.
  */
-public abstract class SwitchToPerspective extends AbstractHandler {
+public abstract class SwitchToPerspective extends OtcAbstractHandler {
+
+    public SwitchToPerspective() {
+        super(Activator.getDefault().getPreferenceStore());
+    }
 
     @Override
     public Object execute(final ExecutionEvent event) throws ExecutionException {

@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.ISelectionService;
@@ -13,6 +14,7 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.ViewPart;
 
 import ch.opentrainingcenter.client.cache.AthleteCache;
+import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.core.cache.IRecordListener;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.transfer.IAthlete;
@@ -30,6 +32,14 @@ public class RoutenView extends ViewPart implements IRecordListener<IAthlete>, I
     private FormToolkit toolkit;
 
     private ScrolledForm form;
+
+    private final IAthlete athlete;
+
+    private IAthlete selectedAthlete;
+
+    public RoutenView() {
+        athlete = ApplicationContext.getApplicationContext().getAthlete();
+    }
 
     @Override
     public void createPartControl(final Composite parent) {
@@ -72,7 +82,15 @@ public class RoutenView extends ViewPart implements IRecordListener<IAthlete>, I
 
     @Override
     public void selectionChanged(final IWorkbenchPart part, final ISelection selection) {
-
+        if (part instanceof UserView && selection instanceof IStructuredSelection) {
+            final IStructuredSelection sel = (IStructuredSelection) selection;
+            final Object firstElement = sel.getFirstElement();
+            if (firstElement instanceof IAthlete) {
+                LOGGER.info(String.format("Neuer Athlete selektiert: %s", firstElement)); //$NON-NLS-1$      
+                selectedAthlete = (IAthlete) firstElement;
+            }
+        } else {
+            LOGGER.info(String.format("Part: %s Selection: %s", part, selection)); //$NON-NLS-1$
+        }
     }
-
 }

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.jobs.Job;
@@ -39,7 +38,7 @@ import ch.opentrainingcenter.transfer.IRoute;
  * Importiert GPS Files.
  * 
  */
-public class ImportManualGpsFiles extends AbstractHandler {
+public class ImportManualGpsFiles extends OtcAbstractHandler {
 
     private final IDatabaseAccess databaseAccess;
     private final Cache cache;
@@ -50,9 +49,15 @@ public class ImportManualGpsFiles extends AbstractHandler {
      * Constructor
      */
     public ImportManualGpsFiles() {
+        this(Activator.getDefault().getPreferenceStore());
+
+    }
+
+    public ImportManualGpsFiles(final IPreferenceStore store) {
+        super(store);
         this.databaseAccess = DatabaseAccessFactory.getDatabaseAccess();
         this.cache = TrainingCache.getInstance();
-        this.store = Activator.getDefault().getPreferenceStore();
+        this.store = store;
         this.cc = new ConvertContainer(ExtensionHelper.getConverters());
     }
 
@@ -61,6 +66,7 @@ public class ImportManualGpsFiles extends AbstractHandler {
      */
     public ImportManualGpsFiles(final IDatabaseAccess databaseAccess, final Cache cache, final IPreferenceStore store,
             final Map<String, IConvert2Tcx> converters) {
+        super(store);
         this.databaseAccess = databaseAccess;
         this.cache = cache;
         this.store = store;

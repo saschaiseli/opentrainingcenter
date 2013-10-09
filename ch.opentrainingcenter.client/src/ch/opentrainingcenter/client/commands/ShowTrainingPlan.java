@@ -1,17 +1,21 @@
 package ch.opentrainingcenter.client.commands;
 
-import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.joda.time.DateTime;
 
+import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.action.job.ShowJahresplanung;
 import ch.opentrainingcenter.i18n.Messages;
 
 /**
  * Handler um Trainingspläne anzuzeigen.
  */
-public class ShowTrainingPlan extends AbstractHandler {
+public class ShowTrainingPlan extends OtcAbstractHandler {
+
+    public ShowTrainingPlan() {
+        super(Activator.getDefault().getPreferenceStore());
+    }
 
     public static final String ID = "ch.opentrainingcenter.client.commands.ShowTrainingPlan"; //$NON-NLS-1$
 
