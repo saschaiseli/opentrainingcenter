@@ -229,7 +229,12 @@ public class RoutenView extends ViewPart implements ISelectionListener {
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(final Object element) {
-                return "route"; //$NON-NLS-1$
+                final ITraining training = (ITraining) element;
+                if (training.getRoute() != null) {
+                    return training.getRoute().getName();
+                } else {
+                    return "rrr"; //$NON-NLS-1$
+                }
             }
         });
     }
@@ -277,7 +282,14 @@ public class RoutenView extends ViewPart implements ISelectionListener {
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(final Object element) {
-                return "n/a"; //$NON-NLS-1$
+                final IRoute route = (IRoute) element;
+                int i = 0;
+                for (final ITraining training : tracks) {
+                    if (training.getRoute() != null && training.getRoute().getName().equals(route.getName())) {
+                        i++;
+                    }
+                }
+                return String.valueOf(i);
             }
         });
     }
