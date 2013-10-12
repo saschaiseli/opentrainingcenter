@@ -100,15 +100,14 @@ public class RouteDialog extends TitleAreaDialog {
             // speichern
             LOG.debug("Neue Route speichern"); //$NON-NLS-1$
 
-            IRoute route = databaseAccess.getRoute(model.getName(), model.getAthlete());
+            final IRoute route = databaseAccess.getRoute(model.getName(), model.getAthlete());
             boolean confirm = true;
 
             if (route != null) {
                 confirm = MessageDialog.openConfirm(parent, Messages.RouteDialog_4, Messages.HealthDialog_1);
             }
             if (confirm) {
-                route = CommonTransferFactory.createRoute(model.getName(), model.getBeschreibung(), model.getAthlete());
-                databaseAccess.saveOrUpdate(route);
+                databaseAccess.saveOrUpdate(CommonTransferFactory.createRoute(model.getName(), model.getBeschreibung(), model.getAthlete()));
                 StreckeCache.getInstance().add(model);
                 super.buttonPressed(buttonId);
             }

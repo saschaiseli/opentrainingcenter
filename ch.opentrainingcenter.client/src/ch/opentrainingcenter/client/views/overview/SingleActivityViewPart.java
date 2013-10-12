@@ -1,17 +1,18 @@
 package ch.opentrainingcenter.client.views.overview;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.layout.GridLayoutFactory;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
+import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTError;
@@ -20,9 +21,8 @@ import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseTrackListener;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -53,6 +53,7 @@ import ch.opentrainingcenter.core.helper.TimeHelper;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.model.ModelFactory;
 import ch.opentrainingcenter.model.strecke.StreckeModel;
+import ch.opentrainingcenter.model.strecke.StreckeModelComparator;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
 import ch.opentrainingcenter.model.training.Wetter;
 import ch.opentrainingcenter.transfer.ActivityExtension;
@@ -76,6 +77,7 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
 
     private IRecordListener<ITraining> listener;
     private final ChartFactory factory;
+    private IRecordListener<StreckeModel> streckeListener;
 
     public SingleActivityViewPart() {
         final ApplicationContext context = ApplicationContext.getApplicationContext();
@@ -121,9 +123,10 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
     @Override
     public void dispose() {
         cache.removeListener(listener);
+        cacheStrecke.removeListener(streckeListener);
         ApplicationContext.getApplicationContext().setSelectedId(null);
-        super.dispose();
         toolkit.dispose();
+        super.dispose();
     }
 
     @Override
@@ -179,21 +182,15 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         section.setDescription(Messages.SingleActivityViewPart_1);
 
         final Composite container = toolkit.createComposite(section);
-        final GridLayout layout = new GridLayout(2, false);
-        layout.verticalSpacing = 2;
-        layout.horizontalSpacing = 10;
-        container.setLayout(layout);
+        GridLayoutFactory.fillDefaults().numColumns(2).applyTo(container);
+        GridDataFactory.swtDefaults().applyTo(container);
 
         final Label label = toolkit.createLabel(container, ""); //$NON-NLS-1$
         label.setText(Messages.SingleActivityViewPart_3);
 
         final Text note = toolkit.createText(container, "", SWT.V_SCROLL | SWT.MULTI | SWT.BORDER); //$NON-NLS-1$
-        final GridData noteGd = new GridData();
-        noteGd.grabExcessHorizontalSpace = true;
-        noteGd.grabExcessVerticalSpace = true;
-        noteGd.minimumHeight = 80;
-        noteGd.minimumWidth = 400;
-        note.setLayoutData(noteGd);
+        GridDataFactory.fillDefaults().grab(true, true).minSize(SWT.DEFAULT, 100).align(SWT.FILL, SWT.FILL).applyTo(note);
+
         final String notiz = simpleTraining.getNote();
         if (notiz != null) {
             note.setText(notiz);
@@ -221,7 +218,6 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
 
             @Override
             public void focusLost(final FocusEvent e) {
-                // speichern
                 safeNote(note.getText());
             }
 
@@ -234,22 +230,19 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         final Label labelWetter = toolkit.createLabel(container, ""); //$NON-NLS-1$
         labelWetter.setText(Messages.SingleActivityViewPart_6);
 
-        final Combo weatherCombo = new Combo(container, SWT.READ_ONLY);
-        weatherCombo.setBounds(50, 50, 150, 65);
+        final Combo comboWetter = new Combo(container, SWT.READ_ONLY);
+        comboWetter.setBounds(50, 50, 150, 65);
 
-        weatherCombo.setItems(Wetter.getItems());
-        weatherCombo.select(simpleTraining.getWetter().getIndex());
-        weatherCombo.addSelectionListener(new SelectionListener() {
+        comboWetter.setItems(Wetter.getItems());
+        comboWetter.select(simpleTraining.getWetter().getIndex());
+        comboWetter.addSelectionListener(new SelectionAdapter() {
 
             @Override
             public void widgetSelected(final SelectionEvent e) {
-                safeWeather(weatherCombo.getSelectionIndex());
-            }
-
-            @Override
-            public void widgetDefaultSelected(final SelectionEvent e) {
+                safeWeather(comboWetter.getSelectionIndex());
             }
         });
+        GridDataFactory.fillDefaults().grab(true, true).align(SWT.FILL, SWT.FILL).applyTo(comboWetter);
 
         listener = new IRecordListener<ITraining>() {
 
@@ -273,57 +266,75 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         final Label labelStrecke = toolkit.createLabel(container, ""); //$NON-NLS-1$
         labelStrecke.setText(Messages.SingleActivityViewPart_2);
 
-        final Combo streckeCombo = new Combo(container, SWT.READ_ONLY);
-        streckeCombo.setBounds(50, 50, 150, 65);
+        final ComboViewer comboStrecke = new ComboViewer(container);
 
-        final List<StreckeModel> all = cacheStrecke.getAll();
-        Collections.sort(all, new Comparator<StreckeModel>() {
+        final List<StreckeModel> all = cacheStrecke.getSortedElements(new StreckeModelComparator());
 
+        comboStrecke.setContentProvider(ArrayContentProvider.getInstance());
+        comboStrecke.setLabelProvider(new LabelProvider() {
             @Override
-            public int compare(final StreckeModel a, final StreckeModel b) {
-                return Integer.valueOf(a.getId()).compareTo(Integer.valueOf(b.getId()));
+            public String getText(final Object element) {
+                String label = ""; //$NON-NLS-1$
+                if (element instanceof StreckeModel) {
+                    final StreckeModel route = (StreckeModel) element;
+                    label = route.getName();
+                }
+                return label;
             }
         });
-        final List<String> allNamen = new ArrayList<String>();
-        final Map<Integer, Integer> mapDbIndex = new HashMap<Integer, Integer>();
-        int i = 0;
-        for (final StreckeModel strecke : all) {
-            allNamen.add(strecke.getName());
-            mapDbIndex.put(strecke.getId(), i);
-            i++;
-        }
+        GridDataFactory.fillDefaults().grab(true, true).align(SWT.FILL, SWT.FILL).applyTo(comboStrecke.getControl());
+
+        comboStrecke.setInput(all);
         final StreckeModel strecke = simpleTraining.getStrecke();
-        if (allNamen.size() > 0) {
-            streckeCombo.setItems(allNamen.toArray(new String[1]));
-            if (strecke != null) {
-                streckeCombo.select(mapDbIndex.get(strecke.getId()));
-            } else {
-                streckeCombo.select(0);
-            }
-        }
-        streckeCombo.addSelectionListener(new SelectionListener() {
+
+        comboStrecke.addSelectionChangedListener(new ISelectionChangedListener() {
 
             @Override
-            public void widgetSelected(final SelectionEvent e) {
-                final Combo source = (Combo) e.getSource();
-                final String[] items = source.getItems();
-                final String key = items[source.getSelectionIndex()];
-                safeStrecke(key);
-            }
-
-            @Override
-            public void widgetDefaultSelected(final SelectionEvent e) {
+            public void selectionChanged(final SelectionChangedEvent event) {
+                if (!event.getSelection().isEmpty()) {
+                    safeStrecke((StreckeModel) ((StructuredSelection) event.getSelection()).getFirstElement());
+                }
             }
         });
+        streckeListener = new IRecordListener<StreckeModel>() {
 
+            @Override
+            public void recordChanged(final Collection<StreckeModel> entry) {
+                updateCombo();
+            }
+
+            @Override
+            public void deleteRecord(final Collection<StreckeModel> entry) {
+                updateCombo();
+            }
+
+            private void updateCombo() {
+                final ISelection sel = comboStrecke.getSelection();
+
+                if (!sel.isEmpty()) {
+                    comboStrecke.setInput(cacheStrecke.getSortedElements(new StreckeModelComparator()));
+                    comboStrecke.setSelection(sel);
+                    comboStrecke.refresh();
+                }
+            }
+        };
+
+        cacheStrecke.addListener(streckeListener);
         cache.addListener(listener);
+
+        if (strecke != null) {
+            comboStrecke.setSelection(new StructuredSelection(strecke));
+        } else {
+            comboStrecke.setSelection(new StructuredSelection(all.get(0)));
+        }
+        comboStrecke.refresh();
+
         section.setClient(container);
     }
 
-    private void safeStrecke(final String key) {
+    private void safeStrecke(final StreckeModel model) {
         final ITraining record = databaseAccess.getTrainingById(training.getDatum());
-        final StreckeModel newModel = cacheStrecke.get(key);
-        updateRoute(record, newModel.getId());
+        updateRoute(record, model.getId());
     }
 
     private void safeWeather(final int index) {
@@ -521,25 +532,15 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
     private Label addLabelAndValue(final Composite parent, final String label, final String value, final Units unit) {
         // Label
         final Label dauerLabel = toolkit.createLabel(parent, label + ": "); //$NON-NLS-1$
-        GridData gd = new GridData();
-        gd.verticalIndent = 4;
-        dauerLabel.setLayoutData(gd);
+        GridDataFactory.swtDefaults().applyTo(dauerLabel);
 
         // value
         final Label dauer = toolkit.createLabel(parent, value);
-        gd = new GridData();
-        gd.horizontalAlignment = SWT.RIGHT;
-        gd.horizontalIndent = 10;
-        gd.verticalIndent = 4;
-        dauer.setLayoutData(gd);
+        GridDataFactory.swtDefaults().indent(10, 4).align(SWT.RIGHT, SWT.CENTER).applyTo(dauer);
 
         // einheit
         final Label einheit = toolkit.createLabel(parent, unit.getName());
-        gd = new GridData();
-        gd.horizontalAlignment = SWT.LEFT;
-        gd.horizontalIndent = 10;
-        gd.verticalIndent = 4;
-        einheit.setLayoutData(gd);
+        GridDataFactory.swtDefaults().indent(10, 4).align(SWT.LEFT, SWT.CENTER).applyTo(einheit);
 
         return dauer;
     }

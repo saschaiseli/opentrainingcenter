@@ -20,4 +20,12 @@ public interface IRoute {
     void setAthlete(IAthlete athlete);
 
     IAthlete getAthlete();
+
+    ITraining getTraining();
+
+    void setTraining(final ITraining training);
+
+    ITraining getReferenzTrack();
+
+    void setReferenzTrack(final ITraining referenzTrack);
 }
