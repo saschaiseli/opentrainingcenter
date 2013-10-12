@@ -29,8 +29,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.forms.events.ExpansionAdapter;
-import org.eclipse.ui.forms.events.ExpansionEvent;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
@@ -107,6 +105,7 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         final Composite body = form.getBody();
 
         final TableWrapLayout layout = new TableWrapLayout();
+        layout.makeColumnsEqualWidth = true;
         layout.numColumns = 2;
         body.setLayout(layout);
 
@@ -136,12 +135,6 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
 
     private void addOverviewSection(final Composite body) {
         final Section overviewSection = toolkit.createSection(body, Section.DESCRIPTION | Section.TITLE_BAR | Section.TWISTIE | Section.EXPANDED);
-        overviewSection.addExpansionListener(new ExpansionAdapter() {
-            @Override
-            public void expansionStateChanged(final ExpansionEvent e) {
-                form.reflow(true);
-            }
-        });
         overviewSection.setExpanded(true);
         td = new TableWrapData(TableWrapData.FILL_GRAB);
         td.colspan = 1;
@@ -171,12 +164,6 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
 
     private void addNoteSection(final Composite body) {
         final Section section = toolkit.createSection(body, Section.DESCRIPTION | Section.TITLE_BAR | Section.TWISTIE | Section.EXPANDED);
-        section.addExpansionListener(new ExpansionAdapter() {
-            @Override
-            public void expansionStateChanged(final ExpansionEvent e) {
-                form.reflow(true);
-            }
-        });
         section.setExpanded(true);
         section.setText(Messages.SingleActivityViewPart_0);
         section.setDescription(Messages.SingleActivityViewPart_1);
@@ -397,12 +384,6 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
 
     private void addMapSection(final Composite body) {
         final Section mapSection = toolkit.createSection(body, Section.DESCRIPTION | Section.TITLE_BAR | Section.TWISTIE | Section.EXPANDED);
-        mapSection.addExpansionListener(new ExpansionAdapter() {
-            @Override
-            public void expansionStateChanged(final ExpansionEvent e) {
-                form.reflow(true);
-            }
-        });
         mapSection.setExpanded(false);
         td = new TableWrapData(TableWrapData.FILL_GRAB);
         td.colspan = 2;
@@ -439,12 +420,6 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
      */
     private void addHeartSection(final Composite body) {
         final Section heartSection = toolkit.createSection(body, Section.DESCRIPTION | Section.TITLE_BAR | Section.TWISTIE | Section.EXPANDED);
-        heartSection.addExpansionListener(new ExpansionAdapter() {
-            @Override
-            public void expansionStateChanged(final ExpansionEvent e) {
-                form.reflow(true);
-            }
-        });
         heartSection.setExpanded(true);
         td = new TableWrapData(TableWrapData.FILL_GRAB);
         td.colspan = 2;
@@ -469,12 +444,6 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
 
     private void addSpeedSection(final Composite body) {
         final Section speedSection = toolkit.createSection(body, Section.DESCRIPTION | Section.TITLE_BAR | Section.TWISTIE | Section.EXPANDED);
-        speedSection.addExpansionListener(new ExpansionAdapter() {
-            @Override
-            public void expansionStateChanged(final ExpansionEvent e) {
-                form.reflow(true);
-            }
-        });
         speedSection.setExpanded(false);
         td = new TableWrapData(TableWrapData.FILL_GRAB);
         td.colspan = 2;
@@ -503,12 +472,6 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
     private void addAltitudeSection(final Composite body) {
         final Section altitude = toolkit.createSection(body, Section.DESCRIPTION | Section.TITLE_BAR | Section.TWISTIE | Section.EXPANDED);
         altitude.setExpanded(false);
-        altitude.addExpansionListener(new ExpansionAdapter() {
-            @Override
-            public void expansionStateChanged(final ExpansionEvent e) {
-                form.reflow(true);
-            }
-        });
         td = new TableWrapData(TableWrapData.FILL_GRAB);
         td.colspan = 2;
         td.grabHorizontal = true;
