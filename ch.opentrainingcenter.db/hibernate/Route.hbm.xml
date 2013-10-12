@@ -21,5 +21,9 @@
 		<property name="beschreibung" type="string">
 			<column name="BESCHREIBUNG" />
 		</property>
+		<many-to-one name="referenzTrack"
+			class="ch.opentrainingcenter.transfer.impl.Training" fetch="select"	update="false" >
+			<column name="ID_FK_TRAINING" />
+		</many-to-one>
 	</class>
 </hibernate-mapping>

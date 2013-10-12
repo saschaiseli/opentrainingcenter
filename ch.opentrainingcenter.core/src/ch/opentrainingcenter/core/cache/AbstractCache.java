@@ -2,6 +2,8 @@ package ch.opentrainingcenter.core.cache;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -66,6 +68,12 @@ public abstract class AbstractCache<K, V> implements ICache<K, V> {
 
     public List<V> getAll() {
         return new ArrayList<V>(cache.values());
+    }
+
+    public List<V> getSortedElements(final Comparator<V> comparator) {
+        final List<V> values = getAll();
+        Collections.sort(new ArrayList<V>(values), comparator);
+        return values;
     }
 
     @Override
