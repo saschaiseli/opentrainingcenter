@@ -383,7 +383,7 @@ public class UserView extends ViewPart {
 
             private void save(final IAthlete athlete) {
                 databaseAccess.save(athlete);
-                databaseAccess.saveOrUpdate(CommonTransferFactory.createRoute(athlete));
+                databaseAccess.saveOrUpdate(CommonTransferFactory.createDefaultRoute(athlete));
                 if (currentAthlete == null) {
                     resetAthleteForm();
                 }

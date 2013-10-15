@@ -35,7 +35,22 @@ public class AthleteDaoTest extends DatabaseTestBase {
         final IAthlete athlete = CommonTransferFactory.createAthlete("junit", 300);
         final int id = athleteDao.save(athlete);
 
-        assertEquals(athlete, athleteDao.getAthlete(id));
+        final IAthlete result = athleteDao.getAthlete(id);
+        assertEquals(athlete.getId(), result.getId());
+    }
+
+    @Test
+    public void testUpdatePuls() {
+
+        final IAthlete athlete = CommonTransferFactory.createAthlete("junit", 300);
+
+        athleteDao.save(athlete);
+
+        athlete.setMaxHeartRate(42);
+
+        athleteDao.save(athlete);
+
+        assertEquals(42, athleteDao.getAthlete("junit").getMaxHeartRate().intValue());
     }
 
     @Test

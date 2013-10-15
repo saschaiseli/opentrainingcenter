@@ -20,14 +20,16 @@ public class Route implements java.io.Serializable, IRoute {
     public Route() {
     }
 
-    public Route(final String name, final String beschreibung) {
-        this(name, beschreibung, null);
+    public Route(final String name, final IAthlete athlete) {
+        this.name = name;
+        this.athlete = athlete;
     }
 
-    public Route(final String name, final String beschreibung, final IAthlete athlete) {
+    public Route(final String name, final String beschreibung, final ITraining referenzTraining) {
         this.name = name;
         this.beschreibung = beschreibung;
-        this.athlete = athlete;
+        this.athlete = referenzTraining.getAthlete();
+        this.referenzTrack = referenzTraining;
     }
 
     @Override

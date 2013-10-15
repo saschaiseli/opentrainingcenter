@@ -96,6 +96,13 @@ public final class TimeHelper {
     }
 
     /**
+     * @return datum als String in der Form dd.mm.yyyy
+     */
+    public static String convertDateToString(final Long millis) {
+        return convertDateToString(new Date(millis));
+    }
+
+    /**
      * @return zeit als String in der Form HH:mm:ss
      */
     public static String convertTimeToString(final long timeInMillis) {

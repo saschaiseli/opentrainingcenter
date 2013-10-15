@@ -74,12 +74,21 @@ public final class CommonTransferFactory {
         return new Planungwoche(athlete, jahr, kw, 0, false, 0);
     }
 
-    public static IRoute createRoute(final IAthlete athlete) {
-        return createRoute(Messages.OTCKonstanten_0, "", athlete); //$NON-NLS-1$
+    /**
+     * @param name
+     *            eindeutiger name der route
+     * @param beschreibung
+     *            beschreibung
+     * @param referenzTraining
+     *            geografische Referenz der Streckenpunkte
+     * @return
+     */
+    public static IRoute createRoute(final String name, final String beschreibung, final ITraining referenzTraining) {
+        return new Route(name, beschreibung, referenzTraining);
     }
 
-    public static IRoute createRoute(final String name, final String beschreibung, final IAthlete athlete) {
-        return new Route(name, beschreibung, athlete);
+    public static IRoute createDefaultRoute(final IAthlete athlete) {
+        return new Route(Messages.OTCKonstanten_0, athlete);
     }
 
     public static IStreckenPunkt createStreckenPunkt(final double distance, final double longitude, final double latitude) {

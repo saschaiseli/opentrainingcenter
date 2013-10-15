@@ -93,7 +93,7 @@ public class TrainingOverViewDatenAufbereitenTest {
         when(mockB.getAthlete()).thenReturn(athlete);
         values.add(mockB);
 
-        final IRoute route = CommonTransferFactory.createRoute("name", "beschreibung", athlete);
+        final IRoute route = CommonTransferFactory.createRoute("name", "beschreibung", mockA);
         when(training.getRoute()).thenReturn(route);
 
         when(mockA.getRoute()).thenReturn(route);
@@ -120,9 +120,7 @@ public class TrainingOverViewDatenAufbereitenTest {
         when(mockA.getTrainingType()).thenReturn(type);
         when(mockA.getAthlete()).thenReturn(athlete);
 
-        final IAthlete athlete = CommonTransferFactory.createAthlete("name", 42);
-
-        final IRoute route = CommonTransferFactory.createRoute("name", "beschreibung", athlete);
+        final IRoute route = CommonTransferFactory.createRoute("name", "beschreibung", mockA);
         when(training.getRoute()).thenReturn(route);
         when(mockA.getRoute()).thenReturn(route);
 
@@ -150,8 +148,7 @@ public class TrainingOverViewDatenAufbereitenTest {
 
         values.add(mockA);
 
-        final IAthlete athlete = CommonTransferFactory.createAthlete("name", 42);
-        final IRoute route = CommonTransferFactory.createRoute("name", "beschreibung", athlete);
+        final IRoute route = CommonTransferFactory.createRoute("name", "beschreibung", mockA);
         when(training.getRoute()).thenReturn(route);
 
         when(mockA.getRoute()).thenReturn(route);
@@ -178,8 +175,7 @@ public class TrainingOverViewDatenAufbereitenTest {
         when(mockA.getAthlete()).thenReturn(athlete);
 
         values.add(mockA);
-        final IAthlete athlete = CommonTransferFactory.createAthlete("name", 42);
-        final IRoute route = CommonTransferFactory.createRoute("name", "beschreibung", athlete);
+        final IRoute route = CommonTransferFactory.createRoute("name", "beschreibung", mockA);
         when(training.getRoute()).thenReturn(route);
 
         when(mockA.getRoute()).thenReturn(route);
@@ -205,8 +201,7 @@ public class TrainingOverViewDatenAufbereitenTest {
         when(mockA.getAthlete()).thenReturn(athlete);
 
         values.add(mockA);
-        final IAthlete athlete = CommonTransferFactory.createAthlete("name", 42);
-        final IRoute route = CommonTransferFactory.createRoute("name", "beschreibung", athlete);
+        final IRoute route = CommonTransferFactory.createRoute("name", "beschreibung", mockA);
         when(training.getRoute()).thenReturn(route);
 
         when(mockA.getRoute()).thenReturn(route);
@@ -232,8 +227,7 @@ public class TrainingOverViewDatenAufbereitenTest {
         when(mockA.getAthlete()).thenReturn(athlete);
 
         values.add(mockA);
-        final IAthlete athlete = CommonTransferFactory.createAthlete("name", 42);
-        final IRoute route = CommonTransferFactory.createRoute("name", "beschreibung", athlete);
+        final IRoute route = CommonTransferFactory.createRoute("name", "beschreibung", mockA);
         when(training.getRoute()).thenReturn(route);
 
         when(mockA.getRoute()).thenReturn(route);
@@ -245,7 +239,7 @@ public class TrainingOverViewDatenAufbereitenTest {
 
         // assert
         final List<ISimpleTraining> trainingsPerDay = auf.getTrainingsPerDay();
-        assertEquals("2 Trainings mit dem Type TEMPO_JOG: ", 1, trainingsPerDay.size()); //$NON-NLS-1$
+        assertEquals("2 Trainings mit dem Type TEMPO_JOG: ", 1, trainingsPerDay.size());
     }
 
     @Test
@@ -264,8 +258,7 @@ public class TrainingOverViewDatenAufbereitenTest {
         when(mockA.getTrainingType()).thenReturn(type);
         when(mockA.getAthlete()).thenReturn(athlete);
 
-        final IAthlete athlete = CommonTransferFactory.createAthlete("name", 42);
-        final IRoute route = CommonTransferFactory.createRoute("name", "beschreibung", athlete);
+        final IRoute route = CommonTransferFactory.createRoute("name", "beschreibung", mockA);
         when(training.getRoute()).thenReturn(route);
 
         when(mockA.getRoute()).thenReturn(route);
@@ -313,8 +306,7 @@ public class TrainingOverViewDatenAufbereitenTest {
         when(training.getTrainingType()).thenReturn(type);
         when(training.getDatum()).thenReturn(date.getTime());
         values.add(training);
-        final IAthlete athlete = CommonTransferFactory.createAthlete("name", 42);
-        final IRoute route = CommonTransferFactory.createRoute("name", "beschreibung", athlete);
+        final IRoute route = CommonTransferFactory.createRoute("name", "beschreibung", training);
         when(training.getRoute()).thenReturn(route);
 
         when(training.getRoute()).thenReturn(route);

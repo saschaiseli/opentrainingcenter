@@ -503,6 +503,23 @@
                </iterate>
             </visibleWhen>
          </command>
+         <command
+               commandId="ch.opentrainingcenter.client.commands.AddRoute"
+               icon="icons/16_16/route_16_16.png"
+               label="%referenzstrecke"
+               style="push">
+            <visibleWhen
+                  checkEnabled="true">
+               <iterate
+                     operator="and">
+                  <or>
+                     <instanceof
+                           value="ch.opentrainingcenter.model.navigation.ConcreteImported">
+                     </instanceof>
+                  </or>
+               </iterate>
+            </visibleWhen>
+         </command>
       </menuContribution>
       <menuContribution
             allPopups="false"
@@ -749,6 +766,11 @@
       <handler
             class="ch.opentrainingcenter.client.commands.AddRoute"
             commandId="ch.opentrainingcenter.client.commands.AddRoute">
+         <enabledWhen>
+            <count
+                  value="1">
+            </count>
+         </enabledWhen>
       </handler>
       <handler
             class="ch.opentrainingcenter.client.commands.CompareRecords"

@@ -25,6 +25,7 @@ public class PostgresDatabaseTestBase {
     private static final String DRIVER = "org.postgresql.Driver";
     private static final String URL = "jdbc:postgresql://localhost/otc_junit";
     private static final String URL_ADMIN = "jdbc:postgresql://localhost/postgres";
+
     private static final String DIALECT = "org.hibernate.dialect.PostgreSQLDialect";
     protected static PostgresDao dao = null;
 
@@ -61,14 +62,16 @@ public class PostgresDatabaseTestBase {
             LOGGER.error(e);
         } finally {
             try {
-                if (stmt != null)
+                if (stmt != null) {
                     stmt.close();
+                }
             } catch (final SQLException se2) {
                 LOGGER.error(se2);
             }
             try {
-                if (conn != null)
+                if (conn != null) {
                     conn.close();
+                }
             } catch (final SQLException se) {
                 LOGGER.error(se);
             }

@@ -59,13 +59,18 @@ public class DatabaseAccessTest extends DatabaseTestBase {
     @Test
     public void testTraining_2() {
         final IAthlete athlete = CommonTransferFactory.createAthlete("testTraining_2", 222);
-        final IRoute route = CommonTransferFactory.createRoute("name", "beschreibung", athlete);
         athleteDao.save(athlete);
-        routeDao.saveOrUpdate(route);
 
-        final ActivityExtension activityExtension = new ActivityExtension("note", weatherA, route);
+        final ActivityExtension activityExtension = new ActivityExtension("note", weatherA, null);
         final ITraining training = CommonTransferFactory.createTraining(now, 1, 2, 3, 4, 5, activityExtension);
         training.setAthlete(athlete);
+        // training.setRoute(route);
+
+        access.saveTraining(training);
+
+        final IRoute route = CommonTransferFactory.createRoute("name", "beschreibung", training);
+        routeDao.saveOrUpdate(route);
+
         training.setRoute(route);
 
         access.saveTraining(training);
@@ -74,22 +79,19 @@ public class DatabaseAccessTest extends DatabaseTestBase {
 
         assertNotNull(result);
 
-        assertEquals("note", activityExtension.getNote());
-        assertEquals(weatherA, activityExtension.getWeather());
-        assertEquals(route, activityExtension.getRoute());
+        assertEquals("note", result.getNote());
+        assertEquals(weatherA, result.getWeather());
+        assertEquals(route, result.getRoute());
     }
 
     @Test
     public void testTraining_3() {
         final IAthlete athlete = CommonTransferFactory.createAthlete("testTraining_3", 222);
-        final IRoute route = CommonTransferFactory.createRoute("testTraining_3_route", "beschreibung", athlete);
         athleteDao.save(athlete);
-        routeDao.saveOrUpdate(route);
 
         final ActivityExtension activityExtension = new ActivityExtension("note", weatherA, null);
         final ITraining training = CommonTransferFactory.createTraining(now, 1, 2, 3, 4, 5, activityExtension);
         training.setAthlete(athlete);
-        training.setRoute(route);
 
         final List<ITrackPointProperty> trackPoints = new ArrayList<ITrackPointProperty>();
         final IStreckenPunkt streckenPunkt = CommonTransferFactory.createStreckenPunkt(1.1, 2.2, 3.3);
@@ -99,6 +101,9 @@ public class DatabaseAccessTest extends DatabaseTestBase {
         training.setTrackPoints(trackPoints);
 
         access.saveTraining(training);
+
+        final IRoute route = CommonTransferFactory.createRoute("testTraining_3_route", "beschreibung", training);
+        routeDao.saveOrUpdate(route);
 
         final ITraining result = access.getTrainingById(now);
 
@@ -125,20 +130,21 @@ public class DatabaseAccessTest extends DatabaseTestBase {
 
     @Test
     public void testTraining_4_update_note_weather_route() {
-        final IAthlete athlete = CommonTransferFactory.createAthlete("testTraining_3", 222);
+        final IAthlete athlete = CommonTransferFactory.createAthlete("testTraining_4", 222);
         athleteDao.save(athlete);
-
-        final IRoute routeA = CommonTransferFactory.createRoute("testTraining_4_route", "beschreibungA", athlete);
-        final IRoute routeB = CommonTransferFactory.createRoute("testTraining_44_route", "beschreibungB", athlete);
-        routeDao.saveOrUpdate(routeA);
-        routeDao.saveOrUpdate(routeB);
 
         final ActivityExtension activityExtension = new ActivityExtension("note1", weatherA, null);
         final ITraining training = CommonTransferFactory.createTraining(now, 1, 2, 3, 4, 5, activityExtension);
+
         training.setAthlete(athlete);
-        training.setRoute(routeA);
 
         access.saveTraining(training);
+
+        final IRoute routeA = CommonTransferFactory.createRoute("testTraining_4_route", "beschreibungA", training);
+        routeDao.saveOrUpdate(routeA);
+
+        final IRoute routeB = CommonTransferFactory.createRoute("testTraining_44_route", "beschreibungB", training);
+        routeDao.saveOrUpdate(routeB);
 
         training.setNote("note2");
         training.setWeather(weatherB);
@@ -239,7 +245,7 @@ public class DatabaseAccessTest extends DatabaseTestBase {
 
     @Test
     public void testTraining_8_getNewest() {
-        final IAthlete athleteA = CommonTransferFactory.createAthlete("testTraining_7", 222);
+        final IAthlete athleteA = CommonTransferFactory.createAthlete("testTraining_8", 222);
         athleteDao.save(athleteA);
 
         final ActivityExtension activityExtension = new ActivityExtension("note1", weatherA, null);
@@ -327,29 +333,29 @@ public class DatabaseAccessTest extends DatabaseTestBase {
 
     @Test
     public void testTraining_12_updateRoute() {
-        final IAthlete athlete = CommonTransferFactory.createAthlete("testTraining_2", 222);
-        final IRoute routeA = CommonTransferFactory.createRoute("nameA", "beschreibungA", athlete);
-        final IRoute routeB = CommonTransferFactory.createRoute("nameB", "beschreibungB", athlete);
+        final IAthlete athlete = CommonTransferFactory.createAthlete("testTraining_12", 222);
         athleteDao.save(athlete);
-        final int idA = routeDao.saveOrUpdate(routeA);
-        final int idB = routeDao.saveOrUpdate(routeB);
 
-        final ActivityExtension activityExtension = new ActivityExtension("note", weatherA, routeA);
+        final ActivityExtension activityExtension = new ActivityExtension("note", weatherA, null);
         final ITraining training = CommonTransferFactory.createTraining(now, 1, 2, 3, 4, 5, activityExtension);
         training.setAthlete(athlete);
 
         access.saveTraining(training);
 
+        final IRoute routeA = CommonTransferFactory.createRoute("nameA", "beschreibungA", training);
+        final IRoute routeB = CommonTransferFactory.createRoute("nameB", "beschreibungB", training);
+
+        final int idA = routeDao.saveOrUpdate(routeA);
+        final int idB = routeDao.saveOrUpdate(routeB);
+
         ITraining result = access.getTrainingById(now);
 
         assertNotNull(result);
 
-        assertEquals("note", activityExtension.getNote());
-        assertEquals(weatherA, activityExtension.getWeather());
-        assertEquals(routeA, activityExtension.getRoute());
-
         training.setRoute(routeB);
+
         access.updateRecordRoute(training, idB);
+
         result = access.getTrainingById(now);
         assertEquals(routeB, result.getRoute());
 
@@ -360,18 +366,19 @@ public class DatabaseAccessTest extends DatabaseTestBase {
 
     @Test
     public void testTraining_13() {
-        final IAthlete athlete = CommonTransferFactory.createAthlete("testTraining_2", 222);
-        final IRoute route = CommonTransferFactory.createRoute("name", "beschreibung", athlete);
+        final IAthlete athlete = CommonTransferFactory.createAthlete("testTraining_13", 222);
         athleteDao.save(athlete);
-        routeDao.saveOrUpdate(route);
 
-        final ActivityExtension activityExtension = new ActivityExtension("note", weatherA, route);
+        final ActivityExtension activityExtension = new ActivityExtension("note", weatherA, null);
         final ITraining training = CommonTransferFactory.createTraining(now, 1, 2, 3, 4, 5, activityExtension);
         training.setAthlete(athlete);
-        training.setRoute(route);
         training.setDateOfImport(new Date(now));
         training.setFileName("22342342skflsdjfs.gpx");
+
         access.saveTraining(training);
+
+        final IRoute route = CommonTransferFactory.createRoute("name", "beschreibung", training);
+        routeDao.saveOrUpdate(route);
 
         final ITraining result = access.getTrainingById(now);
 

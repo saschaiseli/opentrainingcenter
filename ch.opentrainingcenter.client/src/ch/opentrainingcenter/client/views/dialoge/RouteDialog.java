@@ -11,9 +11,11 @@ import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
+import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.layout.GridLayoutFactory;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -25,11 +27,12 @@ import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.cache.StreckeCache;
 import ch.opentrainingcenter.client.views.IImageKeys;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
+import ch.opentrainingcenter.core.helper.TimeHelper;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.model.strecke.StreckeModel;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
-import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IRoute;
+import ch.opentrainingcenter.transfer.ITraining;
 
 public class RouteDialog extends TitleAreaDialog {
 
@@ -45,39 +48,38 @@ public class RouteDialog extends TitleAreaDialog {
 
     private final Shell parent;
 
-    public RouteDialog(final Shell parent, final IDatabaseAccess databaseAccess, final IAthlete athlete) {
+    private final ITraining training;
+
+    public RouteDialog(final Shell parent, final IDatabaseAccess databaseAccess, final ITraining training) {
         super(parent);
         this.parent = parent;
         this.databaseAccess = databaseAccess;
-        model = new StreckeModel(athlete);
+        this.training = training;
+        model = new StreckeModel(training.getAthlete());
     }
 
     @Override
     protected Control createDialogArea(final Composite composite) {
         setTitle(Messages.RouteDialog_0);
-        setMessage(Messages.RouteDialog_1);
+        setMessage(NLS.bind(Messages.RouteDialog_1, TimeHelper.convertDateToString(training.getDatum())));
         setTitleImage(Activator.getImageDescriptor(IImageKeys.ROUTE6464).createImage());
 
         final Composite container = new Composite(composite, SWT.NONE);
 
-        final GridLayout layoutContainer = new GridLayout(2, false);
-        layoutContainer.marginLeft = 10;
-        layoutContainer.marginTop = 10;
-        layoutContainer.horizontalSpacing = 25;
-        container.setLayout(layoutContainer);
-        container.setLayoutData(new GridData(5, 5, true, true, 1, 1));
+        GridLayoutFactory.fillDefaults().numColumns(2).margins(10, 10).applyTo(container);
+        GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL).grab(true, true).applyTo(container);
 
         final Label labelName = new Label(container, SWT.NONE);
-        labelName.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
+        GridDataFactory.fillDefaults().align(SWT.LEFT, SWT.CENTER).grab(true, true).applyTo(labelName);
         labelName.setText(Messages.RouteDialog_2);
 
         name = new Text(container, SWT.BORDER);
-        final GridData gdPulsText = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-        gdPulsText.widthHint = 80;
-        name.setLayoutData(gdPulsText);
+        GridDataFactory.fillDefaults().align(SWT.LEFT, SWT.CENTER).grab(true, true).applyTo(name);
+
+        // ---------------------
 
         final Label labelBeschreibung = new Label(container, SWT.NONE);
-        labelBeschreibung.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
+        GridDataFactory.fillDefaults().align(SWT.LEFT, SWT.CENTER).grab(true, true).applyTo(labelBeschreibung);
         labelBeschreibung.setText(Messages.RouteDialog_3);
 
         beschreibung = new Text(container, SWT.MULTI | SWT.BORDER | SWT.WRAP | SWT.V_SCROLL);
@@ -86,6 +88,8 @@ public class RouteDialog extends TitleAreaDialog {
         noteGd.grabExcessVerticalSpace = true;
         noteGd.minimumHeight = 80;
         noteGd.minimumWidth = 400;
+        noteGd.horizontalAlignment = SWT.LEFT;
+        noteGd.verticalAlignment = SWT.CENTER;
         beschreibung.setLayoutData(noteGd);
 
         ctx = new DataBindingContext();
@@ -107,7 +111,7 @@ public class RouteDialog extends TitleAreaDialog {
                 confirm = MessageDialog.openConfirm(parent, Messages.RouteDialog_4, Messages.HealthDialog_1);
             }
             if (confirm) {
-                databaseAccess.saveOrUpdate(CommonTransferFactory.createRoute(model.getName(), model.getBeschreibung(), model.getAthlete()));
+                databaseAccess.saveOrUpdate(CommonTransferFactory.createRoute(model.getName(), model.getBeschreibung(), training));
                 StreckeCache.getInstance().add(model);
                 super.buttonPressed(buttonId);
             }

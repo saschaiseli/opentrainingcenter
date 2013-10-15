@@ -22,16 +22,11 @@
 			update="true">
 			<column name="ID_FK_TRAININGTYPE" />
 		</many-to-one>
+		
 		<many-to-one name="weather"
 			class="ch.opentrainingcenter.transfer.impl.Weather" fetch="join"
 			update="true">
 			<column name="ID_FK_WEATHER" />
-		</many-to-one>
-
-		<many-to-one name="route"
-			class="ch.opentrainingcenter.transfer.impl.Route" fetch="join"
-			update="true">
-			<column name="ID_FK_ROUTE" />
 		</many-to-one>
 
 		<property name="datum" type="java.lang.Long">
