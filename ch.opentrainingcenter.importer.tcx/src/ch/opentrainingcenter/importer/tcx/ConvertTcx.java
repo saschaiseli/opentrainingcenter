@@ -35,7 +35,6 @@ import ch.opentrainingcenter.tcx.PositionT;
 import ch.opentrainingcenter.tcx.TrackT;
 import ch.opentrainingcenter.tcx.TrackpointT;
 import ch.opentrainingcenter.tcx.TrainingCenterDatabaseT;
-import ch.opentrainingcenter.transfer.ActivityExtension;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IStreckenPunkt;
 import ch.opentrainingcenter.transfer.ITrackPointProperty;
@@ -139,15 +138,13 @@ public class ConvertTcx implements IConvert2Tcx {
             }
             LOGGER.debug("lap: " + lap.getIntensity() + " distance: " + distance); //$NON-NLS-1$//$NON-NLS-2$
         }
-        Integer avgHeartRate = null;
+        Integer avgHr = null;
         if (lapWithCardio > 0) {
-            avgHeartRate = averageHeartRateBpm / lapWithCardio;
+            avgHr = averageHeartRateBpm / lapWithCardio;
         } else {
-            avgHeartRate = 0;
+            avgHr = 0;
         }
-        final ActivityExtension activityExtension = new ActivityExtension();
-        final ITraining training = CommonTransferFactory.createTraining(dateOfStart.getTime(), timeInSeconds, distance, avgHeartRate, maxHeartBeat,
-                maximumSpeed, activityExtension);
+        final ITraining training = CommonTransferFactory.createTraining(dateOfStart.getTime(), timeInSeconds, distance, avgHr, maxHeartBeat, maximumSpeed);
         training.setTrackPoints(trackPoints);
         final Ascending ascending = AltitudeCalculator.calculateAscending(trackPoints);
         training.setUpMeter(ascending.getUp());

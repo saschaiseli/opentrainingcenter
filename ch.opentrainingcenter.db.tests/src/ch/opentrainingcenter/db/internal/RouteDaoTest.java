@@ -12,7 +12,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ch.opentrainingcenter.db.DatabaseAccess;
-import ch.opentrainingcenter.transfer.ActivityExtension;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IRoute;
@@ -42,8 +41,7 @@ public class RouteDaoTest extends DatabaseTestBase {
         final WeatherDao weatherDao = new WeatherDao(dao);
         weatherA = weatherDao.getAllWeather().get(0);
 
-        final ActivityExtension activityExtension = new ActivityExtension("note", weatherA, null);
-        training = CommonTransferFactory.createTraining(now, 1, 2, 3, 4, 5, activityExtension);
+        training = CommonTransferFactory.createTraining(now, 1, 2, 3, 4, 5, "note", weatherA, null);
         training.setAthlete(athlete);
 
         access = new DatabaseAccess(dao);

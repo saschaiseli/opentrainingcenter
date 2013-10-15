@@ -19,7 +19,6 @@ import ch.opentrainingcenter.db.internal.AthleteDao;
 import ch.opentrainingcenter.db.internal.RouteDao;
 import ch.opentrainingcenter.db.internal.TrainingTypeDao;
 import ch.opentrainingcenter.db.internal.WeatherDao;
-import ch.opentrainingcenter.transfer.ActivityExtension;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IRoute;
@@ -54,8 +53,7 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
 
     @Test
     public void testTraining_1() {
-        final ActivityExtension activityExtension = new ActivityExtension("note", weatherA, null);
-        final ITraining training = CommonTransferFactory.createTraining(now, 1, 2, 3, 4, 5, activityExtension);
+        final ITraining training = CommonTransferFactory.createTraining(now, 1, 2, 3, 4, 5, "note", weatherA, null);
         final int id = access.saveTraining(training);
         assertTrue("Id ist sicherlich grösser als 0", 0 <= id);
     }
@@ -65,8 +63,7 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
         final IAthlete athlete = CommonTransferFactory.createAthlete("testTraining_2", 222);
         athleteDao.save(athlete);
 
-        final ActivityExtension activityExtension = new ActivityExtension("note", weatherA, null);
-        final ITraining training = CommonTransferFactory.createTraining(now, 1, 2, 3, 4, 5, activityExtension);
+        final ITraining training = CommonTransferFactory.createTraining(now, 1, 2, 3, 4, 5, "note", weatherA, null);
         training.setAthlete(athlete);
         // training.setRoute(route);
 
@@ -93,8 +90,7 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
         final IAthlete athlete = CommonTransferFactory.createAthlete("testTraining_3", 222);
         athleteDao.save(athlete);
 
-        final ActivityExtension activityExtension = new ActivityExtension("note", weatherA, null);
-        final ITraining training = CommonTransferFactory.createTraining(now, 1, 2, 3, 4, 5, activityExtension);
+        final ITraining training = CommonTransferFactory.createTraining(now, 1, 2, 3, 4, 5, "note", weatherA, null);
         training.setAthlete(athlete);
 
         final List<ITrackPointProperty> trackPoints = new ArrayList<ITrackPointProperty>();
@@ -137,8 +133,7 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
         final IAthlete athlete = CommonTransferFactory.createAthlete("testTraining_4", 222);
         athleteDao.save(athlete);
 
-        final ActivityExtension activityExtension = new ActivityExtension("note1", weatherA, null);
-        final ITraining training = CommonTransferFactory.createTraining(now, 1, 2, 3, 4, 5, activityExtension);
+        final ITraining training = CommonTransferFactory.createTraining(now, 1, 2, 3, 4, 5, "note1", weatherA, null);
 
         training.setAthlete(athlete);
 
@@ -172,11 +167,10 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
         final IAthlete athleteB = CommonTransferFactory.createAthlete("testTraining_5_B", 242);
         athleteDao.save(athleteB);
 
-        final ActivityExtension activityExtension = new ActivityExtension("note1", weatherA, null);
-        final ITraining trainingA = CommonTransferFactory.createTraining(now, 1, 2, 3, 4, 5, activityExtension);
+        final ITraining trainingA = CommonTransferFactory.createTraining(now, 1, 2, 3, 4, 5, "note1", weatherA, null);
         trainingA.setAthlete(athleteA);
 
-        final ITraining trainingB = CommonTransferFactory.createTraining(now + 1, 1, 2, 3, 4, 5, activityExtension);
+        final ITraining trainingB = CommonTransferFactory.createTraining(now + 1, 1, 2, 3, 4, 5, "note1", weatherA, null);
         trainingB.setAthlete(athleteB);
 
         access.saveTraining(trainingA);
@@ -194,9 +188,8 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
         final IAthlete athleteA = CommonTransferFactory.createAthlete("testTraining_6", 222);
         athleteDao.save(athleteA);
 
-        final ActivityExtension activityExtension = new ActivityExtension("note1", weatherA, null);
-        final ITraining trainingA = CommonTransferFactory.createTraining(now - 20, 1, 2, 3, 4, 5, activityExtension);
-        final ITraining trainingB = CommonTransferFactory.createTraining(now + 1000, 1, 2, 3, 4, 5, activityExtension);
+        final ITraining trainingA = CommonTransferFactory.createTraining(now - 20, 1, 2, 3, 4, 5, "note1", weatherA, null);
+        final ITraining trainingB = CommonTransferFactory.createTraining(now + 1000, 1, 2, 3, 4, 5, "note1", weatherA, null);
 
         trainingA.setAthlete(athleteA);
         trainingB.setAthlete(athleteA);
@@ -219,12 +212,11 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
         final IAthlete athleteA = CommonTransferFactory.createAthlete("testTraining_7", 222);
         athleteDao.save(athleteA);
 
-        final ActivityExtension activityExtension = new ActivityExtension("note1", weatherA, null);
-        final ITraining trainingA = CommonTransferFactory.createTraining(now - 20, 1, 2, 3, 4, 5, activityExtension);
-        final ITraining trainingB = CommonTransferFactory.createTraining(now + 1000, 1, 2, 3, 4, 5, activityExtension);
-        final ITraining trainingC = CommonTransferFactory.createTraining(now + 1001, 1, 2, 3, 4, 5, activityExtension);
-        final ITraining trainingD = CommonTransferFactory.createTraining(now + 1002, 1, 2, 3, 4, 5, activityExtension);
-        final ITraining trainingE = CommonTransferFactory.createTraining(now + 1003, 1, 2, 3, 4, 5, activityExtension);
+        final ITraining trainingA = CommonTransferFactory.createTraining(now - 20, 1, 2, 3, 4, 5, "note1", weatherA, null);
+        final ITraining trainingB = CommonTransferFactory.createTraining(now + 1000, 1, 2, 3, 4, 5, "note1", weatherA, null);
+        final ITraining trainingC = CommonTransferFactory.createTraining(now + 1001, 1, 2, 3, 4, 5, "note1", weatherA, null);
+        final ITraining trainingD = CommonTransferFactory.createTraining(now + 1002, 1, 2, 3, 4, 5, "note1", weatherA, null);
+        final ITraining trainingE = CommonTransferFactory.createTraining(now + 1003, 1, 2, 3, 4, 5, "note1", weatherA, null);
 
         trainingA.setAthlete(athleteA);
         trainingB.setAthlete(athleteA);
@@ -252,12 +244,11 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
         final IAthlete athleteA = CommonTransferFactory.createAthlete("testTraining_8", 222);
         athleteDao.save(athleteA);
 
-        final ActivityExtension activityExtension = new ActivityExtension("note1", weatherA, null);
-        final ITraining trainingA = CommonTransferFactory.createTraining(now - 22, 1, 2, 3, 4, 5, activityExtension);
-        final ITraining trainingB = CommonTransferFactory.createTraining(now + 1200, 1, 2, 3, 4, 5, activityExtension);
-        final ITraining trainingC = CommonTransferFactory.createTraining(now + 1201, 1, 2, 3, 4, 5, activityExtension);
-        final ITraining trainingD = CommonTransferFactory.createTraining(now + 1202, 1, 2, 3, 4, 5, activityExtension);
-        final ITraining trainingE = CommonTransferFactory.createTraining(now + 2000, 1, 2, 3, 4, 5, activityExtension);
+        final ITraining trainingA = CommonTransferFactory.createTraining(now - 22, 1, 2, 3, 4, 5, "note1", weatherA, null);
+        final ITraining trainingB = CommonTransferFactory.createTraining(now + 1200, 1, 2, 3, 4, 5, "note1", weatherA, null);
+        final ITraining trainingC = CommonTransferFactory.createTraining(now + 1201, 1, 2, 3, 4, 5, "note1", weatherA, null);
+        final ITraining trainingD = CommonTransferFactory.createTraining(now + 1202, 1, 2, 3, 4, 5, "note1", weatherA, null);
+        final ITraining trainingE = CommonTransferFactory.createTraining(now + 2000, 1, 2, 3, 4, 5, "note1", weatherA, null);
 
         trainingA.setAthlete(athleteA);
         trainingB.setAthlete(athleteA);
@@ -289,8 +280,7 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
         final IAthlete athleteA = CommonTransferFactory.createAthlete("testTraining_9", 222);
         athleteDao.save(athleteA);
 
-        final ActivityExtension activityExtension = new ActivityExtension("note1", weatherA, null);
-        final ITraining trainingA = CommonTransferFactory.createTraining(now, 1, 2, 3, 4, 5, activityExtension);
+        final ITraining trainingA = CommonTransferFactory.createTraining(now, 1, 2, 3, 4, 5, "note1", weatherA, null);
 
         trainingA.setAthlete(athleteA);
 
@@ -308,8 +298,7 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
         final IAthlete athleteA = CommonTransferFactory.createAthlete("testTraining_9", 222);
         athleteDao.save(athleteA);
         final List<ITrainingType> types = trainingTypeDao.getTrainingType();
-        final ActivityExtension activityExtension = new ActivityExtension("note1", weatherA, null);
-        final ITraining trainingA = CommonTransferFactory.createTraining(now, 1, 2, 3, 4, 5, activityExtension);
+        final ITraining trainingA = CommonTransferFactory.createTraining(now, 1, 2, 3, 4, 5, "note1", weatherA, null);
 
         trainingA.setAthlete(athleteA);
         trainingA.setTrainingType(types.get(0));
@@ -340,8 +329,7 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
         final IAthlete athlete = CommonTransferFactory.createAthlete("testTraining_12", 222);
         athleteDao.save(athlete);
 
-        final ActivityExtension activityExtension = new ActivityExtension("note", weatherA, null);
-        final ITraining training = CommonTransferFactory.createTraining(now, 1, 2, 3, 4, 5, activityExtension);
+        final ITraining training = CommonTransferFactory.createTraining(now, 1, 2, 3, 4, 5, "note", weatherA, null);
         training.setAthlete(athlete);
 
         access.saveTraining(training);
@@ -373,8 +361,7 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
         final IAthlete athlete = CommonTransferFactory.createAthlete("testTraining_13", 222);
         athleteDao.save(athlete);
 
-        final ActivityExtension activityExtension = new ActivityExtension("note", weatherA, null);
-        final ITraining training = CommonTransferFactory.createTraining(now, 1, 2, 3, 4, 5, activityExtension);
+        final ITraining training = CommonTransferFactory.createTraining(now, 1, 2, 3, 4, 5, "note", weatherA, null);
         training.setAthlete(athlete);
         training.setDateOfImport(new Date(now));
         training.setFileName("22342342skflsdjfs.gpx");

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import ch.opentrainingcenter.transfer.ActivityExtension;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITrackPointProperty;
@@ -45,16 +44,16 @@ public class Training implements java.io.Serializable, ITraining {
     }
 
     public Training(final long dateOfStart, final double timeInSeconds, final double distance, final int avgHeartRate, final int mxHeartBeat,
-            final double maximumSpeed, final ActivityExtension activityExtension) {
+            final double maximumSpeed, final String note, final IWeather weather, final IRoute route) {
         datum = dateOfStart;
         dauer = timeInSeconds;
         laengeInMeter = distance;
         averageHeartBeat = avgHeartRate;
         maxHeartBeat = mxHeartBeat;
         maxSpeed = maximumSpeed;
-        note = activityExtension.getNote();
-        route = activityExtension.getRoute();
-        weather = activityExtension.getWeather();
+        this.note = note;
+        this.weather = weather;
+        this.route = route;
     }
 
     @Override

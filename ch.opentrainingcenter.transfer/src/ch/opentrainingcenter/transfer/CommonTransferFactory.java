@@ -46,8 +46,14 @@ public final class CommonTransferFactory {
     }
 
     public static ITraining createTraining(final long dateOfStart, final double timeInSeconds, final double distance, final int avgHeartRate,
-            final int maxHeartBeat, final double maximumSpeed, final ActivityExtension activityExtension) {
-        return new Training(dateOfStart, timeInSeconds, distance, avgHeartRate, maxHeartBeat, maximumSpeed, activityExtension);
+            final int maxHeartBeat, final double maximumSpeed, final String note, final IWeather weather, final IRoute route) {
+        return new Training(dateOfStart, timeInSeconds, distance, avgHeartRate, maxHeartBeat, maximumSpeed, note, weather, route);
+    }
+
+    public static ITraining createTraining(final long dateOfStart, final double timeInSeconds, final double distance, final int avgHeartRate,
+            final int maxHeartBeat, final double maximumSpeed) {
+        return new Training(dateOfStart, timeInSeconds, distance, avgHeartRate, maxHeartBeat, maximumSpeed, "", CommonTransferFactory //$NON-NLS-1$
+                .createDefaultWeather(), null);
     }
 
     /**

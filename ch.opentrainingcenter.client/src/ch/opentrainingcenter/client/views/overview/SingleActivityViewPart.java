@@ -54,7 +54,6 @@ import ch.opentrainingcenter.model.strecke.StreckeModel;
 import ch.opentrainingcenter.model.strecke.StreckeModelComparator;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
 import ch.opentrainingcenter.model.training.Wetter;
-import ch.opentrainingcenter.transfer.ActivityExtension;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.ITraining;
@@ -378,8 +377,7 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
     private void updateCache(final ITraining record) {
         final String note = record.getNote();
         final IWeather weather = record.getWeather();
-        final ActivityExtension extension = new ActivityExtension(note, weather, record.getRoute());
-        cache.updateExtension(record.getDatum(), extension);
+        cache.updateExtension(record.getDatum(), note, weather, record.getRoute());
     }
 
     private void addMapSection(final Composite body) {

@@ -23,7 +23,6 @@ import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.core.cache.Cache;
 import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
-import ch.opentrainingcenter.transfer.ActivityExtension;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.ITraining;
@@ -191,7 +190,7 @@ public class TrainingCenterDataCacheTest {
         final Long dateA = activityA.getDatum();
 
         // execute
-        cache.updateExtension(dateA, new ActivityExtension("", null, null));
+        cache.updateExtension(dateA, "", null, null);
         cache.add(activityA);
 
         // assert
@@ -208,7 +207,7 @@ public class TrainingCenterDataCacheTest {
         cache.add(activityA);
 
         // execute
-        cache.updateExtension(dateA, new ActivityExtension("test", null, null));
+        cache.updateExtension(dateA, "test", null, null);
 
         // assert
         final ITraining activityTFromCache = cache.get(dateA);
@@ -226,7 +225,7 @@ public class TrainingCenterDataCacheTest {
         cache.add(activityA);
 
         // execute
-        cache.updateExtension(dateA, new ActivityExtension("test", null, null));
+        cache.updateExtension(dateA, "test", null, null);
 
         // assert
         final ITraining activityTFromCache = cache.get(dateA);
@@ -261,7 +260,7 @@ public class TrainingCenterDataCacheTest {
     }
 
     private ITraining createImported(final Long date) {
-        final ITraining overview = CommonTransferFactory.createTraining(date, 1, 1, 1, 1, 1, new ActivityExtension());
+        final ITraining overview = CommonTransferFactory.createTraining(date, 1, 1, 1, 1, 1);
         final ITrainingType type = CommonTransferFactory.createTrainingType(1, "junit", "description");
         overview.setTrainingType(type);
         return overview;

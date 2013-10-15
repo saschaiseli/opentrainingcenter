@@ -10,7 +10,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ch.opentrainingcenter.model.training.IGoldMedalModel;
-import ch.opentrainingcenter.transfer.ActivityExtension;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.ITraining;
 
@@ -26,7 +25,7 @@ public class GoldMedalActionTest {
     public void setUp() {
         action = new GoldMedalAction();
         allImported = new ArrayList<ITraining>();
-        trainingA = CommonTransferFactory.createTraining(1000L, 0d, 0d, 0, 0, 0d, new ActivityExtension());
+        trainingA = CommonTransferFactory.createTraining(1000L, 0d, 0d, 0, 0, 0d);
         allImported.add(trainingA);
     }
 
@@ -66,7 +65,7 @@ public class GoldMedalActionTest {
 
     @Test
     public void testMaxHeartRate4() {
-        trainingB = CommonTransferFactory.createTraining(1234, 0, 0, 0, 0, 0, new ActivityExtension());
+        trainingB = CommonTransferFactory.createTraining(1234, 0, 0, 0, 0, 0);
 
         trainingA.setMaxHeartBeat(2);
         trainingB.setMaxHeartBeat(4);
@@ -79,7 +78,7 @@ public class GoldMedalActionTest {
 
     @Test
     public void testMaxHeartRate5() {
-        trainingB = CommonTransferFactory.createTraining(2345, 0, 0, 0, 0, 0, new ActivityExtension());
+        trainingB = CommonTransferFactory.createTraining(2345, 0, 0, 0, 0, 0);
 
         trainingA.setMaxHeartBeat(-1);
         trainingB.setMaxHeartBeat(4);
@@ -119,7 +118,7 @@ public class GoldMedalActionTest {
 
     @Test
     public void testAverageHeartRate4() {
-        trainingB = CommonTransferFactory.createTraining(463463, 0, 0, 0, 0, 0, new ActivityExtension());
+        trainingB = CommonTransferFactory.createTraining(463463, 0, 0, 0, 0, 0);
         trainingA.setAverageHeartBeat(2);
         trainingB.setAverageHeartBeat(4);
         allImported.add(trainingA);
@@ -131,7 +130,7 @@ public class GoldMedalActionTest {
 
     @Test
     public void testAverageHeartRate5() {
-        trainingB = CommonTransferFactory.createTraining(1234, 0, 0, 0, 0, 0, new ActivityExtension());
+        trainingB = CommonTransferFactory.createTraining(1234, 0, 0, 0, 0, 0);
         trainingA.setAverageHeartBeat(-1);
         trainingB.setAverageHeartBeat(4);
         allImported.add(trainingA);
@@ -170,7 +169,7 @@ public class GoldMedalActionTest {
 
     @Test
     public void testLowestLowestAverageHeartRate4() {
-        trainingB = CommonTransferFactory.createTraining(4567, 0, 0, 0, 0, 0, new ActivityExtension());
+        trainingB = CommonTransferFactory.createTraining(4567, 0, 0, 0, 0, 0);
         trainingA.setAverageHeartBeat(2);
         trainingB.setAverageHeartBeat(4);
         allImported.add(trainingB);
@@ -181,7 +180,7 @@ public class GoldMedalActionTest {
 
     @Test
     public void testLowestLowestAverageHeartRate5() {
-        trainingB = CommonTransferFactory.createTraining(234234, 0, 0, 0, 0, 0, new ActivityExtension());
+        trainingB = CommonTransferFactory.createTraining(234234, 0, 0, 0, 0, 0);
 
         trainingA.setAverageHeartBeat(-1);
         trainingB.setAverageHeartBeat(4);
@@ -219,7 +218,7 @@ public class GoldMedalActionTest {
 
     @Test
     public void testDauer4() {
-        trainingB = CommonTransferFactory.createTraining(353453, 0, 0, 0, 0, 0, new ActivityExtension());
+        trainingB = CommonTransferFactory.createTraining(353453, 0, 0, 0, 0, 0);
 
         trainingA.setDauer(2);
         trainingB.setDauer(4);
@@ -231,7 +230,7 @@ public class GoldMedalActionTest {
 
     @Test
     public void testDauer5() {
-        trainingB = CommonTransferFactory.createTraining(1234, 0, 0, 0, 0, 0, new ActivityExtension());
+        trainingB = CommonTransferFactory.createTraining(1234, 0, 0, 0, 0, 0);
 
         trainingA.setDauer(-1);
         trainingB.setDauer(4);
@@ -271,7 +270,7 @@ public class GoldMedalActionTest {
 
     @Test
     public void testPace4() {
-        trainingB = CommonTransferFactory.createTraining(42, 120, 1000, 0, 0, 0, new ActivityExtension());
+        trainingB = CommonTransferFactory.createTraining(42, 120, 1000, 0, 0, 0);
         trainingA.setDauer(60);
         trainingA.setLaengeInMeter(1000);
         allImported.add(trainingB);
@@ -282,7 +281,7 @@ public class GoldMedalActionTest {
 
     @Test
     public void testPace5() {
-        trainingB = CommonTransferFactory.createTraining(42, 30, 1000, 0, 0, 0, new ActivityExtension());
+        trainingB = CommonTransferFactory.createTraining(42, 30, 1000, 0, 0, 0);
 
         trainingA.setDauer(60);
         trainingA.setLaengeInMeter(1000);
@@ -321,7 +320,7 @@ public class GoldMedalActionTest {
 
     @Test
     public void testLongestDistance4() {
-        trainingB = CommonTransferFactory.createTraining(42, 0, 0, 0, 0, 0, new ActivityExtension());
+        trainingB = CommonTransferFactory.createTraining(42, 0, 0, 0, 0, 0);
 
         trainingA.setLaengeInMeter(2);
         trainingB.setLaengeInMeter(4);
@@ -333,7 +332,7 @@ public class GoldMedalActionTest {
 
     @Test
     public void testLongestDistance5() {
-        trainingB = CommonTransferFactory.createTraining(42, 0, 0, 0, 0, 0, new ActivityExtension());
+        trainingB = CommonTransferFactory.createTraining(42, 0, 0, 0, 0, 0);
 
         trainingA.setLaengeInMeter(-1);
         trainingB.setLaengeInMeter(4);

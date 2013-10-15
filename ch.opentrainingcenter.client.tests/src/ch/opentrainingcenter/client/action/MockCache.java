@@ -5,8 +5,9 @@ import java.util.List;
 import ch.opentrainingcenter.core.cache.Cache;
 import ch.opentrainingcenter.core.cache.IRecordListener;
 import ch.opentrainingcenter.core.helper.RunType;
-import ch.opentrainingcenter.transfer.ActivityExtension;
+import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
+import ch.opentrainingcenter.transfer.IWeather;
 
 public class MockCache implements Cache {
 
@@ -70,7 +71,7 @@ public class MockCache implements Cache {
     }
 
     @Override
-    public void updateExtension(final Long activityId, final ActivityExtension extension) {
+    public void updateExtension(final Long activityId, final String note, final IWeather weather, final IRoute route) {
         // do nothing
     }
 

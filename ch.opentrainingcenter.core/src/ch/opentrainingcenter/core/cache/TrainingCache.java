@@ -1,7 +1,8 @@
 package ch.opentrainingcenter.core.cache;
 
-import ch.opentrainingcenter.transfer.ActivityExtension;
+import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
+import ch.opentrainingcenter.transfer.IWeather;
 
 public class TrainingCache extends AbstractCache<Long, ITraining> implements Cache {
 
@@ -17,12 +18,12 @@ public class TrainingCache extends AbstractCache<Long, ITraining> implements Cac
     }
 
     @Override
-    public void updateExtension(final Long datum, final ActivityExtension extension) {
+    public void updateExtension(final Long datum, final String note, final IWeather weather, final IRoute route) {
         final ITraining training = get(datum);
         if (training != null) {
-            training.setNote(extension.getNote());
-            training.setWeather(extension.getWeather());
-            training.setRoute(extension.getRoute());
+            training.setNote(note);
+            training.setWeather(weather);
+            training.setRoute(route);
             add(training);
         }
     }

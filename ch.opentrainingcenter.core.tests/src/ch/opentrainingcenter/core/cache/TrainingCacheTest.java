@@ -5,17 +5,25 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import ch.opentrainingcenter.transfer.ActivityExtension;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
+import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.IWeather;
 
 @SuppressWarnings("nls")
 public class TrainingCacheTest {
+
+    private IAthlete athlete;
+
+    @Before
+    public void before() {
+        athlete = CommonTransferFactory.createAthlete("name", 42);
+    }
 
     @Test
     public void testInstance() {
@@ -37,16 +45,16 @@ public class TrainingCacheTest {
         final TrainingCache cache = (TrainingCache) TrainingCache.getInstance();
         cache.resetCache();
 
-        final ActivityExtension ae = new ActivityExtension("blabla", null, null);
-        final ITraining training = CommonTransferFactory.createTraining(1, 2, 3, 4, 5, 6, ae);
+        final ITraining training = CommonTransferFactory.createTraining(1, 2, 3, 4, 5, 6, "blabla", null, null);
         training.setDatum(42);
         cache.add(training);
 
         final IWeather weather = CommonTransferFactory.createWeather(1);
-        final IRoute route = CommonTransferFactory.createRoute("name", "beschreibung", null);
-        final ActivityExtension extension = new ActivityExtension("note", weather, route);
+        final IRoute route = CommonTransferFactory.createDefaultRoute(athlete);
+        route.setName("name");
+        route.setBeschreibung("beschreibung");
 
-        cache.updateExtension(42L, extension);
+        cache.updateExtension(42L, "note", weather, route);
 
         final ITraining copy = cache.get(42L);
         assertEquals("note", copy.getNote());
@@ -68,10 +76,11 @@ public class TrainingCacheTest {
         cache.add(training);
 
         final IWeather weather = CommonTransferFactory.createWeather(1);
-        final IRoute route = CommonTransferFactory.createRoute("name", "beschreibung", null);
-        final ActivityExtension extension = new ActivityExtension("note", weather, route);
+        final IRoute route = CommonTransferFactory.createDefaultRoute(athlete);
+        route.setName("name");
+        route.setBeschreibung("beschreibung");
 
-        cache.updateExtension(1L, extension);
+        cache.updateExtension(1L, "note", weather, route);
 
         final ITraining copy = cache.get(42L);
         assertNull(copy.getNote());
