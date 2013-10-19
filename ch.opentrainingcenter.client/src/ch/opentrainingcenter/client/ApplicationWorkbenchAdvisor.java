@@ -1,6 +1,8 @@
 package ch.opentrainingcenter.client;
 
 import org.apache.log4j.Logger;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchAdvisor;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
@@ -51,6 +53,7 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
     public void eventLoopException(final Throwable exception) {
         LOGGER.error("Exception in UI", exception); //$NON-NLS-1$
         super.eventLoopException(exception);
+        MessageDialog.openError(Display.getCurrent().getActiveShell(), Messages.ApplicationWorkbenchAdvisor_0, Messages.ApplicationWorkbenchAdvisor_1);
     }
 
     private boolean isDbOkAndAthleteSelected(final DBSTATE dbState, final String athleteId) {

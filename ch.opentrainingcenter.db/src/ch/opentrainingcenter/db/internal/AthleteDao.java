@@ -72,7 +72,7 @@ public class AthleteDao {
         session.saveOrUpdate(exists);
         dao.commit();
         session.flush();
-        return getAthlete(athlete.getName()).getId();
+        return exists.getId();
     }
 
 }

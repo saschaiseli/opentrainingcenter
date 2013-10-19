@@ -23,6 +23,8 @@ public final class Messages extends NLS {
     public static String ApplicationActionBarAdvisorRestart;
     public static String ApplicationActionBarAdvisorSwitchPerspective;
     public static String ApplicationActionBarAdvisorWindows;
+    public static String ApplicationWorkbenchAdvisor_0;
+    public static String ApplicationWorkbenchAdvisor_1;
     public static String ApplicationWorkbenchAdvisorAthleteFound;
     public static String ApplicationWorkbenchAdvisorAthleteNotFound;
     public static String ApplicationWorkbenchAdvisorAthleteNotInPreferences;

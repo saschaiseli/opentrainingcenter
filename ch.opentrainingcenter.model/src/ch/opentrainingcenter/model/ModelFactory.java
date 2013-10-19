@@ -78,7 +78,7 @@ public final class ModelFactory {
             training.setWetter(Wetter.getRunType(overview.getWeather().getId()));
         }
         if (overview.getRoute() != null) {
-            training.setStrecke(ModelFactory.createStreckeModel(overview.getRoute(), overview.getAthlete()));
+            training.setStrecke(ModelFactory.createStreckeModel(overview.getRoute(), overview.getAthlete(), overview.getId()));
         }
         training.setUpMeter(overview.getUpMeter());
         training.setDownMeter(overview.getDownMeter());
@@ -106,7 +106,7 @@ public final class ModelFactory {
         return new NavigationParent();
     }
 
-    public static StreckeModel createStreckeModel(final IRoute route, final IAthlete athlete) {
-        return new StreckeModel(route.getId(), athlete, route.getName(), route.getBeschreibung());
+    public static StreckeModel createStreckeModel(final IRoute route, final IAthlete athlete, final int referenzTrainingId) {
+        return new StreckeModel(route.getId(), athlete, route.getName(), route.getBeschreibung(), referenzTrainingId);
     }
 }

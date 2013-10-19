@@ -65,6 +65,27 @@ public class RouteDaoTest extends DatabaseTestBase {
     }
 
     @Test
+    public void testSaveRouteMitReferenzStrecke() {
+        final String name = "testSaveRoute1";
+        final String beschreibung = "testet ob route gespeichert wird";
+
+        final IRoute exists = routeDao.getRoute(name, athlete);
+        assertNull(exists);
+
+        final ITraining trainingB = CommonTransferFactory.createTraining(now + 100, 1, 2, 3, 4, 5, "noteb", weatherA, null);
+        trainingB.setAthlete(athlete);
+        access.saveTraining(trainingB);
+
+        final IRoute route = CommonTransferFactory.createRoute(name, beschreibung, training);
+        final int id = routeDao.saveOrUpdate(route);
+        assertTrue(0 <= id);
+        final List<IRoute> routen = routeDao.getRoute(athlete);
+        assertNotNull(routen);
+        assertEquals(name, routen.get(0).getName());
+        assertEquals(beschreibung, routen.get(0).getBeschreibung());
+    }
+
+    @Test
     public void testUpdateRoute() {
         final String name = "testSaveRoute2";
         final String beschreibung = "testet ob route gespeichert wird";

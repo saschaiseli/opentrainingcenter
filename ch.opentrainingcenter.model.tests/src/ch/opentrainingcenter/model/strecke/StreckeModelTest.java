@@ -15,12 +15,12 @@ public class StreckeModelTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testNullFullConstructorAthlete() {
-        new StreckeModel(42, null, "abcd", "");
+        new StreckeModel(42, null, "abcd", "", 0);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testNullFullConstructorIdnull() {
         final IAthlete athlete = Mockito.mock(IAthlete.class);
-        new StreckeModel(42, athlete, null, "");
+        new StreckeModel(42, athlete, null, "", 0);
     }
 }

@@ -190,7 +190,7 @@ public class TrainingCenterDataCacheTest {
         final Long dateA = activityA.getDatum();
 
         // execute
-        cache.updateExtension(dateA, "", null, null);
+        cache.update(dateA, "", null, null);
         cache.add(activityA);
 
         // assert
@@ -207,7 +207,7 @@ public class TrainingCenterDataCacheTest {
         cache.add(activityA);
 
         // execute
-        cache.updateExtension(dateA, "test", null, null);
+        cache.update(dateA, "test", null, null);
 
         // assert
         final ITraining activityTFromCache = cache.get(dateA);
@@ -225,7 +225,7 @@ public class TrainingCenterDataCacheTest {
         cache.add(activityA);
 
         // execute
-        cache.updateExtension(dateA, "test", null, null);
+        cache.update(dateA, "test", null, null);
 
         // assert
         final ITraining activityTFromCache = cache.get(dateA);

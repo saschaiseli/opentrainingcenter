@@ -90,7 +90,8 @@ public class ImportManualGpsFiles extends OtcAbstractHandler {
             final List<IRoute> routen = databaseAccess.getRoute(athlete);
             final List<StreckeModel> strecken = new ArrayList<StreckeModel>();
             for (final IRoute route : routen) {
-                strecken.add(ModelFactory.createStreckeModel(route, athlete));
+                final int idReferenzStrecke = route.getReferenzTrack() != null ? route.getReferenzTrack().getId() : 0;
+                strecken.add(ModelFactory.createStreckeModel(route, athlete, idReferenzStrecke));
             }
             final RunTypeDialog dialog = new RunTypeDialog(window.getShell(), fileNames, strecken);
             final int open = dialog.open();

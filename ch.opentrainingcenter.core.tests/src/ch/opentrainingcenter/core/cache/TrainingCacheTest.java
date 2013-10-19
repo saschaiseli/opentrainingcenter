@@ -54,7 +54,7 @@ public class TrainingCacheTest {
         route.setName("name");
         route.setBeschreibung("beschreibung");
 
-        cache.updateExtension(42L, "note", weather, route);
+        cache.update(42L, "note", weather, route);
 
         final ITraining copy = cache.get(42L);
         assertEquals("note", copy.getNote());
@@ -80,7 +80,7 @@ public class TrainingCacheTest {
         route.setName("name");
         route.setBeschreibung("beschreibung");
 
-        cache.updateExtension(1L, "note", weather, route);
+        cache.update(1L, "note", weather, route);
 
         final ITraining copy = cache.get(42L);
         assertNull(copy.getNote());

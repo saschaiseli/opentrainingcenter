@@ -14,19 +14,21 @@ public class StreckeModel implements PropertyChangeListener {
     private String beschreibung;
     private int id;
     private IAthlete athlete;
+    private int referenzTrainingId;
 
     public StreckeModel(final IAthlete athlete) {
         Assertions.notNull(athlete);
         this.athlete = athlete;
     }
 
-    public StreckeModel(final int id, final IAthlete athlete, final String name, final String beschreibung) {
+    public StreckeModel(final int id, final IAthlete athlete, final String name, final String beschreibung, final int referenzTrainingId) {
         Assertions.notNull(athlete, "Athlete im StreckeModel Konstruktor darf nicht null sein"); //$NON-NLS-1$
         Assertions.notNull(name, "name im StreckeModel Konstruktor darf nicht null sein"); //$NON-NLS-1$
         this.id = id;
         this.athlete = athlete;
         this.name = name;
         this.beschreibung = beschreibung;
+        this.referenzTrainingId = referenzTrainingId;
     }
 
     public int getId() {
@@ -59,6 +61,14 @@ public class StreckeModel implements PropertyChangeListener {
 
     public void setBeschreibung(final String beschreibung) {
         propertyChangeSupport.firePropertyChange("beschreibung", this.beschreibung, this.beschreibung = beschreibung); //$NON-NLS-1$
+    }
+
+    public int getReferenzTrainingId() {
+        return referenzTrainingId;
+    }
+
+    public void setReferenzTrainingId(final int referenzTrainingId) {
+        this.referenzTrainingId = referenzTrainingId;
     }
 
     public PropertyChangeSupport getPropertyChangeSupport() {

@@ -214,4 +214,6 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
      */
     File backUpDatabase(final String path);
 
+    boolean existsRoute(final String name, final IAthlete athlete);
+
 }

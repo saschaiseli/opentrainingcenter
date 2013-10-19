@@ -19,6 +19,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
@@ -26,9 +27,11 @@ import org.eclipse.swt.widgets.Text;
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.cache.StreckeCache;
 import ch.opentrainingcenter.client.views.IImageKeys;
+import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.helper.TimeHelper;
 import ch.opentrainingcenter.i18n.Messages;
+import ch.opentrainingcenter.model.navigation.ConcreteImported;
 import ch.opentrainingcenter.model.strecke.StreckeModel;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IRoute;
@@ -66,20 +69,20 @@ public class RouteDialog extends TitleAreaDialog {
 
         final Composite container = new Composite(composite, SWT.NONE);
 
-        GridLayoutFactory.fillDefaults().numColumns(2).margins(10, 10).applyTo(container);
+        GridLayoutFactory.fillDefaults().numColumns(2).margins(20, 0).applyTo(container);
         GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL).grab(true, true).applyTo(container);
 
+        // ---
         final Label labelName = new Label(container, SWT.NONE);
-        GridDataFactory.fillDefaults().align(SWT.LEFT, SWT.CENTER).grab(true, true).applyTo(labelName);
+        GridDataFactory.fillDefaults().align(SWT.LEFT, SWT.CENTER).grab(false, true).applyTo(labelName);
         labelName.setText(Messages.RouteDialog_2);
 
         name = new Text(container, SWT.BORDER);
-        GridDataFactory.fillDefaults().align(SWT.LEFT, SWT.CENTER).grab(true, true).applyTo(name);
+        GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).grab(true, true).applyTo(name);
 
         // ---------------------
-
         final Label labelBeschreibung = new Label(container, SWT.NONE);
-        GridDataFactory.fillDefaults().align(SWT.LEFT, SWT.CENTER).grab(true, true).applyTo(labelBeschreibung);
+        GridDataFactory.fillDefaults().align(SWT.LEFT, SWT.CENTER).grab(false, true).applyTo(labelBeschreibung);
         labelBeschreibung.setText(Messages.RouteDialog_3);
 
         beschreibung = new Text(container, SWT.MULTI | SWT.BORDER | SWT.WRAP | SWT.V_SCROLL);
@@ -87,8 +90,8 @@ public class RouteDialog extends TitleAreaDialog {
         noteGd.grabExcessHorizontalSpace = true;
         noteGd.grabExcessVerticalSpace = true;
         noteGd.minimumHeight = 80;
-        noteGd.minimumWidth = 400;
-        noteGd.horizontalAlignment = SWT.LEFT;
+        // noteGd.minimumWidth = 400;
+        noteGd.horizontalAlignment = SWT.FILL;
         noteGd.verticalAlignment = SWT.CENTER;
         beschreibung.setLayoutData(noteGd);
 
@@ -104,15 +107,31 @@ public class RouteDialog extends TitleAreaDialog {
             // speichern
             LOG.debug("Neue Route speichern"); //$NON-NLS-1$
 
-            final IRoute route = databaseAccess.getRoute(model.getName(), model.getAthlete());
             boolean confirm = true;
 
-            if (route != null) {
+            final boolean exists = databaseAccess.existsRoute(model.getName(), model.getAthlete());
+
+            if (exists) {
                 confirm = MessageDialog.openConfirm(parent, Messages.RouteDialog_4, Messages.HealthDialog_1);
             }
             if (confirm) {
-                databaseAccess.saveOrUpdate(CommonTransferFactory.createRoute(model.getName(), model.getBeschreibung(), training));
-                StreckeCache.getInstance().add(model);
+                Display.getDefault().asyncExec(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        final ITraining tr = ((ConcreteImported) training).getImported();
+                        final IRoute newRoute = CommonTransferFactory.createRoute(model.getName(), model.getBeschreibung(), tr);
+                        databaseAccess.saveOrUpdate(newRoute);
+                        model.setId(newRoute.getId());
+                        model.setReferenzTrainingId(tr.getId());
+                        StreckeCache.getInstance().add(model);
+
+                        tr.setRoute(newRoute);
+                        databaseAccess.updateRecordRoute(tr, newRoute.getId());
+                        TrainingCache.getInstance().add(tr);
+                    }
+                });
+
                 super.buttonPressed(buttonId);
             }
         } else {

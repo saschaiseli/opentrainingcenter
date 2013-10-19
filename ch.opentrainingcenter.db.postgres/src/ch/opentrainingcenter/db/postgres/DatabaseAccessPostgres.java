@@ -319,6 +319,11 @@ public class DatabaseAccessPostgres implements IDatabaseAccess {
     }
 
     @Override
+    public boolean existsRoute(final String name, final IAthlete athlete) {
+        return routeDao.exists(name, athlete);
+    }
+
+    @Override
     public void saveOrUpdate(final List<IPlanungWoche> planung) {
         planungsDao.saveOrUpdate(planung);
     }

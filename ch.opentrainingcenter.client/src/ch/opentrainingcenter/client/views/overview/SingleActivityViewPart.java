@@ -230,6 +230,78 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         });
         GridDataFactory.fillDefaults().grab(true, true).align(SWT.FILL, SWT.FILL).applyTo(comboWetter);
 
+        final Label labelStrecke = toolkit.createLabel(container, ""); //$NON-NLS-1$
+        labelStrecke.setText(Messages.SingleActivityViewPart_2);
+
+        final ComboViewer comboStrecke = new ComboViewer(container);
+        comboStrecke.setContentProvider(ArrayContentProvider.getInstance());
+        comboStrecke.setLabelProvider(new LabelProvider() {
+            @Override
+            public String getText(final Object element) {
+                String label = ""; //$NON-NLS-1$
+                if (element instanceof StreckeModel) {
+                    final StreckeModel route = (StreckeModel) element;
+                    label = route.getName();
+                }
+                return label;
+            }
+        });
+        GridDataFactory.fillDefaults().grab(true, true).align(SWT.FILL, SWT.FILL).applyTo(comboStrecke.getControl());
+
+        final List<StreckeModel> all = cacheStrecke.getSortedElements(new StreckeModelComparator());
+        comboStrecke.setInput(all);
+        final StreckeModel strecke = simpleTraining.getStrecke();
+
+        comboStrecke.addSelectionChangedListener(new ISelectionChangedListener() {
+
+            @Override
+            public void selectionChanged(final SelectionChangedEvent event) {
+                if (!event.getSelection().isEmpty()) {
+                    safeStrecke((StreckeModel) ((StructuredSelection) event.getSelection()).getFirstElement());
+                }
+            }
+        });
+        streckeListener = new IRecordListener<StreckeModel>() {
+
+            @Override
+            public void recordChanged(final Collection<StreckeModel> entry) {
+                updateCombo(entry);
+            }
+
+            @Override
+            public void deleteRecord(final Collection<StreckeModel> entry) {
+                updateCombo(entry);
+            }
+
+            private void updateCombo(final Collection<StreckeModel> entry) {
+                final ISelection sel = comboStrecke.getSelection();
+                if (sel.isEmpty()) {
+                    return;
+                }
+                comboStrecke.setInput(cacheStrecke.getSortedElements(new StreckeModelComparator()));
+                if (!entry.isEmpty() && entry.size() > 1) {
+                    // update der liste
+                    comboStrecke.setSelection(sel);
+                    comboStrecke.refresh();
+                } else if (!entry.isEmpty() && entry.size() == 1) {
+                    // update von training
+                    final StreckeModel next = entry.iterator().next();
+                    final StructuredSelection selection = new StructuredSelection(next);
+                    if (next.getReferenzTrainingId() == training.getId()) {
+                        comboStrecke.setSelection(selection);
+                        comboStrecke.refresh();
+                    } else {
+                        // select old selection
+                        comboStrecke.setSelection(sel);
+                        comboStrecke.refresh();
+                    }
+                } else {
+                    // select old selection
+                    comboStrecke.setSelection(sel);
+                }
+            }
+        };
+
         listener = new IRecordListener<ITraining>() {
 
             @Override
@@ -249,62 +321,6 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
             }
         };
 
-        final Label labelStrecke = toolkit.createLabel(container, ""); //$NON-NLS-1$
-        labelStrecke.setText(Messages.SingleActivityViewPart_2);
-
-        final ComboViewer comboStrecke = new ComboViewer(container);
-
-        final List<StreckeModel> all = cacheStrecke.getSortedElements(new StreckeModelComparator());
-
-        comboStrecke.setContentProvider(ArrayContentProvider.getInstance());
-        comboStrecke.setLabelProvider(new LabelProvider() {
-            @Override
-            public String getText(final Object element) {
-                String label = ""; //$NON-NLS-1$
-                if (element instanceof StreckeModel) {
-                    final StreckeModel route = (StreckeModel) element;
-                    label = route.getName();
-                }
-                return label;
-            }
-        });
-        GridDataFactory.fillDefaults().grab(true, true).align(SWT.FILL, SWT.FILL).applyTo(comboStrecke.getControl());
-
-        comboStrecke.setInput(all);
-        final StreckeModel strecke = simpleTraining.getStrecke();
-
-        comboStrecke.addSelectionChangedListener(new ISelectionChangedListener() {
-
-            @Override
-            public void selectionChanged(final SelectionChangedEvent event) {
-                if (!event.getSelection().isEmpty()) {
-                    safeStrecke((StreckeModel) ((StructuredSelection) event.getSelection()).getFirstElement());
-                }
-            }
-        });
-        streckeListener = new IRecordListener<StreckeModel>() {
-
-            @Override
-            public void recordChanged(final Collection<StreckeModel> entry) {
-                updateCombo();
-            }
-
-            @Override
-            public void deleteRecord(final Collection<StreckeModel> entry) {
-                updateCombo();
-            }
-
-            private void updateCombo() {
-                final ISelection sel = comboStrecke.getSelection();
-
-                if (!sel.isEmpty()) {
-                    comboStrecke.setInput(cacheStrecke.getSortedElements(new StreckeModelComparator()));
-                    comboStrecke.setSelection(sel);
-                    comboStrecke.refresh();
-                }
-            }
-        };
-
         cacheStrecke.addListener(streckeListener);
         cache.addListener(listener);
 
@@ -319,6 +335,7 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
     }
 
     private void safeStrecke(final StreckeModel model) {
+
         final ITraining record = databaseAccess.getTrainingById(training.getDatum());
         updateRoute(record, model.getId());
     }
@@ -377,7 +394,7 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
     private void updateCache(final ITraining record) {
         final String note = record.getNote();
         final IWeather weather = record.getWeather();
-        cache.updateExtension(record.getDatum(), note, weather, record.getRoute());
+        cache.update(record.getDatum(), note, weather, record.getRoute());
     }
 
     private void addMapSection(final Composite body) {

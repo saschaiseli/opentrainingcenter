@@ -18,7 +18,7 @@ public class TrainingCache extends AbstractCache<Long, ITraining> implements Cac
     }
 
     @Override
-    public void updateExtension(final Long datum, final String note, final IWeather weather, final IRoute route) {
+    public void update(final Long datum, final String note, final IWeather weather, final IRoute route) {
         final ITraining training = get(datum);
         if (training != null) {
             training.setNote(note);

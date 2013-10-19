@@ -28,9 +28,10 @@ public class RouteDao {
      */
 
     public IRoute getRoute(final String name, final IAthlete athlete) {
-        LOG.info("load Route mit dem namen: " + name + " " + athlete);
+        LOG.info(String.format("lade Route mit dem namen %s und dem Athleten: %s", name, athlete));
         final Session session = dao.getSession();
         dao.begin();
+
         final Criteria criteria = session.createCriteria(IRoute.class);
         criteria.add(Restrictions.eq("name", name));
         criteria.add(Restrictions.eq("athlete", athlete));
@@ -61,7 +62,7 @@ public class RouteDao {
         session.saveOrUpdate(exists);
         dao.commit();
         session.flush();
-        return getRoute(route.getName(), route.getAthlete()).getId();
+        return exists.getId();
     }
 
     public List<IRoute> getRoute(final IAthlete athlete) {
@@ -75,5 +76,18 @@ public class RouteDao {
         dao.commit();
         session.flush();
         return routen;
+    }
+
+    public boolean exists(final String name, final IAthlete athlete) {
+        final Session session = dao.getSession();
+        dao.begin();
+        final Criteria criteria = session.createCriteria(IRoute.class);
+        criteria.add(Restrictions.eq("name", name));
+        criteria.add(Restrictions.eq("athlete", athlete));
+        @SuppressWarnings("unchecked")
+        final List<IRoute> routen = criteria.list();
+        dao.commit();
+        session.flush();
+        return routen.size() > 0;
     }
 }

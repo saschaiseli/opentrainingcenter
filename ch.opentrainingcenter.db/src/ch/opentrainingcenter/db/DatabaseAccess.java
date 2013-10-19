@@ -219,6 +219,11 @@ public class DatabaseAccess implements IDatabaseAccess {
     }
 
     @Override
+    public boolean existsRoute(final String name, final IAthlete athlete) {
+        return routeDao.exists(name, athlete);
+    }
+
+    @Override
     public List<IWeather> getWeather() {
         return wetterDao.getAllWeather();
     }

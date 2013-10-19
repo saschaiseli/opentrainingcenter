@@ -71,7 +71,7 @@ public class MockCache implements Cache {
     }
 
     @Override
-    public void updateExtension(final Long activityId, final String note, final IWeather weather, final IRoute route) {
+    public void update(final Long activityId, final String note, final IWeather weather, final IRoute route) {
         // do nothing
     }
 

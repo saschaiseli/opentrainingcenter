@@ -12,7 +12,7 @@ public interface Cache extends ICache<Long, ITraining> {
      * 
      * @param activityId
      */
-    void updateExtension(final Long activityId, final String note, final IWeather weather, final IRoute route);
+    void update(final Long activityId, final String note, final IWeather weather, final IRoute route);
 
     void resetCache();
 

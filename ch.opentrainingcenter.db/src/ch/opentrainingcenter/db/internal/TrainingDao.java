@@ -179,6 +179,6 @@ public class TrainingDao {
         dao.begin();
         session.saveOrUpdate(exists);
         session.flush();
-        return getImportedRecord(training.getDatum()).getId();
+        return exists.getId();
     }
 }
