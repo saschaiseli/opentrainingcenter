@@ -79,7 +79,18 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
      *            der Athlete der die Records importierte
      * @return eine Liste von {@link ITraining}
      */
-    List<ITraining> getAllImported(IAthlete athlete, int limit);
+    List<ITraining> getAllImported(final IAthlete athlete, int limit);
+
+    /**
+     * Gibt eine Liste von Trainings mit derselben Route zurück.
+     * 
+     * @param athlete
+     *            der Athlete der die Records importierte
+     * @param route
+     *            {@link IRoute}
+     * @return ine Liste von {@link ITraining}
+     */
+    List<ITraining> getAllFromRoute(IAthlete athlete, final IRoute route);
 
     /**
      * Gibt den sportler mit

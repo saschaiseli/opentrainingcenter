@@ -4,9 +4,12 @@ import java.util.List;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.osgi.util.NLS;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
@@ -14,6 +17,7 @@ import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.views.dialoge.RouteDialog;
 import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
+import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
 
 /**
@@ -38,9 +42,22 @@ public class AddRoute extends OtcAbstractHandler {
 
         final List<?> tracks = ((StructuredSelection) selection).toList();
         final ITraining training = (ITraining) tracks.get(0);
-        final IDatabaseAccess db = DatabaseAccessFactory.getDatabaseAccess();
-        final RouteDialog dialog = new RouteDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), db, training);
-        dialog.open();
+
+        final Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+        final IRoute route = training.getRoute();
+        boolean delete = true;
+        if (route != null && route.getReferenzTrack().getId() == training.getId()) {
+            // bereits eine Referenzroute darauf erstellt
+            delete = MessageDialog.openConfirm(shell, "Achtung", NLS.bind(
+                    "Dieser Track ist die Referenz für die Route mit dem Namen: ''{0}''. \n\nDiese Route wird auf allen anderen Tracks entfernt.", route
+                            .getName()));
+        }
+        if (delete) {
+            final IDatabaseAccess db = DatabaseAccessFactory.getDatabaseAccess();
+
+            final RouteDialog dialog = new RouteDialog(shell, db, training);
+            dialog.open();
+        }
         return null;
     }
 }

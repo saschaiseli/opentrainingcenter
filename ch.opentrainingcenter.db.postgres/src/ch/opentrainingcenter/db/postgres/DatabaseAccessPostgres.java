@@ -379,4 +379,9 @@ public class DatabaseAccessPostgres implements IDatabaseAccess {
         return dbConnection;
     }
 
+    @Override
+    public List<ITraining> getAllFromRoute(final IAthlete athlete, final IRoute route) {
+        return trainingDao.getAllFromRoute(athlete, route);
+    }
+
 }

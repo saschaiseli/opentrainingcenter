@@ -169,6 +169,11 @@ public class DatabaseAccess implements IDatabaseAccess {
     }
 
     @Override
+    public List<ITraining> getAllFromRoute(final IAthlete athlete, final IRoute route) {
+        return trainingDao.getAllFromRoute(athlete, route);
+    }
+
+    @Override
     public IAthlete getAthlete(final int id) {
         return athleteDao.getAthlete(id);
     }

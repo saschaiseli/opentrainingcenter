@@ -77,6 +77,25 @@ public class TrainingDao {
         return list;
     }
 
+    public List<ITraining> getAllFromRoute(final IAthlete athlete, final IRoute routenName) {
+        final Session session = dao.getSession();
+        final long start = DateTime.now().getMillis();
+        dao.begin();
+        final Criteria criteria = session.createCriteria(ITraining.class);
+
+        criteria.add(Restrictions.eq("athlete", athlete));
+        criteria.add(Restrictions.eq("route", athlete));
+
+        @SuppressWarnings("unchecked")
+        final List<ITraining> list = criteria.list();
+
+        dao.commit();
+        session.flush();
+        final long time = DateTime.now().getMillis() - start;
+        LOG.info("getAllFromRoute(final IAthlete athlete, final IRoute routenName): Time[ms]: " + time);
+        return list;
+    }
+
     public ITraining getImportedRecord(final long dateInMilliseconds) {
         final Session session = dao.getSession();
         dao.begin();
@@ -181,4 +200,5 @@ public class TrainingDao {
         session.flush();
         return exists.getId();
     }
+
 }

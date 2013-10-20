@@ -160,6 +160,39 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
     }
 
     @Test
+    public void testTraining_5_getAllMitRoute() {
+        final IAthlete athleteA = CommonTransferFactory.createAthlete("testTraining_5_A", 222);
+        athleteDao.save(athleteA);
+
+        final ITraining referenzTraining = CommonTransferFactory.createTraining(now, 1, 2, 3, 4, 5, "note1", weatherA, null);
+        referenzTraining.setAthlete(athleteA);
+
+        final ITraining training = CommonTransferFactory.createTraining(now + 1, 1, 2, 3, 4, 5, "note1", weatherA, null);
+        training.setAthlete(athleteA);
+
+        access.saveTraining(referenzTraining);
+        access.saveTraining(training);
+
+        final IRoute routeA = CommonTransferFactory.createRoute("name", "beschreibung", referenzTraining);
+        routeDao.saveOrUpdate(routeA);
+
+        referenzTraining.setRoute(routeA);
+        training.setRoute(routeA);
+
+        access.saveTraining(referenzTraining);
+        access.saveTraining(training);
+
+        List<ITraining> result = access.getAllFromRoute(athleteA, routeA);
+
+        assertEquals("Zwei Trainings müssen gefunden werden", 2, result.size());
+
+        training.setRoute(null);
+        access.saveTraining(training);
+        result = access.getAllFromRoute(athleteA, routeA);
+        assertEquals("Nur noch ein Training muss gefunden werden", 1, result.size());
+    }
+
+    @Test
     public void testTraining_5_getAllImported() {
         final IAthlete athleteA = CommonTransferFactory.createAthlete("testTraining_5_A", 222);
         athleteDao.save(athleteA);

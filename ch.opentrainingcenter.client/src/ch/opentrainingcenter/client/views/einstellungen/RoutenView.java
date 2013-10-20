@@ -230,9 +230,14 @@ public class RoutenView extends ViewPart implements ISelectionListener {
             public String getText(final Object element) {
                 final ITraining training = (ITraining) element;
                 if (training.getRoute() != null) {
-                    return training.getRoute().getName();
+                    final IRoute route = training.getRoute();
+                    String routenText = route.getName();
+                    if (route.getReferenzTrack().getId() == training.getId()) {
+                        routenText += "*"; //$NON-NLS-1$
+                    }
+                    return routenText;
                 } else {
-                    return "rrr"; //$NON-NLS-1$
+                    return ""; //$NON-NLS-1$
                 }
             }
         });
