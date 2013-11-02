@@ -160,6 +160,30 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
     }
 
     @Test
+    public void testTraining_5_getAllImported() {
+        final IAthlete athleteA = CommonTransferFactory.createAthlete("testTraining_5_A", 222);
+        athleteDao.save(athleteA);
+
+        final IAthlete athleteB = CommonTransferFactory.createAthlete("testTraining_5_B", 242);
+        athleteDao.save(athleteB);
+
+        final ITraining trainingA = CommonTransferFactory.createTraining(now, 1, 2, 3, 4, 5, "note1", weatherA, null);
+        trainingA.setAthlete(athleteA);
+
+        final ITraining trainingB = CommonTransferFactory.createTraining(now + 1, 1, 2, 3, 4, 5, "note1", weatherA, null);
+        trainingB.setAthlete(athleteB);
+
+        access.saveTraining(trainingA);
+        access.saveTraining(trainingB);
+
+        final List<ITraining> allFromAthleteA = access.getAllImported(athleteA);
+        final List<ITraining> allFromAthleteB = access.getAllImported(athleteB);
+
+        assertEquals(1, allFromAthleteA.size());
+        assertEquals(1, allFromAthleteB.size());
+    }
+
+    @Test
     public void testTraining_5_getAllMitRoute() {
         final IAthlete athleteA = CommonTransferFactory.createAthlete("testTraining_5_A", 222);
         athleteDao.save(athleteA);
@@ -190,30 +214,6 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
         access.saveTraining(training);
         result = access.getAllFromRoute(athleteA, routeA);
         assertEquals("Nur noch ein Training muss gefunden werden", 1, result.size());
-    }
-
-    @Test
-    public void testTraining_5_getAllImported() {
-        final IAthlete athleteA = CommonTransferFactory.createAthlete("testTraining_5_A", 222);
-        athleteDao.save(athleteA);
-
-        final IAthlete athleteB = CommonTransferFactory.createAthlete("testTraining_5_B", 242);
-        athleteDao.save(athleteB);
-
-        final ITraining trainingA = CommonTransferFactory.createTraining(now, 1, 2, 3, 4, 5, "note1", weatherA, null);
-        trainingA.setAthlete(athleteA);
-
-        final ITraining trainingB = CommonTransferFactory.createTraining(now + 1, 1, 2, 3, 4, 5, "note1", weatherA, null);
-        trainingB.setAthlete(athleteB);
-
-        access.saveTraining(trainingA);
-        access.saveTraining(trainingB);
-
-        final List<ITraining> allFromAthleteA = access.getAllImported(athleteA);
-        final List<ITraining> allFromAthleteB = access.getAllImported(athleteB);
-
-        assertEquals(1, allFromAthleteA.size());
-        assertEquals(1, allFromAthleteB.size());
     }
 
     @Test

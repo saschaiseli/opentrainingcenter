@@ -27,9 +27,14 @@ public class RouteDaoTest extends DatabaseTestBase {
     private IWeather weatherA;
     private ITraining training;
     private DatabaseAccess access;
+    private String name;
+    private String beschreibung;
 
     @Before
     public void setUp() {
+        name = "testSaveRoute1";
+        beschreibung = "testet ob route gespeichert wird";
+
         routeDao = new RouteDao(dao);
 
         final AthleteDao athleteDao = new AthleteDao(dao);
@@ -52,8 +57,6 @@ public class RouteDaoTest extends DatabaseTestBase {
 
     @Test
     public void testSaveRoute() {
-        final String name = "testSaveRoute1";
-        final String beschreibung = "testet ob route gespeichert wird";
 
         final IRoute route = CommonTransferFactory.createRoute(name, beschreibung, training);
         final int id = routeDao.saveOrUpdate(route);
@@ -87,7 +90,7 @@ public class RouteDaoTest extends DatabaseTestBase {
 
     @Test
     public void testUpdateRoute() {
-        final String name = "testSaveRoute2";
+        final String name = "testSaveRoute1";
         final String beschreibung = "testet ob route gespeichert wird";
 
         IRoute route = CommonTransferFactory.createRoute(name, beschreibung, training);

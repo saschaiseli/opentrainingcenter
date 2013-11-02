@@ -15,6 +15,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.views.dialoge.RouteDialog;
+import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.transfer.IRoute;
@@ -46,7 +47,7 @@ public class AddRoute extends OtcAbstractHandler {
         final Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
         final IRoute route = training.getRoute();
         boolean delete = true;
-        if (route != null && route.getReferenzTrack().getId() == training.getId()) {
+        if (route != null && route.getReferenzTrack() != null && route.getReferenzTrack().getId() == training.getId()) {
             // bereits eine Referenzroute darauf erstellt
             delete = MessageDialog.openConfirm(shell, "Achtung", NLS.bind(
                     "Dieser Track ist die Referenz für die Route mit dem Namen: ''{0}''. \n\nDiese Route wird auf allen anderen Tracks entfernt.", route
@@ -54,6 +55,15 @@ public class AddRoute extends OtcAbstractHandler {
         }
         if (delete) {
             final IDatabaseAccess db = DatabaseAccessFactory.getDatabaseAccess();
+            if (route != null) {
+                // alle referenzen löschen
+                final List<ITraining> all = db.getAllFromRoute(training.getAthlete(), route);
+                for (final ITraining tr : all) {
+                    tr.setRoute(null);
+                    db.saveTraining(tr);
+                    TrainingCache.getInstance().add(tr);
+                }
+            }
 
             final RouteDialog dialog = new RouteDialog(shell, db, training);
             dialog.open();

@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
@@ -38,6 +40,21 @@ public class PostgresDatabaseTestBase {
         final DatabaseAccessPostgres access = new DatabaseAccessPostgres(dao);
         access.setConfiguration(config);
         access.createDatabase();
+    }
+
+    @After
+    public void tearDown() throws SqlException {
+        final Session session = dao.getSession();
+        dao.begin();
+        session.createSQLQuery("delete from ROUTE").executeUpdate();
+        session.createSQLQuery("delete from TRACKTRAININGPROPERTY").executeUpdate();
+        session.createSQLQuery("delete from TRAINING").executeUpdate();
+        session.createSQLQuery("delete from STRECKENPUNKTE").executeUpdate();
+        session.createSQLQuery("delete from HEALTH").executeUpdate();
+        session.createSQLQuery("delete from PLANUNGWOCHE").executeUpdate();
+        session.createSQLQuery("delete from ATHLETE WHERE id>0").executeUpdate();
+        dao.commit();
+        session.flush();
     }
 
     @AfterClass

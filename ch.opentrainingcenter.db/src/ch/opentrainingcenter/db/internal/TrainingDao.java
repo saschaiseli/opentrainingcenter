@@ -77,14 +77,14 @@ public class TrainingDao {
         return list;
     }
 
-    public List<ITraining> getAllFromRoute(final IAthlete athlete, final IRoute routenName) {
+    public List<ITraining> getAllFromRoute(final IAthlete athlete, final IRoute route) {
         final Session session = dao.getSession();
         final long start = DateTime.now().getMillis();
         dao.begin();
         final Criteria criteria = session.createCriteria(ITraining.class);
 
         criteria.add(Restrictions.eq("athlete", athlete));
-        criteria.add(Restrictions.eq("route", athlete));
+        criteria.add(Restrictions.eq("route", route));
 
         @SuppressWarnings("unchecked")
         final List<ITraining> list = criteria.list();
