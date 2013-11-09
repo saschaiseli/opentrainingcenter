@@ -2,9 +2,6 @@ package ch.opentrainingcenter.db;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
@@ -37,6 +34,8 @@ import ch.opentrainingcenter.transfer.IWeather;
 public class DatabaseAccess implements IDatabaseAccess {
 
     private static final Logger LOG = Logger.getLogger(DatabaseAccess.class);
+    private static final String DRIVER = "org.h2.Driver";
+    private static final String DIALOECT = "org.hibernate.dialect.H2Dialect";
     private AthleteDao athleteDao;
     private DatabaseCreator databaseCreator;
     private HealthDao healthDao;
@@ -47,14 +46,12 @@ public class DatabaseAccess implements IDatabaseAccess {
     private boolean developing;
     private IDao dao;
     private DatabaseConnectionConfiguration config;
-    private DbConnection dbConnection;
 
     /**
      * Mit diesem Konstruktur wird mit der eclipse platform der vm args
      * parameters ausgelesen und ausgewertet.
      */
     public DatabaseAccess() {
-        dbConnection = new DbConnection("org.h2.Driver", "org.hibernate.dialect.H2Dialect"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**
@@ -97,20 +94,8 @@ public class DatabaseAccess implements IDatabaseAccess {
     }
 
     @Override
-    public boolean isDatabaseExisting() {
-        try {
-            getAthlete(1);
-        } catch (final Exception e) {
-            final Throwable cause = e.getCause();
-            final String message = cause != null ? cause.getMessage() : e.getMessage();
-            if (message != null && message.contains("Table \"ATHLETE\" not found; SQL statement:")) { //$NON-NLS-1$
-                LOG.error("Database existiert noch nicht"); //$NON-NLS-1$
-                return false;
-            } else {
-                LOG.error(String.format("Fehler mit der Datenbank: %s", message), e); //$NON-NLS-1$
-            }
-        }
-        return true;
+    public DBSTATE validateConnection(final String url, final String user, final String pass) {
+        return getDatabaseState();
     }
 
     @Override
@@ -294,33 +279,24 @@ public class DatabaseAccess implements IDatabaseAccess {
     }
 
     @Override
-    public boolean validateConnection(final String url, final String user, final String pass) {
-
-        boolean result = false;
-        Connection con = null;
-        try {
-            Class.forName(dbConnection.getDriver());
-            con = DriverManager.getConnection(url, user, pass);
-            con.createStatement();
-            result = true;
-            LOG.info(String.format("Connection to database '%s' successfully", url));
-        } catch (final ClassNotFoundException | SQLException e) {
-            LOG.error(String.format("Connection to database '%s' failed", url), e);
-        } finally {
-            if (con != null) {
-                try {
-                    con.close();
-                } catch (final SQLException e) {
-                    LOG.error(String.format("Close connection to database '%s' failed", url), e);
-                }
-            }
-        }
-        return result;
+    public DbConnection getDbConnection() {
+        return config.getDbConnection();
     }
 
     @Override
-    public DbConnection getDbConnection() {
-        return dbConnection;
+    public DbConnection getAdminConnection() {
+        // da keine admin connection gebraucht wird.
+        return null;
+    }
+
+    @Override
+    public String getDriver() {
+        return DRIVER;
+    }
+
+    @Override
+    public String getDialect() {
+        return DIALOECT;
     }
 
 }

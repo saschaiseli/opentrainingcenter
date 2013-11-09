@@ -21,6 +21,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.core.PreferenceConstants;
+import ch.opentrainingcenter.core.db.DBSTATE;
 import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.i18n.Messages;
@@ -145,13 +146,13 @@ public class DatabasePreferencePage extends FieldEditorPreferencePage implements
                     final String user = dbUser.getStringValue();
                     final String password = dbPass.getStringValue();
 
-                    connectionSuccess = access.validateConnection(url, user, password);
+                    connectionSuccess = DBSTATE.OK.equals(access.validateConnection(url, user, password));
 
-                    final String adminUrl = dbAdminUrl.getStringValue();
-                    final String adminUser = dbAdminUser.getStringValue();
-                    final String adminPassword = dbAdminPass.getStringValue();
                     if (access.isUsingAdminDbConnection()) {
-                        connectionSuccess = access.validateConnection(adminUrl, adminUser, adminPassword);
+                        final String adminUrl = dbAdminUrl.getStringValue();
+                        final String adminUser = dbAdminUser.getStringValue();
+                        final String adminPassword = dbAdminPass.getStringValue();
+                        connectionSuccess = DBSTATE.OK.equals(access.validateConnection(adminUrl, adminUser, adminPassword));
                     }
                 }
                 if (!connectionSuccess) {

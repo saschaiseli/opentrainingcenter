@@ -24,10 +24,7 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
 
     DbConnection getDbConnection();
 
-    /**
-     * @return {@link DBSTATE}
-     */
-    DBSTATE getDatabaseState();
+    DbConnection getAdminConnection();
 
     /**
      * @return true, wenn zum erstellen der datenbank eine admin connection
@@ -36,9 +33,12 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
     boolean isUsingAdminDbConnection();
 
     /**
-     * @return true wenn die Datenbank existiert, ansonsten false
+     * Validiert die Datenbankverbindung und gibt entsprechend {@link DBSTATE}
+     * auskunft darüber.
      */
-    boolean isDatabaseExisting();
+    DBSTATE validateConnection(final String url, final String user, final String pass);
+
+    DBSTATE getDatabaseState();
 
     /**
      * Wenn die db nicht vorhanden ist, wird die ganze datenbank mit sql queries
@@ -218,13 +218,15 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
      */
     void updateRecordRoute(ITraining record, int idRoute);
 
-    boolean validateConnection(final String url, final String user, final String pass);
-
     /**
      * @return ein File mit dem Backup der kompletten Datenbank.
      */
     File backUpDatabase(final String path);
 
     boolean existsRoute(final String name, final IAthlete athlete);
+
+    String getDriver();
+
+    String getDialect();
 
 }

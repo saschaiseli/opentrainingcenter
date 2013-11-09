@@ -41,19 +41,24 @@ public class Application implements IApplication {
             LOGGER.info("Datenbank ist noch nicht konfiguriert"); //$NON-NLS-1$
             // welcome page anzeigen
             return PlatformUI.createAndRunWorkbench(display, new ApplicationWorkbenchAdvisor());
-        } else {
-            final String url = store.getString(PreferenceConstants.DB_URL);
-            final String user = store.getString(PreferenceConstants.DB_USER);
-            final String pw = store.getString(PreferenceConstants.DB_PASS);
-            final String dbName = store.getString(PreferenceConstants.DB);
-            // db initialisieren
-            DatabaseAccessFactory.init(dbName, url, user, pw);
-            databaseAccess = DatabaseAccessFactory.getDatabaseAccess();
         }
-        final DBSTATE dbState = databaseAccess.getDatabaseState();
-        ApplicationContext.getApplicationContext().setDbState(dbState);
+        databaseAccess = getDbAccess(store);
         try {
-            if (DBSTATE.LOCKED.equals(dbState)) {
+            final DBSTATE dbState = databaseAccess.getDatabaseState();
+            ApplicationContext.getApplicationContext().setDbState(dbState);
+
+            switch (dbState) {
+            case PROBLEM:
+            case CONFIG_PROBLEM:
+                return PlatformUI.createAndRunWorkbench(display, new ApplicationWorkbenchAdvisor());
+            case CREATE_DB:
+                try {
+                    databaseAccess.createDatabase();
+                } catch (final SqlException e) {
+                    MessageDialog.openError(display.getActiveShell(), Messages.Application_0, Messages.Application_1);
+                }
+                break;
+            case LOCKED: {
                 LOGGER.error("DB gelockt. stoppe die Applikation"); //$NON-NLS-1$
                 final MessageDialog messageDialog = new MessageDialog(display.getActiveShell(), Messages.Application0, null, Messages.Application1,
                         MessageDialog.ERROR, new String[] { Messages.Application2 }, 0);
@@ -61,18 +66,9 @@ public class Application implements IApplication {
                     return IApplication.EXIT_OK;
                 }
             }
-            if (DBSTATE.CONFIG_PROBLEM.equals(dbState)) {
-                ApplicationContext.getApplicationContext().setDbState(dbState);
-                return PlatformUI.createAndRunWorkbench(display, new ApplicationWorkbenchAdvisor());
-            } else {
-                final boolean isExisting = databaseAccess.isDatabaseExisting();
-                if (!isExisting) {
-                    try {
-                        databaseAccess.createDatabase();
-                    } catch (final SqlException sqlException) {
-                        MessageDialog.openError(display.getActiveShell(), Messages.Application_0, Messages.Application_1);
-                    }
-                }
+            case OK:
+            default:
+                LOGGER.info("Datenbank Connectivity sieht gut aus"); //$NON-NLS-1$
             }
 
             addAthleteToContext(databaseAccess);
@@ -85,6 +81,35 @@ public class Application implements IApplication {
         } finally {
             display.dispose();
         }
+    }
+
+    // private DBSTATE getDBState(final IDatabaseAccess databaseAccess, final
+    // IPreferenceStore store) {
+    // DBSTATE dbState = databaseAccess.getDatabaseState();
+    // if (DBSTATE.CONFIG_PROBLEM.equals(dbState) &&
+    // databaseAccess.isUsingAdminDbConnection()) {
+    // final IDatabaseAccess adminDbAccess = getDbAccess(store);
+    // try {
+    // adminDbAccess.createDatabase();
+    // } catch (final SqlException e) {
+    // e.printStackTrace();
+    // }
+    // dbState = adminDbAccess.getDatabaseState();
+    // }
+    // return dbState;
+    // }
+
+    private IDatabaseAccess getDbAccess(final IPreferenceStore store) {
+        final String url = store.getString(PreferenceConstants.DB_URL);
+        final String user = store.getString(PreferenceConstants.DB_USER);
+        final String pw = store.getString(PreferenceConstants.DB_PASS);
+        final String dbName = store.getString(PreferenceConstants.DB);
+        final String urlAdmin = store.getString(PreferenceConstants.DB_ADMIN_URL);
+        final String userAdmin = store.getString(PreferenceConstants.DB_ADMIN_USER);
+        final String pwAdmin = store.getString(PreferenceConstants.DB_ADMIN_PASS);
+        // db initialisieren
+        DatabaseAccessFactory.init(dbName, url, user, pw, urlAdmin, userAdmin, pwAdmin);
+        return DatabaseAccessFactory.getDatabaseAccess();
     }
 
     private void addAthleteToContext(final IDatabaseAccess databaseAccess) {

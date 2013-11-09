@@ -232,7 +232,7 @@ public class RoutenView extends ViewPart implements ISelectionListener {
                 if (training.getRoute() != null) {
                     final IRoute route = training.getRoute();
                     String routenText = route.getName();
-                    if (route.getReferenzTrack().getId() == training.getId()) {
+                    if (route.getReferenzTrack() != null && route.getReferenzTrack().getId() == training.getId()) {
                         routenText += "*"; //$NON-NLS-1$
                     }
                     return routenText;

@@ -12,6 +12,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.CoreException;
+import org.postgresql.util.PSQLException;
 
 import ch.opentrainingcenter.core.assertions.Assertions;
 import ch.opentrainingcenter.core.db.DBSTATE;
@@ -41,7 +42,6 @@ public class DatabaseAccessPostgres implements IDatabaseAccess {
     private static final Logger LOG = Logger.getLogger(DatabaseAccessPostgres.class);
     private final static String DRIVER = "org.postgresql.Driver";
     private final static String DIALECT = "org.hibernate.dialect.PostgreSQLDialect";
-    private final DbConnection dbConnection;
     private AthleteDao athleteDao;
     private DatabaseCreator databaseCreator;
     private HealthDao healthDao;
@@ -58,15 +58,12 @@ public class DatabaseAccessPostgres implements IDatabaseAccess {
      * parameters ausgelesen und ausgewertet.
      */
     public DatabaseAccessPostgres() {
-
-        dbConnection = new DbConnection(DRIVER, DIALECT);
     }
 
     /**
      * Konstruktor für Tests
      */
     public DatabaseAccessPostgres(final IDao dao) {
-        dbConnection = new DbConnection(DRIVER, DIALECT);
         this.dao = dao;
         this.config = dao.getConfig();
         init();
@@ -96,44 +93,6 @@ public class DatabaseAccessPostgres implements IDatabaseAccess {
     @Override
     public Object create() throws CoreException {
         return new DatabaseAccessPostgres();
-    }
-
-    @Override
-    public DBSTATE getDatabaseState() {
-        try {
-            getAthlete(1);
-        } catch (final Exception e) {
-            final Throwable cause = e.getCause();
-            final String message = cause != null ? cause.getMessage() : e.getMessage();
-            if (message != null && message.contains("Locked by another process")) {
-                LOG.error("Database Locked by another process");
-                return DBSTATE.LOCKED;
-            } else if (message != null && message.contains("Wrong user name or password")) {
-                LOG.error("Wrong user name or password");
-                return DBSTATE.CONFIG_PROBLEM;
-            } else {
-                LOG.error("Fehler mit der Datenbank: " + message);
-                return DBSTATE.PROBLEM;
-            }
-        }
-        return DBSTATE.OK;
-    }
-
-    @Override
-    public boolean isDatabaseExisting() {
-        try {
-            getAthlete(1);
-        } catch (final Exception e) {
-            final Throwable cause = e.getCause();
-            final String message = cause != null ? cause.getMessage() : e.getMessage();
-            if (message != null && message.contains("FATAL: database") && message.contains("does not exist")) { //$NON-NLS-2$
-                LOG.error("Database existiert noch nicht");
-                return false;
-            } else {
-                LOG.error("Fehler mit der Datenbank: " + message, e);
-            }
-        }
-        return true;
     }
 
     @Override
@@ -359,29 +318,72 @@ public class DatabaseAccessPostgres implements IDatabaseAccess {
     }
 
     @Override
-    public boolean validateConnection(final String url, final String user, final String pass) {
+    public DBSTATE validateConnection(final String url, final String user, final String pass) {
         final String connectionUrl = url + ";user=" + user + ";password=" + pass;
-        boolean result = false;
+        DBSTATE result = DBSTATE.OK;
         try {
-            Class.forName(dbConnection.getDriver());
+            Class.forName(config.getDbConnection().getDriver());
             final Connection con = DriverManager.getConnection(url, user, pass);
             con.createStatement();
-            result = true;
-            LOG.info("Connection to database '" + connectionUrl + "' successfully");
+            LOG.info(String.format("Connection to database %s successfully", connectionUrl));
+        } catch (final PSQLException plsqlEx) {
+            final String sqlState = plsqlEx.getSQLState();
+            if (sqlState.equals("08001")) {
+                result = DBSTATE.PROBLEM;
+            } else if (sqlState.equals("3D000")) {
+                result = DBSTATE.CREATE_DB;
+            }
         } catch (final ClassNotFoundException | SQLException e) {
-            LOG.info("Connection to database '" + url + "' failed");
+            LOG.error(String.format("Connection to database %s failed", connectionUrl));
+        }
+        return result;
+    }
+
+    @Override
+    public DBSTATE getDatabaseState() {
+        DBSTATE result = DBSTATE.OK;
+
+        final DbConnection dbConnection = config.getDbConnection();
+        final boolean validateConnection = DBSTATE.OK.equals(validateConnection(dbConnection.getUrl(), dbConnection.getUsername(), dbConnection.getPassword()));
+        if (!validateConnection) {
+            LOG.error("DB User / URL Config stimmt nicht");
+            final DbConnection conn = config.getAdminConnection();
+            final DBSTATE adminStatus = validateConnection(conn.getUrl(), conn.getUsername(), conn.getPassword());
+            final boolean isConnectable = DBSTATE.OK.equals(adminStatus);
+            if (isConnectable) {
+                LOG.error("DB Admin User / URL Config stimmt nicht");
+                result = DBSTATE.CREATE_DB;
+            } else {
+                LOG.error("DB Admin User / URL stimmt nicht");
+                result = DBSTATE.PROBLEM;
+            }
         }
         return result;
     }
 
     @Override
     public DbConnection getDbConnection() {
-        return dbConnection;
+        return config.getDbConnection();
+    }
+
+    @Override
+    public DbConnection getAdminConnection() {
+        return config.getAdminConnection();
     }
 
     @Override
     public List<ITraining> getAllFromRoute(final IAthlete athlete, final IRoute route) {
         return trainingDao.getAllFromRoute(athlete, route);
+    }
+
+    @Override
+    public String getDriver() {
+        return DRIVER;
+    }
+
+    @Override
+    public String getDialect() {
+        return DIALECT;
     }
 
 }

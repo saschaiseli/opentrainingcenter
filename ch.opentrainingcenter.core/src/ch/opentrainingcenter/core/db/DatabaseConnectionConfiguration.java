@@ -126,4 +126,12 @@ public class DatabaseConnectionConfiguration {
             return dbConnection.getDatabaseName();
         }
     }
+
+    public DbConnection getAdminConnection() {
+        return adminConnection;
+    }
+
+    public DbConnection getDbConnection() {
+        return dbConnection;
+    }
 }

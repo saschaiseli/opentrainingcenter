@@ -54,22 +54,27 @@ public final class DatabaseAccessFactory {
      *            Passwort
      */
     public static void init(final String dbName, final String url, final String user, final String pw) {
+        init(dbName, url, user, pw, null, null, null);
+    }
+
+    @SuppressWarnings("nls")
+    public static void init(final String dbName, final String url, final String user, final String pw, final String urlAdmin, final String userAdmin,
+            final String pwAdmin) {
         if (instance == null) {
             instance = new DatabaseAccessFactory();
 
             databaseAccess = getDbaccesses().get(dbName);
             if (databaseAccess != null) {
-                final DbConnection dbConnection = databaseAccess.getDbConnection();
-                if (developing) {
-                    dbConnection.setUrl(url + "_dev"); //$NON-NLS-1$
-                } else {
-                    dbConnection.setUrl(url);
+                final DbConnection dbConnection = getConnection(url, user, pw, developing);
+                DbConnection admin = null;
+                if (databaseAccess.isUsingAdminDbConnection()) {
+                    Assertions.notNull(urlAdmin, "Administrierbare Datenbank. URL darf nicht null sein");
+                    Assertions.notNull(userAdmin, "Administrierbare Datenbank. userAdmin darf nicht null sein");
+                    Assertions.notNull(pwAdmin, "Administrierbare Datenbank. pwAdmin darf nicht null sein");
+                    admin = getConnection(urlAdmin, userAdmin, pwAdmin, false);
                 }
-                dbConnection.setUsername(user);
-                dbConnection.setPassword(pw);
-
                 databaseAccess.setDeveloping(developing);
-                final DatabaseConnectionConfiguration config = new DatabaseConnectionConfiguration(dbConnection);
+                final DatabaseConnectionConfiguration config = new DatabaseConnectionConfiguration(dbConnection, admin);
                 databaseAccess.setConfiguration(config);
                 databaseAccess.init();
             } else {
@@ -77,6 +82,18 @@ public final class DatabaseAccessFactory {
             }
 
         }
+    }
+
+    private static DbConnection getConnection(final String url, final String user, final String pw, final boolean dev) {
+        final DbConnection conn = new DbConnection(databaseAccess.getDriver(), databaseAccess.getDialect());
+        if (dev) {
+            conn.setUrl(url + "_dev"); //$NON-NLS-1$
+        } else {
+            conn.setUrl(url);
+        }
+        conn.setUsername(user);
+        conn.setPassword(pw);
+        return conn;
     }
 
     /**
