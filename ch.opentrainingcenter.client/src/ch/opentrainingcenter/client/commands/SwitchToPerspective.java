@@ -48,5 +48,7 @@ public abstract class SwitchToPerspective extends OtcAbstractHandler {
      * @return true, wenn alle daten vorhanden sind um die perspective
      *         anzuzeigen
      */
-    abstract boolean isPerspectiveValidToShow();
+    public boolean isPerspectiveValidToShow() {
+        return true;
+    }
 }

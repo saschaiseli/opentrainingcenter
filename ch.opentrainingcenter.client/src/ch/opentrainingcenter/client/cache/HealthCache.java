@@ -6,11 +6,7 @@ import ch.opentrainingcenter.core.cache.AbstractCache;
 import ch.opentrainingcenter.model.navigation.ConcreteHealth;
 
 /**
- * Cache um die Gesundheitszustände zu verwalten. Namentlich sind die Ruhepuls
- * und Gewicht.
- * 
- * @author sascha
- * 
+ * Cache um die Gesundheitszustände zu verwalten. Ruhepuls und Gewicht.
  */
 public final class HealthCache extends AbstractCache<Integer, ConcreteHealth> {
 

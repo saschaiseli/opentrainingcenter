@@ -7,6 +7,8 @@ public final class Messages extends NLS {
     private static final String BUNDLENAME = "ch.opentrainingcenter.i18n.messages"; //$NON-NLS-1$
     public static String AddEditHandler_0;
     public static String AddEditHandler_1;
+    public static String AddRoute_0;
+    public static String AddRoute_1;
     public static String AddTrainingPlan_0;
     public static String AnnotationHelper_0;
     public static String AnnotationHelper_1;
@@ -28,6 +30,7 @@ public final class Messages extends NLS {
     public static String ApplicationWorkbenchAdvisorAthleteFound;
     public static String ApplicationWorkbenchAdvisorAthleteNotFound;
     public static String ApplicationWorkbenchAdvisorAthleteNotInPreferences;
+    public static String ApplicationWorkbenchWindowAdvisor_0;
     public static String BackupGpsFiles0;
     public static String BackupGpsFiles1;
     public static String BackupPreferencePage_0;

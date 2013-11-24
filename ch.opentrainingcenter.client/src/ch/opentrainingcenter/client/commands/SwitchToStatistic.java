@@ -18,10 +18,4 @@ public class SwitchToStatistic extends SwitchToPerspective {
     boolean isSamePerspective(final String perspectiveId) {
         return StatisticPerspective.ID.equals(perspectiveId);
     }
-
-    @Override
-    boolean isPerspectiveValidToShow() {
-        return true;
-    }
-
 }

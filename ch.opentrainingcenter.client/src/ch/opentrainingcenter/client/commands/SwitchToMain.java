@@ -16,9 +16,4 @@ public class SwitchToMain extends SwitchToPerspective {
     boolean isSamePerspective(final String perspectiveId) {
         return MainPerspective.ID.equals(perspectiveId);
     }
-
-    @Override
-    boolean isPerspectiveValidToShow() {
-        return true;
-    }
 }

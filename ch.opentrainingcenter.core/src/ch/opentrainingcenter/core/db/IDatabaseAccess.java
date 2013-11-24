@@ -36,7 +36,7 @@ public interface IDatabaseAccess extends IExecutableExtensionFactory {
      * Validiert die Datenbankverbindung und gibt entsprechend {@link DBSTATE}
      * auskunft darüber.
      */
-    DBSTATE validateConnection(final String url, final String user, final String pass);
+    DBSTATE validateConnection(final String url, final String user, final String pass, final boolean admin);
 
     DBSTATE getDatabaseState();
 

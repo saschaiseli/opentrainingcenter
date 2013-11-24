@@ -16,10 +16,4 @@ public class SwitchToTable extends SwitchToPerspective {
     boolean isSamePerspective(final String perspectiveId) {
         return TablePerspective.ID.equals(perspectiveId);
     }
-
-    @Override
-    boolean isPerspectiveValidToShow() {
-        return true;
-    }
-
 }

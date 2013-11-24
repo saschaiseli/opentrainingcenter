@@ -23,6 +23,8 @@ import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.core.db.DBSTATE;
 import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
+import ch.opentrainingcenter.core.db.DatabaseConnectionConfiguration;
+import ch.opentrainingcenter.core.db.DbConnection;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.i18n.Messages;
 
@@ -39,6 +41,7 @@ public class DatabasePreferencePage extends FieldEditorPreferencePage implements
     private StringFieldEditor dbAdminUrl;
     private StringFieldEditor dbAdminUser;
     private StringFieldEditor dbAdminPass;
+    private StringFieldEditor dbUrl;
 
     public DatabasePreferencePage() {
         super(GRID);
@@ -70,7 +73,7 @@ public class DatabasePreferencePage extends FieldEditorPreferencePage implements
         final Composite dbComposite = new Composite(groupDb, SWT.NONE);
         dbComposite.setLayout(GridLayoutFactory.swtDefaults().create());
 
-        final StringFieldEditor dbUrl = new StringFieldEditor(PreferenceConstants.DB_URL, Messages.DatabasePreferencePage_2, dbComposite);
+        dbUrl = new StringFieldEditor(PreferenceConstants.DB_URL, Messages.DatabasePreferencePage_2, dbComposite);
         final StringFieldEditor dbUser = new StringFieldEditor(PreferenceConstants.DB_USER, Messages.DatabasePreferencePage_3, dbComposite);
         final StringFieldEditor dbPass = new StringFieldEditor(PreferenceConstants.DB_PASS, Messages.DatabasePreferencePage_4, dbComposite);
 
@@ -142,17 +145,29 @@ public class DatabasePreferencePage extends FieldEditorPreferencePage implements
             public void widgetSelected(final SelectionEvent e) {
                 connectionSuccess = false;
                 if (access != null) {
+
                     final String url = dbUrl.getStringValue();
                     final String user = dbUser.getStringValue();
                     final String password = dbPass.getStringValue();
-
-                    connectionSuccess = DBSTATE.OK.equals(access.validateConnection(url, user, password));
+                    final DbConnection dbConnection = new DbConnection(access.getDriver(), access.getDialect(), url, user, password);
+                    DbConnection dbAdminConnection = null;
 
                     if (access.isUsingAdminDbConnection()) {
                         final String adminUrl = dbAdminUrl.getStringValue();
                         final String adminUser = dbAdminUser.getStringValue();
                         final String adminPassword = dbAdminPass.getStringValue();
-                        connectionSuccess = DBSTATE.OK.equals(access.validateConnection(adminUrl, adminUser, adminPassword));
+                        dbAdminConnection = new DbConnection(access.getDriver(), access.getDialect(), adminUrl, adminUser, adminPassword);
+                    }
+
+                    access.setConfiguration(new DatabaseConnectionConfiguration(dbConnection, dbAdminConnection));
+
+                    connectionSuccess = DBSTATE.OK.equals(access.validateConnection(url, user, password, false));
+
+                    if (access.isUsingAdminDbConnection()) {
+                        final String adminUrl = dbAdminUrl.getStringValue();
+                        final String adminUser = dbAdminUser.getStringValue();
+                        final String adminPassword = dbAdminPass.getStringValue();
+                        connectionSuccess = DBSTATE.OK.equals(access.validateConnection(adminUrl, adminUser, adminPassword, true));
                     }
                 }
                 if (!connectionSuccess) {

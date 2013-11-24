@@ -94,7 +94,7 @@ public class DatabaseAccess implements IDatabaseAccess {
     }
 
     @Override
-    public DBSTATE validateConnection(final String url, final String user, final String pass) {
+    public DBSTATE validateConnection(final String url, final String user, final String pass, final boolean admin) {
         return getDatabaseState();
     }
 

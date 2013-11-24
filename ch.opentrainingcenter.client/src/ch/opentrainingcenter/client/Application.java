@@ -14,7 +14,6 @@ import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.core.db.DBSTATE;
 import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
-import ch.opentrainingcenter.core.db.SqlException;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.transfer.IAthlete;
 
@@ -54,7 +53,8 @@ public class Application implements IApplication {
             case CREATE_DB:
                 try {
                     databaseAccess.createDatabase();
-                } catch (final SqlException e) {
+                    ApplicationContext.getApplicationContext().setDbState(databaseAccess.getDatabaseState());
+                } catch (final Exception e) {
                     MessageDialog.openError(display.getActiveShell(), Messages.Application_0, Messages.Application_1);
                 }
                 break;
@@ -70,9 +70,15 @@ public class Application implements IApplication {
             default:
                 LOGGER.info("Datenbank Connectivity sieht gut aus"); //$NON-NLS-1$
             }
-
-            addAthleteToContext(databaseAccess);
-
+            try {
+                addAthleteToContext(databaseAccess);
+            } catch (final Exception e) {
+                // Datenbank verbindung gut aber trotzdem nicht möglich
+                // abfragen zu machen.
+                ApplicationContext.getApplicationContext().setDbState(DBSTATE.PROBLEM);
+                LOGGER.error("Kann nicht auf Datenbank zugreifen"); //$NON-NLS-1$
+                return PlatformUI.createAndRunWorkbench(display, new ApplicationWorkbenchAdvisor());
+            }
             final int returnCode = PlatformUI.createAndRunWorkbench(display, new ApplicationWorkbenchAdvisor());
             if (returnCode == PlatformUI.RETURN_RESTART) {
                 return IApplication.EXIT_RESTART;
@@ -82,22 +88,6 @@ public class Application implements IApplication {
             display.dispose();
         }
     }
-
-    // private DBSTATE getDBState(final IDatabaseAccess databaseAccess, final
-    // IPreferenceStore store) {
-    // DBSTATE dbState = databaseAccess.getDatabaseState();
-    // if (DBSTATE.CONFIG_PROBLEM.equals(dbState) &&
-    // databaseAccess.isUsingAdminDbConnection()) {
-    // final IDatabaseAccess adminDbAccess = getDbAccess(store);
-    // try {
-    // adminDbAccess.createDatabase();
-    // } catch (final SqlException e) {
-    // e.printStackTrace();
-    // }
-    // dbState = adminDbAccess.getDatabaseState();
-    // }
-    // return dbState;
-    // }
 
     private IDatabaseAccess getDbAccess(final IPreferenceStore store) {
         final String url = store.getString(PreferenceConstants.DB_URL);

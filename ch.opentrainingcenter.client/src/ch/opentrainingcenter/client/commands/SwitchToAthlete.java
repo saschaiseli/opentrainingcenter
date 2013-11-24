@@ -19,9 +19,4 @@ public class SwitchToAthlete extends SwitchToPerspective {
         return EinstellungenPerspective.ID.equals(perspectiveId);
     }
 
-    @Override
-    boolean isPerspectiveValidToShow() {
-        return true;
-    }
-
 }

@@ -18,6 +18,7 @@ import ch.opentrainingcenter.client.views.dialoge.RouteDialog;
 import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
+import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
 
@@ -49,8 +50,8 @@ public class AddRoute extends OtcAbstractHandler {
         boolean delete = true;
         if (route != null && route.getReferenzTrack() != null && route.getReferenzTrack().getId() == training.getId()) {
             // bereits eine Referenzroute darauf erstellt
-            delete = MessageDialog.openConfirm(shell, "Achtung", NLS.bind(
-                    "Dieser Track ist die Referenz für die Route mit dem Namen: ''{0}''. \n\nDiese Route wird auf allen anderen Tracks entfernt.", route
+            delete = MessageDialog.openConfirm(shell, Messages.AddRoute_0, NLS.bind(
+                    Messages.AddRoute_1, route
                             .getName()));
         }
         if (delete) {
