@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<gpx version="1.1" creator="iSmoothRun - http://www.ismoothrun.com"
+ 	xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd" 
+	xmlns="http://www.topografix.com/GPX/1/1"
+	xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v3"
+	xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<trk>
+		<name>Freies Training</name>
+		<desc></desc>
+		<trkseg>
+			<trkpt lat="46.737999" lon="7.967988">
+				<ele>570.12345</ele>
+				<time>2013-08-29T07:05:00Z</time>
+				<extensions>
+					<gpxtpx:TrackPointExtension>
+					<gpxtpx:hr>60</gpxtpx:hr>
+					</gpxtpx:TrackPointExtension>
+				</extensions>
+			</trkpt>
+		</trkseg>
+	</trk>
+</gpx>

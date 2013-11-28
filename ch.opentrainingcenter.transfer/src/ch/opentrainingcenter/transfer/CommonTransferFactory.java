@@ -50,6 +50,23 @@ public final class CommonTransferFactory {
         return new Training(dateOfStart, timeInSeconds, distance, avgHeartRate, maxHeartBeat, maximumSpeed, note, weather, route);
     }
 
+    /**
+     * Factory
+     * 
+     * @param dateOfStart
+     *            start datum
+     * @param timeInSeconds
+     *            zeit des laufes in sekunden
+     * @param distance
+     *            distanz des laufes in meter
+     * @param avgHeartRate
+     *            durchschnittliche herzrate
+     * @param maxHeartBeat
+     *            maximale Herzrate
+     * @param maximumSpeed
+     *            schnellste pace [min/km]
+     * @return {@link ITraining}
+     */
     public static ITraining createTraining(final long dateOfStart, final double timeInSeconds, final double distance, final int avgHeartRate,
             final int maxHeartBeat, final double maximumSpeed) {
         return new Training(dateOfStart, timeInSeconds, distance, avgHeartRate, maxHeartBeat, maximumSpeed, "", CommonTransferFactory //$NON-NLS-1$
@@ -97,10 +114,34 @@ public final class CommonTransferFactory {
         return new Route(Messages.OTCKonstanten_0, athlete);
     }
 
+    /**
+     * @param distance
+     *            vom Start weg
+     * @param longitude
+     *            longitude
+     * @param latitude
+     *            latitude
+     * @return {@link IStreckenPunkt}
+     */
     public static IStreckenPunkt createStreckenPunkt(final double distance, final double longitude, final double latitude) {
         return new Streckenpunkte(longitude, latitude);
     }
 
+    /**
+     * @param distance
+     *            vom Startweg
+     * @param heartbeat
+     *            herzschlag an diesem Punkt
+     * @param altitude
+     *            Höhe in Meter über Meer
+     * @param time
+     *            absolute zeit
+     * @param lap
+     *            Runden nummer
+     * @param streckenPunkt
+     *            {@link IStreckenPunkt}
+     * @return {@link ITraining}
+     */
     public static ITrackPointProperty createTrackPointProperty(final double distance, final int heartbeat, final int altitude, final long time, final int lap,
             final IStreckenPunkt streckenPunkt) {
         return new Tracktrainingproperty(distance, heartbeat, altitude, time, lap, streckenPunkt);

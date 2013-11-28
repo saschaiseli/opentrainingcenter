@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<TrainingCenterDatabase xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2"><Activities>
+<TrainingCenterDatabase 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns="http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2">
+<Activities>
 <Activity Sport="Running"><Id>2013-04-02T10:06:32Z</Id>
 	<Lap StartTime="2013-04-02T10:06:32Z">
 		<TotalTimeSeconds>689.49</TotalTimeSeconds>

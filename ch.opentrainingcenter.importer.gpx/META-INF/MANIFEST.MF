@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: gpx
+Bundle-SymbolicName: ch.opentrainingcenter.importer.gpx;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: ch.opentrainingcenter.importer.gpx.Activator
+Require-Bundle: org.eclipse.core.runtime,
+ ch.opentrainingcenter.core,
+ ch.opentrainingcenter.transfer,
+ logging,
+ geocalc
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7

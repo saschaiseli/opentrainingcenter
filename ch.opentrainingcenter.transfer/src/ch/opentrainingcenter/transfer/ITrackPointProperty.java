@@ -42,7 +42,7 @@ public interface ITrackPointProperty {
     void setAltitude(int altitude);
 
     /**
-     * @return time in milliseconds
+     * @return absolute zeit in milliseconds
      */
     long getZeit();
 

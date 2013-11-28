@@ -25,10 +25,16 @@ public interface ITraining {
 
     void setLaengeInMeter(double laengeInMeter);
 
+    /**
+     * @return Durchschnittlicher Puls. 0 wenn nichts gemessen wurde.
+     */
     int getAverageHeartBeat();
 
     void setAverageHeartBeat(int avgHeartBeat);
 
+    /**
+     * @return Maximalen Puls. 0 wenn nichts gemessen wurde.
+     */
     int getMaxHeartBeat();
 
     void setMaxHeartBeat(int maxHeartBeat);
