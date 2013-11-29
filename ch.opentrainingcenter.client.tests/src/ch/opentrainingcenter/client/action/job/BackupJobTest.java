@@ -17,7 +17,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import ch.opentrainingcenter.core.db.IDatabaseAccess;
+import ch.opentrainingcenter.core.db.IDatabaseConnection;
 import ch.opentrainingcenter.core.exceptions.ConvertException;
 import ch.opentrainingcenter.core.importer.IConvert2Tcx;
 import ch.opentrainingcenter.transfer.ITraining;
@@ -39,7 +39,7 @@ public class BackupJobTest {
 
     private File tmp;
 
-    private IDatabaseAccess db;
+    private IDatabaseConnection db;
 
     private File file;
 
@@ -106,7 +106,7 @@ public class BackupJobTest {
                 // do nothing
             }
         };
-        db = mock(IDatabaseAccess.class);
+        db = mock(IDatabaseConnection.class);
         file = File.createTempFile("backup", ".sql");
         when(db.backUpDatabase(Mockito.anyString())).thenReturn(file);
     }

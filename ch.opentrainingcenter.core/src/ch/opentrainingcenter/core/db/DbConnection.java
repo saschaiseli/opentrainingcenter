@@ -1,5 +1,8 @@
 package ch.opentrainingcenter.core.db;
 
+/**
+ * Verbindungsconfig zu einer Datenbank.
+ */
 public class DbConnection {
     private final String driver;
     private final String dialect;

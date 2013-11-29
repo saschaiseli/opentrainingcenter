@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Tests
+Bundle-SymbolicName: ch.opentrainingcenter.database.tests
+Bundle-Version: 1.0.0.qualifier
+Fragment-Host: ch.opentrainingcenter.database
+Require-Bundle: org.junit,
+ mockito
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7

@@ -15,12 +15,13 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.ui.PlatformUI;
 import org.joda.time.DateTime;
 
 import ch.opentrainingcenter.client.views.ApplicationContext;
-import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.helper.ColorFromPreferenceHelper;
+import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.model.ModelFactory;
 import ch.opentrainingcenter.model.planing.IPastPlanung;
@@ -37,9 +38,12 @@ public class PlanungPastViewer {
 
     private TableViewer viewer;
     private final IPreferenceStore store;
+    private final IDatabaseAccess databaseAccess;
 
     public PlanungPastViewer(final IPreferenceStore store) {
         this.store = store;
+        final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
+        databaseAccess = service.getDatabaseAccess();
     }
 
     void createViewer(final Composite parent) {
@@ -54,12 +58,11 @@ public class PlanungPastViewer {
         final MenuManager menuManager = new MenuManager("KontextMenu"); //$NON-NLS-1$
         table.setMenu(menuManager.createContextMenu(table));
 
-        final IDatabaseAccess db = DatabaseAccessFactory.getDatabaseAccess();
         final IAthlete athlete = ApplicationContext.getApplicationContext().getAthlete();
-        final List<IPlanungWoche> planungsWoche = db.getPlanungsWoche(athlete);
+        final List<IPlanungWoche> planungsWoche = databaseAccess.getPlanungsWoche(athlete);
         Collections.sort(planungsWoche, new PlanungWocheComparator());
 
-        final List<ITraining> allImported = db.getAllImported(athlete);
+        final List<ITraining> allImported = databaseAccess.getAllImported(athlete);
         final DateTime dt = new DateTime();
         final KwJahrKey now = new KwJahrKey(dt.getYear(), dt.getWeekOfWeekyear());
         final IPastPlanungModel model = ModelFactory.createPastPlanungModel(planungsWoche, allImported, now);

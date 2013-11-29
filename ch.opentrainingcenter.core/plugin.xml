@@ -3,4 +3,12 @@
 <plugin>
    <extension-point id="ch.opentrainingdatabase.db" name="dbaccess" schema="schema/ch.opentrainingdatabase.dbaccess.exsd"/>
    <extension-point id="ch.opentrainingcenter.myimporter" name="myimporter" schema="schema/ch.opentrainingcenter.myimporter.exsd"/>
+   <extension
+         point="org.eclipse.ui.services">
+      <serviceFactory
+            factoryClass="ch.opentrainingcenter.core.service.ServiceFactory">
+         <service
+               serviceClass="ch.opentrainingcenter.core.service.IDatabaseService"></service>
+      </serviceFactory>
+   </extension>
 </plugin>

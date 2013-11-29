@@ -2,90 +2,59 @@ package ch.opentrainingcenter.db;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Date;
-import java.util.List;
+import java.io.InputStream;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.CoreException;
 
 import ch.opentrainingcenter.core.db.DBSTATE;
-import ch.opentrainingcenter.core.db.DatabaseConnectionConfiguration;
 import ch.opentrainingcenter.core.db.DbConnection;
-import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.db.SqlException;
-import ch.opentrainingcenter.db.internal.AthleteDao;
-import ch.opentrainingcenter.db.internal.Dao;
-import ch.opentrainingcenter.db.internal.DatabaseCreator;
-import ch.opentrainingcenter.db.internal.DbScriptReader;
-import ch.opentrainingcenter.db.internal.HealthDao;
-import ch.opentrainingcenter.db.internal.IDao;
-import ch.opentrainingcenter.db.internal.PlanungDao;
-import ch.opentrainingcenter.db.internal.RouteDao;
-import ch.opentrainingcenter.db.internal.TrainingDao;
-import ch.opentrainingcenter.db.internal.WeatherDao;
-import ch.opentrainingcenter.transfer.IAthlete;
-import ch.opentrainingcenter.transfer.IHealth;
-import ch.opentrainingcenter.transfer.IPlanungWoche;
-import ch.opentrainingcenter.transfer.IRoute;
-import ch.opentrainingcenter.transfer.ITraining;
-import ch.opentrainingcenter.transfer.IWeather;
+import ch.opentrainingcenter.database.AbstractDatabaseAccess;
+import ch.opentrainingcenter.database.USAGE;
+import ch.opentrainingcenter.database.dao.ConnectionConfig;
+import ch.opentrainingcenter.database.dao.DbScriptReader;
+import ch.opentrainingcenter.database.dao.IConnectionConfig;
 
 @SuppressWarnings("nls")
-public class DatabaseAccess implements IDatabaseAccess {
+public class DatabaseAccess extends AbstractDatabaseAccess {
 
     private static final Logger LOG = Logger.getLogger(DatabaseAccess.class);
     private static final String DRIVER = "org.h2.Driver";
     private static final String DIALOECT = "org.hibernate.dialect.H2Dialect";
-    private AthleteDao athleteDao;
-    private DatabaseCreator databaseCreator;
-    private HealthDao healthDao;
-    private PlanungDao planungsDao;
-    private RouteDao routeDao;
-    private WeatherDao wetterDao;
-    private TrainingDao trainingDao;
-    private boolean developing;
-    private IDao dao;
-    private DatabaseConnectionConfiguration config;
+
+    private IConnectionConfig connectionConfig;
 
     /**
      * Mit diesem Konstruktur wird mit der eclipse platform der vm args
      * parameters ausgelesen und ausgewertet.
      */
     public DatabaseAccess() {
+        super();
     }
 
     /**
      * Konstruktor für Tests
      */
-    public DatabaseAccess(final IDao dao) {
+    public DatabaseAccess(final IConnectionConfig connectionConfig) {
         super();
-        this.dao = dao;
-        createDaos(dao);
-    }
-
-    private void createDaos(final IDao dao) {
-        athleteDao = new AthleteDao(dao);
-        databaseCreator = new DatabaseCreator(dao);
-        healthDao = new HealthDao(dao);
-        planungsDao = new PlanungDao(dao);
-        routeDao = new RouteDao(dao);
-        trainingDao = new TrainingDao(dao);
-        wetterDao = new WeatherDao(dao);
+        this.connectionConfig = connectionConfig;
+        createDaos(connectionConfig);
     }
 
     @Override
     public void init() {
         if (developing) {
-            this.dao = new Dao(USAGE.DEVELOPING, config);
+            this.connectionConfig = new ConnectionConfig(USAGE.DEVELOPING, config);
         } else {
-            this.dao = new Dao(USAGE.PRODUCTION, config);
+            this.connectionConfig = new ConnectionConfig(USAGE.PRODUCTION, config);
         }
-        createDaos(dao);
+        createDaos(connectionConfig);
     }
 
     @Override
     public String getName() {
-        return "H2 Database"; //$NON-NLS-1$
+        return "H2 Database";
     }
 
     @Override
@@ -101,7 +70,7 @@ public class DatabaseAccess implements IDatabaseAccess {
     @Override
     public DBSTATE getDatabaseState() {
         try {
-            getAthlete(1);
+            commonDao.getAthlete(1);
         } catch (final Exception e) {
             final Throwable cause = e.getCause();
             final String message = cause != null ? cause.getMessage() : e.getMessage();
@@ -127,7 +96,8 @@ public class DatabaseAccess implements IDatabaseAccess {
     @Override
     public void createDatabase() throws SqlException {
         try {
-            databaseCreator.createDatabase(DbScriptReader.readDbScript("otc.sql"));
+            final InputStream in = DatabaseAccess.class.getClassLoader().getResourceAsStream("otc.sql"); //$NON-NLS-1$
+            databaseCreator.createDatabase(DbScriptReader.readDbScript(in));
         } catch (final FileNotFoundException fnne) {
             throw new SqlException(fnne);
         }
@@ -136,151 +106,6 @@ public class DatabaseAccess implements IDatabaseAccess {
     @Override
     public File backUpDatabase(final String path) {
         return databaseCreator.backUpDatabase(path);
-    }
-
-    @Override
-    public List<IAthlete> getAllAthletes() {
-        return athleteDao.getAllAthletes();
-    }
-
-    @Override
-    public List<ITraining> getAllImported(final IAthlete athlete) {
-        return trainingDao.getAllImported(athlete);
-    }
-
-    @Override
-    public List<ITraining> getAllImported(final IAthlete athlete, final int limit) {
-        return trainingDao.getAllImported(athlete, limit);
-    }
-
-    @Override
-    public List<ITraining> getAllFromRoute(final IAthlete athlete, final IRoute route) {
-        return trainingDao.getAllFromRoute(athlete, route);
-    }
-
-    @Override
-    public IAthlete getAthlete(final int id) {
-        return athleteDao.getAthlete(id);
-    }
-
-    @Override
-    public IAthlete getAthlete(final String name) {
-        return athleteDao.getAthlete(name);
-    }
-
-    @Override
-    public List<IHealth> getHealth(final IAthlete athlete) {
-        return healthDao.getHealth(athlete);
-    }
-
-    @Override
-    public IHealth getHealth(final IAthlete athlete, final Date date) {
-        return healthDao.getHealth(athlete, date);
-    }
-
-    @Override
-    public ITraining getTrainingById(final long key) {
-        return trainingDao.getImportedRecord(key);
-    }
-
-    @Override
-    public ITraining getNewestRun(final IAthlete athlete) {
-        return trainingDao.getNewestRun(athlete);
-    }
-
-    @Override
-    public List<IPlanungWoche> getPlanungsWoche(final IAthlete athlete) {
-        return planungsDao.getPlanungsWoche(athlete);
-    }
-
-    @Override
-    public List<IPlanungWoche> getPlanungsWoche(final IAthlete athlete, final int jahr, final int kw) {
-        return planungsDao.getPlanungsWoche(athlete, jahr, kw);
-    }
-
-    @Override
-    public List<IRoute> getRoute(final IAthlete athlete) {
-        return routeDao.getRoute(athlete);
-    }
-
-    @Override
-    public IRoute getRoute(final String name, final IAthlete athlete) {
-        return routeDao.getRoute(name, athlete);
-    }
-
-    @Override
-    public boolean existsRoute(final String name, final IAthlete athlete) {
-        return routeDao.exists(name, athlete);
-    }
-
-    @Override
-    public List<IWeather> getWeather() {
-        return wetterDao.getAllWeather();
-    }
-
-    @Override
-    public void removeHealth(final int id) {
-        healthDao.remove(id);
-    }
-
-    @Override
-    public void removeImportedRecord(final long datum) {
-        trainingDao.removeImportedRecord(datum);
-    }
-
-    @Override
-    public int save(final IAthlete athlete) {
-        return athleteDao.save(athlete);
-    }
-
-    @Override
-    public int saveOrUpdate(final IHealth health) {
-        return healthDao.saveOrUpdate(health);
-    }
-
-    @Override
-    public void saveOrUpdate(final IRoute route) {
-        routeDao.saveOrUpdate(route);
-    }
-
-    @Override
-    public void saveOrUpdate(final List<IPlanungWoche> planung) {
-        planungsDao.saveOrUpdate(planung);
-    }
-
-    @Override
-    public int saveTraining(final ITraining training) {
-        return trainingDao.saveOrUpdate(training);
-    }
-
-    @Override
-    public void setConfiguration(final DatabaseConnectionConfiguration config) {
-        this.config = config;
-    }
-
-    @Override
-    public void setDeveloping(final boolean developing) {
-        this.developing = developing;
-    }
-
-    @Override
-    public void updateRecord(final ITraining record) {
-        trainingDao.saveOrUpdate(record);
-    }
-
-    @Override
-    public void updateRecord(final ITraining record, final int index) {
-        trainingDao.updateRecord(record, index);
-    }
-
-    @Override
-    public void updateRecordRoute(final ITraining record, final int idRoute) {
-        trainingDao.updateRecordRoute(record, idRoute);
-    }
-
-    @Override
-    public DbConnection getDbConnection() {
-        return config.getDbConnection();
     }
 
     @Override

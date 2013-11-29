@@ -29,6 +29,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
@@ -45,9 +46,9 @@ import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.core.cache.Cache;
 import ch.opentrainingcenter.core.cache.IRecordListener;
 import ch.opentrainingcenter.core.cache.TrainingCache;
-import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.helper.TimeHelper;
+import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.model.ModelFactory;
 import ch.opentrainingcenter.model.strecke.StreckeModel;
@@ -65,7 +66,6 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
     private static final Logger LOGGER = Logger.getLogger(SingleActivityViewPart.class);
     private final Cache cache = TrainingCache.getInstance();
     private final StreckeCache cacheStrecke = StreckeCache.getInstance();
-    private final IDatabaseAccess databaseAccess = DatabaseAccessFactory.getDatabaseAccess();
     private final ISimpleTraining simpleTraining;
     private final ITraining training;
     private FormToolkit toolkit;
@@ -75,8 +75,11 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
     private IRecordListener<ITraining> listener;
     private final ChartFactory factory;
     private IRecordListener<StreckeModel> streckeListener;
+    private final IDatabaseAccess databaseAccess;
 
     public SingleActivityViewPart() {
+        final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
+        databaseAccess = service.getDatabaseAccess();
         final ApplicationContext context = ApplicationContext.getApplicationContext();
         final Long selectedId = context.getSelectedId();
         if (cache.get(selectedId) == null) {

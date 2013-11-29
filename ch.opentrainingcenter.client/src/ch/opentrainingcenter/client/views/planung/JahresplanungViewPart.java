@@ -13,6 +13,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.events.ExpansionAdapter;
 import org.eclipse.ui.forms.events.ExpansionEvent;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -27,9 +28,9 @@ import org.joda.time.Interval;
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.core.PreferenceConstants;
-import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.helper.TimeHelper;
+import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.model.ModelFactory;
 import ch.opentrainingcenter.model.cache.TrainingsPlanCache;
@@ -51,10 +52,12 @@ public class JahresplanungViewPart extends ViewPart {
     private ScrolledForm form;
     private TableWrapData td;
     private Button save;
-    private IDatabaseAccess db;
+    private IDatabaseAccess databaseAccess;
 
     @Override
     public void createPartControl(final Composite parent) {
+        final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
+        databaseAccess = service.getDatabaseAccess();
         LOG.debug("create JahresplanungViewPart"); //$NON-NLS-1$
         toolkit = new FormToolkit(parent.getDisplay());
         form = toolkit.createScrolledForm(parent);
@@ -97,8 +100,7 @@ public class JahresplanungViewPart extends ViewPart {
         final GridLayout layoutClient = new GridLayout(1, true);
         composite.setLayout(layoutClient);
 
-        db = DatabaseAccessFactory.getDatabaseAccess();
-        final List<IPlanungWoche> all = db.getPlanungsWoche(context.getAthlete(), jahr, kw);
+        final List<IPlanungWoche> all = databaseAccess.getPlanungsWoche(context.getAthlete(), jahr, kw);
 
         Collections.sort(all, Collections.reverseOrder(new PlanungWocheComparator()));
         final List<IPlanungWoche> planungen;
@@ -149,7 +151,7 @@ public class JahresplanungViewPart extends ViewPart {
                     result.add(pla);
                     list.add(m);
                 }
-                db.saveOrUpdate(result);
+                databaseAccess.saveOrUpdate(result);
                 cache.addAll(list);
             }
         });

@@ -15,15 +15,17 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.core.cache.Cache;
 import ch.opentrainingcenter.core.cache.IRecordListener;
 import ch.opentrainingcenter.core.cache.TrainingCache;
-import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
+import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.helper.DistanceHelper;
 import ch.opentrainingcenter.core.helper.TimeHelper;
+import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.transfer.ITraining;
 
@@ -32,9 +34,12 @@ public class OverviewViewer extends ViewPart {
     public static final String ID = "ch.opentrainingcenter.client.table.overview"; //$NON-NLS-1$
     private final Cache cache;
     private TableViewer viewer;
+    private final IDatabaseAccess databaseAccess;
 
     public OverviewViewer() {
         cache = TrainingCache.getInstance();
+        final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
+        databaseAccess = service.getDatabaseAccess();
     }
 
     @Override
@@ -66,7 +71,7 @@ public class OverviewViewer extends ViewPart {
 
         // Get the content for the viewer, setInput will call getElements in the
         // contentProvider
-        viewer.setInput(DatabaseAccessFactory.getDatabaseAccess().getAllImported(ApplicationContext.getApplicationContext().getAthlete()));
+        viewer.setInput(databaseAccess.getAllImported(ApplicationContext.getApplicationContext().getAthlete()));
         // Make the selection available to other views
         getSite().setSelectionProvider(viewer);
         // Set the sorter for the table
@@ -93,7 +98,7 @@ public class OverviewViewer extends ViewPart {
             }
 
             private void update() {
-                viewer.setInput(DatabaseAccessFactory.getDatabaseAccess().getAllImported(ApplicationContext.getApplicationContext().getAthlete()));
+                viewer.setInput(databaseAccess.getAllImported(ApplicationContext.getApplicationContext().getAthlete()));
                 viewer.refresh();
             }
         });

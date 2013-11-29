@@ -9,12 +9,13 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import ch.opentrainingcenter.core.cache.Cache;
 import ch.opentrainingcenter.core.cache.TrainingCache;
-import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
+import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.transfer.ITraining;
 
 /**
@@ -26,9 +27,15 @@ public class DeleteImportedRecord extends AbstractHandler {
 
     public static final String ID = "ch.opentrainingcenter.client.commands.DeleteImportedRecord"; //$NON-NLS-1$
 
+    private final IDatabaseAccess databaseAccess;
+
+    public DeleteImportedRecord() {
+        final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
+        databaseAccess = service.getDatabaseAccess();
+    }
+
     @Override
     public Object execute(final ExecutionEvent event) throws ExecutionException {
-        final IDatabaseAccess db = DatabaseAccessFactory.getDatabaseAccess();
         final Cache cache = TrainingCache.getInstance();
 
         final ISelection selection = HandlerUtil.getCurrentSelection(event);
@@ -40,7 +47,7 @@ public class DeleteImportedRecord extends AbstractHandler {
             final ITraining record = (ITraining) obj;
             final int dbId = record.getId();
             LOGGER.info("Lösche den Lauf mit der ID " + record.getDatum() + " und der DB Id: " + dbId); //$NON-NLS-1$ //$NON-NLS-2$
-            db.removeImportedRecord(record.getDatum());
+            databaseAccess.removeImportedRecord(record.getDatum());
             deletedIds.add(record.getDatum());
         }
         cache.remove(deletedIds);

@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.ui.PlatformUI;
 import org.joda.time.DateTime;
 
 import ch.opentrainingcenter.client.cache.AthleteCache;
@@ -18,10 +19,10 @@ import ch.opentrainingcenter.core.cache.Cache;
 import ch.opentrainingcenter.core.cache.ICache;
 import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.core.data.OTCKonstanten;
-import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.helper.AltitudeCalculator;
 import ch.opentrainingcenter.core.helper.AltitudeCalculator.Ascending;
+import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.model.cache.TrainingsPlanCache;
 import ch.opentrainingcenter.model.navigation.ConcreteHealth;
@@ -36,19 +37,21 @@ import ch.opentrainingcenter.transfer.ITraining;
 public class InitialLoadRunnable implements IRunnableWithProgress {
 
     private static final Logger LOG = Logger.getLogger(InitialLoadRunnable.class);
+    private IDatabaseAccess databaseAccess;
 
     @Override
     public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+        final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
+        databaseAccess = service.getDatabaseAccess();
         final IAthlete athlete = ApplicationContext.getApplicationContext().getAthlete();
-        final IDatabaseAccess db = DatabaseAccessFactory.getDatabaseAccess();
         if (athlete != null) {
-            loadFirstRecords(monitor, athlete, db);
-            loadAllHealths(monitor, athlete, db);
-            loadAllPlaene(monitor, athlete, db);
-            loadAllRouten(monitor, athlete, db);
-            doMaintenance(monitor, athlete, db);
+            loadFirstRecords(monitor, athlete, databaseAccess);
+            loadAllHealths(monitor, athlete, databaseAccess);
+            loadAllPlaene(monitor, athlete, databaseAccess);
+            loadAllRouten(monitor, athlete, databaseAccess);
+            doMaintenance(monitor, athlete, databaseAccess);
         }
-        loadAllAthleten(monitor, db);
+        loadAllAthleten(monitor, databaseAccess);
     }
 
     private void loadFirstRecords(final IProgressMonitor monitor, final IAthlete athlete, final IDatabaseAccess db) {

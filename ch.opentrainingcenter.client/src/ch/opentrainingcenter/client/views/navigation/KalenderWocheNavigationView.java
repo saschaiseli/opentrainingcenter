@@ -41,8 +41,8 @@ import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.core.cache.Cache;
 import ch.opentrainingcenter.core.cache.IRecordListener;
 import ch.opentrainingcenter.core.cache.TrainingCache;
-import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
+import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.model.ModelFactory;
 import ch.opentrainingcenter.model.navigation.ConcreteHealth;
@@ -61,8 +61,6 @@ public class KalenderWocheNavigationView extends ViewPart {
     private static final Logger LOG = Logger.getLogger(KalenderWocheNavigationView.class);
     public static final String ID = "ch.opentrainingcenter.client.kalenderNavigationView"; //$NON-NLS-1$
 
-    private final IDatabaseAccess db = DatabaseAccessFactory.getDatabaseAccess();
-
     private final IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 
     private final Cache cache = TrainingCache.getInstance();
@@ -74,12 +72,15 @@ public class KalenderWocheNavigationView extends ViewPart {
     private TreeViewer viewer;
     private StatusLineWriter status;
     private IAthlete athlete;
+    private final IDatabaseAccess databaseAccess;
 
     public KalenderWocheNavigationView() {
+        final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
+        databaseAccess = service.getDatabaseAccess();
         final String athleteId = store.getString(PreferenceConstants.ATHLETE_ID);
         if (athleteId != null && athleteId.length() > 0) {
             final int id = Integer.parseInt(athleteId);
-            athlete = db.getAthlete(id);
+            athlete = databaseAccess.getAthlete(id);
         } else {
             athlete = null;
         }
@@ -91,7 +92,7 @@ public class KalenderWocheNavigationView extends ViewPart {
 
             @Override
             public void run() {
-                final List<ITraining> imported = db.getAllImported(athlete);
+                final List<ITraining> imported = databaseAccess.getAllImported(athlete);
                 treeModel.reset();
                 treeModel.addItems(healthCache.getAll());
                 treeModel.addItems(DecoratImported.decorate(imported));
@@ -201,7 +202,7 @@ public class KalenderWocheNavigationView extends ViewPart {
                 updateModel();
             }
         });
-        final ITraining newestRun = db.getNewestRun(athlete);
+        final ITraining newestRun = databaseAccess.getNewestRun(athlete);
         if (newestRun != null) {
             openSingleRunView(newestRun);
         }

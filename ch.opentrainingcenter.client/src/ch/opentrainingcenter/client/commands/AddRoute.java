@@ -16,8 +16,8 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.views.dialoge.RouteDialog;
 import ch.opentrainingcenter.core.cache.TrainingCache;
-import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
+import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
@@ -28,6 +28,7 @@ import ch.opentrainingcenter.transfer.ITraining;
 public class AddRoute extends OtcAbstractHandler {
 
     public static final String ID = "ch.opentrainingcenter.client.commands.AddRoute"; //$NON-NLS-1$
+    private final IDatabaseAccess databaseAccess;
 
     public AddRoute() {
         this(Activator.getDefault().getPreferenceStore());
@@ -35,6 +36,9 @@ public class AddRoute extends OtcAbstractHandler {
 
     public AddRoute(final IPreferenceStore store) {
         super(store);
+        final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
+        databaseAccess = service.getDatabaseAccess();
+
     }
 
     @Override
@@ -50,23 +54,20 @@ public class AddRoute extends OtcAbstractHandler {
         boolean delete = true;
         if (route != null && route.getReferenzTrack() != null && route.getReferenzTrack().getId() == training.getId()) {
             // bereits eine Referenzroute darauf erstellt
-            delete = MessageDialog.openConfirm(shell, Messages.AddRoute_0, NLS.bind(
-                    Messages.AddRoute_1, route
-                            .getName()));
+            delete = MessageDialog.openConfirm(shell, Messages.AddRoute_0, NLS.bind(Messages.AddRoute_1, route.getName()));
         }
         if (delete) {
-            final IDatabaseAccess db = DatabaseAccessFactory.getDatabaseAccess();
             if (route != null) {
                 // alle referenzen löschen
-                final List<ITraining> all = db.getAllFromRoute(training.getAthlete(), route);
+                final List<ITraining> all = databaseAccess.getAllFromRoute(training.getAthlete(), route);
                 for (final ITraining tr : all) {
                     tr.setRoute(null);
-                    db.saveTraining(tr);
+                    databaseAccess.saveTraining(tr);
                     TrainingCache.getInstance().add(tr);
                 }
             }
 
-            final RouteDialog dialog = new RouteDialog(shell, db, training);
+            final RouteDialog dialog = new RouteDialog(shell, databaseAccess, training);
             dialog.open();
         }
         return null;

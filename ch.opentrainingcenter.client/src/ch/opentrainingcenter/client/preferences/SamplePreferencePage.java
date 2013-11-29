@@ -15,15 +15,17 @@ import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.eclipse.ui.PlatformUI;
 
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.core.db.DBSTATE;
-import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
+import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.helper.GpsFileNameFilter;
 import ch.opentrainingcenter.core.importer.ExtensionHelper;
 import ch.opentrainingcenter.core.importer.ImporterFactory;
+import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.transfer.IAthlete;
 
@@ -44,11 +46,15 @@ public class SamplePreferencePage extends FieldEditorPreferencePage implements I
 
     private final List<IAthlete> allAthletes;
 
+    private final IDatabaseAccess databaseAccess;
+
     public SamplePreferencePage() {
         super(GRID);
         setDescription(Messages.SamplePreferencePage_1);
+        final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
+        databaseAccess = service.getDatabaseAccess();
         if (DBSTATE.OK.equals(ApplicationContext.getApplicationContext().getDbState())) {
-            allAthletes = DatabaseAccessFactory.getDatabaseAccess().getAllAthletes();
+            allAthletes = databaseAccess.getAllAthletes();
         } else {
             allAthletes = Collections.emptyList();
         }

@@ -19,12 +19,12 @@ import ch.opentrainingcenter.client.views.dialoge.RunTypeDialog;
 import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.core.cache.Cache;
 import ch.opentrainingcenter.core.cache.TrainingCache;
-import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.importer.ConvertContainer;
 import ch.opentrainingcenter.core.importer.ExtensionHelper;
 import ch.opentrainingcenter.core.importer.IConvert2Tcx;
 import ch.opentrainingcenter.core.importer.ImporterFactory;
+import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.importer.IFileImport;
 import ch.opentrainingcenter.importer.impl.FileImport;
@@ -55,10 +55,12 @@ public class ImportManualGpsFiles extends OtcAbstractHandler {
 
     public ImportManualGpsFiles(final IPreferenceStore store) {
         super(store);
-        this.databaseAccess = DatabaseAccessFactory.getDatabaseAccess();
+        final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
+        databaseAccess = service.getDatabaseAccess();
         this.cache = TrainingCache.getInstance();
         this.store = store;
         this.cc = new ConvertContainer(ExtensionHelper.getConverters());
+
     }
 
     /**

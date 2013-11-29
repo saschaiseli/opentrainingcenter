@@ -30,6 +30,7 @@ import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.PlatformUI;
 
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.cache.HealthCache;
@@ -37,8 +38,8 @@ import ch.opentrainingcenter.client.views.IImageKeys;
 import ch.opentrainingcenter.client.views.databinding.NumberValidator;
 import ch.opentrainingcenter.client.views.databinding.StringToIntegerConverter;
 import ch.opentrainingcenter.core.PreferenceConstants;
-import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
+import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.model.ModelFactory;
 import ch.opentrainingcenter.model.sportler.HealthModel;
@@ -74,17 +75,23 @@ public class HealthDialog extends TitleAreaDialog {
     private final Date date;
 
     public HealthDialog(final Shell parent) {
-        this(parent, DatabaseAccessFactory.getDatabaseAccess(), Activator.getDefault().getPreferenceStore(), new Date());
+
+        this(parent, null, Activator.getDefault().getPreferenceStore(), new Date());
     }
 
     public HealthDialog(final Shell parent, final IHealth health) {
-        this(parent, DatabaseAccessFactory.getDatabaseAccess(), Activator.getDefault().getPreferenceStore(), health.getDateofmeasure());
+        this(parent, null, Activator.getDefault().getPreferenceStore(), health.getDateofmeasure());
     }
 
     public HealthDialog(final Shell parent, final IDatabaseAccess databaseAccess, final IPreferenceStore store, final Date date) {
         super(parent);
         this.parent = parent;
-        this.db = databaseAccess;
+        if (databaseAccess == null) {
+            final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
+            this.db = service.getDatabaseAccess();
+        } else {
+            this.db = databaseAccess;
+        }
         this.date = date;
         final String id = store.getString(PreferenceConstants.ATHLETE_ID);
         athlete = db.getAthlete(Integer.valueOf(id));

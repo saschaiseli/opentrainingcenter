@@ -9,7 +9,8 @@ Require-Bundle: org.eclipse.core.runtime,
  ch.opentrainingcenter.transfer,
  jodatime,
  ch.opentrainingcenter.i18n,
- org.eclipse.jface
+ org.eclipse.jface,
+ org.eclipse.ui
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: ch.opentrainingcenter.core,
@@ -17,6 +18,7 @@ Export-Package: ch.opentrainingcenter.core,
  ch.opentrainingcenter.core.cache,
  ch.opentrainingcenter.core.data,
  ch.opentrainingcenter.core.db,
- ch.opentrainingcenter.core.helper,
  ch.opentrainingcenter.core.exceptions,
- ch.opentrainingcenter.core.importer
+ ch.opentrainingcenter.core.helper,
+ ch.opentrainingcenter.core.importer,
+ ch.opentrainingcenter.core.service

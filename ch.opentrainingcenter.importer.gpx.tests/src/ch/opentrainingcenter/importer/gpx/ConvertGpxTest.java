@@ -84,12 +84,16 @@ public class ConvertGpxTest {
         cal.setTimeZone(TimeZone.getDefault());
 
         assertEquals(cal.getTime().getTime() / 1000, result.getDatum() / 1000, 0.001);
+        assertEquals(0, result.getUpMeter().intValue());
+        assertEquals(0, result.getDownMeter().intValue());
     }
 
     @Test
     public void testZeit() throws ConvertException {
         final ITraining result = converter.convert(new File("resources", "twoTrackPoints.gpx")); //$NON-NLS-1$//$NON-NLS-2$
         assertEquals(60, result.getDauer(), 0.001);
+        assertEquals(10, result.getUpMeter().intValue());
+        assertEquals(0, result.getDownMeter().intValue());
     }
 
     @Test

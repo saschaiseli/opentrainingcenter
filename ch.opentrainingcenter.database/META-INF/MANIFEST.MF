@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Database
+Bundle-SymbolicName: ch.opentrainingcenter.database;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: ch.opentrainingcenter.database.Activator
+Require-Bundle: org.eclipse.core.runtime,
+ logging,
+ org.hibernate,
+ ch.opentrainingcenter.transfer,
+ jodatime,
+ ch.opentrainingcenter.core
+Bundle-ActivationPolicy: lazy
+Eclipse-RegisterBuddy: org.hibernate, logging
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Export-Package: ch.opentrainingcenter.database,
+ ch.opentrainingcenter.database.dao
+Bundle-ClassPath: hibernate/,
+ .

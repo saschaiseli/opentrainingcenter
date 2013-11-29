@@ -53,8 +53,8 @@ import ch.opentrainingcenter.client.Application;
 import ch.opentrainingcenter.client.cache.AthleteCache;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.core.PreferenceConstants;
-import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
+import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
@@ -66,7 +66,6 @@ public class UserView extends ViewPart {
     private static final Logger LOGGER = Logger.getLogger(UserView.class);
     private static final ApplicationContext ctx = ApplicationContext.getApplicationContext();
 
-    private final IDatabaseAccess databaseAccess = DatabaseAccessFactory.getDatabaseAccess();
     private final AthleteCache athleteCache = AthleteCache.getInstance();
     private final IPreferenceStore store = Activator.getDefault().getPreferenceStore();
     private Text userName;
@@ -91,8 +90,12 @@ public class UserView extends ViewPart {
 
     private final List<Object> allAthletes = new ArrayList<>();
 
+    private final IDatabaseAccess databaseAccess;
+
     public UserView() {
         currentAthlete = ctx.getAthlete();
+        final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
+        databaseAccess = service.getDatabaseAccess();
     }
 
     @Override

@@ -2,7 +2,9 @@ package ch.opentrainingcenter.client;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchAdvisor;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
@@ -12,7 +14,9 @@ import ch.opentrainingcenter.client.perspectives.MainPerspective;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.core.db.DBSTATE;
-import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
+import ch.opentrainingcenter.core.db.IDatabaseAccess;
+import ch.opentrainingcenter.core.db.IDatabaseConnection;
+import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.transfer.IAthlete;
 
@@ -31,10 +35,22 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 
     @Override
     public String getInitialWindowPerspectiveId() {
-        final DBSTATE dbState = ApplicationContext.getApplicationContext().getDbState();
+
+        final IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+        final String dbName = store.getString(PreferenceConstants.DB);
+        final String url = store.getString(PreferenceConstants.DB_URL);
+        final String user = store.getString(PreferenceConstants.DB_USER);
+        final String pw = store.getString(PreferenceConstants.DB_PASS);
+
+        final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
+        service.init(dbName, url, user, pw);
+        final IDatabaseAccess databaseAccess = service.getDatabaseAccess();
+        final IDatabaseConnection databaseConnection = service.getDatabaseConnection();
+        final DBSTATE dbState = databaseConnection.getDatabaseState();
+        ApplicationContext.getApplicationContext().setDbState(dbState);
         final String athleteId = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.ATHLETE_ID);
         if (isDbOkAndAthleteSelected(dbState, athleteId)) {
-            final IAthlete athlete = DatabaseAccessFactory.getDatabaseAccess().getAthlete(Integer.parseInt(athleteId));
+            final IAthlete athlete = databaseAccess.getAthlete(Integer.parseInt(athleteId));
             if (athlete == null) {
                 LOGGER.info(Messages.ApplicationWorkbenchAdvisorAthleteNotFound);
                 return EinstellungenPerspective.ID;

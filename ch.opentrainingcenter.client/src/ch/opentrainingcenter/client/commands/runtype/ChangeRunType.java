@@ -5,13 +5,14 @@ import java.util.List;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.ui.PlatformUI;
 
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.core.cache.Cache;
 import ch.opentrainingcenter.core.cache.TrainingCache;
-import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.helper.RunType;
+import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.model.navigation.ConcreteImported;
 import ch.opentrainingcenter.transfer.ITraining;
 
@@ -21,7 +22,12 @@ import ch.opentrainingcenter.transfer.ITraining;
 public abstract class ChangeRunType extends AbstractHandler {
 
     private final Cache cache = TrainingCache.getInstance();
-    private final IDatabaseAccess db = DatabaseAccessFactory.getDatabaseAccess();
+    private final IDatabaseAccess databaseAccess;
+
+    public ChangeRunType() {
+        final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
+        databaseAccess = service.getDatabaseAccess();
+    }
 
     @Override
     public Object execute(final ExecutionEvent event) throws ExecutionException {
@@ -32,7 +38,7 @@ public abstract class ChangeRunType extends AbstractHandler {
         }
         for (final Object obj : selection) {
             final ITraining record = ((ConcreteImported) obj).getImported();
-            db.updateRecord(record, getType().getIndex());
+            databaseAccess.updateRecord(record, getType().getIndex());
         }
         cache.notifyListeners();
         return null;

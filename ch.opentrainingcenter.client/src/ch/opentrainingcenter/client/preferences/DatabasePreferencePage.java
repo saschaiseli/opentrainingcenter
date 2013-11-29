@@ -1,5 +1,6 @@
 package ch.opentrainingcenter.client.preferences;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -22,10 +23,9 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.core.db.DBSTATE;
-import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.core.db.DatabaseConnectionConfiguration;
 import ch.opentrainingcenter.core.db.DbConnection;
-import ch.opentrainingcenter.core.db.IDatabaseAccess;
+import ch.opentrainingcenter.core.db.IDatabaseConnection;
 import ch.opentrainingcenter.i18n.Messages;
 
 public class DatabasePreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
@@ -33,7 +33,7 @@ public class DatabasePreferencePage extends FieldEditorPreferencePage implements
     private static final int INTENT = 5;
     public static final Logger LOGGER = Logger.getLogger(DatabasePreferencePage.class);
     private IPreferenceStore store;
-    private IDatabaseAccess access;
+    private IDatabaseConnection access;
     private boolean connectionSuccess = false;
     private Group groupAdminDb;
     private ComboFieldEditor dbChooser;
@@ -80,13 +80,13 @@ public class DatabasePreferencePage extends FieldEditorPreferencePage implements
         addField(dbUser);
         addField(dbPass);
         addField(dbUrl);
-
-        final Map<String, IDatabaseAccess> model = DatabaseAccessFactory.getDbaccesses();
+        // TODO : fix this
+        final Map<String, IDatabaseConnection> model = new HashMap<>();// DatabaseAccessFactory..getDbaccesses();
         initDatabaseAccess(model, store.getString(PreferenceConstants.DB));
         final String[][] entries = new String[model.size() + 1][model.size() + 1];
         entries[0] = new String[] { "", "" }; //$NON-NLS-1$//$NON-NLS-2$
         int i = 1;
-        for (final Map.Entry<String, IDatabaseAccess> entry : model.entrySet()) {
+        for (final Map.Entry<String, IDatabaseConnection> entry : model.entrySet()) {
             entries[i] = new String[] { entry.getValue().getName(), entry.getValue().getName() };
             i++;
         }
@@ -189,7 +189,7 @@ public class DatabasePreferencePage extends FieldEditorPreferencePage implements
         }
     }
 
-    private void initDatabaseAccess(final Map<String, IDatabaseAccess> model, final String dbKey) {
+    private void initDatabaseAccess(final Map<String, IDatabaseConnection> model, final String dbKey) {
         access = model.get(dbKey);
     }
 

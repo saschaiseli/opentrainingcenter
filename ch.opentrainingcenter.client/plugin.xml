@@ -819,4 +819,7 @@
             name="myscheme">
       </scheme>
    </extension>
+   <extension
+         point="org.eclipse.ui.services">
+   </extension>
 </plugin>

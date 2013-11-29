@@ -17,7 +17,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
-import ch.opentrainingcenter.core.db.IDatabaseAccess;
+import ch.opentrainingcenter.core.db.IDatabaseConnection;
 import ch.opentrainingcenter.core.helper.GpsFileNameFilter;
 import ch.opentrainingcenter.core.importer.IConvert2Tcx;
 import ch.opentrainingcenter.i18n.Messages;
@@ -38,13 +38,13 @@ public class BackupJob extends Job {
 
     private final String source;
 
-    private final IDatabaseAccess db;
+    private final IDatabaseConnection dbConnection;
 
-    public BackupJob(final String name, final String source, final File destFolder, final Map<String, IConvert2Tcx> converters, final IDatabaseAccess db) {
+    public BackupJob(final String name, final String source, final File destFolder, final Map<String, IConvert2Tcx> converters, final IDatabaseConnection conn) {
         super(name);
         this.source = source;
         this.destFolder = destFolder;
-        this.db = db;
+        this.dbConnection = conn;
         final File f = new File(this.source);
         fileToCopy = f.list(new GpsFileNameFilter(converters));
     }
@@ -73,7 +73,7 @@ public class BackupJob extends Job {
             monitor.worked(1);
         }
         try {
-            addToZip(out, buf, db.backUpDatabase(source));
+            addToZip(out, buf, dbConnection.backUpDatabase(source));
             out.close();
         } catch (final IOException e) {
             LOG.error(e.getMessage());

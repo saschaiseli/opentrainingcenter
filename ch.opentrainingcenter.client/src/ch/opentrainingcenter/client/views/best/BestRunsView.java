@@ -32,7 +32,8 @@ import ch.opentrainingcenter.core.assertions.Assertions;
 import ch.opentrainingcenter.core.cache.IRecordListener;
 import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.core.data.Pair;
-import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
+import ch.opentrainingcenter.core.db.IDatabaseAccess;
+import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.model.training.IGoldMedalModel;
 import ch.opentrainingcenter.model.training.Intervall;
@@ -79,6 +80,8 @@ public class BestRunsView extends ViewPart {
 
     private Hyperlink longestDistance;
 
+    private final IDatabaseAccess databaseAccess;
+
     public BestRunsView() {
         TrainingCache.getInstance().addListener(new IRecordListener<ITraining>() {
 
@@ -92,6 +95,8 @@ public class BestRunsView extends ViewPart {
                 update();
             }
         });
+        final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
+        databaseAccess = service.getDatabaseAccess();
     }
 
     @Override
@@ -118,12 +123,12 @@ public class BestRunsView extends ViewPart {
         form.setText(Messages.BestRunsView0);
         final String athleteId = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.ATHLETE_ID);
         if (athleteId != null && athleteId.length() > 0) {
-            athlete = DatabaseAccessFactory.getDatabaseAccess().getAthlete(Integer.parseInt(athleteId));
+            athlete = databaseAccess.getAthlete(Integer.parseInt(athleteId));
         } else {
             athlete = null;
         }
         action = new GoldMedalAction();
-        final IGoldMedalModel model = action.getModel(DatabaseAccessFactory.getDatabaseAccess().getAllImported(athlete));
+        final IGoldMedalModel model = action.getModel(databaseAccess.getAllImported(athlete));
 
         addText(body, model);
 
@@ -241,7 +246,7 @@ public class BestRunsView extends ViewPart {
     }
 
     private void update() {
-        final IGoldMedalModel model = action.getModel(DatabaseAccessFactory.getDatabaseAccess().getAllImported(athlete));
+        final IGoldMedalModel model = action.getModel(databaseAccess.getAllImported(athlete));
         bestPace.setText(model.getSchnellstePace().getSecond());
         longestDistance.setText(model.getLongestDistance().getSecond());
         longestDistance.setText(model.getLongestDistance().getSecond());

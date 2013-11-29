@@ -23,8 +23,9 @@ import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.client.views.IImageKeys;
 import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.core.db.DBSTATE;
-import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
+import ch.opentrainingcenter.core.db.IDatabaseConnection;
+import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.transfer.IAthlete;
 
@@ -32,21 +33,28 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 
     private static final Logger LOG = Logger.getLogger(ApplicationWorkbenchWindowAdvisor.class);
     private final IPreferenceStore store;
-    private final IDatabaseAccess databaseAccess;
     private final ApplicationContext context = ApplicationContext.getApplicationContext();
     private IWorkbenchWindowConfigurer configurer;
+    private final IDatabaseAccess databaseAccess;
+    private final IDatabaseConnection databaseConnection;
 
     public ApplicationWorkbenchWindowAdvisor(final IWorkbenchWindowConfigurer configurer) {
-        this(configurer, Activator.getDefault().getPreferenceStore(), DatabaseAccessFactory.getDatabaseAccess());
+
+        this(configurer, Activator.getDefault().getPreferenceStore(), null);
     }
 
     /**
      * Konstruktor für Tests
      */
-    public ApplicationWorkbenchWindowAdvisor(final IWorkbenchWindowConfigurer conf, final IPreferenceStore store, final IDatabaseAccess db) {
+    public ApplicationWorkbenchWindowAdvisor(final IWorkbenchWindowConfigurer conf, final IPreferenceStore store, final IDatabaseService dbservice) {
         super(conf);
         this.store = store;
-        databaseAccess = db;
+        IDatabaseService service = dbservice;
+        if (service == null) {
+            service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
+        }
+        databaseAccess = service.getDatabaseAccess();
+        databaseConnection = service.getDatabaseConnection();
     }
 
     @Override
@@ -98,7 +106,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
         super.postWindowOpen();
         configurer.getWindow().getShell().setMaximized(true);
         final IStatusLineManager manager = getWindowConfigurer().getActionBarConfigurer().getStatusLineManager();
-        final String databaseName = DatabaseAccessFactory.getDatabaseAccess().getName();
+        final String databaseName = databaseConnection.getName();
         final Image icon = Activator.getImageDescriptor(IImageKeys.DATABASE).createImage();
         if (DBSTATE.OK.equals(ApplicationContext.getApplicationContext().getDbState())) {
             manager.setMessage(icon, databaseName);

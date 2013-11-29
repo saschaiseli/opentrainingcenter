@@ -7,13 +7,14 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.ui.PlatformUI;
 
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.action.job.BackupJob;
 import ch.opentrainingcenter.core.PreferenceConstants;
-import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
-import ch.opentrainingcenter.core.db.IDatabaseAccess;
+import ch.opentrainingcenter.core.db.IDatabaseConnection;
 import ch.opentrainingcenter.core.importer.ExtensionHelper;
+import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
 
 /**
@@ -26,6 +27,7 @@ public class BackupGpsFiles extends OtcAbstractHandler {
     private static final Logger LOG = Logger.getLogger(BackupGpsFiles.class);
 
     private final IPreferenceStore store;
+    private final IDatabaseConnection databaseConnection;
 
     public BackupGpsFiles() {
         this(Activator.getDefault().getPreferenceStore());
@@ -34,6 +36,8 @@ public class BackupGpsFiles extends OtcAbstractHandler {
     public BackupGpsFiles(final IPreferenceStore store) {
         super(store);
         this.store = store;
+        final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
+        databaseConnection = service.getDatabaseConnection();
     }
 
     @Override
@@ -46,8 +50,7 @@ public class BackupGpsFiles extends OtcAbstractHandler {
             destFolder.mkdir();
             LOG.info("Pfad zu Backupfolder erstellt"); //$NON-NLS-1$
         }
-        final IDatabaseAccess db = DatabaseAccessFactory.getDatabaseAccess();
-        final Job job = new BackupJob(Messages.BackupGpsFiles0, source, destFolder, ExtensionHelper.getConverters(), db);
+        final Job job = new BackupJob(Messages.BackupGpsFiles0, source, destFolder, ExtensionHelper.getConverters(), databaseConnection);
         job.schedule();
         return null;
     }

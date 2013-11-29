@@ -11,6 +11,8 @@ import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 
+import ch.opentrainingcenter.database.dao.AthleteDao;
+import ch.opentrainingcenter.database.dao.HealthDao;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IHealth;
@@ -24,8 +26,8 @@ public class AthleteDaoTest extends DatabaseTestBase {
 
     @Before
     public void setUp() {
-        athleteDao = new AthleteDao(dao);
-        healthDao = new HealthDao(dao);
+        athleteDao = new AthleteDao(connectionConfig);
+        healthDao = new HealthDao(connectionConfig);
         now = DateTime.now().toDate();
     }
 

@@ -14,7 +14,8 @@ import org.junit.BeforeClass;
 import ch.opentrainingcenter.core.db.DatabaseConnectionConfiguration;
 import ch.opentrainingcenter.core.db.DbConnection;
 import ch.opentrainingcenter.core.db.SqlException;
-import ch.opentrainingcenter.db.USAGE;
+import ch.opentrainingcenter.database.USAGE;
+import ch.opentrainingcenter.database.dao.ConnectionConfig;
 
 @SuppressWarnings("nls")
 public class PostgresDatabaseTestBase {
@@ -29,23 +30,23 @@ public class PostgresDatabaseTestBase {
     private static final String URL_ADMIN = "jdbc:postgresql://localhost/postgres";
 
     private static final String DIALECT = "org.hibernate.dialect.PostgreSQLDialect";
-    protected static PostgresDao dao = null;
+    protected static ConnectionConfig connectionConfig = null;
 
     @BeforeClass
     public static void createDb() throws SqlException {
         final DbConnection appConnection = new DbConnection(DRIVER, DIALECT, URL, USER, PASS);
         final DbConnection adminConnection = new DbConnection(DRIVER, DIALECT, URL_ADMIN, USER_ADMIN, PASS_ADMIN);
         final DatabaseConnectionConfiguration config = new DatabaseConnectionConfiguration(appConnection, adminConnection);
-        dao = new PostgresDao(USAGE.TEST, config);
-        final DatabaseAccessPostgres access = new DatabaseAccessPostgres(dao);
+        connectionConfig = new ConnectionConfig(USAGE.TEST, config);
+        final DatabaseAccessPostgres access = new DatabaseAccessPostgres(connectionConfig);
         access.setConfiguration(config);
         access.createDatabase();
     }
 
     @After
     public void tearDown() throws SqlException {
-        final Session session = dao.getSession();
-        dao.begin();
+        final Session session = connectionConfig.getSession();
+        connectionConfig.begin();
         session.createSQLQuery("delete from ROUTE").executeUpdate();
         session.createSQLQuery("delete from TRACKTRAININGPROPERTY").executeUpdate();
         session.createSQLQuery("delete from TRAINING").executeUpdate();
@@ -53,7 +54,7 @@ public class PostgresDatabaseTestBase {
         session.createSQLQuery("delete from HEALTH").executeUpdate();
         session.createSQLQuery("delete from PLANUNGWOCHE").executeUpdate();
         session.createSQLQuery("delete from ATHLETE WHERE id>0").executeUpdate();
-        dao.commit();
+        connectionConfig.commit();
         session.flush();
     }
 
@@ -68,11 +69,11 @@ public class PostgresDatabaseTestBase {
         Statement stmt = null;
         try {
             Class.forName("org.postgresql.Driver");
-            conn = DriverManager.getConnection(URL, USER_ADMIN, PASS_ADMIN);
+            conn = DriverManager.getConnection(URL_ADMIN, USER_ADMIN, PASS_ADMIN);
             stmt = conn.createStatement();
             stmt.execute("drop schema public cascade;");
             stmt.execute("CREATE SCHEMA PUBLIC;");
-            stmt.execute("ALTER SCHEMA PUBLIC OWNER TO otc_user");
+            stmt.execute("ALTER SCHEMA PUBLIC OWNER TO " + USER);
         } catch (final SQLException se) {
             LOGGER.error(se);
         } catch (final Exception e) {

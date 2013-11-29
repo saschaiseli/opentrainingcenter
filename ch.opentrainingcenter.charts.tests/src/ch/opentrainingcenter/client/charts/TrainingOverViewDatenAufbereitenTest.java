@@ -1,10 +1,5 @@
 package ch.opentrainingcenter.client.charts;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -26,6 +21,11 @@ import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.ITrainingType;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @SuppressWarnings("nls")
 public class TrainingOverViewDatenAufbereitenTest {
@@ -43,14 +43,14 @@ public class TrainingOverViewDatenAufbereitenTest {
 
     private final Map<Integer, List<ISimpleTraining>> trainingsProJahr = new HashMap<Integer, List<ISimpleTraining>>();
 
-    private IDatabaseAccess databaseAccess;
+    private IDatabaseAccess access;
 
     private IAthlete athlete;
 
     @Before
     public void setUp() {
 
-        databaseAccess = mock(IDatabaseAccess.class);
+        access = mock(IDatabaseAccess.class);
         auf = new TrainingOverviewDatenAufbereiten(new IStatistikCreator() {
 
             @Override
@@ -72,7 +72,7 @@ public class TrainingOverViewDatenAufbereitenTest {
             public List<ISimpleTraining> getTrainingsProTag(final List<ISimpleTraining> allTrainings) {
                 return trainingsProTag;
             }
-        }, databaseAccess, athlete);
+        }, access, athlete);
         athlete = CommonTransferFactory.createAthlete("name", 42);
     }
 
@@ -99,7 +99,7 @@ public class TrainingOverViewDatenAufbereitenTest {
         when(mockA.getRoute()).thenReturn(route);
         when(mockB.getRoute()).thenReturn(route);
 
-        when(databaseAccess.getAllImported((IAthlete) Matchers.any())).thenReturn(values);
+        when(access.getAllImported((IAthlete) Matchers.any())).thenReturn(values);
 
         // execute
         auf.update(RunType.NONE);
@@ -125,7 +125,7 @@ public class TrainingOverViewDatenAufbereitenTest {
         when(mockA.getRoute()).thenReturn(route);
 
         values.add(mockA);
-        when(databaseAccess.getAllImported((IAthlete) Matchers.any())).thenReturn(values);
+        when(access.getAllImported((IAthlete) Matchers.any())).thenReturn(values);
         // execute
         auf.update(RunType.EXT_INTERVALL);
 
@@ -153,7 +153,7 @@ public class TrainingOverViewDatenAufbereitenTest {
 
         when(mockA.getRoute()).thenReturn(route);
 
-        when(databaseAccess.getAllImported((IAthlete) Matchers.any())).thenReturn(values);
+        when(access.getAllImported((IAthlete) Matchers.any())).thenReturn(values);
 
         // execute
         auf.update(RunType.INT_INTERVALL);
@@ -179,7 +179,7 @@ public class TrainingOverViewDatenAufbereitenTest {
         when(training.getRoute()).thenReturn(route);
 
         when(mockA.getRoute()).thenReturn(route);
-        when(databaseAccess.getAllImported((IAthlete) Matchers.any())).thenReturn(values);
+        when(access.getAllImported((IAthlete) Matchers.any())).thenReturn(values);
 
         // execute
         auf.update(RunType.LONG_JOG);
@@ -205,7 +205,7 @@ public class TrainingOverViewDatenAufbereitenTest {
         when(training.getRoute()).thenReturn(route);
 
         when(mockA.getRoute()).thenReturn(route);
-        when(databaseAccess.getAllImported((IAthlete) Matchers.any())).thenReturn(values);
+        when(access.getAllImported((IAthlete) Matchers.any())).thenReturn(values);
 
         // execute
         auf.update(RunType.POWER_LONG_JOG);
@@ -232,7 +232,7 @@ public class TrainingOverViewDatenAufbereitenTest {
 
         when(mockA.getRoute()).thenReturn(route);
 
-        when(databaseAccess.getAllImported((IAthlete) Matchers.any())).thenReturn(values);
+        when(access.getAllImported((IAthlete) Matchers.any())).thenReturn(values);
 
         // execute
         auf.update(RunType.TEMPO_JOG);
@@ -264,7 +264,7 @@ public class TrainingOverViewDatenAufbereitenTest {
         when(mockA.getRoute()).thenReturn(route);
 
         values.add(mockA);
-        when(databaseAccess.getAllImported((IAthlete) Matchers.any())).thenReturn(values);
+        when(access.getAllImported((IAthlete) Matchers.any())).thenReturn(values);
         // execute
         auf.update(RunType.LONG_JOG);
         // assert
@@ -311,7 +311,7 @@ public class TrainingOverViewDatenAufbereitenTest {
 
         when(training.getRoute()).thenReturn(route);
 
-        when(databaseAccess.getAllImported((IAthlete) Matchers.any())).thenReturn(values);
+        when(access.getAllImported((IAthlete) Matchers.any())).thenReturn(values);
         // execute
         auf.update(RunType.LONG_JOG);
         // assert

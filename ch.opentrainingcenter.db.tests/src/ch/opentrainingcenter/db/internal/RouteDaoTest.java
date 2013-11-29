@@ -11,6 +11,10 @@ import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 
+import ch.opentrainingcenter.core.db.IDatabaseAccess;
+import ch.opentrainingcenter.database.dao.AthleteDao;
+import ch.opentrainingcenter.database.dao.RouteDao;
+import ch.opentrainingcenter.database.dao.WeatherDao;
 import ch.opentrainingcenter.db.DatabaseAccess;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
@@ -29,30 +33,32 @@ public class RouteDaoTest extends DatabaseTestBase {
     private DatabaseAccess access;
     private String name;
     private String beschreibung;
+    private IDatabaseAccess dataAccess;
 
     @Before
     public void setUp() {
         name = "testSaveRoute1";
         beschreibung = "testet ob route gespeichert wird";
 
-        routeDao = new RouteDao(dao);
+        routeDao = new RouteDao(connectionConfig);
 
-        final AthleteDao athleteDao = new AthleteDao(dao);
+        final AthleteDao athleteDao = new AthleteDao(connectionConfig);
         athlete = CommonTransferFactory.createAthlete("junit", 220);
         athleteDao.save(athlete);
 
         now = DateTime.now().getMillis();
 
-        final WeatherDao weatherDao = new WeatherDao(dao);
+        final WeatherDao weatherDao = new WeatherDao(connectionConfig);
         weatherA = weatherDao.getAllWeather().get(0);
 
         training = CommonTransferFactory.createTraining(now, 1, 2, 3, 4, 5, "note", weatherA, null);
         training.setAthlete(athlete);
 
-        access = new DatabaseAccess(dao);
-        access.saveTraining(training);
+        access = new DatabaseAccess(connectionConfig);
+        dataAccess = access.getDataAccess();
+        dataAccess.saveTraining(training);
 
-        dao.getSession().close();
+        connectionConfig.getSession().close();
     }
 
     @Test
@@ -77,7 +83,7 @@ public class RouteDaoTest extends DatabaseTestBase {
 
         final ITraining trainingB = CommonTransferFactory.createTraining(now + 100, 1, 2, 3, 4, 5, "noteb", weatherA, null);
         trainingB.setAthlete(athlete);
-        access.saveTraining(trainingB);
+        dataAccess.saveTraining(trainingB);
 
         final IRoute route = CommonTransferFactory.createRoute(name, beschreibung, training);
         final int id = routeDao.saveOrUpdate(route);

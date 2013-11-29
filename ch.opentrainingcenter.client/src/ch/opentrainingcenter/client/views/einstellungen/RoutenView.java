@@ -22,6 +22,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.ISelectionService;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.events.ExpansionAdapter;
 import org.eclipse.ui.forms.events.ExpansionEvent;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
@@ -33,10 +34,10 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
 import org.eclipse.ui.part.ViewPart;
 
 import ch.opentrainingcenter.client.views.ApplicationContext;
-import ch.opentrainingcenter.core.db.DatabaseAccessFactory;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.helper.DistanceHelper;
 import ch.opentrainingcenter.core.helper.TimeHelper;
+import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IRoute;
@@ -49,8 +50,6 @@ public class RoutenView extends ViewPart implements ISelectionListener {
     private static final Logger LOGGER = Logger.getLogger(RoutenView.class);
 
     private static final int SWT_TABLE_PATTERN = SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER;
-
-    private final IDatabaseAccess databaseAccess = DatabaseAccessFactory.getDatabaseAccess();
 
     private final List<IRoute> routen = new ArrayList<>();
 
@@ -72,8 +71,12 @@ public class RoutenView extends ViewPart implements ISelectionListener {
 
     private TableViewer viewerRouten, viewerTracks;
 
+    private final IDatabaseAccess databaseAccess;
+
     public RoutenView() {
         athlete = ApplicationContext.getApplicationContext().getAthlete();
+        final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
+        databaseAccess = service.getDatabaseAccess();
     }
 
     @Override
