@@ -28,7 +28,7 @@ import ch.opentrainingcenter.transfer.ITraining;
 public class AddRoute extends OtcAbstractHandler {
 
     public static final String ID = "ch.opentrainingcenter.client.commands.AddRoute"; //$NON-NLS-1$
-    private final IDatabaseAccess databaseAccess;
+    private final IDatabaseService service;
 
     public AddRoute() {
         this(Activator.getDefault().getPreferenceStore());
@@ -36,14 +36,13 @@ public class AddRoute extends OtcAbstractHandler {
 
     public AddRoute(final IPreferenceStore store) {
         super(store);
-        final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
-        databaseAccess = service.getDatabaseAccess();
+        service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
 
     }
 
     @Override
     public Object execute(final ExecutionEvent event) throws ExecutionException {
-
+        final IDatabaseAccess databaseAccess = service.getDatabaseAccess();
         final ISelection selection = HandlerUtil.getCurrentSelection(event);
 
         final List<?> tracks = ((StructuredSelection) selection).toList();

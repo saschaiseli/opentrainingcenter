@@ -1,13 +1,13 @@
 package ch.opentrainingcenter.model.training.internal;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import ch.opentrainingcenter.core.data.Pair;
 import ch.opentrainingcenter.model.training.Intervall;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 @SuppressWarnings("nls")
 public class GoldMedalModelTest {
@@ -17,6 +17,11 @@ public class GoldMedalModelTest {
     @Before
     public void before() {
         model = new GoldMedalModel();
+    }
+
+    @After
+    public void after() {
+        model = null;
     }
 
     @Test

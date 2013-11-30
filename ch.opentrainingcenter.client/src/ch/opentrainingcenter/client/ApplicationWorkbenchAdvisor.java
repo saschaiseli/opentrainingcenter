@@ -42,8 +42,12 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
         final String user = store.getString(PreferenceConstants.DB_USER);
         final String pw = store.getString(PreferenceConstants.DB_PASS);
 
+        final String urlAdmin = store.getString(PreferenceConstants.DB_ADMIN_URL);
+        final String userAdmin = store.getString(PreferenceConstants.DB_ADMIN_USER);
+        final String pwAdmin = store.getString(PreferenceConstants.DB_ADMIN_PASS);
+
         final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
-        service.init(dbName, url, user, pw);
+        service.init(dbName, url, user, pw, urlAdmin, userAdmin, pwAdmin);
         final IDatabaseAccess databaseAccess = service.getDatabaseAccess();
         final IDatabaseConnection databaseConnection = service.getDatabaseConnection();
         final DBSTATE dbState = databaseConnection.getDatabaseState();

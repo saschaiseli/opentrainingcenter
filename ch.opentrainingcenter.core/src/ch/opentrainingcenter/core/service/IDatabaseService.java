@@ -1,5 +1,7 @@
 package ch.opentrainingcenter.core.service;
 
+import java.util.Map;
+
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.db.IDatabaseConnection;
 
@@ -21,9 +23,15 @@ public interface IDatabaseService {
      *            User mit dem die Applikation betrieben wird
      * @param pw
      *            Passwort für den User
-     * @return
+     * @param urlAdmin
+     *            url zu der admin datenbank (kann null sein, wenn db kein admin
+     *            braucht)
+     * @param userAdmin
+     *            admin user (kann null sein, wenn db kein admin braucht)
+     * @param pwAdmin
+     *            admin passwort (kann null sein, wenn db kein admin braucht)
      */
-    void init(final String dbName, final String url, final String user, final String pw);
+    void init(final String dbName, final String url, final String user, final String pw, String urlAdmin, String userAdmin, String pwAdmin);
 
     /**
      * @return den Access auf alle DAO's.
@@ -34,4 +42,9 @@ public interface IDatabaseService {
      * @return die DB Verbindung um Admin Task auf der DB auszuführen.
      */
     IDatabaseConnection getDatabaseConnection();
+
+    /**
+     * @return alle verfügbaren DB Connections
+     */
+    Map<String, IDatabaseConnection> getAvailableConnections();
 }

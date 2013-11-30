@@ -10,7 +10,6 @@ import org.eclipse.ui.PlatformUI;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.core.cache.Cache;
 import ch.opentrainingcenter.core.cache.TrainingCache;
-import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.helper.RunType;
 import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.model.navigation.ConcreteImported;
@@ -22,11 +21,10 @@ import ch.opentrainingcenter.transfer.ITraining;
 public abstract class ChangeRunType extends AbstractHandler {
 
     private final Cache cache = TrainingCache.getInstance();
-    private final IDatabaseAccess databaseAccess;
+    private final IDatabaseService service;
 
     public ChangeRunType() {
-        final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
-        databaseAccess = service.getDatabaseAccess();
+        service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
     }
 
     @Override
@@ -38,7 +36,7 @@ public abstract class ChangeRunType extends AbstractHandler {
         }
         for (final Object obj : selection) {
             final ITraining record = ((ConcreteImported) obj).getImported();
-            databaseAccess.updateRecord(record, getType().getIndex());
+            service.getDatabaseAccess().updateRecord(record, getType().getIndex());
         }
         cache.notifyListeners();
         return null;

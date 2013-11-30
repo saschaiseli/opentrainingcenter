@@ -46,12 +46,14 @@ public class DatabaseService implements IDatabaseService {
     }
 
     @Override
-    public void init(final String dbName, final String url, final String user, final String pw) {
+    public void init(final String dbName, final String url, final String user, final String pw, final String urlAdmin, final String userAdmin,
+            final String pwAdmin) {
         connection = DB_ACCESS.get(dbName);
         Assertions.notNull(connection, "Ausgewählte Datenbank darf nicht null sein"); //$NON-NLS-1$
         connection.setDeveloping(developing);
         final DbConnection dbConnection = getConnection(url, user, pw, developing);
-        final DatabaseConnectionConfiguration config = new DatabaseConnectionConfiguration(dbConnection);
+        final DbConnection dbAdminConnection = getAdminConnection(urlAdmin, userAdmin, pwAdmin);
+        final DatabaseConnectionConfiguration config = new DatabaseConnectionConfiguration(dbConnection, dbAdminConnection);
         connection.setConfiguration(config);
         connection.init();
         LOGGER.info("Datenbankverbindung ist initialisiert..."); //$NON-NLS-1$
@@ -69,18 +71,30 @@ public class DatabaseService implements IDatabaseService {
         return conn;
     }
 
+    private DbConnection getAdminConnection(final String urlAdmin, final String userAdmin, final String pwAdmin) {
+        if (urlAdmin != null && userAdmin != null && pwAdmin != null) {
+            final DbConnection dbConnection = new DbConnection(connection.getDriver(), connection.getDialect());
+            dbConnection.setUrl(urlAdmin);
+            dbConnection.setUsername(userAdmin);
+            dbConnection.setPassword(pwAdmin);
+            return dbConnection;
+        }
+        return null;
+    }
+
     @Override
     public IDatabaseAccess getDatabaseAccess() {
-        if (connection != null) {
-            return connection.getDataAccess();
-        } else {
-            LOGGER.info("Connection ist noch nicht initialisiert"); //$NON-NLS-1$
-            return null;
-        }
+        Assertions.notNull(connection, "Datenbank noch nicht initialisiert!"); //$NON-NLS-1$
+        return connection.getDataAccess();
     }
 
     @Override
     public IDatabaseConnection getDatabaseConnection() {
         return connection;
+    }
+
+    @Override
+    public Map<String, IDatabaseConnection> getAvailableConnections() {
+        return DB_ACCESS;
     }
 }

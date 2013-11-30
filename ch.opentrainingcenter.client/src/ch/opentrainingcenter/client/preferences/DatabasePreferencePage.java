@@ -1,6 +1,5 @@
 package ch.opentrainingcenter.client.preferences;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -19,6 +18,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.eclipse.ui.PlatformUI;
 
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.core.PreferenceConstants;
@@ -26,6 +26,7 @@ import ch.opentrainingcenter.core.db.DBSTATE;
 import ch.opentrainingcenter.core.db.DatabaseConnectionConfiguration;
 import ch.opentrainingcenter.core.db.DbConnection;
 import ch.opentrainingcenter.core.db.IDatabaseConnection;
+import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
 
 public class DatabasePreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
@@ -42,10 +43,12 @@ public class DatabasePreferencePage extends FieldEditorPreferencePage implements
     private StringFieldEditor dbAdminUser;
     private StringFieldEditor dbAdminPass;
     private StringFieldEditor dbUrl;
+    private final IDatabaseService service;
 
     public DatabasePreferencePage() {
         super(GRID);
         setDescription(Messages.DatabasePreferencePage_0);
+        service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
     }
 
     @Override
@@ -80,8 +83,7 @@ public class DatabasePreferencePage extends FieldEditorPreferencePage implements
         addField(dbUser);
         addField(dbPass);
         addField(dbUrl);
-        // TODO : fix this
-        final Map<String, IDatabaseConnection> model = new HashMap<>();// DatabaseAccessFactory..getDbaccesses();
+        final Map<String, IDatabaseConnection> model = service.getAvailableConnections();
         initDatabaseAccess(model, store.getString(PreferenceConstants.DB));
         final String[][] entries = new String[model.size() + 1][model.size() + 1];
         entries[0] = new String[] { "", "" }; //$NON-NLS-1$//$NON-NLS-2$

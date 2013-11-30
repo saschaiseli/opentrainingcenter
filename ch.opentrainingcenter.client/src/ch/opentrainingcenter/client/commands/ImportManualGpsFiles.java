@@ -40,10 +40,10 @@ import ch.opentrainingcenter.transfer.IRoute;
  */
 public class ImportManualGpsFiles extends OtcAbstractHandler {
 
-    private final IDatabaseAccess databaseAccess;
     private final Cache cache;
     private final IPreferenceStore store;
     private final ConvertContainer cc;
+    private IDatabaseService service;
 
     /**
      * Constructor
@@ -55,8 +55,7 @@ public class ImportManualGpsFiles extends OtcAbstractHandler {
 
     public ImportManualGpsFiles(final IPreferenceStore store) {
         super(store);
-        final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
-        databaseAccess = service.getDatabaseAccess();
+        service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
         this.cache = TrainingCache.getInstance();
         this.store = store;
         this.cc = new ConvertContainer(ExtensionHelper.getConverters());
@@ -69,7 +68,6 @@ public class ImportManualGpsFiles extends OtcAbstractHandler {
     public ImportManualGpsFiles(final IDatabaseAccess databaseAccess, final Cache cache, final IPreferenceStore store,
             final Map<String, IConvert2Tcx> converters) {
         super(store);
-        this.databaseAccess = databaseAccess;
         this.cache = cache;
         this.store = store;
         this.cc = new ConvertContainer(converters);
@@ -78,6 +76,7 @@ public class ImportManualGpsFiles extends OtcAbstractHandler {
 
     @Override
     public Object execute(final ExecutionEvent event) throws ExecutionException {
+        final IDatabaseAccess databaseAccess = service.getDatabaseAccess();
         final String location = store.getString(PreferenceConstants.GPS_FILE_LOCATION_PROG);
         final IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
         final IFilterDialog importDialog = new ImportFileDialog(window.getShell());

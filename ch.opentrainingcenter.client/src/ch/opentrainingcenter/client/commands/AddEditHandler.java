@@ -9,7 +9,6 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.transfer.ITraining;
@@ -20,11 +19,10 @@ import ch.opentrainingcenter.transfer.ITraining;
 public class AddEditHandler extends AbstractHandler {
 
     public static final String ID = "ch.opentrainingcenter.client.action.AddEditHandler"; //$NON-NLS-1$
-    private final IDatabaseAccess databaseAccess;
+    private final IDatabaseService service;
 
     public AddEditHandler() {
-        final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
-        databaseAccess = service.getDatabaseAccess();
+        service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
     }
 
     @Override
@@ -43,6 +41,6 @@ public class AddEditHandler extends AbstractHandler {
     }
 
     private void updateNote(final ITraining training) {
-        databaseAccess.updateRecord(training);
+        service.getDatabaseAccess().updateRecord(training);
     }
 }

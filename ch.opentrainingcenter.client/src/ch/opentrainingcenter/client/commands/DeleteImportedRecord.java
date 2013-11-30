@@ -14,7 +14,6 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 import ch.opentrainingcenter.core.cache.Cache;
 import ch.opentrainingcenter.core.cache.TrainingCache;
-import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.transfer.ITraining;
 
@@ -27,11 +26,10 @@ public class DeleteImportedRecord extends AbstractHandler {
 
     public static final String ID = "ch.opentrainingcenter.client.commands.DeleteImportedRecord"; //$NON-NLS-1$
 
-    private final IDatabaseAccess databaseAccess;
+    private final IDatabaseService service;
 
     public DeleteImportedRecord() {
-        final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
-        databaseAccess = service.getDatabaseAccess();
+        service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
     }
 
     @Override
@@ -47,7 +45,7 @@ public class DeleteImportedRecord extends AbstractHandler {
             final ITraining record = (ITraining) obj;
             final int dbId = record.getId();
             LOGGER.info("Lösche den Lauf mit der ID " + record.getDatum() + " und der DB Id: " + dbId); //$NON-NLS-1$ //$NON-NLS-2$
-            databaseAccess.removeImportedRecord(record.getDatum());
+            service.getDatabaseAccess().removeImportedRecord(record.getDatum());
             deletedIds.add(record.getDatum());
         }
         cache.remove(deletedIds);
