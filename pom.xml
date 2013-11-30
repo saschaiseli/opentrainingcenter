@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>ch.opentrainingcenter</groupId>
-	<artifactId>rcp-parent</artifactId>
+	<artifactId>opentrainingcenter</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<properties>
 		<tycho.version>0.14.1</tycho.version>
 		<eclipse-repository-url>http://download.eclipse.org/eclipse/updates/3.7</eclipse-repository-url>
-		<sonar.host.url>http://192.168.1.100:9000</sonar.host.url>
-		<sonar.dynamicAnalysis>false</sonar.dynamicAnalysis>
+		<sonar.host.url>http://mccormick:9000</sonar.host.url>
+		<sonar.dynamicAnalysis>true</sonar.dynamicAnalysis>
 		<sonar.phase>generate-sources</sonar.phase>
-		<sonar.exclusions>rcp-parent, org.hibernate, logging, jfreechart,
+		<sonar.exclusions>opentrainingcenter, org.hibernate, logging, jfreechart,
 			com.eclipsesource.widgets.gmaps,junit,h2_lib,
 			ch.opentrainingcenter.tcx/**/*.java,
 			**/Messages.java,
@@ -38,11 +36,13 @@
 		<module>ch.opentrainingcenter.charts</module>
 		<module>ch.opentrainingcenter.core</module>
 		<module>ch.opentrainingcenter.model</module>
-		<module>ch.opentrainingcenter.db</module>
+	        <module>ch.opentrainingcenter.database</module>	
+                <module>ch.opentrainingcenter.db</module>
 		<module>ch.opentrainingcenter.db.postgres</module>
 		<module>ch.opentrainingcenter.i18n</module>
 		<module>ch.opentrainingcenter.importer.tcx</module>
-		<module>ch.opentrainingcenter.tcx</module>
+		<module>ch.opentrainingcenter.importer.gpx</module>
+                <module>ch.opentrainingcenter.tcx</module>
 		<module>ch.opentrainingcenter.transfer</module>
 		<module>ch.opentrainingcenter.route</module>
 		<module>com.eclipsesource.widgets.gmaps</module>
@@ -60,11 +60,14 @@
 		<module>ch.opentrainingcenter.core.tests</module>
 		<module>ch.opentrainingcenter.charts.tests</module>
 		<module>ch.opentrainingcenter.db.tests</module>
-		<module>ch.opentrainingcenter.db.postgres.tests</module>
+	        <module>ch.opentrainingcenter.database.tests</module>	
+                <!--<module>ch.opentrainingcenter.db.postgres.tests</module -->
 		<module>ch.opentrainingcenter.importer.tcx.tests</module>
-		<module>ch.opentrainingcenter.model.tests</module>
+	        <module>ch.opentrainingcenter.importer.gpx.tests</module>	
+                <module>ch.opentrainingcenter.model.tests</module>
 		<module>ch.opentrainingcenter.route.tests</module>
-	</modules>
+    <module>gps-tools</module>
+  </modules>
 
 	<profiles>
 		<profile>
