@@ -11,7 +11,6 @@ Require-Bundle: org.eclipse.core.runtime,
  jodatime,
  ch.opentrainingcenter.core
 Bundle-ActivationPolicy: lazy
-Eclipse-RegisterBuddy: org.hibernate, logging
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: ch.opentrainingcenter.database,
  ch.opentrainingcenter.database.dao
