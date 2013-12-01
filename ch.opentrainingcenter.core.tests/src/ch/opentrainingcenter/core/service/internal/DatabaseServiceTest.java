@@ -1,5 +1,6 @@
 package ch.opentrainingcenter.core.service.internal;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
@@ -26,9 +27,10 @@ public class DatabaseServiceTest {
     }
 
     @Test
+    @Ignore
     public void testInitOhneAdminDBExisitert() {
         service = DatabaseService.getInstance();
-        service.init("H2 Database", "jdbc:h2:file:~/.otc/otc", "sa", "", null, null, null);
+        service.init("H2 Database", "jdbc:h2:file:~/.otc/abc", "sa", "", null, null, null);
         final IDatabaseAccess access = service.getDatabaseAccess();
         assertNotNull(access);
 
@@ -45,10 +47,11 @@ public class DatabaseServiceTest {
     }
 
     @Test
+    @Ignore
     public void testGetAvailableConnections() {
         service = DatabaseService.getInstance();
         assertNotNull(service.getAvailableConnections());
-        assertTrue(service.getAvailableConnections().size() >= 1);
+        assertTrue("Mindestens eine connection muss da sein", service.getAvailableConnections().size() >= 1);
     }
 
 }
