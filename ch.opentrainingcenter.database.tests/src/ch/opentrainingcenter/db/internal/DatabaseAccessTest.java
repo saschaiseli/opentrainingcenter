@@ -1,11 +1,5 @@
 package ch.opentrainingcenter.db.internal;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -14,12 +8,11 @@ import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 
-import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.database.dao.AthleteDao;
+import ch.opentrainingcenter.database.dao.CommonDao;
 import ch.opentrainingcenter.database.dao.RouteDao;
 import ch.opentrainingcenter.database.dao.TrainingTypeDao;
 import ch.opentrainingcenter.database.dao.WeatherDao;
-import ch.opentrainingcenter.db.DatabaseAccess;
 import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IRoute;
@@ -28,23 +21,26 @@ import ch.opentrainingcenter.transfer.ITrackPointProperty;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.ITrainingType;
 import ch.opentrainingcenter.transfer.IWeather;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 @SuppressWarnings("nls")
 public class DatabaseAccessTest extends DatabaseTestBase {
 
-    private DatabaseAccess access;
+    private CommonDao access;
     private long now;
     private IWeather weatherA;
     private IWeather weatherB;
     private AthleteDao athleteDao;
     private RouteDao routeDao;
     private TrainingTypeDao trainingTypeDao;
-    private IDatabaseAccess dataAccess;
 
     @Before
     public void setUp() {
-        access = new DatabaseAccess(connectionConfig);
-        dataAccess = access.getDataAccess();
+        access = new CommonDao(connectionConfig);
         final WeatherDao weatherDao = new WeatherDao(connectionConfig);
         weatherA = weatherDao.getAllWeather().get(0);
         weatherB = weatherDao.getAllWeather().get(1);
@@ -57,7 +53,7 @@ public class DatabaseAccessTest extends DatabaseTestBase {
     @Test
     public void testTraining_1() {
         final ITraining training = CommonTransferFactory.createTraining(now, 1, 2, 3, 4, 5, "note", weatherA, null);
-        final int id = access.getDataAccess().saveTraining(training);
+        final int id = access.saveTraining(training);
         assertTrue("Id ist sicherlich grösser als 0", 0 <= id);
     }
 
@@ -79,7 +75,7 @@ public class DatabaseAccessTest extends DatabaseTestBase {
 
         dataAccess.saveTraining(training);
 
-        final ITraining result = access.getDataAccess().getTrainingById(now);
+        final ITraining result = access.getTrainingById(now);
 
         assertNotNull(result);
 
@@ -108,7 +104,7 @@ public class DatabaseAccessTest extends DatabaseTestBase {
         final IRoute route = CommonTransferFactory.createRoute("testTraining_3_route", "beschreibung", training);
         routeDao.saveOrUpdate(route);
 
-        final ITraining result = access.getDataAccess().getTrainingById(now);
+        final ITraining result = access.getTrainingById(now);
 
         assertNotNull(result);
 

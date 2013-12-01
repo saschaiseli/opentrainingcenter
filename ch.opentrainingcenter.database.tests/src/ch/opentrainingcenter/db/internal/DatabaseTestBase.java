@@ -10,6 +10,7 @@ import ch.opentrainingcenter.core.db.DatabaseConnectionConfiguration;
 import ch.opentrainingcenter.core.db.DbConnection;
 import ch.opentrainingcenter.core.db.SqlException;
 import ch.opentrainingcenter.database.USAGE;
+import ch.opentrainingcenter.database.dao.CommonDao;
 import ch.opentrainingcenter.database.dao.ConnectionConfig;
 import ch.opentrainingcenter.database.dao.IConnectionConfig;
 import ch.opentrainingcenter.db.DatabaseAccess;
@@ -29,12 +30,18 @@ public class DatabaseTestBase {
     private static final String DIALECT = "org.hibernate.dialect.H2Dialect";
 
     protected static IConnectionConfig connectionConfig = null;
+    protected static DatabaseAccess dataConnection;
+    protected static CommonDao dataAccess;
 
     @BeforeClass
     public static void createDb() throws SqlException {
-        connectionConfig = new ConnectionConfig(USAGE.TEST, new DatabaseConnectionConfiguration(new DbConnection(DRIVER, DIALECT, URL + USAGE.TEST.getDbName(), USER, "")));
-        final DatabaseAccess access = new DatabaseAccess(connectionConfig);
-        access.createDatabase();
+        connectionConfig = new ConnectionConfig(USAGE.TEST, new DatabaseConnectionConfiguration(new DbConnection(DRIVER, DIALECT, URL + USAGE.TEST.getDbName(),
+                USER, "")));
+        dataConnection = new DatabaseAccess(connectionConfig);
+        dataConnection.createDatabase();
+
+        dataAccess = new CommonDao(connectionConfig);
+
     }
 
     @After

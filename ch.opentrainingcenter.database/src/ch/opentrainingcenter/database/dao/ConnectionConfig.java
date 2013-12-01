@@ -35,15 +35,15 @@ public class ConnectionConfig implements IConnectionConfig {
         configuration.setProperty("hibernate.format_sql", String.valueOf(usage.isFormatSql()));
         configuration.setProperty("hibernate.connection.pool_size", String.valueOf(10));
         try {
-            configuration.addResource("Athlete.hbm.xml");
-            configuration.addResource("Health.hbm.xml");
-            configuration.addResource("Weather.hbm.xml");
-            configuration.addResource("Training.hbm.xml");
-            configuration.addResource("Trainingtype.hbm.xml");
-            configuration.addResource("Tracktrainingproperty.hbm.xml");
-            configuration.addResource("Streckenpunkte.hbm.xml");
-            configuration.addResource("Planungwoche.hbm.xml");
-            configuration.addResource("Route.hbm.xml");
+            configuration.addResource("Athlete.hbm.xml", this.getClass().getClassLoader());
+            configuration.addResource("Health.hbm.xml", this.getClass().getClassLoader());
+            configuration.addResource("Weather.hbm.xml", this.getClass().getClassLoader());
+            configuration.addResource("Training.hbm.xml", this.getClass().getClassLoader());
+            configuration.addResource("Trainingtype.hbm.xml", this.getClass().getClassLoader());
+            configuration.addResource("Tracktrainingproperty.hbm.xml", this.getClass().getClassLoader());
+            configuration.addResource("Streckenpunkte.hbm.xml", this.getClass().getClassLoader());
+            configuration.addResource("Planungwoche.hbm.xml", this.getClass().getClassLoader());
+            configuration.addResource("Route.hbm.xml", this.getClass().getClassLoader());
             LOG.info("Hibernate Config: show_sql=" + configuration.getProperty("hibernate.show_sql"));
             LOG.info("Hibernate Config: format_sql=" + configuration.getProperty("hibernate.format_sql"));
             LOG.info("Hibernate Config: pool_size=" + configuration.getProperty("hibernate.pool_size"));

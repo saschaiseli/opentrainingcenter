@@ -5,5 +5,7 @@ Bundle-SymbolicName: ch.opentrainingcenter.database.tests
 Bundle-Version: 1.0.0.qualifier
 Fragment-Host: ch.opentrainingcenter.database
 Require-Bundle: org.junit,
- mockito
+ mockito,
+ ch.opentrainingcenter.db,
+ org.eclipse.ui
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
