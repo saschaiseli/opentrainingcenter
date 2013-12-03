@@ -54,7 +54,7 @@ public class DatabaseService implements IDatabaseService {
         final DbConnection dbConnection = getConnection(url, user, pw, developing);
         final DbConnection dbAdminConnection = getAdminConnection(urlAdmin, userAdmin, pwAdmin);
         final DatabaseConnectionConfiguration config = new DatabaseConnectionConfiguration(dbConnection, dbAdminConnection);
-        connection.setConfiguration(config);
+        connection.setConfig(config);
         connection.init();
         LOGGER.info("Datenbankverbindung ist initialisiert..."); //$NON-NLS-1$
     }

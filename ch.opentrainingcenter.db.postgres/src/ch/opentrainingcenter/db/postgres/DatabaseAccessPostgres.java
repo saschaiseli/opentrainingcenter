@@ -14,12 +14,11 @@ import org.eclipse.core.runtime.CoreException;
 import org.postgresql.util.PSQLException;
 
 import ch.opentrainingcenter.core.db.DBSTATE;
+import ch.opentrainingcenter.core.db.DatabaseConnectionConfiguration;
 import ch.opentrainingcenter.core.db.DatabaseConnectionConfiguration.DB_MODE;
 import ch.opentrainingcenter.core.db.DbConnection;
 import ch.opentrainingcenter.core.db.SqlException;
 import ch.opentrainingcenter.database.AbstractDatabaseAccess;
-import ch.opentrainingcenter.database.USAGE;
-import ch.opentrainingcenter.database.dao.ConnectionConfig;
 import ch.opentrainingcenter.database.dao.DbScriptReader;
 import ch.opentrainingcenter.database.dao.IConnectionConfig;
 
@@ -48,16 +47,6 @@ public class DatabaseAccessPostgres extends AbstractDatabaseAccess {
     }
 
     @Override
-    public void init() {
-        if (developing) {
-            this.connectionConfig = new ConnectionConfig(USAGE.DEVELOPING, config);
-        } else {
-            this.connectionConfig = new ConnectionConfig(USAGE.PRODUCTION, config);
-        }
-        createDaos(connectionConfig);
-    }
-
-    @Override
     public Object create() throws CoreException {
         return new DatabaseAccessPostgres();
     }
@@ -74,7 +63,7 @@ public class DatabaseAccessPostgres extends AbstractDatabaseAccess {
         connectionConfig.getSession();
         try {
             final InputStream in = DatabaseAccessPostgres.class.getClassLoader().getResourceAsStream("otc_postgres.sql"); //$NON-NLS-1$
-            databaseCreator.createDatabase(DbScriptReader.readDbScript(in));
+            getDatabaseCreator().createDatabase(DbScriptReader.readDbScript(in));
         } catch (final FileNotFoundException fnne) {
             throw new SqlException(fnne);
         }
@@ -91,23 +80,24 @@ public class DatabaseAccessPostgres extends AbstractDatabaseAccess {
         ResultSet db = null;
         ResultSet user = null;
         try {
-            Class.forName(config.getDriver(DB_MODE.ADMIN));
-            conn = DriverManager.getConnection(config.getUrl(DB_MODE.ADMIN), config.getUsername(DB_MODE.ADMIN), config.getPassword(DB_MODE.ADMIN));
+            final DatabaseConnectionConfiguration cfg = getConfig();
+            Class.forName(cfg.getDriver(DB_MODE.ADMIN));
+            conn = DriverManager.getConnection(cfg.getUrl(DB_MODE.ADMIN), getConfig().getUsername(DB_MODE.ADMIN), cfg.getPassword(DB_MODE.ADMIN));
             stmt = conn.createStatement();
-            user = stmt.executeQuery("SELECT COUNT(*) FROM pg_user WHERE usename='" + config.getUsername(DB_MODE.APPLICATION) + "'");
+            user = stmt.executeQuery("SELECT COUNT(*) FROM pg_user WHERE usename='" + cfg.getUsername(DB_MODE.APPLICATION) + "'");
             user.next();
             final int count = user.getInt("count");
             if (count == 0) {
-                stmt.execute("CREATE USER " + config.getUsername(DB_MODE.APPLICATION) + " WITH PASSWORD '" + config.getPassword(DB_MODE.APPLICATION) + "'");
+                stmt.execute("CREATE USER " + cfg.getUsername(DB_MODE.APPLICATION) + " WITH PASSWORD '" + cfg.getPassword(DB_MODE.APPLICATION) + "'");
             }
-            db = stmt.executeQuery("SELECT count(*) from pg_database where datname='" + config.getDatabaseName(DB_MODE.APPLICATION) + "'");
+            db = stmt.executeQuery("SELECT count(*) from pg_database where datname='" + cfg.getDatabaseName(DB_MODE.APPLICATION) + "'");
             db.next();
             final int countDb = db.getInt("count");
             if (countDb == 0) {
                 stmt.execute("CREATE DATABASE " + connectionConfig.getUsage().getDbName());
             }
-            stmt.execute(String.format("ALTER DATABASE %s OWNER TO %s", connectionConfig.getUsage().getDbName(), config.getUsername(DB_MODE.APPLICATION)));
-            stmt.execute("ALTER SCHEMA PUBLIC OWNER TO " + config.getUsername(DB_MODE.APPLICATION));
+            stmt.execute(String.format("ALTER DATABASE %s OWNER TO %s", connectionConfig.getUsage().getDbName(), cfg.getUsername(DB_MODE.APPLICATION)));
+            stmt.execute("ALTER SCHEMA PUBLIC OWNER TO " + cfg.getUsername(DB_MODE.APPLICATION));
         } catch (final SQLException se) {
             LOG.error(se);
         } catch (final Exception e) {
@@ -160,7 +150,7 @@ public class DatabaseAccessPostgres extends AbstractDatabaseAccess {
         final String connectionUrl = url + ";user=" + user + ";password=***";
         DBSTATE result = DBSTATE.OK;
         try {
-            Class.forName(config.getDbConnection().getDriver());
+            Class.forName(getConfig().getDbConnection().getDriver());
             final Connection con = DriverManager.getConnection(url, user, pass);
             final Statement statement = con.createStatement();
             if (!admin) {
@@ -189,7 +179,8 @@ public class DatabaseAccessPostgres extends AbstractDatabaseAccess {
     @Override
     public DBSTATE getDatabaseState() {
         DBSTATE result = DBSTATE.OK;
-        final DbConnection adminConn = config.getAdminConnection();
+        final DatabaseConnectionConfiguration cfg = getConfig();
+        final DbConnection adminConn = cfg.getAdminConnection();
         final String adminUrl = adminConn.getUrl();
         final String adminUser = adminConn.getUsername();
         final String adminPw = adminConn.getPassword();
@@ -197,10 +188,10 @@ public class DatabaseAccessPostgres extends AbstractDatabaseAccess {
         if (DBSTATE.OK.equals(adminStatus)) {
             LOG.info("Admin Connection funktioniert, nun testen ob die user db mit dem user erstellt werden kann");
             try {
-                Class.forName(config.getDbConnection().getDriver());
+                Class.forName(cfg.getDbConnection().getDriver());
                 final Connection con = DriverManager.getConnection(adminUrl, adminUser, adminPw);
                 final Statement statement = con.createStatement();
-                final String url = config.getDbConnection().getUrl();
+                final String url = cfg.getDbConnection().getUrl();
                 final String dbName = url.substring(url.lastIndexOf('/') + 1, url.length());
 
                 final ResultSet rs = statement
@@ -211,7 +202,7 @@ public class DatabaseAccessPostgres extends AbstractDatabaseAccess {
                     final String datname = rs.getString("datname");
                     final String usename = rs.getString("usename");
                     if (datname.equals(dbName)) {
-                        if (!usename.equals(config.getDbConnection().getUsername())) {
+                        if (!usename.equals(cfg.getDbConnection().getUsername())) {
                             LOG.info(String.format("Datenbank %s existiert bereits unter dem User %s. Kann nicht neu erstellt werden", datname, usename));
                             result = DBSTATE.PROBLEM;
                         }
@@ -235,7 +226,7 @@ public class DatabaseAccessPostgres extends AbstractDatabaseAccess {
 
     @Override
     public DbConnection getAdminConnection() {
-        return config.getAdminConnection();
+        return getConfig().getAdminConnection();
     }
 
     @Override

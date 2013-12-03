@@ -11,8 +11,6 @@ import ch.opentrainingcenter.core.db.DBSTATE;
 import ch.opentrainingcenter.core.db.DbConnection;
 import ch.opentrainingcenter.core.db.SqlException;
 import ch.opentrainingcenter.database.AbstractDatabaseAccess;
-import ch.opentrainingcenter.database.USAGE;
-import ch.opentrainingcenter.database.dao.ConnectionConfig;
 import ch.opentrainingcenter.database.dao.DbScriptReader;
 import ch.opentrainingcenter.database.dao.IConnectionConfig;
 
@@ -22,8 +20,6 @@ public class DatabaseAccess extends AbstractDatabaseAccess {
     private static final Logger LOG = Logger.getLogger(DatabaseAccess.class);
     private static final String DRIVER = "org.h2.Driver";
     private static final String DIALOECT = "org.hibernate.dialect.H2Dialect";
-
-    private IConnectionConfig connectionConfig;
 
     /**
      * Mit diesem Konstruktur wird mit der eclipse platform der vm args
@@ -38,17 +34,6 @@ public class DatabaseAccess extends AbstractDatabaseAccess {
      */
     public DatabaseAccess(final IConnectionConfig connectionConfig) {
         super();
-        this.connectionConfig = connectionConfig;
-        createDaos(connectionConfig);
-    }
-
-    @Override
-    public void init() {
-        if (developing) {
-            this.connectionConfig = new ConnectionConfig(USAGE.DEVELOPING, config);
-        } else {
-            this.connectionConfig = new ConnectionConfig(USAGE.PRODUCTION, config);
-        }
         createDaos(connectionConfig);
     }
 
@@ -70,7 +55,7 @@ public class DatabaseAccess extends AbstractDatabaseAccess {
     @Override
     public DBSTATE getDatabaseState() {
         try {
-            commonDao.getAthlete(1);
+            getCommonDao().getAthlete(1);
         } catch (final Exception e) {
             final Throwable cause = e.getCause();
             final String message = cause != null ? cause.getMessage() : e.getMessage();
@@ -97,7 +82,7 @@ public class DatabaseAccess extends AbstractDatabaseAccess {
     public void createDatabase() throws SqlException {
         try {
             final InputStream in = DatabaseAccess.class.getClassLoader().getResourceAsStream("otc.sql"); //$NON-NLS-1$
-            databaseCreator.createDatabase(DbScriptReader.readDbScript(in));
+            getDatabaseCreator().createDatabase(DbScriptReader.readDbScript(in));
         } catch (final FileNotFoundException fnne) {
             throw new SqlException(fnne);
         }
@@ -105,7 +90,7 @@ public class DatabaseAccess extends AbstractDatabaseAccess {
 
     @Override
     public File backUpDatabase(final String path) {
-        return databaseCreator.backUpDatabase(path);
+        return getDatabaseCreator().backUpDatabase(path);
     }
 
     @Override

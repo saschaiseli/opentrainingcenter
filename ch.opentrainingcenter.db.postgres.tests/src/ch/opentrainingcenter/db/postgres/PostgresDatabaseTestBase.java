@@ -39,7 +39,7 @@ public class PostgresDatabaseTestBase {
         final DatabaseConnectionConfiguration config = new DatabaseConnectionConfiguration(appConnection, adminConnection);
         connectionConfig = new ConnectionConfig(USAGE.TEST, config);
         final DatabaseAccessPostgres access = new DatabaseAccessPostgres(connectionConfig);
-        access.setConfiguration(config);
+        access.setConfig(config);
         access.createDatabase();
     }
 

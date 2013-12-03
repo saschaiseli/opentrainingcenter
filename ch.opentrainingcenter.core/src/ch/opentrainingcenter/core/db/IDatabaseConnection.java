@@ -45,7 +45,7 @@ public interface IDatabaseConnection extends IExecutableExtensionFactory {
      * Setzt die Datenbankkonfiguration (driver, url, user, password,
      * dialect,..) Darf NICHT null sein
      */
-    void setConfiguration(DatabaseConnectionConfiguration config);
+    void setConfig(DatabaseConnectionConfiguration config);
 
     /**
      * Initialisiert den Database Access. Zu diesem Zeitpunkt muss die
