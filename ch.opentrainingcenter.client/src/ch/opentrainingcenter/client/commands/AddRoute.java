@@ -31,12 +31,12 @@ public class AddRoute extends OtcAbstractHandler {
     private final IDatabaseService service;
 
     public AddRoute() {
-        this(Activator.getDefault().getPreferenceStore());
+        this(Activator.getDefault().getPreferenceStore(), (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class));
     }
 
-    public AddRoute(final IPreferenceStore store) {
+    public AddRoute(final IPreferenceStore store, final IDatabaseService service) {
         super(store);
-        service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
+        this.service = service;
 
     }
 
