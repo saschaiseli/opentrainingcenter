@@ -28,19 +28,8 @@ public final class DbScriptReader {
      * @throws FileNotFoundException
      */
     @SuppressWarnings("nls")
-    public static List<String> readDbScript(final InputStream in) throws FileNotFoundException {// final
-        // String
-        // sqlFileName)
-        // throws
-        // FileNotFoundException
-        // {
+    public static List<String> readDbScript(final InputStream in) throws FileNotFoundException {
         final List<String> result = new ArrayList<>();
-        // if (sqlFileName == null || sqlFileName.length() == 0) {
-        // throw new
-        // IllegalArgumentException("Ungültige Angabe des SQL Files. '" +
-        // sqlFileName + "'");
-        // }
-        //        final InputStream in = DbScriptReader.class.getClassLoader().getResourceAsStream(sqlFileName); //$NON-NLS-1$
         if (in == null) {
             throw new FileNotFoundException("Das SQL Script File konnte nicht gefunden werden.");
         }
