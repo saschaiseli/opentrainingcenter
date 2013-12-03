@@ -35,10 +35,10 @@ import ch.opentrainingcenter.tcx.PositionT;
 import ch.opentrainingcenter.tcx.TrackT;
 import ch.opentrainingcenter.tcx.TrackpointT;
 import ch.opentrainingcenter.tcx.TrainingCenterDatabaseT;
-import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IStreckenPunkt;
 import ch.opentrainingcenter.transfer.ITrackPointProperty;
 import ch.opentrainingcenter.transfer.ITraining;
+import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
 
 public class ConvertTcx implements IConvert2Tcx {
     private static final Logger LOGGER = Logger.getLogger(ConvertTcx.class);

@@ -10,8 +10,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ch.opentrainingcenter.model.training.IGoldMedalModel;
-import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.ITraining;
+import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
 
 @SuppressWarnings("nls")
 public class GoldMedalActionTest {

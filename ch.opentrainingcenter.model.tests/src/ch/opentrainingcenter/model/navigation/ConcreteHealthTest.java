@@ -5,8 +5,8 @@ import java.util.Locale;
 
 import org.junit.Test;
 
-import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IHealth;
+import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
 import static org.junit.Assert.assertEquals;
 
 @SuppressWarnings("nls")

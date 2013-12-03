@@ -13,10 +13,10 @@ import ch.opentrainingcenter.core.helper.TimeHelper;
 import ch.opentrainingcenter.model.planing.IPastPlanung;
 import ch.opentrainingcenter.model.planing.IPastPlanungModel;
 import ch.opentrainingcenter.model.planing.KwJahrKey;
-import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IPlanungWoche;
 import ch.opentrainingcenter.transfer.ITraining;
+import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
 
 public class PastPlanungModel implements IPastPlanungModel {
 

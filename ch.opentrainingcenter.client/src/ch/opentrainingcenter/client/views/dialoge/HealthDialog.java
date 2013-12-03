@@ -43,9 +43,9 @@ import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.model.ModelFactory;
 import ch.opentrainingcenter.model.sportler.HealthModel;
-import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IHealth;
+import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
 
 import com.ibm.icu.text.NumberFormat;
 

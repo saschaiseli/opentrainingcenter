@@ -37,9 +37,9 @@ import ch.opentrainingcenter.model.cache.TrainingsPlanCache;
 import ch.opentrainingcenter.model.planing.IPlanungModel;
 import ch.opentrainingcenter.model.planing.IPlanungWocheModel;
 import ch.opentrainingcenter.model.planing.PlanungWocheComparator;
-import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IPlanungWoche;
+import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
 
 public class JahresplanungViewPart extends ViewPart {
     private static final Logger LOG = Logger.getLogger(JahresplanungViewPart.class);

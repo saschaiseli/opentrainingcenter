@@ -1,10 +1,19 @@
-package ch.opentrainingcenter.transfer;
+package ch.opentrainingcenter.transfer.factory;
 
 import java.util.Date;
 
 import org.joda.time.DateTime;
 
 import ch.opentrainingcenter.i18n.Messages;
+import ch.opentrainingcenter.transfer.IAthlete;
+import ch.opentrainingcenter.transfer.IHealth;
+import ch.opentrainingcenter.transfer.IPlanungWoche;
+import ch.opentrainingcenter.transfer.IRoute;
+import ch.opentrainingcenter.transfer.IStreckenPunkt;
+import ch.opentrainingcenter.transfer.ITrackPointProperty;
+import ch.opentrainingcenter.transfer.ITraining;
+import ch.opentrainingcenter.transfer.ITrainingType;
+import ch.opentrainingcenter.transfer.IWeather;
 import ch.opentrainingcenter.transfer.impl.Athlete;
 import ch.opentrainingcenter.transfer.impl.Health;
 import ch.opentrainingcenter.transfer.impl.Planungwoche;

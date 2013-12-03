@@ -2,8 +2,8 @@ package ch.opentrainingcenter.client.cache;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 
-import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.ITraining;
+import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
 
 public class ActivityTTestHelper {
 

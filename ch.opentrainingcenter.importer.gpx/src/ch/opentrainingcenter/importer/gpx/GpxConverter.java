@@ -7,10 +7,10 @@ import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
 
-import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IStreckenPunkt;
 import ch.opentrainingcenter.transfer.ITrackPointProperty;
 import ch.opentrainingcenter.transfer.ITraining;
+import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
 
 import com.grum.geocalc.DegreeCoordinate;
 import com.grum.geocalc.EarthCalc;

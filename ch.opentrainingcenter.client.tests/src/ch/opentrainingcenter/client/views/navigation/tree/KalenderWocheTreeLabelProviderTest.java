@@ -15,8 +15,8 @@ import org.junit.Test;
 import ch.opentrainingcenter.model.ModelFactory;
 import ch.opentrainingcenter.model.navigation.INavigationItem;
 import ch.opentrainingcenter.model.navigation.INavigationParent;
-import ch.opentrainingcenter.transfer.CommonTransferFactory;
 import ch.opentrainingcenter.transfer.IHealth;
+import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
 
 @SuppressWarnings("nls")
 public class KalenderWocheTreeLabelProviderTest {

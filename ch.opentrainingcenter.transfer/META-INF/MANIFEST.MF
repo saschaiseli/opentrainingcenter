@@ -11,6 +11,7 @@ Require-Bundle: org.eclipse.core.runtime,
  ch.opentrainingcenter.i18n
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Export-Package: ch.opentrainingcenter.transfer
+Export-Package: ch.opentrainingcenter.transfer,
+ ch.opentrainingcenter.transfer.factory
 Eclipse-RegisterBuddy: org.hibernate, logging
  

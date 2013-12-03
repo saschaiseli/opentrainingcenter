@@ -13,8 +13,6 @@ public class Route implements java.io.Serializable, IRoute {
     private String beschreibung;
     private IAthlete athlete;
 
-    // private ITraining training;
-
     private ITraining referenzTrack;
 
     public Route() {
@@ -71,17 +69,6 @@ public class Route implements java.io.Serializable, IRoute {
     public IAthlete getAthlete() {
         return athlete;
     }
-
-    //
-    // @Override
-    // public ITraining getTraining() {
-    // return training;
-    // }
-    //
-    // @Override
-    // public void setTraining(final ITraining training) {
-    // this.training = training;
-    // }
 
     @Override
     public ITraining getReferenzTrack() {
