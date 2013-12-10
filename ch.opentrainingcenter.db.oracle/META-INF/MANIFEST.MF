@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Oracle
+Bundle-SymbolicName: ch.opentrainingcenter.db.oracle;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: ch.opentrainingcenter.db.oracle.Activator
+Require-Bundle: org.eclipse.core.runtime,
+ ch.opentrainingcenter.transfer,
+ ch.opentrainingcenter.core,
+ org.hibernate,
+ logging,
+ jodatime,
+ ch.opentrainingcenter.database,
+ oracle14
+Bundle-ActivationPolicy: lazy
+Eclipse-RegisterBuddy: org.hibernate, logging
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ClassPath: db/,
+ .
