@@ -20,6 +20,5 @@ Export-Package: ch.opentrainingcenter.db;
    ch.opentrainingcenter.db.internal"
 Eclipse-RegisterBuddy: org.hibernate, logging
 Bundle-ActivationPolicy: lazy
-Bundle-ClassPath: hibernate/,
- db/,
+Bundle-ClassPath: db/,
  .
