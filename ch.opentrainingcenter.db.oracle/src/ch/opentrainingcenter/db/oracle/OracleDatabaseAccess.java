@@ -69,6 +69,8 @@ public class OracleDatabaseAccess extends AbstractDatabaseAccess {
                 result = DatabaseConnectionState.createProblemState(Messages.OracleDatabaseAccess_0);
             } else if (sqlState.startsWith("I/O Exception")) { //$NON-NLS-1$
                 result = DatabaseConnectionState.createProblemState(Messages.OracleDatabaseAccess_1);
+            } else if (sqlState.startsWith("ORA-01017")) { //$NON-NLS-1$
+                result = DatabaseConnectionState.createProblemState(Messages.OracleDatabaseAccess_5);
             } else {
                 result = DatabaseConnectionState.createProblemState(NLS.bind(Messages.OracleDatabaseAccess_2, sqlEx.getMessage()));
             }

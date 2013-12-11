@@ -163,13 +163,13 @@ public class DatabasePreferencePage extends FieldEditorPreferencePage implements
 
                     access.setConfig(new DatabaseConnectionConfiguration(dbConnection, dbAdminConnection));
 
-                    connectionSuccess = DBSTATE.OK.equals(access.validateConnection(url, user, password, false));
+                    connectionSuccess = DBSTATE.OK.equals(access.validateConnection(url, user, password, false).getState());
 
                     if (access.isUsingAdminDbConnection()) {
                         final String adminUrl = dbAdminUrl.getStringValue();
                         final String adminUser = dbAdminUser.getStringValue();
                         final String adminPassword = dbAdminPass.getStringValue();
-                        connectionSuccess = DBSTATE.OK.equals(access.validateConnection(adminUrl, adminUser, adminPassword, true));
+                        connectionSuccess = DBSTATE.OK.equals(access.validateConnection(adminUrl, adminUser, adminPassword, true).getState());
                     }
                 }
                 if (!connectionSuccess) {

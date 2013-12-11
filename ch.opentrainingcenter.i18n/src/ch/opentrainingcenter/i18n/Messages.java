@@ -186,6 +186,7 @@ public final class Messages extends NLS {
     public static String OracleDatabaseAccess_2;
     public static String OracleDatabaseAccess_3;
     public static String OracleDatabaseAccess_4;
+    public static String OracleDatabaseAccess_5;
     public static String OTCBarChartViewer0;
     public static String OTCBarChartViewer1;
     public static String OTCBarChartViewer10;

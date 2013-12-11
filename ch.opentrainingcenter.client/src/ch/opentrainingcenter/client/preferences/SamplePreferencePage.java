@@ -53,7 +53,7 @@ public class SamplePreferencePage extends FieldEditorPreferencePage implements I
         setDescription(Messages.SamplePreferencePage_1);
         final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
         databaseAccess = service.getDatabaseAccess();
-        if (DBSTATE.OK.equals(ApplicationContext.getApplicationContext().getDbState())) {
+        if (DBSTATE.OK.equals(ApplicationContext.getApplicationContext().getDbState().getState())) {
             allAthletes = databaseAccess.getAllAthletes();
         } else {
             allAthletes = Collections.emptyList();

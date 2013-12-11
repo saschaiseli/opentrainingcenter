@@ -42,7 +42,7 @@ public class DatabaseContributeItem extends ContributionItem {
         label.setImage(icon);
 
         final DatabaseConnectionState dbState = ApplicationContext.getApplicationContext().getDbState();
-        if (DBSTATE.OK.equals(dbState)) {
+        if (DBSTATE.OK.equals(dbState.getState())) {
             label.setToolTipText(NLS.bind(Messages.DbContributeItem_0, dbUrl));
         } else {
             // nicht ok
