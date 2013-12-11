@@ -313,7 +313,9 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
                     final ITraining act = entry.iterator().next();
                     if (act.getDatum() == simpleTraining.getDatum().getTime()) {
                         // nur wenn es dieser record ist!
-                        note.setText(simpleTraining.getNote());
+                        if (simpleTraining.getNote() != null) {
+                            note.setText(simpleTraining.getNote());
+                        }
                         // comboStrecke.setSelection(new
                         // StructuredSelection(simpleTraining.getStrecke()));
                     }

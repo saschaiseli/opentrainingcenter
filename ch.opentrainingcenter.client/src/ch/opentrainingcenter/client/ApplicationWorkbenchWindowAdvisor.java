@@ -7,8 +7,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.action.IStatusLineManager;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceManager;
-import org.eclipse.osgi.util.NLS;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.application.ActionBarAdvisor;
@@ -20,13 +18,12 @@ import ch.opentrainingcenter.client.perspectives.MainPerspective;
 import ch.opentrainingcenter.client.splash.InitialLoadRunnable;
 import ch.opentrainingcenter.client.splash.OtcSplashHandler;
 import ch.opentrainingcenter.client.views.ApplicationContext;
-import ch.opentrainingcenter.client.views.IImageKeys;
+import ch.opentrainingcenter.client.views.statusline.DatabaseContributeItem;
 import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.core.db.DBSTATE;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.db.IDatabaseConnection;
 import ch.opentrainingcenter.core.service.IDatabaseService;
-import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.transfer.IAthlete;
 
 public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
@@ -106,13 +103,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
         super.postWindowOpen();
         configurer.getWindow().getShell().setMaximized(true);
         final IStatusLineManager manager = getWindowConfigurer().getActionBarConfigurer().getStatusLineManager();
-        final String databaseName = databaseConnection.getName();
-        final Image icon = Activator.getImageDescriptor(IImageKeys.DATABASE).createImage();
-        if (DBSTATE.OK.equals(ApplicationContext.getApplicationContext().getDbState())) {
-            manager.setMessage(icon, databaseName);
-        } else {
-            manager.setErrorMessage(icon, NLS.bind(Messages.ApplicationWorkbenchWindowAdvisor_0, databaseName));
-        }
+        manager.add(new DatabaseContributeItem(databaseConnection.getName(), databaseConnection.getDbConnection().getUrl()));
     }
 
     @Override
