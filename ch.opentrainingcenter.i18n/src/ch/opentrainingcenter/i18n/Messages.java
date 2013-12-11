@@ -100,6 +100,15 @@ public final class Messages extends NLS {
     public static String CreateAthleteView9;
     public static String CreateHeapDump_0;
     public static String CreateHeapDump_1;
+    public static String DatabaseAccess_0;
+    public static String DatabaseAccess_1;
+    public static String DatabaseAccess_2;
+    public static String DatabaseAccessPostgres_12;
+    public static String DatabaseAccessPostgres_14;
+    public static String DatabaseAccessPostgres_15;
+    public static String DatabaseAccessPostgres_17;
+    public static String DatabaseAccessPostgres_18;
+    public static String DatabaseAccessPostgres_19;
     public static String DatabasePreferencePage_0;
     public static String DatabasePreferencePage_1;
     public static String DatabasePreferencePage_10;
@@ -115,6 +124,8 @@ public final class Messages extends NLS {
     public static String DatabasePreferencePage_7;
     public static String DatabasePreferencePage_8;
     public static String DatabasePreferencePage_9;
+    public static String DbContributeItem_0;
+    public static String DBSTATE_5;
     public static String DeleteImportedRecord0;
     public static String HealthDialog_0;
     public static String HealthDialog_1;
@@ -170,6 +181,11 @@ public final class Messages extends NLS {
     public static String NumberValidator2;
     public static String NumberValidator3;
     public static String OptionalNumberValidator_0;
+    public static String OracleDatabaseAccess_0;
+    public static String OracleDatabaseAccess_1;
+    public static String OracleDatabaseAccess_2;
+    public static String OracleDatabaseAccess_3;
+    public static String OracleDatabaseAccess_4;
     public static String OTCBarChartViewer0;
     public static String OTCBarChartViewer1;
     public static String OTCBarChartViewer10;

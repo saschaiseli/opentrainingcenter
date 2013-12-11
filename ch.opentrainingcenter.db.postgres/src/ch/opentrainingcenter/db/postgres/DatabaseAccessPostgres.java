@@ -11,22 +11,24 @@ import java.sql.Statement;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.osgi.util.NLS;
 import org.postgresql.util.PSQLException;
 
 import ch.opentrainingcenter.core.db.DBSTATE;
 import ch.opentrainingcenter.core.db.DatabaseConnectionConfiguration;
 import ch.opentrainingcenter.core.db.DatabaseConnectionConfiguration.DB_MODE;
+import ch.opentrainingcenter.core.db.DatabaseConnectionState;
 import ch.opentrainingcenter.core.db.DbConnection;
 import ch.opentrainingcenter.core.db.SqlException;
 import ch.opentrainingcenter.database.AbstractDatabaseAccess;
 import ch.opentrainingcenter.database.dao.DbScriptReader;
 import ch.opentrainingcenter.database.dao.IConnectionConfig;
+import ch.opentrainingcenter.i18n.Messages;
 
-@SuppressWarnings("nls")
 public class DatabaseAccessPostgres extends AbstractDatabaseAccess {
     private static final Logger LOG = Logger.getLogger(DatabaseAccessPostgres.class);
-    private final static String DRIVER = "org.postgresql.Driver";
-    private final static String DIALECT = "org.hibernate.dialect.PostgreSQLDialect";
+    private final static String DRIVER = "org.postgresql.Driver"; //$NON-NLS-1$
+    private final static String DIALECT = "org.hibernate.dialect.PostgreSQLDialect"; //$NON-NLS-1$
 
     private IConnectionConfig connectionConfig;
 
@@ -71,7 +73,7 @@ public class DatabaseAccessPostgres extends AbstractDatabaseAccess {
 
     @Override
     public File backUpDatabase(final String path) {
-        return new File(path, "pleaseBackUpYourself.sql");
+        return new File(path, "pleaseBackUpYourself.sql"); //$NON-NLS-1$
     }
 
     private void createDB() {
@@ -84,20 +86,20 @@ public class DatabaseAccessPostgres extends AbstractDatabaseAccess {
             Class.forName(cfg.getDriver(DB_MODE.ADMIN));
             conn = DriverManager.getConnection(cfg.getUrl(DB_MODE.ADMIN), getConfig().getUsername(DB_MODE.ADMIN), cfg.getPassword(DB_MODE.ADMIN));
             stmt = conn.createStatement();
-            user = stmt.executeQuery("SELECT COUNT(*) FROM pg_user WHERE usename='" + cfg.getUsername(DB_MODE.APPLICATION) + "'");
+            user = stmt.executeQuery("SELECT COUNT(*) FROM pg_user WHERE usename='" + cfg.getUsername(DB_MODE.APPLICATION) + "'"); //$NON-NLS-1$ //$NON-NLS-2$
             user.next();
-            final int count = user.getInt("count");
+            final int count = user.getInt("count"); //$NON-NLS-1$
             if (count == 0) {
-                stmt.execute("CREATE USER " + cfg.getUsername(DB_MODE.APPLICATION) + " WITH PASSWORD '" + cfg.getPassword(DB_MODE.APPLICATION) + "'");
+                stmt.execute("CREATE USER " + cfg.getUsername(DB_MODE.APPLICATION) + " WITH PASSWORD '" + cfg.getPassword(DB_MODE.APPLICATION) + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             }
-            db = stmt.executeQuery("SELECT count(*) from pg_database where datname='" + cfg.getDatabaseName(DB_MODE.APPLICATION) + "'");
+            db = stmt.executeQuery("SELECT count(*) from pg_database where datname='" + cfg.getDatabaseName(DB_MODE.APPLICATION) + "'"); //$NON-NLS-1$ //$NON-NLS-2$
             db.next();
-            final int countDb = db.getInt("count");
+            final int countDb = db.getInt("count"); //$NON-NLS-1$
             if (countDb == 0) {
-                stmt.execute("CREATE DATABASE " + connectionConfig.getUsage().getDbName());
+                stmt.execute("CREATE DATABASE " + connectionConfig.getUsage().getDbName()); //$NON-NLS-1$
             }
-            stmt.execute(String.format("ALTER DATABASE %s OWNER TO %s", connectionConfig.getUsage().getDbName(), cfg.getUsername(DB_MODE.APPLICATION)));
-            stmt.execute("ALTER SCHEMA PUBLIC OWNER TO " + cfg.getUsername(DB_MODE.APPLICATION));
+            stmt.execute(String.format("ALTER DATABASE %s OWNER TO %s", connectionConfig.getUsage().getDbName(), cfg.getUsername(DB_MODE.APPLICATION))); //$NON-NLS-1$
+            stmt.execute("ALTER SCHEMA PUBLIC OWNER TO " + cfg.getUsername(DB_MODE.APPLICATION)); //$NON-NLS-1$
         } catch (final SQLException se) {
             LOG.error(se);
         } catch (final Exception e) {
@@ -142,51 +144,52 @@ public class DatabaseAccessPostgres extends AbstractDatabaseAccess {
 
     @Override
     public String getName() {
-        return "Postgres Database";
+        return "Postgres Database"; //$NON-NLS-1$
     }
 
     @Override
-    public DBSTATE validateConnection(final String url, final String user, final String pass, final boolean admin) {
-        final String connectionUrl = url + ";user=" + user + ";password=***";
-        DBSTATE result = DBSTATE.OK;
+    public DatabaseConnectionState validateConnection(final String url, final String user, final String pass, final boolean admin) {
+        final String connectionUrl = url + ";user=" + user + ";password=***"; //$NON-NLS-1$ //$NON-NLS-2$
+        DatabaseConnectionState result = DatabaseConnectionState.createNewOkState();
         try {
             Class.forName(getConfig().getDbConnection().getDriver());
             final Connection con = DriverManager.getConnection(url, user, pass);
             final Statement statement = con.createStatement();
             if (!admin) {
                 // execute a select statement
-                statement.execute("Select * from ATHLETE");
+                statement.execute("Select * from ATHLETE"); //$NON-NLS-1$
             }
-            LOG.info(String.format("Connection to database %s successfully", connectionUrl));
+            LOG.info(String.format("Connection to database %s successfully", connectionUrl)); //$NON-NLS-1$
         } catch (final PSQLException plsqlEx) {
             final String sqlState = plsqlEx.getSQLState();
-            if (sqlState.equals("08001")) {
-                LOG.info("DBSTATE.PROBLEM: " + plsqlEx);
-                result = DBSTATE.PROBLEM;
-            } else if (sqlState.equals("3D000") || sqlState.equals("28P01")) {
-                LOG.info(String.format("DBSTATE.CREATE_DB: %s", plsqlEx));
-                result = DBSTATE.CREATE_DB;
+            if (sqlState.equals("08001")) { //$NON-NLS-1$
+                LOG.info(String.format("DBSTATE.PROBLEM: %s", plsqlEx)); //$NON-NLS-1$
+                result = DatabaseConnectionState.createProblemState(Messages.DatabaseAccessPostgres_12);
+            } else if (sqlState.equals("3D000") || sqlState.equals("28P01")) { //$NON-NLS-1$//$NON-NLS-2$
+                LOG.info(String.format("DBSTATE.CREATE_DB: %s", plsqlEx)); //$NON-NLS-1$
+                result = DatabaseConnectionState.createState(Messages.DatabaseAccessPostgres_14, DBSTATE.CREATE_DB);
             } else {
-                LOG.error(String.format("Unbehandelter Datenbankfehler: %s", plsqlEx));
-                result = DBSTATE.PROBLEM;
+                LOG.error(String.format("Unbehandelter Datenbankfehler: %s", plsqlEx)); //$NON-NLS-1$
+                result = DatabaseConnectionState.createProblemState(NLS.bind(Messages.DatabaseAccessPostgres_15, sqlState));
             }
         } catch (final ClassNotFoundException | SQLException e) {
-            LOG.error(String.format("Connection to database %s failed", connectionUrl));
+            LOG.error(String.format("Connection to database %s failed", connectionUrl), e); //$NON-NLS-1$
+            result = DatabaseConnectionState.createProblemState(NLS.bind(Messages.DatabaseAccessPostgres_15, e.getMessage()));
         }
         return result;
     }
 
     @Override
-    public DBSTATE getDatabaseState() {
-        DBSTATE result = DBSTATE.OK;
+    public DatabaseConnectionState getDatabaseState() {
+        DatabaseConnectionState result = DatabaseConnectionState.createNewOkState();
         final DatabaseConnectionConfiguration cfg = getConfig();
         final DbConnection adminConn = cfg.getAdminConnection();
         final String adminUrl = adminConn.getUrl();
         final String adminUser = adminConn.getUsername();
         final String adminPw = adminConn.getPassword();
-        final DBSTATE adminStatus = validateConnection(adminUrl, adminUser, adminPw, true);
+        final DBSTATE adminStatus = validateConnection(adminUrl, adminUser, adminPw, true).getState();
         if (DBSTATE.OK.equals(adminStatus)) {
-            LOG.info("Admin Connection funktioniert, nun testen ob die user db mit dem user erstellt werden kann");
+            LOG.info("Admin Connection funktioniert, nun testen ob die user db mit dem user erstellt werden kann"); //$NON-NLS-1$
             try {
                 Class.forName(cfg.getDbConnection().getDriver());
                 final Connection con = DriverManager.getConnection(adminUrl, adminUser, adminPw);
@@ -195,31 +198,35 @@ public class DatabaseAccessPostgres extends AbstractDatabaseAccess {
                 final String dbName = url.substring(url.lastIndexOf('/') + 1, url.length());
 
                 final ResultSet rs = statement
-                        .executeQuery("SELECT pg_database.datname,pg_user.usename FROM pg_database, pg_user WHERE pg_database.datdba = pg_user.usesysid UNION SELECT pg_database.datname, NULL FROM pg_database WHERE pg_database.datdba NOT IN (SELECT usesysid FROM pg_user)");
+                        .executeQuery("SELECT pg_database.datname,pg_user.usename FROM pg_database, pg_user WHERE pg_database.datdba = pg_user.usesysid UNION SELECT pg_database.datname, NULL FROM pg_database WHERE pg_database.datdba NOT IN (SELECT usesysid FROM pg_user)"); //$NON-NLS-1$
 
                 boolean existsDb = false;
                 while (rs.next()) {
-                    final String datname = rs.getString("datname");
-                    final String usename = rs.getString("usename");
+                    final String datname = rs.getString("datname"); //$NON-NLS-1$
+                    final String usename = rs.getString("usename"); //$NON-NLS-1$
                     if (datname.equals(dbName)) {
                         if (!usename.equals(cfg.getDbConnection().getUsername())) {
-                            LOG.info(String.format("Datenbank %s existiert bereits unter dem User %s. Kann nicht neu erstellt werden", datname, usename));
-                            result = DBSTATE.PROBLEM;
+                            final String msg = NLS.bind(Messages.DatabaseAccessPostgres_17, datname, usename);
+                            LOG.info(msg);
+                            result = DatabaseConnectionState.createProblemState(msg);
                         }
                         existsDb = true;
                         break;
                     }
                 }
                 if (!existsDb) {
-                    LOG.info(String.format("Die Datenbank %s existiert noch nicht und kann auch erstellt werden.", dbName));
-                    result = DBSTATE.CREATE_DB;
+                    final String msg = NLS.bind(Messages.DatabaseAccessPostgres_18, dbName);
+                    LOG.info(msg);
+                    result = DatabaseConnectionState.createState(msg, DBSTATE.CREATE_DB);
                 }
             } catch (final ClassNotFoundException | SQLException ex) {
-                result = DBSTATE.PROBLEM;
+                LOG.error(ex);
+                result = DatabaseConnectionState.createProblemState(ex.getMessage());
             }
         } else {
-            LOG.error("DB Admin User / URL stimmt nicht");
-            result = DBSTATE.PROBLEM;
+            final String msg = Messages.DatabaseAccessPostgres_19;
+            LOG.error(msg);
+            result = DatabaseConnectionState.createProblemState(msg);
         }
         return result;
     }

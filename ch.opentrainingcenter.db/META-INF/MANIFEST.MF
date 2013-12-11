@@ -11,7 +11,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.hibernate,
  logging,
  jodatime,
- ch.opentrainingcenter.database
+ ch.opentrainingcenter.database,
+ ch.opentrainingcenter.i18n
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: ch.opentrainingcenter.db;
   uses:="ch.opentrainingcenter.core.db,

@@ -74,7 +74,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
         final OtcSplashHandler splashHandler = Activator.getSplashHandler();
 
         final String id = store.getString(PreferenceConstants.ATHLETE_ID);
-        final DBSTATE dbState = ApplicationContext.getApplicationContext().getDbState();
+        final DBSTATE dbState = ApplicationContext.getApplicationContext().getDbState().getState();
         if (DBSTATE.OK.equals(dbState)) {
             if (id != null && id.length() > 0) {
                 final IAthlete athlete = databaseAccess.getAthlete(Integer.parseInt(id));
@@ -104,6 +104,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
         configurer.getWindow().getShell().setMaximized(true);
         final IStatusLineManager manager = getWindowConfigurer().getActionBarConfigurer().getStatusLineManager();
         manager.add(new DatabaseContributeItem(databaseConnection.getName(), databaseConnection.getDbConnection().getUrl()));
+        manager.update(true);
     }
 
     @Override

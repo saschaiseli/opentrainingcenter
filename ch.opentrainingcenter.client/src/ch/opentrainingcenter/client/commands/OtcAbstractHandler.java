@@ -31,6 +31,6 @@ public abstract class OtcAbstractHandler extends AbstractHandler {
     }
 
     private boolean isDatabaseOk() {
-        return DBSTATE.OK.equals(ApplicationContext.getApplicationContext().getDbState());
+        return DBSTATE.OK.equals(ApplicationContext.getApplicationContext().getDbState().getState());
     }
 }

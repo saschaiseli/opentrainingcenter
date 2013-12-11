@@ -11,8 +11,15 @@ public interface IDatabaseConnection extends IExecutableExtensionFactory {
 
     String EXTENSION_POINT_NAME = "classImportedDao"; //$NON-NLS-1$
 
+    /**
+     * @return {@link DbConnection} um Applikation mit der Datenbank zu
+     *         connecten.
+     */
     DbConnection getDbConnection();
 
+    /**
+     * @return admin {@link DbConnection} oder null, wenn keine benötigt wird.
+     */
     DbConnection getAdminConnection();
 
     /**
@@ -22,12 +29,17 @@ public interface IDatabaseConnection extends IExecutableExtensionFactory {
     boolean isUsingAdminDbConnection();
 
     /**
-     * Validiert die Datenbankverbindung und gibt entsprechend {@link DBSTATE}
-     * auskunft darüber.
+     * Validiert die Datenbankverbindung mit den angegebenen Parameter und gibt
+     * entsprechend {@link DBSTATE} Auskunft darüber. Wird verwendet um neue
+     * Connectionkonfigurationen zu testen.
      */
-    DBSTATE validateConnection(final String url, final String user, final String pass, final boolean admin);
+    DatabaseConnectionState validateConnection(final String url, final String user, final String pass, final boolean admin);
 
-    DBSTATE getDatabaseState();
+    /**
+     * @return DBSTATE um den momentanen Zustand der Datenbankverbindung zu
+     *         prüfen.
+     */
+    DatabaseConnectionState getDatabaseState();
 
     /**
      * Setzt das developing flag. So kann in der entwicklung zum beispiel eine
@@ -55,12 +67,21 @@ public interface IDatabaseConnection extends IExecutableExtensionFactory {
     void init();
 
     /**
-     * @return den namen der datenbank
+     * @return den namen der datenbank. Ist ein Freitext, einfach um die DB
+     *         wiederzuerkennen.
      */
     String getName();
 
+    /**
+     * @return den Namen des jdbc treibers. Zum Beispiel
+     *         oracle.jdbc.OracleDriver.
+     */
     String getDriver();
 
+    /**
+     * @return den HibernateDialect. Zum Beispiel
+     *         org.hibernate.dialect.OracleDialect.
+     */
     String getDialect();
 
     /**
@@ -68,5 +89,8 @@ public interface IDatabaseConnection extends IExecutableExtensionFactory {
      */
     File backUpDatabase(final String path);
 
+    /**
+     * @return {@link IDatabaseAccess}.
+     */
     IDatabaseAccess getDataAccess();
 }

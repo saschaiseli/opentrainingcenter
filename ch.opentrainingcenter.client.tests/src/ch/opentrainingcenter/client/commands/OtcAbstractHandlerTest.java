@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.core.PreferenceConstants;
-import ch.opentrainingcenter.core.db.DBSTATE;
+import ch.opentrainingcenter.core.db.DatabaseConnectionState;
 import ch.opentrainingcenter.core.service.IDatabaseService;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -36,14 +36,14 @@ public class OtcAbstractHandlerTest {
 
     @Test
     public void testAthleteFound() {
-        ApplicationContext.getApplicationContext().setDbState(DBSTATE.OK);
+        ApplicationContext.getApplicationContext().setDbState(DatabaseConnectionState.createNewOkState());
         when(store.getString(PreferenceConstants.ATHLETE_ID)).thenReturn("42");
         assertTrue(handler.isEnabled());
     }
 
     @Test
     public void testAthleteFoundButDatabaseNotOk() {
-        ApplicationContext.getApplicationContext().setDbState(DBSTATE.PROBLEM);
+        ApplicationContext.getApplicationContext().setDbState(DatabaseConnectionState.createProblemState("blabla"));
         when(store.getString(PreferenceConstants.ATHLETE_ID)).thenReturn("42");
         assertFalse("Da DB nicht ok ist", handler.isEnabled());
     }

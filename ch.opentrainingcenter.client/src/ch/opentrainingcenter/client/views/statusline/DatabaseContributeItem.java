@@ -12,6 +12,7 @@ import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.client.views.IImageKeys;
 import ch.opentrainingcenter.core.db.DBSTATE;
+import ch.opentrainingcenter.core.db.DatabaseConnectionState;
 import ch.opentrainingcenter.i18n.Messages;
 
 /**
@@ -38,12 +39,15 @@ public class DatabaseContributeItem extends ContributionItem {
     public void fill(final Composite parent) {
         final CLabel label = new CLabel(parent, SWT.NONE);
         label.setText(text);
-        if (DBSTATE.OK.equals(ApplicationContext.getApplicationContext().getDbState())) {
+        label.setImage(icon);
+
+        final DatabaseConnectionState dbState = ApplicationContext.getApplicationContext().getDbState();
+        if (DBSTATE.OK.equals(dbState)) {
             label.setToolTipText(NLS.bind(Messages.DbContributeItem_0, dbUrl));
         } else {
+            // nicht ok
             label.setBackground(PlatformUI.getWorkbench().getDisplay().getSystemColor(SWT.COLOR_RED));
-            label.setToolTipText(NLS.bind(Messages.ApplicationWorkbenchWindowAdvisor_0, text));
+            label.setToolTipText(dbState.getMessage());
         }
-        label.setImage(icon);
     }
 }

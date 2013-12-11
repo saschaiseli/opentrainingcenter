@@ -11,7 +11,7 @@ import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.IWeather;
 
 /**
- * Datenbankzugriffe.
+ * Datenbankzugriffe. Alle Zugriffe auf die DAOs.
  */
 public interface IDatabaseAccess {
 

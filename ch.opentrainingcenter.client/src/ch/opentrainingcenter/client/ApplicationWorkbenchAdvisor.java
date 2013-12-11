@@ -14,6 +14,7 @@ import ch.opentrainingcenter.client.perspectives.MainPerspective;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.core.db.DBSTATE;
+import ch.opentrainingcenter.core.db.DatabaseConnectionState;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.db.IDatabaseConnection;
 import ch.opentrainingcenter.core.service.IDatabaseService;
@@ -50,10 +51,10 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
         service.init(dbName, url, user, pw, urlAdmin, userAdmin, pwAdmin);
         final IDatabaseAccess databaseAccess = service.getDatabaseAccess();
         final IDatabaseConnection databaseConnection = service.getDatabaseConnection();
-        final DBSTATE dbState = databaseConnection.getDatabaseState();
+        final DatabaseConnectionState dbState = databaseConnection.validateConnection(url, user, pw, false);
         ApplicationContext.getApplicationContext().setDbState(dbState);
         final String athleteId = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.ATHLETE_ID);
-        if (isDbOkAndAthleteSelected(dbState, athleteId)) {
+        if (isDbOkAndAthleteSelected(dbState.getState(), athleteId)) {
             final IAthlete athlete = databaseAccess.getAthlete(Integer.parseInt(athleteId));
             if (athlete == null) {
                 LOGGER.info(Messages.ApplicationWorkbenchAdvisorAthleteNotFound);

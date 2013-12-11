@@ -6,20 +6,22 @@ import java.io.InputStream;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.osgi.util.NLS;
 
 import ch.opentrainingcenter.core.db.DBSTATE;
+import ch.opentrainingcenter.core.db.DatabaseConnectionState;
 import ch.opentrainingcenter.core.db.DbConnection;
 import ch.opentrainingcenter.core.db.SqlException;
 import ch.opentrainingcenter.database.AbstractDatabaseAccess;
 import ch.opentrainingcenter.database.dao.DbScriptReader;
 import ch.opentrainingcenter.database.dao.IConnectionConfig;
+import ch.opentrainingcenter.i18n.Messages;
 
-@SuppressWarnings("nls")
 public class DatabaseAccess extends AbstractDatabaseAccess {
 
     private static final Logger LOG = Logger.getLogger(DatabaseAccess.class);
-    private static final String DRIVER = "org.h2.Driver";
-    private static final String DIALOECT = "org.hibernate.dialect.H2Dialect";
+    private static final String DRIVER = "org.h2.Driver"; //$NON-NLS-1$
+    private static final String DIALOECT = "org.hibernate.dialect.H2Dialect"; //$NON-NLS-1$
 
     /**
      * Mit diesem Konstruktur wird mit der eclipse platform der vm args
@@ -39,7 +41,7 @@ public class DatabaseAccess extends AbstractDatabaseAccess {
 
     @Override
     public String getName() {
-        return "H2 Database";
+        return "H2 Database"; //$NON-NLS-1$
     }
 
     @Override
@@ -48,12 +50,13 @@ public class DatabaseAccess extends AbstractDatabaseAccess {
     }
 
     @Override
-    public DBSTATE validateConnection(final String url, final String user, final String pass, final boolean admin) {
+    public DatabaseConnectionState validateConnection(final String url, final String user, final String pass, final boolean admin) {
         return getDatabaseState();
     }
 
     @Override
-    public DBSTATE getDatabaseState() {
+    public DatabaseConnectionState getDatabaseState() {
+        DatabaseConnectionState result = DatabaseConnectionState.createNewOkState();
         try {
             getCommonDao().getAthlete(1);
         } catch (final Exception e) {
@@ -61,16 +64,16 @@ public class DatabaseAccess extends AbstractDatabaseAccess {
             final String message = cause != null ? cause.getMessage() : e.getMessage();
             if (message != null && message.contains("Locked by another process")) { //$NON-NLS-1$
                 LOG.error("Database Locked by another process"); //$NON-NLS-1$
-                return DBSTATE.LOCKED;
+                result = DatabaseConnectionState.createState(Messages.DatabaseAccess_0, DBSTATE.LOCKED);
             } else if (message != null && message.contains("Wrong user name or password")) { //$NON-NLS-1$
                 LOG.error("Wrong user name or password"); //$NON-NLS-1$
-                return DBSTATE.CONFIG_PROBLEM;
+                result = DatabaseConnectionState.createState(Messages.DatabaseAccess_1, DBSTATE.CONFIG_PROBLEM);
             } else {
                 LOG.error(String.format("Fehler mit der Datenbank: %s", message), e); //$NON-NLS-1$
-                return DBSTATE.PROBLEM;
+                result = DatabaseConnectionState.createProblemState(NLS.bind(Messages.DatabaseAccess_2, message));
             }
         }
-        return DBSTATE.OK;
+        return result;
     }
 
     @Override
