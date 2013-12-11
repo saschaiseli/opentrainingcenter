@@ -39,6 +39,7 @@
 	        <module>ch.opentrainingcenter.database</module>	
                 <module>ch.opentrainingcenter.db</module>
 		<module>ch.opentrainingcenter.db.postgres</module>
+                <module>ch.opentrainingcenter.db.oracle</module>
 		<module>ch.opentrainingcenter.i18n</module>
 		<module>ch.opentrainingcenter.importer.tcx</module>
 		<module>ch.opentrainingcenter.importer.gpx</module>
@@ -48,6 +49,7 @@
 		<module>com.eclipsesource.widgets.gmaps</module>
 		<module>h2</module>
 		<module>postgres</module>
+                <module>oracle14</module>
 		<module>geocalc</module>
 		<module>jfreechart</module>
 		<module>jodatime</module>

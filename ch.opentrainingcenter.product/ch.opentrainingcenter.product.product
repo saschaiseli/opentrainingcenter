@@ -41,6 +41,7 @@
       <plugin id="ch.opentrainingcenter.db"/>
       <plugin id="ch.opentrainingcenter.database"/>
       <plugin id="ch.opentrainingcenter.db.postgres"/>
+      <plugin id="ch.opentrainingcenter.db.oracle"/>
       <plugin id="ch.opentrainingcenter.i18n"/>
       <plugin id="ch.opentrainingcenter.importer.tcx"/>
       <plugin id="ch.opentrainingcenter.importer.gpx"/>
@@ -51,6 +52,7 @@
       <plugin id="com.eclipsesource.widgets.gmaps"/>
       <plugin id="com.ibm.icu"/>
       <plugin id="geocalc"/>
+      <plugin id="oracle14"/>
       <plugin id="h2_lib"/>
       <plugin id="javax.servlet"/>
       <plugin id="jfreechart"/>
