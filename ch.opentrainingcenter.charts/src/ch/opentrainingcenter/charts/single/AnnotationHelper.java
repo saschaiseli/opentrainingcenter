@@ -1,5 +1,8 @@
 package ch.opentrainingcenter.charts.single;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
+
 import org.jfree.chart.annotations.XYLineAnnotation;
 import org.jfree.chart.annotations.XYTextAnnotation;
 import org.jfree.chart.plot.XYPlot;
@@ -18,8 +21,8 @@ public final class AnnotationHelper {
     static void addCrossAnnotation(final XYPlot plot, final Pair<Number, Number> xy, final double xMax, final double yMax, final String zeit) {
         final double x = xy.getFirst().doubleValue();
         final double y = xy.getSecond().doubleValue();
-        plot.addAnnotation(new XYLineAnnotation(x, 0, x, Integer.MAX_VALUE));
-        plot.addAnnotation(new XYLineAnnotation(0, y, Integer.MAX_VALUE, y));
+        plot.addAnnotation(new XYLineAnnotation(x, 0, x, Integer.MAX_VALUE, new BasicStroke(0.1f), Color.gray));
+        plot.addAnnotation(new XYLineAnnotation(0, y, Integer.MAX_VALUE, y, new BasicStroke(0.1f), Color.gray));
         final Range range = plot.getRangeAxis(0).getRange();
         final double lowerBound = range.getLowerBound();
         final double upperBound = range.getUpperBound();
