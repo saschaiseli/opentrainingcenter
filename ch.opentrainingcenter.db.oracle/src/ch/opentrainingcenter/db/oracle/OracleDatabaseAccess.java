@@ -65,17 +65,9 @@ public class OracleDatabaseAccess extends AbstractDatabaseAccess {
             LOG.info(String.format("Connection to database %s successfully", connectionUrl)); //$NON-NLS-1$
         } catch (final SQLException sqlEx) {
             final String sqlState = sqlEx.getLocalizedMessage();
-            if (sqlState.startsWith("ORA-28000")) { //$NON-NLS-1$
-                result = DatabaseConnectionState.createProblemState(Messages.OracleDatabaseAccess_0);
-            } else if (sqlState.startsWith("I/O Exception")) { //$NON-NLS-1$
-                result = DatabaseConnectionState.createProblemState(Messages.OracleDatabaseAccess_1);
-            } else if (sqlState.startsWith("ORA-01017")) { //$NON-NLS-1$
-                result = DatabaseConnectionState.createProblemState(Messages.OracleDatabaseAccess_5);
-            } else {
-                result = DatabaseConnectionState.createProblemState(NLS.bind(Messages.OracleDatabaseAccess_2, sqlEx.getMessage()));
-            }
+            result = extractDatabaseConnectionState(sqlState, sqlEx.getMessage());
         } catch (final ClassNotFoundException cnfe) {
-
+            result = DatabaseConnectionState.createProblemState(cnfe.getMessage());
         }
         LOG.info(result.getMessage());
         return result;
@@ -89,15 +81,24 @@ public class OracleDatabaseAccess extends AbstractDatabaseAccess {
             cd.getAthlete(0);
         } catch (final Exception e) {
             final Throwable cause = e.getCause();
-            if (cause != null) {
-                final String localizedMessage = cause.getLocalizedMessage();
-                if ("ORA-01017".startsWith(localizedMessage)) { //$NON-NLS-1$
-                    result = DatabaseConnectionState.createProblemState(Messages.OracleDatabaseAccess_3);
-                }
-            }
-            result = DatabaseConnectionState.createProblemState(NLS.bind(Messages.OracleDatabaseAccess_4, e.getMessage()));
+            final String localizedMessage = cause.getLocalizedMessage();
+            result = extractDatabaseConnectionState(localizedMessage, e.getMessage());
         }
         LOG.info(result.getMessage());
+        return result;
+    }
+
+    private DatabaseConnectionState extractDatabaseConnectionState(final String sqlState, final String message) {
+        DatabaseConnectionState result;
+        if (sqlState.startsWith("ORA-28000")) { //$NON-NLS-1$
+            result = DatabaseConnectionState.createProblemState(Messages.OracleDatabaseAccess_0);
+        } else if (sqlState.startsWith("I/O Exception")) { //$NON-NLS-1$
+            result = DatabaseConnectionState.createProblemState(Messages.OracleDatabaseAccess_1);
+        } else if (sqlState.startsWith("ORA-01017")) { //$NON-NLS-1$
+            result = DatabaseConnectionState.createProblemState(Messages.OracleDatabaseAccess_5);
+        } else {
+            result = DatabaseConnectionState.createProblemState(NLS.bind(Messages.OracleDatabaseAccess_2, message));
+        }
         return result;
     }
 
