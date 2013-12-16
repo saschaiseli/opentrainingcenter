@@ -42,6 +42,7 @@ import ch.opentrainingcenter.charts.single.ChartType;
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.cache.StreckeCache;
 import ch.opentrainingcenter.client.model.Units;
+import ch.opentrainingcenter.client.ui.FormToolkitSupport;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.core.cache.Cache;
 import ch.opentrainingcenter.core.cache.IRecordListener;
@@ -136,7 +137,7 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
     }
 
     private void addOverviewSection(final Composite body) {
-        final Section overviewSection = toolkit.createSection(body, Section.DESCRIPTION | Section.TITLE_BAR | Section.TWISTIE | Section.EXPANDED);
+        final Section overviewSection = toolkit.createSection(body, FormToolkitSupport.SECTION_STYLE);
         overviewSection.setExpanded(true);
         td = new TableWrapData(TableWrapData.FILL_GRAB);
         td.colspan = 1;
@@ -147,25 +148,25 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         final Composite overViewComposite = toolkit.createComposite(overviewSection);
         final GridLayout layoutClient = new GridLayout(3, false);
         overViewComposite.setLayout(layoutClient);
-
-        addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart3, simpleTraining.getZeit(), Units.HOUR_MINUTE_SEC);
-        addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart4, simpleTraining.getLaengeInKilometer(), Units.KM);
+        final FormToolkitSupport support = new FormToolkitSupport(toolkit);
+        support.addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart3, simpleTraining.getZeit(), Units.HOUR_MINUTE_SEC);
+        support.addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart4, simpleTraining.getLaengeInKilometer(), Units.KM);
         final int avgHeartRate = simpleTraining.getAvgHeartRate();
         if (avgHeartRate > 0) {
-            addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart5, String.valueOf(avgHeartRate), Units.BEATS_PER_MINUTE);
+            support.addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart5, String.valueOf(avgHeartRate), Units.BEATS_PER_MINUTE);
         } else {
-            addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart5, "-", Units.BEATS_PER_MINUTE); //$NON-NLS-1$
+            support.addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart5, "-", Units.BEATS_PER_MINUTE); //$NON-NLS-1$
         }
-        addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart6, simpleTraining.getMaxHeartBeat(), Units.BEATS_PER_MINUTE);
-        addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart7, simpleTraining.getPace(), Units.PACE);
-        addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart8, simpleTraining.getMaxSpeed(), Units.PACE);
-        addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_4, "" + simpleTraining.getUpMeter(), Units.METER); //$NON-NLS-1$
-        addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_8, "" + simpleTraining.getDownMeter(), Units.METER); //$NON-NLS-1$
+        support.addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart6, simpleTraining.getMaxHeartBeat(), Units.BEATS_PER_MINUTE);
+        support.addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart7, simpleTraining.getPace(), Units.PACE);
+        support.addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart8, simpleTraining.getMaxSpeed(), Units.PACE);
+        support.addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_4, "" + simpleTraining.getUpMeter(), Units.METER); //$NON-NLS-1$
+        support.addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_8, "" + simpleTraining.getDownMeter(), Units.METER); //$NON-NLS-1$
         overviewSection.setClient(overViewComposite);
     }
 
     private void addNoteSection(final Composite body) {
-        final Section section = toolkit.createSection(body, Section.DESCRIPTION | Section.TITLE_BAR | Section.TWISTIE | Section.EXPANDED);
+        final Section section = toolkit.createSection(body, FormToolkitSupport.SECTION_STYLE);
         section.setExpanded(true);
         section.setText(Messages.SingleActivityViewPart_0);
         section.setDescription(Messages.SingleActivityViewPart_1);
@@ -405,7 +406,7 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
     }
 
     private void addMapSection(final Composite body) {
-        final Section mapSection = toolkit.createSection(body, Section.DESCRIPTION | Section.TITLE_BAR | Section.TWISTIE | Section.EXPANDED);
+        final Section mapSection = toolkit.createSection(body, FormToolkitSupport.SECTION_STYLE);
         mapSection.setExpanded(false);
         td = new TableWrapData(TableWrapData.FILL_GRAB);
         td.colspan = 2;
@@ -441,7 +442,7 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
      * Herz frequenz
      */
     private void addHeartSection(final Composite body) {
-        final Section heartSection = toolkit.createSection(body, Section.DESCRIPTION | Section.TITLE_BAR | Section.TWISTIE | Section.EXPANDED);
+        final Section heartSection = toolkit.createSection(body, FormToolkitSupport.SECTION_STYLE);
         heartSection.setExpanded(true);
         td = new TableWrapData(TableWrapData.FILL_GRAB);
         td.colspan = 2;
@@ -465,7 +466,7 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
     }
 
     private void addSpeedSection(final Composite body) {
-        final Section speedSection = toolkit.createSection(body, Section.DESCRIPTION | Section.TITLE_BAR | Section.TWISTIE | Section.EXPANDED);
+        final Section speedSection = toolkit.createSection(body, FormToolkitSupport.SECTION_STYLE);
         speedSection.setExpanded(false);
         td = new TableWrapData(TableWrapData.FILL_GRAB);
         td.colspan = 2;
@@ -492,7 +493,7 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
      * Verlauf der höhe
      */
     private void addAltitudeSection(final Composite body) {
-        final Section altitude = toolkit.createSection(body, Section.DESCRIPTION | Section.TITLE_BAR | Section.TWISTIE | Section.EXPANDED);
+        final Section altitude = toolkit.createSection(body, FormToolkitSupport.SECTION_STYLE);
         altitude.setExpanded(false);
         td = new TableWrapData(TableWrapData.FILL_GRAB);
         td.colspan = 2;
@@ -512,22 +513,6 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         factory.addChartToComposite(client, ChartType.ALTITUDE_DISTANCE);
 
         altitude.setClient(client);
-    }
-
-    private Label addLabelAndValue(final Composite parent, final String label, final String value, final Units unit) {
-        // Label
-        final Label dauerLabel = toolkit.createLabel(parent, label + ": "); //$NON-NLS-1$
-        GridDataFactory.swtDefaults().applyTo(dauerLabel);
-
-        // value
-        final Label dauer = toolkit.createLabel(parent, value);
-        GridDataFactory.swtDefaults().indent(10, 4).align(SWT.RIGHT, SWT.CENTER).applyTo(dauer);
-
-        // einheit
-        final Label einheit = toolkit.createLabel(parent, unit.getName());
-        GridDataFactory.swtDefaults().indent(10, 4).align(SWT.LEFT, SWT.CENTER).applyTo(einheit);
-
-        return dauer;
     }
 
     @Override

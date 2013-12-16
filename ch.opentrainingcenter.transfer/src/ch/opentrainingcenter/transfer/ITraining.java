@@ -43,6 +43,9 @@ public interface ITraining {
 
     void setMaxSpeed(double maxSpeed);
 
+    /**
+     * @return die Dauer des Laufes in Sekunden.
+     */
     double getDauer();
 
     void setDauer(double dauerInSekunden);

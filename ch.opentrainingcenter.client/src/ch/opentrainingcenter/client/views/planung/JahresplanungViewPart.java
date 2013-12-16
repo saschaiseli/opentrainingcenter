@@ -26,6 +26,7 @@ import org.joda.time.DateTime;
 import org.joda.time.Interval;
 
 import ch.opentrainingcenter.client.Activator;
+import ch.opentrainingcenter.client.ui.FormToolkitSupport;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
@@ -77,7 +78,7 @@ public class JahresplanungViewPart extends ViewPart {
         final DateTime now = new DateTime();
         final int kw = now.getWeekOfWeekyear() + 1;
         final int jahr = now.getYear();
-        final Section monat = toolkit.createSection(body, Section.DESCRIPTION | Section.TITLE_BAR | Section.TWISTIE | Section.EXPANDED);
+        final Section monat = toolkit.createSection(body, FormToolkitSupport.SECTION_STYLE);
         monat.addExpansionListener(new ExpansionAdapter() {
             @Override
             public void expansionStateChanged(final ExpansionEvent e) {

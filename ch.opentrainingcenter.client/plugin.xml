@@ -189,6 +189,14 @@
             name="%routenverwaltung"
             restorable="true">
       </view>
+      <view
+            allowMultiple="false"
+            category="ch.opentrainingcenter.client.otccategory"
+            class="ch.opentrainingcenter.client.views.weeks.MonthlyOverview"
+            id="ch.opentrainingcenter.client.weeks.monthlyOverview"
+            name="%monatsuebersicht"
+            restorable="false">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.commands">

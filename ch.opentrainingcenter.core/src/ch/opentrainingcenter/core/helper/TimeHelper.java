@@ -9,6 +9,8 @@ import java.util.TimeZone;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 
+import ch.opentrainingcenter.i18n.Messages;
+
 public final class TimeHelper {
 
     private static final String DATE_FILE_FORMAT_PATTERN = "yyyyMMddHHmmssSSS"; //$NON-NLS-1$
@@ -173,6 +175,85 @@ public final class TimeHelper {
             final DateTime start = day.minusDays(dayOfWeek - 1);
             final DateTime end = day.plusDays(7 - dayOfWeek);
             result = new Interval(start.getMillis(), end.getMillis());
+        }
+        return result;
+    }
+
+    /**
+     * Gibt den Montag 00:00:00 Uhr zurück von der Woche mit dem angegebenen
+     * Datum.
+     * 
+     * Zum Beispiel: Sonntag 15. Dezember 2013 09:11:00 --> gibt Montag 9.
+     * Dezember 2013 00:00:00 zurück.
+     */
+    public static DateTime getFirstDayOfWeek(final DateTime now) {
+        DateTime result = now.minusDays(now.getDayOfWeek() - 1);
+        result = result.minusHours(now.getHourOfDay());
+        result = result.minusMinutes(now.getMinuteOfHour());
+        result = result.minusSeconds(now.getSecondOfMinute());
+        result = result.minusMillis(now.getMillisOfSecond());
+        return result;
+    }
+
+    /**
+     * Gibt den Montag 00:00:00 Uhr zurück von der Woche mit dem angegebenen
+     * Datum.
+     * 
+     * Zum Beispiel: Sonntag 15. Dezember 2013 09:11:00 --> gibt Sonntag 1.
+     * Dezember 2013 00:00:00 zurück.
+     */
+    public static DateTime getFirstDayOfMonth(final DateTime now) {
+        DateTime result = now.minusDays(now.getDayOfMonth() - 1);
+        result = result.minusHours(now.getHourOfDay());
+        result = result.minusMinutes(now.getMinuteOfHour());
+        result = result.minusSeconds(now.getSecondOfMinute());
+        result = result.minusMillis(now.getMillisOfSecond());
+        return result;
+    }
+
+    public static String getTranslatedMonat(final DateTime now) {
+        final int month = now.getMonthOfYear();
+        final String result;
+        switch (month) {
+        case 1:
+            result = Messages.TimeHelper_0;
+            break;
+        case 2:
+            result = Messages.TimeHelper_1;
+            break;
+        case 3:
+            result = Messages.TimeHelper_2;
+            break;
+        case 4:
+            result = Messages.TimeHelper_3;
+            break;
+        case 5:
+            result = Messages.TimeHelper_4;
+            break;
+        case 6:
+            result = Messages.TimeHelper_5;
+            break;
+        case 7:
+            result = Messages.TimeHelper_6;
+            break;
+        case 8:
+            result = Messages.TimeHelper_7;
+            break;
+        case 9:
+            result = Messages.TimeHelper_8;
+            break;
+        case 10:
+            result = Messages.TimeHelper_9;
+            break;
+        case 11:
+            result = Messages.TimeHelper_10;
+            break;
+        case 12:
+            result = Messages.TimeHelper_11;
+            break;
+        default:
+            result = Messages.TimeHelper_12;
+            //            throw new RuntimeException("Unmöglicher Monat: " + month); //$NON-NLS-1$
         }
         return result;
     }

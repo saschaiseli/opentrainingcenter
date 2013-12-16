@@ -1,7 +1,5 @@
 package ch.opentrainingcenter.core.helper;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -9,6 +7,9 @@ import java.util.Locale;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 @SuppressWarnings("nls")
 public class TimeHelperTest {
@@ -247,9 +248,45 @@ public class TimeHelperTest {
         assertEquals("00:00:00", time);
     }
 
+    @Test
+    public void testFirstDayOfWeek() {
+        final DateTime dateTime = new DateTime(2013, 12, 15, 9, 11, 12, 42);
+        final DateTime expected = new DateTime(2013, 12, 9, 0, 0, 0, 0);
+
+        final DateTime firstDayOfWeek = TimeHelper.getFirstDayOfWeek(dateTime);
+
+        assertDatum(expected, firstDayOfWeek);
+        assertEquals(expected.getHourOfDay(), firstDayOfWeek.getHourOfDay());
+        assertEquals(expected.getMinuteOfHour(), firstDayOfWeek.getMinuteOfHour());
+        assertEquals(expected.getSecondOfMinute(), firstDayOfWeek.getSecondOfMinute());
+        assertEquals(expected.getMillisOfSecond(), firstDayOfWeek.getMillisOfSecond());
+    }
+
+    @Test
+    public void testFirstDayOfMonth() {
+        final DateTime dateTime = new DateTime(2013, 12, 15, 9, 11, 12, 42);
+        final DateTime expected = new DateTime(2013, 12, 1, 0, 0, 0, 0);
+
+        final DateTime firstDayOfMonth = TimeHelper.getFirstDayOfMonth(dateTime);
+
+        assertDatum(expected, firstDayOfMonth);
+        assertEquals(expected.getMonthOfYear(), firstDayOfMonth.getMonthOfYear());
+        assertEquals(expected.getHourOfDay(), firstDayOfMonth.getHourOfDay());
+        assertEquals(expected.getMinuteOfHour(), firstDayOfMonth.getMinuteOfHour());
+        assertEquals(expected.getSecondOfMinute(), firstDayOfMonth.getSecondOfMinute());
+        assertEquals(expected.getMillisOfSecond(), firstDayOfMonth.getMillisOfSecond());
+    }
+
     private void assertDatum(final DateTime startExpected, final DateTime start) {
         assertEquals(startExpected.getDayOfMonth(), start.getDayOfMonth());
         assertEquals(startExpected.getMonthOfYear(), start.getMonthOfYear());
         assertEquals(startExpected.getYear(), start.getYear());
+    }
+
+    @Test
+    public void testGetTranslatedMonth() {
+        for (int i = 1; i <= 12; i++) {
+            assertNotNull(TimeHelper.getTranslatedMonat(new DateTime(2013, i, 15, 9, 11, 12, 42)));
+        }
     }
 }

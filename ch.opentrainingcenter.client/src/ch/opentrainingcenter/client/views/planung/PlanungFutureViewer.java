@@ -13,6 +13,7 @@ import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.PlatformUI;
@@ -71,18 +72,7 @@ public class PlanungFutureViewer {
         final MenuManager menuManager = new MenuManager("KontextMenu"); //$NON-NLS-1$
         table.setMenu(menuManager.createContextMenu(table));
 
-        all = databaseAccess.getPlanungsWoche(ApplicationContext.getApplicationContext().getAthlete());
-        final DateTime dt = new DateTime();
-        final KwJahrKey now = new KwJahrKey(dt.getYear(), dt.getWeekOfWeekyear());
-        final List<IPlanungWoche> planungsWoche = new ArrayList<IPlanungWoche>();
-        for (final IPlanungWoche woche : all) {
-            final KwJahrKey kwJahrKey = new KwJahrKey(woche.getJahr(), woche.getKw());
-            if (now.compareTo(kwJahrKey) < 0) {
-                planungsWoche.add(woche);
-            }
-        }
-        Collections.sort(planungsWoche, new PlanungWocheComparator(false));
-        viewer.setInput(planungsWoche);
+        loadData();
 
         final GridData gridData = new GridData();
         gridData.horizontalSpan = 2;
@@ -90,7 +80,27 @@ public class PlanungFutureViewer {
         gridData.grabExcessVerticalSpace = false;
         gridData.horizontalAlignment = GridData.FILL;
         viewer.getControl().setLayoutData(gridData);
+    }
 
+    private void loadData() {
+        Display.getDefault().asyncExec(new Runnable() {
+
+            @Override
+            public void run() {
+                all = databaseAccess.getPlanungsWoche(ApplicationContext.getApplicationContext().getAthlete());
+                final DateTime dt = new DateTime();
+                final KwJahrKey now = new KwJahrKey(dt.getYear(), dt.getWeekOfWeekyear());
+                final List<IPlanungWoche> planungsWoche = new ArrayList<IPlanungWoche>();
+                for (final IPlanungWoche woche : all) {
+                    final KwJahrKey kwJahrKey = new KwJahrKey(woche.getJahr(), woche.getKw());
+                    if (now.compareTo(kwJahrKey) < 0) {
+                        planungsWoche.add(woche);
+                    }
+                }
+                Collections.sort(planungsWoche, new PlanungWocheComparator(false));
+                viewer.setInput(planungsWoche);
+            }
+        });
     }
 
     // This will create the columns for the table

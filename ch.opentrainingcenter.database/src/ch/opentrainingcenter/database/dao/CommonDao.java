@@ -3,6 +3,8 @@ package ch.opentrainingcenter.database.dao;
 import java.util.Date;
 import java.util.List;
 
+import org.joda.time.DateTime;
+
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IHealth;
@@ -42,6 +44,11 @@ public class CommonDao implements IDatabaseAccess {
     @Override
     public final List<ITraining> getAllImported(final IAthlete athlete) {
         return trainingDao.getAllImported(athlete);
+    }
+
+    @Override
+    public List<ITraining> getTrainingsByAthleteAndDate(final IAthlete athlete, final DateTime von, final DateTime bis) {
+        return trainingDao.getTrainingsByAthleteAndDate(athlete, von, bis);
     }
 
     @Override

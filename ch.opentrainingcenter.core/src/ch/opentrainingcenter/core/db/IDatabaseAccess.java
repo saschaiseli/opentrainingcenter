@@ -3,6 +3,8 @@ package ch.opentrainingcenter.core.db;
 import java.util.Date;
 import java.util.List;
 
+import org.joda.time.DateTime;
+
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IHealth;
 import ch.opentrainingcenter.transfer.IPlanungWoche;
@@ -26,6 +28,12 @@ public interface IDatabaseAccess {
      * @return eine Liste von {@link ITraining}
      */
     List<ITraining> getAllImported(IAthlete athlete);
+
+    /**
+     * Gibt eine Liste mit Trainings von dem Athleten welche grösser gleich und
+     * kleiner gleich bis Datum sind.
+     */
+    List<ITraining> getTrainingsByAthleteAndDate(IAthlete athlete, DateTime von, DateTime bis);
 
     /**
      * Gibt eine nach datum sortierte Liste von allen importierted Records

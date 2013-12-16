@@ -13,7 +13,6 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.events.HyperlinkEvent;
 import org.eclipse.ui.forms.events.IHyperlinkListener;
-import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
@@ -25,6 +24,7 @@ import org.eclipse.ui.part.ViewPart;
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.action.GoldMedalAction;
 import ch.opentrainingcenter.client.model.Units;
+import ch.opentrainingcenter.client.ui.FormToolkitSupport;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.client.views.overview.SingleActivityViewPart;
 import ch.opentrainingcenter.core.PreferenceConstants;
@@ -136,8 +136,7 @@ public class BestRunsView extends ViewPart {
     }
 
     private void addPace(final Composite body, final IGoldMedalModel model) {
-        sectionPace = toolkit.createSection(body, Section.DESCRIPTION | ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE
-                | ExpandableComposite.EXPANDED);
+        sectionPace = toolkit.createSection(body, FormToolkitSupport.SECTION_STYLE);
 
         td = new TableWrapData(TableWrapData.FILL_GRAB);
         td.colspan = 1;
@@ -162,8 +161,7 @@ public class BestRunsView extends ViewPart {
     }
 
     private void addText(final Composite body, final IGoldMedalModel model) {
-        sectionOverall = toolkit.createSection(body, Section.DESCRIPTION | ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE
-                | ExpandableComposite.EXPANDED);
+        sectionOverall = toolkit.createSection(body, FormToolkitSupport.SECTION_STYLE);
 
         td = new TableWrapData(TableWrapData.FILL_GRAB);
         td.colspan = 1;

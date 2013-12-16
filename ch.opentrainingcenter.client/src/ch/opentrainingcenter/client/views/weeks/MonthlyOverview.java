@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -34,12 +33,11 @@ import ch.opentrainingcenter.model.training.IOverviewModel;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.ITraining;
 
-public class WeeklyOverview extends ViewPart {
+public class MonthlyOverview extends ViewPart {
 
-    public static final String ID = "ch.opentrainingcenter.client.weeks.weeklyOverview"; //$NON-NLS-1$
+    public static final String ID = "ch.opentrainingcenter.client.weeks.monthlyOverview"; //$NON-NLS-1$
 
     private static final Logger LOGGER = Logger.getLogger(WeeklyOverview.class);
-
     private final IDatabaseAccess databaseAccess;
 
     private final IAthlete athlete;
@@ -50,7 +48,7 @@ public class WeeklyOverview extends ViewPart {
 
     private TableWrapData td;
 
-    private Section sectionWeek;
+    private Section sectionMonth;
 
     private Label kmTotal;
 
@@ -60,7 +58,7 @@ public class WeeklyOverview extends ViewPart {
 
     private Composite weekComposite;
 
-    public WeeklyOverview() {
+    public MonthlyOverview() {
         final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
         databaseAccess = service.getDatabaseAccess();
         athlete = ApplicationContext.getApplicationContext().getAthlete();
@@ -86,7 +84,7 @@ public class WeeklyOverview extends ViewPart {
 
         td = new TableWrapData(TableWrapData.FILL_GRAB);
         body.setLayoutData(td);
-        form.setText(Messages.WeeklyOverview0);
+        form.setText(Messages.MonthlyOverview_0);
 
         addWeek(body);
 
@@ -94,17 +92,17 @@ public class WeeklyOverview extends ViewPart {
     }
 
     private void addWeek(final Composite body) {
-        sectionWeek = toolkit.createSection(body, FormToolkitSupport.SECTION_STYLE);
+        sectionMonth = toolkit.createSection(body, FormToolkitSupport.SECTION_STYLE);
 
         td = new TableWrapData(TableWrapData.FILL_GRAB);
         td.colspan = 1;
         td.grabHorizontal = true;
         td.grabVertical = true;
 
-        sectionWeek.setLayoutData(td);
-        sectionWeek.setText(NLS.bind(Messages.WeeklyOverview_3, DateTime.now().getWeekOfWeekyear()));
+        sectionMonth.setLayoutData(td);
+        sectionMonth.setText(TimeHelper.getTranslatedMonat(DateTime.now()));
 
-        weekComposite = toolkit.createComposite(sectionWeek);
+        weekComposite = toolkit.createComposite(sectionMonth);
         final GridLayout layoutClient = new GridLayout(3, false);
         weekComposite.setLayout(layoutClient);
 
@@ -116,7 +114,7 @@ public class WeeklyOverview extends ViewPart {
 
         update();
 
-        sectionWeek.setClient(weekComposite);
+        sectionMonth.setClient(weekComposite);
     }
 
     private void update() {
@@ -132,7 +130,7 @@ public class WeeklyOverview extends ViewPart {
                 zeitTotal.setText(TimeHelper.convertTimeToString(model.getTotaleZeitInSekunden() * 1000));
                 anzahl.setText(String.valueOf(model.getAnzahlTrainings()));
 
-                sectionWeek.layout();
+                sectionMonth.layout();
             }
         });
     }
@@ -155,4 +153,5 @@ public class WeeklyOverview extends ViewPart {
     @Override
     public void setFocus() {
     }
+
 }

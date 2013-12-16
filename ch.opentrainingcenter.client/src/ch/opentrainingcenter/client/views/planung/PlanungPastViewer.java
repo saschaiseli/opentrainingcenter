@@ -13,6 +13,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.PlatformUI;
@@ -58,17 +59,6 @@ public class PlanungPastViewer {
         final MenuManager menuManager = new MenuManager("KontextMenu"); //$NON-NLS-1$
         table.setMenu(menuManager.createContextMenu(table));
 
-        final IAthlete athlete = ApplicationContext.getApplicationContext().getAthlete();
-        final List<IPlanungWoche> planungsWoche = databaseAccess.getPlanungsWoche(athlete);
-        Collections.sort(planungsWoche, new PlanungWocheComparator());
-
-        final List<ITraining> allImported = databaseAccess.getAllImported(athlete);
-        final DateTime dt = new DateTime();
-        final KwJahrKey now = new KwJahrKey(dt.getYear(), dt.getWeekOfWeekyear());
-        final IPastPlanungModel model = ModelFactory.createPastPlanungModel(planungsWoche, allImported, now);
-
-        viewer.setInput(model.getPastPlanungen());
-
         // Layout the viewer
         final GridData gridData = new GridData();
         gridData.verticalAlignment = GridData.FILL;
@@ -76,8 +66,30 @@ public class PlanungPastViewer {
         gridData.grabExcessHorizontalSpace = true;
         gridData.grabExcessVerticalSpace = true;
         gridData.horizontalAlignment = GridData.FILL;
+        // load data async
+        loadData();
         viewer.getControl().setLayoutData(gridData);
+    }
 
+    private void loadData() {
+
+        Display.getDefault().asyncExec(new Runnable() {
+
+            @Override
+            public void run() {
+                // return
+                final IAthlete athlete = ApplicationContext.getApplicationContext().getAthlete();
+                final List<IPlanungWoche> planungsWoche = databaseAccess.getPlanungsWoche(athlete);
+
+                Collections.sort(planungsWoche, new PlanungWocheComparator());
+
+                final List<ITraining> allImported = databaseAccess.getAllImported(athlete);
+                final DateTime dt = new DateTime();
+                final KwJahrKey now = new KwJahrKey(dt.getYear(), dt.getWeekOfWeekyear());
+                final IPastPlanungModel model = ModelFactory.createPastPlanungModel(planungsWoche, allImported, now);
+                viewer.setInput(model.getPastPlanungen());
+            }
+        });
     }
 
     // This will create the columns for the table

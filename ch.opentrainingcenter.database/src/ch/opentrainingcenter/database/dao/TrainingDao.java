@@ -52,6 +52,32 @@ public class TrainingDao {
         return list;
     }
 
+    public List<ITraining> getTrainingsByAthleteAndDate(final IAthlete athlete, final DateTime von, final DateTime bis) {
+        final Session session = dao.getSession();
+        dao.begin();
+
+        final Criteria criteria = session.createCriteria(ITraining.class);
+
+        criteria.setFetchMode("athlete", FetchMode.JOIN);
+        criteria.setFetchMode("trainingType", FetchMode.JOIN);
+        criteria.setFetchMode("weather", FetchMode.JOIN);
+        criteria.setFetchMode("route", FetchMode.JOIN);
+        criteria.setFetchMode("trackPoints", FetchMode.SELECT);
+
+        criteria.add(Restrictions.eq("athlete", athlete));
+        criteria.add(Restrictions.ge("datum", von.getMillis()));
+        criteria.add(Restrictions.le("datum", bis.getMillis()));
+        criteria.addOrder(Order.desc("datum"));
+
+        @SuppressWarnings("unchecked")
+        final List<ITraining> list = criteria.list();
+
+        dao.commit();
+        session.flush();
+
+        return list;
+    }
+
     public List<ITraining> getAllImported(final IAthlete athlete, final int limit) {
         final Session session = dao.getSession();
         final long start = DateTime.now().getMillis();

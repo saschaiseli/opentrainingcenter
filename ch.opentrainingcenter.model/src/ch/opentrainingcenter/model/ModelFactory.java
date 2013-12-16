@@ -22,9 +22,11 @@ import ch.opentrainingcenter.model.planing.internal.PlanungModel;
 import ch.opentrainingcenter.model.planing.internal.PlanungWocheModel;
 import ch.opentrainingcenter.model.strecke.StreckeModel;
 import ch.opentrainingcenter.model.training.IGoldMedalModel;
+import ch.opentrainingcenter.model.training.IOverviewModel;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
 import ch.opentrainingcenter.model.training.Wetter;
 import ch.opentrainingcenter.model.training.internal.GoldMedalModel;
+import ch.opentrainingcenter.model.training.internal.OverviewModel;
 import ch.opentrainingcenter.model.training.internal.SimpleTraining;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IHealth;
@@ -108,5 +110,9 @@ public final class ModelFactory {
 
     public static StreckeModel createStreckeModel(final IRoute route, final IAthlete athlete, final int referenzTrainingId) {
         return new StreckeModel(route.getId(), athlete, route.getName(), route.getBeschreibung(), referenzTrainingId);
+    }
+
+    public static IOverviewModel createOverview(final List<ITraining> trainings) {
+        return new OverviewModel(trainings);
     }
 }
