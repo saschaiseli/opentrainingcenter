@@ -29,7 +29,7 @@ public class OverviewModelTest {
         model = new OverviewModel(trainings);
 
         assertEquals(0, model.getAnzahlTrainings());
-        assertEquals(0, model.getTotaleDistanzInMeter());
+        assertEquals(0, model.getTotaleDistanzInMeter(), 0.0001);
         assertEquals(0, model.getTotaleZeitInSekunden());
     }
 
@@ -45,7 +45,7 @@ public class OverviewModelTest {
 
         assertEquals(1, model.getAnzahlTrainings());
         assertEquals(42, model.getTotaleZeitInSekunden());
-        assertEquals(1042, model.getTotaleDistanzInMeter());
+        assertEquals(1042, model.getTotaleDistanzInMeter(), 0.0001);
     }
 
     @Test
@@ -65,6 +65,6 @@ public class OverviewModelTest {
 
         assertEquals(2, model.getAnzahlTrainings());
         assertEquals(142, model.getTotaleZeitInSekunden());
-        assertEquals(2042, model.getTotaleDistanzInMeter());
+        assertEquals(2042, model.getTotaleDistanzInMeter(), 0.0001);
     }
 }
