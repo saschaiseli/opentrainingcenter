@@ -196,8 +196,7 @@ public final class TimeHelper {
     }
 
     /**
-     * Gibt den Montag 00:00:00 Uhr zurück von der Woche mit dem angegebenen
-     * Datum.
+     * Gibt den ersten Tag mit 00:00:00 Uhr vom Monat zurück.
      * 
      * Zum Beispiel: Sonntag 15. Dezember 2013 09:11:00 --> gibt Sonntag 1.
      * Dezember 2013 00:00:00 zurück.
