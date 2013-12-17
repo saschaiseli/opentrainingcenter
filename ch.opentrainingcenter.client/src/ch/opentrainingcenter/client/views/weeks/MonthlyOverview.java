@@ -123,7 +123,7 @@ public class MonthlyOverview extends ViewPart {
             @Override
             public void run() {
                 final DateTime now = DateTime.now();
-                final DateTime firstDayInWeek = TimeHelper.getFirstDayOfWeek(now);
+                final DateTime firstDayInWeek = TimeHelper.getFirstDayOfMonth(now);
                 final List<ITraining> trainings = databaseAccess.getTrainingsByAthleteAndDate(athlete, firstDayInWeek, now);
                 final IOverviewModel model = ModelFactory.createOverview(trainings);
                 kmTotal.setText(String.valueOf(DistanceHelper.roundDistanceFromMeterToKm(model.getTotaleDistanzInMeter())));
