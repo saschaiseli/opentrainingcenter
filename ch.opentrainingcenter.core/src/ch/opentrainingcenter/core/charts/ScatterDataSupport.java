@@ -1,8 +1,8 @@
 package ch.opentrainingcenter.core.charts;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import ch.opentrainingcenter.core.assertions.Assertions;
 import ch.opentrainingcenter.transfer.ITrackPointProperty;
@@ -38,7 +38,7 @@ public final class ScatterDataSupport {
     public static Map<Integer, Integer> populate(final ITraining training) {
         Assertions.notNull(training);
         final List<ITrackPointProperty> trackPoints = training.getTrackPoints();
-        final Map<Integer, Integer> result = new HashMap<>();
+        final Map<Integer, Integer> result = new TreeMap<>();
         for (final ITrackPointProperty trackPoint : trackPoints) {
             final int bpm = trackPoint.getHeartBeat();
             if (bpm > 0) {

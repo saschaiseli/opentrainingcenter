@@ -58,9 +58,9 @@ public class ScatterDataSupportTest {
         final float[][] result = ScatterDataSupport.populateHeartData(training);
 
         assertEquals(2, result.length);
-        assertEquals(1, result[0][0], 0.00001);
         assertEquals(1, result[1][0], 0.00001);
-        assertEquals(2, result[2][0], 0.00001);
+        assertEquals(1, result[1][1], 0.00001);
+        assertEquals(2, result[1][2], 0.00001);
     }
 
     @Test
@@ -73,9 +73,9 @@ public class ScatterDataSupportTest {
         final float[][] result = ScatterDataSupport.populateHeartData(training);
 
         assertEquals(2, result.length);
-        assertEquals(1, result[0][0], 0.00001);
         assertEquals(1, result[1][0], 0.00001);
-        assertEquals(2, result[2][0], 0.00001);
+        assertEquals(1, result[1][1], 0.00001);
+        assertEquals(2, result[1][2], 0.00001);
     }
 
     private ITrackPointProperty createHeartBeat(final int bpm) {
