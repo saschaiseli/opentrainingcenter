@@ -77,6 +77,7 @@ public final class Messages extends NLS {
     public static String ChartType7;
     public static String ChartType8;
     public static String ChartType9;
+    public static String ChartViewPart_0;
     public static String CreateAthleteView0;
     public static String CreateAthleteView1;
     public static String CreateAthleteView10;

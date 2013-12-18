@@ -8,3 +8,4 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: org.junit,
  jodatime,
  mockito
+Export-Package: ch.opentrainingcenter.core.charts

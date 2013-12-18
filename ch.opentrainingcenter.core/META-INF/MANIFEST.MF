@@ -16,6 +16,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: ch.opentrainingcenter.core,
  ch.opentrainingcenter.core.assertions,
  ch.opentrainingcenter.core.cache,
+ ch.opentrainingcenter.core.charts,
  ch.opentrainingcenter.core.data,
  ch.opentrainingcenter.core.db,
  ch.opentrainingcenter.core.exceptions,

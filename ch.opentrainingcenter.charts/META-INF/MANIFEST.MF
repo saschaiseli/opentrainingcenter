@@ -19,4 +19,5 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: ch.opentrainingcenter.charts.bar,
  ch.opentrainingcenter.charts.single,
+ ch.opentrainingcenter.charts.ng,
  ch.opentrainingcenter.charts.statistics

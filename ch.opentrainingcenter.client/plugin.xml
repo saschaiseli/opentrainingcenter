@@ -127,7 +127,7 @@
       </category>
       <view
             class="ch.opentrainingcenter.client.views.statistics.StatisticView"
-            icon="icons/16_16/chart_16_16.png"
+            icon="icons/16_16/charts.png"
             id="ch.opentrainingcenter.client.views.statistics.StatisticView"
             name="%auswertungen"
             restorable="true">
@@ -146,6 +146,14 @@
             class="ch.opentrainingcenter.client.views.weeks.WeeklyOverview"
             id="ch.opentrainingcenter.client.weeks.weeklyOverview"
             name="%wochenuebersicht"
+            restorable="false">
+      </view>
+      <view
+            allowMultiple="false"
+            category="ch.opentrainingcenter.client.otccategory"
+            class="ch.opentrainingcenter.client.views.weeks.MonthlyOverview"
+            id="ch.opentrainingcenter.client.weeks.monthlyOverview"
+            name="%monatsuebersicht"
             restorable="false">
       </view>
       <view
@@ -190,12 +198,12 @@
             restorable="true">
       </view>
       <view
-            allowMultiple="false"
-            category="ch.opentrainingcenter.client.otccategory"
-            class="ch.opentrainingcenter.client.views.weeks.MonthlyOverview"
-            id="ch.opentrainingcenter.client.weeks.monthlyOverview"
-            name="%monatsuebersicht"
-            restorable="false">
+            allowMultiple="true"
+            class="ch.opentrainingcenter.client.views.chart.ChartViewPart"
+            icon="icons/16_16/charts.png"
+            id="ch.opentrainingcenter.client.views.chart"
+            name="%chart"
+            restorable="true">
       </view>
    </extension>
    <extension
@@ -314,6 +322,11 @@
             description="%vergleicht2laeufe_desc"
             id="ch.opentrainingcenter.client.commands.CompareRecords"
             name="%vergleicht2laeufe">
+      </command>
+      <command
+            description="%herz_scatter_desc"
+            id="ch.opentrainingcenter.client.commands.HeartScatter"
+            name="%herz_scatter">
       </command>
       <command
             description="%heapdump_desc"
@@ -528,6 +541,16 @@
                </iterate>
             </visibleWhen>
          </command>
+         <menu
+               icon="icons/16_16/charts.png"
+               label="%menu_chart">
+            <command
+                  commandId="ch.opentrainingcenter.client.commands.HeartScatter"
+                  icon="icons/16_16/scatter-icon.png"
+                  label="%herz_scatter"
+                  style="push">
+            </command>
+         </menu>
       </menuContribution>
       <menuContribution
             allPopups="false"
@@ -570,7 +593,7 @@
             <command
                   commandId="ch.opentrainingcenter.client.commands.ShowTrainingPlan"
                   icon="icons/16_16/plaeneuebersicht.gif"
-                  label="%trainingsplaeneuebersicht"
+                  label="%trainingsplaene_uebersicht"
                   style="push"
                   tooltip="%trainingsplaene_uebersicht_tooltip">
             </command>
@@ -598,7 +621,7 @@
             </command>
             <command
                   commandId="ch.opentrainingcenter.client.commands.SwitchToStatistic"
-                  icon="icons/16_16/chart_16_16.png"
+                  icon="icons/16_16/charts.png"
                   label="%auswertungen"
                   style="push"
                   tooltip="%auswertungen">
@@ -793,6 +816,15 @@
             class="ch.opentrainingcenter.client.commands.CreateHeapDump"
             commandId="ch.opentrainingcenter.client.commands.CreateHeapDump">
       </handler>
+      <handler
+            class="ch.opentrainingcenter.client.commands.HeartScatterHandler"
+            commandId="ch.opentrainingcenter.client.commands.HeartScatter">
+         <enabledWhen>
+            <test
+                  property="ch.opentrainingcenter.client.selection.navigationSelection">
+            </test>
+         </enabledWhen>
+      </handler>
    </extension>
    <extension
          point="org.eclipse.ui.viewActions">
@@ -829,5 +861,15 @@
    </extension>
    <extension
          point="org.eclipse.ui.services">
+   </extension>
+   <extension
+         point="org.eclipse.core.expressions.propertyTesters">
+      <propertyTester
+            class="ch.opentrainingcenter.client.property.SelectionPropertyTester"
+            id="ch.opentrainingcenter.client.selection"
+            namespace="ch.opentrainingcenter.client.selection"
+            properties="navigationSelection"
+            type="java.lang.Object">
+      </propertyTester>
    </extension>
 </plugin>
