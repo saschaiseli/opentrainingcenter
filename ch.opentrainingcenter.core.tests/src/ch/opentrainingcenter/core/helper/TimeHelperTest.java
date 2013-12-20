@@ -3,9 +3,11 @@ package ch.opentrainingcenter.core.helper;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -15,6 +17,12 @@ import static org.junit.Assert.assertNotNull;
 public class TimeHelperTest {
 
     private final Locale locale = Locale.GERMAN;
+
+    @Before
+    public void setUp() {
+        Locale.setDefault(Locale.GERMAN);
+        TimeZone.setDefault(TimeZone.getTimeZone("GMT+1"));
+    }
 
     @Test
     public void testConvertSekundenInReadableFormat() {
