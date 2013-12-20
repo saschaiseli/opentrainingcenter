@@ -114,9 +114,8 @@ public class DynamicChartInfosTest {
         collection.add(xyZwei);
         // Item eins
         final Number expectedDistance = Integer.valueOf(10042);
-        final Calendar cal = Calendar.getInstance(Locale.GERMAN);
-        cal.set(2000, 11, 23, 22, 52, 42);
-        final Number expectedTime = Long.valueOf(cal.getTimeInMillis());
+
+        final Number expectedTime = Long.valueOf(10000);
         when(dataSet.getSeriesCount()).thenReturn(2);
         when(dataSet.getX(0, 0)).thenReturn(expectedDistance);
         when(dataSet.getY(1, 0)).thenReturn(expectedTime);
@@ -129,9 +128,8 @@ public class DynamicChartInfosTest {
 
         // Item zwei
         final Number expectedDistance2 = Integer.valueOf(10042);
-        final Calendar cal2 = Calendar.getInstance(Locale.GERMAN);
-        cal2.set(2000, 11, 23, 22, 52, 52);
-        final Number expectedTime2 = Long.valueOf(cal2.getTimeInMillis());
+        final Number expectedTime2 = Long.valueOf(20000);
+
         when(dataSet.getX(0, 1)).thenReturn(expectedDistance2);
         when(dataSet.getY(1, 1)).thenReturn(expectedTime2);
         when(xyEins.getDataset()).thenReturn(dataSet);

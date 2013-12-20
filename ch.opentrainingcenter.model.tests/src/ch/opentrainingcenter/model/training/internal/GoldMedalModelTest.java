@@ -67,7 +67,7 @@ public class GoldMedalModelTest {
         final GoldMedalModel emptyModel = new GoldMedalModel();
         for (final Intervall intervall : Intervall.values()) {
             final Pair<Long, String> result = emptyModel.getSchnellstePace(intervall);
-            LOGGER.warn(result);
+            LOGGER.warn("empty?: " + result);
             assertEmptyPair(result);
         }
     }
