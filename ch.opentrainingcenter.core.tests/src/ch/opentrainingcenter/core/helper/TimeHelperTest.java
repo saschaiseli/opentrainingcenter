@@ -47,7 +47,7 @@ public class TimeHelperTest {
         final Calendar cal = Calendar.getInstance(locale);
         cal.set(2012, 0, 1);
         final int kw = TimeHelper.getKalenderWoche(cal.getTime(), Locale.GERMAN);
-        assertEquals("Locale isch: " + Locale.getDefault(), 52, kw);
+        assertEquals("Locale isch: " + Locale.GERMAN, 52, kw);
     }
 
     @Test
@@ -71,7 +71,7 @@ public class TimeHelperTest {
         final Calendar cal = Calendar.getInstance(locale);
         cal.set(2012, 3, 1);
         final int kw = TimeHelper.getKalenderWoche(cal.getTime(), Locale.GERMAN);
-        assertEquals("Locale isch: " + Locale.getDefault(), 13, kw);
+        assertEquals("Locale isch: " + Locale.GERMAN, 13, kw);
     }
 
     @Test
@@ -95,7 +95,7 @@ public class TimeHelperTest {
         final Calendar cal = Calendar.getInstance(locale);
         cal.set(2012, 6, 1);
         final int kw = TimeHelper.getKalenderWoche(cal.getTime(), Locale.GERMAN);
-        assertEquals("Locale isch: " + Locale.getDefault(), 26, kw);
+        assertEquals("Locale isch: " + Locale.GERMAN, 26, kw);
     }
 
     @Test
@@ -210,9 +210,9 @@ public class TimeHelperTest {
         final DateTime dateTime = new DateTime(2013, 1, 13, 0, 0);
         final Date datum = dateTime.toDate();
 
-        final Calendar calendar = Calendar.getInstance();
+        final Calendar calendar = Calendar.getInstance(Locale.GERMAN);
         calendar.setTime(datum);
-        final String tag = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());
+        final String tag = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.GERMAN);
         final String converted = TimeHelper.convertDateToString(datum, true);
         assertEquals(tag + " 13.01.2013 00:00:00", converted);
     }
