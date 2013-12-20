@@ -1,11 +1,5 @@
 package ch.opentrainingcenter.charts.single;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
@@ -13,16 +7,24 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import org.jfree.chart.ChartRenderingInfo;
 import org.jfree.chart.entity.EntityCollection;
 import org.jfree.chart.entity.XYItemEntity;
 import org.jfree.data.xy.XYDataset;
+import org.joda.time.DateTimeZone;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
 import ch.opentrainingcenter.core.data.Pair;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @SuppressWarnings({ "rawtypes", "unchecked", "nls" })
 public class DynamicChartInfosTest {
@@ -33,11 +35,15 @@ public class DynamicChartInfosTest {
 
     @Before
     public void setUp() throws Exception {
+        Locale.setDefault(Locale.GERMAN);
+        TimeZone.setDefault(TimeZone.getTimeZone("GMT+1"));
+
+        final DateTimeZone zoneUTC = DateTimeZone.forID("Europe/Berlin");
+        DateTimeZone.setDefault(zoneUTC);
         renderInfos = mock(ChartRenderingInfo.class);
         dataSet = mock(XYDataset.class);
         infos = new DynamicChartInfos(dataSet);
         infos.setRenderInfos(renderInfos);
-        Locale.setDefault(Locale.GERMAN);
     }
 
     @Test

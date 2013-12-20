@@ -1,5 +1,9 @@
 package ch.opentrainingcenter.model.training.internal;
 
+import java.util.Locale;
+import java.util.TimeZone;
+
+import org.joda.time.DateTimeZone;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +20,12 @@ public class GoldMedalModelTest {
 
     @Before
     public void before() {
+        Locale.setDefault(Locale.GERMAN);
+        TimeZone.setDefault(TimeZone.getTimeZone("GMT+1"));
+
+        final DateTimeZone zoneUTC = DateTimeZone.forID("Europe/Berlin");
+        DateTimeZone.setDefault(zoneUTC);
+
         model = new GoldMedalModel();
     }
 
