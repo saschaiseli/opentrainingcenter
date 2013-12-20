@@ -3,6 +3,7 @@ package ch.opentrainingcenter.model.training.internal;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import org.apache.log4j.Logger;
 import org.joda.time.DateTimeZone;
 import org.junit.After;
 import org.junit.Before;
@@ -15,6 +16,8 @@ import static org.junit.Assert.assertNull;
 
 @SuppressWarnings("nls")
 public class GoldMedalModelTest {
+
+    private final Logger LOGGER = Logger.getLogger(GoldMedalModelTest.class);
 
     GoldMedalModel model;
 
@@ -61,8 +64,10 @@ public class GoldMedalModelTest {
 
     @Test
     public void testGetSchnellstePaceIntervallValueNotFound() {
+        final GoldMedalModel emptyModel = new GoldMedalModel();
         for (final Intervall intervall : Intervall.values()) {
-            final Pair<Long, String> result = model.getSchnellstePace(intervall);
+            final Pair<Long, String> result = emptyModel.getSchnellstePace(intervall);
+            LOGGER.warn(result);
             assertEmptyPair(result);
         }
     }
