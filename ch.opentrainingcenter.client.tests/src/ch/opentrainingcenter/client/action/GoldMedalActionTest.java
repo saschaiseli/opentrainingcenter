@@ -1,10 +1,9 @@
 package ch.opentrainingcenter.client.action;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -12,6 +11,8 @@ import org.junit.Test;
 import ch.opentrainingcenter.model.training.IGoldMedalModel;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 @SuppressWarnings("nls")
 public class GoldMedalActionTest {
@@ -23,6 +24,8 @@ public class GoldMedalActionTest {
 
     @Before
     public void setUp() {
+        Locale.setDefault(Locale.GERMAN);
+        TimeZone.setDefault(TimeZone.getTimeZone("GMT+1"));
         action = new GoldMedalAction();
         allImported = new ArrayList<ITraining>();
         trainingA = CommonTransferFactory.createTraining(1000L, 0d, 0d, 0, 0, 0d);
