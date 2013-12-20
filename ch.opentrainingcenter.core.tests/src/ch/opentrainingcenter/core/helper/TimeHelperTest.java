@@ -6,6 +6,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,6 +23,9 @@ public class TimeHelperTest {
     public void setUp() {
         Locale.setDefault(Locale.GERMAN);
         TimeZone.setDefault(TimeZone.getTimeZone("GMT+1"));
+
+        final DateTimeZone zoneUTC = DateTimeZone.forID("Europe/Berlin");
+        DateTimeZone.setDefault(zoneUTC);
     }
 
     @Test
