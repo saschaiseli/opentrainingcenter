@@ -1,5 +1,6 @@
 package ch.opentrainingcenter.charts.ng;
 
+import java.awt.Color;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.experimental.chart.swt.ChartComposite;
 
@@ -37,9 +39,13 @@ public class ChartViewer {
         final NumberAxis rangeAxis = new NumberAxis("Anzahl");
         rangeAxis.setAutoRangeIncludesZero(false);
 
-        final JFreeChart jfreechart = ChartFactory.createScatterPlot("", "[bpm]", "Anzahl", dataset, PlotOrientation.VERTICAL, true, true, false);
+        final JFreeChart chart = ChartFactory.createScatterPlot("", "[bpm]", "Anzahl", dataset, PlotOrientation.VERTICAL, true, true, false);
+        final XYPlot plot = chart.getXYPlot();
+        plot.setBackgroundPaint(Color.white);
+        plot.setDomainGridlinePaint(Color.lightGray);
+        plot.setRangeGridlinePaint(Color.lightGray);
 
-        final ChartComposite cc = new ChartComposite(parent, SWT.NONE, jfreechart);
+        final ChartComposite cc = new ChartComposite(parent, SWT.NONE, chart);
 
         final TableWrapData td = new TableWrapData(TableWrapData.FILL_GRAB);
         td.heightHint = 800;
