@@ -1,6 +1,5 @@
 package ch.opentrainingcenter.core.service.internal;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,6 +31,6 @@ public final class DatabaseExtensionSupport {
                 LOGGER.error("Extension nicht gefunden: ", e); //$NON-NLS-1$
             }
         }
-        return Collections.unmodifiableMap(result);
+        return result;
     }
 }

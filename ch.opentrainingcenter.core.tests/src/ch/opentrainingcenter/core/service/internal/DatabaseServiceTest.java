@@ -1,13 +1,15 @@
 package ch.opentrainingcenter.core.service.internal;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
-import ch.opentrainingcenter.core.db.IDatabaseAccess;
+import ch.opentrainingcenter.core.db.DatabaseConnectionConfiguration;
 import ch.opentrainingcenter.core.db.IDatabaseConnection;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @SuppressWarnings("nls")
 public class DatabaseServiceTest {
@@ -26,20 +28,6 @@ public class DatabaseServiceTest {
         service.init("dbName", "url", "user", "pw", null, null, null);
     }
 
-    @Test
-    @Ignore
-    public void testInitOhneAdminDBExisitert() {
-        service = DatabaseService.getInstance();
-        service.init("H2 Database", "jdbc:h2:file:~/.otc/abc", "sa", "", null, null, null);
-        final IDatabaseAccess access = service.getDatabaseAccess();
-        assertNotNull(access);
-
-        final IDatabaseConnection connection = service.getDatabaseConnection();
-        assertNotNull(connection);
-
-        assertNull(connection.getAdminConnection());
-    }
-
     @Test(expected = IllegalArgumentException.class)
     public void testGetDatabaseAccessNochNichtInitialisert() {
         service = DatabaseService.getInstance();
@@ -47,11 +35,32 @@ public class DatabaseServiceTest {
     }
 
     @Test
-    @Ignore
-    public void testGetAvailableConnections() {
+    public void testInit() {
         service = DatabaseService.getInstance();
-        assertNotNull(service.getAvailableConnections());
-        assertTrue("Mindestens eine connection muss da sein", service.getAvailableConnections().size() >= 1);
+        final IDatabaseConnection databaseConnection = mock(IDatabaseConnection.class);
+        when(databaseConnection.getDriver()).thenReturn("junit_driver");
+        when(databaseConnection.getDialect()).thenReturn("junit_dialect");
+        final String dbName = "junit";
+        service.getAvailableConnections().put(dbName, databaseConnection);
+
+        service.init(dbName, "url", "sa", "", null, null, null);
+
+        verify(databaseConnection).setConfig(any(DatabaseConnectionConfiguration.class));
+        verify(databaseConnection).init();
     }
 
+    @Test
+    public void testInitAdmin() {
+        service = DatabaseService.getInstance();
+        final IDatabaseConnection databaseConnection = mock(IDatabaseConnection.class);
+        when(databaseConnection.getDriver()).thenReturn("junit_driver");
+        when(databaseConnection.getDialect()).thenReturn("junit_dialect");
+        final String dbName = "junit";
+        service.getAvailableConnections().put(dbName, databaseConnection);
+
+        service.init(dbName, "url", "sa", "", "urlAdmin", "adminUser", "");
+
+        verify(databaseConnection).setConfig(any(DatabaseConnectionConfiguration.class));
+        verify(databaseConnection).init();
+    }
 }
