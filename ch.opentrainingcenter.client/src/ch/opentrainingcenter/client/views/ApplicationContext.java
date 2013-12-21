@@ -33,6 +33,17 @@ public final class ApplicationContext {
         return INSTANCE;
     }
 
+    /**
+     * Löscht alle Daten aus dem Context.
+     */
+    public void clear() {
+        selectedJahr = 0;
+        selectedId = null;
+        athlete = null;
+        selectedItems.clear();
+        dbState = null;
+    }
+
     public Long getSelectedId() {
         return selectedId;
     }

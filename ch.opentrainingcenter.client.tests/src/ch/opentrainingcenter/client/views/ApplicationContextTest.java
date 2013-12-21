@@ -6,6 +6,8 @@ import ch.opentrainingcenter.core.db.DatabaseConnectionState;
 import ch.opentrainingcenter.transfer.IAthlete;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import static org.mockito.Mockito.mock;
 
@@ -60,5 +62,26 @@ public class ApplicationContextTest {
         context.setDbState(dbState);
 
         assertEquals(dbState, context.getDbState());
+    }
+
+    @Test
+    public void testClear() {
+        final ApplicationContext context = ApplicationContext.getApplicationContext();
+        context.setAthlete(mock(IAthlete.class));
+        context.setDbState(mock(DatabaseConnectionState.class));
+        context.setSelectedId(42L);
+        context.setSelection(new Object[] { "abc", "cdf" });
+
+        assertNotNull(context.getAthlete());
+        assertNotNull(context.getDbState());
+        assertNotNull(context.getSelectedId());
+        assertNotNull(context.getSelection());
+
+        context.clear();
+
+        assertNull(context.getAthlete());
+        assertNull(context.getDbState());
+        assertNull(context.getSelectedId());
+        assertTrue(context.getSelection().isEmpty());
     }
 }
