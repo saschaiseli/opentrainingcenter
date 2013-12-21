@@ -29,7 +29,7 @@ public class NavigationElementComparer implements IElementComparer {
             final ConcreteImported second = (ConcreteImported) b;
             result = first.getDatum() == second.getDatum();
         } else {
-            throw new IllegalArgumentException(String.format("Kann %s nicht mit %s vergleichen", a, b)); //$NON-NLS-1$
+            result = false;
         }
         return result;
     }
@@ -51,7 +51,7 @@ public class NavigationElementComparer implements IElementComparer {
             final Integer first = (Integer) element;
             hashCode = first.hashCode();
         } else {
-            throw new IllegalArgumentException(String.format("Kein HashCode für %s", element)); //$NON-NLS-1$
+            hashCode = 0;
         }
         return hashCode;
     }

@@ -23,18 +23,22 @@ public class NavigationElementComparerTest {
         comparer = new NavigationElementComparer();
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testEqualsObjectObject() {
         final Object a = new Object();
         final Object b = new Object();
-        comparer.equals(a, b);
+        final boolean equals = comparer.equals(a, b);
+
+        assertFalse(equals);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testEqualsIntegerObject() {
         final Object a = new Object();
         final Integer b = Integer.valueOf(42);
-        comparer.equals(a, b);
+        final boolean equals = comparer.equals(a, b);
+
+        assertFalse(equals);
     }
 
     @Test
@@ -121,9 +125,10 @@ public class NavigationElementComparerTest {
         assertTrue(result);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testHashCode_Object() {
-        comparer.hashCode(new Object());
+        final int hashCode = comparer.hashCode(new Object());
+        assertEquals(0, hashCode);
     }
 
     @Test
