@@ -30,13 +30,12 @@ public class BackupGpsFiles extends OtcAbstractHandler {
     private final IDatabaseConnection databaseConnection;
 
     public BackupGpsFiles() {
-        this(Activator.getDefault().getPreferenceStore());
+        this(Activator.getDefault().getPreferenceStore(), (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class));
     }
 
-    public BackupGpsFiles(final IPreferenceStore store) {
+    public BackupGpsFiles(final IPreferenceStore store, final IDatabaseService service) {
         super(store);
         this.store = store;
-        final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
         databaseConnection = service.getDatabaseConnection();
     }
 

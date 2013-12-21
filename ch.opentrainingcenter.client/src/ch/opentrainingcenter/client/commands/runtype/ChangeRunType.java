@@ -20,11 +20,19 @@ import ch.opentrainingcenter.transfer.ITraining;
  */
 public abstract class ChangeRunType extends AbstractHandler {
 
-    private final Cache cache = TrainingCache.getInstance();
+    private final Cache cache;
     private final IDatabaseService service;
 
     public ChangeRunType() {
-        service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
+        this((IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class), TrainingCache.getInstance());
+    }
+
+    /**
+     * Konstruktor fuer Tests
+     */
+    public ChangeRunType(final IDatabaseService service, final Cache cache) {
+        this.service = service;
+        this.cache = cache;
     }
 
     @Override
