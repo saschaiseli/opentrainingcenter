@@ -11,13 +11,8 @@ import ch.opentrainingcenter.model.training.Intervall;
 public class GoldMedalModel implements IGoldMedalModel {
 
     private static final Pair<Long, String> EMPTY_PAIR = new Pair<>(null, "-"); //$NON-NLS-1$
-    private static final Map<Intervall, Pair<Long, String>> SCHNELLSTE_PACES = new HashMap<>();
 
-    static {
-        for (final Intervall intervall : Intervall.values()) {
-            SCHNELLSTE_PACES.put(intervall, EMPTY_PAIR);
-        }
-    }
+    private final Map<Intervall, Pair<Long, String>> SCHNELLSTE_PACES = new HashMap<>();
 
     private Pair<Long, String> schnellstePace = EMPTY_PAIR;
     private Pair<Long, String> longestDistance = EMPTY_PAIR;
@@ -25,6 +20,12 @@ public class GoldMedalModel implements IGoldMedalModel {
     private Pair<Long, String> highestPulse = EMPTY_PAIR;
     private Pair<Long, String> highestAveragePulse = EMPTY_PAIR;
     private Pair<Long, String> lowestAveragePulse = EMPTY_PAIR;
+
+    public GoldMedalModel() {
+        for (final Intervall intervall : Intervall.values()) {
+            SCHNELLSTE_PACES.put(intervall, EMPTY_PAIR);
+        }
+    }
 
     @Override
     public Pair<Long, String> getSchnellstePace() {
