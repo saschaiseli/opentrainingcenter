@@ -18,7 +18,6 @@ import ch.opentrainingcenter.client.views.IImageKeys;
 import ch.opentrainingcenter.core.cache.Cache;
 import ch.opentrainingcenter.core.cache.ICache;
 import ch.opentrainingcenter.core.cache.TrainingCache;
-import ch.opentrainingcenter.core.data.OTCKonstanten;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.helper.AltitudeCalculator;
 import ch.opentrainingcenter.core.helper.AltitudeCalculator.Ascending;
@@ -113,7 +112,7 @@ public class InitialLoadRunnable implements IRunnableWithProgress {
         final List<ITraining> trainings = db.getAllImported(athlete);
         calculateHoehenmeter(monitor, db, trainings);
 
-        final IRoute defaultRoute = db.getRoute(OTCKonstanten.DEFAULT_ROUTE_NAME, athlete);
+        final IRoute defaultRoute = db.getRoute(Messages.OTCKonstanten_0, athlete);
         setDefaultStrecke(monitor, db, trainings, defaultRoute);
     }
 

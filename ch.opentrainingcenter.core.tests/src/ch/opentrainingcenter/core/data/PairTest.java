@@ -1,8 +1,9 @@
 package ch.opentrainingcenter.core.data;
 
-import static org.junit.Assert.assertEquals;
-
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class PairTest {
 
@@ -24,5 +25,7 @@ public class PairTest {
 
         assertEquals(142L, a.getFirst(), 0.0001);
         assertEquals(2042F, a.getSecond(), 0.00001);
+
+        assertTrue(a.toString().startsWith("Pair [first=")); //$NON-NLS-1$
     }
 }

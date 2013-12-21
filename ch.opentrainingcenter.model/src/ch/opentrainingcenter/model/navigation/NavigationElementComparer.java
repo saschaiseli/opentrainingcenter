@@ -9,51 +9,51 @@ public class NavigationElementComparer implements IElementComparer {
 
     @Override
     public boolean equals(final Object a, final Object b) {
+        final boolean result;
         if (a instanceof Integer && b instanceof Integer) {
             final Integer kwa = (Integer) a;
             final Integer kwb = (Integer) b;
-            return kwb.equals(kwa);
-        }
-        if (a instanceof KWTraining && b instanceof KWTraining) {
+            result = kwb.equals(kwa);
+        } else if (a instanceof KWTraining && b instanceof KWTraining) {
             final KWTraining kwa = (KWTraining) a;
             final KWTraining kwb = (KWTraining) b;
-            return kwa.equals(kwb);
-        }
-        if (a instanceof NavigationParent && b instanceof NavigationParent) {
+            result = kwa.equals(kwb);
+        } else if (a instanceof NavigationParent && b instanceof NavigationParent) {
             final NavigationParent first = (NavigationParent) a;
             final NavigationParent second = (NavigationParent) b;
             final KalenderWoche kwa = first.getKalenderWoche();
             final KalenderWoche kwb = second.getKalenderWoche();
-            return kwa.equals(kwb);
-        }
-        if (a instanceof ConcreteImported && b instanceof ConcreteImported) {
+            result = kwa.equals(kwb);
+        } else if (a instanceof ConcreteImported && b instanceof ConcreteImported) {
             final ConcreteImported first = (ConcreteImported) a;
             final ConcreteImported second = (ConcreteImported) b;
-            return first.getDatum() == second.getDatum();
+            result = first.getDatum() == second.getDatum();
+        } else {
+            throw new IllegalArgumentException(String.format("Kann %s nicht mit %s vergleichen", a, b)); //$NON-NLS-1$
         }
-        return false;
+        return result;
     }
 
     @Override
     public int hashCode(final Object element) {
+        final int hashCode;
         if (element instanceof KWTraining) {
             final KWTraining kwa = (KWTraining) element;
-            return kwa.hashCode();
-        }
-        if (element instanceof NavigationParent) {
+            hashCode = kwa.hashCode();
+        } else if (element instanceof NavigationParent) {
             final NavigationParent first = (NavigationParent) element;
             final KalenderWoche kwa = first.getKalenderWoche();
-            return kwa.hashCode();
-        }
-        if (element instanceof ConcreteImported) {
+            hashCode = kwa.hashCode();
+        } else if (element instanceof ConcreteImported) {
             final ConcreteImported first = (ConcreteImported) element;
-            return (int) first.getDatum();
-        }
-        if (element instanceof Integer) {
+            hashCode = (int) first.getDatum();
+        } else if (element instanceof Integer) {
             final Integer first = (Integer) element;
-            return first.hashCode();
+            hashCode = first.hashCode();
+        } else {
+            throw new IllegalArgumentException(String.format("Kein HashCode für %s", element)); //$NON-NLS-1$
         }
-        return 0;
+        return hashCode;
     }
 
 }

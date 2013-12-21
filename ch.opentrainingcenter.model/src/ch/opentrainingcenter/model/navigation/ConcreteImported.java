@@ -30,7 +30,7 @@ public class ConcreteImported extends ImportedDecorator implements INavigationIt
 
     @Override
     public String getImage() {
-        return super.getTrainingType().getImageicon();
+        return training.getTrainingType().getImageicon();
     }
 
     @Override
