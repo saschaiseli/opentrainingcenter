@@ -3,6 +3,9 @@ package ch.opentrainingcenter.client.views.overview;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
+
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.model.geo.Track;
 import ch.opentrainingcenter.model.geo.TrackPoint;
@@ -15,6 +18,8 @@ import ch.opentrainingcenter.transfer.ITraining;
  * kann.
  */
 public final class MapConverter {
+
+    private static final Logger LOGGER = Logger.getLogger(MapConverter.class);
 
     private MapConverter() {
     }
@@ -38,6 +43,7 @@ public final class MapConverter {
      * </pre>
      */
     public static String convertTrackpoints(final ITraining training) {
+        final long start = DateTime.now().getMillis();
         final StringBuffer str = new StringBuffer();
         str.append('[');
         final List<ITrackPointProperty> points = training.getTrackPoints();
@@ -51,6 +57,8 @@ public final class MapConverter {
             str.append(']');
             str.replace(str.length() - 2, str.length() - 1, ""); //$NON-NLS-1$
         }
+        final long end = DateTime.now().getMillis();
+        LOGGER.debug(String.format("Dauer convertTrackPoints %s [ms]", (end - start))); //$NON-NLS-1$
         return str.toString();
     }
 

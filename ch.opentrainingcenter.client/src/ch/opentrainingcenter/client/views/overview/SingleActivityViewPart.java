@@ -36,6 +36,7 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.forms.widgets.TableWrapData;
 import org.eclipse.ui.forms.widgets.TableWrapLayout;
 import org.eclipse.ui.part.ViewPart;
+import org.joda.time.DateTime;
 
 import ch.opentrainingcenter.charts.single.ChartFactory;
 import ch.opentrainingcenter.charts.single.ChartType;
@@ -91,6 +92,8 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         final IAthlete athlete = context.getAthlete();
         simpleTraining = ModelFactory.convertToSimpleTraining(training);
 
+        LOGGER.info(String.format("Training mit %s Trackpoints geladen", training.getTrackPoints().size())); //$NON-NLS-1$
+
         factory = new ChartFactory(Activator.getDefault().getPreferenceStore(), training, athlete);
 
         setPartName(simpleTraining.getFormattedDate());
@@ -112,12 +115,25 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         layout.numColumns = 2;
         body.setLayout(layout);
 
+        long time1 = DateTime.now().getMillis();
         addOverviewSection(body);
+        long time2 = DateTime.now().getMillis();
+        LOGGER.debug(String.format("Zeit zum Laden von Overview: %s [s]", time2 - time1)); //$NON-NLS-1$
         addNoteSection(body);
+        time1 = DateTime.now().getMillis();
+        LOGGER.debug(String.format("Zeit zum Laden von addNoteSection: %s [s]", time1 - time2)); //$NON-NLS-1$
         addMapSection(body);
+        time2 = DateTime.now().getMillis();
+        LOGGER.debug(String.format("Zeit zum Laden von addMapSection: %s [s]", time2 - time1)); //$NON-NLS-1$
         addHeartSection(body);
+        time1 = DateTime.now().getMillis();
+        LOGGER.debug(String.format("Zeit zum Laden von addHeartSection: %s [s]", time1 - time2)); //$NON-NLS-1$
         addSpeedSection(body);
+        time2 = DateTime.now().getMillis();
+        LOGGER.debug(String.format("Zeit zum Laden von addSpeedSection: %s [s]", time2 - time1)); //$NON-NLS-1$
         addAltitudeSection(body);
+        time1 = DateTime.now().getMillis();
+        LOGGER.debug(String.format("Zeit zum Laden von addAltitudeSection: %s [s]", time1 - time2)); //$NON-NLS-1$
 
         getSite().setSelectionProvider(this);
     }
