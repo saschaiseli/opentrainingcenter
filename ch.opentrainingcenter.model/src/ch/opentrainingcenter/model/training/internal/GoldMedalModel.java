@@ -21,12 +21,6 @@ public class GoldMedalModel implements IGoldMedalModel {
     private Pair<Long, String> highestAveragePulse = EMPTY_PAIR;
     private Pair<Long, String> lowestAveragePulse = EMPTY_PAIR;
 
-    public GoldMedalModel() {
-        for (final Intervall intervall : Intervall.values()) {
-            SCHNELLSTE_PACES.put(intervall, EMPTY_PAIR);
-        }
-    }
-
     @Override
     public Pair<Long, String> getSchnellstePace() {
         return schnellstePace;
@@ -41,6 +35,9 @@ public class GoldMedalModel implements IGoldMedalModel {
     @Override
     public Pair<Long, String> getSchnellstePace(final Intervall intervall) {
         Assertions.notNull(intervall);
+        if (!SCHNELLSTE_PACES.containsKey(intervall)) {
+            SCHNELLSTE_PACES.put(intervall, EMPTY_PAIR);
+        }
         return SCHNELLSTE_PACES.get(intervall);
     }
 
