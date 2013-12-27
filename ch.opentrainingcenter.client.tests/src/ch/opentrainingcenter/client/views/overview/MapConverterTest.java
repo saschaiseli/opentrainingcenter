@@ -1,7 +1,5 @@
 package ch.opentrainingcenter.client.views.overview;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +11,8 @@ import ch.opentrainingcenter.model.geo.TrackPoint;
 import ch.opentrainingcenter.transfer.IStreckenPunkt;
 import ch.opentrainingcenter.transfer.ITrackPointProperty;
 import ch.opentrainingcenter.transfer.ITraining;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 @SuppressWarnings("nls")
 public class MapConverterTest {
@@ -23,6 +23,15 @@ public class MapConverterTest {
     public void testGetFirstPoint() {
         final String firstPointToPan = MapConverter.getFirstPointToPan("[[25.774252,-80.190262],[18.466465,-66.118292], [46.954, 7.448]]");//$NON-NLS-1$
         assertEquals("25.774252,-80.190262", firstPointToPan);//$NON-NLS-1$
+    }
+
+    @Test
+    public void testMapConvertNo_GPS_Data() {
+        final ITraining training = Mockito.mock(ITraining.class);
+        final List<ITrackPointProperty> trackPoints = new ArrayList<ITrackPointProperty>();
+        Mockito.when(training.getTrackPoints()).thenReturn(trackPoints);
+        final String track = MapConverter.convertTrackpoints(training);
+        assertNull("Wenn keine GPS Daten da sind muss null zurückgegeben werden", track);
     }
 
     @Test

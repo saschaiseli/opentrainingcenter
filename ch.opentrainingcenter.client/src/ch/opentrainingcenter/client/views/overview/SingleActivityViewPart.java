@@ -59,7 +59,6 @@ import ch.opentrainingcenter.model.training.ISimpleTraining;
 import ch.opentrainingcenter.model.training.Wetter;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.ITraining;
-import ch.opentrainingcenter.transfer.IWeather;
 import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
 
 public class SingleActivityViewPart extends ViewPart implements ISelectionProvider {
@@ -84,11 +83,11 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         databaseAccess = service.getDatabaseAccess();
         final ApplicationContext context = ApplicationContext.getApplicationContext();
         final Long selectedId = context.getSelectedId();
-        if (cache.get(selectedId) == null) {
-            training = databaseAccess.getTrainingById(selectedId);
-        } else {
-            training = cache.get(selectedId);
-        }
+        // if (cache.get(selectedId) == null) {
+        training = databaseAccess.getTrainingById(selectedId);
+        // } else {
+        // training = cache.get(selectedId);
+        // }
         final IAthlete athlete = context.getAthlete();
         simpleTraining = ModelFactory.convertToSimpleTraining(training);
 
@@ -122,7 +121,9 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         addNoteSection(body);
         time1 = DateTime.now().getMillis();
         LOGGER.debug(String.format("Zeit zum Laden von addNoteSection: %s [s]", time1 - time2)); //$NON-NLS-1$
-        addMapSection(body);
+        if (!training.getTrackPoints().isEmpty()) {
+            addMapSection(body);
+        }
         time2 = DateTime.now().getMillis();
         LOGGER.debug(String.format("Zeit zum Laden von addMapSection: %s [s]", time2 - time1)); //$NON-NLS-1$
         addHeartSection(body);
@@ -326,18 +327,25 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
 
             @Override
             public void recordChanged(final Collection<ITraining> entry) {
-                if (entry != null) {
-                    final ITraining act = entry.iterator().next();
-                    if (act.getDatum() == simpleTraining.getDatum().getTime()) {
-                        // nur wenn es dieser record ist!
-                        if (simpleTraining.getNote() != null) {
-                            note.setText(simpleTraining.getNote());
+                Display.getDefault().asyncExec(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        if (entry != null) {
+                            final ITraining act = entry.iterator().next();
+                            if (act.getDatum() == simpleTraining.getDatum().getTime()) {
+                                // nur wenn es dieser record ist!
+                                if (simpleTraining.getNote() != null) {
+                                    note.setText(simpleTraining.getNote());
+                                }
+                                // comboStrecke.setSelection(new
+                                // StructuredSelection(simpleTraining.getStrecke()));
+                            }
                         }
-                        // comboStrecke.setSelection(new
-                        // StructuredSelection(simpleTraining.getStrecke()));
+                        section.update();
                     }
-                }
-                section.update();
+                });
+
             }
 
             @Override
@@ -395,9 +403,7 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
 
             @Override
             public void run() {
-                databaseAccess.updateRecordRoute(record, idRoute);
-                updateCache(databaseAccess.getTrainingById(record.getDatum()));
-
+                databaseAccess.updateTrainingRoute(record, idRoute);
             }
         });
     }
@@ -407,18 +413,11 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
 
             @Override
             public void run() {
-                databaseAccess.updateRecord(record);
-                updateCache(record);
+                databaseAccess.saveOrUpdate(record);
 
             }
         });
 
-    }
-
-    private void updateCache(final ITraining record) {
-        final String note = record.getNote();
-        final IWeather weather = record.getWeather();
-        cache.update(record.getDatum(), note, weather, record.getRoute());
     }
 
     private void addMapSection(final Composite body) {

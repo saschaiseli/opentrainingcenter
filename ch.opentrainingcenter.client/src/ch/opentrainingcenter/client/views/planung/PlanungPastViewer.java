@@ -83,7 +83,7 @@ public class PlanungPastViewer {
 
                 Collections.sort(planungsWoche, new PlanungWocheComparator());
 
-                final List<ITraining> allImported = databaseAccess.getAllImported(athlete);
+                final List<ITraining> allImported = databaseAccess.getAllTrainings(athlete);
                 final DateTime dt = new DateTime();
                 final KwJahrKey now = new KwJahrKey(dt.getYear(), dt.getWeekOfWeekyear());
                 final IPastPlanungModel model = ModelFactory.createPastPlanungModel(planungsWoche, allImported, now);

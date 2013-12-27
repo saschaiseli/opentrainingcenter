@@ -100,7 +100,7 @@ public class ImportManualGpsFiles extends OtcAbstractHandler {
                 if (validId(athleteId)) {
                     final IFileImport fileImporter = new FileImport(cc, athlete, databaseAccess, location, ImporterFactory.createFileCopy());
                     final IGpsFileModelWrapper model = dialog.getModelWrapper();
-                    final Job job = new ImportManualJob(Messages.ImportManualGpsFilesLadeGpsFiles, model, filterPath, fileImporter, cache);
+                    final Job job = new ImportManualJob(Messages.ImportManualGpsFilesLadeGpsFiles, model, filterPath, fileImporter);
                     job.schedule();
                 } else {
                     throw new ExecutionException("Kein Athlete gesetzt."); //$NON-NLS-1$

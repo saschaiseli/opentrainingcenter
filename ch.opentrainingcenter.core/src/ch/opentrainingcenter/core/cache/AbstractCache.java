@@ -28,7 +28,7 @@ public abstract class AbstractCache<K, V> implements ICache<K, V> {
     @Override
     public void add(final V value) {
         cache.put(getKey(value), value);
-        LOG.info("Cache Size: (Element added)" + cache.size()); //$NON-NLS-1$
+        LOG.info(String.format("Element added -> Cache (%s) Size: %s", value.getClass().getName(), cache.size())); //$NON-NLS-1$
         final List<V> v = new ArrayList<V>();
         v.add(value);
         fireRecordAdded(v);
@@ -42,9 +42,9 @@ public abstract class AbstractCache<K, V> implements ICache<K, V> {
     @Override
     public void remove(final K key) {
         final V value = cache.remove(key);
-        LOG.info("Cache Size: (Element removed)" + cache.size()); //$NON-NLS-1$
         final List<V> values = new ArrayList<V>();
         if (value != null) {
+            LOG.info(String.format("Element removed --> Cache (%s) Size: %s", value.getClass().getName(), cache.size())); //$NON-NLS-1$
             values.add(value);
         }
         fireRecordDeleted(values);
@@ -71,8 +71,8 @@ public abstract class AbstractCache<K, V> implements ICache<K, V> {
     }
 
     public List<V> getSortedElements(final Comparator<V> comparator) {
-        final List<V> values = getAll();
-        Collections.sort(new ArrayList<V>(values), comparator);
+        final List<V> values = new ArrayList<V>(cache.values());
+        Collections.sort(values, comparator);
         return values;
     }
 

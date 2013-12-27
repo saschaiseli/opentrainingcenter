@@ -7,6 +7,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
@@ -128,7 +129,7 @@ public class BestRunsView extends ViewPart {
             athlete = null;
         }
         action = new GoldMedalAction();
-        final IGoldMedalModel model = action.getModel(databaseAccess.getAllImported(athlete));
+        final IGoldMedalModel model = action.getModel(databaseAccess.getAllTrainings(athlete));
 
         addText(body, model);
 
@@ -244,22 +245,28 @@ public class BestRunsView extends ViewPart {
     }
 
     private void update() {
-        final IGoldMedalModel model = action.getModel(databaseAccess.getAllImported(athlete));
-        bestPace.setText(model.getSchnellstePace().getSecond());
-        longestDistance.setText(model.getLongestDistance().getSecond());
-        longestDistance.setText(model.getLongestDistance().getSecond());
-        longestRun.setText(model.getLongestRun().getSecond());
-        highestPulse.setText(model.getHighestPulse().getSecond());
-        highAvPulse.setText(model.getHighestAveragePulse().getSecond());
-        lowestAvPulse.setText(model.getLowestAveragePulse().getSecond());
+        Display.getDefault().asyncExec(new Runnable() {
 
-        bestKl10.setText(model.getSchnellstePace(Intervall.KLEINER_10).getSecond());
-        best10.setText(model.getSchnellstePace(Intervall.VON10_BIS_15).getSecond());
-        best15.setText(model.getSchnellstePace(Intervall.VON15_BIS_20).getSecond());
-        best20.setText(model.getSchnellstePace(Intervall.VON20_BIS_25).getSecond());
-        best25.setText(model.getSchnellstePace(Intervall.PLUS25).getSecond());
+            @Override
+            public void run() {
+                final IGoldMedalModel model = action.getModel(databaseAccess.getAllTrainings(athlete));
+                bestPace.setText(model.getSchnellstePace().getSecond());
+                longestDistance.setText(model.getLongestDistance().getSecond());
+                longestDistance.setText(model.getLongestDistance().getSecond());
+                longestRun.setText(model.getLongestRun().getSecond());
+                highestPulse.setText(model.getHighestPulse().getSecond());
+                highAvPulse.setText(model.getHighestAveragePulse().getSecond());
+                lowestAvPulse.setText(model.getLowestAveragePulse().getSecond());
 
-        sectionOverall.redraw();
-        sectionPace.redraw();
+                bestKl10.setText(model.getSchnellstePace(Intervall.KLEINER_10).getSecond());
+                best10.setText(model.getSchnellstePace(Intervall.VON10_BIS_15).getSecond());
+                best15.setText(model.getSchnellstePace(Intervall.VON15_BIS_20).getSecond());
+                best20.setText(model.getSchnellstePace(Intervall.VON20_BIS_25).getSecond());
+                best25.setText(model.getSchnellstePace(Intervall.PLUS25).getSecond());
+
+                sectionOverall.redraw();
+                sectionPace.redraw();
+            }
+        });
     }
 }

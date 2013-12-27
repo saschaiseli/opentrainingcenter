@@ -53,7 +53,7 @@ public class RouteDaoTest extends DatabaseTestBase {
 
         access = new CommonDao(connectionConfig);
 
-        access.saveTraining(training);
+        access.saveOrUpdate(training);
 
         connectionConfig.getSession().close();
     }
@@ -80,7 +80,7 @@ public class RouteDaoTest extends DatabaseTestBase {
 
         final ITraining trainingB = CommonTransferFactory.createTraining(now + 100, 1, 2, 3, 4, 5, "noteb", weatherA, null);
         trainingB.setAthlete(athlete);
-        access.saveTraining(trainingB);
+        access.saveOrUpdate(trainingB);
 
         final IRoute route = CommonTransferFactory.createRoute(name, beschreibung, training);
         final int id = routeDao.saveOrUpdate(route);

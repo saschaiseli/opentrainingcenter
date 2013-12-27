@@ -28,7 +28,7 @@ public class TrainingDao {
         this.dao = dao;
     }
 
-    public List<ITraining> getAllImported(final IAthlete athlete) {
+    public List<ITraining> getAllTrainings(final IAthlete athlete) {
         final Session session = dao.getSession();
         dao.begin();
 
@@ -51,6 +51,34 @@ public class TrainingDao {
 
         return list;
     }
+
+    // @Deprecated
+    // public List<ITraining> getAllTrainings(final IAthlete athlete, final int
+    // limit) {
+    // final Session session = dao.getSession();
+    // final long start = DateTime.now().getMillis();
+    // dao.begin();
+    // final Criteria criteria = session.createCriteria(ITraining.class);
+    //
+    // criteria.add(Restrictions.eq("athlete", athlete));
+    // criteria.addOrder(Order.desc("datum"));
+    // criteria.setMaxResults(limit);
+    // criteria.setFetchMode("athlete", FetchMode.JOIN);
+    // criteria.setFetchMode("trainingType", FetchMode.JOIN);
+    // criteria.setFetchMode("weather", FetchMode.JOIN);
+    // criteria.setFetchMode("route", FetchMode.JOIN);
+    // criteria.setFetchMode("trackPoints", FetchMode.SELECT);
+    //
+    // @SuppressWarnings("unchecked")
+    // final List<ITraining> list = criteria.list();
+    //
+    // dao.commit();
+    // session.flush();
+    // final long time = DateTime.now().getMillis() - start;
+    // LOG.info("getAllImported(final IAthlete athlete, final int limit): Time[ms]: "
+    // + time);
+    // return list;
+    // }
 
     public List<ITraining> getTrainingsByAthleteAndDate(final IAthlete athlete, final DateTime von, final DateTime bis) {
         final Session session = dao.getSession();
@@ -78,32 +106,7 @@ public class TrainingDao {
         return list;
     }
 
-    public List<ITraining> getAllImported(final IAthlete athlete, final int limit) {
-        final Session session = dao.getSession();
-        final long start = DateTime.now().getMillis();
-        dao.begin();
-        final Criteria criteria = session.createCriteria(ITraining.class);
-
-        criteria.add(Restrictions.eq("athlete", athlete));
-        criteria.addOrder(Order.desc("datum"));
-        criteria.setMaxResults(limit);
-        criteria.setFetchMode("athlete", FetchMode.JOIN);
-        criteria.setFetchMode("trainingType", FetchMode.JOIN);
-        criteria.setFetchMode("weather", FetchMode.JOIN);
-        criteria.setFetchMode("route", FetchMode.JOIN);
-        criteria.setFetchMode("trackPoints", FetchMode.SELECT);
-
-        @SuppressWarnings("unchecked")
-        final List<ITraining> list = criteria.list();
-
-        dao.commit();
-        session.flush();
-        final long time = DateTime.now().getMillis() - start;
-        LOG.info("getAllImported(final IAthlete athlete, final int limit): Time[ms]: " + time);
-        return list;
-    }
-
-    public List<ITraining> getAllFromRoute(final IAthlete athlete, final IRoute route) {
+    public List<ITraining> getAllTrainingsByRoute(final IAthlete athlete, final IRoute route) {
         final Session session = dao.getSession();
         final long start = DateTime.now().getMillis();
         dao.begin();
@@ -122,7 +125,7 @@ public class TrainingDao {
         return list;
     }
 
-    public ITraining getImportedRecord(final long dateInMilliseconds) {
+    public ITraining getTrainingByDate(final long dateInMilliseconds) {
         final Session session = dao.getSession();
         dao.begin();
 
@@ -140,8 +143,8 @@ public class TrainingDao {
         }
     }
 
-    public ITraining getNewestRun(final IAthlete athlete) {
-        final List<ITraining> list = getAllImported(athlete);
+    public ITraining getNewestTraining(final IAthlete athlete) {
+        final List<ITraining> list = getAllTrainings(athlete);
         ITraining result;
         if (!list.isEmpty()) {
             result = list.get(0);
@@ -151,7 +154,7 @@ public class TrainingDao {
         return result;
     }
 
-    public void removeImportedRecord(final Long datum) {
+    public void removeTrainingByDate(final Long datum) {
         final Session session = dao.getSession();
         dao.begin();
         final Query query = session.createQuery("delete Training where DATUM=:datum");
@@ -161,7 +164,7 @@ public class TrainingDao {
         session.flush();
     }
 
-    public void updateRecord(final ITraining record, final int index) {
+    public void updateTrainingType(final ITraining record, final int index) {
         record.setTrainingType(getTrainingType(index));
         final Session session = dao.getSession();
         final Transaction tx = session.beginTransaction();
@@ -191,7 +194,7 @@ public class TrainingDao {
         return records != null && !records.isEmpty();
     }
 
-    public void updateRecordRoute(final ITraining record, final int idRoute) {
+    public void updateTrainingRoute(final ITraining record, final int idRoute) {
         record.setRoute(getRoute(idRoute));
         final Session session = dao.getSession();
         final Transaction tx = session.beginTransaction();
@@ -209,7 +212,7 @@ public class TrainingDao {
     }
 
     public int saveOrUpdate(final ITraining training) {
-        ITraining exists = getImportedRecord(training.getDatum());
+        ITraining exists = getTrainingByDate(training.getDatum());
         if (exists != null) {
             LOG.info("Training bereits einmal importiert: --> updaten");
         } else {

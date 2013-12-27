@@ -341,7 +341,7 @@ public class RoutenView extends ViewPart implements ISelectionListener {
             if (firstElement instanceof IAthlete) {
                 selectedAthlete = (IAthlete) firstElement;
                 routen.addAll(databaseAccess.getRoute(selectedAthlete));
-                tracks.addAll(databaseAccess.getAllImported(selectedAthlete));
+                tracks.addAll(databaseAccess.getAllTrainings(selectedAthlete));
                 LOGGER.info(String.format("Neuer Athlete selektiert: %s mit %s Routen und %s Tracks", firstElement, routen.size(), tracks.size())); //$NON-NLS-1$      
             }
             final boolean enabled = athlete != null && athlete.equals(selectedAthlete);

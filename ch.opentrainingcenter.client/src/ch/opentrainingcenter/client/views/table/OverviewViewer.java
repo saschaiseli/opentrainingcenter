@@ -71,7 +71,7 @@ public class OverviewViewer extends ViewPart {
 
         // Get the content for the viewer, setInput will call getElements in the
         // contentProvider
-        viewer.setInput(databaseAccess.getAllImported(ApplicationContext.getApplicationContext().getAthlete()));
+        viewer.setInput(databaseAccess.getAllTrainings(ApplicationContext.getApplicationContext().getAthlete()));
         // Make the selection available to other views
         getSite().setSelectionProvider(viewer);
         // Set the sorter for the table
@@ -98,7 +98,7 @@ public class OverviewViewer extends ViewPart {
             }
 
             private void update() {
-                viewer.setInput(databaseAccess.getAllImported(ApplicationContext.getApplicationContext().getAthlete()));
+                viewer.setInput(databaseAccess.getAllTrainings(ApplicationContext.getApplicationContext().getAthlete()));
                 viewer.refresh();
             }
         });

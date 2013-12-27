@@ -92,10 +92,10 @@ public class KalenderWocheNavigationView extends ViewPart {
 
             @Override
             public void run() {
-                final List<ITraining> imported = databaseAccess.getAllImported(athlete);
+                final List<ITraining> training = databaseAccess.getAllTrainings(athlete);
                 treeModel.reset();
                 treeModel.addItems(healthCache.getAll());
-                treeModel.addItems(DecoratImported.decorate(imported));
+                treeModel.addItems(DecoratImported.decorate(training));
                 if (viewer != null) {
                     viewer.refresh();
                 }
@@ -153,8 +153,8 @@ public class KalenderWocheNavigationView extends ViewPart {
                 final Object item = selection.getFirstElement();
 
                 if (item instanceof ConcreteImported) {
-                    final ITraining selectedTraining = (ITraining) item;
-                    cache.add(selectedTraining);
+                    final ITraining selectedTraining = ((ConcreteImported) item).getImported();
+                    // cache.add(selectedTraining);
                     openSingleRunView(selectedTraining);
                 }
 
@@ -202,7 +202,7 @@ public class KalenderWocheNavigationView extends ViewPart {
                 updateModel();
             }
         });
-        final ITraining newestRun = databaseAccess.getNewestRun(athlete);
+        final ITraining newestRun = databaseAccess.getNewestTraining(athlete);
         if (newestRun != null) {
             openSingleRunView(newestRun);
         }

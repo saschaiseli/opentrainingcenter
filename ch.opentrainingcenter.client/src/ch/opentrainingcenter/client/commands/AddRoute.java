@@ -15,7 +15,6 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.views.dialoge.RouteDialog;
-import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
@@ -58,11 +57,10 @@ public class AddRoute extends OtcAbstractHandler {
         if (delete) {
             if (route != null) {
                 // alle referenzen löschen
-                final List<ITraining> all = databaseAccess.getAllFromRoute(training.getAthlete(), route);
+                final List<ITraining> all = databaseAccess.getAllTrainingByRoute(training.getAthlete(), route);
                 for (final ITraining tr : all) {
                     tr.setRoute(null);
-                    databaseAccess.saveTraining(tr);
-                    TrainingCache.getInstance().add(tr);
+                    databaseAccess.saveOrUpdate(tr);
                 }
             }
 

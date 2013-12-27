@@ -15,9 +15,7 @@ import ch.opentrainingcenter.client.cache.HealthCache;
 import ch.opentrainingcenter.client.cache.StreckeCache;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.client.views.IImageKeys;
-import ch.opentrainingcenter.core.cache.Cache;
 import ch.opentrainingcenter.core.cache.ICache;
-import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.helper.AltitudeCalculator;
 import ch.opentrainingcenter.core.helper.AltitudeCalculator.Ascending;
@@ -55,9 +53,7 @@ public class InitialLoadRunnable implements IRunnableWithProgress {
 
     private void loadFirstRecords(final IProgressMonitor monitor, final IAthlete athlete, final IDatabaseAccess db) {
         monitor.subTask(Messages.InitialLoadRunnable_0);
-        final List<ITraining> allImported = db.getAllImported(athlete, 10);
-        final Cache cache = TrainingCache.getInstance();
-        cache.addAll(allImported);
+        db.getAllTrainings(athlete);
     }
 
     private void loadAllPlaene(final IProgressMonitor monitor, final IAthlete athlete, final IDatabaseAccess db) {
@@ -109,7 +105,7 @@ public class InitialLoadRunnable implements IRunnableWithProgress {
     }
 
     private void doMaintenance(final IProgressMonitor monitor, final IAthlete athlete, final IDatabaseAccess db) {
-        final List<ITraining> trainings = db.getAllImported(athlete);
+        final List<ITraining> trainings = db.getAllTrainings(athlete);
         calculateHoehenmeter(monitor, db, trainings);
 
         final IRoute defaultRoute = db.getRoute(Messages.OTCKonstanten_0, athlete);
@@ -121,7 +117,7 @@ public class InitialLoadRunnable implements IRunnableWithProgress {
         for (final ITraining training : trainings) {
             if (training.getRoute() == null) {
                 training.setRoute(defaultRoute);
-                db.saveTraining(training);
+                db.saveOrUpdate(training);
                 monitor.subTask(Messages.InitialLoadRunnable_6 + i);
                 LOG.info("Setzte default Strecke bei Training: " + i); //$NON-NLS-1$ 
                 i++;
@@ -138,7 +134,7 @@ public class InitialLoadRunnable implements IRunnableWithProgress {
                 final DateTime end = DateTime.now();
                 training.setUpMeter(ascending.getUp());
                 training.setDownMeter(ascending.getDown());
-                db.saveTraining(training);
+                db.saveOrUpdate(training);
                 final long time = end.getMillis() - start.getMillis();
                 monitor.subTask(Messages.InitialLoadRunnable_7 + i);
                 LOG.info("Berechne Steigungen " + i + " Zeit: " + time); //$NON-NLS-1$ //$NON-NLS-2$ 

@@ -56,6 +56,8 @@ public final class MapConverter {
         if (pointAdded) {
             str.append(']');
             str.replace(str.length() - 2, str.length() - 1, ""); //$NON-NLS-1$
+        } else {
+            return null;
         }
         final long end = DateTime.now().getMillis();
         LOGGER.debug(String.format("Dauer convertTrackPoints %s [ms]", (end - start))); //$NON-NLS-1$

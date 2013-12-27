@@ -41,6 +41,6 @@ public class AddEditHandler extends AbstractHandler {
     }
 
     private void updateNote(final ITraining training) {
-        service.getDatabaseAccess().updateRecord(training);
+        service.getDatabaseAccess().saveOrUpdate(training);
     }
 }

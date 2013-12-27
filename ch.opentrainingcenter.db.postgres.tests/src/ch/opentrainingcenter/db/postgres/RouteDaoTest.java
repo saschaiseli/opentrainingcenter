@@ -1,10 +1,5 @@
 package ch.opentrainingcenter.db.postgres;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
 import java.util.List;
 
 import org.joda.time.DateTime;
@@ -21,6 +16,10 @@ import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.IWeather;
 import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 @SuppressWarnings("nls")
 public class RouteDaoTest extends PostgresDatabaseTestBase {
@@ -51,7 +50,7 @@ public class RouteDaoTest extends PostgresDatabaseTestBase {
 
         access = new DatabaseAccess(connectionConfig);
         dataAccess = access.getDataAccess();
-        dataAccess.saveTraining(training);
+        dataAccess.saveOrUpdate(training);
 
         connectionConfig.getSession().close();
     }

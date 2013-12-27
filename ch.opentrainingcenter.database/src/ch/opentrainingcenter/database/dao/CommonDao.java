@@ -3,8 +3,10 @@ package ch.opentrainingcenter.database.dao;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 
+import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IHealth;
@@ -19,13 +21,15 @@ import ch.opentrainingcenter.transfer.IWeather;
  * 
  */
 public class CommonDao implements IDatabaseAccess {
-
+    private static final Logger LOGGER = Logger.getLogger(CommonDao.class);
     private final AthleteDao athleteDao;
     private final HealthDao healthDao;
     private final PlanungDao planungsDao;
     private final RouteDao routeDao;
     private final WeatherDao wetterDao;
     private final TrainingDao trainingDao;
+    private final TrainingCache cache;
+    private final boolean useCache = true;
 
     public CommonDao(final IConnectionConfig dao) {
         athleteDao = new AthleteDao(dao);
@@ -34,31 +38,105 @@ public class CommonDao implements IDatabaseAccess {
         routeDao = new RouteDao(dao);
         trainingDao = new TrainingDao(dao);
         wetterDao = new WeatherDao(dao);
+        cache = TrainingCache.getInstance();
     }
 
-    @Override
-    public final List<IAthlete> getAllAthletes() {
-        return athleteDao.getAllAthletes();
+    public CommonDao(final AthleteDao athleteDao, final HealthDao healthDao, final PlanungDao planungsDao, final RouteDao routeDao, final WeatherDao wetterDao,
+            final TrainingDao trainingDao, final TrainingCache cache) {
+        this.athleteDao = athleteDao;
+        this.healthDao = healthDao;
+        this.planungsDao = planungsDao;
+        this.routeDao = routeDao;
+        this.wetterDao = wetterDao;
+        this.trainingDao = trainingDao;
+        this.cache = cache;
     }
 
+    // -------------------------------TRAINING--------------------------------------------------
     @Override
-    public final List<ITraining> getAllImported(final IAthlete athlete) {
-        return trainingDao.getAllImported(athlete);
+    public final List<ITraining> getAllTrainings(final IAthlete athlete) {
+        if (useCache) {
+            if (cache.size() == 0) {
+                cache.addAll(trainingDao.getAllTrainings(athlete));
+                LOGGER.info(String.format("load %s records from database", cache.size())); //$NON-NLS-1$
+            }
+            return cache.getAll(athlete);
+        } else {
+            return trainingDao.getAllTrainings(athlete);
+        }
     }
 
     @Override
     public List<ITraining> getTrainingsByAthleteAndDate(final IAthlete athlete, final DateTime von, final DateTime bis) {
+        LOGGER.info("Load records direct from database"); //$NON-NLS-1$
         return trainingDao.getTrainingsByAthleteAndDate(athlete, von, bis);
     }
 
     @Override
-    public final List<ITraining> getAllImported(final IAthlete athlete, final int limit) {
-        return trainingDao.getAllImported(athlete, limit);
+    public final List<ITraining> getAllTrainingByRoute(final IAthlete athlete, final IRoute route) {
+        LOGGER.info("Load records direct from database"); //$NON-NLS-1$
+        return trainingDao.getAllTrainingsByRoute(athlete, route);
     }
 
     @Override
-    public final List<ITraining> getAllFromRoute(final IAthlete athlete, final IRoute route) {
-        return trainingDao.getAllFromRoute(athlete, route);
+    public final int saveOrUpdate(final ITraining training) {
+        final int id = trainingDao.saveOrUpdate(training);
+        if (useCache) {
+            cache.add(training);
+        }
+        return id;
+    }
+
+    @Override
+    public final void updateTrainingType(final ITraining training, final int typeIndex) {
+        trainingDao.updateTrainingType(training, typeIndex);
+        if (useCache) {
+            cache.add(trainingDao.getTrainingByDate(training.getDatum()));
+        }
+    }
+
+    @Override
+    public final void updateTrainingRoute(final ITraining training, final int idRoute) {
+        trainingDao.updateTrainingRoute(training, idRoute);
+        if (useCache) {
+            cache.add(trainingDao.getTrainingByDate(training.getDatum()));
+        }
+    }
+
+    @Override
+    public final ITraining getTrainingById(final long datum) {
+        if (useCache) {
+            ITraining training = cache.get(datum);
+            if (training == null) {
+                training = trainingDao.getTrainingByDate(datum);
+                if (training != null) {
+                    cache.add(training);
+                }
+            }
+            return training;
+        } else {
+            return trainingDao.getTrainingByDate(datum);
+        }
+
+    }
+
+    @Override
+    public final ITraining getNewestTraining(final IAthlete athlete) {
+        return trainingDao.getNewestTraining(athlete);
+    }
+
+    @Override
+    public final void removeTrainingByDate(final long datum) {
+        trainingDao.removeTrainingByDate(datum);
+        if (useCache) {
+            cache.remove(datum);
+        }
+    }
+
+    // -------------------------------ATHLETE--------------------------------------------------
+    @Override
+    public final List<IAthlete> getAllAthletes() {
+        return athleteDao.getAllAthletes();
     }
 
     @Override
@@ -67,10 +145,16 @@ public class CommonDao implements IDatabaseAccess {
     }
 
     @Override
+    public final int save(final IAthlete athlete) {
+        return athleteDao.save(athlete);
+    }
+
+    @Override
     public final IAthlete getAthlete(final String name) {
         return athleteDao.getAthlete(name);
     }
 
+    // -------------------------------healthDao--------------------------------------------------
     @Override
     public final List<IHealth> getHealth(final IAthlete athlete) {
         return healthDao.getHealth(athlete);
@@ -82,15 +166,16 @@ public class CommonDao implements IDatabaseAccess {
     }
 
     @Override
-    public final ITraining getTrainingById(final long key) {
-        return trainingDao.getImportedRecord(key);
+    public final void removeHealth(final int id) {
+        healthDao.remove(id);
     }
 
     @Override
-    public final ITraining getNewestRun(final IAthlete athlete) {
-        return trainingDao.getNewestRun(athlete);
+    public final int saveOrUpdate(final IHealth health) {
+        return healthDao.saveOrUpdate(health);
     }
 
+    // -------------------------------healthDao--------------------------------------------------
     @Override
     public final List<IPlanungWoche> getPlanungsWoche(final IAthlete athlete) {
         return planungsDao.getPlanungsWoche(athlete);
@@ -101,6 +186,12 @@ public class CommonDao implements IDatabaseAccess {
         return planungsDao.getPlanungsWoche(athlete, jahr, kw);
     }
 
+    @Override
+    public final void saveOrUpdate(final List<IPlanungWoche> planung) {
+        planungsDao.saveOrUpdate(planung);
+    }
+
+    // -------------------------------routeDao--------------------------------------------------
     @Override
     public final List<IRoute> getRoute(final IAthlete athlete) {
         return routeDao.getRoute(athlete);
@@ -117,57 +208,14 @@ public class CommonDao implements IDatabaseAccess {
     }
 
     @Override
-    public final List<IWeather> getWeather() {
-        return wetterDao.getAllWeather();
-    }
-
-    @Override
-    public final void removeHealth(final int id) {
-        healthDao.remove(id);
-    }
-
-    @Override
-    public final void removeImportedRecord(final long datum) {
-        trainingDao.removeImportedRecord(datum);
-    }
-
-    @Override
-    public final int save(final IAthlete athlete) {
-        return athleteDao.save(athlete);
-    }
-
-    @Override
-    public final int saveOrUpdate(final IHealth health) {
-        return healthDao.saveOrUpdate(health);
-    }
-
-    @Override
     public final void saveOrUpdate(final IRoute route) {
         routeDao.saveOrUpdate(route);
     }
 
+    // -------------------------------wetterDao--------------------------------------------------
     @Override
-    public final void saveOrUpdate(final List<IPlanungWoche> planung) {
-        planungsDao.saveOrUpdate(planung);
+    public final List<IWeather> getWeather() {
+        return wetterDao.getAllWeather();
     }
 
-    @Override
-    public final int saveTraining(final ITraining training) {
-        return trainingDao.saveOrUpdate(training);
-    }
-
-    @Override
-    public final void updateRecord(final ITraining record) {
-        trainingDao.saveOrUpdate(record);
-    }
-
-    @Override
-    public final void updateRecord(final ITraining record, final int index) {
-        trainingDao.updateRecord(record, index);
-    }
-
-    @Override
-    public final void updateRecordRoute(final ITraining record, final int idRoute) {
-        trainingDao.updateRecordRoute(record, idRoute);
-    }
 }

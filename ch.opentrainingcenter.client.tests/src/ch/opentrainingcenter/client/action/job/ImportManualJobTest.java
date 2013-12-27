@@ -46,14 +46,14 @@ public class ImportManualJobTest {
     @Test
     public void testConstructor() {
 
-        job = new ImportManualJob("junit", modelWrapper, filterPath, importer, cache);
+        job = new ImportManualJob("junit", modelWrapper, filterPath, importer);
         assertNotNull(job);
     }
 
     @Test
     @Ignore
     public void testRun() {
-        job = new ImportManualJob("junit", modelWrapper, filterPath, importer, cache);
+        job = new ImportManualJob("junit", modelWrapper, filterPath, importer);
 
         final IProgressMonitor monitor = mock(IProgressMonitor.class);
         final IStatus status = job.run(monitor);
@@ -64,7 +64,7 @@ public class ImportManualJobTest {
     @Test(timeout = 3000)
     @Ignore
     public void testRunMitFileModel() throws Exception {
-        job = new ImportManualJob("junit", modelWrapper, filterPath, importer, cache);
+        job = new ImportManualJob("junit", modelWrapper, filterPath, importer);
 
         final List<IGpsFileModel> models = new ArrayList<IGpsFileModel>();
         final IGpsFileModel model = mock(IGpsFileModel.class);

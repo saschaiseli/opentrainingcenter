@@ -1,11 +1,5 @@
 package ch.opentrainingcenter.db.postgres;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -28,6 +22,11 @@ import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.ITrainingType;
 import ch.opentrainingcenter.transfer.IWeather;
 import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 @SuppressWarnings("nls")
 public class DatabaseAccessTest extends PostgresDatabaseTestBase {
@@ -57,7 +56,7 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
     @Test
     public void testTraining_1() {
         final ITraining training = CommonTransferFactory.createTraining(now, 1, 2, 3, 4, 5, "note", weatherA, null);
-        final int id = dataAccess.saveTraining(training);
+        final int id = dataAccess.saveOrUpdate(training);
         assertTrue("Id ist sicherlich grösser als 0", 0 <= id);
     }
 
@@ -70,14 +69,14 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
         training.setAthlete(athlete);
         // training.setRoute(route);
 
-        dataAccess.saveTraining(training);
+        dataAccess.saveOrUpdate(training);
 
         final IRoute route = CommonTransferFactory.createRoute("name", "beschreibung", training);
         routeDao.saveOrUpdate(route);
 
         training.setRoute(route);
 
-        dataAccess.saveTraining(training);
+        dataAccess.saveOrUpdate(training);
 
         final ITraining result = dataAccess.getTrainingById(now);
 
@@ -103,7 +102,7 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
         trackPoints.add(property);
         training.setTrackPoints(trackPoints);
 
-        dataAccess.saveTraining(training);
+        dataAccess.saveOrUpdate(training);
 
         final IRoute route = CommonTransferFactory.createRoute("testTraining_3_route", "beschreibung", training);
         routeDao.saveOrUpdate(route);
@@ -140,7 +139,7 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
 
         training.setAthlete(athlete);
 
-        dataAccess.saveTraining(training);
+        dataAccess.saveOrUpdate(training);
 
         final IRoute routeA = CommonTransferFactory.createRoute("testTraining_4_route", "beschreibungA", training);
         routeDao.saveOrUpdate(routeA);
@@ -152,7 +151,7 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
         training.setWeather(weatherB);
         training.setRoute(routeB);
 
-        dataAccess.saveTraining(training);
+        dataAccess.saveOrUpdate(training);
 
         final ITraining result = dataAccess.getTrainingById(now);
 
@@ -176,11 +175,11 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
         final ITraining trainingB = CommonTransferFactory.createTraining(now + 1, 1, 2, 3, 4, 5, "note1", weatherA, null);
         trainingB.setAthlete(athleteB);
 
-        dataAccess.saveTraining(trainingA);
-        dataAccess.saveTraining(trainingB);
+        dataAccess.saveOrUpdate(trainingA);
+        dataAccess.saveOrUpdate(trainingB);
 
-        final List<ITraining> allFromAthleteA = dataAccess.getAllImported(athleteA);
-        final List<ITraining> allFromAthleteB = dataAccess.getAllImported(athleteB);
+        final List<ITraining> allFromAthleteA = dataAccess.getAllTrainings(athleteA);
+        final List<ITraining> allFromAthleteB = dataAccess.getAllTrainings(athleteB);
 
         assertEquals(1, allFromAthleteA.size());
         assertEquals(1, allFromAthleteB.size());
@@ -197,8 +196,8 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
         final ITraining training = CommonTransferFactory.createTraining(now + 1, 1, 2, 3, 4, 5, "note1", weatherA, null);
         training.setAthlete(athleteA);
 
-        dataAccess.saveTraining(referenzTraining);
-        dataAccess.saveTraining(training);
+        dataAccess.saveOrUpdate(referenzTraining);
+        dataAccess.saveOrUpdate(training);
 
         final IRoute routeA = CommonTransferFactory.createRoute("name", "beschreibung", referenzTraining);
         routeDao.saveOrUpdate(routeA);
@@ -206,16 +205,16 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
         referenzTraining.setRoute(routeA);
         training.setRoute(routeA);
 
-        dataAccess.saveTraining(referenzTraining);
-        dataAccess.saveTraining(training);
+        dataAccess.saveOrUpdate(referenzTraining);
+        dataAccess.saveOrUpdate(training);
 
-        List<ITraining> result = dataAccess.getAllFromRoute(athleteA, routeA);
+        List<ITraining> result = dataAccess.getAllTrainingByRoute(athleteA, routeA);
 
         assertEquals("Zwei Trainings müssen gefunden werden", 2, result.size());
 
         training.setRoute(null);
-        dataAccess.saveTraining(training);
-        result = dataAccess.getAllFromRoute(athleteA, routeA);
+        dataAccess.saveOrUpdate(training);
+        result = dataAccess.getAllTrainingByRoute(athleteA, routeA);
         assertEquals("Nur noch ein Training muss gefunden werden", 1, result.size());
     }
 
@@ -230,10 +229,10 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
         trainingA.setAthlete(athleteA);
         trainingB.setAthlete(athleteA);
 
-        dataAccess.saveTraining(trainingA);
-        dataAccess.saveTraining(trainingB);
+        dataAccess.saveOrUpdate(trainingA);
+        dataAccess.saveOrUpdate(trainingB);
 
-        final List<ITraining> allFromAthleteA = dataAccess.getAllImported(athleteA);
+        final List<ITraining> allFromAthleteA = dataAccess.getAllTrainings(athleteA);
 
         assertEquals(2, allFromAthleteA.size());
 
@@ -243,37 +242,44 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
         assertTrue(first.getDatum() > second.getDatum());
     }
 
-    @Test
-    public void testTraining_7_getAllImported_Sort_And_Limit() {
-        final IAthlete athleteA = CommonTransferFactory.createAthlete("testTraining_7", 222);
-        athleteDao.save(athleteA);
-
-        final ITraining trainingA = CommonTransferFactory.createTraining(now - 20, 1, 2, 3, 4, 5, "note1", weatherA, null);
-        final ITraining trainingB = CommonTransferFactory.createTraining(now + 1000, 1, 2, 3, 4, 5, "note1", weatherA, null);
-        final ITraining trainingC = CommonTransferFactory.createTraining(now + 1001, 1, 2, 3, 4, 5, "note1", weatherA, null);
-        final ITraining trainingD = CommonTransferFactory.createTraining(now + 1002, 1, 2, 3, 4, 5, "note1", weatherA, null);
-        final ITraining trainingE = CommonTransferFactory.createTraining(now + 1003, 1, 2, 3, 4, 5, "note1", weatherA, null);
-
-        trainingA.setAthlete(athleteA);
-        trainingB.setAthlete(athleteA);
-        trainingC.setAthlete(athleteA);
-        trainingD.setAthlete(athleteA);
-        trainingE.setAthlete(athleteA);
-
-        dataAccess.saveTraining(trainingA);
-        dataAccess.saveTraining(trainingB);
-        dataAccess.saveTraining(trainingC);
-        dataAccess.saveTraining(trainingD);
-        dataAccess.saveTraining(trainingE);
-
-        final List<ITraining> allFromAthleteA = dataAccess.getAllImported(athleteA);
-
-        assertEquals(5, allFromAthleteA.size());
-
-        final List<ITraining> limited = dataAccess.getAllImported(athleteA, 2);
-
-        assertEquals(2, limited.size());
-    }
+    // @Test
+    // public void testTraining_7_getAllImported_Sort_And_Limit() {
+    // final IAthlete athleteA =
+    // CommonTransferFactory.createAthlete("testTraining_7", 222);
+    // athleteDao.save(athleteA);
+    //
+    // final ITraining trainingA = CommonTransferFactory.createTraining(now -
+    // 20, 1, 2, 3, 4, 5, "note1", weatherA, null);
+    // final ITraining trainingB = CommonTransferFactory.createTraining(now +
+    // 1000, 1, 2, 3, 4, 5, "note1", weatherA, null);
+    // final ITraining trainingC = CommonTransferFactory.createTraining(now +
+    // 1001, 1, 2, 3, 4, 5, "note1", weatherA, null);
+    // final ITraining trainingD = CommonTransferFactory.createTraining(now +
+    // 1002, 1, 2, 3, 4, 5, "note1", weatherA, null);
+    // final ITraining trainingE = CommonTransferFactory.createTraining(now +
+    // 1003, 1, 2, 3, 4, 5, "note1", weatherA, null);
+    //
+    // trainingA.setAthlete(athleteA);
+    // trainingB.setAthlete(athleteA);
+    // trainingC.setAthlete(athleteA);
+    // trainingD.setAthlete(athleteA);
+    // trainingE.setAthlete(athleteA);
+    //
+    // dataAccess.saveOrUpdate(trainingA);
+    // dataAccess.saveOrUpdate(trainingB);
+    // dataAccess.saveOrUpdate(trainingC);
+    // dataAccess.saveOrUpdate(trainingD);
+    // dataAccess.saveOrUpdate(trainingE);
+    //
+    // final List<ITraining> allFromAthleteA =
+    // dataAccess.getAllTrainings(athleteA);
+    //
+    // assertEquals(5, allFromAthleteA.size());
+    //
+    // final List<ITraining> limited = dataAccess.getAllTrainings(athleteA, 2);
+    //
+    // assertEquals(2, limited.size());
+    // }
 
     @Test
     public void testTraining_8_getNewest() {
@@ -292,13 +298,13 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
         trainingD.setAthlete(athleteA);
         trainingE.setAthlete(athleteA);
 
-        dataAccess.saveTraining(trainingA);
-        dataAccess.saveTraining(trainingB);
-        dataAccess.saveTraining(trainingC);
-        dataAccess.saveTraining(trainingD);
-        dataAccess.saveTraining(trainingE);
+        dataAccess.saveOrUpdate(trainingA);
+        dataAccess.saveOrUpdate(trainingB);
+        dataAccess.saveOrUpdate(trainingC);
+        dataAccess.saveOrUpdate(trainingD);
+        dataAccess.saveOrUpdate(trainingE);
 
-        final ITraining newest = dataAccess.getNewestRun(athleteA);
+        final ITraining newest = dataAccess.getNewestTraining(athleteA);
 
         assertEquals(now + 2000, newest.getDatum());
     }
@@ -307,7 +313,7 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
     public void testTraining_9_getNewestEmpty() {
         final IAthlete athleteA = CommonTransferFactory.createAthlete("testTraining_9", 222);
         athleteDao.save(athleteA);
-        final ITraining newest = dataAccess.getNewestRun(athleteA);
+        final ITraining newest = dataAccess.getNewestTraining(athleteA);
         assertNull(newest);
     }
 
@@ -320,11 +326,11 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
 
         trainingA.setAthlete(athleteA);
 
-        dataAccess.saveTraining(trainingA);
+        dataAccess.saveOrUpdate(trainingA);
 
         ITraining record = dataAccess.getTrainingById(now);
         assertNotNull(record);
-        dataAccess.removeImportedRecord(now);
+        dataAccess.removeTrainingByDate(now);
         record = dataAccess.getTrainingById(now);
         assertNull(record);
     }
@@ -339,7 +345,7 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
         trainingA.setAthlete(athleteA);
         trainingA.setTrainingType(types.get(0));
 
-        dataAccess.saveTraining(trainingA);
+        dataAccess.saveOrUpdate(trainingA);
 
         ITraining result = dataAccess.getTrainingById(now);
 
@@ -347,13 +353,13 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
 
         trainingA.setTrainingType(types.get(1));
 
-        dataAccess.saveTraining(trainingA);
+        dataAccess.saveOrUpdate(trainingA);
 
         result = dataAccess.getTrainingById(now);
 
         assertEquals(1, result.getTrainingType().getId());
 
-        dataAccess.updateRecord(trainingA, 2);
+        dataAccess.updateTrainingType(trainingA, 2);
 
         result = dataAccess.getTrainingById(now);
 
@@ -368,7 +374,7 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
         final ITraining training = CommonTransferFactory.createTraining(now, 1, 2, 3, 4, 5, "note", weatherA, null);
         training.setAthlete(athlete);
 
-        dataAccess.saveTraining(training);
+        dataAccess.saveOrUpdate(training);
 
         final IRoute routeA = CommonTransferFactory.createRoute("nameA", "beschreibungA", training);
         final IRoute routeB = CommonTransferFactory.createRoute("nameB", "beschreibungB", training);
@@ -382,12 +388,12 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
 
         training.setRoute(routeB);
 
-        dataAccess.updateRecordRoute(training, idB);
+        dataAccess.updateTrainingRoute(training, idB);
 
         result = dataAccess.getTrainingById(now);
         assertEquals(routeB, result.getRoute());
 
-        dataAccess.updateRecordRoute(training, idA);
+        dataAccess.updateTrainingRoute(training, idA);
         result = dataAccess.getTrainingById(now);
         assertEquals(routeA, result.getRoute());
     }
@@ -402,7 +408,7 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
         training.setDateOfImport(new Date(now));
         training.setFileName("22342342skflsdjfs.gpx");
 
-        dataAccess.saveTraining(training);
+        dataAccess.saveOrUpdate(training);
 
         final IRoute route = CommonTransferFactory.createRoute("name", "beschreibung", training);
         routeDao.saveOrUpdate(route);

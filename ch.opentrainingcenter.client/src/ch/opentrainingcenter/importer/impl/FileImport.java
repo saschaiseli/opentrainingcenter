@@ -95,7 +95,7 @@ public class FileImport implements IFileImport {
             training.setTrainingType(tt);
             LOGGER.info(Messages.FileImport_3);
             final long start = DateTime.now().getMillis();
-            dbAccess.saveTraining(training);
+            dbAccess.saveOrUpdate(training);
             LOGGER.info(Messages.FileImport_4 + (DateTime.now().getMillis() - start) + Messages.FileImport_5);
             activitiesToImport.add(training);
 

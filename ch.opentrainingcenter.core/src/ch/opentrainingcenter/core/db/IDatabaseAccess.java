@@ -27,23 +27,13 @@ public interface IDatabaseAccess {
      *            der Athlete der die Records importierte
      * @return eine Liste von {@link ITraining}
      */
-    List<ITraining> getAllImported(IAthlete athlete);
+    List<ITraining> getAllTrainings(IAthlete athlete);
 
     /**
      * Gibt eine Liste mit Trainings von dem Athleten welche grösser gleich und
      * kleiner gleich bis Datum sind.
      */
     List<ITraining> getTrainingsByAthleteAndDate(IAthlete athlete, DateTime von, DateTime bis);
-
-    /**
-     * Gibt eine nach datum sortierte Liste von allen importierted Records
-     * zurück.
-     * 
-     * @param athlete
-     *            der Athlete der die Records importierte
-     * @return eine Liste von {@link ITraining}
-     */
-    List<ITraining> getAllImported(final IAthlete athlete, int limit);
 
     /**
      * Gibt eine Liste von Trainings mit derselben Route zurück.
@@ -54,7 +44,35 @@ public interface IDatabaseAccess {
      *            {@link IRoute}
      * @return ine Liste von {@link ITraining}
      */
-    List<ITraining> getAllFromRoute(IAthlete athlete, final IRoute route);
+    List<ITraining> getAllTrainingByRoute(IAthlete athlete, final IRoute route);
+
+    /**
+     * @param key
+     *            das datum des importierten records. das datum ist die id des
+     *            laufes.
+     * @return
+     */
+    ITraining getTrainingById(long key);
+
+    /**
+     * @return den neusten Lauf. Nicht der Lauf der zuletzt importiert wurde,
+     *         sondern der Lauf, der zuletzt gemacht wurde.
+     */
+    ITraining getNewestTraining(IAthlete athlete);
+
+    int saveOrUpdate(ITraining training);
+
+    /**
+     * updated training type
+     */
+    void updateTrainingType(ITraining record, int index);
+
+    /**
+     * updated training type
+     */
+    void updateTrainingRoute(ITraining record, int idRoute);
+
+    // ------------------------------------------------------------------------------------------
 
     /**
      * Gibt den sportler mit
@@ -84,20 +102,6 @@ public interface IDatabaseAccess {
      * Wenn noch keine daten erfasst sind, wird null zurückgegeben.
      */
     IHealth getHealth(IAthlete athlete, Date date);
-
-    /**
-     * @param key
-     *            das datum des importierten records. das datum ist die id des
-     *            laufes.
-     * @return
-     */
-    ITraining getTrainingById(long key);
-
-    /**
-     * @return den neusten Lauf. Nicht der Lauf der zuletzt importiert wurde,
-     *         sondern der Lauf, der zuletzt gemacht wurde.
-     */
-    ITraining getNewestRun(IAthlete athlete);
 
     List<IPlanungWoche> getPlanungsWoche(IAthlete athlete);
 
@@ -138,7 +142,7 @@ public interface IDatabaseAccess {
      */
     void removeHealth(int id);
 
-    void removeImportedRecord(long datum);
+    void removeTrainingByDate(long datum);
 
     /**
      * @param athlete
@@ -158,23 +162,6 @@ public interface IDatabaseAccess {
     void saveOrUpdate(IRoute route);
 
     void saveOrUpdate(List<IPlanungWoche> planung);
-
-    int saveTraining(ITraining training);
-
-    /**
-     * updated ganzer record
-     */
-    void updateRecord(ITraining record);
-
-    /**
-     * updated training type
-     */
-    void updateRecord(ITraining record, int index);
-
-    /**
-     * updated training type
-     */
-    void updateRecordRoute(ITraining record, int idRoute);
 
     boolean existsRoute(final String name, final IAthlete athlete);
 

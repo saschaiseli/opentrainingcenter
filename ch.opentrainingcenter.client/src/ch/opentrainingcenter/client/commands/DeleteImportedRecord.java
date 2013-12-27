@@ -1,6 +1,5 @@
 package ch.opentrainingcenter.client.commands;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -12,8 +11,6 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import ch.opentrainingcenter.core.cache.Cache;
-import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.transfer.ITraining;
 
@@ -34,21 +31,15 @@ public class DeleteImportedRecord extends AbstractHandler {
 
     @Override
     public Object execute(final ExecutionEvent event) throws ExecutionException {
-        final Cache cache = TrainingCache.getInstance();
-
         final ISelection selection = HandlerUtil.getCurrentSelection(event);
-
         final List<?> records = ((StructuredSelection) selection).toList();
 
-        final List<Long> deletedIds = new ArrayList<Long>();
         for (final Object obj : records) {
             final ITraining record = (ITraining) obj;
             final int dbId = record.getId();
             LOGGER.info("Lösche den Lauf mit der ID " + record.getDatum() + " und der DB Id: " + dbId); //$NON-NLS-1$ //$NON-NLS-2$
-            service.getDatabaseAccess().removeImportedRecord(record.getDatum());
-            deletedIds.add(record.getDatum());
+            service.getDatabaseAccess().removeTrainingByDate(record.getDatum());
         }
-        cache.remove(deletedIds);
         return null;
     }
 }

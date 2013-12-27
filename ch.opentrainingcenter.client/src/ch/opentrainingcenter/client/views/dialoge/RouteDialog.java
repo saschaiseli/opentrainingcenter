@@ -27,7 +27,6 @@ import org.eclipse.swt.widgets.Text;
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.cache.StreckeCache;
 import ch.opentrainingcenter.client.views.IImageKeys;
-import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.helper.TimeHelper;
 import ch.opentrainingcenter.i18n.Messages;
@@ -127,8 +126,7 @@ public class RouteDialog extends TitleAreaDialog {
                         StreckeCache.getInstance().add(model);
 
                         tr.setRoute(newRoute);
-                        databaseAccess.updateRecordRoute(tr, newRoute.getId());
-                        TrainingCache.getInstance().add(tr);
+                        databaseAccess.updateTrainingRoute(tr, newRoute.getId());
                     }
                 });
 

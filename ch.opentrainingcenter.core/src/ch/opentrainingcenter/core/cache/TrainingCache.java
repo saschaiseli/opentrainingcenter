@@ -1,5 +1,10 @@
 package ch.opentrainingcenter.core.cache;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import ch.opentrainingcenter.core.cache.internal.TrainingComparator;
+import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.IWeather;
@@ -8,8 +13,13 @@ public class TrainingCache extends AbstractCache<Long, ITraining> implements Cac
 
     private static final TrainingCache INSTANCE = new TrainingCache();
 
-    public static Cache getInstance() {
+    public static TrainingCache getInstance() {
         return INSTANCE;
+    }
+
+    @Override
+    public List<ITraining> getAll() {
+        return super.getSortedElements(new TrainingComparator());
     }
 
     @Override
@@ -26,6 +36,21 @@ public class TrainingCache extends AbstractCache<Long, ITraining> implements Cac
             training.setRoute(route);
             add(training);
         }
+    }
+
+    /**
+     * @return die gecachten trainings von dem angegeben athleten. Wenn keine
+     *         Trainings gefunden werden, wird eine leere Liste zurueckgegeben.
+     */
+    public List<ITraining> getAll(final IAthlete athlete) {
+        final List<ITraining> result = new ArrayList<>();
+        final List<ITraining> all = super.getSortedElements(new TrainingComparator());
+        for (final ITraining training : all) {
+            if (training.getAthlete().equals(athlete)) {
+                result.add(training);
+            }
+        }
+        return result;
     }
 
     @Override
