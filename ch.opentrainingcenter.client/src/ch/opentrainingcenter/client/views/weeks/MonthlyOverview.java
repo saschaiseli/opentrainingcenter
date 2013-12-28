@@ -93,6 +93,7 @@ public class MonthlyOverview extends ViewPart {
 
     private void addWeek(final Composite body) {
         sectionMonth = toolkit.createSection(body, FormToolkitSupport.SECTION_STYLE);
+        sectionMonth.setExpanded(false);
 
         td = new TableWrapData(TableWrapData.FILL_GRAB);
         td.colspan = 1;
@@ -131,6 +132,7 @@ public class MonthlyOverview extends ViewPart {
                 anzahl.setText(String.valueOf(model.getAnzahlTrainings()));
 
                 sectionMonth.layout();
+                sectionMonth.setExpanded(true);
             }
         });
     }

@@ -17,8 +17,6 @@ import ch.opentrainingcenter.client.views.dialoge.IFilterDialog;
 import ch.opentrainingcenter.client.views.dialoge.ImportFileDialog;
 import ch.opentrainingcenter.client.views.dialoge.RunTypeDialog;
 import ch.opentrainingcenter.core.PreferenceConstants;
-import ch.opentrainingcenter.core.cache.Cache;
-import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.importer.ConvertContainer;
 import ch.opentrainingcenter.core.importer.ExtensionHelper;
@@ -40,7 +38,6 @@ import ch.opentrainingcenter.transfer.IRoute;
  */
 public class ImportManualGpsFiles extends OtcAbstractHandler {
 
-    private final Cache cache;
     private final IPreferenceStore store;
     private final ConvertContainer cc;
     private IDatabaseService service;
@@ -56,7 +53,6 @@ public class ImportManualGpsFiles extends OtcAbstractHandler {
     public ImportManualGpsFiles(final IPreferenceStore store) {
         super(store);
         service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
-        this.cache = TrainingCache.getInstance();
         this.store = store;
         this.cc = new ConvertContainer(ExtensionHelper.getConverters());
 
@@ -65,10 +61,8 @@ public class ImportManualGpsFiles extends OtcAbstractHandler {
     /**
      * Constructor für Tests
      */
-    public ImportManualGpsFiles(final IDatabaseAccess databaseAccess, final Cache cache, final IPreferenceStore store,
-            final Map<String, IConvert2Tcx> converters) {
+    public ImportManualGpsFiles(final IDatabaseAccess databaseAccess, final IPreferenceStore store, final Map<String, IConvert2Tcx> converters) {
         super(store);
-        this.cache = cache;
         this.store = store;
         this.cc = new ConvertContainer(converters);
 

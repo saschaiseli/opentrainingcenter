@@ -95,6 +95,7 @@ public class WeeklyOverview extends ViewPart {
 
     private void addWeek(final Composite body) {
         sectionWeek = toolkit.createSection(body, FormToolkitSupport.SECTION_STYLE);
+        sectionWeek.setExpanded(false);
 
         td = new TableWrapData(TableWrapData.FILL_GRAB);
         td.colspan = 1;
@@ -133,6 +134,7 @@ public class WeeklyOverview extends ViewPart {
                 anzahl.setText(String.valueOf(model.getAnzahlTrainings()));
 
                 sectionWeek.layout();
+                sectionWeek.setExpanded(true);
             }
         });
     }
