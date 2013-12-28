@@ -31,7 +31,7 @@ public class TimeHelperTest {
     @Test
     public void testConvertSekundenInReadableFormat() {
         final String t = TimeHelper.convertSecondsToHumanReadableZeit(6273.27);
-        assertEquals("1:44:33", t);
+        assertEquals("01:44:33", t);
     }
 
     @Test
@@ -43,7 +43,7 @@ public class TimeHelperTest {
     @Test
     public void testConvert0() {
         final String t = TimeHelper.convertSecondsToHumanReadableZeit(0);
-        assertEquals("0:00:00", t);
+        assertEquals("00:00:00", t);
     }
 
     @Test

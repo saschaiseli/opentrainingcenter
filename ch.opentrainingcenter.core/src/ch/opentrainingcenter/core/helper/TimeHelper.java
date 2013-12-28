@@ -17,7 +17,6 @@ public final class TimeHelper {
     private static final String DATE_TIME_FORMAT_PATTERN = "dd.MM.yyyy HH:mm:ss"; //$NON-NLS-1$
     private static final String TIME_FORMAT_PATTERN = "HH:mm:ss"; //$NON-NLS-1$
     private static final String DATE_FORMAT_PATTERN = "dd.MM.yyyy"; //$NON-NLS-1$
-    private static final int SEKUNDE_IN_MS = 1000;
     private static final String UNKNOWN_DATE = "--:--:--"; //$NON-NLS-1$
 
     private TimeHelper() {
@@ -25,7 +24,7 @@ public final class TimeHelper {
     }
 
     /**
-     * Konvertiert Sekunden in H:MM:ss
+     * Konvertiert Sekunden in HH:MM:ss
      * 
      * @param sec
      *            sekunden
@@ -36,14 +35,7 @@ public final class TimeHelper {
         if (sec < 0) {
             return UNKNOWN_DATE;
         }
-        final Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis((long) sec * SEKUNDE_IN_MS);
-        final StringBuffer calStr = new StringBuffer();
-        final int hour = cal.get(Calendar.HOUR) - 1;
-        final int m = cal.get(Calendar.MINUTE);
-        final int s = cal.get(Calendar.SECOND);
-        calStr.append(hour).append(":").append(addZero(m)).append(":").append(addZero(s)); //$NON-NLS-1$ //$NON-NLS-2$
-        return calStr.toString();
+        return convertTimeToString((long) (sec * 1000));
     }
 
     /**
@@ -138,14 +130,6 @@ public final class TimeHelper {
             year--;
         }
         return year;
-    }
-
-    private static String addZero(final int i) {
-        if (i < 10) {
-            return "0" + i; //$NON-NLS-1$
-        } else {
-            return "" + i; //$NON-NLS-1$
-        }
     }
 
     /**

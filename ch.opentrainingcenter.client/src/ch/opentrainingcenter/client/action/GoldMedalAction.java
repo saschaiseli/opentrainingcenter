@@ -58,7 +58,7 @@ public class GoldMedalAction {
         }
         // längster lauf zeit
         final Pair<Long, Double> longRun = Collections.max(dauer, new PairComparator<Double>());
-        final String seconds = TimeHelper.convertTimeToString(longRun.getSecond().longValue() * 1000);
+        final String seconds = TimeHelper.convertSecondsToHumanReadableZeit(longRun.getSecond().longValue());
         if (dauer.isEmpty()) {
             result.setLongestRun(emptyPair);
         } else {
