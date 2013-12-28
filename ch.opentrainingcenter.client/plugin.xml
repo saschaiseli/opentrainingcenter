@@ -613,11 +613,11 @@
                id="ch.opentrainingcenter.client.toolbar"
                label="Perspective Toolbars">
             <command
-                  commandId="ch.opentrainingcenter.client.commands.SwitchToAthlete"
-                  icon="icons/16_16/einstellungen.png"
-                  label="%einstellungen"
+                  commandId="ch.opentrainingcenter.client.commands.SwitchToMain"
+                  icon="icons/16_16/home_16_16.png"
+                  label="%home"
                   style="push"
-                  tooltip="%einstellungen">
+                  tooltip="%home">
             </command>
             <command
                   commandId="ch.opentrainingcenter.client.commands.SwitchToStatistic"
@@ -627,18 +627,18 @@
                   tooltip="%auswertungen">
             </command>
             <command
+                  commandId="ch.opentrainingcenter.client.commands.SwitchToAthlete"
+                  icon="icons/16_16/einstellungen.png"
+                  label="%einstellungen"
+                  style="push"
+                  tooltip="%einstellungen">
+            </command>
+            <command
                   commandId="ch.opentrainingcenter.client.commands.SwitchToTable"
                   icon="icons/16_16/table_16_16.png"
                   label="%tabelle"
                   style="push"
                   tooltip="%tabelle">
-            </command>
-            <command
-                  commandId="ch.opentrainingcenter.client.commands.SwitchToMain"
-                  icon="icons/16_16/home_16_16.png"
-                  label="%home"
-                  style="push"
-                  tooltip="%home">
             </command>
             <separator
                   name="ch.opentrainingcenter.client.separator1"
