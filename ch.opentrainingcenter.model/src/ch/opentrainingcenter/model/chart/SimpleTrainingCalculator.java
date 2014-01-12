@@ -1,4 +1,4 @@
-package ch.opentrainingcenter.charts.bar.internal;
+package ch.opentrainingcenter.model.chart;
 
 import java.util.ArrayList;
 import java.util.Date;

@@ -1,5 +1,6 @@
 package ch.opentrainingcenter.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -73,18 +74,30 @@ public final class ModelFactory {
     /**
      * Erstellt ein SimpleTraining mit dem Lauf Typ NONE
      */
-    public static ISimpleTraining convertToSimpleTraining(final ITraining overview) {
-        final SimpleTraining training = new SimpleTraining(overview.getLaengeInMeter(), overview.getDauer(), new Date(overview.getDatum()), overview
-                .getAverageHeartBeat(), overview.getMaxHeartBeat(), overview.getMaxSpeed(), RunType.NONE, overview.getNote());
-        if (overview.getWeather() != null) {
-            training.setWetter(Wetter.getRunType(overview.getWeather().getId()));
+    public static ISimpleTraining convertToSimpleTraining(final ITraining training) {
+        final SimpleTraining simpleTraining = new SimpleTraining(training.getLaengeInMeter(), training.getDauer(), new Date(training.getDatum()), training
+                .getAverageHeartBeat(), training.getMaxHeartBeat(), training.getMaxSpeed(), RunType.NONE, training.getNote());
+        simpleTraining.setType(RunType.getRunType(training.getTrainingType().getId()));
+        if (training.getWeather() != null) {
+            simpleTraining.setWetter(Wetter.getRunType(training.getWeather().getId()));
         }
-        if (overview.getRoute() != null) {
-            training.setStrecke(ModelFactory.createStreckeModel(overview.getRoute(), overview.getAthlete(), overview.getId()));
+        if (training.getRoute() != null) {
+            simpleTraining.setStrecke(ModelFactory.createStreckeModel(training.getRoute(), training.getAthlete(), training.getId()));
         }
-        training.setUpMeter(overview.getUpMeter());
-        training.setDownMeter(overview.getDownMeter());
-        return training;
+        simpleTraining.setUpMeter(training.getUpMeter());
+        simpleTraining.setDownMeter(training.getDownMeter());
+        return simpleTraining;
+    }
+
+    /**
+     * Erstellt ein SimpleTraining mit dem entsprechenden Lauf Typ
+     */
+    public static List<ISimpleTraining> convertToSimpleTraining(final List<ITraining> allImported) {
+        final List<ISimpleTraining> result = new ArrayList<>();
+        for (final ITraining training : allImported) {
+            result.add(convertToSimpleTraining(training));
+        }
+        return result;
     }
 
     public static ISimpleTraining createSimpleTraining(final double distanzInMeter, final double dauerInSekunden, final Date datum, final int avgHeartRate,

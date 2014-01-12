@@ -1,4 +1,4 @@
-package ch.opentrainingcenter.client.charts;
+package ch.opentrainingcenter.model.chart;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -17,9 +17,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import ch.opentrainingcenter.charts.bar.IStatistikCreator;
-import ch.opentrainingcenter.charts.single.creators.StatistikCreator;
 import ch.opentrainingcenter.model.ModelFactory;
+import ch.opentrainingcenter.model.chart.IStatistikCreator;
+import ch.opentrainingcenter.model.chart.StatistikCreator;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
 
 @SuppressWarnings("nls")

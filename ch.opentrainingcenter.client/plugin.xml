@@ -90,7 +90,7 @@
       <perspective
             class="ch.opentrainingcenter.client.perspectives.StatisticPerspective"
             fixed="true"
-            icon="icons/chart_bar.png"
+            icon="icons/16_16/charts.png"
             id="ch.opentrainingcenter.client.StatisticPerspective"
             name="Statistik">
       </perspective>
@@ -129,6 +129,14 @@
             class="ch.opentrainingcenter.client.views.statistics.StatisticView"
             icon="icons/16_16/charts.png"
             id="ch.opentrainingcenter.client.views.statistics.StatisticView"
+            name="%auswertungen_old"
+            restorable="true">
+      </view>
+      <view
+            allowMultiple="false"
+            class="ch.opentrainingcenter.client.views.ngchart.DynamicChartViewPart"
+            icon="icons/16_16/charts.png"
+            id="ch.opentrainingcenter.client.views.ngchart.DynamicChart"
             name="%auswertungen"
             restorable="true">
       </view>
@@ -332,6 +340,11 @@
             description="%heapdump_desc"
             id="ch.opentrainingcenter.client.commands.CreateHeapDump"
             name="%heapdump">
+      </command>
+      <command
+            description="%dynamic_chart_desc"
+            id="ch.opentrainingcenter.client.commands.DynamicChart"
+            name="%dynamic_chart">
       </command>
    </extension>
    <extension
@@ -604,6 +617,13 @@
                   style="push"
                   tooltip="%neuestrecke">
             </command>
+            <command
+                  commandId="ch.opentrainingcenter.client.commands.DynamicChart"
+                  icon="icons/16_16/charts.png"
+                  label="%dynamic_chart_label"
+                  style="push"
+                  tooltip="%dynamic_chart_tooltip">
+            </command>
          </toolbar>
       </menuContribution>
       <menuContribution
@@ -824,6 +844,10 @@
                   property="ch.opentrainingcenter.client.selection.navigationSelection">
             </test>
          </enabledWhen>
+      </handler>
+      <handler
+            class="ch.opentrainingcenter.client.commands.ShowDynamicChart"
+            commandId="ch.opentrainingcenter.client.commands.DynamicChart">
       </handler>
    </extension>
    <extension

@@ -10,11 +10,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Matchers;
 
-import ch.opentrainingcenter.charts.bar.IStatistikCreator;
-import ch.opentrainingcenter.charts.bar.internal.TrainingOverviewDatenAufbereiten;
+import ch.opentrainingcenter.charts.bar.internal.TrainingDataFilter;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.helper.RunType;
 import ch.opentrainingcenter.core.helper.TimeHelper;
+import ch.opentrainingcenter.model.chart.IStatistikCreator;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IRoute;
@@ -28,12 +28,12 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @SuppressWarnings("nls")
-public class TrainingOverViewDatenAufbereitenTest {
+public class TrainingDataFilterTest {
 
     private static final String EXPECTED = "Übersicht auf die aufbereiteten Daten:\n" + "Trainings pro Monat:\n" + "Trainings pro Woche:\n"
             + "Trainings pro Tag:\n";
 
-    private TrainingOverviewDatenAufbereiten auf;
+    private TrainingDataFilter auf;
 
     private final List<ISimpleTraining> trainingsProTag = new ArrayList<ISimpleTraining>();
 
@@ -51,7 +51,7 @@ public class TrainingOverViewDatenAufbereitenTest {
     public void setUp() {
 
         access = mock(IDatabaseAccess.class);
-        auf = new TrainingOverviewDatenAufbereiten(new IStatistikCreator() {
+        auf = new TrainingDataFilter(new IStatistikCreator() {
 
             @Override
             public Map<Integer, Map<Integer, List<ISimpleTraining>>> getTrainingsProWoche(final List<ISimpleTraining> allTrainings) {
@@ -102,7 +102,7 @@ public class TrainingOverViewDatenAufbereitenTest {
         when(access.getAllTrainings((IAthlete) Matchers.any())).thenReturn(values);
 
         // execute
-        auf.update(RunType.NONE);
+        auf.filter(RunType.NONE);
 
         // assert
         final List<ISimpleTraining> trainingsPerDay = auf.getTrainingsPerDay();
@@ -127,7 +127,7 @@ public class TrainingOverViewDatenAufbereitenTest {
         values.add(mockA);
         when(access.getAllTrainings((IAthlete) Matchers.any())).thenReturn(values);
         // execute
-        auf.update(RunType.EXT_INTERVALL);
+        auf.filter(RunType.EXT_INTERVALL);
 
         // assert
         final List<ISimpleTraining> trainingsPerDay = auf.getTrainingsPerDay();
@@ -156,7 +156,7 @@ public class TrainingOverViewDatenAufbereitenTest {
         when(access.getAllTrainings((IAthlete) Matchers.any())).thenReturn(values);
 
         // execute
-        auf.update(RunType.INT_INTERVALL);
+        auf.filter(RunType.INT_INTERVALL);
 
         // assert
         final List<ISimpleTraining> trainingsPerDay = auf.getTrainingsPerDay();
@@ -182,7 +182,7 @@ public class TrainingOverViewDatenAufbereitenTest {
         when(access.getAllTrainings((IAthlete) Matchers.any())).thenReturn(values);
 
         // execute
-        auf.update(RunType.LONG_JOG);
+        auf.filter(RunType.LONG_JOG);
 
         // assert
         final List<ISimpleTraining> trainingsPerDay = auf.getTrainingsPerDay();
@@ -208,7 +208,7 @@ public class TrainingOverViewDatenAufbereitenTest {
         when(access.getAllTrainings((IAthlete) Matchers.any())).thenReturn(values);
 
         // execute
-        auf.update(RunType.POWER_LONG_JOG);
+        auf.filter(RunType.POWER_LONG_JOG);
 
         // assert
         final List<ISimpleTraining> trainingsPerDay = auf.getTrainingsPerDay();
@@ -235,7 +235,7 @@ public class TrainingOverViewDatenAufbereitenTest {
         when(access.getAllTrainings((IAthlete) Matchers.any())).thenReturn(values);
 
         // execute
-        auf.update(RunType.TEMPO_JOG);
+        auf.filter(RunType.TEMPO_JOG);
 
         // assert
         final List<ISimpleTraining> trainingsPerDay = auf.getTrainingsPerDay();
@@ -266,7 +266,7 @@ public class TrainingOverViewDatenAufbereitenTest {
         values.add(mockA);
         when(access.getAllTrainings((IAthlete) Matchers.any())).thenReturn(values);
         // execute
-        auf.update(RunType.LONG_JOG);
+        auf.filter(RunType.LONG_JOG);
         // assert
         assertEquals(1, auf.getTrainingsPerDay().size());
     }
@@ -313,7 +313,7 @@ public class TrainingOverViewDatenAufbereitenTest {
 
         when(access.getAllTrainings((IAthlete) Matchers.any())).thenReturn(values);
         // execute
-        auf.update(RunType.LONG_JOG);
+        auf.filter(RunType.LONG_JOG);
         // assert
         assertEquals(EXPECTED + TimeHelper.convertDateToString(date, false) + " " + "1042.0[m] LONG_JOG\n", auf.toString());
     }

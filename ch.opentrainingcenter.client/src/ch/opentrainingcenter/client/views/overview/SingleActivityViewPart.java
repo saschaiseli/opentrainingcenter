@@ -117,24 +117,24 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         long time1 = DateTime.now().getMillis();
         addOverviewSection(body);
         long time2 = DateTime.now().getMillis();
-        LOGGER.debug(String.format("Zeit zum Laden von Overview: %s [s]", time2 - time1)); //$NON-NLS-1$
+        LOGGER.debug(String.format("Zeit zum Laden von Overview: %s [ms]", time2 - time1)); //$NON-NLS-1$
         addNoteSection(body);
         time1 = DateTime.now().getMillis();
-        LOGGER.debug(String.format("Zeit zum Laden von addNoteSection: %s [s]", time1 - time2)); //$NON-NLS-1$
+        LOGGER.debug(String.format("Zeit zum Laden von addNoteSection: %s [ms]", time1 - time2)); //$NON-NLS-1$
         if (!training.getTrackPoints().isEmpty()) {
             addMapSection(body);
         }
         time2 = DateTime.now().getMillis();
-        LOGGER.debug(String.format("Zeit zum Laden von addMapSection: %s [s]", time2 - time1)); //$NON-NLS-1$
+        LOGGER.debug(String.format("Zeit zum Laden von addMapSection: %s [ms]", time2 - time1)); //$NON-NLS-1$
         addHeartSection(body);
         time1 = DateTime.now().getMillis();
-        LOGGER.debug(String.format("Zeit zum Laden von addHeartSection: %s [s]", time1 - time2)); //$NON-NLS-1$
+        LOGGER.debug(String.format("Zeit zum Laden von addHeartSection: %s [ms]", time1 - time2)); //$NON-NLS-1$
         addSpeedSection(body);
         time2 = DateTime.now().getMillis();
-        LOGGER.debug(String.format("Zeit zum Laden von addSpeedSection: %s [s]", time2 - time1)); //$NON-NLS-1$
+        LOGGER.debug(String.format("Zeit zum Laden von addSpeedSection: %s [ms]", time2 - time1)); //$NON-NLS-1$
         addAltitudeSection(body);
         time1 = DateTime.now().getMillis();
-        LOGGER.debug(String.format("Zeit zum Laden von addAltitudeSection: %s [s]", time1 - time2)); //$NON-NLS-1$
+        LOGGER.debug(String.format("Zeit zum Laden von addAltitudeSection: %s [ms]", time1 - time2)); //$NON-NLS-1$
 
         getSite().setSelectionProvider(this);
     }

@@ -59,8 +59,6 @@ import org.jfree.data.xy.IntervalXYDataset;
 import org.jfree.experimental.chart.swt.ChartComposite;
 import org.jfree.ui.TextAnchor;
 
-import ch.opentrainingcenter.charts.bar.IStatistikCreator;
-import ch.opentrainingcenter.charts.single.creators.StatistikCreator;
 import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.core.cache.Cache;
 import ch.opentrainingcenter.core.cache.IRecordListener;
@@ -98,8 +96,7 @@ public class OTCBarChartViewer implements ISelectionProvider {
     private final ChartSerieType type;
     private XYItemLabelGenerator labelGenerator;
     private JFreeChart chart;
-    private final IStatistikCreator statistik;
-    private final TrainingOverviewDatenAufbereiten daten;
+    private final TrainingDataFilter daten;
     private RunType filter = RunType.NONE;
 
     private final IPreferenceStore store;
@@ -112,9 +109,8 @@ public class OTCBarChartViewer implements ISelectionProvider {
         this.type = type;
         this.store = store;
         clazz = getSeriesType(this.type);
-        statistik = new StatistikCreator();
         final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
-        daten = new TrainingOverviewDatenAufbereiten(statistik, service.getDatabaseAccess(), athlete);
+        daten = new TrainingDataFilter(service.getDatabaseAccess(), athlete);
         distanceSerie = new TimeSeries(DISTANZ);
         heartSerie = new TimeSeries(HEART);
         cache = TrainingCache.getInstance();
@@ -303,13 +299,13 @@ public class OTCBarChartViewer implements ISelectionProvider {
         return thisClazz;
     }
 
-    private void createOrUpdateDataSet(final TrainingOverviewDatenAufbereiten trainingDaten, final RunType runTypeFilter) {
+    private void createOrUpdateDataSet(final TrainingDataFilter trainingDaten, final RunType runTypeFilter) {
         LOGGER.debug("createOrUpdateDataSet... " + runTypeFilter); //$NON-NLS-1$
         createOrUpdateDataSet(trainingDaten, DISTANZ, runTypeFilter);
         createOrUpdateDataSet(trainingDaten, HEART, runTypeFilter);
     }
 
-    private IntervalXYDataset createOrUpdateDataSet(final TrainingOverviewDatenAufbereiten trainingDaten, final String serieTyp, final RunType runTypeFilter) {
+    private IntervalXYDataset createOrUpdateDataSet(final TrainingDataFilter trainingDaten, final String serieTyp, final RunType runTypeFilter) {
         final Map<String, TimeSeries> series = updateSeries(trainingDaten, runTypeFilter);
         if (DISTANZ.equals(serieTyp)) {
             timeSeriesDistanzCollection.removeAllSeries();
@@ -325,10 +321,10 @@ public class OTCBarChartViewer implements ISelectionProvider {
         throw new IllegalArgumentException(Messages.OTCBarChartViewer4 + serieTyp + Messages.OTCBarChartViewer5);
     }
 
-    private Map<String, TimeSeries> updateSeries(final TrainingOverviewDatenAufbereiten trainingDaten, final RunType runType) {
+    private Map<String, TimeSeries> updateSeries(final TrainingDataFilter trainingDaten, final RunType runType) {
         final Map<String, TimeSeries> map = new HashMap<String, TimeSeries>();
         final List<ISimpleTraining> trainings = new ArrayList<ISimpleTraining>();
-        trainingDaten.update(runType);
+        trainingDaten.filter(runType);
         LOGGER.debug(trainingDaten);
         if (ChartSerieType.DAY.equals(type)) {
             trainings.addAll(trainingDaten.getTrainingsPerDay());

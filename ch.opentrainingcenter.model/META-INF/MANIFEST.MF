@@ -15,10 +15,12 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: ch.opentrainingcenter.model,
  ch.opentrainingcenter.model.cache,
+ ch.opentrainingcenter.model.chart,
  ch.opentrainingcenter.model.geo,
  ch.opentrainingcenter.model.importer,
  ch.opentrainingcenter.model.navigation,
  ch.opentrainingcenter.model.planing,
  ch.opentrainingcenter.model.sportler,
  ch.opentrainingcenter.model.strecke,
- ch.opentrainingcenter.model.training
+ ch.opentrainingcenter.model.training,
+ ch.opentrainingcenter.model.training.filter

@@ -1,11 +1,5 @@
 package ch.opentrainingcenter.core.cache;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -17,6 +11,11 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import ch.opentrainingcenter.transfer.ITraining;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 @SuppressWarnings("nls")
 public class AbstractCacheTest {
@@ -99,7 +98,7 @@ public class AbstractCacheTest {
 
     @Before
     public void before() {
-        cache = (TrainingCache) TrainingCache.getInstance();
+        cache = TrainingCache.getInstance();
         cache.resetCache();
         listener = new JunitListener();
         testCache = new TestCache();
@@ -240,8 +239,8 @@ public class AbstractCacheTest {
         cache.addAll(values);
 
         final List<ITraining> all = cache.getAll();
-        assertEquals("", 42L, all.get(0).getDatum());
-        assertEquals("", 43L, all.get(1).getDatum());
+        assertEquals("Zeitlich sortiert 43 > 42", 42L, all.get(1).getDatum());
+        assertEquals("Zeitlich sortiert 43 > 42", 43L, all.get(0).getDatum());
     }
 
     @Test

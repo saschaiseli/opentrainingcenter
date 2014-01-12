@@ -1,4 +1,4 @@
-package ch.opentrainingcenter.client.charts;
+package ch.opentrainingcenter.model.chart;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,7 +8,6 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
-import ch.opentrainingcenter.charts.bar.internal.SimpleTrainingCalculator;
 import ch.opentrainingcenter.core.helper.RunType;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
 import static org.junit.Assert.assertEquals;

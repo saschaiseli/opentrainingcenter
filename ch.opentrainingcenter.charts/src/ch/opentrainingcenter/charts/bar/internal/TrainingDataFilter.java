@@ -8,18 +8,20 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import ch.opentrainingcenter.charts.bar.IStatistikCreator;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.helper.RunType;
 import ch.opentrainingcenter.core.helper.TimeHelper;
 import ch.opentrainingcenter.model.ModelFactory;
+import ch.opentrainingcenter.model.chart.IStatistikCreator;
+import ch.opentrainingcenter.model.chart.SimpleTrainingCalculator;
+import ch.opentrainingcenter.model.chart.StatistikCreator;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.ITraining;
 
-public class TrainingOverviewDatenAufbereiten {
+public class TrainingDataFilter {
 
-    private static final Logger LOGGER = Logger.getLogger(TrainingOverviewDatenAufbereiten.class);
+    private static final Logger LOGGER = Logger.getLogger(TrainingDataFilter.class);
 
     private final List<ISimpleTraining> trainingsPerDay = new ArrayList<ISimpleTraining>();
     private final List<ISimpleTraining> trainingsPerWeek = new ArrayList<ISimpleTraining>();
@@ -32,48 +34,60 @@ public class TrainingOverviewDatenAufbereiten {
 
     private final IAthlete athlete;
 
-    public TrainingOverviewDatenAufbereiten(final IStatistikCreator statistik, final IDatabaseAccess databaseAccess, final IAthlete athlete) {
+    public TrainingDataFilter(final IDatabaseAccess databaseAccess, final IAthlete athlete) {
+        this(new StatistikCreator(), databaseAccess, athlete);
+    }
+
+    public TrainingDataFilter(final IStatistikCreator statistik, final IDatabaseAccess databaseAccess, final IAthlete athlete) {
         this.statistik = statistik;
         this.databaseAccess = databaseAccess;
         this.athlete = athlete;
-        update(null);
+        filter(null);
     }
 
     /**
      * Filtert die Daten nach dem angegeben Lauftyp.
      */
-    public final void update(final RunType type) {
+    public final void filter(final RunType type) {
         LOGGER.debug("update/filter daten vom cache: " + type); //$NON-NLS-1$
         trainingsPerDay.clear();
 
-        final List<ISimpleTraining> allTrainings = new ArrayList<ISimpleTraining>();
+        final List<ISimpleTraining> allSimpleTrainings = convertToSimpleTraining();
 
-        final List<ITraining> allImported = databaseAccess.getAllTrainings(athlete);
-        for (final ITraining training : allImported) {
-            final ISimpleTraining simpleTraining = ModelFactory.convertToSimpleTraining(training);
-            simpleTraining.setType(RunType.getRunType(training.getTrainingType().getId()));
-            allTrainings.add(simpleTraining);
-        }
-
-        for (final ISimpleTraining training : allTrainings) {
+        // trainings per day
+        for (final ISimpleTraining training : allSimpleTrainings) {
             if (isTypeMatching(type, training.getType())) {
                 trainingsPerDay.add(training);
             }
         }
 
+        // trainings per week
+        final Map<Integer, Map<Integer, List<ISimpleTraining>>> trainingsProWoche = statistik.getTrainingsProWoche(allSimpleTrainings);
         trainingsPerWeek.clear();
-        final Map<Integer, Map<Integer, List<ISimpleTraining>>> trainingsProWoche = statistik.getTrainingsProWoche(allTrainings);
         trainingsPerWeek.addAll(SimpleTrainingCalculator.createSum(trainingsProWoche, type));
 
+        // trainings per month
+        final Map<Integer, Map<Integer, List<ISimpleTraining>>> trainingsProMonat = statistik.getTrainingsProMonat(allSimpleTrainings);
         trainingsPerMonth.clear();
-        final Map<Integer, Map<Integer, List<ISimpleTraining>>> trainingsProMonat = statistik.getTrainingsProMonat(allTrainings);
         trainingsPerMonth.addAll(SimpleTrainingCalculator.createSum(trainingsProMonat, type));
 
-        trainingsPerYear.clear();
-        final Map<Integer, List<ISimpleTraining>> trainingsProJahr = statistik.getTrainingsProJahr(allTrainings);
+        // trainings per year
+        final Map<Integer, List<ISimpleTraining>> trainingsProJahr = statistik.getTrainingsProJahr(allSimpleTrainings);
         final Map<Integer, Map<Integer, List<ISimpleTraining>>> tmp = new HashMap<Integer, Map<Integer, List<ISimpleTraining>>>();
         tmp.put(1, trainingsProJahr);
+        trainingsPerYear.clear();
         trainingsPerYear.addAll(SimpleTrainingCalculator.createSum(tmp, type));
+    }
+
+    private List<ISimpleTraining> convertToSimpleTraining() {
+        final List<ISimpleTraining> filteredTrainings = new ArrayList<>();
+        final List<ITraining> allImported = databaseAccess.getAllTrainings(athlete);
+        for (final ITraining training : allImported) {
+            final ISimpleTraining simpleTraining = ModelFactory.convertToSimpleTraining(training);
+            simpleTraining.setType(RunType.getRunType(training.getTrainingType().getId()));
+            filteredTrainings.add(simpleTraining);
+        }
+        return filteredTrainings;
     }
 
     private boolean isTypeMatching(final RunType filterType, final RunType trainingType) {

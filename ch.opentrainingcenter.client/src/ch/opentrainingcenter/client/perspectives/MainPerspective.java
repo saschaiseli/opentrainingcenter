@@ -8,6 +8,7 @@ import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.client.views.best.BestRunsView;
 import ch.opentrainingcenter.client.views.chart.ChartViewPart;
 import ch.opentrainingcenter.client.views.navigation.KalenderWocheNavigationView;
+import ch.opentrainingcenter.client.views.ngchart.DynamicChartViewPart;
 import ch.opentrainingcenter.client.views.overview.SingleActivityViewPart;
 import ch.opentrainingcenter.client.views.planung.JahresplanungViewPart;
 import ch.opentrainingcenter.client.views.planung.ShowJahresplanungViewPart;
@@ -46,6 +47,7 @@ public class MainPerspective implements IPerspectiveFactory {
         folderMiddle.addPlaceholder(JahresplanungViewPart.ID);
         folderMiddle.addPlaceholder(ShowJahresplanungViewPart.ID);
         folderMiddle.addPlaceholder(ChartViewPart.ID + MULTI_VIEW);
+        folderMiddle.addPlaceholder(DynamicChartViewPart.ID);
 
         layout.addStandaloneView(WeeklyOverview.ID, false, IPageLayout.RIGHT, RIGHT, editorArea);
         layout.addStandaloneView(BestRunsView.ID, false, IPageLayout.BOTTOM, 0.5f, WeeklyOverview.ID);

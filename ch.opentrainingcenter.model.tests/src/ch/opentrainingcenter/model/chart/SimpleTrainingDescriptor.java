@@ -1,4 +1,4 @@
-package ch.opentrainingcenter.client.charts;
+package ch.opentrainingcenter.model.chart;
 
 import java.util.Calendar;
 import java.util.Date;
