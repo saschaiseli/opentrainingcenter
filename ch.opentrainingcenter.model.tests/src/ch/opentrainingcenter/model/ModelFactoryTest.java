@@ -1,10 +1,5 @@
 package ch.opentrainingcenter.model;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -23,6 +18,12 @@ import ch.opentrainingcenter.model.training.internal.SimpleTraining;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
+import ch.opentrainingcenter.transfer.ITrainingType;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @SuppressWarnings("nls")
 public class ModelFactoryTest {
@@ -45,6 +46,9 @@ public class ModelFactoryTest {
         when(overview.getAverageHeartBeat()).thenReturn(avgHeart);
         when(overview.getMaxHeartBeat()).thenReturn(maxHeart);
         when(overview.getMaxSpeed()).thenReturn(maxSpeed);
+        final ITrainingType trainingType = mock(ITrainingType.class);
+        when(trainingType.getId()).thenReturn(0);
+        when(overview.getTrainingType()).thenReturn(trainingType);
         final IRoute route = mock(IRoute.class);
         athlete = mock(IAthlete.class);
         when(route.getAthlete()).thenReturn(athlete);
@@ -63,14 +67,15 @@ public class ModelFactoryTest {
     public void testFullTraining() {
         final RunType type = RunType.INT_INTERVALL;
         final ISimpleTraining training = ModelFactory.createSimpleTraining(distanz, dauer, date, avgHeart, maxHeart, maxSpeed, type, null);
-        assertTraining(training);
+        assertTraining(training, type);
     }
 
     @Test
     public void testSimpleTrainingMitTyp() {
+        final RunType type = RunType.EXT_INTERVALL;
         final ISimpleTraining training = new SimpleTraining(overview.getLaengeInMeter(), overview.getDauer(), new Date(overview.getDatum()), overview
-                .getAverageHeartBeat(), overview.getMaxHeartBeat(), overview.getMaxSpeed(), RunType.EXT_INTERVALL, "");
-        assertTraining(training);
+                .getAverageHeartBeat(), overview.getMaxHeartBeat(), overview.getMaxSpeed(), type, "");
+        assertTraining(training, type);
     }
 
     /**
@@ -82,12 +87,17 @@ public class ModelFactoryTest {
     }
 
     private void assertTraining(final ISimpleTraining training) {
+        assertTraining(training, RunType.getRunType(0));
+    }
+
+    private void assertTraining(final ISimpleTraining training, final RunType type) {
         assertEquals("Distanz:", distanz, training.getDistanzInMeter(), 0.001);
         assertEquals("Dauer:", dauer, training.getDauerInSekunden(), 0.001);
         assertEquals("Datum:", date, training.getDatum());
         assertEquals("Herzrfequenz:", avgHeart, training.getAvgHeartRate());
         assertEquals("max Herzrfequenz:", Integer.toString(maxHeart), training.getMaxHeartBeat());
         assertEquals("max Speed:", DistanceHelper.calculatePace(maxSpeed), training.getMaxSpeed());
+        assertEquals(type, training.getType());
     }
 
     @Test
