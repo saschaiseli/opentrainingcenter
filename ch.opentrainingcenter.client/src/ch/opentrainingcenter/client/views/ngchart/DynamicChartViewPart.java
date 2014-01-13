@@ -31,7 +31,6 @@ import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -52,6 +51,7 @@ import ch.opentrainingcenter.client.ui.FormToolkitSupport;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.helper.ChartSerieType;
+import ch.opentrainingcenter.core.helper.TimeHelper;
 import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.model.ModelFactory;
 import ch.opentrainingcenter.model.chart.SimpleTrainingCalculator;
@@ -67,12 +67,8 @@ public class DynamicChartViewPart extends ViewPart {
     public static final String ID = "ch.opentrainingcenter.client.views.ngchart.DynamicChart"; //$NON-NLS-1$
     private FormToolkit toolkit;
     private ScrolledForm form;
-    private final Cursor cursorHand;
-    private final Cursor cursorDefault;
 
-    private Label vonDatum;
     private Date von;
-    private Label bisDatum;
     private Date bis;
 
     private final IDatabaseAccess databaseAccess;
@@ -85,9 +81,13 @@ public class DynamicChartViewPart extends ViewPart {
 
     private Button showHeart;
 
+    private DateTime dateFrom;
+
+    private DateTime dateBis;
+
+    private Combo comboFilter;
+
     public DynamicChartViewPart() {
-        cursorHand = new Cursor(Display.getDefault(), SWT.CURSOR_HAND);
-        cursorDefault = new Cursor(Display.getDefault(), SWT.CURSOR_ARROW);
         final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
         databaseAccess = service.getDatabaseAccess();
         chartViewer = new OTCDynamicChartViewer(Activator.getDefault().getPreferenceStore());
@@ -132,7 +132,7 @@ public class DynamicChartViewPart extends ViewPart {
         final Label lDay = new Label(container, SWT.NONE);
         lDay.setText("X-Achse");
 
-        final Combo comboFilter = new Combo(container, SWT.READ_ONLY);
+        comboFilter = new Combo(container, SWT.READ_ONLY);
         comboFilter.setBounds(50, 50, 150, 65);
 
         comboFilter.setItems(ChartSerieType.items());
@@ -145,31 +145,36 @@ public class DynamicChartViewPart extends ViewPart {
                 update(type, compareTraining.getSelection());
                 compareTraining.setEnabled(ChartSerieType.WEEK.equals(type));
             }
+
         });
 
         compareTraining = new Button(container, SWT.CHECK);
         compareTraining.setText("Vergleich mit Planung");
         compareTraining.setEnabled(false);
-        compareTraining.addSelectionListener(new SelectionAdapter() {
-
-            @Override
-            public void widgetSelected(final SelectionEvent e) {
-                final ChartSerieType type = ChartSerieType.getByIndex(comboFilter.getSelectionIndex());
-                update(type, compareTraining.getSelection());
-            }
-        });
+        compareTraining.addSelectionListener(new UpdateSelectionAdapter());
         GridDataFactory.swtDefaults().span(5, 1).applyTo(compareTraining);
         // -------
         toolkit.createLabel(container, "Von: ");
-
-        final DateTime dateFrom = new DateTime(container, SWT.BORDER | SWT.DATE | SWT.DROP_DOWN);
-        dateFrom.setDate(2007, 0, 1);
+        final org.joda.time.DateTime von = org.joda.time.DateTime.now().minusMonths(3);
+        dateFrom = new DateTime(container, SWT.BORDER | SWT.DATE | SWT.DROP_DOWN);
+        dateFrom.setDate(von.getYear(), von.getMonthOfYear(), von.getDayOfMonth());
+        dateFrom.addSelectionListener(new UpdateSelectionAdapter());
 
         toolkit.createLabel(container, "Bis: ");
-        final DateTime dateBis = new DateTime(container, SWT.BORDER | SWT.DATE | SWT.DROP_DOWN);
-        dateBis.setDate(2007, 0, 1);
+        final org.joda.time.DateTime bis = org.joda.time.DateTime.now();
+        dateBis = new DateTime(container, SWT.BORDER | SWT.DATE | SWT.DROP_DOWN);
+        dateBis.setDate(bis.getYear(), bis.getMonthOfYear(), bis.getDayOfMonth());
+        dateBis.addSelectionListener(new UpdateSelectionAdapter());
 
         sectionFilter.setClient(container);
+    }
+
+    private class UpdateSelectionAdapter extends SelectionAdapter {
+        @Override
+        public void widgetSelected(final SelectionEvent e) {
+            final ChartSerieType type = ChartSerieType.getByIndex(comboFilter.getSelectionIndex());
+            update(type, compareTraining.getSelection());
+        }
     }
 
     private void addChartSection(final Composite body) {
@@ -207,6 +212,7 @@ public class DynamicChartViewPart extends ViewPart {
     }
 
     private void update(final ChartSerieType type, final boolean compare) {
+        LOGGER.info("UPDATE CHART"); //$NON-NLS-1$
         Display.getDefault().asyncExec(new Runnable() {
 
             @Override
@@ -222,8 +228,8 @@ public class DynamicChartViewPart extends ViewPart {
     private List<ISimpleTraining> getFilteredData(final ChartSerieType chartType) {
         final StatistikCreator sc = new StatistikCreator();
         final List<ITraining> allTrainings = databaseAccess.getAllTrainings(ApplicationContext.getApplicationContext().getAthlete());
-        final SimpleTrainingFilter filter = new SimpleTrainingFilter(new Date(0), new Date(), null);
         final List<ISimpleTraining> filteredData = new ArrayList<>();
+        final SimpleTrainingFilter filter = createSimpleTrainingFilter();
         for (final ISimpleTraining tr : ModelFactory.convertToSimpleTraining(allTrainings)) {
             final ISimpleTraining st = filter.filter(tr);
             if (st != null) {
@@ -245,6 +251,12 @@ public class DynamicChartViewPart extends ViewPart {
         default:
             return sc.getTrainingsProTag(filteredData);
         }
+    }
+
+    private SimpleTrainingFilter createSimpleTrainingFilter() {
+        final Date start = TimeHelper.getDate(dateFrom.getYear(), dateFrom.getMonth(), dateFrom.getDay());
+        final Date end = TimeHelper.getDate(dateBis.getYear(), dateBis.getMonth(), dateBis.getDay());
+        return new SimpleTrainingFilter(start, end, null);
     }
 
     @Override
