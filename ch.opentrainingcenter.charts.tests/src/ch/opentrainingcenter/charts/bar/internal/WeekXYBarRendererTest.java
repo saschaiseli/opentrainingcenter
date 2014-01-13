@@ -1,7 +1,4 @@
-package ch.opentrainingcenter.client.charts;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+package ch.opentrainingcenter.charts.bar.internal;
 
 import java.awt.Color;
 import java.math.BigDecimal;
@@ -18,6 +15,8 @@ import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.core.cache.ICache;
 import ch.opentrainingcenter.model.planing.IPlanungModel;
 import ch.opentrainingcenter.model.planing.KwJahrKey;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 @SuppressWarnings("nls")
 public class WeekXYBarRendererTest {

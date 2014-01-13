@@ -1,4 +1,4 @@
-package ch.opentrainingcenter.client.charts;
+package ch.opentrainingcenter.core.helper;
 
 import org.junit.Test;
 

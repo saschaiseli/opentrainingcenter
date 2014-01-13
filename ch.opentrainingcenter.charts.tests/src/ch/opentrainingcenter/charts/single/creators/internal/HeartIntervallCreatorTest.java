@@ -1,4 +1,4 @@
-package ch.opentrainingcenter.client.charts;
+package ch.opentrainingcenter.charts.single.creators.internal;
 
 import java.util.Map;
 

@@ -1,10 +1,9 @@
 package ch.opentrainingcenter.charts.single;
 
-import static org.junit.Assert.assertEquals;
-
 import org.junit.Test;
 
 import ch.opentrainingcenter.i18n.Messages;
+import static org.junit.Assert.assertEquals;
 
 public class ChartTypeTest {
 
