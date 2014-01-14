@@ -301,4 +301,14 @@ public class TimeHelperTest {
             assertNotNull(TimeHelper.getTranslatedMonat(new DateTime(2013, i, 15, 9, 11, 12, 42)));
         }
     }
+
+    @Test
+    public void testGetDate() {
+        final Calendar cal = Calendar.getInstance(Locale.GERMAN);
+        cal.set(2000, 11, 22, 0, 0, 0);
+
+        final Date date = TimeHelper.getDate(2000, 11, 22);
+
+        assertEquals(cal.getTime(), date);
+    }
 }

@@ -68,9 +68,6 @@ public class DynamicChartViewPart extends ViewPart {
     private FormToolkit toolkit;
     private ScrolledForm form;
 
-    private Date von;
-    private Date bis;
-
     private final IDatabaseAccess databaseAccess;
 
     private final OTCDynamicChartViewer chartViewer;

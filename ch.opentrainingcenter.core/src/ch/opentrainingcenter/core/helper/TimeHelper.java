@@ -240,4 +240,21 @@ public final class TimeHelper {
         }
         return result;
     }
+
+    /**
+     * Macht aus Jahr, Monat, Tag ein Date mit Zeit 00:00:00
+     * 
+     * @param year
+     *            Jahr
+     * @param month
+     *            Monat 0...11
+     * @param day
+     *            Tag
+     * @return
+     */
+    public static Date getDate(final int year, final int month, final int day) {
+        final Calendar cal = Calendar.getInstance(Locale.getDefault());
+        cal.set(year, month, day, 0, 0, 0);
+        return cal.getTime();
+    }
 }
