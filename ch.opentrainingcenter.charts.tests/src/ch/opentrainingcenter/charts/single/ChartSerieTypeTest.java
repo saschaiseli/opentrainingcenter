@@ -1,8 +1,8 @@
-package ch.opentrainingcenter.core.helper;
+package ch.opentrainingcenter.charts.single;
 
 import org.junit.Test;
 
-import ch.opentrainingcenter.core.helper.ChartSerieType;
+import ch.opentrainingcenter.charts.single.ChartSerieType;
 import ch.opentrainingcenter.i18n.Messages;
 import static org.junit.Assert.assertEquals;
 

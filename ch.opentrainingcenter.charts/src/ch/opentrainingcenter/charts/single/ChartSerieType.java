@@ -1,4 +1,4 @@
-package ch.opentrainingcenter.core.helper;
+package ch.opentrainingcenter.charts.single;
 
 import ch.opentrainingcenter.i18n.Messages;
 

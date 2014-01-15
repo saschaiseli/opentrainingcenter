@@ -46,11 +46,12 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
 import org.eclipse.ui.part.ViewPart;
 
 import ch.opentrainingcenter.charts.bar.OTCDynamicChartViewer;
+import ch.opentrainingcenter.charts.ng.SimpleTrainingChart;
+import ch.opentrainingcenter.charts.single.ChartSerieType;
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.ui.FormToolkitSupport;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
-import ch.opentrainingcenter.core.helper.ChartSerieType;
 import ch.opentrainingcenter.core.helper.TimeHelper;
 import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.model.ModelFactory;
@@ -83,6 +84,8 @@ public class DynamicChartViewPart extends ViewPart {
     private DateTime dateBis;
 
     private Combo comboFilter;
+
+    private Combo comboChartType;
 
     public DynamicChartViewPart() {
         final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
@@ -127,7 +130,8 @@ public class DynamicChartViewPart extends ViewPart {
         GridLayoutFactory.swtDefaults().numColumns(7).applyTo(container);
 
         final Label lDay = new Label(container, SWT.NONE);
-        lDay.setText("X-Achse");
+        lDay.setText("X-Achse:");
+        GridDataFactory.swtDefaults().align(SWT.RIGHT, SWT.CENTER).applyTo(lDay);
 
         comboFilter = new Combo(container, SWT.READ_ONLY);
         comboFilter.setBounds(50, 50, 150, 65);
@@ -149,19 +153,40 @@ public class DynamicChartViewPart extends ViewPart {
         compareTraining.setText("Vergleich mit Planung");
         compareTraining.setEnabled(false);
         compareTraining.addSelectionListener(new UpdateSelectionAdapter());
-        GridDataFactory.swtDefaults().span(5, 1).applyTo(compareTraining);
+
+        final Label y = new Label(container, SWT.NONE);
+        y.setText("Y-Achse:");
+        GridDataFactory.swtDefaults().align(SWT.RIGHT, SWT.CENTER).applyTo(y);
+
+        comboChartType = new Combo(container, SWT.READ_ONLY);
+        comboChartType.setItems(SimpleTrainingChart.items());
+        comboChartType.select(SimpleTrainingChart.DISTANZ.getIndex());
+        comboChartType.addSelectionListener(new SelectionAdapter() {
+
+            @Override
+            public void widgetSelected(final SelectionEvent e) {
+                final ChartSerieType type = ChartSerieType.getByIndex(comboFilter.getSelectionIndex());
+                update(type, compareTraining.getSelection());
+                compareTraining.setEnabled(ChartSerieType.WEEK.equals(type));
+            }
+
+        });
+
+        GridDataFactory.swtDefaults().align(SWT.BEGINNING, SWT.BEGINNING).span(3, 1).applyTo(comboChartType);
         // -------
-        toolkit.createLabel(container, "Von: ");
+        final Label vonLabel = toolkit.createLabel(container, "Von: ");
         final org.joda.time.DateTime von = org.joda.time.DateTime.now().minusMonths(3);
         dateFrom = new DateTime(container, SWT.BORDER | SWT.DATE | SWT.DROP_DOWN);
         dateFrom.setDate(von.getYear(), von.getMonthOfYear(), von.getDayOfMonth());
         dateFrom.addSelectionListener(new UpdateSelectionAdapter());
+        GridDataFactory.swtDefaults().align(SWT.RIGHT, SWT.CENTER).applyTo(vonLabel);
 
-        toolkit.createLabel(container, "Bis: ");
+        final Label bisLabel = toolkit.createLabel(container, "Bis: ");
         final org.joda.time.DateTime bis = org.joda.time.DateTime.now();
         dateBis = new DateTime(container, SWT.BORDER | SWT.DATE | SWT.DROP_DOWN);
         dateBis.setDate(bis.getYear(), bis.getMonthOfYear(), bis.getDayOfMonth());
         dateBis.addSelectionListener(new UpdateSelectionAdapter());
+        GridDataFactory.swtDefaults().align(SWT.RIGHT, SWT.CENTER).applyTo(bisLabel);
 
         sectionFilter.setClient(container);
     }
@@ -202,27 +227,28 @@ public class DynamicChartViewPart extends ViewPart {
             @Override
             public void run() {
                 final List<ISimpleTraining> filteredData = getFilteredData(type);
-                chartViewer.createPartControl(type, filteredData);
+                chartViewer.createPartControl(type, SimpleTrainingChart.DISTANZ, filteredData);
                 sectionChart.setExpanded(true);
             }
         });
     }
 
-    private void update(final ChartSerieType type, final boolean compare) {
+    private void update(final ChartSerieType chartSerieType, final boolean compare) {
         LOGGER.info("UPDATE CHART"); //$NON-NLS-1$
         Display.getDefault().asyncExec(new Runnable() {
 
             @Override
             public void run() {
-                final List<ISimpleTraining> data = getFilteredData(type);
-                chartViewer.updateData(data, type);
-                chartViewer.updateRenderer(type, compare);
+                final List<ISimpleTraining> data = getFilteredData(chartSerieType);
+                final SimpleTrainingChart chartType = SimpleTrainingChart.getByIndex(comboChartType.getSelectionIndex());
+                chartViewer.updateData(data, chartSerieType, chartType);
+                chartViewer.updateRenderer(chartSerieType, compare);
                 chartViewer.forceRedraw();
             }
         });
     }
 
-    private List<ISimpleTraining> getFilteredData(final ChartSerieType chartType) {
+    private List<ISimpleTraining> getFilteredData(final ChartSerieType chartSerieType) {
         final StatistikCreator sc = new StatistikCreator();
         final List<ITraining> allTrainings = databaseAccess.getAllTrainings(ApplicationContext.getApplicationContext().getAthlete());
         final List<ISimpleTraining> filteredData = new ArrayList<>();
@@ -233,7 +259,7 @@ public class DynamicChartViewPart extends ViewPart {
                 filteredData.add(st);
             }
         }
-        switch (chartType) {
+        switch (chartSerieType) {
         case DAY:
             return sc.getTrainingsProTag(filteredData);
         case WEEK:

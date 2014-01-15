@@ -1,4 +1,4 @@
-package ch.opentrainingcenter.core.helper;
+package ch.opentrainingcenter.charts.single;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -6,6 +6,8 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+
+import ch.opentrainingcenter.charts.single.ChartSerieType;
 
 public class ChartSerieTypeHelper {
 

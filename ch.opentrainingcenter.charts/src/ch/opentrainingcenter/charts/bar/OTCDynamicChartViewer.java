@@ -56,10 +56,10 @@ import org.jfree.ui.TextAnchor;
 
 import ch.opentrainingcenter.charts.bar.internal.OTCBarPainter;
 import ch.opentrainingcenter.charts.bar.internal.WeekXYBarRenderer;
+import ch.opentrainingcenter.charts.ng.SimpleTrainingChart;
+import ch.opentrainingcenter.charts.single.ChartSerieType;
 import ch.opentrainingcenter.core.PreferenceConstants;
-import ch.opentrainingcenter.core.helper.ChartSerieType;
 import ch.opentrainingcenter.core.helper.ColorFromPreferenceHelper;
-import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.model.cache.TrainingsPlanCache;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
 
@@ -69,8 +69,8 @@ public class OTCDynamicChartViewer {
 
     private static final Logger LOGGER = Logger.getLogger(OTCDynamicChartViewer.class);
 
-    private static final int ALPHA = 255;
     private static final int KILOMETER_IN_METER = 1000;
+    static final int ALPHA = 255;
 
     private ChartComposite chartComposite;
 
@@ -84,20 +84,21 @@ public class OTCDynamicChartViewer {
 
     private final TimeSeriesCollection dataset = new TimeSeriesCollection();
 
+    private XYBarRenderer renderer;
+
     public OTCDynamicChartViewer(final IPreferenceStore store) {
         this.store = store;
-
     }
 
     public void setParent(final Composite parent) {
         this.parent = parent;
     }
 
-    public void createPartControl(final ChartSerieType type, final List<ISimpleTraining> data) {
+    public void createPartControl(final ChartSerieType chartSerieType, final SimpleTrainingChart chartType, final List<ISimpleTraining> data) {
 
-        updateTimeSerie(data, type);
+        init(data, chartSerieType);
 
-        createChart(type);
+        createChart(chartSerieType, chartType);
 
         chartComposite = new ChartComposite(parent, SWT.NONE, chart, true);
         final GridData gd = new GridData(SWT.FILL);
@@ -110,9 +111,9 @@ public class OTCDynamicChartViewer {
         chartComposite.forceRedraw();
     }
 
-    private JFreeChart createChart(final ChartSerieType type) {
-        chart = ChartFactory.createXYBarChart(Messages.OTCBarChartViewer6, Messages.OTCBarChartViewer7, true, Messages.OTCBarChartViewer8, dataset,
-                PlotOrientation.VERTICAL, false, true, false);
+    JFreeChart createChart(final ChartSerieType type, final SimpleTrainingChart chartType) {
+        chart = ChartFactory.createXYBarChart(chartType.getTitle(), chartType.getxAchse(), true, chartType.getyAchse(), dataset, PlotOrientation.VERTICAL,
+                false, true, false);
         chart.setAntiAlias(true);
         chart.setBorderVisible(false);
         chart.setAntiAlias(true);
@@ -134,38 +135,47 @@ public class OTCDynamicChartViewer {
     /**
      * Aktualisiert die Daten der Timeserie
      */
-    public void updateData(final List<ISimpleTraining> data, final ChartSerieType type) {
+    public void updateData(final List<ISimpleTraining> data, final ChartSerieType type, final SimpleTrainingChart chartType) {
+
+        updateAxis(chartType);
+
         serie.clear();
         final Class<? extends RegularTimePeriod> clazz = getSeriesType(type);
         for (final ISimpleTraining t : data) {
             final RegularTimePeriod period = RegularTimePeriod.createInstance(clazz, t.getDatum(), Calendar.getInstance().getTimeZone());
-            serie.addOrUpdate(period, t.getDistanzInMeter() / KILOMETER_IN_METER);
+            if (SimpleTrainingChart.DISTANZ.equals(chartType)) {
+                serie.addOrUpdate(period, t.getDistanzInMeter() / KILOMETER_IN_METER);
+            } else if (SimpleTrainingChart.HERZ.equals(chartType)) {
+                serie.addOrUpdate(period, t.getAvgHeartRate());
+            } else {
+                LOGGER.error(String.format("Not supported ChartType %s", chartType)); //$NON-NLS-1$
+            }
         }
     }
 
-    private void updateTimeSerie(final List<ISimpleTraining> data, final ChartSerieType type) {
-        updateData(data, type);
+    void updateAxis(final SimpleTrainingChart chartType) {
+        if (chart != null) {
+            // update axis & title
+            chart.setTitle(chartType.getTitle());
+            chart.getXYPlot().getRangeAxis().setLabel(chartType.getyAchse());
+        }
+    }
+
+    void init(final List<ISimpleTraining> data, final ChartSerieType type) {
+        updateData(data, type, SimpleTrainingChart.DISTANZ);
         dataset.removeAllSeries();
         dataset.addSeries(serie);
         dataset.setXPosition(TimePeriodAnchor.MIDDLE);
     }
 
     public void updateRenderer(final ChartSerieType type, final boolean compare) {
-        final XYBarRenderer renderer;
-        if (chart != null) {
-            final XYPlot plot = chart.getXYPlot();
-
-            if (ChartSerieType.WEEK.equals(type) && compare) {
-                renderer = new WeekXYBarRenderer(dataset, store, TrainingsPlanCache.getInstance());
-            } else {
-                renderer = new XYBarRenderer();
-            }
-            renderer.setSeriesPaint(0, ColorFromPreferenceHelper.getColor(store, PreferenceConstants.DISTANCE_CHART_COLOR, ALPHA));
-
-            plot.setRenderer(renderer);
+        if (ChartSerieType.WEEK.equals(type) && compare) {
+            renderer = new WeekXYBarRenderer(dataset, store, TrainingsPlanCache.getInstance());
         } else {
             renderer = new XYBarRenderer();
         }
+        renderer.setSeriesPaint(0, ColorFromPreferenceHelper.getColor(store, PreferenceConstants.DISTANCE_CHART_COLOR, ALPHA));
+
         final OTCBarPainter painter = new OTCBarPainter();
         renderer.setBarPainter(painter);
 
@@ -186,9 +196,12 @@ public class OTCDynamicChartViewer {
             renderer.setBaseItemLabelGenerator(lgen);
             renderer.setBaseItemLabelsVisible(true);
         }
+        if (chart != null) {
+            chart.getXYPlot().setRenderer(renderer);
+        }
     }
 
-    private Class<? extends RegularTimePeriod> getSeriesType(final ChartSerieType chartType) {
+    Class<? extends RegularTimePeriod> getSeriesType(final ChartSerieType chartType) {
         final Class<? extends RegularTimePeriod> thisClazz;
         switch (chartType) {
         case DAY:
@@ -214,4 +227,31 @@ public class OTCDynamicChartViewer {
         chartComposite.forceRedraw();
     }
 
+    /**
+     * fuer Testzwecke
+     */
+    TimeSeries getSerie() {
+        return serie;
+    }
+
+    /**
+     * fuer Testzwecke
+     */
+    TimeSeriesCollection getDataset() {
+        return dataset;
+    }
+
+    /**
+     * nur fuer Testzwecke
+     */
+    void setChart(final JFreeChart mockedChart) {
+        chart = mockedChart;
+    }
+
+    /**
+     * nur fuer Testzwecke
+     */
+    XYBarRenderer getRenderer() {
+        return renderer;
+    }
 }

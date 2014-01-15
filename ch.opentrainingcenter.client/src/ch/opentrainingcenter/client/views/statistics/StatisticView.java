@@ -8,11 +8,11 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.ui.part.ViewPart;
 
 import ch.opentrainingcenter.charts.bar.BarChartFactory;
+import ch.opentrainingcenter.charts.single.ChartSerieType;
 import ch.opentrainingcenter.charts.statistics.StatisticsFactory;
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.cache.HealthCache;
 import ch.opentrainingcenter.client.views.ApplicationContext;
-import ch.opentrainingcenter.core.helper.ChartSerieType;
 
 public class StatisticView extends ViewPart {
 

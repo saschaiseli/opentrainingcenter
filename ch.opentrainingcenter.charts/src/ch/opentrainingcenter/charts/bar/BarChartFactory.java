@@ -6,7 +6,7 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 
 import ch.opentrainingcenter.charts.bar.internal.OTCBarChartViewer;
-import ch.opentrainingcenter.core.helper.ChartSerieType;
+import ch.opentrainingcenter.charts.single.ChartSerieType;
 import ch.opentrainingcenter.transfer.IAthlete;
 
 public class BarChartFactory {

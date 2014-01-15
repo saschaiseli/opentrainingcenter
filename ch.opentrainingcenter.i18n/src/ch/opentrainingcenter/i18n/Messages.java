@@ -244,6 +244,14 @@ public final class Messages extends NLS {
     public static String ShowJahresplanungViewPart_0;
     public static String ShowJahresplanungViewPart_1;
     public static String ShowTrainingPlan_0;
+    public static String SimpleTrainingChart_0;
+    public static String SimpleTrainingChart_1;
+    public static String SimpleTrainingChart_2;
+    public static String SimpleTrainingChart_3;
+    public static String SimpleTrainingChart_4;
+    public static String SimpleTrainingChart_5;
+    public static String SimpleTrainingChart_6;
+    public static String SimpleTrainingChart_7;
     public static String SingleActivityViewPart_0;
     public static String SingleActivityViewPart_1;
     public static String SingleActivityViewPart_2;

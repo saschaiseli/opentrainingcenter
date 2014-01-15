@@ -59,11 +59,11 @@ import org.jfree.data.xy.IntervalXYDataset;
 import org.jfree.experimental.chart.swt.ChartComposite;
 import org.jfree.ui.TextAnchor;
 
+import ch.opentrainingcenter.charts.single.ChartSerieType;
 import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.core.cache.Cache;
 import ch.opentrainingcenter.core.cache.IRecordListener;
 import ch.opentrainingcenter.core.cache.TrainingCache;
-import ch.opentrainingcenter.core.helper.ChartSerieType;
 import ch.opentrainingcenter.core.helper.ColorFromPreferenceHelper;
 import ch.opentrainingcenter.core.helper.RunType;
 import ch.opentrainingcenter.core.service.IDatabaseService;
