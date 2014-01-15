@@ -2,8 +2,6 @@ package ch.opentrainingcenter.model.planing;
 
 import org.junit.Test;
 
-import ch.opentrainingcenter.model.planing.KwJahrKey;
-
 import static org.junit.Assert.assertEquals;
 
 public class KwJahrKeyTest {

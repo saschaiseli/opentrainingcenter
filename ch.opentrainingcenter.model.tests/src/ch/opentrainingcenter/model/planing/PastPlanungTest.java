@@ -1,7 +1,5 @@
 package ch.opentrainingcenter.model.planing;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +14,7 @@ import ch.opentrainingcenter.transfer.IPlanungWoche;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.ITrainingType;
 import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
+import static org.junit.Assert.assertEquals;
 
 @SuppressWarnings("nls")
 public class PastPlanungTest {

@@ -2,6 +2,12 @@ package ch.opentrainingcenter.core.helper;
 
 import ch.opentrainingcenter.i18n.Messages;
 
+/**
+ * Enum welche die Granularität (X-Achse) der Charts definiert. Bei
+ * {@link ChartSerieType#MONTH} werden zum Beispiel alle Trainings innerhalb
+ * eines Monates zu einem einzigen Training zusammengefasst.
+ * 
+ */
 public enum ChartSerieType {
     YEAR(3, Messages.ChartSerieType0, Messages.ChartSerieType8, Messages.ChartSerieType3), //
     MONTH(2, Messages.ChartSerieType1, Messages.ChartSerieType2, Messages.ChartSerieType3), //

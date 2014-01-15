@@ -1,11 +1,5 @@
 package ch.opentrainingcenter.model.chart;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -18,9 +12,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ch.opentrainingcenter.model.ModelFactory;
-import ch.opentrainingcenter.model.chart.IStatistikCreator;
-import ch.opentrainingcenter.model.chart.StatistikCreator;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 @SuppressWarnings("nls")
 public class IStatistikCreatorTest {

@@ -1,12 +1,11 @@
 package ch.opentrainingcenter.client.cache;
 
-import static org.junit.Assert.assertEquals;
-
 import org.junit.Test;
 import org.mockito.Mockito;
 
 import ch.opentrainingcenter.model.strecke.StreckeModel;
 import ch.opentrainingcenter.transfer.IAthlete;
+import static org.junit.Assert.assertEquals;
 
 @SuppressWarnings("nls")
 public class StreckeCacheTest {

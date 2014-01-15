@@ -21,6 +21,7 @@ import ch.opentrainingcenter.core.helper.AltitudeCalculator;
 import ch.opentrainingcenter.core.helper.AltitudeCalculator.Ascending;
 import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
+import ch.opentrainingcenter.model.ModelFactory;
 import ch.opentrainingcenter.model.cache.TrainingsPlanCache;
 import ch.opentrainingcenter.model.navigation.ConcreteHealth;
 import ch.opentrainingcenter.model.planing.IPlanungModel;
@@ -74,7 +75,7 @@ public class InitialLoadRunnable implements IRunnableWithProgress {
         final List<IHealth> healths = db.getHealth(athlete);
         final ICache<Integer, ConcreteHealth> healthCache = HealthCache.getInstance();
         for (final IHealth health : healths) {
-            healthCache.add(ch.opentrainingcenter.model.ModelFactory.createConcreteHealth(health, IImageKeys.CARDIO3232));
+            healthCache.add(ModelFactory.createConcreteHealth(health, IImageKeys.CARDIO3232));
             monitor.subTask(NLS.bind(Messages.InitialLoadRunnable_1, i++));
             LOG.info(Messages.InitialLoadRunnable_2);
         }
@@ -86,7 +87,7 @@ public class InitialLoadRunnable implements IRunnableWithProgress {
         final ICache<String, StreckeModel> cache = StreckeCache.getInstance();
         for (final IRoute route : routen) {
             final int referenzTrainingId = route.getReferenzTrack() != null ? route.getReferenzTrack().getId() : 0;
-            final StreckeModel strecke = ch.opentrainingcenter.model.ModelFactory.createStreckeModel(route, athlete, referenzTrainingId);
+            final StreckeModel strecke = ModelFactory.createStreckeModel(route, athlete, referenzTrainingId);
             cache.add(strecke);
             monitor.subTask(NLS.bind(Messages.InitialLoadRunnable_5, i++));
             LOG.info(String.format("Strecke dem Cache hinzugefügt: %s Strecke: %s", route, strecke)); //$NON-NLS-1$ 
