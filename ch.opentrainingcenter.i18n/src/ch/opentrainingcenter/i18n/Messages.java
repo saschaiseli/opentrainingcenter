@@ -128,6 +128,15 @@ public final class Messages extends NLS {
     public static String DbContributeItem_0;
     public static String DBSTATE_5;
     public static String DeleteImportedRecord0;
+    public static String DynamicChartViewPart_0;
+    public static String DynamicChartViewPart_1;
+    public static String DynamicChartViewPart_2;
+    public static String DynamicChartViewPart_3;
+    public static String DynamicChartViewPart_4;
+    public static String DynamicChartViewPart_5;
+    public static String DynamicChartViewPart_6;
+    public static String DynamicChartViewPart_7;
+    public static String DynamicChartViewPart_8;
     public static String HealthDialog_0;
     public static String HealthDialog_1;
     public static String HealthDialog_3;

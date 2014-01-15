@@ -119,6 +119,8 @@ public class OTCDynamicChartViewer {
         chart.setAntiAlias(true);
         chart.setBorderVisible(true);
         chart.setTextAntiAlias(true);
+        chart.setBackgroundPaint(Color.white);
+        chart.setBorderPaint(Color.white);
 
         updateRenderer(type, false);
 
@@ -126,6 +128,10 @@ public class OTCDynamicChartViewer {
         plot.setBackgroundPaint(Color.white);
         plot.setDomainGridlinePaint(Color.lightGray);
         plot.setRangeGridlinePaint(Color.lightGray);
+        plot.setDomainCrosshairVisible(true);
+        plot.setDomainCrosshairLockedOnData(true);
+        plot.setRangeCrosshairVisible(true);
+        plot.setRangeCrosshairLockedOnData(true);
 
         final DateAxis axis = (DateAxis) plot.getDomainAxis();
         axis.setTickMarkPosition(DateTickMarkPosition.MIDDLE);

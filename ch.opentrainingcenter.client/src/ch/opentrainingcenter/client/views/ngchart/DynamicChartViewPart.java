@@ -54,6 +54,7 @@ import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.helper.TimeHelper;
 import ch.opentrainingcenter.core.service.IDatabaseService;
+import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.model.ModelFactory;
 import ch.opentrainingcenter.model.chart.SimpleTrainingCalculator;
 import ch.opentrainingcenter.model.chart.StatistikCreator;
@@ -77,8 +78,6 @@ public class DynamicChartViewPart extends ViewPart {
 
     private Button compareTraining;
 
-    private Button showHeart;
-
     private DateTime dateFrom;
 
     private DateTime dateBis;
@@ -101,7 +100,7 @@ public class DynamicChartViewPart extends ViewPart {
 
         toolkit.decorateFormHeading(form.getForm());
 
-        form.setText("Auswertungen");
+        form.setText(Messages.DynamicChartViewPart_0);
         final Composite body = form.getBody();
 
         final TableWrapLayout layout = new TableWrapLayout();
@@ -117,8 +116,8 @@ public class DynamicChartViewPart extends ViewPart {
     private void addFilterSection(final Composite body) {
         final Section sectionFilter = toolkit.createSection(body, FormToolkitSupport.SECTION_STYLE);
         sectionFilter.setExpanded(true);
-        sectionFilter.setText("Filter");
-        sectionFilter.setDescription("Hier werden die zu darstellenden Daten gefiltert.");
+        sectionFilter.setText(Messages.DynamicChartViewPart_1);
+        sectionFilter.setDescription(Messages.DynamicChartViewPart_2);
 
         final TableWrapData td = new TableWrapData(TableWrapData.FILL_GRAB);
         td.colspan = 1;
@@ -130,7 +129,7 @@ public class DynamicChartViewPart extends ViewPart {
         GridLayoutFactory.swtDefaults().numColumns(7).applyTo(container);
 
         final Label lDay = new Label(container, SWT.NONE);
-        lDay.setText("X-Achse:");
+        lDay.setText(Messages.DynamicChartViewPart_3);
         GridDataFactory.swtDefaults().align(SWT.RIGHT, SWT.CENTER).applyTo(lDay);
 
         comboFilter = new Combo(container, SWT.READ_ONLY);
@@ -149,13 +148,8 @@ public class DynamicChartViewPart extends ViewPart {
 
         });
 
-        compareTraining = new Button(container, SWT.CHECK);
-        compareTraining.setText("Vergleich mit Planung");
-        compareTraining.setEnabled(false);
-        compareTraining.addSelectionListener(new UpdateSelectionAdapter());
-
         final Label y = new Label(container, SWT.NONE);
-        y.setText("Y-Achse:");
+        y.setText(Messages.DynamicChartViewPart_4);
         GridDataFactory.swtDefaults().align(SWT.RIGHT, SWT.CENTER).applyTo(y);
 
         comboChartType = new Combo(container, SWT.READ_ONLY);
@@ -172,16 +166,21 @@ public class DynamicChartViewPart extends ViewPart {
 
         });
 
-        GridDataFactory.swtDefaults().align(SWT.BEGINNING, SWT.BEGINNING).span(3, 1).applyTo(comboChartType);
+        compareTraining = new Button(container, SWT.CHECK);
+        compareTraining.setText(Messages.DynamicChartViewPart_5);
+        compareTraining.setEnabled(false);
+        compareTraining.addSelectionListener(new UpdateSelectionAdapter());
+
+        GridDataFactory.swtDefaults().align(SWT.BEGINNING, SWT.BEGINNING).span(3, 1).applyTo(compareTraining);
         // -------
-        final Label vonLabel = toolkit.createLabel(container, "Von: ");
+        final Label vonLabel = toolkit.createLabel(container, Messages.DynamicChartViewPart_6);
         final org.joda.time.DateTime von = org.joda.time.DateTime.now().minusMonths(3);
         dateFrom = new DateTime(container, SWT.BORDER | SWT.DATE | SWT.DROP_DOWN);
         dateFrom.setDate(von.getYear(), von.getMonthOfYear(), von.getDayOfMonth());
         dateFrom.addSelectionListener(new UpdateSelectionAdapter());
         GridDataFactory.swtDefaults().align(SWT.RIGHT, SWT.CENTER).applyTo(vonLabel);
 
-        final Label bisLabel = toolkit.createLabel(container, "Bis: ");
+        final Label bisLabel = toolkit.createLabel(container, Messages.DynamicChartViewPart_7);
         final org.joda.time.DateTime bis = org.joda.time.DateTime.now();
         dateBis = new DateTime(container, SWT.BORDER | SWT.DATE | SWT.DROP_DOWN);
         dateBis.setDate(bis.getYear(), bis.getMonthOfYear(), bis.getDayOfMonth());
@@ -202,7 +201,7 @@ public class DynamicChartViewPart extends ViewPart {
     private void addChartSection(final Composite body) {
         sectionChart = toolkit.createSection(body, FormToolkitSupport.SECTION_STYLE);
         sectionChart.setExpanded(false);
-        sectionChart.setText("Chart");
+        sectionChart.setText(Messages.DynamicChartViewPart_8);
 
         final TableWrapData td = new TableWrapData(TableWrapData.FILL_GRAB);
         td.colspan = 1;
