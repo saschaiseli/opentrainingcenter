@@ -88,13 +88,6 @@
             name="%einstellungen">
       </perspective>
       <perspective
-            class="ch.opentrainingcenter.client.perspectives.StatisticPerspective"
-            fixed="true"
-            icon="icons/16_16/charts.png"
-            id="ch.opentrainingcenter.client.StatisticPerspective"
-            name="Statistik">
-      </perspective>
-      <perspective
             class="ch.opentrainingcenter.client.perspectives.TablePerspective"
             fixed="true"
             icon="icons/table_green_24_24.png"
@@ -125,13 +118,6 @@
             id="ch.opentrainingcenter.client.otccategory"
             name="OTC">
       </category>
-      <view
-            class="ch.opentrainingcenter.client.views.statistics.StatisticView"
-            icon="icons/16_16/charts.png"
-            id="ch.opentrainingcenter.client.views.statistics.StatisticView"
-            name="%auswertungen_old"
-            restorable="true">
-      </view>
       <view
             allowMultiple="false"
             class="ch.opentrainingcenter.client.views.ngchart.DynamicChartViewPart"
@@ -249,11 +235,6 @@
       <command
             description="Öffnet die Tabellen Perspective"
             id="ch.opentrainingcenter.client.commands.SwitchToTable"
-            name="name">
-      </command>
-      <command
-            description="Öffnet die Statistik Perspective"
-            id="ch.opentrainingcenter.client.commands.SwitchToStatistic"
             name="name">
       </command>
       <command
@@ -640,13 +621,6 @@
                   tooltip="%home">
             </command>
             <command
-                  commandId="ch.opentrainingcenter.client.commands.SwitchToStatistic"
-                  icon="icons/16_16/charts.png"
-                  label="%auswertungen"
-                  style="push"
-                  tooltip="%auswertungen">
-            </command>
-            <command
                   commandId="ch.opentrainingcenter.client.commands.SwitchToAthlete"
                   icon="icons/16_16/einstellungen.png"
                   label="%einstellungen"
@@ -723,20 +697,6 @@
             </not>
     </with>
 </enabledWhen>
-      </handler>
-      <handler
-            class="ch.opentrainingcenter.client.commands.SwitchToStatistic"
-            commandId="ch.opentrainingcenter.client.commands.SwitchToStatistic">
-         <enabledWhen>
-            <with
-                  variable="activeWorkbenchWindow.activePerspective">
-               <not>
-                  <equals
-                        value="ch.opentrainingcenter.client.StatisticPerspective">
-                  </equals>
-               </not>
-            </with>
-         </enabledWhen>
       </handler>
       <handler
             class="ch.opentrainingcenter.client.commands.SwitchToMain"

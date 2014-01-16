@@ -56,8 +56,9 @@ import ch.opentrainingcenter.core.helper.TimeHelper;
 import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.model.ModelFactory;
+import ch.opentrainingcenter.model.chart.IStatistikCreator;
 import ch.opentrainingcenter.model.chart.SimpleTrainingCalculator;
-import ch.opentrainingcenter.model.chart.StatistikCreator;
+import ch.opentrainingcenter.model.chart.StatistikFactory;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
 import ch.opentrainingcenter.model.training.filter.SimpleTrainingFilter;
 import ch.opentrainingcenter.transfer.ITraining;
@@ -248,7 +249,7 @@ public class DynamicChartViewPart extends ViewPart {
     }
 
     private List<ISimpleTraining> getFilteredData(final ChartSerieType chartSerieType) {
-        final StatistikCreator sc = new StatistikCreator();
+        final IStatistikCreator sc = StatistikFactory.createStatistik();
         final List<ITraining> allTrainings = databaseAccess.getAllTrainings(ApplicationContext.getApplicationContext().getAthlete());
         final List<ISimpleTraining> filteredData = new ArrayList<>();
         final SimpleTrainingFilter filter = createSimpleTrainingFilter();

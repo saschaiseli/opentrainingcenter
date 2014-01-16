@@ -14,7 +14,7 @@ import ch.opentrainingcenter.core.helper.TimeHelper;
 import ch.opentrainingcenter.model.ModelFactory;
 import ch.opentrainingcenter.model.chart.IStatistikCreator;
 import ch.opentrainingcenter.model.chart.SimpleTrainingCalculator;
-import ch.opentrainingcenter.model.chart.StatistikCreator;
+import ch.opentrainingcenter.model.chart.StatistikFactory;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.ITraining;
@@ -35,7 +35,7 @@ public class TrainingDataFilter {
     private final IAthlete athlete;
 
     public TrainingDataFilter(final IDatabaseAccess databaseAccess, final IAthlete athlete) {
-        this(new StatistikCreator(), databaseAccess, athlete);
+        this(StatistikFactory.createStatistik(), databaseAccess, athlete);
     }
 
     public TrainingDataFilter(final IStatistikCreator statistik, final IDatabaseAccess databaseAccess, final IAthlete athlete) {

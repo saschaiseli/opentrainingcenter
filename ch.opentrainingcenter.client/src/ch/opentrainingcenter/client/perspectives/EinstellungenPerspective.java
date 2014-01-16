@@ -24,7 +24,6 @@ public class EinstellungenPerspective implements IPerspectiveFactory {
 
         layout.addPerspectiveShortcut(MainPerspective.ID);
         layout.addPerspectiveShortcut(TablePerspective.ID);
-        layout.addPerspectiveShortcut(StatisticPerspective.ID);
         layout.addPerspectiveShortcut(EinstellungenPerspective.ID);
     }
 

@@ -1,4 +1,4 @@
-package ch.opentrainingcenter.model.chart;
+package ch.opentrainingcenter.model.chart.internal;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -11,6 +11,7 @@ import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
 
+import ch.opentrainingcenter.model.chart.IStatistikCreator;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
 
 public class StatistikCreator implements IStatistikCreator {
