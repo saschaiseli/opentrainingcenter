@@ -18,6 +18,7 @@
 			jfreechart,
 			com.eclipsesource.widgets.gmaps,junit,h2_lib,
 			ch.opentrainingcenter.tcx/**/*.java,
+			ch.opentrainingcenter.tcx.ObjectFactory.java,
 			**/Messages.java,
 			ch/**/Messages.java,
 			**/*Test.java,
