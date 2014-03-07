@@ -34,7 +34,7 @@ import org.jfree.data.time.TimeSeriesDataItem;
 import org.jfree.data.xy.IntervalXYDataset;
 import org.jfree.experimental.chart.swt.ChartComposite;
 
-import ch.opentrainingcenter.charts.bar.internal.OTCBarPainter;
+import ch.opentrainingcenter.charts.bar.internal.OTCXYBarPainter;
 import ch.opentrainingcenter.core.cache.AbstractCache;
 import ch.opentrainingcenter.core.cache.IRecordListener;
 import ch.opentrainingcenter.i18n.Messages;
@@ -157,7 +157,7 @@ public abstract class VitaldatenChartViewer extends ViewPart implements ISelecti
 
         final XYBarRenderer renderer = (XYBarRenderer) plot.getRenderer();
 
-        final OTCBarPainter painter = new OTCBarPainter();
+        final OTCXYBarPainter painter = new OTCXYBarPainter();
         renderer.setBarPainter(painter);
         renderer.setSeriesPaint(0, getBarColor());
         renderer.setMargin(0.1);

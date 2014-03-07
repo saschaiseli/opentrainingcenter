@@ -71,8 +71,11 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
         defaults.put(PreferenceConstants.ZIEL_NICHT_ERFUELLT_COLOR, "212,62,59"); //$NON-NLS-1$
         defaults.put(PreferenceConstants.ZIEL_NICHT_BEKANNT_COLOR, "173,216,230"); //$NON-NLS-1$
 
-        defaults.put(PreferenceConstants.DISTANCE_CHART_COLOR, "30,144,255"); //$NON-NLS-1$
-        defaults.put(PreferenceConstants.DISTANCE_HEART_COLOR, "255,17,14"); //$NON-NLS-1$
+        defaults.put(PreferenceConstants.CHART_DISTANCE_COLOR, "30,144,255"); //$NON-NLS-1$
+        defaults.put(PreferenceConstants.CHART_HEART_COLOR, "255,17,14"); //$NON-NLS-1$
+
+        defaults.put(PreferenceConstants.CHART_DISTANCE_COLOR_PAST, "135,192,248"); //$NON-NLS-1$
+        defaults.put(PreferenceConstants.CHART_HEART_COLOR_PAST, "238,141,140"); //$NON-NLS-1$
 
         defaults.put(PreferenceConstants.RUHEPULS_COLOR, "255,0,26"); //$NON-NLS-1$
         defaults.put(PreferenceConstants.GEWICHT_COLOR, "240,173,50"); //$NON-NLS-1$

@@ -42,7 +42,7 @@ import org.jfree.data.time.Year;
 import org.junit.Before;
 import org.junit.Test;
 
-import ch.opentrainingcenter.charts.bar.internal.OTCBarPainter;
+import ch.opentrainingcenter.charts.bar.internal.OTCXYBarPainter;
 import ch.opentrainingcenter.charts.ng.SimpleTrainingChart;
 import ch.opentrainingcenter.charts.single.ChartSerieType;
 import ch.opentrainingcenter.core.PreferenceConstants;
@@ -160,7 +160,7 @@ public class OTCDynamicChartViewerTest {
     @Test
     public void updateRendererDay() {
         final Color color = new Color(1, 2, 3, OTCDynamicChartViewer.ALPHA);
-        when(store.getString(PreferenceConstants.DISTANCE_CHART_COLOR)).thenReturn("1,2,3");
+        when(store.getString(PreferenceConstants.CHART_DISTANCE_COLOR)).thenReturn("1,2,3");
 
         // Execute
         viewer.updateRenderer(ChartSerieType.DAY, false);
@@ -173,7 +173,7 @@ public class OTCDynamicChartViewerTest {
 
         final XYBarPainter barPainter = renderer.getBarPainter();
 
-        assertTrue(barPainter instanceof OTCBarPainter);
+        assertTrue(barPainter instanceof OTCXYBarPainter);
 
         assertEquals(0.1, renderer.getMargin(), 0.001);
     }
@@ -181,7 +181,7 @@ public class OTCDynamicChartViewerTest {
     @Test
     public void updateRendererMonth() {
         final Color color = new Color(1, 2, 3, OTCDynamicChartViewer.ALPHA);
-        when(store.getString(PreferenceConstants.DISTANCE_CHART_COLOR)).thenReturn("1,2,3");
+        when(store.getString(PreferenceConstants.CHART_DISTANCE_COLOR)).thenReturn("1,2,3");
 
         final JFreeChart mockedChart = mock(JFreeChart.class);
         final XYPlot plot = mock(XYPlot.class);
@@ -199,7 +199,7 @@ public class OTCDynamicChartViewerTest {
 
         final XYBarPainter barPainter = renderer.getBarPainter();
 
-        assertTrue(barPainter instanceof OTCBarPainter);
+        assertTrue(barPainter instanceof OTCXYBarPainter);
 
         assertEquals(0.1, renderer.getMargin(), 0.001);
 

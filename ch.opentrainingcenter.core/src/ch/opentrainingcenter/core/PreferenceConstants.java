@@ -20,8 +20,10 @@ public final class PreferenceConstants {
     //    public static final String KM_PER_WEEK = "KM_PER_WEEK"; //$NON-NLS-1$
     public static final String WEEK_FOR_PLAN = "WEEK_FOR_PLAN"; //$NON-NLS-1$
 
-    public static final String DISTANCE_CHART_COLOR = "DISTANCE_CHART_COLOR"; //$NON-NLS-1$
-    public static final String DISTANCE_HEART_COLOR = "DISTANCE_HEART_COLOR"; //$NON-NLS-1$
+    public static final String CHART_DISTANCE_COLOR = "DISTANCE_CHART_COLOR"; //$NON-NLS-1$
+    public static final String CHART_DISTANCE_COLOR_PAST = "DISTANCE_CHART_COLOR_PAST"; //$NON-NLS-1$
+    public static final String CHART_HEART_COLOR = "DISTANCE_HEART_COLOR"; //$NON-NLS-1$
+    public static final String CHART_HEART_COLOR_PAST = "DISTANCE_HEART_COLOR_PAST"; //$NON-NLS-1$
     public static final String RECOM = "RECOM"; //$NON-NLS-1$
     public static final String RECOM_COLOR = RECOM + COLOR_POSTFIX;
     public static final String GA1 = "GA1"; //$NON-NLS-1$

@@ -321,6 +321,8 @@ public final class Messages extends NLS {
     public static String TrainingTargetPreferencePage7;
     public static String TrainingTargetPreferencePage8;
     public static String TrainingTargetPreferencePage9;
+    public static String TrainingTargetPreferencePage10;
+    public static String TrainingTargetPreferencePage11;
     public static String Units_0;
     public static String Units0;
     public static String Units1;

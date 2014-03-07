@@ -45,7 +45,7 @@ import org.eclipse.ui.forms.widgets.TableWrapData;
 import org.eclipse.ui.forms.widgets.TableWrapLayout;
 import org.eclipse.ui.part.ViewPart;
 
-import ch.opentrainingcenter.charts.bar.OTCDynamicChartViewer;
+import ch.opentrainingcenter.charts.bar.OTCCategoryChartViewer;
 import ch.opentrainingcenter.charts.ng.SimpleTrainingChart;
 import ch.opentrainingcenter.charts.single.ChartSerieType;
 import ch.opentrainingcenter.client.Activator;
@@ -73,7 +73,7 @@ public class DynamicChartViewPart extends ViewPart {
 
     private final IDatabaseAccess databaseAccess;
 
-    private final OTCDynamicChartViewer chartViewer;
+    private final OTCCategoryChartViewer chartViewer;
 
     private Section sectionChart;
 
@@ -87,10 +87,12 @@ public class DynamicChartViewPart extends ViewPart {
 
     private Combo comboChartType;
 
+    private Button compareLastYear;
+
     public DynamicChartViewPart() {
         final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
         databaseAccess = service.getDatabaseAccess();
-        chartViewer = new OTCDynamicChartViewer(Activator.getDefault().getPreferenceStore());
+        chartViewer = new OTCCategoryChartViewer(Activator.getDefault().getPreferenceStore());
     }
 
     @Override
@@ -171,20 +173,26 @@ public class DynamicChartViewPart extends ViewPart {
         compareTraining.setText(Messages.DynamicChartViewPart_5);
         compareTraining.setEnabled(false);
         compareTraining.addSelectionListener(new UpdateSelectionAdapter());
+        GridDataFactory.swtDefaults().align(SWT.BEGINNING, SWT.BEGINNING).applyTo(compareTraining);
 
-        GridDataFactory.swtDefaults().align(SWT.BEGINNING, SWT.BEGINNING).span(3, 1).applyTo(compareTraining);
-        // -------
+        compareLastYear = new Button(container, SWT.CHECK);
+        compareLastYear.setText("Vergleichen");
+        compareLastYear.setToolTipText("Mit gleicher Periode aus vergangenem Jahr vergleichen");
+        compareLastYear.addSelectionListener(new UpdateSelectionAdapter());
+
+        GridDataFactory.swtDefaults().align(SWT.BEGINNING, SWT.BEGINNING).span(2, 1).applyTo(compareLastYear);
+        // ------- neue Zeile
         final Label vonLabel = toolkit.createLabel(container, Messages.DynamicChartViewPart_6);
         final org.joda.time.DateTime von = org.joda.time.DateTime.now().minusMonths(3);
         dateFrom = new DateTime(container, SWT.BORDER | SWT.DATE | SWT.DROP_DOWN);
-        dateFrom.setDate(von.getYear(), von.getMonthOfYear(), von.getDayOfMonth());
+        dateFrom.setDate(von.getYear(), von.getMonthOfYear() - 1, von.getDayOfMonth());
         dateFrom.addSelectionListener(new UpdateSelectionAdapter());
         GridDataFactory.swtDefaults().align(SWT.RIGHT, SWT.CENTER).applyTo(vonLabel);
 
         final Label bisLabel = toolkit.createLabel(container, Messages.DynamicChartViewPart_7);
         final org.joda.time.DateTime bis = org.joda.time.DateTime.now();
         dateBis = new DateTime(container, SWT.BORDER | SWT.DATE | SWT.DROP_DOWN);
-        dateBis.setDate(bis.getYear(), bis.getMonthOfYear(), bis.getDayOfMonth());
+        dateBis.setDate(bis.getYear(), bis.getMonthOfYear() - 1, bis.getDayOfMonth());
         dateBis.addSelectionListener(new UpdateSelectionAdapter());
         GridDataFactory.swtDefaults().align(SWT.RIGHT, SWT.CENTER).applyTo(bisLabel);
 
@@ -226,8 +234,10 @@ public class DynamicChartViewPart extends ViewPart {
 
             @Override
             public void run() {
-                final List<ISimpleTraining> filteredData = getFilteredData(type);
-                chartViewer.createPartControl(type, SimpleTrainingChart.DISTANZ, filteredData);
+                final Date start = TimeHelper.getDate(dateFrom.getYear(), dateFrom.getMonth(), dateFrom.getDay());
+                final Date end = TimeHelper.getDate(dateBis.getYear(), dateBis.getMonth(), dateBis.getDay());
+                final List<ISimpleTraining> filteredDataNow = getFilteredData(type, start, end);
+                chartViewer.createPartControl(type, SimpleTrainingChart.DISTANZ, filteredDataNow, filteredDataNow);
                 sectionChart.setExpanded(true);
             }
         });
@@ -239,20 +249,27 @@ public class DynamicChartViewPart extends ViewPart {
 
             @Override
             public void run() {
-                final List<ISimpleTraining> data = getFilteredData(chartSerieType);
+                final Date start = TimeHelper.getDate(dateFrom.getYear(), dateFrom.getMonth(), dateFrom.getDay());
+                final Date end = TimeHelper.getDate(dateBis.getYear(), dateBis.getMonth(), dateBis.getDay());
+                final org.joda.time.DateTime dtStart = new org.joda.time.DateTime(start.getTime());
+                final org.joda.time.DateTime dtEnd = new org.joda.time.DateTime(end.getTime());
+                final List<ISimpleTraining> dataPast = getFilteredData(chartSerieType, dtStart.minusYears(1).toDate(), dtEnd.minusYears(1).toDate());
+                final List<ISimpleTraining> dataNow = getFilteredData(chartSerieType, start, end);
                 final SimpleTrainingChart chartType = SimpleTrainingChart.getByIndex(comboChartType.getSelectionIndex());
-                chartViewer.updateData(data, chartSerieType, chartType);
-                chartViewer.updateRenderer(chartSerieType, compare);
+                final boolean compare = compareLastYear.getSelection();
+
+                chartViewer.updateData(dataPast, dataNow, chartSerieType, chartType);
+                chartViewer.updateRenderer(chartSerieType, compare, chartType);
                 chartViewer.forceRedraw();
             }
         });
     }
 
-    private List<ISimpleTraining> getFilteredData(final ChartSerieType chartSerieType) {
+    private List<ISimpleTraining> getFilteredData(final ChartSerieType chartSerieType, final Date start, final Date end) {
         final IStatistikCreator sc = StatistikFactory.createStatistik();
         final List<ITraining> allTrainings = databaseAccess.getAllTrainings(ApplicationContext.getApplicationContext().getAthlete());
         final List<ISimpleTraining> filteredData = new ArrayList<>();
-        final SimpleTrainingFilter filter = createSimpleTrainingFilter();
+        final SimpleTrainingFilter filter = new SimpleTrainingFilter(start, end, null);
         for (final ISimpleTraining tr : ModelFactory.convertToSimpleTraining(allTrainings)) {
             final ISimpleTraining st = filter.filter(tr);
             if (st != null) {
@@ -274,12 +291,6 @@ public class DynamicChartViewPart extends ViewPart {
         default:
             return sc.getTrainingsProTag(filteredData);
         }
-    }
-
-    private SimpleTrainingFilter createSimpleTrainingFilter() {
-        final Date start = TimeHelper.getDate(dateFrom.getYear(), dateFrom.getMonth(), dateFrom.getDay());
-        final Date end = TimeHelper.getDate(dateBis.getYear(), dateBis.getMonth(), dateBis.getDay());
-        return new SimpleTrainingFilter(start, end, null);
     }
 
     @Override

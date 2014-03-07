@@ -20,10 +20,10 @@
 package ch.opentrainingcenter.charts.bar;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -33,43 +33,39 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.DateAxis;
-import org.jfree.chart.axis.DateTickMarkPosition;
 import org.jfree.chart.labels.ItemLabelAnchor;
 import org.jfree.chart.labels.ItemLabelPosition;
 import org.jfree.chart.labels.StandardXYItemLabelGenerator;
 import org.jfree.chart.labels.StandardXYToolTipGenerator;
 import org.jfree.chart.labels.XYItemLabelGenerator;
+import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.xy.XYBarRenderer;
+import org.jfree.chart.renderer.AbstractRenderer;
+import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.time.Day;
 import org.jfree.data.time.Month;
 import org.jfree.data.time.RegularTimePeriod;
-import org.jfree.data.time.TimePeriodAnchor;
 import org.jfree.data.time.TimeSeries;
-import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.time.Week;
 import org.jfree.data.time.Year;
 import org.jfree.experimental.chart.swt.ChartComposite;
 import org.jfree.ui.TextAnchor;
 
-import ch.opentrainingcenter.charts.bar.internal.OTCXYBarPainter;
-import ch.opentrainingcenter.charts.bar.internal.WeekXYBarRenderer;
+import ch.opentrainingcenter.charts.bar.internal.OTCBarPainter;
+import ch.opentrainingcenter.charts.bar.internal.ValueMapper;
 import ch.opentrainingcenter.charts.ng.SimpleTrainingChart;
 import ch.opentrainingcenter.charts.single.ChartSerieType;
 import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.core.helper.ColorFromPreferenceHelper;
-import ch.opentrainingcenter.model.cache.TrainingsPlanCache;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
 
-public class OTCDynamicChartViewer {
+public class OTCCategoryChartViewer {
 
     private static final String DECIMAL = "0.000"; //$NON-NLS-1$
 
     private static final Logger LOGGER = Logger.getLogger(OTCDynamicChartViewer.class);
 
-    private static final int KILOMETER_IN_METER = 1000;
     static final int ALPHA = 255;
 
     private ChartComposite chartComposite;
@@ -82,11 +78,9 @@ public class OTCDynamicChartViewer {
 
     private Composite parent;
 
-    private final TimeSeriesCollection dataset = new TimeSeriesCollection();
+    DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
-    private XYBarRenderer renderer;
-
-    public OTCDynamicChartViewer(final IPreferenceStore store) {
+    public OTCCategoryChartViewer(final IPreferenceStore store) {
         this.store = store;
     }
 
@@ -94,9 +88,10 @@ public class OTCDynamicChartViewer {
         this.parent = parent;
     }
 
-    public void createPartControl(final ChartSerieType chartSerieType, final SimpleTrainingChart chartType, final List<ISimpleTraining> data) {
+    public void createPartControl(final ChartSerieType chartSerieType, final SimpleTrainingChart chartType, final List<ISimpleTraining> dataNow,
+            final List<ISimpleTraining> dataPast) {
 
-        init(data, chartSerieType);
+        init(dataNow, dataPast, chartSerieType);
 
         createChart(chartSerieType, chartType);
 
@@ -112,8 +107,8 @@ public class OTCDynamicChartViewer {
     }
 
     JFreeChart createChart(final ChartSerieType type, final SimpleTrainingChart chartType) {
-        chart = ChartFactory.createXYBarChart(chartType.getTitle(), chartType.getxAchse(), true, chartType.getyAchse(), dataset, PlotOrientation.VERTICAL,
-                false, true, false);
+        chart = ChartFactory.createBarChart(chartType.getTitle(), chartType.getxAchse(), chartType.getyAchse(), dataset, PlotOrientation.VERTICAL, true, true,
+                false);
         chart.setAntiAlias(true);
         chart.setBorderVisible(false);
         chart.setAntiAlias(true);
@@ -122,88 +117,96 @@ public class OTCDynamicChartViewer {
         chart.setBackgroundPaint(Color.white);
         chart.setBorderPaint(Color.white);
 
-        updateRenderer(type, false);
-
-        final XYPlot plot = chart.getXYPlot();
+        updateRenderer(type, false, chartType);
+        //
+        final CategoryPlot plot = chart.getCategoryPlot();
         plot.setBackgroundPaint(Color.white);
         plot.setDomainGridlinePaint(Color.lightGray);
         plot.setRangeGridlinePaint(Color.lightGray);
         plot.setDomainCrosshairVisible(true);
-        plot.setDomainCrosshairLockedOnData(true);
         plot.setRangeCrosshairVisible(true);
         plot.setRangeCrosshairLockedOnData(true);
-
-        final DateAxis axis = (DateAxis) plot.getDomainAxis();
-        axis.setTickMarkPosition(DateTickMarkPosition.MIDDLE);
         return chart;
     }
 
     /**
      * Aktualisiert die Daten der Timeserie
      */
-    public void updateData(final List<ISimpleTraining> data, final ChartSerieType type, final SimpleTrainingChart chartType) {
+    public void updateData(final List<ISimpleTraining> dataPast, final List<ISimpleTraining> dataNow, final ChartSerieType type,
+            final SimpleTrainingChart chartType) {
 
         updateAxis(chartType);
-
-        serie.clear();
-        final Class<? extends RegularTimePeriod> clazz = getSeriesType(type);
-        for (final ISimpleTraining t : data) {
-            final RegularTimePeriod period = RegularTimePeriod.createInstance(clazz, t.getDatum(), Calendar.getInstance().getTimeZone());
-            if (SimpleTrainingChart.DISTANZ.equals(chartType)) {
-                serie.addOrUpdate(period, t.getDistanzInMeter() / KILOMETER_IN_METER);
-            } else if (SimpleTrainingChart.HERZ.equals(chartType)) {
-                serie.addOrUpdate(period, t.getAvgHeartRate());
-            } else {
-                LOGGER.error(String.format("Not supported ChartType %s", chartType)); //$NON-NLS-1$
-            }
+        dataset.clear();
+        if (!ChartSerieType.DAY.equals(type)) {
+            updateDataSet(dataPast, type, chartType, "dataPast");
         }
+        updateDataSet(dataNow, type, chartType, "dataNow");
+    }
+
+    private void updateDataSet(final List<ISimpleTraining> data, final ChartSerieType type, final SimpleTrainingChart stc, final String rowName) {
+        final List<ValueMapper> values = convertAndSort(data, stc, type);
+        for (final ValueMapper t : values) {
+            dataset.addValue(t.getValue(stc), rowName, t.getCategory());
+        }
+    }
+
+    private List<ValueMapper> convertAndSort(final List<ISimpleTraining> data, final SimpleTrainingChart stc, final ChartSerieType type) {
+        final List<ValueMapper> result = new ArrayList<>();
+        for (final ISimpleTraining training : data) {
+            result.add(new ValueMapper(training, type));
+        }
+        Collections.sort(result);
+        return result;
     }
 
     void updateAxis(final SimpleTrainingChart chartType) {
         if (chart != null) {
             // update axis & title
             chart.setTitle(chartType.getTitle());
-            chart.getXYPlot().getRangeAxis().setLabel(chartType.getyAchse());
+            ((CategoryPlot) chart.getPlot()).getRangeAxis().setLabel(chartType.getyAchse());
         }
     }
 
-    void init(final List<ISimpleTraining> data, final ChartSerieType type) {
-        updateData(data, type, SimpleTrainingChart.DISTANZ);
-        dataset.removeAllSeries();
-        dataset.addSeries(serie);
-        dataset.setXPosition(TimePeriodAnchor.MIDDLE);
+    void init(final List<ISimpleTraining> dataNow, final List<ISimpleTraining> dataPast, final ChartSerieType type) {
+        dataset.clear();
+        updateData(dataPast, dataNow, type, SimpleTrainingChart.DISTANZ);
     }
 
-    public void updateRenderer(final ChartSerieType type, final boolean compare) {
-        if (ChartSerieType.WEEK.equals(type) && compare) {
-            renderer = new WeekXYBarRenderer(dataset, store, TrainingsPlanCache.getInstance());
-        } else {
-            renderer = new XYBarRenderer();
-        }
-        renderer.setSeriesPaint(0, ColorFromPreferenceHelper.getColor(store, PreferenceConstants.CHART_DISTANCE_COLOR, ALPHA));
+    public void updateRenderer(final ChartSerieType type, final boolean compare, final SimpleTrainingChart chartType) {
+        final BarRenderer renderer = new BarRenderer();
+        setSeriesPaint(renderer, chartType);
 
-        final OTCXYBarPainter painter = new OTCXYBarPainter();
+        final OTCBarPainter painter = new OTCBarPainter();
         renderer.setBarPainter(painter);
-
-        renderer.setMargin(0.1);
+        renderer.setItemMargin(0.0);
 
         if (type.isLabelVisible()) {
             final String label = "{2}km (" + type.getLabel() + "{1})"; //$NON-NLS-1$//$NON-NLS-2$
             final SimpleDateFormat datePattern = new SimpleDateFormat(type.getFormatPattern());
             final StandardXYToolTipGenerator generator = new StandardXYToolTipGenerator(label, datePattern, new DecimalFormat(DECIMAL));
-            renderer.setBaseToolTipGenerator(generator);
-            renderer.setBaseItemLabelFont(new Font("Default", Font.PLAIN, 7)); //$NON-NLS-1$
+            // renderer.setBaseToolTipGenerator(generator);
+            //            renderer.setBaseItemLabelFont(new Font("Default", Font.PLAIN, 7)); //$NON-NLS-1$
             renderer.setBaseItemLabelGenerator(null);
 
             final ItemLabelPosition position = new ItemLabelPosition(ItemLabelAnchor.CENTER, TextAnchor.CENTER, TextAnchor.CENTER, -Math.PI / 2.0);
             renderer.setBasePositiveItemLabelPosition(position);
 
             final XYItemLabelGenerator lgen = new StandardXYItemLabelGenerator(label, datePattern, new DecimalFormat(DECIMAL));
-            renderer.setBaseItemLabelGenerator(lgen);
+            // renderer.setBaseItemLabelGenerator(lgen);
             renderer.setBaseItemLabelsVisible(true);
         }
         if (chart != null) {
-            chart.getXYPlot().setRenderer(renderer);
+            chart.getCategoryPlot().setRenderer(renderer);
+        }
+    }
+
+    private void setSeriesPaint(final AbstractRenderer renderer, final SimpleTrainingChart chartType) {
+        if (SimpleTrainingChart.DISTANZ.equals(chartType)) {
+            renderer.setSeriesPaint(0, ColorFromPreferenceHelper.getColor(store, PreferenceConstants.CHART_DISTANCE_COLOR_PAST, ALPHA));
+            renderer.setSeriesPaint(1, ColorFromPreferenceHelper.getColor(store, PreferenceConstants.CHART_DISTANCE_COLOR, ALPHA));
+        } else {
+            renderer.setSeriesPaint(0, ColorFromPreferenceHelper.getColor(store, PreferenceConstants.CHART_HEART_COLOR_PAST, ALPHA));
+            renderer.setSeriesPaint(1, ColorFromPreferenceHelper.getColor(store, PreferenceConstants.CHART_HEART_COLOR, ALPHA));
         }
     }
 
@@ -240,24 +243,17 @@ public class OTCDynamicChartViewer {
         return serie;
     }
 
-    /**
-     * fuer Testzwecke
-     */
-    TimeSeriesCollection getDataset() {
-        return dataset;
-    }
+    // /**
+    // * fuer Testzwecke
+    // */
+    // TimeSeriesCollection getDataset() {
+    // return dataset;
+    // }
 
     /**
      * nur fuer Testzwecke
      */
     void setChart(final JFreeChart mockedChart) {
         chart = mockedChart;
-    }
-
-    /**
-     * nur fuer Testzwecke
-     */
-    XYBarRenderer getRenderer() {
-        return renderer;
     }
 }
