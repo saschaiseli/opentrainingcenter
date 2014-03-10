@@ -22,11 +22,11 @@
          </property>
          <property
                name="aboutImage"
-               value="/icons/about.gif">
+               value="icons/about/about.gif">
          </property>
          <property
                name="aboutText"
-               value="%aboutText">
+               value="Ein noch zu definierender Text...............................">
          </property>
          <property
                name="startupForegroundColor"

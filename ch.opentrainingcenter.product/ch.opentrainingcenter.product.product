@@ -4,9 +4,9 @@
 <product name="Open Training Center" uid="ch.opentrainingcenter.product" id="ch.opentrainingcenter.client.opentrainingcenter" application="ch.opentrainingcenter.client.application" version="1.0.0" useFeatures="false" includeLaunchers="true">
 
    <aboutInfo>
-      <image path="/icons/about.gif"/>
+      <image path="/ch.opentrainingcenter.client/icons/about/about.gif"/>
       <text>
-         %aboutText
+         Ein noch zu definierender Text...............................
       </text>
    </aboutInfo>
 
@@ -34,7 +34,8 @@
    <vm>
    </vm>
 
-   <plugins>
+
+  <plugins>
       <plugin id="ch.opentrainingcenter.charts"/>
       <plugin id="ch.opentrainingcenter.client"/>
       <plugin id="ch.opentrainingcenter.core"/>
