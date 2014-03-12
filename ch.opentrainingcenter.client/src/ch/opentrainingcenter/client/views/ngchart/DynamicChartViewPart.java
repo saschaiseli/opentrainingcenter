@@ -77,8 +77,6 @@ public class DynamicChartViewPart extends ViewPart {
 
     private Section sectionChart;
 
-    private Button compareTraining;
-
     private DateTime dateFrom;
 
     private DateTime dateBis;
@@ -87,7 +85,7 @@ public class DynamicChartViewPart extends ViewPart {
 
     private Combo comboChartType;
 
-    private Button compareLastYear;
+    private Button compareWithLastYear;
 
     public DynamicChartViewPart() {
         final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
@@ -145,8 +143,8 @@ public class DynamicChartViewPart extends ViewPart {
             @Override
             public void widgetSelected(final SelectionEvent e) {
                 final ChartSerieType type = ChartSerieType.getByIndex(comboFilter.getSelectionIndex());
-                update(type, compareTraining.getSelection());
-                compareTraining.setEnabled(ChartSerieType.WEEK.equals(type));
+                update(type);
+                compareWithLastYear.setEnabled(!ChartSerieType.DAY.equals(type));
             }
 
         });
@@ -163,24 +161,19 @@ public class DynamicChartViewPart extends ViewPart {
             @Override
             public void widgetSelected(final SelectionEvent e) {
                 final ChartSerieType type = ChartSerieType.getByIndex(comboFilter.getSelectionIndex());
-                update(type, compareTraining.getSelection());
-                compareTraining.setEnabled(ChartSerieType.WEEK.equals(type));
+                update(type);
             }
 
         });
+        final ChartSerieType cst = ChartSerieType.getByIndex(comboFilter.getSelectionIndex());
 
-        compareTraining = new Button(container, SWT.CHECK);
-        compareTraining.setText(Messages.DynamicChartViewPart_5);
-        compareTraining.setEnabled(false);
-        compareTraining.addSelectionListener(new UpdateSelectionAdapter());
-        GridDataFactory.swtDefaults().align(SWT.BEGINNING, SWT.BEGINNING).applyTo(compareTraining);
+        compareWithLastYear = new Button(container, SWT.CHECK);
+        compareWithLastYear.setText(Messages.DynamicChartViewPart_9);
+        compareWithLastYear.setEnabled(!ChartSerieType.DAY.equals(cst));
+        compareWithLastYear.setToolTipText(Messages.DynamicChartViewPart_10);
+        compareWithLastYear.addSelectionListener(new UpdateSelectionAdapter());
 
-        compareLastYear = new Button(container, SWT.CHECK);
-        compareLastYear.setText("Vergleichen");
-        compareLastYear.setToolTipText("Mit gleicher Periode aus vergangenem Jahr vergleichen");
-        compareLastYear.addSelectionListener(new UpdateSelectionAdapter());
-
-        GridDataFactory.swtDefaults().align(SWT.BEGINNING, SWT.BEGINNING).span(2, 1).applyTo(compareLastYear);
+        GridDataFactory.swtDefaults().align(SWT.BEGINNING, SWT.BEGINNING).span(3, 1).applyTo(compareWithLastYear);
         // ------- neue Zeile
         final Label vonLabel = toolkit.createLabel(container, Messages.DynamicChartViewPart_6);
         final org.joda.time.DateTime von = org.joda.time.DateTime.now().minusMonths(3);
@@ -203,7 +196,7 @@ public class DynamicChartViewPart extends ViewPart {
         @Override
         public void widgetSelected(final SelectionEvent e) {
             final ChartSerieType type = ChartSerieType.getByIndex(comboFilter.getSelectionIndex());
-            update(type, compareTraining.getSelection());
+            update(type);
         }
     }
 
@@ -243,7 +236,7 @@ public class DynamicChartViewPart extends ViewPart {
         });
     }
 
-    private void update(final ChartSerieType chartSerieType, final boolean compare) {
+    private void update(final ChartSerieType chartSerieType) {
         LOGGER.info("UPDATE CHART"); //$NON-NLS-1$
         Display.getDefault().asyncExec(new Runnable() {
 
@@ -256,10 +249,10 @@ public class DynamicChartViewPart extends ViewPart {
                 final List<ISimpleTraining> dataPast = getFilteredData(chartSerieType, dtStart.minusYears(1).toDate(), dtEnd.minusYears(1).toDate());
                 final List<ISimpleTraining> dataNow = getFilteredData(chartSerieType, start, end);
                 final SimpleTrainingChart chartType = SimpleTrainingChart.getByIndex(comboChartType.getSelectionIndex());
-                final boolean compare = compareLastYear.getSelection();
+                final boolean compareLast = compareWithLastYear.getSelection();
 
-                chartViewer.updateData(dataPast, dataNow, chartSerieType, chartType);
-                chartViewer.updateRenderer(chartSerieType, compare, chartType);
+                chartViewer.updateData(dataPast, dataNow, chartSerieType, chartType, compareLast);
+                chartViewer.updateRenderer(chartSerieType, chartType, compareLast);
                 chartViewer.forceRedraw();
             }
         });

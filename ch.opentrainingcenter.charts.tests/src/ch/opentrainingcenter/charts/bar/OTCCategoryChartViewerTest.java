@@ -81,7 +81,7 @@ public class OTCCategoryChartViewerTest {
         when(simpleTraining.getDatum()).thenReturn(date);
         data.add(simpleTraining);
 
-        viewer.updateData(data, data, ChartSerieType.DAY, SimpleTrainingChart.HERZ);
+        viewer.updateData(data, data, ChartSerieType.DAY, SimpleTrainingChart.HERZ, false);
 
         final DefaultCategoryDataset dataset = viewer.getDataset();
         final Number value = dataset.getValue("dataNow", "1");
@@ -117,7 +117,7 @@ public class OTCCategoryChartViewerTest {
         when(simpleTraining.getDatum()).thenReturn(date);
         data.add(simpleTraining);
 
-        viewer.updateData(data, data, ChartSerieType.DAY, SimpleTrainingChart.DISTANZ);
+        viewer.updateData(data, data, ChartSerieType.DAY, SimpleTrainingChart.DISTANZ, false);
 
         final DefaultCategoryDataset dataset = viewer.getDataset();
         final Number value = dataset.getValue("dataNow", "1");
@@ -153,7 +153,7 @@ public class OTCCategoryChartViewerTest {
         when(store.getString(PreferenceConstants.CHART_DISTANCE_COLOR_PAST)).thenReturn("2,3,4");
 
         // Execute
-        viewer.updateRenderer(ChartSerieType.DAY, false, SimpleTrainingChart.DISTANZ);
+        viewer.updateRenderer(ChartSerieType.DAY, SimpleTrainingChart.DISTANZ, false);
 
         final BarRenderer renderer = viewer.getRenderer();
 
@@ -185,7 +185,7 @@ public class OTCCategoryChartViewerTest {
         viewer.setChart(mockedChart);
 
         // Execute
-        viewer.updateRenderer(ChartSerieType.MONTH, false, SimpleTrainingChart.DISTANZ);
+        viewer.updateRenderer(ChartSerieType.MONTH, SimpleTrainingChart.DISTANZ, false);
 
         final BarRenderer renderer = viewer.getRenderer();
 
