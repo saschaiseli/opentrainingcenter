@@ -21,28 +21,24 @@ package ch.opentrainingcenter.charts.bar;
 
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.ValueAxis;
-import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.xy.XYBarPainter;
-import org.jfree.chart.renderer.xy.XYBarRenderer;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.renderer.category.BarPainter;
+import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.time.Day;
 import org.jfree.data.time.Month;
-import org.jfree.data.time.RegularTimePeriod;
-import org.jfree.data.time.TimeSeries;
-import org.jfree.data.time.TimeSeriesCollection;
-import org.jfree.data.time.TimeSeriesDataItem;
 import org.jfree.data.time.Week;
 import org.jfree.data.time.Year;
 import org.junit.Before;
 import org.junit.Test;
 
-import ch.opentrainingcenter.charts.bar.internal.OTCXYBarPainter;
+import ch.opentrainingcenter.charts.bar.internal.OTCBarPainter;
 import ch.opentrainingcenter.charts.ng.SimpleTrainingChart;
 import ch.opentrainingcenter.charts.single.ChartSerieType;
 import ch.opentrainingcenter.core.PreferenceConstants;
@@ -56,15 +52,15 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SuppressWarnings("nls")
-public class OTCDynamicChartViewerTest {
+public class OTCCategoryChartViewerTest {
 
-    private OTCDynamicChartViewer viewer;
+    private OTCCategoryChartViewer viewer;
     private IPreferenceStore store;
 
     @Before
     public void setup() {
         store = mock(IPreferenceStore.class);
-        viewer = new OTCDynamicChartViewer(store);
+        viewer = new OTCCategoryChartViewer(store);
     }
 
     @Test
@@ -85,14 +81,12 @@ public class OTCDynamicChartViewerTest {
         when(simpleTraining.getDatum()).thenReturn(date);
         data.add(simpleTraining);
 
-        viewer.updateData(data, ChartSerieType.DAY, SimpleTrainingChart.HERZ);
+        viewer.updateData(data, data, ChartSerieType.DAY, SimpleTrainingChart.HERZ);
 
-        final TimeSeries serie = viewer.getSerie();
-        final TimeSeriesDataItem dataItem = (TimeSeriesDataItem) serie.getItems().get(0);
-        assertEquals(1, serie.getItems().size());
-        assertEquals((double) heart, dataItem.getValue());
-        final RegularTimePeriod period = RegularTimePeriod.createInstance(Day.class, date, Calendar.getInstance().getTimeZone());
-        assertEquals(period, dataItem.getPeriod());
+        final DefaultCategoryDataset dataset = viewer.getDataset();
+        final Number value = dataset.getValue("dataNow", "1");
+
+        assertEquals(170, value.intValue());
     }
 
     @Test
@@ -105,16 +99,12 @@ public class OTCDynamicChartViewerTest {
         when(simpleTraining.getDatum()).thenReturn(date);
         data.add(simpleTraining);
 
-        viewer.init(data, ChartSerieType.DAY);
+        viewer.init(data, data, ChartSerieType.DAY);
 
-        final TimeSeriesCollection dataset = viewer.getDataset();
-        final TimeSeries serie = (TimeSeries) dataset.getSeries().get(0);
-        final TimeSeriesDataItem dataItem = (TimeSeriesDataItem) serie.getItems().get(0);
-        assertEquals(1, serie.getItems().size());
-        assertEquals(distanz / 1000, dataItem.getValue());
-        final RegularTimePeriod period = RegularTimePeriod.createInstance(Day.class, date, Calendar.getInstance().getTimeZone());
-        assertEquals(period, dataItem.getPeriod());
+        final DefaultCategoryDataset dataset = viewer.getDataset();
+        final Number value = dataset.getValue("dataNow", "1");
 
+        assertEquals((int) (distanz / 1000), value.intValue());
     }
 
     @Test
@@ -127,14 +117,12 @@ public class OTCDynamicChartViewerTest {
         when(simpleTraining.getDatum()).thenReturn(date);
         data.add(simpleTraining);
 
-        viewer.updateData(data, ChartSerieType.DAY, SimpleTrainingChart.DISTANZ);
+        viewer.updateData(data, data, ChartSerieType.DAY, SimpleTrainingChart.DISTANZ);
 
-        final TimeSeries serie = viewer.getSerie();
-        final TimeSeriesDataItem dataItem = (TimeSeriesDataItem) serie.getItems().get(0);
-        assertEquals(1, serie.getItems().size());
-        assertEquals(distanz / 1000, dataItem.getValue());
-        final RegularTimePeriod period = RegularTimePeriod.createInstance(Day.class, date, Calendar.getInstance().getTimeZone());
-        assertEquals(period, dataItem.getPeriod());
+        final DefaultCategoryDataset dataset = viewer.getDataset();
+        final Number value = dataset.getValue("dataNow", "1");
+
+        assertEquals((int) (distanz / 1000), value.intValue());
     }
 
     @Test
@@ -145,10 +133,10 @@ public class OTCDynamicChartViewerTest {
     @Test
     public void updateAxisChartAlreadyCreated_Distanz() {
         final JFreeChart mockedChart = mock(JFreeChart.class);
-        final XYPlot plot = mock(XYPlot.class);
+        final CategoryPlot plot = mock(CategoryPlot.class);
         final ValueAxis rangeAxis = mock(ValueAxis.class);
         when(plot.getRangeAxis()).thenReturn(rangeAxis);
-        when(mockedChart.getXYPlot()).thenReturn(plot);
+        when(mockedChart.getPlot()).thenReturn(plot);
         viewer.setChart(mockedChart);
 
         viewer.updateAxis(SimpleTrainingChart.DISTANZ);
@@ -159,49 +147,60 @@ public class OTCDynamicChartViewerTest {
 
     @Test
     public void updateRendererDay() {
-        final Color color = new Color(1, 2, 3, OTCDynamicChartViewer.ALPHA);
+        final Color colorNow = new Color(1, 2, 3, OTCCategoryChartViewer.ALPHA);
+        final Color colorPast = new Color(2, 3, 4, OTCCategoryChartViewer.ALPHA);
         when(store.getString(PreferenceConstants.CHART_DISTANCE_COLOR)).thenReturn("1,2,3");
+        when(store.getString(PreferenceConstants.CHART_DISTANCE_COLOR_PAST)).thenReturn("2,3,4");
 
         // Execute
-        viewer.updateRenderer(ChartSerieType.DAY, false);
+        viewer.updateRenderer(ChartSerieType.DAY, false, SimpleTrainingChart.DISTANZ);
 
-        final XYBarRenderer renderer = viewer.getRenderer();
+        final BarRenderer renderer = viewer.getRenderer();
 
         assertNotNull(renderer);
-        final Color result = (Color) renderer.getSeriesPaint(0);
-        assertEquals(color, result);
 
-        final XYBarPainter barPainter = renderer.getBarPainter();
+        final Color past = (Color) renderer.getSeriesPaint(0);
+        assertEquals(colorPast, past);
 
-        assertTrue(barPainter instanceof OTCXYBarPainter);
+        final Color now = (Color) renderer.getSeriesPaint(1);
+        assertEquals(colorNow, now);
 
-        assertEquals(0.1, renderer.getMargin(), 0.001);
+        final BarPainter barPainter = renderer.getBarPainter();
+
+        assertTrue(barPainter instanceof OTCBarPainter);
+
+        assertEquals(0.0, renderer.getItemMargin(), 0.001);
     }
 
     @Test
     public void updateRendererMonth() {
-        final Color color = new Color(1, 2, 3, OTCDynamicChartViewer.ALPHA);
+        final Color colorNow = new Color(1, 2, 3, OTCCategoryChartViewer.ALPHA);
+        final Color colorPast = new Color(2, 3, 4, OTCCategoryChartViewer.ALPHA);
         when(store.getString(PreferenceConstants.CHART_DISTANCE_COLOR)).thenReturn("1,2,3");
+        when(store.getString(PreferenceConstants.CHART_DISTANCE_COLOR_PAST)).thenReturn("2,3,4");
 
         final JFreeChart mockedChart = mock(JFreeChart.class);
-        final XYPlot plot = mock(XYPlot.class);
-        when(mockedChart.getXYPlot()).thenReturn(plot);
+        final CategoryPlot plot = mock(CategoryPlot.class);
+        when(mockedChart.getCategoryPlot()).thenReturn(plot);
         viewer.setChart(mockedChart);
 
         // Execute
-        viewer.updateRenderer(ChartSerieType.MONTH, false);
+        viewer.updateRenderer(ChartSerieType.MONTH, false, SimpleTrainingChart.DISTANZ);
 
-        final XYBarRenderer renderer = viewer.getRenderer();
+        final BarRenderer renderer = viewer.getRenderer();
 
         assertNotNull(renderer);
-        final Color result = (Color) renderer.getSeriesPaint(0);
-        assertEquals(color, result);
+        final Color past = (Color) renderer.getSeriesPaint(0);
+        assertEquals(colorPast, past);
 
-        final XYBarPainter barPainter = renderer.getBarPainter();
+        final Color now = (Color) renderer.getSeriesPaint(1);
+        assertEquals(colorNow, now);
 
-        assertTrue(barPainter instanceof OTCXYBarPainter);
+        final BarPainter barPainter = renderer.getBarPainter();
 
-        assertEquals(0.1, renderer.getMargin(), 0.001);
+        assertTrue(barPainter instanceof OTCBarPainter);
+
+        assertEquals(0.0, renderer.getItemMargin(), 0.001);
 
         verify(plot).setRenderer(renderer);
     }
@@ -214,7 +213,7 @@ public class OTCDynamicChartViewerTest {
         assertNotNull(chart);
 
         assertEquals(SimpleTrainingChart.DISTANZ.getTitle(), chart.getTitle().getText());
-        assertEquals(SimpleTrainingChart.DISTANZ.getyAchse(), chart.getXYPlot().getRangeAxis().getLabel());
-        assertEquals(SimpleTrainingChart.DISTANZ.getxAchse(), chart.getXYPlot().getDomainAxis().getLabel());
+        assertEquals(SimpleTrainingChart.DISTANZ.getyAchse(), chart.getCategoryPlot().getRangeAxis().getLabel());
+        assertEquals(SimpleTrainingChart.DISTANZ.getxAchse(), chart.getCategoryPlot().getDomainAxis().getLabel());
     }
 }

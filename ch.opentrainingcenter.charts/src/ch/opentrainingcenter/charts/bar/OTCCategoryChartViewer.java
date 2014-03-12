@@ -21,9 +21,6 @@ package ch.opentrainingcenter.charts.bar;
 
 import java.awt.Color;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -33,11 +30,11 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.labels.CategoryItemLabelGenerator;
 import org.jfree.chart.labels.ItemLabelAnchor;
 import org.jfree.chart.labels.ItemLabelPosition;
-import org.jfree.chart.labels.StandardXYItemLabelGenerator;
-import org.jfree.chart.labels.StandardXYToolTipGenerator;
-import org.jfree.chart.labels.XYItemLabelGenerator;
+import org.jfree.chart.labels.StandardCategoryItemLabelGenerator;
+import org.jfree.chart.labels.StandardCategoryToolTipGenerator;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.AbstractRenderer;
@@ -46,14 +43,14 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.time.Day;
 import org.jfree.data.time.Month;
 import org.jfree.data.time.RegularTimePeriod;
-import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.Week;
 import org.jfree.data.time.Year;
 import org.jfree.experimental.chart.swt.ChartComposite;
 import org.jfree.ui.TextAnchor;
 
+import ch.opentrainingcenter.charts.bar.internal.ChartDataSupport;
+import ch.opentrainingcenter.charts.bar.internal.ChartDataWrapper;
 import ch.opentrainingcenter.charts.bar.internal.OTCBarPainter;
-import ch.opentrainingcenter.charts.bar.internal.ValueMapper;
 import ch.opentrainingcenter.charts.ng.SimpleTrainingChart;
 import ch.opentrainingcenter.charts.single.ChartSerieType;
 import ch.opentrainingcenter.core.PreferenceConstants;
@@ -64,13 +61,11 @@ public class OTCCategoryChartViewer {
 
     private static final String DECIMAL = "0.000"; //$NON-NLS-1$
 
-    private static final Logger LOGGER = Logger.getLogger(OTCDynamicChartViewer.class);
+    private static final Logger LOGGER = Logger.getLogger(OTCCategoryChartViewer.class);
 
     static final int ALPHA = 255;
 
     private ChartComposite chartComposite;
-
-    private final TimeSeries serie = new TimeSeries("TimeChart"); //$NON-NLS-1$
 
     private JFreeChart chart;
 
@@ -78,7 +73,9 @@ public class OTCCategoryChartViewer {
 
     private Composite parent;
 
-    DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+    private final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
+    private BarRenderer renderer;
 
     public OTCCategoryChartViewer(final IPreferenceStore store) {
         this.store = store;
@@ -123,40 +120,32 @@ public class OTCCategoryChartViewer {
         plot.setBackgroundPaint(Color.white);
         plot.setDomainGridlinePaint(Color.lightGray);
         plot.setRangeGridlinePaint(Color.lightGray);
-        plot.setDomainCrosshairVisible(true);
-        plot.setRangeCrosshairVisible(true);
-        plot.setRangeCrosshairLockedOnData(true);
         return chart;
     }
 
     /**
-     * Aktualisiert die Daten der Timeserie
+     * Aktualisiert die Daten
      */
     public void updateData(final List<ISimpleTraining> dataPast, final List<ISimpleTraining> dataNow, final ChartSerieType type,
             final SimpleTrainingChart chartType) {
 
         updateAxis(chartType);
         dataset.clear();
+
+        final ChartDataSupport support = new ChartDataSupport(type);
+        final List<ChartDataWrapper> now = support.convertAndSort(dataNow);
+        final List<ChartDataWrapper> past = support.createPastData(dataPast, now);
+
         if (!ChartSerieType.DAY.equals(type)) {
-            updateDataSet(dataPast, type, chartType, "dataPast");
+            addValues(past, "dataPast", chartType);
         }
-        updateDataSet(dataNow, type, chartType, "dataNow");
+        addValues(now, "dataNow", chartType);
     }
 
-    private void updateDataSet(final List<ISimpleTraining> data, final ChartSerieType type, final SimpleTrainingChart stc, final String rowName) {
-        final List<ValueMapper> values = convertAndSort(data, stc, type);
-        for (final ValueMapper t : values) {
+    private void addValues(final List<ChartDataWrapper> now, final String rowName, final SimpleTrainingChart stc) {
+        for (final ChartDataWrapper t : now) {
             dataset.addValue(t.getValue(stc), rowName, t.getCategory());
         }
-    }
-
-    private List<ValueMapper> convertAndSort(final List<ISimpleTraining> data, final SimpleTrainingChart stc, final ChartSerieType type) {
-        final List<ValueMapper> result = new ArrayList<>();
-        for (final ISimpleTraining training : data) {
-            result.add(new ValueMapper(training, type));
-        }
-        Collections.sort(result);
-        return result;
     }
 
     void updateAxis(final SimpleTrainingChart chartType) {
@@ -173,28 +162,22 @@ public class OTCCategoryChartViewer {
     }
 
     public void updateRenderer(final ChartSerieType type, final boolean compare, final SimpleTrainingChart chartType) {
-        final BarRenderer renderer = new BarRenderer();
+        renderer = new BarRenderer();
         setSeriesPaint(renderer, chartType);
 
         final OTCBarPainter painter = new OTCBarPainter();
         renderer.setBarPainter(painter);
         renderer.setItemMargin(0.0);
 
-        if (type.isLabelVisible()) {
-            final String label = "{2}km (" + type.getLabel() + "{1})"; //$NON-NLS-1$//$NON-NLS-2$
-            final SimpleDateFormat datePattern = new SimpleDateFormat(type.getFormatPattern());
-            final StandardXYToolTipGenerator generator = new StandardXYToolTipGenerator(label, datePattern, new DecimalFormat(DECIMAL));
-            // renderer.setBaseToolTipGenerator(generator);
-            //            renderer.setBaseItemLabelFont(new Font("Default", Font.PLAIN, 7)); //$NON-NLS-1$
-            renderer.setBaseItemLabelGenerator(null);
+        final String labelPattern = "{2} km (" + type.getLabel() + "{1})"; //$NON-NLS-1$//$NON-NLS-2$
+        renderer.setBaseToolTipGenerator(new StandardCategoryToolTipGenerator(labelPattern, new DecimalFormat(DECIMAL)));
 
-            final ItemLabelPosition position = new ItemLabelPosition(ItemLabelAnchor.CENTER, TextAnchor.CENTER, TextAnchor.CENTER, -Math.PI / 2.0);
-            renderer.setBasePositiveItemLabelPosition(position);
+        final ItemLabelPosition position = new ItemLabelPosition(ItemLabelAnchor.CENTER, TextAnchor.CENTER, TextAnchor.CENTER, -Math.PI / 2.0);
+        renderer.setBasePositiveItemLabelPosition(position);
 
-            final XYItemLabelGenerator lgen = new StandardXYItemLabelGenerator(label, datePattern, new DecimalFormat(DECIMAL));
-            // renderer.setBaseItemLabelGenerator(lgen);
-            renderer.setBaseItemLabelsVisible(true);
-        }
+        final CategoryItemLabelGenerator cl = new StandardCategoryItemLabelGenerator(labelPattern, new DecimalFormat(DECIMAL));
+        renderer.setBaseItemLabelGenerator(cl);
+        renderer.setBaseItemLabelsVisible(true);
         if (chart != null) {
             chart.getCategoryPlot().setRenderer(renderer);
         }
@@ -237,23 +220,21 @@ public class OTCCategoryChartViewer {
     }
 
     /**
-     * fuer Testzwecke
-     */
-    TimeSeries getSerie() {
-        return serie;
-    }
-
-    // /**
-    // * fuer Testzwecke
-    // */
-    // TimeSeriesCollection getDataset() {
-    // return dataset;
-    // }
-
-    /**
      * nur fuer Testzwecke
      */
     void setChart(final JFreeChart mockedChart) {
         chart = mockedChart;
     }
+
+    /**
+     * nur fuer Testzwecke
+     */
+    DefaultCategoryDataset getDataset() {
+        return dataset;
+    }
+
+    public BarRenderer getRenderer() {
+        return renderer;
+    }
+
 }

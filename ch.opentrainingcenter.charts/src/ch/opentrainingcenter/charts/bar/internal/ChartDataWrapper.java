@@ -19,20 +19,32 @@
 
 package ch.opentrainingcenter.charts.bar.internal;
 
+import java.util.Date;
+
 import ch.opentrainingcenter.charts.ng.SimpleTrainingChart;
 import ch.opentrainingcenter.charts.single.ChartSerieType;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
 
-public class ValueMapper implements Comparable<ValueMapper> {
+/**
+ * Kapselt Wert(Herz- und Distanz Daten) und Category
+ */
+public class ChartDataWrapper implements Comparable<ChartDataWrapper> {
     private static final int KILOMETER_IN_METER = 1000;
     private final double distance;
     private final int avgHeartRate;
     private final String category;
+    private final Date date;
 
-    public ValueMapper(final ISimpleTraining training, final ChartSerieType type) {
-        distance = training.getDistanzInMeter() / KILOMETER_IN_METER;
-        avgHeartRate = training.getAvgHeartRate();
-        category = CategoryHelper.getCategory(training.getDatum(), type);
+    public ChartDataWrapper(final ISimpleTraining training, final ChartSerieType type) {
+        this(training.getDistanzInMeter() / KILOMETER_IN_METER, training.getAvgHeartRate(), CategoryHelper.getCategory(training.getDatum(), type), training
+                .getDatum());
+    }
+
+    public ChartDataWrapper(final double distanceInMeter, final int avgHeartRate, final String category, final Date date) {
+        distance = distanceInMeter;
+        this.avgHeartRate = avgHeartRate;
+        this.category = category;
+        this.date = date;
     }
 
     public double getValue(final SimpleTrainingChart stc) {
@@ -50,8 +62,17 @@ public class ValueMapper implements Comparable<ValueMapper> {
         return category;
     }
 
+    public Date getDate() {
+        return date;
+    }
+
     @Override
-    public int compareTo(final ValueMapper other) {
-        return Integer.valueOf(category).compareTo(Integer.valueOf(other.getCategory()));
+    public int compareTo(final ChartDataWrapper other) {
+        return date.compareTo(other.getDate());
+    }
+
+    @Override
+    public String toString() {
+        return "ValueMapper [category=" + category + ", distance=" + distance + ", avgHeartRate=" + avgHeartRate + "]";
     }
 }
