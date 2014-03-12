@@ -59,6 +59,10 @@ import ch.opentrainingcenter.model.training.ISimpleTraining;
 
 public class OTCCategoryChartViewer {
 
+    static final String DIESES_JAHR = "DiesesJahr"; //$NON-NLS-1$
+
+    static final String LETZTES_JAHR = "letztesJahr"; //$NON-NLS-1$
+
     private static final String DECIMAL = "0.000"; //$NON-NLS-1$
 
     private static final Logger LOGGER = Logger.getLogger(OTCCategoryChartViewer.class);
@@ -145,9 +149,9 @@ public class OTCCategoryChartViewer {
         final List<ChartDataWrapper> past = support.createPastData(dataPast, now);
 
         if (isComparable(type, compareLast)) {
-            addValues(past, "LetztesJahr", chartType); //$NON-NLS-1$
+            addValues(past, LETZTES_JAHR, chartType);
         }
-        addValues(now, "DiesesJahr", chartType); //$NON-NLS-1$
+        addValues(now, DIESES_JAHR, chartType);
     }
 
     private void addValues(final List<ChartDataWrapper> now, final String rowName, final SimpleTrainingChart stc) {
