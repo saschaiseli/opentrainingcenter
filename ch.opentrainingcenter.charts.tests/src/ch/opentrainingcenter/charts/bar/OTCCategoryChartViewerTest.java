@@ -84,7 +84,7 @@ public class OTCCategoryChartViewerTest {
         viewer.updateData(data, data, ChartSerieType.DAY, SimpleTrainingChart.HERZ, false);
 
         final DefaultCategoryDataset dataset = viewer.getDataset();
-        final Number value = dataset.getValue("dataNow", "1");
+        final Number value = dataset.getValue(OTCCategoryChartViewer.DIESES_JAHR, "1");
 
         assertEquals(170, value.intValue());
     }
@@ -102,7 +102,7 @@ public class OTCCategoryChartViewerTest {
         viewer.init(data, data, ChartSerieType.DAY);
 
         final DefaultCategoryDataset dataset = viewer.getDataset();
-        final Number value = dataset.getValue("dataNow", "1");
+        final Number value = dataset.getValue(OTCCategoryChartViewer.DIESES_JAHR, "1");
 
         assertEquals((int) (distanz / 1000), value.intValue());
     }
@@ -120,7 +120,7 @@ public class OTCCategoryChartViewerTest {
         viewer.updateData(data, data, ChartSerieType.DAY, SimpleTrainingChart.DISTANZ, false);
 
         final DefaultCategoryDataset dataset = viewer.getDataset();
-        final Number value = dataset.getValue("dataNow", "1");
+        final Number value = dataset.getValue(OTCCategoryChartViewer.DIESES_JAHR, "1");
 
         assertEquals((int) (distanz / 1000), value.intValue());
     }
@@ -146,21 +146,20 @@ public class OTCCategoryChartViewerTest {
     }
 
     @Test
-    public void updateRendererDay() {
+    public void updateRendererDay_Kein_Past_Renderer() {
         final Color colorNow = new Color(1, 2, 3, OTCCategoryChartViewer.ALPHA);
-        final Color colorPast = new Color(2, 3, 4, OTCCategoryChartViewer.ALPHA);
         when(store.getString(PreferenceConstants.CHART_DISTANCE_COLOR)).thenReturn("1,2,3");
         when(store.getString(PreferenceConstants.CHART_DISTANCE_COLOR_PAST)).thenReturn("2,3,4");
 
         // Execute
-        viewer.updateRenderer(ChartSerieType.DAY, SimpleTrainingChart.DISTANZ, false);
+        viewer.updateRenderer(ChartSerieType.DAY, SimpleTrainingChart.DISTANZ, true);
 
         final BarRenderer renderer = viewer.getRenderer();
 
         assertNotNull(renderer);
 
         final Color past = (Color) renderer.getSeriesPaint(0);
-        assertEquals(colorPast, past);
+        assertEquals(colorNow, past);
 
         final Color now = (Color) renderer.getSeriesPaint(1);
         assertEquals(colorNow, now);
@@ -185,7 +184,7 @@ public class OTCCategoryChartViewerTest {
         viewer.setChart(mockedChart);
 
         // Execute
-        viewer.updateRenderer(ChartSerieType.MONTH, SimpleTrainingChart.DISTANZ, false);
+        viewer.updateRenderer(ChartSerieType.MONTH, SimpleTrainingChart.DISTANZ, true);
 
         final BarRenderer renderer = viewer.getRenderer();
 
