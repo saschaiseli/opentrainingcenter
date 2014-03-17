@@ -58,6 +58,10 @@ public final class Messages extends NLS {
     public static String BestRunsView7;
     public static String BestRunsView8;
     public static String BestRunsView9;
+    public static String CategoryHelper_0;
+    public static String CategoryHelper_1;
+    public static String CategoryHelper_2;
+    public static String CategoryHelper_3;
     public static String ChartSerieType0;
     public static String ChartSerieType1;
     public static String ChartSerieType2;
