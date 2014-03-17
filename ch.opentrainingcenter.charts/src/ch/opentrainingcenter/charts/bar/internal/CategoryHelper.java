@@ -23,14 +23,15 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import ch.opentrainingcenter.charts.single.ChartSerieType;
+import ch.opentrainingcenter.charts.single.XAxisChart;
+import ch.opentrainingcenter.i18n.Messages;
 
 public final class CategoryHelper {
 
     private CategoryHelper() {
     }
 
-    public static String getCategory(final Date date, final ChartSerieType type) {
+    public static String getCategory(final Date date, final XAxisChart type) {
         switch (type) {
         case DAY:
             return String.valueOf(createDate(date).get(Calendar.DAY_OF_YEAR));
@@ -60,6 +61,21 @@ public final class CategoryHelper {
             month = "0" + month; //$NON-NLS-1$
         }
         return month;
+    }
+
+    public static String getDomainAxis(final XAxisChart type) {
+        switch (type) {
+        case DAY:
+            return Messages.CategoryHelper_0;
+        case MONTH:
+            return Messages.CategoryHelper_1;
+        case WEEK:
+            return Messages.CategoryHelper_2;
+        case YEAR:
+            return Messages.CategoryHelper_3;
+        default:
+            throw new IllegalArgumentException(String.format("Der Typ %s konnte nicht zugeordnet werden", type)); //$NON-NLS-1$
+        }
     }
 
     private static Calendar createDate(final Date date) {

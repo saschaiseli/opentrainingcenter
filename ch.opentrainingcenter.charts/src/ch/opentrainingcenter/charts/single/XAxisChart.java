@@ -4,11 +4,11 @@ import ch.opentrainingcenter.i18n.Messages;
 
 /**
  * Enum welche die Granularität (X-Achse) der Charts definiert. Bei
- * {@link ChartSerieType#MONTH} werden zum Beispiel alle Trainings innerhalb
+ * {@link XAxisChart#MONTH} werden zum Beispiel alle Trainings innerhalb
  * eines Monates zu einem einzigen Training zusammengefasst.
  * 
  */
-public enum ChartSerieType {
+public enum XAxisChart {
     YEAR(3, Messages.ChartSerieType0, Messages.ChartSerieType8, Messages.ChartSerieType3), //
     MONTH(2, Messages.ChartSerieType1, Messages.ChartSerieType2, Messages.ChartSerieType3), //
     WEEK(1, Messages.ChartSerieType4, Messages.ChartSerieType5, Messages.ChartSerieType6), //
@@ -19,14 +19,14 @@ public enum ChartSerieType {
     private final String formatPattern;
     private final String label;
 
-    private ChartSerieType(final int index, final String name) {
+    private XAxisChart(final int index, final String name) {
         this.index = index;
         this.name = name;
         formatPattern = null;
         label = null;
     }
 
-    private ChartSerieType(final int index, final String name, final String formatPattern, final String label) {
+    private XAxisChart(final int index, final String name, final String formatPattern, final String label) {
         this.index = index;
         this.name = name;
         this.formatPattern = formatPattern;
@@ -52,18 +52,18 @@ public enum ChartSerieType {
     /**
      * @return den ChartFilter mit dem angegebenen Index.
      */
-    public static ChartSerieType getByIndex(final int index) {
+    public static XAxisChart getByIndex(final int index) {
         switch (index) {
         case 0:
-            return ChartSerieType.DAY;
+            return XAxisChart.DAY;
         case 1:
-            return ChartSerieType.WEEK;
+            return XAxisChart.WEEK;
         case 2:
-            return ChartSerieType.MONTH;
+            return XAxisChart.MONTH;
         case 3:
-            return ChartSerieType.YEAR;
+            return XAxisChart.YEAR;
         default:
-            return ChartSerieType.DAY;
+            return XAxisChart.DAY;
         }
     }
 
@@ -71,8 +71,8 @@ public enum ChartSerieType {
      * @return String Array mit allen ChartFilter Namen.
      */
     public static String[] items() {
-        final String[] result = new String[ChartSerieType.values().length];
-        for (final ChartSerieType item : ChartSerieType.values()) {
+        final String[] result = new String[XAxisChart.values().length];
+        for (final XAxisChart item : XAxisChart.values()) {
             result[item.index] = item.name;
         }
         return result;

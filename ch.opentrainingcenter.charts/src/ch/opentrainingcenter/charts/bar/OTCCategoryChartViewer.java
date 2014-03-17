@@ -48,11 +48,12 @@ import org.jfree.data.time.Year;
 import org.jfree.experimental.chart.swt.ChartComposite;
 import org.jfree.ui.TextAnchor;
 
+import ch.opentrainingcenter.charts.bar.internal.CategoryHelper;
 import ch.opentrainingcenter.charts.bar.internal.ChartDataSupport;
 import ch.opentrainingcenter.charts.bar.internal.ChartDataWrapper;
 import ch.opentrainingcenter.charts.bar.internal.OTCBarPainter;
 import ch.opentrainingcenter.charts.ng.SimpleTrainingChart;
-import ch.opentrainingcenter.charts.single.ChartSerieType;
+import ch.opentrainingcenter.charts.single.XAxisChart;
 import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.core.helper.ColorFromPreferenceHelper;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
@@ -89,7 +90,7 @@ public class OTCCategoryChartViewer {
         this.parent = parent;
     }
 
-    public void createPartControl(final ChartSerieType chartSerieType, final SimpleTrainingChart chartType, final List<ISimpleTraining> dataNow,
+    public void createPartControl(final XAxisChart chartSerieType, final SimpleTrainingChart chartType, final List<ISimpleTraining> dataNow,
             final List<ISimpleTraining> dataPast) {
 
         init(dataNow, dataPast, chartSerieType);
@@ -107,14 +108,14 @@ public class OTCCategoryChartViewer {
         chartComposite.forceRedraw();
     }
 
-    void init(final List<ISimpleTraining> dataNow, final List<ISimpleTraining> dataPast, final ChartSerieType type) {
+    void init(final List<ISimpleTraining> dataNow, final List<ISimpleTraining> dataPast, final XAxisChart type) {
         dataset.clear();
         updateData(dataPast, dataNow, type, SimpleTrainingChart.DISTANZ, false);
     }
 
-    JFreeChart createChart(final ChartSerieType type, final SimpleTrainingChart chartType) {
-        chart = ChartFactory.createBarChart(chartType.getTitle(), chartType.getxAchse(), chartType.getyAchse(), dataset, PlotOrientation.VERTICAL, false, true,
-                false);
+    JFreeChart createChart(final XAxisChart type, final SimpleTrainingChart chartType) {
+        chart = ChartFactory.createBarChart(chartType.getTitle(), CategoryHelper.getDomainAxis(type), chartType.getyAchse(), dataset, PlotOrientation.VERTICAL,
+                false, true, false);
         chart.setAntiAlias(true);
         chart.setBorderVisible(false);
         chart.setAntiAlias(true);
@@ -138,17 +139,18 @@ public class OTCCategoryChartViewer {
      * @param compareLast
      *            mit letztem Jahr vergleichen
      */
-    public void updateData(final List<ISimpleTraining> dataPast, final List<ISimpleTraining> dataNow, final ChartSerieType type,
+    public void updateData(final List<ISimpleTraining> dataPast, final List<ISimpleTraining> dataNow, final XAxisChart chartSerieType,
             final SimpleTrainingChart chartType, final boolean compareLast) {
 
-        updateAxis(chartType);
+        updateAxis(chartType, chartSerieType);
+
         dataset.clear();
 
-        final ChartDataSupport support = new ChartDataSupport(type);
+        final ChartDataSupport support = new ChartDataSupport(chartSerieType);
         final List<ChartDataWrapper> now = support.convertAndSort(dataNow);
         final List<ChartDataWrapper> past = support.createPastData(dataPast, now);
 
-        if (isComparable(type, compareLast)) {
+        if (isComparable(chartSerieType, compareLast)) {
             addValues(past, LETZTES_JAHR, chartType);
         }
         addValues(now, DIESES_JAHR, chartType);
@@ -160,15 +162,16 @@ public class OTCCategoryChartViewer {
         }
     }
 
-    void updateAxis(final SimpleTrainingChart chartType) {
+    void updateAxis(final SimpleTrainingChart chartType, final XAxisChart chartSerieType) {
         if (chart != null) {
             // update axis & title
             chart.setTitle(chartType.getTitle());
             ((CategoryPlot) chart.getPlot()).getRangeAxis().setLabel(chartType.getyAchse());
+            ((CategoryPlot) chart.getPlot()).getDomainAxis().setLabel(CategoryHelper.getDomainAxis(chartSerieType));
         }
     }
 
-    public void updateRenderer(final ChartSerieType type, final SimpleTrainingChart chartType, final boolean compareLast) {
+    public void updateRenderer(final XAxisChart type, final SimpleTrainingChart chartType, final boolean compareLast) {
         renderer = new BarRenderer();
         setSeriesPaint(renderer, chartType, type, compareLast);
 
@@ -190,7 +193,7 @@ public class OTCCategoryChartViewer {
         }
     }
 
-    private void setSeriesPaint(final AbstractRenderer renderer, final SimpleTrainingChart chartType, final ChartSerieType type, final boolean compareLast) {
+    private void setSeriesPaint(final AbstractRenderer renderer, final SimpleTrainingChart chartType, final XAxisChart type, final boolean compareLast) {
         final String firstColor;
         final String secondColor;
         if (SimpleTrainingChart.DISTANZ.equals(chartType)) {
@@ -214,11 +217,11 @@ public class OTCCategoryChartViewer {
         renderer.setSeriesPaint(1, ColorFromPreferenceHelper.getColor(store, secondColor, ALPHA));
     }
 
-    private boolean isComparable(final ChartSerieType type, final boolean compareLast) {
-        return compareLast && !ChartSerieType.DAY.equals(type);
+    private boolean isComparable(final XAxisChart type, final boolean compareLast) {
+        return compareLast && !XAxisChart.DAY.equals(type);
     }
 
-    Class<? extends RegularTimePeriod> getSeriesType(final ChartSerieType chartType) {
+    Class<? extends RegularTimePeriod> getSeriesType(final XAxisChart chartType) {
         final Class<? extends RegularTimePeriod> thisClazz;
         switch (chartType) {
         case DAY:

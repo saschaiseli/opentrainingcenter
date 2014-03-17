@@ -47,7 +47,7 @@ import org.eclipse.ui.part.ViewPart;
 
 import ch.opentrainingcenter.charts.bar.OTCCategoryChartViewer;
 import ch.opentrainingcenter.charts.ng.SimpleTrainingChart;
-import ch.opentrainingcenter.charts.single.ChartSerieType;
+import ch.opentrainingcenter.charts.single.XAxisChart;
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.ui.FormToolkitSupport;
 import ch.opentrainingcenter.client.views.ApplicationContext;
@@ -136,15 +136,15 @@ public class DynamicChartViewPart extends ViewPart {
         comboFilter = new Combo(container, SWT.READ_ONLY);
         comboFilter.setBounds(50, 50, 150, 65);
 
-        comboFilter.setItems(ChartSerieType.items());
+        comboFilter.setItems(XAxisChart.items());
         comboFilter.select(0);
         comboFilter.addSelectionListener(new SelectionAdapter() {
 
             @Override
             public void widgetSelected(final SelectionEvent e) {
-                final ChartSerieType type = ChartSerieType.getByIndex(comboFilter.getSelectionIndex());
+                final XAxisChart type = XAxisChart.getByIndex(comboFilter.getSelectionIndex());
                 update(type);
-                compareWithLastYear.setEnabled(!ChartSerieType.DAY.equals(type));
+                compareWithLastYear.setEnabled(!XAxisChart.DAY.equals(type));
             }
 
         });
@@ -160,16 +160,16 @@ public class DynamicChartViewPart extends ViewPart {
 
             @Override
             public void widgetSelected(final SelectionEvent e) {
-                final ChartSerieType type = ChartSerieType.getByIndex(comboFilter.getSelectionIndex());
+                final XAxisChart type = XAxisChart.getByIndex(comboFilter.getSelectionIndex());
                 update(type);
             }
 
         });
-        final ChartSerieType cst = ChartSerieType.getByIndex(comboFilter.getSelectionIndex());
+        final XAxisChart cst = XAxisChart.getByIndex(comboFilter.getSelectionIndex());
 
         compareWithLastYear = new Button(container, SWT.CHECK);
         compareWithLastYear.setText(Messages.DynamicChartViewPart_9);
-        compareWithLastYear.setEnabled(!ChartSerieType.DAY.equals(cst));
+        compareWithLastYear.setEnabled(!XAxisChart.DAY.equals(cst));
         compareWithLastYear.setToolTipText(Messages.DynamicChartViewPart_10);
         compareWithLastYear.addSelectionListener(new UpdateSelectionAdapter());
 
@@ -195,7 +195,7 @@ public class DynamicChartViewPart extends ViewPart {
     private class UpdateSelectionAdapter extends SelectionAdapter {
         @Override
         public void widgetSelected(final SelectionEvent e) {
-            final ChartSerieType type = ChartSerieType.getByIndex(comboFilter.getSelectionIndex());
+            final XAxisChart type = XAxisChart.getByIndex(comboFilter.getSelectionIndex());
             update(type);
         }
     }
@@ -217,12 +217,12 @@ public class DynamicChartViewPart extends ViewPart {
 
         chartViewer.setParent(container);
 
-        createPartControl(ChartSerieType.DAY);
+        createPartControl(XAxisChart.DAY);
 
         sectionChart.setClient(container);
     }
 
-    private void createPartControl(final ChartSerieType type) {
+    private void createPartControl(final XAxisChart type) {
         Display.getDefault().asyncExec(new Runnable() {
 
             @Override
@@ -236,29 +236,39 @@ public class DynamicChartViewPart extends ViewPart {
         });
     }
 
-    private void update(final ChartSerieType chartSerieType) {
+    private void update(final XAxisChart xAxis) {
         LOGGER.info("UPDATE CHART"); //$NON-NLS-1$
         Display.getDefault().asyncExec(new Runnable() {
 
             @Override
             public void run() {
-                final Date start = TimeHelper.getDate(dateFrom.getYear(), dateFrom.getMonth(), dateFrom.getDay());
-                final Date end = TimeHelper.getDate(dateBis.getYear(), dateBis.getMonth(), dateBis.getDay());
+                final boolean year = XAxisChart.YEAR.equals(xAxis);
+                dateFrom.setEnabled(!year);
+                dateBis.setEnabled(!year);
+                final Date start;
+                final Date end;
+                if (year) {
+                    start = TimeHelper.getDate(dateBis.getYear(), 0, 1);
+                    end = TimeHelper.getDate(dateBis.getYear(), 11, 31);
+                } else {
+                    start = TimeHelper.getDate(dateFrom.getYear(), dateFrom.getMonth(), dateFrom.getDay());
+                    end = TimeHelper.getDate(dateBis.getYear(), dateBis.getMonth(), dateBis.getDay());
+                }
                 final org.joda.time.DateTime dtStart = new org.joda.time.DateTime(start.getTime());
                 final org.joda.time.DateTime dtEnd = new org.joda.time.DateTime(end.getTime());
-                final List<ISimpleTraining> dataPast = getFilteredData(chartSerieType, dtStart.minusYears(1).toDate(), dtEnd.minusYears(1).toDate());
-                final List<ISimpleTraining> dataNow = getFilteredData(chartSerieType, start, end);
+                final List<ISimpleTraining> dataPast = getFilteredData(xAxis, dtStart.minusYears(1).toDate(), dtEnd.minusYears(1).toDate());
+                final List<ISimpleTraining> dataNow = getFilteredData(xAxis, start, end);
                 final SimpleTrainingChart chartType = SimpleTrainingChart.getByIndex(comboChartType.getSelectionIndex());
                 final boolean compareLast = compareWithLastYear.getSelection();
 
-                chartViewer.updateData(dataPast, dataNow, chartSerieType, chartType, compareLast);
-                chartViewer.updateRenderer(chartSerieType, chartType, compareLast);
+                chartViewer.updateData(dataPast, dataNow, xAxis, chartType, compareLast);
+                chartViewer.updateRenderer(xAxis, chartType, compareLast);
                 chartViewer.forceRedraw();
             }
         });
     }
 
-    private List<ISimpleTraining> getFilteredData(final ChartSerieType chartSerieType, final Date start, final Date end) {
+    private List<ISimpleTraining> getFilteredData(final XAxisChart chartSerieType, final Date start, final Date end) {
         final IStatistikCreator sc = StatistikFactory.createStatistik();
         final List<ITraining> allTrainings = databaseAccess.getAllTrainings(ApplicationContext.getApplicationContext().getAthlete());
         final List<ISimpleTraining> filteredData = new ArrayList<>();

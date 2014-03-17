@@ -7,16 +7,16 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import ch.opentrainingcenter.charts.single.ChartSerieType;
+import ch.opentrainingcenter.charts.single.XAxisChart;
 
 public class ChartSerieTypeHelper {
 
     @Test
     public void testEnum() {
-        final ChartSerieType jahr = ChartSerieType.YEAR;
-        final ChartSerieType month = ChartSerieType.MONTH;
-        final ChartSerieType woche = ChartSerieType.WEEK;
-        final ChartSerieType tag = ChartSerieType.DAY;
+        final XAxisChart jahr = XAxisChart.YEAR;
+        final XAxisChart month = XAxisChart.MONTH;
+        final XAxisChart woche = XAxisChart.WEEK;
+        final XAxisChart tag = XAxisChart.DAY;
 
         assertNotNull(jahr.getName());
         assertNotNull(month.getName());

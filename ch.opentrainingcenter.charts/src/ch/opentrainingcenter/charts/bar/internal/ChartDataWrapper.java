@@ -22,7 +22,7 @@ package ch.opentrainingcenter.charts.bar.internal;
 import java.util.Date;
 
 import ch.opentrainingcenter.charts.ng.SimpleTrainingChart;
-import ch.opentrainingcenter.charts.single.ChartSerieType;
+import ch.opentrainingcenter.charts.single.XAxisChart;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
 
 /**
@@ -35,7 +35,7 @@ public class ChartDataWrapper implements Comparable<ChartDataWrapper> {
     private final String category;
     private final Date date;
 
-    public ChartDataWrapper(final ISimpleTraining training, final ChartSerieType type) {
+    public ChartDataWrapper(final ISimpleTraining training, final XAxisChart type) {
         this(training.getDistanzInMeter() / KILOMETER_IN_METER, training.getAvgHeartRate(), CategoryHelper.getCategory(training.getDatum(), type), training
                 .getDatum());
     }

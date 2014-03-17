@@ -26,6 +26,7 @@ import java.util.List;
 
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.renderer.category.BarPainter;
@@ -38,9 +39,10 @@ import org.jfree.data.time.Year;
 import org.junit.Before;
 import org.junit.Test;
 
+import ch.opentrainingcenter.charts.bar.internal.CategoryHelper;
 import ch.opentrainingcenter.charts.bar.internal.OTCBarPainter;
 import ch.opentrainingcenter.charts.ng.SimpleTrainingChart;
-import ch.opentrainingcenter.charts.single.ChartSerieType;
+import ch.opentrainingcenter.charts.single.XAxisChart;
 import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
 import static org.junit.Assert.assertEquals;
@@ -65,10 +67,10 @@ public class OTCCategoryChartViewerTest {
 
     @Test
     public void testGetSeriesType() {
-        assertTrue(Day.class.equals(viewer.getSeriesType(ChartSerieType.DAY)));
-        assertTrue(Week.class.equals(viewer.getSeriesType(ChartSerieType.WEEK)));
-        assertTrue(Month.class.equals(viewer.getSeriesType(ChartSerieType.MONTH)));
-        assertTrue(Year.class.equals(viewer.getSeriesType(ChartSerieType.YEAR)));
+        assertTrue(Day.class.equals(viewer.getSeriesType(XAxisChart.DAY)));
+        assertTrue(Week.class.equals(viewer.getSeriesType(XAxisChart.WEEK)));
+        assertTrue(Month.class.equals(viewer.getSeriesType(XAxisChart.MONTH)));
+        assertTrue(Year.class.equals(viewer.getSeriesType(XAxisChart.YEAR)));
     }
 
     @Test
@@ -81,7 +83,7 @@ public class OTCCategoryChartViewerTest {
         when(simpleTraining.getDatum()).thenReturn(date);
         data.add(simpleTraining);
 
-        viewer.updateData(data, data, ChartSerieType.DAY, SimpleTrainingChart.HERZ, false);
+        viewer.updateData(data, data, XAxisChart.DAY, SimpleTrainingChart.HERZ, false);
 
         final DefaultCategoryDataset dataset = viewer.getDataset();
         final Number value = dataset.getValue(OTCCategoryChartViewer.DIESES_JAHR, "1");
@@ -99,7 +101,7 @@ public class OTCCategoryChartViewerTest {
         when(simpleTraining.getDatum()).thenReturn(date);
         data.add(simpleTraining);
 
-        viewer.init(data, data, ChartSerieType.DAY);
+        viewer.init(data, data, XAxisChart.DAY);
 
         final DefaultCategoryDataset dataset = viewer.getDataset();
         final Number value = dataset.getValue(OTCCategoryChartViewer.DIESES_JAHR, "1");
@@ -117,7 +119,7 @@ public class OTCCategoryChartViewerTest {
         when(simpleTraining.getDatum()).thenReturn(date);
         data.add(simpleTraining);
 
-        viewer.updateData(data, data, ChartSerieType.DAY, SimpleTrainingChart.DISTANZ, false);
+        viewer.updateData(data, data, XAxisChart.DAY, SimpleTrainingChart.DISTANZ, false);
 
         final DefaultCategoryDataset dataset = viewer.getDataset();
         final Number value = dataset.getValue(OTCCategoryChartViewer.DIESES_JAHR, "1");
@@ -127,7 +129,7 @@ public class OTCCategoryChartViewerTest {
 
     @Test
     public void updateAxisChart_NotCreated() {
-        viewer.updateAxis(SimpleTrainingChart.DISTANZ);
+        viewer.updateAxis(SimpleTrainingChart.DISTANZ, XAxisChart.DAY);
     }
 
     @Test
@@ -136,12 +138,15 @@ public class OTCCategoryChartViewerTest {
         final CategoryPlot plot = mock(CategoryPlot.class);
         final ValueAxis rangeAxis = mock(ValueAxis.class);
         when(plot.getRangeAxis()).thenReturn(rangeAxis);
+        final CategoryAxis domainAxis = mock(CategoryAxis.class);
+        when(plot.getDomainAxis()).thenReturn(domainAxis);
         when(mockedChart.getPlot()).thenReturn(plot);
         viewer.setChart(mockedChart);
 
-        viewer.updateAxis(SimpleTrainingChart.DISTANZ);
+        viewer.updateAxis(SimpleTrainingChart.DISTANZ, XAxisChart.DAY);
 
         verify(rangeAxis).setLabel(SimpleTrainingChart.DISTANZ.getyAchse());
+        verify(domainAxis).setLabel(CategoryHelper.getDomainAxis(XAxisChart.DAY));
         verify(mockedChart).setTitle(SimpleTrainingChart.DISTANZ.getTitle());
     }
 
@@ -152,7 +157,7 @@ public class OTCCategoryChartViewerTest {
         when(store.getString(PreferenceConstants.CHART_DISTANCE_COLOR_PAST)).thenReturn("2,3,4");
 
         // Execute
-        viewer.updateRenderer(ChartSerieType.DAY, SimpleTrainingChart.DISTANZ, true);
+        viewer.updateRenderer(XAxisChart.DAY, SimpleTrainingChart.DISTANZ, true);
 
         final BarRenderer renderer = viewer.getRenderer();
 
@@ -184,7 +189,7 @@ public class OTCCategoryChartViewerTest {
         viewer.setChart(mockedChart);
 
         // Execute
-        viewer.updateRenderer(ChartSerieType.MONTH, SimpleTrainingChart.DISTANZ, true);
+        viewer.updateRenderer(XAxisChart.MONTH, SimpleTrainingChart.DISTANZ, true);
 
         final BarRenderer renderer = viewer.getRenderer();
 
@@ -207,12 +212,12 @@ public class OTCCategoryChartViewerTest {
     @Test
     public void testCreateChart() {
 
-        final JFreeChart chart = viewer.createChart(ChartSerieType.MONTH, SimpleTrainingChart.DISTANZ);
+        final JFreeChart chart = viewer.createChart(XAxisChart.MONTH, SimpleTrainingChart.DISTANZ);
 
         assertNotNull(chart);
 
         assertEquals(SimpleTrainingChart.DISTANZ.getTitle(), chart.getTitle().getText());
         assertEquals(SimpleTrainingChart.DISTANZ.getyAchse(), chart.getCategoryPlot().getRangeAxis().getLabel());
-        assertEquals(SimpleTrainingChart.DISTANZ.getxAchse(), chart.getCategoryPlot().getDomainAxis().getLabel());
+        assertEquals(CategoryHelper.getDomainAxis(XAxisChart.MONTH), chart.getCategoryPlot().getDomainAxis().getLabel());
     }
 }

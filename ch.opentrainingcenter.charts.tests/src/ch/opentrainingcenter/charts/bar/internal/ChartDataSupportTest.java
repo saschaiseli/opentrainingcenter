@@ -26,7 +26,7 @@ import org.joda.time.DateTime;
 import org.junit.Test;
 
 import ch.opentrainingcenter.charts.ng.SimpleTrainingChart;
-import ch.opentrainingcenter.charts.single.ChartSerieType;
+import ch.opentrainingcenter.charts.single.XAxisChart;
 import ch.opentrainingcenter.core.helper.RunType;
 import ch.opentrainingcenter.model.ModelFactory;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
@@ -40,14 +40,14 @@ public class ChartDataSupportTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testConvertAndSortNull() {
-        final ChartDataSupport support = new ChartDataSupport(ChartSerieType.MONTH);
+        final ChartDataSupport support = new ChartDataSupport(XAxisChart.MONTH);
 
         support.convertAndSort(null);
     }
 
     @Test
     public void testConvertAndSortEmpty() {
-        final ChartDataSupport support = new ChartDataSupport(ChartSerieType.MONTH);
+        final ChartDataSupport support = new ChartDataSupport(XAxisChart.MONTH);
 
         final List<ChartDataWrapper> result = support.convertAndSort(new ArrayList<ISimpleTraining>());
 
@@ -57,7 +57,7 @@ public class ChartDataSupportTest {
 
     @Test
     public void testConvertAndSortOneTraining() {
-        final ChartDataSupport support = new ChartDataSupport(ChartSerieType.MONTH);
+        final ChartDataSupport support = new ChartDataSupport(XAxisChart.MONTH);
 
         final ArrayList<ISimpleTraining> data = new ArrayList<ISimpleTraining>();
         final DateTime dt = new DateTime(2014, 8, 29, 12, 0);
@@ -73,21 +73,21 @@ public class ChartDataSupportTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testCreatePastDataNull_empty() {
-        final ChartDataSupport support = new ChartDataSupport(ChartSerieType.MONTH);
+        final ChartDataSupport support = new ChartDataSupport(XAxisChart.MONTH);
 
         support.createPastData(null, new ArrayList<ChartDataWrapper>());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testCreatePastData_empty_null() {
-        final ChartDataSupport support = new ChartDataSupport(ChartSerieType.MONTH);
+        final ChartDataSupport support = new ChartDataSupport(XAxisChart.MONTH);
 
         support.createPastData(new ArrayList<ISimpleTraining>(), null);
     }
 
     @Test
     public void testCreatePastData_empty_empty() {
-        final ChartDataSupport support = new ChartDataSupport(ChartSerieType.MONTH);
+        final ChartDataSupport support = new ChartDataSupport(XAxisChart.MONTH);
 
         final List<ChartDataWrapper> result = support.createPastData(new ArrayList<ISimpleTraining>(), new ArrayList<ChartDataWrapper>());
 
@@ -97,7 +97,7 @@ public class ChartDataSupportTest {
 
     @Test
     public void testCreatePastData_empty_now() {
-        final ChartDataSupport support = new ChartDataSupport(ChartSerieType.MONTH);
+        final ChartDataSupport support = new ChartDataSupport(XAxisChart.MONTH);
 
         final ArrayList<ChartDataWrapper> now = new ArrayList<ChartDataWrapper>();
         final DateTime datum = new DateTime(2013, 8, 29, 12, 00);
@@ -117,7 +117,7 @@ public class ChartDataSupportTest {
 
     @Test
     public void testCreatePastData_merge() {
-        final ChartDataSupport support = new ChartDataSupport(ChartSerieType.MONTH);
+        final ChartDataSupport support = new ChartDataSupport(XAxisChart.MONTH);
 
         // NOW
         final ArrayList<ChartDataWrapper> now = new ArrayList<ChartDataWrapper>();
@@ -145,7 +145,7 @@ public class ChartDataSupportTest {
 
     @Test
     public void testCreatePastData_2_categories() {
-        final ChartDataSupport support = new ChartDataSupport(ChartSerieType.MONTH);
+        final ChartDataSupport support = new ChartDataSupport(XAxisChart.MONTH);
 
         // NOW
         final ArrayList<ChartDataWrapper> now = new ArrayList<ChartDataWrapper>();
@@ -180,7 +180,7 @@ public class ChartDataSupportTest {
 
     @Test
     public void testCreatePast_day_not_supported() {
-        final ChartDataSupport support = new ChartDataSupport(ChartSerieType.DAY);
+        final ChartDataSupport support = new ChartDataSupport(XAxisChart.DAY);
 
         // NOW
         final ArrayList<ChartDataWrapper> now = new ArrayList<ChartDataWrapper>();

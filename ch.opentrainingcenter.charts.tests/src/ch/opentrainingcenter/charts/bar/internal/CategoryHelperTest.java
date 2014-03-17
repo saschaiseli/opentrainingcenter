@@ -25,7 +25,8 @@ import java.util.Locale;
 import org.junit.Before;
 import org.junit.Test;
 
-import ch.opentrainingcenter.charts.single.ChartSerieType;
+import ch.opentrainingcenter.charts.single.XAxisChart;
+import ch.opentrainingcenter.i18n.Messages;
 import static org.junit.Assert.assertEquals;
 
 @SuppressWarnings("nls")
@@ -42,7 +43,7 @@ public class CategoryHelperTest {
         cal.set(Calendar.DAY_OF_MONTH, 11);// 11
         cal.set(Calendar.MONTH, 11);// dezember
 
-        final String category = CategoryHelper.getCategory(cal.getTime(), ChartSerieType.DAY);
+        final String category = CategoryHelper.getCategory(cal.getTime(), XAxisChart.DAY);
 
         assertEquals(String.valueOf(cal.get(Calendar.DAY_OF_YEAR)), category);
     }
@@ -52,7 +53,7 @@ public class CategoryHelperTest {
         final Calendar cal = Calendar.getInstance(Locale.GERMAN);
         cal.set(Calendar.WEEK_OF_YEAR, 7);// Februar
 
-        final String category = CategoryHelper.getCategory(cal.getTime(), ChartSerieType.WEEK);
+        final String category = CategoryHelper.getCategory(cal.getTime(), XAxisChart.WEEK);
 
         assertEquals("07", category);
     }
@@ -62,7 +63,7 @@ public class CategoryHelperTest {
         final Calendar cal = Calendar.getInstance(Locale.GERMAN);
         cal.set(Calendar.MONTH, 1);// Februar
 
-        final String category = CategoryHelper.getCategory(cal.getTime(), ChartSerieType.MONTH);
+        final String category = CategoryHelper.getCategory(cal.getTime(), XAxisChart.MONTH);
 
         assertEquals("02", category);
     }
@@ -72,7 +73,7 @@ public class CategoryHelperTest {
         final Calendar cal = Calendar.getInstance(Locale.GERMAN);
         cal.set(Calendar.MONTH, 11);// Dez
 
-        final String category = CategoryHelper.getCategory(cal.getTime(), ChartSerieType.MONTH);
+        final String category = CategoryHelper.getCategory(cal.getTime(), XAxisChart.MONTH);
 
         assertEquals("12", category);
     }
@@ -82,8 +83,32 @@ public class CategoryHelperTest {
         final Calendar cal = Calendar.getInstance(Locale.GERMAN);
         cal.set(Calendar.YEAR, 2014);// Dez
 
-        final String category = CategoryHelper.getCategory(cal.getTime(), ChartSerieType.YEAR);
+        final String category = CategoryHelper.getCategory(cal.getTime(), XAxisChart.YEAR);
 
         assertEquals("2014", category);
+    }
+
+    @Test
+    public void testDomainAxisDay() {
+        final String result = CategoryHelper.getDomainAxis(XAxisChart.DAY);
+        assertEquals(Messages.CategoryHelper_0, result);
+    }
+
+    @Test
+    public void testDomainAxisWeek() {
+        final String result = CategoryHelper.getDomainAxis(XAxisChart.WEEK);
+        assertEquals(Messages.CategoryHelper_2, result);
+    }
+
+    @Test
+    public void testDomainAxisMonth() {
+        final String result = CategoryHelper.getDomainAxis(XAxisChart.MONTH);
+        assertEquals(Messages.CategoryHelper_1, result);
+    }
+
+    @Test
+    public void testDomainAxisYear() {
+        final String result = CategoryHelper.getDomainAxis(XAxisChart.YEAR);
+        assertEquals(Messages.CategoryHelper_3, result);
     }
 }

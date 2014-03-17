@@ -27,15 +27,15 @@ import java.util.Set;
 
 import org.joda.time.DateTime;
 
-import ch.opentrainingcenter.charts.single.ChartSerieType;
+import ch.opentrainingcenter.charts.single.XAxisChart;
 import ch.opentrainingcenter.core.assertions.Assertions;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
 
 public class ChartDataSupport {
 
-    private final ChartSerieType type;
+    private final XAxisChart type;
 
-    public ChartDataSupport(final ChartSerieType type) {
+    public ChartDataSupport(final XAxisChart type) {
         this.type = type;
     }
 
@@ -62,7 +62,7 @@ public class ChartDataSupport {
         Assertions.notNull(dataPast);
         Assertions.notNull(now);
         final List<ChartDataWrapper> past = new ArrayList<>();
-        if (!ChartSerieType.DAY.equals(type)) {
+        if (!XAxisChart.DAY.equals(type)) {
             past.addAll(convertAndSort(dataPast));
             adjust(past, now);
             Collections.sort(past);
