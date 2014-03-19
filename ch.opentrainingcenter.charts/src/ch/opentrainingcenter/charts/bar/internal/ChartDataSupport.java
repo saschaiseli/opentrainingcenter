@@ -64,7 +64,9 @@ public class ChartDataSupport {
         final List<ChartDataWrapper> past = new ArrayList<>();
         if (!XAxisChart.DAY.equals(type)) {
             past.addAll(convertAndSort(dataPast));
-            adjust(past, now);
+            if (!XAxisChart.YEAR.equals(type)) {
+                adjust(past, now);
+            }
             Collections.sort(past);
         }
         return past;

@@ -74,6 +74,7 @@ public class ChartDataWrapper implements Comparable<ChartDataWrapper> {
     @SuppressWarnings("nls")
     @Override
     public String toString() {
-        return "ValueMapper [category=" + category + ", distance=" + distance + ", avgHeartRate=" + avgHeartRate + "]";
+        return "ChartDataWrapper [category=" + category + ", date=" + date + ", distance=" + distance + ", avgHeartRate=" + avgHeartRate + "]";
     }
+
 }
