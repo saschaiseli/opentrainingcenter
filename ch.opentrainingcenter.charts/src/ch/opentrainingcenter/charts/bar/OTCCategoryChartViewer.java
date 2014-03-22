@@ -30,6 +30,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.labels.CategoryItemLabelGenerator;
 import org.jfree.chart.labels.ItemLabelAnchor;
 import org.jfree.chart.labels.ItemLabelPosition;
@@ -164,10 +165,15 @@ public class OTCCategoryChartViewer {
 
     void updateAxis(final SimpleTrainingChart chartType, final XAxisChart chartSerieType) {
         if (chart != null) {
-            // update axis & title
             chart.setTitle(chartType.getTitle());
             ((CategoryPlot) chart.getPlot()).getRangeAxis().setLabel(chartType.getyAchse());
-            ((CategoryPlot) chart.getPlot()).getDomainAxis().setLabel(CategoryHelper.getDomainAxis(chartSerieType));
+            final CategoryAxis domainAxis = ((CategoryPlot) chart.getPlot()).getDomainAxis();
+            domainAxis.setLabel(CategoryHelper.getDomainAxis(chartSerieType));
+            if (XAxisChart.YEAR.equals(chartSerieType)) {
+                domainAxis.setCategoryMargin(-0.75d);
+            } else {
+                domainAxis.setCategoryMargin(0.2d);
+            }
         }
     }
 
