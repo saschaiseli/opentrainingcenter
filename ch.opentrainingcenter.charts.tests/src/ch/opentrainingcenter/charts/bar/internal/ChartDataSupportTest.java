@@ -197,6 +197,7 @@ public class ChartDataSupportTest {
         // execute
         final List<ChartDataWrapper> result = support.createPastData(dataPast, now);
 
+        // spezialfall bei jahres kategorie
         assertEquals("Es gibt nur eine Past Kategorie", 1, result.size());
         final ChartDataWrapper cdw1 = result.get(0);
         assertEquals("2012", cdw1.getCategory());
