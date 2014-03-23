@@ -54,7 +54,7 @@ public final class CategoryHelper {
         return week;
     }
 
-    private static String getMonthCategory(final Date date) {
+    public static String getMonthCategory(final Date date) {
         final int i = createDate(date).get(Calendar.MONTH);
         switch (i) {
         case 0:

@@ -185,7 +185,7 @@ public class OTCCategoryChartViewer {
         renderer.setBarPainter(painter);
         renderer.setItemMargin(0.0);
 
-        final String labelPattern = "{2} km (" + type.getLabel() + "{1})"; //$NON-NLS-1$//$NON-NLS-2$
+        final String labelPattern = String.format("{2} ", SimpleTrainingChart.getEinheit(chartType)); //$NON-NLS-1$
         renderer.setBaseToolTipGenerator(new StandardCategoryToolTipGenerator(labelPattern, new DecimalFormat(DECIMAL)));
 
         final ItemLabelPosition position = new ItemLabelPosition(ItemLabelAnchor.CENTER, TextAnchor.CENTER, TextAnchor.CENTER, -Math.PI / 2.0);

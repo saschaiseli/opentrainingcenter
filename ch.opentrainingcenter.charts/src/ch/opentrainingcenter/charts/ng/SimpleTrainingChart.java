@@ -21,7 +21,9 @@ package ch.opentrainingcenter.charts.ng;
 
 import ch.opentrainingcenter.i18n.Messages;
 
-
+/**
+ * Herz oder Distanz Chart. Definiert X- und Y-Achsen sowie Titel vom Chart
+ */
 public enum SimpleTrainingChart {
 
     /**
@@ -78,6 +80,20 @@ public enum SimpleTrainingChart {
             return SimpleTrainingChart.HERZ;
         default:
             throw new IllegalArgumentException(String.format("SimpleTrainingChart mit Index %s ist unbekannt", index)); //$NON-NLS-1$
+        }
+    }
+
+    /**
+     * @return den ChartFilter mit dem angegebenen Index.
+     */
+    public static String getEinheit(final SimpleTrainingChart stc) {
+        switch (stc) {
+        case DISTANZ:
+            return Messages.Einheit_Kilometer;
+        case HERZ:
+            return Messages.Einheit_Herzfrequenz;
+        default:
+            throw new IllegalArgumentException(String.format("Keine Einheit für %s gefunden", stc)); //$NON-NLS-1$
         }
     }
 

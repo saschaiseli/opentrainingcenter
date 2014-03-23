@@ -122,7 +122,7 @@ public class ChartDataSupportTest {
         // NOW
         final ArrayList<ChartDataWrapper> now = new ArrayList<ChartDataWrapper>();
         final DateTime datum = new DateTime(2013, 8, 29, 12, 00);
-        final String category = "08";
+        final String category = CategoryHelper.getMonthCategory(datum.toDate());
         now.add(new ChartDataWrapper(1000, 142, category, datum.toDate()));
 
         // PAST
@@ -150,7 +150,7 @@ public class ChartDataSupportTest {
         // NOW
         final ArrayList<ChartDataWrapper> now = new ArrayList<ChartDataWrapper>();
         final DateTime datum = new DateTime(2013, 8, 29, 12, 00);
-        final String category = "08";
+        final String category = CategoryHelper.getMonthCategory(datum.toDate());
         now.add(new ChartDataWrapper(1000, 142, category, datum.toDate()));
 
         // PAST
@@ -171,7 +171,7 @@ public class ChartDataSupportTest {
         assertEquals("Wird mit der Vorjahresperiode verglichen", 2012, date1.getYear());
 
         final ChartDataWrapper cdw2 = result.get(1);
-        assertEquals("09", cdw2.getCategory());
+        assertEquals(CategoryHelper.getMonthCategory(datePast.toDate()), cdw2.getCategory());
         assertEquals(2, cdw2.getValue(SimpleTrainingChart.DISTANZ), 0.001);
         assertEquals(132, cdw2.getValue(SimpleTrainingChart.HERZ), 0.001);
         final DateTime date2 = new DateTime(cdw2.getDate().getTime());
