@@ -55,12 +55,36 @@ public final class CategoryHelper {
     }
 
     private static String getMonthCategory(final Date date) {
-        int i = createDate(date).get(Calendar.MONTH);
-        String month = String.valueOf(++i);
-        if (month.length() == 1) {
-            month = "0" + month; //$NON-NLS-1$
+        final int i = createDate(date).get(Calendar.MONTH);
+        switch (i) {
+        case 0:
+            return Messages.CategoryHelper_4;
+        case 1:
+            return Messages.CategoryHelper_5;
+        case 2:
+            return Messages.CategoryHelper_6;
+        case 3:
+            return Messages.CategoryHelper_7;
+        case 4:
+            return Messages.CategoryHelper_8;
+        case 5:
+            return Messages.CategoryHelper_9;
+        case 6:
+            return Messages.CategoryHelper_10;
+        case 7:
+            return Messages.CategoryHelper_11;
+        case 8:
+            return Messages.CategoryHelper_12;
+        case 9:
+            return Messages.CategoryHelper_13;
+        case 10:
+            return Messages.CategoryHelper_14;
+        case 11:
+            return Messages.CategoryHelper_15;
+        default:
+            return Messages.CategoryHelper_16;
         }
-        return month;
+
     }
 
     public static String getDomainAxis(final XAxisChart type) {

@@ -59,13 +59,28 @@ public class CategoryHelperTest {
     }
 
     @Test
-    public void testMonthFeb() {
+    public void testMonth() {
+        assertMonth(0, "Januar");
+        assertMonth(1, "Februar");
+        assertMonth(2, "März");
+        assertMonth(3, "April");
+        assertMonth(4, "Mai");
+        assertMonth(5, "Juni");
+        assertMonth(6, "Juli");
+        assertMonth(7, "August");
+        assertMonth(8, "September");
+        assertMonth(9, "Oktober");
+        assertMonth(10, "November");
+        assertMonth(11, "Dezember");
+    }
+
+    private void assertMonth(final int month, final String monat) {
         final Calendar cal = Calendar.getInstance(Locale.GERMAN);
-        cal.set(Calendar.MONTH, 1);// Februar
-
+        cal.set(Calendar.MONTH, month);
+        // execute
         final String category = CategoryHelper.getCategory(cal.getTime(), XAxisChart.MONTH);
-
-        assertEquals("02", category);
+        // assert
+        assertEquals(monat, category);
     }
 
     @Test
@@ -75,7 +90,7 @@ public class CategoryHelperTest {
 
         final String category = CategoryHelper.getCategory(cal.getTime(), XAxisChart.MONTH);
 
-        assertEquals("12", category);
+        assertEquals("Dezember", category);
     }
 
     @Test
