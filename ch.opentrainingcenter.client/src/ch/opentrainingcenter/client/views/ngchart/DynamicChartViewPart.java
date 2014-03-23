@@ -20,6 +20,7 @@
 package ch.opentrainingcenter.client.views.ngchart;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -51,6 +52,8 @@ import ch.opentrainingcenter.charts.single.XAxisChart;
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.ui.FormToolkitSupport;
 import ch.opentrainingcenter.client.views.ApplicationContext;
+import ch.opentrainingcenter.core.cache.IRecordListener;
+import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.helper.TimeHelper;
 import ch.opentrainingcenter.core.service.IDatabaseService;
@@ -63,7 +66,7 @@ import ch.opentrainingcenter.model.training.ISimpleTraining;
 import ch.opentrainingcenter.model.training.filter.SimpleTrainingFilter;
 import ch.opentrainingcenter.transfer.ITraining;
 
-public class DynamicChartViewPart extends ViewPart {
+public class DynamicChartViewPart extends ViewPart implements IRecordListener<ITraining> {
 
     private static final Logger LOGGER = Logger.getLogger(DynamicChartViewPart.class);
 
@@ -91,6 +94,7 @@ public class DynamicChartViewPart extends ViewPart {
         final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
         databaseAccess = service.getDatabaseAccess();
         chartViewer = new OTCCategoryChartViewer(Activator.getDefault().getPreferenceStore());
+        TrainingCache.getInstance().addListener(this);
     }
 
     @Override
@@ -143,7 +147,7 @@ public class DynamicChartViewPart extends ViewPart {
             @Override
             public void widgetSelected(final SelectionEvent e) {
                 final XAxisChart type = XAxisChart.getByIndex(comboFilter.getSelectionIndex());
-                update(type);
+                update();
                 compareWithLastYear.setEnabled(!XAxisChart.DAY.equals(type));
             }
 
@@ -160,8 +164,7 @@ public class DynamicChartViewPart extends ViewPart {
 
             @Override
             public void widgetSelected(final SelectionEvent e) {
-                final XAxisChart type = XAxisChart.getByIndex(comboFilter.getSelectionIndex());
-                update(type);
+                update();
             }
 
         });
@@ -195,8 +198,7 @@ public class DynamicChartViewPart extends ViewPart {
     private class UpdateSelectionAdapter extends SelectionAdapter {
         @Override
         public void widgetSelected(final SelectionEvent e) {
-            final XAxisChart type = XAxisChart.getByIndex(comboFilter.getSelectionIndex());
-            update(type);
+            update();
         }
     }
 
@@ -236,12 +238,13 @@ public class DynamicChartViewPart extends ViewPart {
         });
     }
 
-    private void update(final XAxisChart xAxis) {
+    private void update() {
         LOGGER.info("UPDATE CHART"); //$NON-NLS-1$
         Display.getDefault().asyncExec(new Runnable() {
 
             @Override
             public void run() {
+                final XAxisChart xAxis = XAxisChart.getByIndex(comboFilter.getSelectionIndex());
                 final boolean year = XAxisChart.YEAR.equals(xAxis);
                 dateFrom.setEnabled(!year);
                 dateBis.setEnabled(!year);
@@ -299,6 +302,22 @@ public class DynamicChartViewPart extends ViewPart {
     @Override
     public void setFocus() {
 
+    }
+
+    @Override
+    public void dispose() {
+        TrainingCache.getInstance().removeListener(this);
+        super.dispose();
+    }
+
+    @Override
+    public void recordChanged(final Collection<ITraining> entry) {
+        update();
+    }
+
+    @Override
+    public void deleteRecord(final Collection<ITraining> entry) {
+        update();
     }
 
 }

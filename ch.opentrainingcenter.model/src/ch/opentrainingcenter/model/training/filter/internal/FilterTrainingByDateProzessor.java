@@ -21,6 +21,8 @@ package ch.opentrainingcenter.model.training.filter.internal;
 
 import java.util.Date;
 
+import org.joda.time.DateTime;
+
 import ch.opentrainingcenter.core.process.ElementProzessor;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
 
@@ -29,8 +31,17 @@ public class FilterTrainingByDateProzessor implements ElementProzessor<ISimpleTr
     private final long endMillis;
 
     public FilterTrainingByDateProzessor(final Date start, final Date end) {
-        this.startMillis = start.getTime();
-        this.endMillis = end.getTime();
+        this.startMillis = round(start, 0, 0);
+        this.endMillis = round(end, 23, 59);
+    }
+
+    private long round(final Date date, final int hour, final int minute) {
+        final DateTime dtStart = new DateTime(date);
+        final int year = dtStart.getYear();
+        final int monthOfYear = dtStart.getMonthOfYear();
+        final int dayOfYear = dtStart.getDayOfMonth();
+        final DateTime dt = new DateTime(year, monthOfYear, dayOfYear, hour, minute);
+        return dt.getMillis();
     }
 
     @Override

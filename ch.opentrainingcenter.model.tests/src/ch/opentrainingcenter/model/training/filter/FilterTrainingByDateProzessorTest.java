@@ -21,6 +21,7 @@ package ch.opentrainingcenter.model.training.filter;
 
 import java.util.Date;
 
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -66,9 +67,11 @@ public class FilterTrainingByDateProzessorTest {
 
     @Test
     public void testTooLow() {
-        prozessor = new FilterTrainingByDateProzessor(new Date(1), new Date(1000));
-
-        when(item.getDatum()).thenReturn(new Date(0));
+        final DateTime von = new DateTime(2012, 1, 22, 12, 22);
+        final DateTime bis = new DateTime(2012, 3, 22, 12, 22);
+        prozessor = new FilterTrainingByDateProzessor(von.toDate(), bis.toDate());
+        final DateTime training = new DateTime(2012, 1, 21, 23, 59);
+        when(item.getDatum()).thenReturn(training.toDate());
 
         final ISimpleTraining result = prozessor.onNext(item);
 
@@ -77,12 +80,27 @@ public class FilterTrainingByDateProzessorTest {
 
     @Test
     public void testTooLate() {
-        prozessor = new FilterTrainingByDateProzessor(new Date(1), new Date(1000));
-
-        when(item.getDatum()).thenReturn(new Date(1001));
+        final DateTime von = new DateTime(2012, 1, 22, 12, 22);
+        final DateTime bis = new DateTime(2012, 3, 22, 12, 22);
+        prozessor = new FilterTrainingByDateProzessor(von.toDate(), bis.toDate());
+        final DateTime training = new DateTime(2012, 3, 23, 0, 0);
+        when(item.getDatum()).thenReturn(training.toDate());
 
         final ISimpleTraining result = prozessor.onNext(item);
 
         assertNull(result);
+    }
+
+    @Test
+    public void testRoundedByDay() {
+        final DateTime von = new DateTime(2012, 1, 22, 12, 22);
+        final DateTime bis = new DateTime(2012, 3, 22, 12, 22);
+        prozessor = new FilterTrainingByDateProzessor(von.toDate(), bis.toDate());
+        final DateTime training = new DateTime(2012, 3, 22, 16, 22);
+        when(item.getDatum()).thenReturn(training.toDate());
+
+        final ISimpleTraining result = prozessor.onNext(item);
+
+        assertNotNull(result);
     }
 }
