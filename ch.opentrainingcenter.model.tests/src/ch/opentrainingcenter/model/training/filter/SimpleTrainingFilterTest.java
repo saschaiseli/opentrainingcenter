@@ -21,6 +21,7 @@ package ch.opentrainingcenter.model.training.filter;
 
 import java.util.Date;
 
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -68,10 +69,15 @@ public class SimpleTrainingFilterTest {
     }
 
     @Test
-    public void testTooLow() {
-        filter = new SimpleTrainingFilter(new Date(1), new Date(100), RunType.EXT_INTERVALL);
+    public void testTooLate() {
+        final DateTime von = new DateTime(2012, 1, 22, 12, 22);
+        final DateTime bis = new DateTime(2012, 3, 22, 12, 22);
 
-        when(training.getDatum()).thenReturn(new Date(0));
+        filter = new SimpleTrainingFilter(von.toDate(), bis.toDate(), RunType.EXT_INTERVALL);
+
+        final DateTime dt = new DateTime(2012, 3, 23, 0, 0);
+
+        when(training.getDatum()).thenReturn(dt.toDate());
         when(training.getType()).thenReturn(RunType.EXT_INTERVALL);
 
         final ISimpleTraining result = filter.filter(training);
@@ -80,11 +86,14 @@ public class SimpleTrainingFilterTest {
     }
 
     @Test
-    public void testTooLate() {
-        filter = new SimpleTrainingFilter(new Date(1), new Date(100), RunType.EXT_INTERVALL);
+    public void testTooLow() {
+        final DateTime von = new DateTime(2012, 1, 22, 12, 22);
+        final DateTime bis = new DateTime(2012, 3, 22, 12, 22);
 
-        when(training.getDatum()).thenReturn(new Date(101));
-        when(training.getType()).thenReturn(RunType.EXT_INTERVALL);
+        filter = new SimpleTrainingFilter(von.toDate(), bis.toDate(), RunType.EXT_INTERVALL);
+
+        final DateTime dt = new DateTime(2012, 1, 21, 23, 59);
+        when(training.getDatum()).thenReturn(dt.toDate());
 
         final ISimpleTraining result = filter.filter(training);
 

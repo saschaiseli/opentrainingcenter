@@ -29,6 +29,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -52,6 +53,7 @@ import ch.opentrainingcenter.charts.single.XAxisChart;
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.ui.FormToolkitSupport;
 import ch.opentrainingcenter.client.views.ApplicationContext;
+import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.core.cache.IRecordListener;
 import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
@@ -90,11 +92,14 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
 
     private Button compareWithLastYear;
 
+    private final IPreferenceStore store;
+
     public DynamicChartViewPart() {
         final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
         databaseAccess = service.getDatabaseAccess();
         chartViewer = new OTCCategoryChartViewer(Activator.getDefault().getPreferenceStore());
         TrainingCache.getInstance().addListener(this);
+        store = Activator.getDefault().getPreferenceStore();
     }
 
     @Override
@@ -116,6 +121,8 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
         addFilterSection(body);
 
         addChartSection(body);
+
+        update();
     }
 
     private void addFilterSection(final Composite body) {
@@ -141,7 +148,7 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
         comboFilter.setBounds(50, 50, 150, 65);
 
         comboFilter.setItems(XAxisChart.items());
-        comboFilter.select(0);
+        comboFilter.select(store.getInt(PreferenceConstants.CHART_XAXIS_CHART));
         comboFilter.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -159,7 +166,7 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
 
         comboChartType = new Combo(container, SWT.READ_ONLY);
         comboChartType.setItems(SimpleTrainingChart.items());
-        comboChartType.select(SimpleTrainingChart.DISTANZ.getIndex());
+        comboChartType.select(store.getInt(PreferenceConstants.CHART_YAXIS_CHART));
         comboChartType.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -173,13 +180,14 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
         compareWithLastYear = new Button(container, SWT.CHECK);
         compareWithLastYear.setText(Messages.DynamicChartViewPart_9);
         compareWithLastYear.setEnabled(!XAxisChart.DAY.equals(cst));
+        compareWithLastYear.setSelection(store.getBoolean(PreferenceConstants.CHART_COMPARE));
         compareWithLastYear.setToolTipText(Messages.DynamicChartViewPart_10);
         compareWithLastYear.addSelectionListener(new UpdateSelectionAdapter());
 
         GridDataFactory.swtDefaults().align(SWT.BEGINNING, SWT.BEGINNING).span(3, 1).applyTo(compareWithLastYear);
         // ------- neue Zeile
         final Label vonLabel = toolkit.createLabel(container, Messages.DynamicChartViewPart_6);
-        final org.joda.time.DateTime von = org.joda.time.DateTime.now().minusMonths(3);
+        final org.joda.time.DateTime von = org.joda.time.DateTime.now().minusWeeks(store.getInt(PreferenceConstants.CHART_WEEKS));
         dateFrom = new DateTime(container, SWT.BORDER | SWT.DATE | SWT.DROP_DOWN);
         dateFrom.setDate(von.getYear(), von.getMonthOfYear() - 1, von.getDayOfMonth());
         dateFrom.addSelectionListener(new UpdateSelectionAdapter());
@@ -218,24 +226,8 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
         GridDataFactory.swtDefaults().grab(true, true).align(SWT.FILL, SWT.FILL).hint(SWT.DEFAULT, 400).applyTo(container);
 
         chartViewer.setParent(container);
-
-        createPartControl(XAxisChart.DAY);
-
+        chartViewer.createPartControl();
         sectionChart.setClient(container);
-    }
-
-    private void createPartControl(final XAxisChart type) {
-        Display.getDefault().asyncExec(new Runnable() {
-
-            @Override
-            public void run() {
-                final Date start = TimeHelper.getDate(dateFrom.getYear(), dateFrom.getMonth(), dateFrom.getDay());
-                final Date end = TimeHelper.getDate(dateBis.getYear(), dateBis.getMonth(), dateBis.getDay());
-                final List<ISimpleTraining> filteredDataNow = getFilteredData(type, start, end);
-                chartViewer.createPartControl(type, SimpleTrainingChart.DISTANZ, filteredDataNow, filteredDataNow);
-                sectionChart.setExpanded(true);
-            }
-        });
     }
 
     private void update() {
@@ -267,6 +259,7 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
                 chartViewer.updateData(dataPast, dataNow, xAxis, chartType, compareLast);
                 chartViewer.updateRenderer(xAxis, chartType, compareLast);
                 chartViewer.forceRedraw();
+                sectionChart.setExpanded(true);
             }
         });
     }

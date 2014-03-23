@@ -88,9 +88,10 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
         defaults.put(PreferenceConstants.DB_URL, "jdbc:h2:file:~/.otc/otc"); //$NON-NLS-1$
         defaults.put(PreferenceConstants.DB, "H2 Database"); //$NON-NLS-1$
 
-        //        defaults.put(PreferenceConstants.DB_USER, "otc"); //$NON-NLS-1$
-        //        defaults.put(PreferenceConstants.DB_PASS, "otc"); //$NON-NLS-1$
-        //        defaults.put(PreferenceConstants.DB_URL, "http://localhost:5432/otc"); //$NON-NLS-1$
-        //        defaults.put(PreferenceConstants.DB, "Postgres Database"); //$NON-NLS-1$
+        // charts
+        defaults.putInt(PreferenceConstants.CHART_XAXIS_CHART, 1);
+        defaults.putInt(PreferenceConstants.CHART_YAXIS_CHART, 0);
+        defaults.putBoolean(PreferenceConstants.CHART_COMPARE, true);
+        defaults.putInt(PreferenceConstants.CHART_WEEKS, 16);
     }
 }

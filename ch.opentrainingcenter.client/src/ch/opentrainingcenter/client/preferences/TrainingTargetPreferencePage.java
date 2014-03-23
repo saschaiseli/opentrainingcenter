@@ -15,10 +15,9 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.i18n.Messages;
+import static ch.opentrainingcenter.client.preferences.ChartPreferencePage.INDENT;
 
 public class TrainingTargetPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
-
-    private static final int INDENT = 5;
 
     public TrainingTargetPreferencePage() {
         super(FieldEditorPreferencePage.GRID);
@@ -51,31 +50,7 @@ public class TrainingTargetPreferencePage extends FieldEditorPreferencePage impl
         addField(new ColorFieldEditor(PreferenceConstants.ZIEL_NICHT_ERFUELLT_COLOR, Messages.TrainingTargetPreferencePage_5, training));
         addField(new ColorFieldEditor(PreferenceConstants.ZIEL_NICHT_BEKANNT_COLOR, Messages.TrainingTargetPreferencePage_6, training));
 
-        // -----------
-        final Group groupChartColors = new Group(parent, SWT.NONE);
-        groupChartColors.setText(Messages.TrainingTargetPreferencePage7);
-        groupChartColors.setLayout(gridLayout);
-        final Composite chart = new Composite(groupChartColors, SWT.NONE);
-        chart.setLayout(GridLayoutFactory.swtDefaults().create());
-
-        addField(new ColorFieldEditor(PreferenceConstants.CHART_DISTANCE_COLOR, Messages.TrainingTargetPreferencePage8, chart));
-        addField(new ColorFieldEditor(PreferenceConstants.CHART_HEART_COLOR, Messages.TrainingTargetPreferencePage9, chart));
-
-        addField(new ColorFieldEditor(PreferenceConstants.CHART_DISTANCE_COLOR_PAST, Messages.TrainingTargetPreferencePage10, chart));
-        addField(new ColorFieldEditor(PreferenceConstants.CHART_HEART_COLOR_PAST, Messages.TrainingTargetPreferencePage11, chart));
-        // ----------- Vital
-        final Group groupVitalColors = new Group(parent, SWT.NONE);
-        groupVitalColors.setText(Messages.TrainingTargetPreferencePage7);
-        groupVitalColors.setLayout(gridLayout);
-        final Composite vital = new Composite(groupVitalColors, SWT.NONE);
-        vital.setLayout(GridLayoutFactory.swtDefaults().create());
-
-        addField(new ColorFieldEditor(PreferenceConstants.RUHEPULS_COLOR, Messages.TrainingTargetPreferencePage_0, vital));
-        addField(new ColorFieldEditor(PreferenceConstants.GEWICHT_COLOR, Messages.TrainingTargetPreferencePage_1, vital));
-
         // -- layout
         GridDataFactory.defaultsFor(groupTrainingTarget).grab(true, true).span(2, 1).indent(INDENT, INDENT).applyTo(groupTrainingTarget);
-        GridDataFactory.defaultsFor(groupChartColors).grab(true, true).span(2, 1).indent(INDENT, INDENT).applyTo(groupChartColors);
-        GridDataFactory.defaultsFor(groupVitalColors).grab(true, true).span(2, 1).indent(INDENT, INDENT).applyTo(groupVitalColors);
     }
 }

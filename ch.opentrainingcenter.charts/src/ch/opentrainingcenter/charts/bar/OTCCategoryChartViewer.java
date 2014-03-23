@@ -91,14 +91,11 @@ public class OTCCategoryChartViewer {
         this.parent = parent;
     }
 
-    public void createPartControl(final XAxisChart chartSerieType, final SimpleTrainingChart chartType, final List<ISimpleTraining> dataNow,
-            final List<ISimpleTraining> dataPast) {
+    public void createPartControl() {
 
-        init(dataNow, dataPast, chartSerieType);
-
-        createChart(chartSerieType, chartType);
-
+        createChart();
         chartComposite = new ChartComposite(parent, SWT.NONE, chart, true);
+
         final GridData gd = new GridData(SWT.FILL);
         gd.grabExcessHorizontalSpace = true;
         gd.grabExcessVerticalSpace = true;
@@ -109,14 +106,8 @@ public class OTCCategoryChartViewer {
         chartComposite.forceRedraw();
     }
 
-    void init(final List<ISimpleTraining> dataNow, final List<ISimpleTraining> dataPast, final XAxisChart type) {
-        dataset.clear();
-        updateData(dataPast, dataNow, type, SimpleTrainingChart.DISTANZ, false);
-    }
-
-    JFreeChart createChart(final XAxisChart type, final SimpleTrainingChart chartType) {
-        chart = ChartFactory.createBarChart(chartType.getTitle(), CategoryHelper.getDomainAxis(type), chartType.getyAchse(), dataset, PlotOrientation.VERTICAL,
-                false, true, false);
+    JFreeChart createChart() {
+        chart = ChartFactory.createBarChart("", "", "", dataset, PlotOrientation.VERTICAL, false, true, false); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         chart.setAntiAlias(true);
         chart.setBorderVisible(false);
         chart.setAntiAlias(true);
@@ -125,7 +116,6 @@ public class OTCCategoryChartViewer {
         chart.setBackgroundPaint(Color.white);
         chart.setBorderPaint(Color.white);
 
-        updateRenderer(type, chartType, false);
         //
         final CategoryPlot plot = chart.getCategoryPlot();
         plot.setBackgroundPaint(Color.white);

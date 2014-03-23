@@ -101,7 +101,8 @@ public class OTCCategoryChartViewerTest {
         when(simpleTraining.getDatum()).thenReturn(date);
         data.add(simpleTraining);
 
-        viewer.init(data, data, XAxisChart.DAY);
+        viewer.createChart();
+        viewer.updateData(data, data, XAxisChart.DAY, SimpleTrainingChart.DISTANZ, false);
 
         final DefaultCategoryDataset dataset = viewer.getDataset();
         final Number value = dataset.getValue(OTCCategoryChartViewer.DIESES_JAHR, "1");
@@ -212,7 +213,9 @@ public class OTCCategoryChartViewerTest {
     @Test
     public void testCreateChart() {
 
-        final JFreeChart chart = viewer.createChart(XAxisChart.MONTH, SimpleTrainingChart.DISTANZ);
+        final JFreeChart chart = viewer.createChart();
+
+        viewer.updateData(new ArrayList<ISimpleTraining>(), new ArrayList<ISimpleTraining>(), XAxisChart.MONTH, SimpleTrainingChart.DISTANZ, false);
 
         assertNotNull(chart);
 

@@ -348,6 +348,18 @@
             name="%preferences_import">
       </page>
       <page
+            class="ch.opentrainingcenter.client.preferences.ChartPreferencePage"
+            id="ch.opentrainingcenter.client.preferences.charts"
+            name="%preferences_charts">
+      </page>
+      <page
+            category="ch.opentrainingcenter.client.preferences.charts"
+            class="ch.opentrainingcenter.client.preferences.ChartColorPreferencePage"
+            id="ch.opentrainingcenter.client.preferences.chartsColor"
+            name="%preferences_charts_colors">
+      </page>
+      <page
+            category="ch.opentrainingcenter.client.preferences.charts"
             class="ch.opentrainingcenter.client.preferences.TrainingTargetPreferencePage"
             id="ch.opentrainingcenter.client.preferences.TrainingTargetPage"
             name="%preferences_farben">
