@@ -19,11 +19,14 @@
 
 package ch.opentrainingcenter.client.views.ngchart;
 
+import java.text.DateFormat;
+import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -36,7 +39,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.PlatformUI;
@@ -46,12 +48,15 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.forms.widgets.TableWrapData;
 import org.eclipse.ui.forms.widgets.TableWrapLayout;
 import org.eclipse.ui.part.ViewPart;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeFieldType;
 
 import ch.opentrainingcenter.charts.bar.OTCCategoryChartViewer;
 import ch.opentrainingcenter.charts.ng.SimpleTrainingChart;
 import ch.opentrainingcenter.charts.single.XAxisChart;
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.ui.FormToolkitSupport;
+import ch.opentrainingcenter.client.ui.datepicker.DatePickerCombo;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.core.cache.IRecordListener;
@@ -70,6 +75,10 @@ import ch.opentrainingcenter.transfer.ITraining;
 
 public class DynamicChartViewPart extends ViewPart implements IRecordListener<ITraining> {
 
+    private static final DateFormat DATE_FORMAT = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
+
+    private static final String[] NEW_SHORT_WEEKDAYS = new String[] { "", "Mo", "Di", "Mi", "Do", "Fr", "Sa", "So" }; //$NON-NLS-1$
+
     private static final Logger LOGGER = Logger.getLogger(DynamicChartViewPart.class);
 
     public static final String ID = "ch.opentrainingcenter.client.views.ngchart.DynamicChart"; //$NON-NLS-1$
@@ -82,9 +91,9 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
 
     private Section sectionChart;
 
-    private DateTime dateFrom;
+    private DatePickerCombo dateVon;
 
-    private DateTime dateBis;
+    private DatePickerCombo dateBis;
 
     private Combo comboFilter;
 
@@ -188,15 +197,23 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
         // ------- neue Zeile
         final Label vonLabel = toolkit.createLabel(container, Messages.DynamicChartViewPart_6);
         final org.joda.time.DateTime von = org.joda.time.DateTime.now().minusWeeks(store.getInt(PreferenceConstants.CHART_WEEKS));
-        dateFrom = new DateTime(container, SWT.BORDER | SWT.DATE | SWT.DROP_DOWN);
-        dateFrom.setDate(von.getYear(), von.getMonthOfYear() - 1, von.getDayOfMonth());
-        dateFrom.addSelectionListener(new UpdateSelectionAdapter());
+
+        final DateFormatSymbols symbols = DateFormatSymbols.getInstance(Locale.getDefault());
+        symbols.setShortWeekdays(NEW_SHORT_WEEKDAYS);
+
+        dateVon = new DatePickerCombo(container, SWT.BORDER | SWT.DATE | SWT.DROP_DOWN);
+        dateVon.setFormat(DATE_FORMAT);
+        dateVon.setDateSymbols(symbols);
+        dateVon.setDate(von.toDate());
+        dateVon.addSelectionListener(new UpdateSelectionAdapter());
         GridDataFactory.swtDefaults().align(SWT.RIGHT, SWT.CENTER).applyTo(vonLabel);
 
         final Label bisLabel = toolkit.createLabel(container, Messages.DynamicChartViewPart_7);
-        final org.joda.time.DateTime bis = org.joda.time.DateTime.now();
-        dateBis = new DateTime(container, SWT.BORDER | SWT.DATE | SWT.DROP_DOWN);
-        dateBis.setDate(bis.getYear(), bis.getMonthOfYear() - 1, bis.getDayOfMonth());
+
+        dateBis = new DatePickerCombo(container, SWT.BORDER | SWT.DATE | SWT.DROP_DOWN);
+        dateBis.setFormat(DATE_FORMAT);
+        dateBis.setDate(DateTime.now().toDate());
+        dateBis.setDateSymbols(symbols);
         dateBis.addSelectionListener(new UpdateSelectionAdapter());
         GridDataFactory.swtDefaults().align(SWT.RIGHT, SWT.CENTER).applyTo(bisLabel);
 
@@ -227,6 +244,7 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
 
         chartViewer.setParent(container);
         chartViewer.createPartControl();
+
         sectionChart.setClient(container);
     }
 
@@ -238,17 +256,18 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
             public void run() {
                 final XAxisChart xAxis = XAxisChart.getByIndex(comboFilter.getSelectionIndex());
                 final boolean year = XAxisChart.YEAR.equals(xAxis);
-                dateFrom.setEnabled(!year);
+                dateVon.setEnabled(!year);
                 dateBis.setEnabled(!year);
-                final Date start;
-                final Date end;
+                Date start = dateVon.getDate();
+                Date end = dateBis.getDate();
                 if (year) {
-                    start = TimeHelper.getDate(dateBis.getYear(), 0, 1);
-                    end = TimeHelper.getDate(dateBis.getYear(), 11, 31);
-                } else {
-                    start = TimeHelper.getDate(dateFrom.getYear(), dateFrom.getMonth(), dateFrom.getDay());
-                    end = TimeHelper.getDate(dateBis.getYear(), dateBis.getMonth(), dateBis.getDay());
+                    final int yStart = new DateTime(start.getTime()).get(DateTimeFieldType.year());
+                    start = TimeHelper.getDate(yStart, 0, 1);
+
+                    final int yEnd = new DateTime(end.getTime()).get(DateTimeFieldType.year());
+                    end = TimeHelper.getDate(yEnd, 11, 31);
                 }
+
                 final org.joda.time.DateTime dtStart = new org.joda.time.DateTime(start.getTime());
                 final org.joda.time.DateTime dtEnd = new org.joda.time.DateTime(end.getTime());
                 final List<ISimpleTraining> dataPast = getFilteredData(xAxis, dtStart.minusYears(1).toDate(), dtEnd.minusYears(1).toDate());
