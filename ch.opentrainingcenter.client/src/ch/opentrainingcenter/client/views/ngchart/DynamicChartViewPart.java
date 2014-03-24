@@ -36,6 +36,10 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -62,6 +66,7 @@ import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.core.cache.IRecordListener;
 import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
+import ch.opentrainingcenter.core.helper.ColorFromPreferenceHelper;
 import ch.opentrainingcenter.core.helper.TimeHelper;
 import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
@@ -75,33 +80,37 @@ import ch.opentrainingcenter.transfer.ITraining;
 
 public class DynamicChartViewPart extends ViewPart implements IRecordListener<ITraining> {
 
+    private static final String PFEIL = " -----> "; //$NON-NLS-1$
+    public static final String ID = "ch.opentrainingcenter.client.views.ngchart.DynamicChart"; //$NON-NLS-1$
     private static final DateFormat DATE_FORMAT = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
 
-    private static final String[] NEW_SHORT_WEEKDAYS = new String[] { "", "Mo", "Di", "Mi", "Do", "Fr", "Sa", "So" }; //$NON-NLS-1$
+    private static final String[] NEW_SHORT_WEEKDAYS = new String[] { "", Messages.DynamicChartViewPart_Montag, // //$NON-NLS-1$
+            Messages.DynamicChartViewPart_Dienstag, Messages.DynamicChartViewPart_Mittwoch, //
+            Messages.DynamicChartViewPart_Donnerstag, Messages.DynamicChartViewPart_Freitag, //
+            Messages.DynamicChartViewPart_Samstag, Messages.DynamicChartViewPart_Sonntag };
 
     private static final Logger LOGGER = Logger.getLogger(DynamicChartViewPart.class);
 
-    public static final String ID = "ch.opentrainingcenter.client.views.ngchart.DynamicChart"; //$NON-NLS-1$
     private FormToolkit toolkit;
     private ScrolledForm form;
 
     private final IDatabaseAccess databaseAccess;
-
+    private final IPreferenceStore store;
     private final OTCCategoryChartViewer chartViewer;
 
     private Section sectionChart;
+    private Section sectionLegende;
 
     private DatePickerCombo dateVon;
-
     private DatePickerCombo dateBis;
 
     private Combo comboFilter;
-
     private Combo comboChartType;
-
     private Button compareWithLastYear;
-
-    private final IPreferenceStore store;
+    private Label labelIconPast;
+    private Label labelTextPast;
+    private Label labelIconNow;
+    private Label labelTextNow;
 
     public DynamicChartViewPart() {
         final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
@@ -130,6 +139,8 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
         addFilterSection(body);
 
         addChartSection(body);
+
+        addLegendeSection(body);
 
         update();
     }
@@ -248,6 +259,47 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
         sectionChart.setClient(container);
     }
 
+    private void addLegendeSection(final Composite body) {
+        sectionLegende = toolkit.createSection(body, FormToolkitSupport.SECTION_STYLE);
+        sectionLegende.setExpanded(false);
+        sectionLegende.setText(Messages.DynamicChartViewPart_Legende);
+
+        final TableWrapData td = new TableWrapData(TableWrapData.FILL_GRAB);
+        td.colspan = 1;
+        td.grabHorizontal = true;
+        td.grabVertical = true;
+        sectionLegende.setLayoutData(td);
+
+        final Composite container = toolkit.createComposite(sectionLegende);
+        GridLayoutFactory.swtDefaults().numColumns(2).applyTo(container);
+        GridDataFactory.swtDefaults().grab(true, true).align(SWT.FILL, SWT.FILL).hint(SWT.DEFAULT, 400).applyTo(container);
+
+        labelIconNow = new Label(container, SWT.NONE);
+        labelTextNow = new Label(container, SWT.NONE);
+
+        labelIconPast = new Label(container, SWT.NONE);
+        labelIconPast.setVisible(false);
+
+        labelTextPast = new Label(container, SWT.NONE);
+        labelTextPast.setVisible(false);
+
+        updateLegende(SimpleTrainingChart.getByIndex(comboChartType.getSelectionIndex()), compareWithLastYear.getSelection());
+
+        sectionLegende.setClient(container);
+    }
+
+    private Image createImage(final Color color) {
+        final Display display = PlatformUI.getWorkbench().getDisplay();
+        final Image image = new Image(display, 32, 32);
+        final GC gc = new GC(image);
+
+        gc.setBackground(color);
+        gc.fillRectangle(new Rectangle(0, 0, 32, 32));
+        gc.dispose();
+
+        return image;
+    }
+
     private void update() {
         LOGGER.info("UPDATE CHART"); //$NON-NLS-1$
         Display.getDefault().asyncExec(new Runnable() {
@@ -261,16 +313,18 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
                 Date start = dateVon.getDate();
                 Date end = dateBis.getDate();
                 if (year) {
-                    final int yStart = new DateTime(start.getTime()).get(DateTimeFieldType.year());
+                    final int yStart = new DateTime(end.getTime()).get(DateTimeFieldType.year());
                     start = TimeHelper.getDate(yStart, 0, 1);
 
                     final int yEnd = new DateTime(end.getTime()).get(DateTimeFieldType.year());
                     end = TimeHelper.getDate(yEnd, 11, 31);
                 }
 
-                final org.joda.time.DateTime dtStart = new org.joda.time.DateTime(start.getTime());
-                final org.joda.time.DateTime dtEnd = new org.joda.time.DateTime(end.getTime());
-                final List<ISimpleTraining> dataPast = getFilteredData(xAxis, dtStart.minusYears(1).toDate(), dtEnd.minusYears(1).toDate());
+                final DateTime dtStart = new DateTime(start.getTime());
+                final DateTime dtEnd = new DateTime(end.getTime());
+                final Date startPast = dtStart.minusYears(1).toDate();
+                final Date endPast = dtEnd.minusYears(1).toDate();
+                final List<ISimpleTraining> dataPast = getFilteredData(xAxis, startPast, endPast);
                 final List<ISimpleTraining> dataNow = getFilteredData(xAxis, start, end);
                 final SimpleTrainingChart chartType = SimpleTrainingChart.getByIndex(comboChartType.getSelectionIndex());
                 final boolean compareLast = compareWithLastYear.getSelection();
@@ -279,8 +333,29 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
                 chartViewer.updateRenderer(xAxis, chartType, compareLast);
                 chartViewer.forceRedraw();
                 sectionChart.setExpanded(true);
+
+                if (SimpleTrainingChart.DISTANZ.equals(chartType)) {
+                    labelIconPast.setImage(createImage(ColorFromPreferenceHelper.getSwtColor(store, PreferenceConstants.CHART_DISTANCE_COLOR_PAST)));
+                    labelIconNow.setImage(createImage(ColorFromPreferenceHelper.getSwtColor(store, PreferenceConstants.CHART_DISTANCE_COLOR)));
+                } else {
+                    labelIconPast.setImage(createImage(ColorFromPreferenceHelper.getSwtColor(store, PreferenceConstants.CHART_HEART_COLOR_PAST)));
+                    labelIconNow.setImage(createImage(ColorFromPreferenceHelper.getSwtColor(store, PreferenceConstants.CHART_HEART_COLOR)));
+                }
+
+                labelTextPast.setText(DATE_FORMAT.format(startPast) + PFEIL + DATE_FORMAT.format(endPast));
+                labelTextNow.setText(DATE_FORMAT.format(dtStart.toDate()) + PFEIL + DATE_FORMAT.format(dtEnd.toDate()));
+
+                labelIconPast.setVisible(compareLast);
+                labelTextPast.setVisible(compareLast);
+
+                sectionLegende.setExpanded(true);
             }
+
         });
+    }
+
+    private void updateLegende(final SimpleTrainingChart chartType, final boolean compareLast) {
+
     }
 
     private List<ISimpleTraining> getFilteredData(final XAxisChart chartSerieType, final Date start, final Date end) {

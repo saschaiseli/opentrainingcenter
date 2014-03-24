@@ -163,6 +163,14 @@ public final class Messages extends NLS {
     public static String DynamicChartViewPart_7;
     public static String DynamicChartViewPart_8;
     public static String DynamicChartViewPart_9;
+    public static String DynamicChartViewPart_Dienstag;
+    public static String DynamicChartViewPart_Donnerstag;
+    public static String DynamicChartViewPart_Freitag;
+    public static String DynamicChartViewPart_Legende;
+    public static String DynamicChartViewPart_Mittwoch;
+    public static String DynamicChartViewPart_Montag;
+    public static String DynamicChartViewPart_Samstag;
+    public static String DynamicChartViewPart_Sonntag;
     public static String HealthDialog_0;
     public static String HealthDialog_1;
     public static String HealthDialog_3;
