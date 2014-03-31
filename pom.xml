@@ -81,7 +81,7 @@
 		<module>ch.opentrainingcenter.route.tests</module>
 		
 	</modules>
-
+<!--
 	<profiles>
 		<profile>
 			<id>e37</id>
@@ -90,7 +90,7 @@
 			</properties>
 		</profile>
 	</profiles>
-
+-->
 	<build>
 		<plugins>
 			<plugin>
@@ -116,9 +116,9 @@
 				<artifactId>target-platform-configuration</artifactId>
 				<version>${tycho.version}</version>
 				<configuration>
-					<resolver>p2</resolver>
+					<!-- <resolver>p2</resolver> -->
 					<environments>
-<!--
+
 						<environment>
 							<os>linux</os>
 							<ws>gtk</ws>
@@ -154,7 +154,7 @@
 							<ws>win32</ws>
 							<arch>x86_64</arch>
 						</environment>
--->
+
 					</environments>
 				</configuration>
 			</plugin>
