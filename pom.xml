@@ -10,10 +10,7 @@
 
 	<properties>
 		<tycho.version>0.19.0</tycho.version>
-		<eclipse-repository-url>http://download.eclipse.org/releases/indigo</eclipse-repository-url>
-<!--
-http://download.eclipse.org/eclipse/updates/3.7</eclipse-repository-url>
--->
+		<eclipse-repository-url>http://download.eclipse.org/eclipse/updates/3.7</eclipse-repository-url>
 		<sonar.host.url>http://localhost:9000</sonar.host.url>
 		<sonar.dynamicAnalysis>true</sonar.dynamicAnalysis>
 		<sonar.phase>generate-sources</sonar.phase>
@@ -121,6 +118,7 @@ http://download.eclipse.org/eclipse/updates/3.7</eclipse-repository-url>
 				<configuration>
 					<resolver>p2</resolver>
 					<environments>
+<!--
 						<environment>
 							<os>linux</os>
 							<ws>gtk</ws>
@@ -131,7 +129,6 @@ http://download.eclipse.org/eclipse/updates/3.7</eclipse-repository-url>
 							<ws>gtk</ws>
 							<arch>x86</arch>
 						</environment>
-<!--
 						<environment>
 							<os>macosx</os>
 							<ws>carbon</ws>
