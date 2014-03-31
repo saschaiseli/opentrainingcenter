@@ -77,6 +77,7 @@ public class CategoryHelperTest {
     private void assertMonth(final int month, final String monat) {
         final Calendar cal = Calendar.getInstance(Locale.GERMAN);
         cal.set(Calendar.MONTH, month);
+        cal.set(Calendar.DAY_OF_MONTH, 10);
         // execute
         final String category = CategoryHelper.getCategory(cal.getTime(), XAxisChart.MONTH);
         // assert
