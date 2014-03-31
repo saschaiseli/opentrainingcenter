@@ -40,6 +40,8 @@
 	</repositories>
 
 	<modules>
+		<module>ch.opentrainingcenter.feature</module>
+		<!-- Produktiver Code
 		<module>ch.opentrainingcenter.product</module>
 		<module>ch.opentrainingcenter.client</module>
 		<module>ch.opentrainingcenter.charts</module>
@@ -64,7 +66,8 @@
 		<module>jodatime</module>
 		<module>logging</module>
 		<module>org.hibernate</module>
-		<!-- Tests -->
+		-->
+		<!-- Tests 
 		<module>junit</module>
 		<module>mockito</module>
 		<module>ch.opentrainingcenter.client.tests</module>
@@ -72,11 +75,11 @@
 		<module>ch.opentrainingcenter.charts.tests</module>
 		<module>ch.opentrainingcenter.db.tests</module>
 		<module>ch.opentrainingcenter.database.tests</module>
-		<!--<module>ch.opentrainingcenter.db.postgres.tests</module -->
 		<module>ch.opentrainingcenter.importer.tcx.tests</module>
 		<module>ch.opentrainingcenter.importer.gpx.tests</module>
 		<module>ch.opentrainingcenter.model.tests</module>
 		<module>ch.opentrainingcenter.route.tests</module>
+		-->
 	</modules>
 
 	<profiles>
@@ -125,6 +128,7 @@
 							<ws>gtk</ws>
 							<arch>x86</arch>
 						</environment>
+<!--
 						<environment>
 							<os>macosx</os>
 							<ws>carbon</ws>
@@ -150,6 +154,7 @@
 							<ws>win32</ws>
 							<arch>x86_64</arch>
 						</environment>
+-->
 					</environments>
 				</configuration>
 			</plugin>
