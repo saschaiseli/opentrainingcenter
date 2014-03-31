@@ -10,7 +10,9 @@
 
 	<properties>
 		<tycho.version>0.19.0</tycho.version>
+<!--
 		<eclipse-repository-url>http://download.eclipse.org/eclipse/updates/3.7</eclipse-repository-url>
+-->
 		<sonar.host.url>http://localhost:9000</sonar.host.url>
 		<sonar.dynamicAnalysis>true</sonar.dynamicAnalysis>
 		<sonar.phase>generate-sources</sonar.phase>
@@ -41,7 +43,7 @@
 
 	<modules>
 		<module>ch.opentrainingcenter.feature</module>
-		<!-- Produktiver Code -->
+		<!-- Produktiver Code 
 		<module>ch.opentrainingcenter.product</module>
 		<module>ch.opentrainingcenter.client</module>
 		<module>ch.opentrainingcenter.charts</module>
@@ -66,8 +68,8 @@
 		<module>jodatime</module>
 		<module>logging</module>
 		<module>org.hibernate</module>
-		
-		<!-- Tests -->
+		-->
+		<!-- Tests 
 		<module>junit</module>
 		<module>mockito</module>
 		<module>ch.opentrainingcenter.client.tests</module>
@@ -79,7 +81,7 @@
 		<module>ch.opentrainingcenter.importer.gpx.tests</module>
 		<module>ch.opentrainingcenter.model.tests</module>
 		<module>ch.opentrainingcenter.route.tests</module>
-		
+		-->
 	</modules>
 <!--
 	<profiles>
@@ -115,10 +117,10 @@
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>target-platform-configuration</artifactId>
 				<version>${tycho.version}</version>
-				<configuration>
-					<!-- <resolver>p2</resolver> -->
-					<environments>
 
+				<configuration>
+					<!-- <resolver>p2</resolver>  -->
+					<environments>
 						<environment>
 							<os>linux</os>
 							<ws>gtk</ws>
@@ -154,7 +156,6 @@
 							<ws>win32</ws>
 							<arch>x86_64</arch>
 						</environment>
-
 					</environments>
 				</configuration>
 			</plugin>
