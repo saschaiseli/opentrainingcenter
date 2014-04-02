@@ -5,7 +5,7 @@
 
 	<groupId>ch.opentrainingcenter</groupId>
 	<artifactId>opentrainingcenter</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<properties>
@@ -43,7 +43,7 @@
 
 	<modules>
 		<module>ch.opentrainingcenter.feature</module>
-		<!-- Produktiver Code 
+		<!-- Produktiver Code -->
 		<module>ch.opentrainingcenter.product</module>
 		<module>ch.opentrainingcenter.client</module>
 		<module>ch.opentrainingcenter.charts</module>
@@ -68,8 +68,8 @@
 		<module>jodatime</module>
 		<module>logging</module>
 		<module>org.hibernate</module>
-		-->
-		<!-- Tests 
+		
+		<!-- Tests -->
 		<module>junit</module>
 		<module>mockito</module>
 		<module>ch.opentrainingcenter.client.tests</module>
@@ -81,7 +81,6 @@
 		<module>ch.opentrainingcenter.importer.gpx.tests</module>
 		<module>ch.opentrainingcenter.model.tests</module>
 		<module>ch.opentrainingcenter.route.tests</module>
-		-->
 	</modules>
 <!--
 	<profiles>
@@ -109,17 +108,17 @@
 				</configuration>
 			</plugin>
 			<plugin>
-		        <groupId>org.codehaus.mojo</groupId>
-		        <artifactId>sonar-maven-plugin</artifactId>
-		        <version>2.2</version>
-      		</plugin>
+		        	<groupId>org.codehaus.mojo</groupId>
+		        	<artifactId>sonar-maven-plugin</artifactId>
+		        	<version>2.2</version>
+      			</plugin>
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>target-platform-configuration</artifactId>
 				<version>${tycho.version}</version>
 
 				<configuration>
-					<!-- <resolver>p2</resolver>  -->
+					<resolver>p2</resolver>
 					<environments>
 						<environment>
 							<os>linux</os>
