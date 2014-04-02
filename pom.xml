@@ -42,45 +42,45 @@
 	</repositories>
 
 	<modules>
-		<module>../ch.opentrainingcenter.feature</module>
+		<module>ch.opentrainingcenter.feature</module>
 		<!-- Produktiver Code -->
-		<module>../ch.opentrainingcenter.product</module>
-		<module>../ch.opentrainingcenter.client</module>
-		<module>../ch.opentrainingcenter.charts</module>
-		<module>../ch.opentrainingcenter.core</module>
-		<module>../ch.opentrainingcenter.model</module>
-		<module>../ch.opentrainingcenter.database</module>
-		<module>../ch.opentrainingcenter.db</module>
-		<module>../ch.opentrainingcenter.db.postgres</module>
-		<module>../ch.opentrainingcenter.db.oracle</module>
-		<module>../ch.opentrainingcenter.i18n</module>
-		<module>../ch.opentrainingcenter.importer.tcx</module>
-		<module>../ch.opentrainingcenter.importer.gpx</module>
-		<module>../ch.opentrainingcenter.tcx</module>
-		<module>../ch.opentrainingcenter.transfer</module>
-		<module>../ch.opentrainingcenter.route</module>
-		<module>../com.eclipsesource.widgets.gmaps</module>
-		<module>../h2</module>
-		<module>../postgres</module>
-		<module>../oracle14</module>
-		<module>../geocalc</module>
-		<module>../jfreechart</module>
-		<module>../jodatime</module>
-		<module>../logging</module>
-		<module>../org.hibernate</module>
+		<module>ch.opentrainingcenter.product</module>
+		<module>ch.opentrainingcenter.client</module>
+		<module>ch.opentrainingcenter.charts</module>
+		<module>ch.opentrainingcenter.core</module>
+		<module>ch.opentrainingcenter.model</module>
+		<module>ch.opentrainingcenter.database</module>
+		<module>ch.opentrainingcenter.db</module>
+		<module>ch.opentrainingcenter.db.postgres</module>
+		<module>ch.opentrainingcenter.db.oracle</module>
+		<module>ch.opentrainingcenter.i18n</module>
+		<module>ch.opentrainingcenter.importer.tcx</module>
+		<module>ch.opentrainingcenter.importer.gpx</module>
+		<module>ch.opentrainingcenter.tcx</module>
+		<module>ch.opentrainingcenter.transfer</module>
+		<module>ch.opentrainingcenter.route</module>
+		<module>com.eclipsesource.widgets.gmaps</module>
+		<module>h2</module>
+		<module>postgres</module>
+		<module>oracle14</module>
+		<module>geocalc</module>
+		<module>jfreechart</module>
+		<module>jodatime</module>
+		<module>logging</module>
+		<module>org.hibernate</module>
 		
 		<!-- Tests -->
-		<module>../junit</module>
-		<module>../mockito</module>
-		<module>../ch.opentrainingcenter.client.tests</module>
-		<module>../ch.opentrainingcenter.core.tests</module>
-		<module>../ch.opentrainingcenter.charts.tests</module>
-		<module>../ch.opentrainingcenter.db.tests</module>
-		<module>../ch.opentrainingcenter.database.tests</module>
-		<module>../ch.opentrainingcenter.importer.tcx.tests</module>
-		<module>../ch.opentrainingcenter.importer.gpx.tests</module>
-		<module>../ch.opentrainingcenter.model.tests</module>
-		<module>../ch.opentrainingcenter.route.tests</module>
+		<module>junit</module>
+		<module>mockito</module>
+		<module>ch.opentrainingcenter.client.tests</module>
+		<module>ch.opentrainingcenter.core.tests</module>
+		<module>ch.opentrainingcenter.charts.tests</module>
+		<module>ch.opentrainingcenter.db.tests</module>
+		<module>ch.opentrainingcenter.database.tests</module>
+		<module>ch.opentrainingcenter.importer.tcx.tests</module>
+		<module>ch.opentrainingcenter.importer.gpx.tests</module>
+		<module>ch.opentrainingcenter.model.tests</module>
+		<module>ch.opentrainingcenter.route.tests</module>
 	</modules>
 <!--
 	<profiles>
