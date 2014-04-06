@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 04.04.2013 20:38:06 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+	<class name="ch.opentrainingcenter.transfer.impl.LapInfo"
+		table="LAPINFO">
+		<id name="id" type="int">
+			<column name="ID" />
+			<generator class="sequence">
+				<param name="sequence">lapinfo_id_sequence</param>
+			</generator>
+		</id>
+		<property name="time" type="java.lang.Long">
+			<column name="TIME" />
+		</property>
+		<property name="distance" type="java.lang.Integer">
+			<column name="DISTANCE" />
+		</property>
+		<property name="heartBeat" type="java.lang.Integer">
+			<column name="HEARTBEAT" />
+		</property>
+		<property name="pace" type="java.lang.Double">
+			<column name="PACE" precision="17" scale="0" />
+		</property>
+		<property name="lap" type="java.lang.Integer">
+			<column name="LAP" />
+		</property>
+		<many-to-one name="training"
+			class="ch.opentrainingcenter.transfer.impl.Training" fetch="join"
+			insert="true" not-null="true">
+			<column name="ID_TRAINING" />
+		</many-to-one>
+	</class>
+</hibernate-mapping>

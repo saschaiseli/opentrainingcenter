@@ -44,6 +44,7 @@ public class ConnectionConfig implements IConnectionConfig {
             configuration.addResource("Streckenpunkte.hbm.xml", this.getClass().getClassLoader());
             configuration.addResource("Planungwoche.hbm.xml", this.getClass().getClassLoader());
             configuration.addResource("Route.hbm.xml", this.getClass().getClassLoader());
+            configuration.addResource("LapInfo.hbm.xml", this.getClass().getClassLoader());
             LOG.info("Hibernate Config: show_sql=" + configuration.getProperty("hibernate.show_sql"));
             LOG.info("Hibernate Config: format_sql=" + configuration.getProperty("hibernate.format_sql"));
             LOG.info("Hibernate Config: pool_size=" + configuration.getProperty("hibernate.pool_size"));

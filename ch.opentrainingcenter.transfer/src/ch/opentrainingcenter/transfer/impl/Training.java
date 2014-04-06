@@ -1,10 +1,12 @@
 package ch.opentrainingcenter.transfer.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import ch.opentrainingcenter.transfer.IAthlete;
+import ch.opentrainingcenter.transfer.ILapInfo;
 import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITrackPointProperty;
 import ch.opentrainingcenter.transfer.ITraining;
@@ -34,11 +36,12 @@ public class Training implements java.io.Serializable, ITraining {
     private IRoute route;
     private IWeather weather;
 
-    private List<ITrackPointProperty> trackPoints = new ArrayList<ITrackPointProperty>();
+    private List<ITrackPointProperty> trackPoints = new ArrayList<>();
     private Date dateOfImport;
     private String fileName;
     private Integer upMeter;
     private Integer downMeter;
+    private List<ILapInfo> lapInfos = new ArrayList<>();
 
     public Training() {
     }
@@ -232,5 +235,15 @@ public class Training implements java.io.Serializable, ITraining {
     @Override
     public void setDownMeter(final Integer downMeter) {
         this.downMeter = downMeter;
+    }
+
+    @Override
+    public List<ILapInfo> getLapInfos() {
+        return Collections.unmodifiableList(lapInfos);
+    }
+
+    @Override
+    public void setLapInfos(final List<ILapInfo> lapInfos) {
+        this.lapInfos = lapInfos;
     }
 }

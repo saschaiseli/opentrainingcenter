@@ -70,6 +70,10 @@ public interface ITraining {
 
     void setTrackPoints(final List<ITrackPointProperty> trackPoints);
 
+    List<ILapInfo> getLapInfos();
+
+    void setLapInfos(final List<ILapInfo> lapInfos);
+
     ITrainingType getTrainingType();
 
     void setTrainingType(ITrainingType type);

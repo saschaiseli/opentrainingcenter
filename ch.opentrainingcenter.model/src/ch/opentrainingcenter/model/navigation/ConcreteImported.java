@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import ch.opentrainingcenter.core.helper.TimeHelper;
+import ch.opentrainingcenter.transfer.ILapInfo;
 import ch.opentrainingcenter.transfer.ITrackPointProperty;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.IWeather;
@@ -161,5 +162,15 @@ public class ConcreteImported extends ImportedDecorator implements INavigationIt
     @Override
     public void setDownMeter(final Integer downMeter) {
         training.setDownMeter(downMeter);
+    }
+
+    @Override
+    public List<ILapInfo> getLapInfos() {
+        return training.getLapInfos();
+    }
+
+    @Override
+    public void setLapInfos(final List<ILapInfo> lapInfos) {
+        training.setLapInfos(lapInfos);
     }
 }

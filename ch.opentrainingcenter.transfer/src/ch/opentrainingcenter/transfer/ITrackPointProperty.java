@@ -1,7 +1,8 @@
 package ch.opentrainingcenter.transfer;
 
 /**
- * Eigenschaften eines Punktes. Distanz zum Start, Herzschlag, Höhe, Zeit
+ * Eigenschaften eines Punktes. Distanz zum Start, Herzschlag, Höhe, Zeit, in
+ * welcher Runde,....
  * 
  * @author sascha
  * 
