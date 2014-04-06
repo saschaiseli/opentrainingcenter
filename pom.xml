@@ -42,7 +42,9 @@
 	</repositories>
 
 	<modules>
+                <!--
 		<module>ch.opentrainingcenter.feature</module>
+                -->
 		<!-- Produktiver Code -->
 		<module>ch.opentrainingcenter.product</module>
 		<module>ch.opentrainingcenter.client</module>
