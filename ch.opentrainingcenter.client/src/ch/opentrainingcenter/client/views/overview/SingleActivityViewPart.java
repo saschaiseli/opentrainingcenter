@@ -1,6 +1,9 @@
 package ch.opentrainingcenter.client.views.overview;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -14,6 +17,8 @@ import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTError;
 import org.eclipse.swt.SWTException;
@@ -28,6 +33,8 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -49,6 +56,7 @@ import ch.opentrainingcenter.core.cache.Cache;
 import ch.opentrainingcenter.core.cache.IRecordListener;
 import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
+import ch.opentrainingcenter.core.helper.DistanceHelper;
 import ch.opentrainingcenter.core.helper.TimeHelper;
 import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
@@ -58,6 +66,7 @@ import ch.opentrainingcenter.model.strecke.StreckeModelComparator;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
 import ch.opentrainingcenter.model.training.Wetter;
 import ch.opentrainingcenter.transfer.IAthlete;
+import ch.opentrainingcenter.transfer.ILapInfo;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
 
@@ -77,17 +86,15 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
     private final ChartFactory factory;
     private IRecordListener<StreckeModel> streckeListener;
     private final IDatabaseAccess databaseAccess;
+    private final List<ILapInfo> lapInfos;
 
     public SingleActivityViewPart() {
         final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
         databaseAccess = service.getDatabaseAccess();
         final ApplicationContext context = ApplicationContext.getApplicationContext();
         final Long selectedId = context.getSelectedId();
-        // if (cache.get(selectedId) == null) {
         training = databaseAccess.getTrainingById(selectedId);
-        // } else {
-        // training = cache.get(selectedId);
-        // }
+        lapInfos = training.getLapInfos();
         final IAthlete athlete = context.getAthlete();
         simpleTraining = ModelFactory.convertToSimpleTraining(training);
 
@@ -118,25 +125,147 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         addOverviewSection(body);
         long time2 = DateTime.now().getMillis();
         LOGGER.debug(String.format("Zeit zum Laden von Overview: %s [ms]", time2 - time1)); //$NON-NLS-1$
+
         addNoteSection(body);
         time1 = DateTime.now().getMillis();
         LOGGER.debug(String.format("Zeit zum Laden von addNoteSection: %s [ms]", time1 - time2)); //$NON-NLS-1$
+
+        if (lapInfos.size() > 1) {
+            addLapSection(body);
+        }
+
         if (!training.getTrackPoints().isEmpty()) {
             addMapSection(body);
         }
         time2 = DateTime.now().getMillis();
         LOGGER.debug(String.format("Zeit zum Laden von addMapSection: %s [ms]", time2 - time1)); //$NON-NLS-1$
+
         addHeartSection(body);
         time1 = DateTime.now().getMillis();
         LOGGER.debug(String.format("Zeit zum Laden von addHeartSection: %s [ms]", time1 - time2)); //$NON-NLS-1$
+
         addSpeedSection(body);
         time2 = DateTime.now().getMillis();
         LOGGER.debug(String.format("Zeit zum Laden von addSpeedSection: %s [ms]", time2 - time1)); //$NON-NLS-1$
+
         addAltitudeSection(body);
         time1 = DateTime.now().getMillis();
         LOGGER.debug(String.format("Zeit zum Laden von addAltitudeSection: %s [ms]", time1 - time2)); //$NON-NLS-1$
 
         getSite().setSelectionProvider(this);
+    }
+
+    private void addLapSection(final Composite body) {
+
+        final Section lapSection = toolkit.createSection(body, FormToolkitSupport.SECTION_STYLE);
+        lapSection.setExpanded(true);
+        final TableWrapData tableWrapData = new TableWrapData(TableWrapData.FILL_GRAB);
+        tableWrapData.colspan = 2;
+        tableWrapData.grabHorizontal = true;
+        tableWrapData.grabVertical = true;
+        tableWrapData.maxHeight = 270;
+        lapSection.setLayoutData(tableWrapData);
+
+        lapSection.setText(Messages.RUNDEN);
+        lapSection.setDescription(Messages.DETAIL_RUNDEN);
+
+        final Composite client = toolkit.createComposite(lapSection);
+        final TableWrapLayout layout = new TableWrapLayout();
+        layout.numColumns = 1;
+        layout.makeColumnsEqualWidth = false;
+        client.setLayout(layout);
+
+        final TableWrapData clientLayoutData = new TableWrapData(TableWrapData.FILL_GRAB);
+        clientLayoutData.maxHeight = 270;
+        clientLayoutData.grabHorizontal = true;
+        clientLayoutData.grabVertical = true;
+        client.setLayoutData(clientLayoutData);
+
+        final TableViewer viewer = new TableViewer(client, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
+        createLapColumns(viewer);
+        final Table table = viewer.getTable();
+        table.setHeaderVisible(true);
+        table.setLinesVisible(true);
+
+        viewer.setContentProvider(new ArrayContentProvider());
+        final List<ILapInfo> input = new ArrayList<>(training.getLapInfos());
+        Collections.sort(input, new Comparator<ILapInfo>() {
+
+            @Override
+            public int compare(final ILapInfo o1, final ILapInfo o2) {
+                return Integer.compare(o1.getLap(), o2.getLap());
+            }
+        });
+        viewer.setInput(input);
+        viewer.refresh();
+        viewer.getControl().setLayoutData(clientLayoutData);
+        lapSection.setClient(client);
+    }
+
+    private void createLapColumns(final TableViewer tableViewer) {
+        final String[] titles = { Messages.RUNDE, Messages.ZEIT, Messages.DISTANZ, Messages.PACE, Messages.HERZFREQUENZ };
+        final int[] bounds = { 60, 100, 100, 100, 100 };
+
+        // Runde
+        TableViewerColumn col = createTableViewerColumn(titles[0], bounds[0], tableViewer);
+        col.setLabelProvider(new LapInfoColumnLabelProvider() {
+
+            @Override
+            public String getLapInfoText(final ILapInfo lapInfo) {
+                return String.valueOf(lapInfo.getLap());
+            }
+        });
+
+        // Zeit
+        col = createTableViewerColumn(titles[1], bounds[1], tableViewer);
+        col.setLabelProvider(new LapInfoColumnLabelProvider() {
+
+            @Override
+            public String getLapInfoText(final ILapInfo lapInfo) {
+                return TimeHelper.convertSecondsToHumanReadableZeit(lapInfo.getTime() / 1000);
+            }
+        });
+
+        // distanz
+        col = createTableViewerColumn(titles[2], bounds[2], tableViewer);
+        col.setLabelProvider(new LapInfoColumnLabelProvider() {
+
+            @Override
+            public String getLapInfoText(final ILapInfo lapInfo) {
+                return DistanceHelper.roundDistanceFromMeterToKm(lapInfo.getDistance());
+            }
+        });
+
+        // pace
+        col = createTableViewerColumn(titles[3], bounds[3], tableViewer);
+        col.setLabelProvider(new LapInfoColumnLabelProvider() {
+
+            @Override
+            public String getLapInfoText(final ILapInfo lapInfo) {
+                return lapInfo.getPace();
+            }
+        });
+
+        // Herzfrequenz
+        col = createTableViewerColumn(titles[4], bounds[4], tableViewer);
+        col.setLabelProvider(new LapInfoColumnLabelProvider() {
+
+            @Override
+            public String getLapInfoText(final ILapInfo lapInfo) {
+                return String.valueOf(lapInfo.getHeartBeat());
+            }
+        });
+    }
+
+    private TableViewerColumn createTableViewerColumn(final String title, final int bound, final TableViewer viewer) {
+        final TableViewerColumn viewerColumn = new TableViewerColumn(viewer, SWT.NONE);
+        final TableColumn column = viewerColumn.getColumn();
+        column.setText(title);
+        column.setWidth(bound);
+        column.setResizable(true);
+        column.setMoveable(true);
+        return viewerColumn;
+
     }
 
     @Override

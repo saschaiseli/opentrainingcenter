@@ -29,7 +29,7 @@ public class LapInfo implements ILapInfo {
     private int distance;
     private long time;
     private int heartBeat;
-    private double pace;
+    private String pace;
     private ITraining training;
 
     @Override
@@ -83,12 +83,12 @@ public class LapInfo implements ILapInfo {
     }
 
     @Override
-    public double getPace() {
+    public String getPace() {
         return pace;
     }
 
     @Override
-    public void setPace(final double pace) {
+    public void setPace(final String pace) {
         this.pace = pace;
     }
 

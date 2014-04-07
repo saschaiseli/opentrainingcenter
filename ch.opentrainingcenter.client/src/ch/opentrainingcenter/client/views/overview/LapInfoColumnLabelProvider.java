@@ -17,53 +17,17 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package ch.opentrainingcenter.transfer;
+package ch.opentrainingcenter.client.views.overview;
 
-/**
- * Infos ueber eine Runde.
- */
-public interface ILapInfo {
+import org.eclipse.jface.viewers.ColumnLabelProvider;
 
-    int getId();
+import ch.opentrainingcenter.transfer.ILapInfo;
 
-    void setId(int id);
+abstract class LapInfoColumnLabelProvider extends ColumnLabelProvider {
+    @Override
+    public String getText(final Object element) {
+        return getLapInfoText((ILapInfo) element);
+    }
 
-    /**
-     * @return die Nummer der Runde (1. Runde ist 0)
-     */
-    int getLap();
-
-    void setLap(int lap);
-
-    /**
-     * @return Distanz in Meter
-     */
-    int getDistance();
-
-    void setDistance(int distance);
-
-    /**
-     * @return Zeit in Millisekunden
-     */
-    long getTime();
-
-    void setTime(long time);
-
-    /**
-     * @return durchschnittliche Herzfrequenz
-     */
-    int getHeartBeat();
-
-    void setHeartBeat(int heartBeat);
-
-    /**
-     * @return durchschnittliche Pace
-     */
-    String getPace();
-
-    void setPace(String string);
-
-    ITraining getTraining();
-
-    void setTraining(ITraining training);
+    abstract String getLapInfoText(final ILapInfo lapInfo);
 }

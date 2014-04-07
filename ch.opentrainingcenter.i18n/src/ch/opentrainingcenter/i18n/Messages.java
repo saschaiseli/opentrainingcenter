@@ -152,6 +152,8 @@ public final class Messages extends NLS {
     public static String DbContributeItem_0;
     public static String DBSTATE_5;
     public static String DeleteImportedRecord0;
+    public static String DETAIL_RUNDEN;
+    public static String DISTANZ;
     public static String DynamicChartViewPart_0;
     public static String DynamicChartViewPart_1;
     public static String DynamicChartViewPart_10;
@@ -206,6 +208,7 @@ public final class Messages extends NLS {
     public static String InitialLoadRunnable_5;
     public static String InitialLoadRunnable_6;
     public static String InitialLoadRunnable_7;
+    public static String InitialLoadRunnable_BERECHNE_RUNDEN;
     public static String MapConverter0;
     public static String MapConverter1;
     public static String MonthlyOverview_0;
@@ -453,8 +456,12 @@ public final class Messages extends NLS {
     public static String RoutenView_7;
     public static String RoutenView_8;
     public static String RoutenView_9;
+    public static String RUNDE;
+    public static String RUNDEN;
     public static String HEAVYRAIN;
+    public static String HERZFREQUENZ;
     public static String LIGHTSNOW;
+    public static String PACE;
     public static String PlanungFutureViewer_0;
     public static String PlanungFutureViewer_1;
     public static String PlanungFutureViewer_2;
@@ -487,6 +494,7 @@ public final class Messages extends NLS {
     public static String RunType3;
     public static String RunType4;
     public static String RunType5;
+    public static String ZEIT;
     static {
         // initialize resource bundle
         NLS.initializeMessages(BUNDLENAME, Messages.class);

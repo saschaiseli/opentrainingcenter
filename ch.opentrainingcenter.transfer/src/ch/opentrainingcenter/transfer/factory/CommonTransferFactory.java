@@ -7,6 +7,7 @@ import org.joda.time.DateTime;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IHealth;
+import ch.opentrainingcenter.transfer.ILapInfo;
 import ch.opentrainingcenter.transfer.IPlanungWoche;
 import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.IStreckenPunkt;
@@ -16,6 +17,7 @@ import ch.opentrainingcenter.transfer.ITrainingType;
 import ch.opentrainingcenter.transfer.IWeather;
 import ch.opentrainingcenter.transfer.impl.Athlete;
 import ch.opentrainingcenter.transfer.impl.Health;
+import ch.opentrainingcenter.transfer.impl.LapInfo;
 import ch.opentrainingcenter.transfer.impl.Planungwoche;
 import ch.opentrainingcenter.transfer.impl.Route;
 import ch.opentrainingcenter.transfer.impl.Streckenpunkte;
@@ -154,5 +156,9 @@ public final class CommonTransferFactory {
     public static ITrackPointProperty createTrackPointProperty(final double distance, final int heartbeat, final int altitude, final long time, final int lap,
             final IStreckenPunkt streckenPunkt) {
         return new Tracktrainingproperty(distance, heartbeat, altitude, time, lap, streckenPunkt);
+    }
+
+    public static ILapInfo createLapInfo() {
+        return new LapInfo();
     }
 }

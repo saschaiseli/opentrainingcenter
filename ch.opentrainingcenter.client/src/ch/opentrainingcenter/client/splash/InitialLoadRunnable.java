@@ -1,7 +1,10 @@
 package ch.opentrainingcenter.client.splash;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -19,6 +22,8 @@ import ch.opentrainingcenter.core.cache.ICache;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.helper.AltitudeCalculator;
 import ch.opentrainingcenter.core.helper.AltitudeCalculator.Ascending;
+import ch.opentrainingcenter.core.helper.DistanceHelper;
+import ch.opentrainingcenter.core.helper.TimeHelper;
 import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.model.ModelFactory;
@@ -28,9 +33,12 @@ import ch.opentrainingcenter.model.planing.IPlanungModel;
 import ch.opentrainingcenter.model.strecke.StreckeModel;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IHealth;
+import ch.opentrainingcenter.transfer.ILapInfo;
 import ch.opentrainingcenter.transfer.IPlanungWoche;
 import ch.opentrainingcenter.transfer.IRoute;
+import ch.opentrainingcenter.transfer.ITrackPointProperty;
 import ch.opentrainingcenter.transfer.ITraining;
+import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
 
 public class InitialLoadRunnable implements IRunnableWithProgress {
 
@@ -43,7 +51,7 @@ public class InitialLoadRunnable implements IRunnableWithProgress {
         databaseAccess = service.getDatabaseAccess();
         final IAthlete athlete = ApplicationContext.getApplicationContext().getAthlete();
         if (athlete != null) {
-            loadFirstRecords(monitor, athlete, databaseAccess);
+            loadAllTrainings(monitor, athlete, databaseAccess);
             loadAllHealths(monitor, athlete, databaseAccess);
             loadAllPlaene(monitor, athlete, databaseAccess);
             loadAllRouten(monitor, athlete, databaseAccess);
@@ -52,7 +60,7 @@ public class InitialLoadRunnable implements IRunnableWithProgress {
         loadAllAthleten(monitor, databaseAccess);
     }
 
-    private void loadFirstRecords(final IProgressMonitor monitor, final IAthlete athlete, final IDatabaseAccess db) {
+    private void loadAllTrainings(final IProgressMonitor monitor, final IAthlete athlete, final IDatabaseAccess db) {
         monitor.subTask(Messages.InitialLoadRunnable_0);
         db.getAllTrainings(athlete);
     }
@@ -111,6 +119,8 @@ public class InitialLoadRunnable implements IRunnableWithProgress {
 
         final IRoute defaultRoute = db.getRoute(Messages.OTCKonstanten_0, athlete);
         setDefaultStrecke(monitor, db, trainings, defaultRoute);
+
+        calculateLapInfos(monitor, db, trainings);
     }
 
     private void setDefaultStrecke(final IProgressMonitor monitor, final IDatabaseAccess db, final List<ITraining> trainings, final IRoute defaultRoute) {
@@ -142,5 +152,68 @@ public class InitialLoadRunnable implements IRunnableWithProgress {
                 i++;
             }
         }
+    }
+
+    private void calculateLapInfos(final IProgressMonitor monitor, final IDatabaseAccess db, final List<ITraining> trainings) {
+        for (final ITraining training : trainings) {
+            if (training.getLapInfos().isEmpty()) {
+                // lapinfos sind leer
+                final List<ITrackPointProperty> trackPoints = training.getTrackPoints();
+                if (hasMoreThanOneLap(trackPoints)) {
+                    LOG.info(String.format("Berechne Runden von Track vom %s", TimeHelper.convertDateToString(training.getDatum()))); //$NON-NLS-1$
+                    monitor.subTask(NLS.bind(Messages.InitialLoadRunnable_BERECHNE_RUNDEN, TimeHelper.convertDateToString(training.getDatum())));
+                    final Map<Integer, List<ITrackPointProperty>> perRound = new HashMap<>();
+                    for (final ITrackPointProperty point : trackPoints) {
+                        final Integer key = Integer.valueOf(point.getLap());
+                        if (!perRound.containsKey(key)) {
+                            perRound.put(point.getLap(), new ArrayList<ITrackPointProperty>());
+                        }
+                        perRound.get(key).add(point);
+                    }
+                    if (perRound.size() > 1) {
+                        final List<ILapInfo> lapInfos = new ArrayList<>();
+                        for (final Map.Entry<Integer, List<ITrackPointProperty>> entry : perRound.entrySet()) {
+                            lapInfos.add(createLapInfo(entry.getValue()));
+                        }
+                        training.setLapInfos(lapInfos);
+                        db.saveOrUpdate(training);
+                    }
+                } else {
+                    LOG.info(String.format("KEINE Runden von Track vom %s", TimeHelper.convertDateToString(training.getDatum()))); //$NON-NLS-1$
+                }
+            }
+        }
+    }
+
+    private boolean hasMoreThanOneLap(final List<ITrackPointProperty> trackPoints) {
+        return trackPoints.size() > 0 && trackPoints.get(trackPoints.size() - 1).getLap() > 1;
+    }
+
+    private ILapInfo createLapInfo(final List<ITrackPointProperty> points) {
+        final ILapInfo result = CommonTransferFactory.createLapInfo();
+        int heart = 0;
+        for (final ITrackPointProperty point : points) {
+            heart += point.getHeartBeat();
+        }
+        result.setHeartBeat(heart / points.size());
+        final ITrackPointProperty firstPoint = points.get(0);
+        final ITrackPointProperty lastPoint = points.get(points.size() - 1);
+
+        result.setLap(firstPoint.getLap());
+
+        final int startDist = (int) firstPoint.getDistance();
+        final int endDist = (int) lastPoint.getDistance();
+        final int distance = endDist - startDist;
+        result.setDistance(distance);
+
+        final long startTime = firstPoint.getZeit();
+        final long endTime = lastPoint.getZeit();
+        final long time = endTime - startTime;
+        result.setTime(time);
+
+        result.setPace(DistanceHelper.calculatePace(distance, time / 1000));
+
+        result.setTraining(firstPoint.getTraining());
+        return result;
     }
 }
