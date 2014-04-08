@@ -33,18 +33,17 @@
 
    <vm>
    </vm>
-
-   <plugins>
+<plugins>
       <plugin id="ch.opentrainingcenter.charts"/>
       <plugin id="ch.opentrainingcenter.client"/>
       <plugin id="ch.opentrainingcenter.core"/>
-      <plugin id="ch.opentrainingcenter.database"/>
       <plugin id="ch.opentrainingcenter.db"/>
-      <plugin id="ch.opentrainingcenter.db.oracle"/>
+      <plugin id="ch.opentrainingcenter.database"/>
       <plugin id="ch.opentrainingcenter.db.postgres"/>
+      <plugin id="ch.opentrainingcenter.db.oracle"/>
       <plugin id="ch.opentrainingcenter.i18n"/>
-      <plugin id="ch.opentrainingcenter.importer.gpx"/>
       <plugin id="ch.opentrainingcenter.importer.tcx"/>
+      <plugin id="ch.opentrainingcenter.importer.gpx"/>
       <plugin id="ch.opentrainingcenter.model"/>
       <plugin id="ch.opentrainingcenter.route"/>
       <plugin id="ch.opentrainingcenter.tcx"/>
@@ -52,13 +51,13 @@
       <plugin id="com.eclipsesource.widgets.gmaps"/>
       <plugin id="com.ibm.icu"/>
       <plugin id="geocalc"/>
+      <plugin id="oracle14"/>
       <plugin id="h2_lib"/>
       <plugin id="javax.servlet"/>
       <plugin id="jfreechart"/>
       <plugin id="jodatime"/>
       <plugin id="junit"/>
       <plugin id="logging"/>
-      <plugin id="oracle14"/>
       <plugin id="org.eclipse.ant.core"/>
       <plugin id="org.eclipse.core.commands"/>
       <plugin id="org.eclipse.core.contenttype"/>
@@ -92,17 +91,17 @@
       <plugin id="org.eclipse.osgi"/>
       <plugin id="org.eclipse.osgi.services"/>
       <plugin id="org.eclipse.swt"/>
- 	 <!--
-	  <plugin id="org.eclipse.swt.carbon.macosx" fragment="true" os="macosx" ws="carbon" arch="x86"/>
+      <!--
+      <plugin id="org.eclipse.swt.carbon.macosx" fragment="true" os="macosx" ws="carbon" arch="x86"/>
       <plugin id="org.eclipse.swt.cocoa.macosx" fragment="true" os="macosx" ws="cocoa" arch="x86"/>
       <plugin id="org.eclipse.swt.cocoa.macosx.x86_64" fragment="true" os="macosx" ws="cocoa" arch="x86_64"/>
       -->
       <plugin id="org.eclipse.swt.gtk.linux.x86" fragment="true" os="linux" ws="gtk" arch="x86"/>
       <plugin id="org.eclipse.swt.gtk.linux.x86_64" fragment="true" os="linux" ws="gtk" arch="x86_64"/>
-     <!--
+      <!--
       <plugin id="org.eclipse.swt.win32.win32.x86" fragment="true" os="win32" ws="win32" arch="x86"/>
       <plugin id="org.eclipse.swt.win32.win32.x86_64" fragment="true" os="win32" ws="win32" arch="x86_64"/>
-     -->
+      -->
       <plugin id="org.eclipse.text"/>
       <plugin id="org.eclipse.ui"/>
       <plugin id="org.eclipse.ui.forms"/>
