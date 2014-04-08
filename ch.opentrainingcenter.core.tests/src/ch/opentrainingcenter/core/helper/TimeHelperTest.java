@@ -309,6 +309,12 @@ public class TimeHelperTest {
 
         final Date date = TimeHelper.getDate(2000, 11, 22);
 
-        assertEquals(cal.getTime(), date);
+        final DateTime startExpected = new DateTime(cal.getTime());
+        final DateTime start = new DateTime(date);
+
+        assertDatum(startExpected, start);
+        assertEquals(startExpected.getHourOfDay(), start.getHourOfDay());
+        assertEquals(startExpected.getMinuteOfHour(), start.getMinuteOfHour());
+        assertEquals(startExpected.getSecondOfMinute(), start.getSecondOfMinute());
     }
 }
