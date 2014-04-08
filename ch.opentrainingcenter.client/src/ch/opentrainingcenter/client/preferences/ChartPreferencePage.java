@@ -73,7 +73,7 @@ public class ChartPreferencePage extends FieldEditorPreferencePage implements IW
         comboFilter.setBounds(50, 50, 150, 65);
 
         comboFilter.setItems(XAxisChart.items());
-        comboFilter.select(0);
+        comboFilter.select(getPreferenceStore().getInt(PreferenceConstants.CHART_XAXIS_CHART));
         comboFilter.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -89,7 +89,7 @@ public class ChartPreferencePage extends FieldEditorPreferencePage implements IW
         comboDist.setBounds(50, 50, 150, 65);
 
         comboDist.setItems(SimpleTrainingChart.items());
-        comboDist.select(0);
+        comboDist.select(getPreferenceStore().getInt(PreferenceConstants.CHART_YAXIS_CHART));
         comboDist.addSelectionListener(new SelectionAdapter() {
 
             @Override
@@ -100,8 +100,7 @@ public class ChartPreferencePage extends FieldEditorPreferencePage implements IW
 
         addField(new BooleanFieldEditor(PreferenceConstants.CHART_COMPARE, Messages.ChartPreferencePage_4, training));
 
-        final IntegerFieldEditor anzahlWochen = new IntegerFieldEditor(PreferenceConstants.CHART_WEEKS, Messages.ChartPreferencePage_5,
-                training);
+        final IntegerFieldEditor anzahlWochen = new IntegerFieldEditor(PreferenceConstants.CHART_WEEKS, Messages.ChartPreferencePage_5, training);
         addField(anzahlWochen);
 
         // -- layout
