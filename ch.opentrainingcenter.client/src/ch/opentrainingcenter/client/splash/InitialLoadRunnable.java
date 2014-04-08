@@ -120,7 +120,7 @@ public class InitialLoadRunnable implements IRunnableWithProgress {
         final IRoute defaultRoute = db.getRoute(Messages.OTCKonstanten_0, athlete);
         setDefaultStrecke(monitor, db, trainings, defaultRoute);
 
-        calculateLapInfos(monitor, db, trainings);
+        // calculateLapInfos(monitor, db, trainings);
     }
 
     private void setDefaultStrecke(final IProgressMonitor monitor, final IDatabaseAccess db, final List<ITraining> trainings, final IRoute defaultRoute) {
@@ -154,6 +154,7 @@ public class InitialLoadRunnable implements IRunnableWithProgress {
         }
     }
 
+    @SuppressWarnings("unused")
     private void calculateLapInfos(final IProgressMonitor monitor, final IDatabaseAccess db, final List<ITraining> trainings) {
         for (final ITraining training : trainings) {
             if (training.getLapInfos().isEmpty()) {
