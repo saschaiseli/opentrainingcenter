@@ -5,21 +5,19 @@
 
 	<groupId>ch.opentrainingcenter</groupId>
 	<artifactId>opentrainingcenter</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<properties>
 		<tycho.version>0.19.0</tycho.version>
-<!--
 		<eclipse-repository-url>http://download.eclipse.org/eclipse/updates/3.7</eclipse-repository-url>
--->
 		<sonar.host.url>http://localhost:9000</sonar.host.url>
 		<sonar.dynamicAnalysis>true</sonar.dynamicAnalysis>
 		<sonar.phase>generate-sources</sonar.phase>
 		<sonar.exclusions>
-		    opentrainingcenter, 
-		    org.hibernate, 
-		    logging,
+			opentrainingcenter,
+			org.hibernate,
+			logging,
 			jfreechart,
 			com.eclipsesource.widgets.gmaps,
 			junit,
@@ -37,15 +35,11 @@
 		<repository>
 			<id>indigo</id>
 			<layout>p2</layout>
-			<url>http://download.eclipse.org/releases/indigo</url>
+			<url>http://download.eclipse.org/releases/indigo/</url>
 		</repository>
 	</repositories>
 
 	<modules>
-                <!--
-		<module>ch.opentrainingcenter.feature</module>
-                -->
-		<!-- Produktiver Code -->
 		<module>ch.opentrainingcenter.product</module>
 		<module>ch.opentrainingcenter.client</module>
 		<module>ch.opentrainingcenter.charts</module>
@@ -70,7 +64,6 @@
 		<module>jodatime</module>
 		<module>logging</module>
 		<module>org.hibernate</module>
-		
 		<!-- Tests -->
 		<module>junit</module>
 		<module>mockito</module>
@@ -79,12 +72,13 @@
 		<module>ch.opentrainingcenter.charts.tests</module>
 		<module>ch.opentrainingcenter.db.tests</module>
 		<module>ch.opentrainingcenter.database.tests</module>
+		<!--<module>ch.opentrainingcenter.db.postgres.tests</module -->
 		<module>ch.opentrainingcenter.importer.tcx.tests</module>
 		<module>ch.opentrainingcenter.importer.gpx.tests</module>
 		<module>ch.opentrainingcenter.model.tests</module>
 		<module>ch.opentrainingcenter.route.tests</module>
 	</modules>
-<!--
+
 	<profiles>
 		<profile>
 			<id>e37</id>
@@ -93,7 +87,7 @@
 			</properties>
 		</profile>
 	</profiles>
--->
+
 	<build>
 		<plugins>
 			<plugin>
@@ -110,15 +104,14 @@
 				</configuration>
 			</plugin>
 			<plugin>
-		        	<groupId>org.codehaus.mojo</groupId>
-		        	<artifactId>sonar-maven-plugin</artifactId>
-		        	<version>2.2</version>
-      			</plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>sonar-maven-plugin</artifactId>
+				<version>2.2</version>
+			</plugin>
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>target-platform-configuration</artifactId>
 				<version>${tycho.version}</version>
-
 				<configuration>
 					<resolver>p2</resolver>
 					<environments>
