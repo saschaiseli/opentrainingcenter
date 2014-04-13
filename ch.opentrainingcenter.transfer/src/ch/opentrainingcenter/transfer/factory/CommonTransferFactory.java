@@ -158,7 +158,7 @@ public final class CommonTransferFactory {
         return new Tracktrainingproperty(distance, heartbeat, altitude, time, lap, streckenPunkt);
     }
 
-    public static ILapInfo createLapInfo() {
-        return new LapInfo();
+    public static ILapInfo createLapInfo(final int lap, final int distance, final long time, final int heartBeat, final String pace) {
+        return new LapInfo(lap, distance, time, heartBeat, pace);
     }
 }

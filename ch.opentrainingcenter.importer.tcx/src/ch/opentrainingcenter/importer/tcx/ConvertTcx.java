@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 import ch.opentrainingcenter.core.exceptions.ConvertException;
 import ch.opentrainingcenter.core.helper.AltitudeCalculator;
 import ch.opentrainingcenter.core.helper.AltitudeCalculator.Ascending;
+import ch.opentrainingcenter.core.helper.DistanceHelper;
 import ch.opentrainingcenter.core.importer.IConvert2Tcx;
 import ch.opentrainingcenter.tcx.ActivityLapT;
 import ch.opentrainingcenter.tcx.ActivityT;
@@ -35,6 +36,7 @@ import ch.opentrainingcenter.tcx.PositionT;
 import ch.opentrainingcenter.tcx.TrackT;
 import ch.opentrainingcenter.tcx.TrackpointT;
 import ch.opentrainingcenter.tcx.TrainingCenterDatabaseT;
+import ch.opentrainingcenter.transfer.ILapInfo;
 import ch.opentrainingcenter.transfer.IStreckenPunkt;
 import ch.opentrainingcenter.transfer.ITrackPointProperty;
 import ch.opentrainingcenter.transfer.ITraining;
@@ -106,6 +108,7 @@ public class ConvertTcx implements IConvert2Tcx {
         final Date dateOfStart = date.toGregorianCalendar().getTime();
         final List<ActivityLapT> laps = activity.getLap();
         final List<ITrackPointProperty> trackPoints = new ArrayList<ITrackPointProperty>();
+        final List<ILapInfo> lapInfos = new ArrayList<>();
         double distance = 0.0;
         double timeInSeconds = 0.0;
         int averageHeartRateBpm = 0;
@@ -116,23 +119,28 @@ public class ConvertTcx implements IConvert2Tcx {
 
         for (final ActivityLapT lap : laps) {
             LOGGER.info("Runde " + lapCount + " wird konvertiert"); //$NON-NLS-1$//$NON-NLS-2$
+            final double distanceMeters = lap.getDistanceMeters();
+            final double totalTimeSeconds = lap.getTotalTimeSeconds();
+            final String pace = DistanceHelper.calculatePace(distanceMeters, totalTimeSeconds);
+            final HeartRateInBeatsPerMinuteT heart = lap.getAverageHeartRateBpm();
+            int lapHeart = 0;
+            if (heart != null) {
+                lapHeart = heart.getValue();
+            }
+            lapInfos.add(CommonTransferFactory.createLapInfo(lapCount, (int) distanceMeters, (int) (totalTimeSeconds * 1000), lapHeart, pace));
             final List<ITrackPointProperty> trackPointsOfLap = getTrackPointsOfLap(lap, lapCount);
             trackPoints.addAll(trackPointsOfLap);
             lapCount++;
-            distance += lap.getDistanceMeters();
+            distance += distanceMeters;
             if (lap.getMaximumSpeed() != null && maximumSpeed < lap.getMaximumSpeed()) {
                 maximumSpeed = lap.getMaximumSpeed();
             }
-            timeInSeconds += lap.getTotalTimeSeconds();
+            timeInSeconds += totalTimeSeconds;
             if (!hasCardio(lap)) {
                 continue;
             }
             lapWithCardio++;
-            if (lap.getAverageHeartRateBpm() != null) {
-                averageHeartRateBpm += lap.getAverageHeartRateBpm().getValue();
-            } else {
-                averageHeartRateBpm += 0;
-            }
+            averageHeartRateBpm += lapHeart;
             if (maxHeartBeat < lap.getMaximumHeartRateBpm().getValue()) {
                 maxHeartBeat = lap.getMaximumHeartRateBpm().getValue();
             }
@@ -146,6 +154,7 @@ public class ConvertTcx implements IConvert2Tcx {
         }
         final ITraining training = CommonTransferFactory.createTraining(dateOfStart.getTime(), timeInSeconds, distance, avgHr, maxHeartBeat, maximumSpeed);
         training.setTrackPoints(trackPoints);
+        training.setLapInfos(lapInfos);
         final Ascending ascending = AltitudeCalculator.calculateAscending(trackPoints);
         training.setUpMeter(ascending.getUp());
         training.setDownMeter(ascending.getDown());

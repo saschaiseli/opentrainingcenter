@@ -32,6 +32,18 @@ public class LapInfo implements ILapInfo {
     private String pace;
     private ITraining training;
 
+    public LapInfo() {
+
+    }
+
+    public LapInfo(final int lap, final int distance, final long time, final int heartBeat, final String pace) {
+        this.lap = lap;
+        this.distance = distance;
+        this.time = time;
+        this.heartBeat = heartBeat;
+        this.pace = pace;
+    }
+
     @Override
     public int getId() {
         return id;

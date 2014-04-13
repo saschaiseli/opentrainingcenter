@@ -191,30 +191,23 @@ public class InitialLoadRunnable implements IRunnableWithProgress {
     }
 
     private ILapInfo createLapInfo(final List<ITrackPointProperty> points) {
-        final ILapInfo result = CommonTransferFactory.createLapInfo();
         int heart = 0;
         for (final ITrackPointProperty point : points) {
             heart += point.getHeartBeat();
         }
-        result.setHeartBeat(heart / points.size());
+        final int heartBeat = heart / points.size();
         final ITrackPointProperty firstPoint = points.get(0);
         final ITrackPointProperty lastPoint = points.get(points.size() - 1);
-
-        result.setLap(firstPoint.getLap());
 
         final int startDist = (int) firstPoint.getDistance();
         final int endDist = (int) lastPoint.getDistance();
         final int distance = endDist - startDist;
-        result.setDistance(distance);
 
         final long startTime = firstPoint.getZeit();
         final long endTime = lastPoint.getZeit();
         final long time = endTime - startTime;
-        result.setTime(time);
 
-        result.setPace(DistanceHelper.calculatePace(distance, time / 1000));
-
-        result.setTraining(firstPoint.getTraining());
-        return result;
+        final String pace = DistanceHelper.calculatePace(distance, time / 1000);
+        return CommonTransferFactory.createLapInfo(firstPoint.getLap(), distance, time, heartBeat, pace);
     }
 }
