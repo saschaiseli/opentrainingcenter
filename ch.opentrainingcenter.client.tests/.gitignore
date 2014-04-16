@@ -1,4 +1,3 @@
 /bin
-/otc.log
 /target
-/otc.log.1
+/*.log*
