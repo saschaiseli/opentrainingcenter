@@ -12,7 +12,6 @@ import org.eclipse.ui.PlatformUI;
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.action.job.BackupJob;
 import ch.opentrainingcenter.core.PreferenceConstants;
-import ch.opentrainingcenter.core.db.IDatabaseConnection;
 import ch.opentrainingcenter.core.importer.ExtensionHelper;
 import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
@@ -27,20 +26,19 @@ public class BackupGpsFiles extends OtcAbstractHandler {
     private static final Logger LOG = Logger.getLogger(BackupGpsFiles.class);
 
     private final IPreferenceStore store;
-    private final IDatabaseConnection databaseConnection;
 
     public BackupGpsFiles() {
-        this(Activator.getDefault().getPreferenceStore(), (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class));
+        this(Activator.getDefault().getPreferenceStore());
     }
 
-    public BackupGpsFiles(final IPreferenceStore store, final IDatabaseService service) {
+    public BackupGpsFiles(final IPreferenceStore store) {
         super(store);
         this.store = store;
-        databaseConnection = service.getDatabaseConnection();
     }
 
     @Override
     public Object execute(final ExecutionEvent event) throws ExecutionException {
+        final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
         final String source = store.getString(PreferenceConstants.GPS_FILE_LOCATION_PROG);
         final String destination = store.getString(PreferenceConstants.BACKUP_FILE_LOCATION);
 
@@ -49,7 +47,7 @@ public class BackupGpsFiles extends OtcAbstractHandler {
             destFolder.mkdir();
             LOG.info("Pfad zu Backupfolder erstellt"); //$NON-NLS-1$
         }
-        final Job job = new BackupJob(Messages.BackupGpsFiles0, source, destFolder, ExtensionHelper.getConverters(), databaseConnection);
+        final Job job = new BackupJob(Messages.BackupGpsFiles0, source, destFolder, ExtensionHelper.getConverters(), service.getDatabaseConnection());
         job.schedule();
         return null;
     }

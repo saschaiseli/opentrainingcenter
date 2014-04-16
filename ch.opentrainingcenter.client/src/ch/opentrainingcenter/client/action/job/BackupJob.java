@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
+import ch.opentrainingcenter.core.assertions.Assertions;
 import ch.opentrainingcenter.core.db.IDatabaseConnection;
 import ch.opentrainingcenter.core.helper.GpsFileNameFilter;
 import ch.opentrainingcenter.core.importer.IConvert2Tcx;
@@ -42,6 +43,7 @@ public class BackupJob extends Job {
 
     public BackupJob(final String name, final String source, final File destFolder, final Map<String, IConvert2Tcx> converters, final IDatabaseConnection conn) {
         super(name);
+        Assertions.notNull(conn, "Datenbankverbindung darf nicht null sein"); //$NON-NLS-1$
         this.source = source;
         this.destFolder = destFolder;
         this.dbConnection = conn;
