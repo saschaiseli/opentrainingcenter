@@ -296,7 +296,12 @@ public class AbstractCacheTest {
     @Test
     public void testSimpleAdd() {
         final CacheElement value = new CacheElement(42, "FirstElement");
-        testCache.add(value);
+
+        final List<CacheElement> models = new ArrayList<>();
+        models.add(value);
+
+        testCache.addAll(models);
+
         assertEquals("Element muss im cache gefunden werden", value, testCache.get(42));
     }
 
@@ -319,7 +324,12 @@ public class AbstractCacheTest {
     @Test
     public void testSimpleRemove() {
         final CacheElement value = new CacheElement(42, "FirstElement");
-        testCache.add(value);
+
+        final List<CacheElement> models = new ArrayList<>();
+        models.add(value);
+
+        testCache.addAll(models);
+
         assertEquals("Element muss im cache gefunden werden", value, testCache.get(42));
         testCache.remove(42);
         assertNull("Element nicht mehr im cache", testCache.get(42));
@@ -360,7 +370,12 @@ public class AbstractCacheTest {
             }
         });
         final CacheElement value1 = new CacheElement(42, "1Element");
-        testCache.add(value1);
+
+        final List<CacheElement> models = new ArrayList<>();
+        models.add(value1);
+
+        testCache.addAll(models);
+
         assertEquals("Listener wurde notifiziert", value1, changed.get(0));
         testCache.remove(42);
         assertEquals("Listener wurde notifiziert", value1, deleted.get(0));
@@ -396,7 +411,11 @@ public class AbstractCacheTest {
             }
         });
         final CacheElement value1 = new CacheElement(42, "1Element");
-        testCache.add(value1);
+        final List<CacheElement> models = new ArrayList<>();
+        models.add(value1);
+
+        testCache.addAll(models);
+
         assertEquals("2 Listener wurde notifiziert", 2, changed.size());
         testCache.remove(42);
         assertEquals("2 Listener wurde notifiziert", 2, deleted.size());

@@ -125,6 +125,7 @@ public class WeeklyOverview extends ViewPart {
 
             @Override
             public void run() {
+                LOGGER.info("update WeeklyOverview"); //$NON-NLS-1$
                 final DateTime now = DateTime.now();
                 final DateTime firstDayInWeek = TimeHelper.getFirstDayOfWeek(now);
                 final List<ITraining> trainings = databaseAccess.getTrainingsByAthleteAndDate(athlete, firstDayInWeek, now);

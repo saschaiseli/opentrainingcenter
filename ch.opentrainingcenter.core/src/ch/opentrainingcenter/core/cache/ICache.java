@@ -5,7 +5,6 @@ import java.util.List;
 /**
  * Cache
  * 
- * @author sascha
  * 
  * @param <K>
  *            Key mit dem der Wert abgelegt wird.
@@ -13,12 +12,6 @@ import java.util.List;
  *            Werte die gespeichert werden.
  */
 public interface ICache<K, V> {
-
-    /**
-     * Fügt dem Cache ein Element hinzu. Wenn es schon im Cache ist, wird es
-     * aktualisiert.
-     */
-    void add(final V value);
 
     /**
      * Holt ein Element aus dem Cache. Wenn das Element mit dem Key nicht

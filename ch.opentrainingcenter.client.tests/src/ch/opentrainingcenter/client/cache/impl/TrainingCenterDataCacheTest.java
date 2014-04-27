@@ -54,20 +54,22 @@ public class TrainingCenterDataCacheTest {
 
     @Test
     public void testGetIfEmpty() {
-        final ITraining activity = cache.get(42L);
-        assertNull("Wenn nichts hinzugefügt wurde, kommt auch nix zurück.", activity);
+        final ITraining training = cache.get(42L);
+        assertNull("Wenn nichts hinzugefügt wurde, kommt auch nix zurück.", training);
     }
 
     @Test
     public void simpleAdd() throws DatatypeConfigurationException {
-        final ITraining activity = ActivityTTestHelper.createActivity(2012);
+        final ITraining training = ActivityTTestHelper.createActivity(2012);
 
+        final List<ITraining> models = new ArrayList<>();
+        models.add(training);
         // execute
-        cache.add(activity);
+        cache.addAll(models);
 
         // assert
-        final ITraining activityFromCache = cache.get(activity.getDatum());
-        assertNotNull("Activity muss im Cache gefunden werden: ", activityFromCache);
+        final ITraining trainingFromCache = cache.get(training.getDatum());
+        assertNotNull("Activity muss im Cache gefunden werden: ", trainingFromCache);
     }
 
     @Test
@@ -76,14 +78,17 @@ public class TrainingCenterDataCacheTest {
 
         cache.addListener(listener);
 
-        final ITraining activityA = ActivityTTestHelper.createActivity(2012);
-        final ITraining activityB = ActivityTTestHelper.createActivity(2013);
+        final ITraining trainingA = ActivityTTestHelper.createActivity(2012);
+        final ITraining trainingB = ActivityTTestHelper.createActivity(2013);
 
-        final Long dateA = activityA.getDatum();
-        final Long dateB = activityB.getDatum();
+        final Long dateA = trainingA.getDatum();
+        final Long dateB = trainingB.getDatum();
 
-        cache.add(activityA);
-        cache.add(activityB);
+        final List<ITraining> models = new ArrayList<>();
+        models.add(trainingA);
+        models.add(trainingB);
+
+        cache.addAll(models);
 
         final List<Long> deletedIds = new ArrayList<Long>();
         deletedIds.add(dateA);
@@ -99,19 +104,22 @@ public class TrainingCenterDataCacheTest {
     public void testRemoveOne() throws DatatypeConfigurationException {
         // prepare
         cache.addListener(listener);
-        final ITraining activityA = ActivityTTestHelper.createActivity(2012);
-        final ITraining activityB = ActivityTTestHelper.createActivity(2013);
+        final ITraining trainingA = ActivityTTestHelper.createActivity(2012);
+        final ITraining trainingB = ActivityTTestHelper.createActivity(2013);
 
-        final Long dateA = activityA.getDatum();
-        final Long dateB = activityB.getDatum();
+        final Long dateA = trainingA.getDatum();
+        final Long dateB = trainingB.getDatum();
         final ITraining impA = createImported(dateA);
         final ITraining impB = createImported(dateB);
 
         Mockito.when(mockDataAccess.getTrainingById(dateA)).thenReturn(impA);
         Mockito.when(mockDataAccess.getTrainingById(dateB)).thenReturn(impB);
 
-        cache.add(activityA);
-        cache.add(activityB);
+        final List<ITraining> models = new ArrayList<>();
+        models.add(trainingA);
+        models.add(trainingB);
+
+        cache.addAll(models);
 
         final List<Long> deletedIds = new ArrayList<Long>();
         deletedIds.add(42L);
@@ -168,14 +176,17 @@ public class TrainingCenterDataCacheTest {
     public void containsTest() throws DatatypeConfigurationException {
 
         // prepare
-        final ITraining activityA = ActivityTTestHelper.createActivity(2012);
-        final ITraining activityB = ActivityTTestHelper.createActivity(2013);
+        final ITraining trainingA = ActivityTTestHelper.createActivity(2012);
+        final ITraining trainingB = ActivityTTestHelper.createActivity(2013);
 
-        final Long dateA = activityA.getDatum();
-        final Long dateB = activityB.getDatum();
+        final Long dateA = trainingA.getDatum();
+        final Long dateB = trainingB.getDatum();
 
-        cache.add(activityA);
-        cache.add(activityB);
+        final List<ITraining> models = new ArrayList<>();
+        models.add(trainingA);
+        models.add(trainingB);
+
+        cache.addAll(models);
 
         assertTrue("Erster Record ist im Cache (" + dateA + ")", cache.contains(dateA));
         assertTrue("Zweiter Record ist im Cache (" + dateB + ")", cache.contains(dateB));
@@ -185,52 +196,64 @@ public class TrainingCenterDataCacheTest {
     @Test
     public void testNotesNull() throws DatatypeConfigurationException {
         // prepare
-        final ITraining activityA = ActivityTTestHelper.createActivity(2012);
+        final ITraining trainingA = ActivityTTestHelper.createActivity(2012);
 
-        final Long dateA = activityA.getDatum();
+        final Long dateA = trainingA.getDatum();
 
         // execute
         cache.update(dateA, "", null, null);
-        cache.add(activityA);
+
+        final List<ITraining> models = new ArrayList<>();
+        models.add(trainingA);
+
+        cache.addAll(models);
 
         // assert
-        final ITraining activityTFromCache = cache.get(dateA);
-        assertEquals("Note ist nicht gesetzt, da Record erst später in cache kam", "", activityTFromCache.getNote());
+        final ITraining trainingTFromCache = cache.get(dateA);
+        assertEquals("Note ist nicht gesetzt, da Record erst später in cache kam", "", trainingTFromCache.getNote());
     }
 
     @Test
     public void testNotes() throws DatatypeConfigurationException {
         // prepare
-        final ITraining activityA = ActivityTTestHelper.createActivity(2012);
+        final ITraining trainingA = ActivityTTestHelper.createActivity(2012);
 
-        final Long dateA = activityA.getDatum();
-        cache.add(activityA);
+        final Long dateA = trainingA.getDatum();
+
+        final List<ITraining> models = new ArrayList<>();
+        models.add(trainingA);
+
+        cache.addAll(models);
 
         // execute
         cache.update(dateA, "test", null, null);
 
         // assert
-        final ITraining activityTFromCache = cache.get(dateA);
+        final ITraining trainingTFromCache = cache.get(dateA);
 
-        assertEquals("Note muss korrekt gesetzt sein", "test", activityTFromCache.getNote());
+        assertEquals("Note muss korrekt gesetzt sein", "test", trainingTFromCache.getNote());
     }
 
     @Test
     public void testNotesNotification() throws DatatypeConfigurationException {
         // prepare
         cache.addListener(listener);
-        final ITraining activityA = ActivityTTestHelper.createActivity(2012);
+        final ITraining trainingA = ActivityTTestHelper.createActivity(2012);
 
-        final Long dateA = activityA.getDatum();
-        cache.add(activityA);
+        final Long dateA = trainingA.getDatum();
+
+        final List<ITraining> models = new ArrayList<>();
+        models.add(trainingA);
+
+        cache.addAll(models);
 
         // execute
         cache.update(dateA, "test", null, null);
 
         // assert
-        final ITraining activityTFromCache = cache.get(dateA);
+        final ITraining trainingTFromCache = cache.get(dateA);
 
-        assertEquals("Note muss korrekt gesetzt sein", "test", activityTFromCache.getNote());
+        assertEquals("Note muss korrekt gesetzt sein", "test", trainingTFromCache.getNote());
         assertEquals("Ein Record-Changed muss an Listener propagiert werden", 1, listener.getChangedEntry().size());
     }
 
@@ -250,11 +273,14 @@ public class TrainingCenterDataCacheTest {
     @Test
     public void testToString() throws DatatypeConfigurationException {
         // prepare
-        final ITraining activityA = ActivityTTestHelper.createActivity(2012);
-        final ITraining activityB = ActivityTTestHelper.createActivity(2013);
+        final ITraining trainingA = ActivityTTestHelper.createActivity(2012);
+        final ITraining trainingB = ActivityTTestHelper.createActivity(2013);
 
-        cache.add(activityA);
-        cache.add(activityB);
+        final List<ITraining> models = new ArrayList<>();
+        models.add(trainingA);
+        models.add(trainingB);
+
+        cache.addAll(models);
 
         assertEquals("Cache: Anzahl Elemente: 2", cache.toString());
     }

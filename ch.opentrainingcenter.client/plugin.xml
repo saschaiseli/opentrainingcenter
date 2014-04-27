@@ -230,22 +230,22 @@
       <command
             description="Öffnet die Athlete Perspective"
             id="ch.opentrainingcenter.client.commands.SwitchToAthlete"
-            name="name">
+            name="%switch_to_athlete">
       </command>
       <command
             description="Öffnet die Tabellen Perspective"
             id="ch.opentrainingcenter.client.commands.SwitchToTable"
-            name="name">
+            name="%switch_to_table">
       </command>
       <command
             description="Öffnet die Main Perspective"
             id="ch.opentrainingcenter.client.commands.SwitchToMain"
-            name="name">
+            name="%switch_to_main">
       </command>
       <command
             description="Macht ein Backup der importierten Gps Files"
             id="ch.opentrainingcenter.client.commands.BackupGpsFiles"
-            name="backupGpsFiles">
+            name="%backup_files">
       </command>
       <command
             description="Importiert ein GPS File"
@@ -326,6 +326,11 @@
             description="%dynamic_chart_desc"
             id="ch.opentrainingcenter.client.commands.DynamicChart"
             name="%dynamic_chart">
+      </command>
+      <command
+            description="%search"
+            id="ch.opentrainingcenter.client.commands.search"
+            name="%search">
       </command>
    </extension>
    <extension
@@ -585,6 +590,13 @@
                   style="push"
                   tooltip="%health_tooltip">
             </command>
+            <command
+                  commandId="ch.opentrainingcenter.client.commands.search"
+                  icon="icons/16_16/search_16_16.png"
+                  label="%search"
+                  style="push"
+                  tooltip="%search_tooltip">
+            </command>
             <separator
                   name="ch.opentrainingcenter.client.separator1"
                   visible="true">
@@ -821,6 +833,10 @@
             class="ch.opentrainingcenter.client.commands.ShowDynamicChart"
             commandId="ch.opentrainingcenter.client.commands.DynamicChart">
       </handler>
+      <handler
+            class="ch.opentrainingcenter.client.commands.SearchCommand"
+            commandId="ch.opentrainingcenter.client.commands.search">
+      </handler>
    </extension>
    <extension
          point="org.eclipse.ui.viewActions">
@@ -854,9 +870,6 @@
             id="myscheme"
             name="myscheme">
       </scheme>
-   </extension>
-   <extension
-         point="org.eclipse.ui.services">
    </extension>
    <extension
          point="org.eclipse.core.expressions.propertyTesters">

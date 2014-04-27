@@ -16,12 +16,6 @@ public class MockCache implements Cache {
     private List<Long> deletedIds;
 
     @Override
-    public void add(final ITraining activity) {
-        // do nothing
-
-    }
-
-    @Override
     public void addAll(final List<ITraining> activities) {
         // do nothing
     }

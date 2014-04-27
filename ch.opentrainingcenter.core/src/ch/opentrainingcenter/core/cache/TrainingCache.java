@@ -34,7 +34,9 @@ public class TrainingCache extends AbstractCache<Long, ITraining> implements Cac
             training.setNote(note);
             training.setWeather(weather);
             training.setRoute(route);
-            add(training);
+            final List<ITraining> models = new ArrayList<>();
+            models.add(training);
+            addAll(models);
         }
     }
 

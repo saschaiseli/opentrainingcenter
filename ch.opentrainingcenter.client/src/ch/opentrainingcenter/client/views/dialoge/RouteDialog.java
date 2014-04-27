@@ -1,5 +1,8 @@
 package ch.opentrainingcenter.client.views.dialoge;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeansObservables;
@@ -123,7 +126,9 @@ public class RouteDialog extends TitleAreaDialog {
                         databaseAccess.saveOrUpdate(newRoute);
                         model.setId(newRoute.getId());
                         model.setReferenzTrainingId(tr.getId());
-                        StreckeCache.getInstance().add(model);
+                        final List<StreckeModel> models = new ArrayList<>();
+                        models.add(model);
+                        StreckeCache.getInstance().addAll(models);
 
                         tr.setRoute(newRoute);
                         databaseAccess.updateTrainingRoute(tr, newRoute.getId());

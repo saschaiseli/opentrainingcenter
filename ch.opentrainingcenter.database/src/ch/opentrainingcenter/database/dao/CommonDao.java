@@ -1,5 +1,7 @@
 package ch.opentrainingcenter.database.dao;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -82,16 +84,34 @@ public class CommonDao implements IDatabaseAccess {
     public final int saveOrUpdate(final ITraining training) {
         final int id = trainingDao.saveOrUpdate(training);
         if (useCache) {
-            cache.add(training);
+            final List<ITraining> models = new ArrayList<>();
+            models.add(training);
+            cache.addAll(models);
         }
         return id;
+    }
+
+    @Override
+    public final void saveOrUpdateAll(final Collection<ITraining> trainings) {
+        final List<ITraining> models = new ArrayList<>();
+        for (final ITraining training : trainings) {
+            trainingDao.saveOrUpdate(training);
+            if (useCache) {
+                models.add(training);
+            }
+        }
+        if (!models.isEmpty()) {
+            cache.addAll(models);
+        }
     }
 
     @Override
     public final void updateTrainingType(final ITraining training, final int typeIndex) {
         trainingDao.updateTrainingType(training, typeIndex);
         if (useCache) {
-            cache.add(trainingDao.getTrainingByDate(training.getDatum()));
+            final List<ITraining> models = new ArrayList<>();
+            models.add(trainingDao.getTrainingByDate(training.getDatum()));
+            cache.addAll(models);
         }
     }
 
@@ -99,7 +119,9 @@ public class CommonDao implements IDatabaseAccess {
     public final void updateTrainingRoute(final ITraining training, final int idRoute) {
         trainingDao.updateTrainingRoute(training, idRoute);
         if (useCache) {
-            cache.add(trainingDao.getTrainingByDate(training.getDatum()));
+            final List<ITraining> models = new ArrayList<>();
+            models.add(trainingDao.getTrainingByDate(training.getDatum()));
+            cache.addAll(models);
         }
     }
 
@@ -110,7 +132,9 @@ public class CommonDao implements IDatabaseAccess {
             if (training == null) {
                 training = trainingDao.getTrainingByDate(datum);
                 if (training != null) {
-                    cache.add(training);
+                    final List<ITraining> models = new ArrayList<>();
+                    models.add(training);
+                    cache.addAll(models);
                 }
             }
             return training;

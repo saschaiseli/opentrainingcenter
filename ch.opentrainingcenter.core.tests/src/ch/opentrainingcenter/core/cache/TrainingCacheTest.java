@@ -1,9 +1,7 @@
 package ch.opentrainingcenter.core.cache;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -14,6 +12,10 @@ import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.IWeather;
 import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 @SuppressWarnings("nls")
 public class TrainingCacheTest {
@@ -27,13 +29,13 @@ public class TrainingCacheTest {
 
     @Test
     public void testInstance() {
-        final TrainingCache cache = (TrainingCache) TrainingCache.getInstance();
+        final TrainingCache cache = TrainingCache.getInstance();
         assertNotNull(cache);
     }
 
     @Test
     public void testGetKey() {
-        final TrainingCache cache = (TrainingCache) TrainingCache.getInstance();
+        final TrainingCache cache = TrainingCache.getInstance();
         final ITraining training = Mockito.mock(ITraining.class);
         Mockito.when(training.getDatum()).thenReturn(42L);
         final Long key = cache.getKey(training);
@@ -42,12 +44,15 @@ public class TrainingCacheTest {
 
     @Test
     public void testUpdateExtension() {
-        final TrainingCache cache = (TrainingCache) TrainingCache.getInstance();
+        final TrainingCache cache = TrainingCache.getInstance();
         cache.resetCache();
 
         final ITraining training = CommonTransferFactory.createTraining(1, 2, 3, 4, 5, 6, "blabla", null, null);
         training.setDatum(42);
-        cache.add(training);
+        final List<ITraining> models = new ArrayList<>();
+        models.add(training);
+
+        cache.addAll(models);
 
         final IWeather weather = CommonTransferFactory.createWeather(1);
         final IRoute route = CommonTransferFactory.createDefaultRoute(athlete);
@@ -64,7 +69,7 @@ public class TrainingCacheTest {
 
     @Test
     public void testUpdateExtensionNull() {
-        final TrainingCache cache = (TrainingCache) TrainingCache.getInstance();
+        final TrainingCache cache = TrainingCache.getInstance();
         cache.resetCache();
 
         final ITraining training = Mockito.mock(ITraining.class);
@@ -73,7 +78,10 @@ public class TrainingCacheTest {
         Mockito.when(training.getWeather()).thenReturn(null);
         Mockito.when(training.getRoute()).thenReturn(null);
 
-        cache.add(training);
+        final List<ITraining> models = new ArrayList<>();
+        models.add(training);
+
+        cache.addAll(models);
 
         final IWeather weather = CommonTransferFactory.createWeather(1);
         final IRoute route = CommonTransferFactory.createDefaultRoute(athlete);
@@ -90,26 +98,32 @@ public class TrainingCacheTest {
 
     @Test
     public void testToString() {
-        final TrainingCache cache = (TrainingCache) TrainingCache.getInstance();
+        final TrainingCache cache = TrainingCache.getInstance();
         cache.resetCache();
 
         final ITraining training = Mockito.mock(ITraining.class);
         Mockito.when(training.getDatum()).thenReturn(42L);
 
-        cache.add(training);
+        final List<ITraining> models = new ArrayList<>();
+        models.add(training);
+
+        cache.addAll(models);
 
         assertEquals("Cache: Anzahl Elemente: 1", cache.toString());
     }
 
     @Test
     public void testReset() {
-        final TrainingCache cache = (TrainingCache) TrainingCache.getInstance();
+        final TrainingCache cache = TrainingCache.getInstance();
         cache.resetCache();
 
         final ITraining training = Mockito.mock(ITraining.class);
         Mockito.when(training.getDatum()).thenReturn(42L);
 
-        cache.add(training);
+        final List<ITraining> models = new ArrayList<>();
+        models.add(training);
+
+        cache.addAll(models);
 
         assertEquals("Ein element muss drin sein", 1, cache.size());
     }

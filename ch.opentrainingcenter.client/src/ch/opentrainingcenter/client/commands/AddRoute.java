@@ -9,6 +9,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
@@ -55,18 +56,29 @@ public class AddRoute extends OtcAbstractHandler {
             delete = MessageDialog.openConfirm(shell, Messages.AddRoute_0, NLS.bind(Messages.AddRoute_1, route.getName()));
         }
         if (delete) {
-            if (route != null) {
-                // alle referenzen löschen
-                final List<ITraining> all = databaseAccess.getAllTrainingByRoute(training.getAthlete(), route);
-                for (final ITraining tr : all) {
-                    tr.setRoute(null);
-                    databaseAccess.saveOrUpdate(tr);
-                }
-            }
+            deleteReferenzen(databaseAccess, training, route);
 
             final RouteDialog dialog = new RouteDialog(shell, databaseAccess, training);
             dialog.open();
         }
         return null;
+    }
+
+    private void deleteReferenzen(final IDatabaseAccess databaseAccess, final ITraining training, final IRoute route) {
+        Display.getDefault().asyncExec(new Runnable() {
+
+            @Override
+            public void run() {
+                if (route != null) {
+                    // alle referenzen löschen
+                    final List<ITraining> all = databaseAccess.getAllTrainingByRoute(training.getAthlete(), route);
+                    for (final ITraining tr : all) {
+                        tr.setRoute(null);
+                    }
+                    databaseAccess.saveOrUpdateAll(all);
+                }
+            }
+
+        });
     }
 }

@@ -123,6 +123,7 @@ public class MonthlyOverview extends ViewPart {
 
             @Override
             public void run() {
+                LOGGER.info("update MonthlyOverview"); //$NON-NLS-1$
                 final DateTime now = DateTime.now();
                 final DateTime firstDayInWeek = TimeHelper.getFirstDayOfMonth(now);
                 final List<ITraining> trainings = databaseAccess.getTrainingsByAthleteAndDate(athlete, firstDayInWeek, now);

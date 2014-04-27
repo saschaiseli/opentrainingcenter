@@ -1,7 +1,9 @@
 package ch.opentrainingcenter.client.views.dialoge;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import org.apache.log4j.Logger;
@@ -42,6 +44,7 @@ import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.model.ModelFactory;
+import ch.opentrainingcenter.model.navigation.ConcreteHealth;
 import ch.opentrainingcenter.model.sportler.HealthModel;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IHealth;
@@ -75,7 +78,6 @@ public class HealthDialog extends TitleAreaDialog {
     private final Date date;
 
     public HealthDialog(final Shell parent) {
-
         this(parent, null, Activator.getDefault().getPreferenceStore(), new Date());
     }
 
@@ -181,7 +183,10 @@ public class HealthDialog extends TitleAreaDialog {
                 final IHealth healthToSave = CommonTransferFactory.createHealth(athlete, model.getWeight(), model.getRuhePuls(), model.getDateOfMeasure());
                 final int id = db.saveOrUpdate(healthToSave);
                 healthToSave.setId(id);
-                HealthCache.getInstance().add(ModelFactory.createConcreteHealth(healthToSave, IImageKeys.CARDIO3232));
+                final ConcreteHealth healthModel = ModelFactory.createConcreteHealth(healthToSave, IImageKeys.CARDIO3232);
+                final List<ConcreteHealth> models = new ArrayList<>();
+                models.add(healthModel);
+                HealthCache.getInstance().addAll(models);
             }
         } else {
             super.buttonPressed(buttonId);

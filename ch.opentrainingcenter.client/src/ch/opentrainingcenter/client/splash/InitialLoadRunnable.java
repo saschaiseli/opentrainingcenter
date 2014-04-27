@@ -69,48 +69,56 @@ public class InitialLoadRunnable implements IRunnableWithProgress {
         int i = 0;
         final List<IPlanungWoche> planungsWoche = db.getPlanungsWoche(athlete);
         final TrainingsPlanCache planCache = TrainingsPlanCache.getInstance();
+        final List<IPlanungModel> plaene = new ArrayList<>();
         for (final IPlanungWoche plan : planungsWoche) {
             final IPlanungModel model = ch.opentrainingcenter.model.ModelFactory.createPlanungModel(athlete, plan.getJahr(), plan.getKw(),
                     plan.getKmProWoche(), plan.isInterval(), plan.getLangerLauf());
-            planCache.add(model);
+            plaene.add(model);
             monitor.subTask(NLS.bind(Messages.InitialLoadRunnable_3, i++));
             LOG.info(Messages.InitialLoadRunnable_4);
         }
+        planCache.addAll(plaene);
     }
 
     private void loadAllHealths(final IProgressMonitor monitor, final IAthlete athlete, final IDatabaseAccess db) {
         int i = 0;
         final List<IHealth> healths = db.getHealth(athlete);
         final ICache<Integer, ConcreteHealth> healthCache = HealthCache.getInstance();
+        final List<ConcreteHealth> values = new ArrayList<>();
         for (final IHealth health : healths) {
-            healthCache.add(ModelFactory.createConcreteHealth(health, IImageKeys.CARDIO3232));
+            values.add(ModelFactory.createConcreteHealth(health, IImageKeys.CARDIO3232));
             monitor.subTask(NLS.bind(Messages.InitialLoadRunnable_1, i++));
             LOG.info(Messages.InitialLoadRunnable_2);
         }
+        healthCache.addAll(values);
     }
 
     private void loadAllRouten(final IProgressMonitor monitor, final IAthlete athlete, final IDatabaseAccess db) {
         int i = 0;
         final List<IRoute> routen = db.getRoute(athlete);
         final ICache<String, StreckeModel> cache = StreckeCache.getInstance();
+        final List<StreckeModel> strecken = new ArrayList<>();
         for (final IRoute route : routen) {
             final int referenzTrainingId = route.getReferenzTrack() != null ? route.getReferenzTrack().getId() : 0;
             final StreckeModel strecke = ModelFactory.createStreckeModel(route, athlete, referenzTrainingId);
-            cache.add(strecke);
+            strecken.add(strecke);
             monitor.subTask(NLS.bind(Messages.InitialLoadRunnable_5, i++));
             LOG.info(String.format("Strecke dem Cache hinzugefügt: %s Strecke: %s", route, strecke)); //$NON-NLS-1$ 
         }
+        cache.addAll(strecken);
     }
 
     private void loadAllAthleten(final IProgressMonitor monitor, final IDatabaseAccess db) {
         int i = 0;
         final ICache<String, IAthlete> cache = AthleteCache.getInstance();
         final List<IAthlete> athletes = db.getAllAthletes();
+        final List<IAthlete> values = new ArrayList<>();
         for (final IAthlete athlete : athletes) {
-            cache.add(athlete);
+            values.add(athlete);
             monitor.subTask(NLS.bind("Athlete in Cache laden {0}", i++)); //$NON-NLS-1$
             LOG.info(String.format("Athlete dem Cache hinzugefügt: %s", athlete)); //$NON-NLS-1$ 
         }
+        cache.addAll(values);
     }
 
     private void doMaintenance(final IProgressMonitor monitor, final IAthlete athlete, final IDatabaseAccess db) {

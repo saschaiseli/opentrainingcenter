@@ -1,5 +1,6 @@
 package ch.opentrainingcenter.core.db;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -61,6 +62,8 @@ public interface IDatabaseAccess {
     ITraining getNewestTraining(IAthlete athlete);
 
     int saveOrUpdate(ITraining training);
+
+    void saveOrUpdateAll(Collection<ITraining> trainings);
 
     /**
      * updated training type

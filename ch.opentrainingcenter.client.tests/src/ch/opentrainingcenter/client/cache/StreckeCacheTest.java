@@ -1,5 +1,8 @@
 package ch.opentrainingcenter.client.cache;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -14,7 +17,11 @@ public class StreckeCacheTest {
         final StreckeCache cache = StreckeCache.getInstance();
         final IAthlete athlete = Mockito.mock(IAthlete.class);
         final StreckeModel model = new StreckeModel(42, athlete, "abc", "Beschreibung", 0);
-        cache.add(model);
+
+        final List<StreckeModel> models = new ArrayList<>();
+        models.add(model);
+
+        cache.addAll(models);
 
         assertEquals("Wenn nichts gefunden null zurück", null, cache.get("efg"));
     }
@@ -24,7 +31,10 @@ public class StreckeCacheTest {
         final StreckeCache cache = StreckeCache.getInstance();
         final IAthlete athlete = Mockito.mock(IAthlete.class);
         final StreckeModel model = new StreckeModel(42, athlete, "abc", "Beschreibung", 0);
-        cache.add(model);
+        final List<StreckeModel> models = new ArrayList<>();
+        models.add(model);
+
+        cache.addAll(models);
 
         assertEquals("Strecke gefunden...", model, cache.get("abc"));
     }

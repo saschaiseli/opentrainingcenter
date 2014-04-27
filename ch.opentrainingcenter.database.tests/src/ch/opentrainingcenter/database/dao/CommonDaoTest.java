@@ -19,6 +19,7 @@
 
 package ch.opentrainingcenter.database.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
@@ -101,7 +102,10 @@ public class CommonDaoTest {
         dao.saveOrUpdate(training);
 
         verify(trainingDao).saveOrUpdate(training);
-        verify(trainingCache).add(training);
+
+        final List<ITraining> models = new ArrayList<>();
+        models.add(training);
+        verify(trainingCache).addAll(models);
     }
 
     @Test
@@ -116,7 +120,9 @@ public class CommonDaoTest {
         verify(trainingDao).updateTrainingType(training, 2);
         verify(trainingDao).getTrainingByDate(42L);
 
-        verify(trainingCache).add(trainingWithNewType);
+        final List<ITraining> models = new ArrayList<>();
+        models.add(trainingWithNewType);
+        verify(trainingCache).addAll(models);
     }
 
     @Test
@@ -130,7 +136,10 @@ public class CommonDaoTest {
 
         verify(trainingDao).updateTrainingRoute(training, 2);
         verify(trainingDao).getTrainingByDate(42L);
-        verify(trainingCache).add(trainingWithNewRoute);
+
+        final List<ITraining> models = new ArrayList<>();
+        models.add(trainingWithNewRoute);
+        verify(trainingCache).addAll(models);
     }
 
     @Test
@@ -157,7 +166,10 @@ public class CommonDaoTest {
 
         verify(trainingCache).get(42L);
         verify(trainingDao).getTrainingByDate(42L);
-        verify(trainingCache).add(training);
+
+        final List<ITraining> models = new ArrayList<>();
+        models.add(training);
+        verify(trainingCache).addAll(models);
     }
 
     @Test

@@ -20,18 +20,11 @@ public abstract class AbstractCache<K, V> implements ICache<K, V> {
 
     @Override
     public void addAll(final List<V> values) {
-        for (final V v : values) {
-            add(v);
+        for (final V value : values) {
+            LOG.info(String.format("Element added -> Cache (%s) Size: %s", value.getClass().getName(), cache.size())); //$NON-NLS-1$
+            cache.put(getKey(value), value);
         }
-    }
-
-    @Override
-    public void add(final V value) {
-        cache.put(getKey(value), value);
-        LOG.info(String.format("Element added -> Cache (%s) Size: %s", value.getClass().getName(), cache.size())); //$NON-NLS-1$
-        final List<V> v = new ArrayList<V>();
-        v.add(value);
-        fireRecordAdded(v);
+        fireRecordAdded(values);
     }
 
     @Override

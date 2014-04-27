@@ -372,13 +372,17 @@ public class UserView extends ViewPart {
                         exists.setBirthday(cal.getTime());
                         exists.setMaxHeartRate(maxPulse);
                         save(exists);
-                        athleteCache.add(exists);
+                        final List<IAthlete> models = new ArrayList<>();
+                        models.add(exists);
+                        athleteCache.addAll(models);
                     }
                 } else {
                     // neuen hinzufügen
                     final IAthlete athlete = CommonTransferFactory.createAthlete(name, cal.getTime(), maxPulse);
                     save(athlete);
-                    athleteCache.add(athlete);
+                    final List<IAthlete> models = new ArrayList<>();
+                    models.add(athlete);
+                    athleteCache.addAll(models);
                     allAthletes.add(athlete);
                 }
             }
