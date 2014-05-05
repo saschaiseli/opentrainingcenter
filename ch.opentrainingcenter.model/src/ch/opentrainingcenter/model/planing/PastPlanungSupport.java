@@ -1,29 +1,31 @@
 package ch.opentrainingcenter.model.planing;
 
+import ch.opentrainingcenter.i18n.Messages;
+
 public final class PastPlanungSupport {
     private PastPlanungSupport() {
 
     }
 
     public static String getKmProWoche(final IPastPlanung woche) {
-        final String result;
         final int kmProWoche = woche.getPlanung().getKmProWoche();
-        result = isGroesserNull(kmProWoche);
-        return result;
+        return isGroesserNull(kmProWoche);
     }
 
     public static String getLangerLauf(final IPastPlanung element) {
-        String result;
         final int langerLauf = element.getPlanung().getLangerLauf();
-        result = isGroesserNull(langerLauf);
-        return result;
+        return isGroesserNull(langerLauf);
     }
 
     public static String getIntervall(final IPastPlanung element) {
         final int kmProWoche = element.getPlanung().getKmProWoche();
         final String result;
         if (kmProWoche > 0) {
-            result = String.valueOf(element.getPlanung().isInterval());
+            if (element.getPlanung().isInterval()) {
+                result = Messages.Common_YES;
+            } else {
+                result = Messages.Common_NO;
+            }
         } else {
             result = String.valueOf(""); //$NON-NLS-1$
         }

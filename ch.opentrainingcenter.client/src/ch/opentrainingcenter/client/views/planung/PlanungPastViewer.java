@@ -220,7 +220,11 @@ public class PlanungPastViewer {
             @Override
             public String getText(final Object element) {
                 final IPastPlanung woche = (IPastPlanung) element;
-                return String.valueOf(woche.hasInterval());
+                if (woche.hasInterval()) {
+                    return Messages.Common_YES;
+                } else {
+                    return Messages.Common_NO;
+                }
             }
 
             @Override

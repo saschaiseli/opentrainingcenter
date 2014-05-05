@@ -426,6 +426,8 @@ public final class Messages extends NLS {
     public static String SUN;
     public static String LIGHTCLOUDY;
     public static String CLOUDY;
+    public static String Common_NO;
+    public static String Common_YES;
     public static String Einheit_Herzfrequenz;
     public static String Einheit_Kilometer;
     public static String FileImport_0;
