@@ -241,5 +241,4 @@ public class CommonDao implements IDatabaseAccess {
     public final List<IWeather> getWeather() {
         return wetterDao.getAllWeather();
     }
-
 }

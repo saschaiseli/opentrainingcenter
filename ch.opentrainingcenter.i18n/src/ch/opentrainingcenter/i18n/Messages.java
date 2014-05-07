@@ -287,6 +287,11 @@ public final class Messages extends NLS {
     public static String SamplePreferencePage7;
     public static String SamplePreferencePage8;
     public static String SamplePreferencePage9;
+    public static String SearchDialog_COMMON_KM;
+    public static String SearchDialog_SEARCH;
+    public static String SearchDialog_SEARCH_DESC_LABEL;
+    public static String SearchDialog_SEARCH_DESCRIPTION;
+    public static String SearchDialog_SEARCH_DIST_LABEL;
     public static String ShowJahresplanungViewPart_0;
     public static String ShowJahresplanungViewPart_1;
     public static String ShowTrainingPlan_0;

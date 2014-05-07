@@ -25,7 +25,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.PlatformUI;
 
 import ch.opentrainingcenter.client.Activator;
-import ch.opentrainingcenter.client.views.dialoge.SearchDialog;
+import ch.opentrainingcenter.client.views.search.dialog.SearchDialog;
 
 public class SearchCommand extends OtcAbstractHandler {
 
@@ -36,6 +36,7 @@ public class SearchCommand extends OtcAbstractHandler {
      */
     public SearchCommand() {
         this(Activator.getDefault().getPreferenceStore());
+
     }
 
     public SearchCommand(final IPreferenceStore store) {
@@ -48,5 +49,4 @@ public class SearchCommand extends OtcAbstractHandler {
         dialog.open();
         return null;
     }
-
 }

@@ -64,6 +64,7 @@ public class AddRoute extends OtcAbstractHandler {
         return null;
     }
 
+    @SuppressWarnings("unused")
     private void deleteReferenzen(final IDatabaseAccess databaseAccess, final ITraining training, final IRoute route) {
         Display.getDefault().asyncExec(new Runnable() {
 
