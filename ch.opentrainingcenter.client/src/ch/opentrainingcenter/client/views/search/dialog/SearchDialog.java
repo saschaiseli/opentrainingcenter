@@ -20,6 +20,7 @@
 package ch.opentrainingcenter.client.views.search.dialog;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -30,6 +31,7 @@ import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
@@ -44,16 +46,17 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.joda.time.DateTime;
 
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.client.views.IImageKeys;
+import ch.opentrainingcenter.client.views.overview.SingleActivityViewPart;
 import ch.opentrainingcenter.core.db.CriteriaContainer;
 import ch.opentrainingcenter.core.db.CriteriaFactory;
-import ch.opentrainingcenter.core.helper.DistanceHelper;
-import ch.opentrainingcenter.core.helper.TimeHelper;
 import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.transfer.ITraining;
@@ -135,6 +138,7 @@ public class SearchDialog extends TitleAreaDialog {
 
         viewer = new TableViewer(result);
         viewer.setContentProvider(new ArrayContentProvider());
+        viewer.setLabelProvider(new TrainingLabelProvider());
         viewer.addSelectionChangedListener(new ISelectionChangedListener() {
 
             @Override
@@ -165,17 +169,10 @@ public class SearchDialog extends TitleAreaDialog {
                 container.addCriteria(CriteriaFactory.createNoteCriteria(beschreibungSearch.getText()));
                 final long start = DateTime.now().getMillis();
 
-                final List<String> result = new ArrayList<>();
+                final List<ITraining> result = new ArrayList<>();
                 for (final ITraining training : trainings) {
                     if (container.matches(training)) {
-                        final String datum = TimeHelper.convertDateToString(training.getDatum());
-                        final String note = training.getNote();
-                        final String laengeInMeter = DistanceHelper.roundDistanceFromMeterToKm(training.getLaengeInMeter());
-                        String text = String.format("%s  %s %s", datum, laengeInMeter, Messages.SearchDialog_COMMON_KM); //$NON-NLS-1$
-                        if (note != null && note.length() > 0) {
-                            text = text + " " + note; //$NON-NLS-1$
-                        }
-                        result.add(text);
+                        result.add(training);
                     }
                 }
                 LOGGER.info(String.format("Filter trainings dauerte %s [ms]", DateTime.now().getMillis() - start)); //$NON-NLS-1$
@@ -190,6 +187,31 @@ public class SearchDialog extends TitleAreaDialog {
 
     @Override
     protected void okPressed() {
+        final StructuredSelection selection = (StructuredSelection) viewer.getSelection();
+        final Object[] array = selection.toArray();
+        final List<Object> records = Arrays.asList(array);
+        Display.getDefault().asyncExec(new Runnable() {
+
+            @Override
+            public void run() {
+                Display.getDefault().asyncExec(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        for (final Object record : records) {
+                            final ITraining training = (ITraining) record;
+                            final String hash = String.valueOf(training.getDatum());
+                            try {
+                                final IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+                                activePage.showView(SingleActivityViewPart.ID, hash, IWorkbenchPage.VIEW_ACTIVATE);
+                            } catch (final PartInitException e) {
+                                LOGGER.error(e);
+                            }
+                        }
+                    }
+                });
+            }
+        });
         super.okPressed();
     }
 }
