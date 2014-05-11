@@ -34,6 +34,11 @@ public class TrainingLabelProvider extends LabelProvider {
             str.append(TimeHelper.convertDateToString(training.getDatum()));
             str.append(' ');
             str.append(DistanceHelper.roundDistanceFromMeterToKmMitEinheit(training.getLaengeInMeter()));
+            final String note = training.getNote();
+            if (note != null && note.length() > 0) {
+                str.append(' ');
+                str.append(note);
+            }
             return str.toString();
         } else {
             throw new IllegalArgumentException(String.format("Der Typ %s wird in diesem LabelProvider nicht unterstützt", element)); //$NON-NLS-1$

@@ -46,8 +46,8 @@ public class TrainingLabelProviderTest {
     }
 
     @Test
-    public void testGetTextFromTraining() {
-        final Object training = createTraining(2_000_000_000L, 10123);
+    public void testGetTextFromTrainingNote() {
+        final Object training = createTraining(2_000_000_000L, 10123, "");
 
         final String result = provider.getText(training);
 
@@ -55,8 +55,21 @@ public class TrainingLabelProviderTest {
         assertEquals(TimeHelper.convertDateToString(2_000_000_000L) + " 10.123km", result);
     }
 
-    private ITraining createTraining(final long dateOfStart, final double distance) {
-        return CommonTransferFactory.createTraining(dateOfStart, 42, distance, 123, 180, 12);
+    @Test
+    public void testGetTextFromTrainingMitNote() {
+        final String note = "blabla";
+        final Object training = createTraining(2_000_000_000L, 10123, note);
+
+        final String result = provider.getText(training);
+
+        assertNotNull(result);
+        assertEquals(TimeHelper.convertDateToString(2_000_000_000L) + " 10.123km " + note, result);
+    }
+
+    private ITraining createTraining(final long dateOfStart, final double distance, final String note) {
+        final ITraining training = CommonTransferFactory.createTraining(dateOfStart, 42, distance, 123, 180, 12);
+        training.setNote(note);
+        return training;
     }
 
 }
