@@ -203,6 +203,7 @@ public class SearchDialog extends TitleAreaDialog {
                             final String hash = String.valueOf(training.getDatum());
                             try {
                                 final IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+                                ApplicationContext.getApplicationContext().setSelectedId(training.getDatum());
                                 activePage.showView(SingleActivityViewPart.ID, hash, IWorkbenchPage.VIEW_ACTIVATE);
                             } catch (final PartInitException e) {
                                 LOGGER.error(e);
