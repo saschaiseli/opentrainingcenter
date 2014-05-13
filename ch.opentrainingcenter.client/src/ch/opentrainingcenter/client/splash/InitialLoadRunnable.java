@@ -22,8 +22,8 @@ import ch.opentrainingcenter.core.cache.ICache;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.helper.AltitudeCalculator;
 import ch.opentrainingcenter.core.helper.AltitudeCalculator.Ascending;
-import ch.opentrainingcenter.core.helper.DistanceHelper;
 import ch.opentrainingcenter.core.helper.TimeHelper;
+import ch.opentrainingcenter.core.lapinfo.LapInfoSupport;
 import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.model.ModelFactory;
@@ -38,7 +38,6 @@ import ch.opentrainingcenter.transfer.IPlanungWoche;
 import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITrackPointProperty;
 import ch.opentrainingcenter.transfer.ITraining;
-import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
 
 public class InitialLoadRunnable implements IRunnableWithProgress {
 
@@ -182,7 +181,7 @@ public class InitialLoadRunnable implements IRunnableWithProgress {
                     if (perRound.size() > 1) {
                         final List<ILapInfo> lapInfos = new ArrayList<>();
                         for (final Map.Entry<Integer, List<ITrackPointProperty>> entry : perRound.entrySet()) {
-                            lapInfos.add(createLapInfo(entry.getValue()));
+                            lapInfos.add(LapInfoSupport.createLapInfo(entry.getValue()));
                         }
                         training.setLapInfos(lapInfos);
                         db.saveOrUpdate(training);
@@ -198,24 +197,4 @@ public class InitialLoadRunnable implements IRunnableWithProgress {
         return trackPoints.size() > 0 && trackPoints.get(trackPoints.size() - 1).getLap() > 1;
     }
 
-    private ILapInfo createLapInfo(final List<ITrackPointProperty> points) {
-        int heart = 0;
-        for (final ITrackPointProperty point : points) {
-            heart += point.getHeartBeat();
-        }
-        final int heartBeat = heart / points.size();
-        final ITrackPointProperty firstPoint = points.get(0);
-        final ITrackPointProperty lastPoint = points.get(points.size() - 1);
-
-        final int startDist = (int) firstPoint.getDistance();
-        final int endDist = (int) lastPoint.getDistance();
-        final int distance = endDist - startDist;
-
-        final long startTime = firstPoint.getZeit();
-        final long endTime = lastPoint.getZeit();
-        final long time = endTime - startTime;
-
-        final String pace = DistanceHelper.calculatePace(distance, time / 1000);
-        return CommonTransferFactory.createLapInfo(firstPoint.getLap(), distance, time, heartBeat, pace);
-    }
 }
