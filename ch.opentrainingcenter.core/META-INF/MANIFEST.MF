@@ -22,5 +22,6 @@ Export-Package: ch.opentrainingcenter.core,
  ch.opentrainingcenter.core.exceptions,
  ch.opentrainingcenter.core.helper,
  ch.opentrainingcenter.core.importer,
+ ch.opentrainingcenter.core.lapinfo,
  ch.opentrainingcenter.core.process,
  ch.opentrainingcenter.core.service
