@@ -97,4 +97,8 @@ public interface ITraining {
      * Inkrementierte Meter die der Lauf nach unten geht.
      */
     void setDownMeter(Integer downMeter);
+
+    Sport getSport();
+
+    void setSport(Sport sport);
 }

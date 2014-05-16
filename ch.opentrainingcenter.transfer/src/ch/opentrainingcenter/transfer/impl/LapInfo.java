@@ -36,6 +36,18 @@ public class LapInfo implements ILapInfo {
 
     }
 
+    /**
+     * @param lap
+     *            Runde [Anzahl]
+     * @param distance
+     *            Distanz in Meter [m]
+     * @param time
+     *            Zeit in Millisekunden [ms]
+     * @param heartBeat
+     *            Herzschlag in [Bpm]
+     * @param pace
+     *            Pace in [min/km]
+     */
     public LapInfo(final int lap, final int distance, final long time, final int heartBeat, final String pace) {
         this.lap = lap;
         this.distance = distance;
