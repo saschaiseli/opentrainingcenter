@@ -20,8 +20,8 @@ public class LapInfoCreator {
      * @param distance
      *            Distanz in Meter [m]
      */
-    public LapInfoCreator(double distance) {
-        Assertions.isValid(distance <= 0, "Distanz muss positiv sein");
+    public LapInfoCreator(final double distance) {
+        Assertions.isValid(distance <= 0, "Distanz muss positiv sein"); //$NON-NLS-1$
         this.distance = distance;
     }
 
@@ -32,16 +32,16 @@ public class LapInfoCreator {
      * @param training
      * @return eine Liste mit {@link ILapInfo}s.
      */
-    public List<ILapInfo> createLapInfos(ITraining training) {
-        List<ILapInfo> result = new ArrayList<>();
+    public List<ILapInfo> createLapInfos(final ITraining training) {
+        final List<ILapInfo> result = new ArrayList<>();
         if (training.getTrackPoints().isEmpty()) {
             return result;
         }
-        NavigableMap<Integer, List<ITrackPointProperty>> points = createLapMap(training);
-        Integer lastLap = points.lastKey();
+        final NavigableMap<Integer, List<ITrackPointProperty>> points = createLapMap(training);
+        final Integer lastLap = points.lastKey();
         ITrackPointProperty previous = null;
         for (int i = 0; i <= lastLap.intValue(); i++) {
-            List<ITrackPointProperty> pointsOfLap = points.get(i);
+            final List<ITrackPointProperty> pointsOfLap = points.get(i);
             if (pointsOfLap == null) {
                 result.add(createEmptyLap());
             } else {
@@ -53,13 +53,13 @@ public class LapInfoCreator {
     }
 
     private ILapInfo createEmptyLap() {
-        return CommonTransferFactory.createLapInfo(0, 0, 0, 0, "--:--");
+        return CommonTransferFactory.createLapInfo(0, 0, 0, 0, "--:--"); //$NON-NLS-1$
     }
 
-    private NavigableMap<Integer, List<ITrackPointProperty>> createLapMap(ITraining training) {
-        NavigableMap<Integer, List<ITrackPointProperty>> points = new TreeMap<>();
-        for (ITrackPointProperty point : training.getTrackPoints()) {
-            int lap = getLap(point.getDistance());
+    private NavigableMap<Integer, List<ITrackPointProperty>> createLapMap(final ITraining training) {
+        final NavigableMap<Integer, List<ITrackPointProperty>> points = new TreeMap<>();
+        for (final ITrackPointProperty point : training.getTrackPoints()) {
+            final int lap = getLap(point.getDistance());
             if (!points.containsKey(lap)) {
                 points.put(lap, new ArrayList<ITrackPointProperty>());
             }
@@ -68,12 +68,12 @@ public class LapInfoCreator {
         return points;
     }
 
-    private int getLap(double pointDistance) {
-        int mod = (int) (pointDistance / distance);
+    private int getLap(final double pointDistance) {
+        final int mod = (int) (pointDistance / distance);
         return mod;
     }
 
-    private ILapInfo createLapInfo(List<ITrackPointProperty> points, ITrackPointProperty previous) {
+    private ILapInfo createLapInfo(final List<ITrackPointProperty> points, final ITrackPointProperty previous) {
         final ILapInfo result;
         double initPosition = 0;
         long initTime = 0;

@@ -1,8 +1,5 @@
 package ch.opentrainingcenter.core.lapinfo;
 
-import static ch.opentrainingcenter.core.lapinfo.TrackPointSupport.assertLapInfo;
-import static ch.opentrainingcenter.core.lapinfo.TrackPointSupport.createTrackPoint;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -12,7 +9,10 @@ import org.junit.Test;
 
 import ch.opentrainingcenter.transfer.ILapInfo;
 import ch.opentrainingcenter.transfer.ITrackPointProperty;
+import static ch.opentrainingcenter.core.lapinfo.TrackPointSupport.assertLapInfo;
+import static ch.opentrainingcenter.core.lapinfo.TrackPointSupport.createTrackPoint;
 
+@SuppressWarnings("nls")
 public class LapInfoSupportTest {
 
     private List<ITrackPointProperty> points;
@@ -45,7 +45,7 @@ public class LapInfoSupportTest {
         points.add(createTrackPoint(1000, 142, 240_000L));
         points.add(createTrackPoint(2000, 162, 480_000L));
 
-        ILapInfo result = LapInfoSupport.createLapInfo(points);
+        final ILapInfo result = LapInfoSupport.createLapInfo(points);
 
         assertLapInfo(1000, 152, 240_000, "4:00", result);
     }
@@ -68,7 +68,7 @@ public class LapInfoSupportTest {
     public void testEinPoint_mit_init() {
         points.add(createTrackPoint(1000, 142, 240_000L));
 
-        ILapInfo result = LapInfoSupport.createLapInfo(points, 0, 0);
+        final ILapInfo result = LapInfoSupport.createLapInfo(points, 0, 0);
 
         assertLapInfo(1000, 142, 240_000, "4:00", result);
     }

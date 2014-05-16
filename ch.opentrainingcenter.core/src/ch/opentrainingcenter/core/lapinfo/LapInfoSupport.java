@@ -31,7 +31,7 @@ public class LapInfoSupport {
      */
     public static ILapInfo createLapInfo(final List<ITrackPointProperty> points) {
         Assertions.notNull(points);
-        Assertions.isValid(points.size() < 2, "Es braucht mindest 2 Punkte");
+        Assertions.isValid(points.size() < 2, "Es braucht mindest 2 Punkte"); //$NON-NLS-1$
         int heart = 0;
         for (final ITrackPointProperty point : points) {
             heart += point.getHeartBeat();
@@ -68,11 +68,11 @@ public class LapInfoSupport {
      * 
      * @return eine {@link ILapInfo}
      */
-    public static ILapInfo createLapInfo(final List<ITrackPointProperty> points, double initPosition, long initTime) {
+    public static ILapInfo createLapInfo(final List<ITrackPointProperty> points, final double initPosition, final long initTime) {
         Assertions.notNull(points);
-        Assertions.isValid(initPosition < 0, "initiale position muss groesser gleich 0 sein");
-        Assertions.isValid(initTime < 0, "initiale zeit muss groesser gleich 0 sein");
-        Assertions.isValid(points.size() < 1, "Es braucht mindest einen Punkt");
+        Assertions.isValid(initPosition < 0, "initiale position muss groesser gleich 0 sein"); //$NON-NLS-1$
+        Assertions.isValid(initTime < 0, "initiale zeit muss groesser gleich 0 sein"); //$NON-NLS-1$
+        Assertions.isValid(points.size() < 1, "Es braucht mindest einen Punkt"); //$NON-NLS-1$
         int heart = 0;
         for (final ITrackPointProperty point : points) {
             heart += point.getHeartBeat();

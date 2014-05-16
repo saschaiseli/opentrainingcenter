@@ -1,11 +1,5 @@
 package ch.opentrainingcenter.core.lapinfo;
 
-import static ch.opentrainingcenter.core.lapinfo.TrackPointSupport.assertLapInfo;
-import static ch.opentrainingcenter.core.lapinfo.TrackPointSupport.createTrackPoint;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +9,14 @@ import org.junit.Test;
 import ch.opentrainingcenter.transfer.ILapInfo;
 import ch.opentrainingcenter.transfer.ITrackPointProperty;
 import ch.opentrainingcenter.transfer.ITraining;
+import static ch.opentrainingcenter.core.lapinfo.TrackPointSupport.assertLapInfo;
+import static ch.opentrainingcenter.core.lapinfo.TrackPointSupport.createTrackPoint;
+import static org.junit.Assert.assertTrue;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+@SuppressWarnings("nls")
 public class LapInfoCreatorTest {
 
     private static final int HEART_BEAT = 120;
@@ -54,7 +55,7 @@ public class LapInfoCreatorTest {
     @Test
     public void testNoTrackPoints() {
         creator = new LapInfoCreator(42d);
-        List<ILapInfo> result = creator.createLapInfos(training);
+        final List<ILapInfo> result = creator.createLapInfos(training);
 
         assertTrue(result.isEmpty());
     }
@@ -71,9 +72,9 @@ public class LapInfoCreatorTest {
         creator = new LapInfoCreator(1001d);
         trackPoints.add(createTrackPoint(EIN_KILOMETER_IN_METER, HEART_BEAT, FUENF_FUENFZENHN_IN_MILLIS));
 
-        List<ILapInfo> lapInfos = creator.createLapInfos(training);
+        final List<ILapInfo> lapInfos = creator.createLapInfos(training);
 
-        ILapInfo lapInfo = lapInfos.get(0);
+        final ILapInfo lapInfo = lapInfos.get(0);
 
         assertLapInfo(EIN_KILOMETER_IN_METER, HEART_BEAT, FUENF_FUENFZENHN_IN_MILLIS, "5:15", lapInfo);
     }
@@ -90,9 +91,9 @@ public class LapInfoCreatorTest {
         creator = new LapInfoCreator(999d);
         trackPoints.add(createTrackPoint(EIN_KILOMETER_IN_METER, HEART_BEAT, FUENF_FUENFZENHN_IN_MILLIS));
 
-        List<ILapInfo> lapInfos = creator.createLapInfos(training);
+        final List<ILapInfo> lapInfos = creator.createLapInfos(training);
 
-        ILapInfo lapInfo = lapInfos.get(1);
+        final ILapInfo lapInfo = lapInfos.get(1);
 
         assertLapInfo(EIN_KILOMETER_IN_METER, HEART_BEAT, FUENF_FUENFZENHN_IN_MILLIS, "5:15", lapInfo);
     }
@@ -113,10 +114,10 @@ public class LapInfoCreatorTest {
         trackPoints.add(createTrackPoint(EIN_KILOMETER_IN_METER, HEART_BEAT, FUENF_FUENFZENHN_IN_MILLIS));
         trackPoints.add(createTrackPoint(2 * EIN_KILOMETER_IN_METER, HEART_BEAT + 20, FUENF_FUENFZENHN_IN_MILLIS + VIER_MINUTEN_IN_MILLIS));
 
-        List<ILapInfo> lapInfos = creator.createLapInfos(training);
+        final List<ILapInfo> lapInfos = creator.createLapInfos(training);
 
-        ILapInfo lapInfo0 = lapInfos.get(1);
-        ILapInfo lapInfo1 = lapInfos.get(2);
+        final ILapInfo lapInfo0 = lapInfos.get(1);
+        final ILapInfo lapInfo1 = lapInfos.get(2);
 
         assertLapInfo(EIN_KILOMETER_IN_METER, HEART_BEAT, FUENF_FUENFZENHN_IN_MILLIS, "5:15", lapInfo0);
         assertLapInfo(EIN_KILOMETER_IN_METER, HEART_BEAT + 20, VIER_MINUTEN_IN_MILLIS, "4:00", lapInfo1);

@@ -1,11 +1,5 @@
 package ch.opentrainingcenter.core.service.internal;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
@@ -14,7 +8,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ch.opentrainingcenter.core.db.IDatabaseConnection;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.anyString;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+@SuppressWarnings("nls")
 public class DatabaseExtensionSupportTest {
 
     private static final String H2_DATABASE = "H2Database";
@@ -30,9 +31,9 @@ public class DatabaseExtensionSupportTest {
 
     @Test
     public void getDaosOhneConfItems() {
-        IConfigurationElement[] confItems = new IConfigurationElement[0];
+        final IConfigurationElement[] confItems = new IConfigurationElement[0];
 
-        Map<String, IDatabaseConnection> dao = DatabaseExtensionSupport.getDao(confItems, EXTENSION_ATTR);
+        final Map<String, IDatabaseConnection> dao = DatabaseExtensionSupport.getDao(confItems, EXTENSION_ATTR);
 
         assertNotNull(dao);
         assertTrue(dao.isEmpty());
@@ -41,12 +42,12 @@ public class DatabaseExtensionSupportTest {
     @SuppressWarnings("unchecked")
     @Test
     public void getDaosMitConfItemsCoreException() throws CoreException {
-        IConfigurationElement[] confItems = new IConfigurationElement[1];
+        final IConfigurationElement[] confItems = new IConfigurationElement[1];
         confItems[0] = element;
 
         when(element.createExecutableExtension(anyString())).thenThrow(CoreException.class);
 
-        Map<String, IDatabaseConnection> dao = DatabaseExtensionSupport.getDao(confItems, EXTENSION_ATTR);
+        final Map<String, IDatabaseConnection> dao = DatabaseExtensionSupport.getDao(confItems, EXTENSION_ATTR);
 
         assertNotNull(dao);
         assertTrue(dao.isEmpty());
@@ -54,16 +55,16 @@ public class DatabaseExtensionSupportTest {
 
     @Test
     public void getDaosMitConfItems() throws CoreException {
-        IConfigurationElement[] confItems = new IConfigurationElement[1];
+        final IConfigurationElement[] confItems = new IConfigurationElement[1];
         confItems[0] = element;
 
-        IDatabaseConnection connection = mock(IDatabaseConnection.class);
+        final IDatabaseConnection connection = mock(IDatabaseConnection.class);
         when(connection.getName()).thenReturn(H2_DATABASE);
 
         when(element.createExecutableExtension(EXTENSION_ATTR)).thenReturn(connection);
 
-        Map<String, IDatabaseConnection> dao = DatabaseExtensionSupport.getDao(confItems, EXTENSION_ATTR);
-        IDatabaseConnection result = dao.get(H2_DATABASE);
+        final Map<String, IDatabaseConnection> dao = DatabaseExtensionSupport.getDao(confItems, EXTENSION_ATTR);
+        final IDatabaseConnection result = dao.get(H2_DATABASE);
 
         assertNotNull(result);
     }
