@@ -1,5 +1,11 @@
 package ch.opentrainingcenter.db.internal;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -21,12 +27,8 @@ import ch.opentrainingcenter.transfer.ITrackPointProperty;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.ITrainingType;
 import ch.opentrainingcenter.transfer.IWeather;
+import ch.opentrainingcenter.transfer.Sport;
 import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 @SuppressWarnings("nls")
 public class DatabaseAccessTest extends DatabaseTestBase {
@@ -74,6 +76,7 @@ public class DatabaseAccessTest extends DatabaseTestBase {
         routeDao.saveOrUpdate(route);
 
         training.setRoute(route);
+        training.setSport(Sport.BIKE);
 
         dataAccess.saveOrUpdate(training);
 
@@ -84,6 +87,7 @@ public class DatabaseAccessTest extends DatabaseTestBase {
         assertEquals("note", result.getNote());
         assertEquals(weatherA, result.getWeather());
         assertEquals(route, result.getRoute());
+        assertEquals(Sport.BIKE, result.getSport());
     }
 
     @Test
