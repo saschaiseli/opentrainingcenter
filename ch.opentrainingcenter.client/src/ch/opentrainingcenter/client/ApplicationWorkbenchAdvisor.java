@@ -17,6 +17,7 @@ import ch.opentrainingcenter.core.db.DBSTATE;
 import ch.opentrainingcenter.core.db.DatabaseConnectionState;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.db.IDatabaseConnection;
+import ch.opentrainingcenter.core.db.SqlException;
 import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.transfer.IAthlete;
@@ -65,6 +66,13 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
                 return MainPerspective.ID;
             }
         } else {
+            try {
+                LOGGER.info("Versuche DB zu erstellen");
+                databaseConnection.createDatabase();
+            } catch (SqlException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
             LOGGER.info(Messages.ApplicationWorkbenchAdvisorAthleteNotInPreferences);
             return EinstellungenPerspective.ID;
         }

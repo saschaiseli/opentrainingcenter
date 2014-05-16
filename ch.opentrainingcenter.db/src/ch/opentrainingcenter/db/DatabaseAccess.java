@@ -61,6 +61,8 @@ public class DatabaseAccess extends AbstractDatabaseAccess {
             getCommonDao().getAthlete(1);
         } catch (final Exception e) {
             final Throwable cause = e.getCause();
+
+            // TODO Mapping auf sql nummer
             final String message = cause != null ? cause.getMessage() : e.getMessage();
             if (message != null && message.contains("Locked by another process")) { //$NON-NLS-1$
                 LOG.error("Database Locked by another process"); //$NON-NLS-1$
@@ -68,6 +70,8 @@ public class DatabaseAccess extends AbstractDatabaseAccess {
             } else if (message != null && message.contains("Wrong user name or password")) { //$NON-NLS-1$
                 LOG.error("Wrong user name or password"); //$NON-NLS-1$
                 result = DatabaseConnectionState.createState(Messages.DatabaseAccess_1, DBSTATE.CONFIG_PROBLEM);
+            } else if (message != null && message.contains("Tabelle x existiert nicht")) {
+                result = DatabaseConnectionState.createState("Datenbank existier nicht", DBSTATE.CREATE_DB);
             } else {
                 LOG.error(String.format("Fehler mit der Datenbank: %s", message), e); //$NON-NLS-1$
                 result = DatabaseConnectionState.createProblemState(NLS.bind(Messages.DatabaseAccess_2, message));

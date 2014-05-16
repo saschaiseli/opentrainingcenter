@@ -8,6 +8,7 @@ import ch.opentrainingcenter.transfer.ILapInfo;
 import ch.opentrainingcenter.transfer.ITrackPointProperty;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.IWeather;
+import ch.opentrainingcenter.transfer.Sport;
 
 public class ConcreteImported extends ImportedDecorator implements INavigationItem, ITraining {
 
@@ -172,5 +173,15 @@ public class ConcreteImported extends ImportedDecorator implements INavigationIt
     @Override
     public void setLapInfos(final List<ILapInfo> lapInfos) {
         training.setLapInfos(lapInfos);
+    }
+
+    @Override
+    public Sport getSport() {
+        return training.getSport();
+    }
+
+    @Override
+    public void setSport(Sport sport) {
+        training.setSport(sport);
     }
 }

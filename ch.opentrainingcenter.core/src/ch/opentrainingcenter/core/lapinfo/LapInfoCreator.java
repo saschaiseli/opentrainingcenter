@@ -30,7 +30,7 @@ public class LapInfoCreator {
      * Konstruktor definiert.
      * 
      * @param training
-     * @return
+     * @return eine Liste mit {@link ILapInfo}s.
      */
     public List<ILapInfo> createLapInfos(ITraining training) {
         List<ILapInfo> result = new ArrayList<>();

@@ -1,5 +1,9 @@
 package ch.opentrainingcenter.importer.tcx;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+
 import java.io.File;
 import java.util.List;
 
@@ -10,9 +14,7 @@ import ch.opentrainingcenter.transfer.ILapInfo;
 import ch.opentrainingcenter.transfer.IStreckenPunkt;
 import ch.opentrainingcenter.transfer.ITrackPointProperty;
 import ch.opentrainingcenter.transfer.ITraining;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
+import ch.opentrainingcenter.transfer.Sport;
 
 @SuppressWarnings("nls")
 public class ConvertTcxTest {
@@ -103,6 +105,7 @@ public class ConvertTcxTest {
         assertEquals(240000, lap2.getTime());
         assertEquals(1000, lap2.getDistance());
         assertEquals("4:00", lap2.getPace());
+        assertEquals(Sport.RUNNING, training.getSport());
     }
 
     @Test

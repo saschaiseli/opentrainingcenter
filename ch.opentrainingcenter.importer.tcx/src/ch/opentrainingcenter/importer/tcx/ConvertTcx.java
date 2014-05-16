@@ -33,6 +33,7 @@ import ch.opentrainingcenter.tcx.ActivityLapT;
 import ch.opentrainingcenter.tcx.ActivityT;
 import ch.opentrainingcenter.tcx.HeartRateInBeatsPerMinuteT;
 import ch.opentrainingcenter.tcx.PositionT;
+import ch.opentrainingcenter.tcx.SportT;
 import ch.opentrainingcenter.tcx.TrackT;
 import ch.opentrainingcenter.tcx.TrackpointT;
 import ch.opentrainingcenter.tcx.TrainingCenterDatabaseT;
@@ -40,6 +41,7 @@ import ch.opentrainingcenter.transfer.ILapInfo;
 import ch.opentrainingcenter.transfer.IStreckenPunkt;
 import ch.opentrainingcenter.transfer.ITrackPointProperty;
 import ch.opentrainingcenter.transfer.ITraining;
+import ch.opentrainingcenter.transfer.Sport;
 import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
 
 public class ConvertTcx implements IConvert2Tcx {
@@ -158,6 +160,7 @@ public class ConvertTcx implements IConvert2Tcx {
         final Ascending ascending = AltitudeCalculator.calculateAscending(trackPoints);
         training.setUpMeter(ascending.getUp());
         training.setDownMeter(ascending.getDown());
+        training.setSport(translate(activity.getSport()));
         if (trackPoints.isEmpty()) {
             training.setNote(NO_DATA);
         }
@@ -200,7 +203,15 @@ public class ConvertTcx implements IConvert2Tcx {
         }
     }
 
-    private static boolean hasCardio(final ActivityLapT lap) {
+    private Sport translate(SportT in) {
+        if (Sport.RUNNING.toString().equals(in.name())) {
+            return Sport.RUNNING;
+        } else {
+            return Sport.OTHER;
+        }
+    }
+
+    private boolean hasCardio(final ActivityLapT lap) {
         return lap.getMaximumHeartRateBpm() != null;
     }
 
