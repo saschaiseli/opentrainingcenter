@@ -30,30 +30,32 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
-import ch.opentrainingcenter.client.ui.tableviewer.labelprovider.TrackColumnLabelProviderDistanz;
-import ch.opentrainingcenter.client.ui.tableviewer.labelprovider.TrackColumnLabelProviderNote;
-import ch.opentrainingcenter.client.ui.tableviewer.labelprovider.TrackColumnLabelProviderRouten;
-import ch.opentrainingcenter.client.ui.tableviewer.labelprovider.TrackColumnLabelProviderZeit;
+import ch.opentrainingcenter.client.ui.tableviewer.labelprovider.RouteColumnLabelProviderAnzahl;
+import ch.opentrainingcenter.client.ui.tableviewer.labelprovider.RouteColumnLabelProviderBeschreibung;
+import ch.opentrainingcenter.client.ui.tableviewer.labelprovider.RouteColumnLabelProviderId;
+import ch.opentrainingcenter.client.ui.tableviewer.labelprovider.RouteColumnLabelProviderLaenge;
+import ch.opentrainingcenter.client.ui.tableviewer.labelprovider.RouteColumnLabelProviderName;
 import ch.opentrainingcenter.i18n.Messages;
+import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
 
-public class TrackTableViewer extends TableViewer {
+public class RoutenTableViewer extends TableViewer {
 
-    public TrackTableViewer(final Composite parent, final int style) {
+    public RoutenTableViewer(final Composite parent, final int style) {
         super(parent, style);
-
     }
 
-    public void createTableViewer(final List<ITraining> input) {
+    public void createTableViewer(final List<IRoute> routen, final List<ITraining> tracks) {
         final Table table = getTable();
         table.setHeaderVisible(true);
         table.setLinesVisible(true);
 
-        createTrackColumns();
+        createRouteColumns(tracks);
 
         setContentProvider(new ArrayContentProvider());
-        setInput(input);
+        setInput(routen);
 
+        // Layout the viewer
         final GridData gridData = new GridData();
         gridData.verticalAlignment = GridData.FILL;
         gridData.horizontalSpan = 1;
@@ -64,24 +66,27 @@ public class TrackTableViewer extends TableViewer {
         getControl().setLayoutData(gridData);
     }
 
-    private void createTrackColumns() {
-        final String[] titles = { Messages.RoutenView_5, Messages.RoutenView_6, Messages.RoutenView_7, Messages.RoutenView_8 };
-        final int[] bounds = { 120, 80, 200, 100 };
+    private void createRouteColumns(final List<ITraining> tracks) {
+        final String[] titles = { Messages.RoutenView_9, Messages.RoutenView_10, Messages.RoutenView_11, Messages.RoutenView_6, Messages.RoutenView_13 };
+        final int[] bounds = { 40, 100, 200, 100, 40 };
 
-        TableViewerColumn col = createTrackColumn(titles[0], bounds[0]);
-        col.setLabelProvider(new TrackColumnLabelProviderZeit());
+        TableViewerColumn col = createRouteColumn(titles[0], bounds[0]);
+        col.setLabelProvider(new RouteColumnLabelProviderId());
 
-        col = createTrackColumn(titles[1], bounds[1]);
-        col.setLabelProvider(new TrackColumnLabelProviderDistanz());
+        col = createRouteColumn(titles[1], bounds[1]);
+        col.setLabelProvider(new RouteColumnLabelProviderName());
 
-        col = createTrackColumn(titles[2], bounds[2]);
-        col.setLabelProvider(new TrackColumnLabelProviderNote());
+        col = createRouteColumn(titles[2], bounds[2]);
+        col.setLabelProvider(new RouteColumnLabelProviderBeschreibung());
 
-        col = createTrackColumn(titles[3], bounds[3]);
-        col.setLabelProvider(new TrackColumnLabelProviderRouten());
+        col = createRouteColumn(titles[3], bounds[3]);
+        col.setLabelProvider(new RouteColumnLabelProviderLaenge());
+
+        col = createRouteColumn(titles[4], bounds[4]);
+        col.setLabelProvider(new RouteColumnLabelProviderAnzahl(tracks));
     }
 
-    private TableViewerColumn createTrackColumn(final String title, final int bound) {
+    private TableViewerColumn createRouteColumn(final String title, final int bound) {
         final TableViewerColumn viewerColumn = new TableViewerColumn(this, SWT.NONE);
         final TableColumn column = viewerColumn.getColumn();
         column.setText(title);
@@ -90,5 +95,4 @@ public class TrackTableViewer extends TableViewer {
         column.setMoveable(true);
         return viewerColumn;
     }
-
 }

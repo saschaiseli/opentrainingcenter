@@ -17,7 +17,7 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package ch.opentrainingcenter.client.ui.tableviewer;
+package ch.opentrainingcenter.client.ui.tableviewer.labelprovider;
 
 import static org.junit.Assert.assertEquals;
 
@@ -26,6 +26,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import ch.opentrainingcenter.client.ui.tableviewer.labelprovider.TrackColumnLabelProviderRouten;
 import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
 
@@ -45,7 +46,7 @@ public class ColumnLabelProviderRoutenTest {
 
     @Test
     public void testRouten_null() {
-        final ColumnLabelProviderRouten provider = new ColumnLabelProviderRouten();
+        final TrackColumnLabelProviderRouten provider = new TrackColumnLabelProviderRouten();
         when(training.getRoute()).thenReturn(null);
 
         final String result = provider.getText(training);
@@ -55,7 +56,7 @@ public class ColumnLabelProviderRoutenTest {
 
     @Test
     public void testRouten_Route() {
-        final ColumnLabelProviderRouten provider = new ColumnLabelProviderRouten();
+        final TrackColumnLabelProviderRouten provider = new TrackColumnLabelProviderRouten();
         final IRoute route = mock(IRoute.class);
         when(route.getName()).thenReturn("Junit");
         when(training.getRoute()).thenReturn(route);
@@ -67,7 +68,7 @@ public class ColumnLabelProviderRoutenTest {
 
     @Test
     public void testRouten_ReferenzTrackRoute() {
-        final ColumnLabelProviderRouten provider = new ColumnLabelProviderRouten();
+        final TrackColumnLabelProviderRouten provider = new TrackColumnLabelProviderRouten();
         final IRoute route = mock(IRoute.class);
         when(route.getName()).thenReturn("Junit");
         when(route.getReferenzTrack()).thenReturn(training);
@@ -82,7 +83,7 @@ public class ColumnLabelProviderRoutenTest {
 
     @Test
     public void testRouten_NichtReferenzTrackRoute() {
-        final ColumnLabelProviderRouten provider = new ColumnLabelProviderRouten();
+        final TrackColumnLabelProviderRouten provider = new TrackColumnLabelProviderRouten();
         final IRoute route = mock(IRoute.class);
         when(route.getName()).thenReturn("Junit");
         final ITraining otherTraining = mock(ITraining.class);

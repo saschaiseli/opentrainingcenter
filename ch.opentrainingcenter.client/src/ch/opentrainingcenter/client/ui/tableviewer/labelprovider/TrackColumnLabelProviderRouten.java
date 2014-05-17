@@ -17,37 +17,26 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package ch.opentrainingcenter.client.ui.tableviewer;
+package ch.opentrainingcenter.client.ui.tableviewer.labelprovider;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.eclipse.jface.viewers.ColumnLabelProvider;
 
+import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
-import static org.junit.Assert.assertEquals;
 
-import static org.mockito.Mockito.when;
-
-@SuppressWarnings("nls")
-public class ColumnLabelProviderNoteTest {
-    @Mock
-    private ITraining training;
-
-    @Before
-    public void setUp() {
-        MockitoAnnotations.initMocks(this);
+public final class TrackColumnLabelProviderRouten extends ColumnLabelProvider {
+    @Override
+    public String getText(final Object element) {
+        final ITraining training = (ITraining) element;
+        final IRoute route = training.getRoute();
+        if (route != null) {
+            String routenText = route.getName();
+            if (route.getReferenzTrack() != null && route.getReferenzTrack().getId() == training.getId()) {
+                routenText += "*"; //$NON-NLS-1$
+            }
+            return routenText;
+        } else {
+            return ""; //$NON-NLS-1$
+        }
     }
-
-    @Test
-    public void testNote() {
-        final ColumnLabelProviderNote provider = new ColumnLabelProviderNote();
-        final String note = "abc_junit judihui";
-        when(training.getNote()).thenReturn(note);
-
-        final String result = provider.getText(training);
-
-        assertEquals(note, result);
-    }
-
 }

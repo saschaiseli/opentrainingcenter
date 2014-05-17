@@ -17,16 +17,16 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package ch.opentrainingcenter.client.ui.tableviewer;
+package ch.opentrainingcenter.client.ui.tableviewer.labelprovider;
 
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 
-import ch.opentrainingcenter.transfer.ITraining;
+import ch.opentrainingcenter.transfer.IRoute;
 
-final class ColumnLabelProviderNote extends ColumnLabelProvider {
+public final class RouteColumnLabelProviderId extends ColumnLabelProvider {
     @Override
     public String getText(final Object element) {
-        final ITraining training = (ITraining) element;
-        return training.getNote();
+        final IRoute route = (IRoute) element;
+        return String.valueOf(route.getId());
     }
 }

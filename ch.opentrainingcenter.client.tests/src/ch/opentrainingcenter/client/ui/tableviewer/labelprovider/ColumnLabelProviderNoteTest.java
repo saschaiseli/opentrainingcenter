@@ -17,20 +17,21 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package ch.opentrainingcenter.client.ui.tableviewer;
+package ch.opentrainingcenter.client.ui.tableviewer.labelprovider;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import ch.opentrainingcenter.client.ui.tableviewer.labelprovider.TrackColumnLabelProviderNote;
 import ch.opentrainingcenter.transfer.ITraining;
 import static org.junit.Assert.assertEquals;
 
 import static org.mockito.Mockito.when;
 
 @SuppressWarnings("nls")
-public class ColumnLabelProviderZeitTest {
+public class ColumnLabelProviderNoteTest {
     @Mock
     private ITraining training;
 
@@ -40,12 +41,14 @@ public class ColumnLabelProviderZeitTest {
     }
 
     @Test
-    public void testZeit() {
-        final ColumnLabelProviderZeit provider = new ColumnLabelProviderZeit();
-        when(training.getDatum()).thenReturn(1_234_456_789_123L);
+    public void testNote() {
+        final TrackColumnLabelProviderNote provider = new TrackColumnLabelProviderNote();
+        final String note = "abc_junit judihui";
+        when(training.getNote()).thenReturn(note);
 
         final String result = provider.getText(training);
 
-        assertEquals("12.02.2009", result);
+        assertEquals(note, result);
     }
+
 }

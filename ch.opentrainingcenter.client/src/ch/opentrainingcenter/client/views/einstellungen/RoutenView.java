@@ -6,18 +6,11 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
-import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.ISelectionService;
 import org.eclipse.ui.IWorkbenchPart;
@@ -32,10 +25,10 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
 import org.eclipse.ui.part.ViewPart;
 
 import ch.opentrainingcenter.client.ui.FormToolkitSupport;
+import ch.opentrainingcenter.client.ui.tableviewer.RoutenTableViewer;
 import ch.opentrainingcenter.client.ui.tableviewer.TrackTableViewer;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
-import ch.opentrainingcenter.core.helper.DistanceHelper;
 import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.transfer.IAthlete;
@@ -70,7 +63,7 @@ public class RoutenView extends ViewPart implements ISelectionListener {
 
     private TrackTableViewer viewerTracks;
 
-    private TableViewer viewerRouten;
+    private RoutenTableViewer viewerRouten;
 
     private final IDatabaseAccess databaseAccess;
 
@@ -147,24 +140,8 @@ public class RoutenView extends ViewPart implements ISelectionListener {
         final Label headLeft = new Label(compositeLeft, SWT.BOLD);
         headLeft.setText(Messages.RoutenView_3);
 
-        viewerRouten = new TableViewer(compositeLeft, SWT_TABLE_PATTERN);
-        createRouteColumns();
-
-        final Table table = viewerRouten.getTable();
-        defineTable(table);
-
-        viewerRouten.setContentProvider(new ArrayContentProvider());
-        viewerRouten.setInput(routen);
-
-        // Layout the viewer
-        final GridData gridData = new GridData();
-        gridData.verticalAlignment = GridData.FILL;
-        gridData.horizontalSpan = 1;
-        gridData.grabExcessHorizontalSpace = true;
-        gridData.grabExcessVerticalSpace = true;
-        gridData.horizontalAlignment = GridData.FILL;
-        gridData.minimumHeight = 300;
-        viewerRouten.getControl().setLayoutData(gridData);
+        viewerRouten = new RoutenTableViewer(compositeLeft, SWT_TABLE_PATTERN);
+        viewerRouten.createTableViewer(routen, tracks);
     }
 
     private void createRightComposite(final Composite compositeRight) {
@@ -173,100 +150,6 @@ public class RoutenView extends ViewPart implements ISelectionListener {
 
         viewerTracks = new TrackTableViewer(compositeRight, SWT_TABLE_PATTERN);
         viewerTracks.createTableViewer(tracks);
-        // viewerTracks = new TableViewer(compositeRight, SWT_TABLE_PATTERN);
-        // createTrackColumns();
-        //
-        // final Table table = viewerTracks.getTable();
-        // defineTable(table);
-        //
-        // viewerTracks.setContentProvider(new ArrayContentProvider());
-        // viewerTracks.setInput(tracks);
-        //
-        // // Layout the viewer
-        // final GridData gridData = new GridData();
-        // gridData.verticalAlignment = GridData.FILL;
-        // gridData.horizontalSpan = 1;
-        // gridData.grabExcessHorizontalSpace = true;
-        // gridData.grabExcessVerticalSpace = true;
-        // gridData.horizontalAlignment = GridData.FILL;
-        // gridData.minimumHeight = 300;
-        // viewerTracks.getControl().setLayoutData(gridData);
-    }
-
-    private void defineTable(final Table table) {
-        table.setHeaderVisible(true);
-        table.setLinesVisible(true);
-    }
-
-    private void createRouteColumns() {
-        final String[] titles = { Messages.RoutenView_9, Messages.RoutenView_10, Messages.RoutenView_11, Messages.RoutenView_6, Messages.RoutenView_13 };
-        final int[] bounds = { 40, 100, 200, 100, 40 };
-
-        TableViewerColumn col = createRouteColumn(titles[0], bounds[0]);
-        col.setLabelProvider(new ColumnLabelProvider() {
-            @Override
-            public String getText(final Object element) {
-                final IRoute route = (IRoute) element;
-                return String.valueOf(route.getId());
-            }
-        });
-
-        col = createRouteColumn(titles[1], bounds[1]);
-        col.setLabelProvider(new ColumnLabelProvider() {
-            @Override
-            public String getText(final Object element) {
-                final IRoute route = (IRoute) element;
-                return route.getName();
-            }
-        });
-
-        col = createRouteColumn(titles[2], bounds[2]);
-        col.setLabelProvider(new ColumnLabelProvider() {
-            @Override
-            public String getText(final Object element) {
-                final IRoute route = (IRoute) element;
-                return route.getBeschreibung();
-            }
-        });
-
-        col = createRouteColumn(titles[3], bounds[3]);
-        col.setLabelProvider(new ColumnLabelProvider() {
-            @Override
-            public String getText(final Object element) {
-                final IRoute route = (IRoute) element;
-                final ITraining referenzTrack = route.getReferenzTrack();
-                if (referenzTrack != null) {
-                    return DistanceHelper.roundDistanceFromMeterToKm(referenzTrack.getLaengeInMeter());
-                } else {
-                    return ""; //$NON-NLS-1$
-                }
-            }
-        });
-
-        col = createRouteColumn(titles[4], bounds[4]);
-        col.setLabelProvider(new ColumnLabelProvider() {
-            @Override
-            public String getText(final Object element) {
-                final IRoute route = (IRoute) element;
-                int i = 0;
-                for (final ITraining training : tracks) {
-                    if (training.getRoute() != null && training.getRoute().getName().equals(route.getName())) {
-                        i++;
-                    }
-                }
-                return String.valueOf(i);
-            }
-        });
-    }
-
-    private TableViewerColumn createRouteColumn(final String title, final int bound) {
-        final TableViewerColumn viewerColumn = new TableViewerColumn(viewerRouten, SWT.NONE);
-        final TableColumn column = viewerColumn.getColumn();
-        column.setText(title);
-        column.setWidth(bound);
-        column.setResizable(true);
-        column.setMoveable(true);
-        return viewerColumn;
     }
 
     @Override

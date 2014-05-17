@@ -17,22 +17,24 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package ch.opentrainingcenter.client.ui.tableviewer;
+package ch.opentrainingcenter.client.ui.tableviewer.labelprovider;
+
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import ch.opentrainingcenter.transfer.ITraining;
-import static org.junit.Assert.assertEquals;
+import ch.opentrainingcenter.transfer.IRoute;
 
 import static org.mockito.Mockito.when;
 
 @SuppressWarnings("nls")
-public class ColumnLabelProviderDistanzTest {
+public class RouteColumnLabelProviderIdTest {
+
     @Mock
-    private ITraining training;
+    private IRoute route;
 
     @Before
     public void setUp() {
@@ -40,12 +42,12 @@ public class ColumnLabelProviderDistanzTest {
     }
 
     @Test
-    public void testDistanz() {
-        final ColumnLabelProviderDistanz provider = new ColumnLabelProviderDistanz();
-        when(training.getLaengeInMeter()).thenReturn(1234.5678d);
+    public void test() {
+        final RouteColumnLabelProviderId provider = new RouteColumnLabelProviderId();
+        when(route.getId()).thenReturn(12);
 
-        final String result = provider.getText(training);
+        final String result = provider.getText(route);
 
-        assertEquals("1.235", result);
+        assertEquals("12", result);
     }
 }

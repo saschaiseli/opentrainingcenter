@@ -17,26 +17,19 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package ch.opentrainingcenter.client.ui.tableviewer;
+package ch.opentrainingcenter.client.ui.tableviewer.labelprovider;
+
+import java.util.Date;
 
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 
-import ch.opentrainingcenter.transfer.IRoute;
+import ch.opentrainingcenter.core.helper.TimeHelper;
 import ch.opentrainingcenter.transfer.ITraining;
 
-final class ColumnLabelProviderRouten extends ColumnLabelProvider {
+public final class TrackColumnLabelProviderZeit extends ColumnLabelProvider {
     @Override
     public String getText(final Object element) {
         final ITraining training = (ITraining) element;
-        final IRoute route = training.getRoute();
-        if (route != null) {
-            String routenText = route.getName();
-            if (route.getReferenzTrack() != null && route.getReferenzTrack().getId() == training.getId()) {
-                routenText += "*"; //$NON-NLS-1$
-            }
-            return routenText;
-        } else {
-            return ""; //$NON-NLS-1$
-        }
+        return String.valueOf(TimeHelper.convertDateToString(new Date(training.getDatum())));
     }
 }
