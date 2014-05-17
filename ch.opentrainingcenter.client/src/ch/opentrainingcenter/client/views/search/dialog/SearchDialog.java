@@ -21,6 +21,8 @@ package ch.opentrainingcenter.client.views.search.dialog;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -175,6 +177,14 @@ public class SearchDialog extends TitleAreaDialog {
                         result.add(training);
                     }
                 }
+                Collections.sort(result, new Comparator<ITraining>() {
+
+                    @Override
+                    public int compare(final ITraining o1, final ITraining o2) {
+                        return Double.compare(o2.getLaengeInMeter(), o1.getLaengeInMeter());
+                    }
+
+                });
                 LOGGER.info(String.format("Filter trainings dauerte %s [ms]", DateTime.now().getMillis() - start)); //$NON-NLS-1$
                 if (viewer != null) {
                     viewer.setInput(result);
