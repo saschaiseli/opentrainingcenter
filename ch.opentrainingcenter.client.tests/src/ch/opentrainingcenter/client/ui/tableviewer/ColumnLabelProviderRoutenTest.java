@@ -19,14 +19,17 @@
 
 package ch.opentrainingcenter.client.ui.tableviewer;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
-import static org.junit.Assert.assertEquals;
 
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @SuppressWarnings("nls")
@@ -48,5 +51,49 @@ public class ColumnLabelProviderRoutenTest {
         final String result = provider.getText(training);
 
         assertEquals("", result);
+    }
+
+    @Test
+    public void testRouten_Route() {
+        final ColumnLabelProviderRouten provider = new ColumnLabelProviderRouten();
+        final IRoute route = mock(IRoute.class);
+        when(route.getName()).thenReturn("Junit");
+        when(training.getRoute()).thenReturn(route);
+
+        final String result = provider.getText(training);
+
+        assertEquals("Junit", result);
+    }
+
+    @Test
+    public void testRouten_ReferenzTrackRoute() {
+        final ColumnLabelProviderRouten provider = new ColumnLabelProviderRouten();
+        final IRoute route = mock(IRoute.class);
+        when(route.getName()).thenReturn("Junit");
+        when(route.getReferenzTrack()).thenReturn(training);
+        when(training.getId()).thenReturn(42);
+
+        when(training.getRoute()).thenReturn(route);
+
+        final String result = provider.getText(training);
+
+        assertEquals("Junit*", result);
+    }
+
+    @Test
+    public void testRouten_NichtReferenzTrackRoute() {
+        final ColumnLabelProviderRouten provider = new ColumnLabelProviderRouten();
+        final IRoute route = mock(IRoute.class);
+        when(route.getName()).thenReturn("Junit");
+        final ITraining otherTraining = mock(ITraining.class);
+        when(otherTraining.getId()).thenReturn(43);
+        when(route.getReferenzTrack()).thenReturn(otherTraining);
+        when(training.getId()).thenReturn(42);
+
+        when(training.getRoute()).thenReturn(route);
+
+        final String result = provider.getText(training);
+
+        assertEquals("Junit", result);
     }
 }
