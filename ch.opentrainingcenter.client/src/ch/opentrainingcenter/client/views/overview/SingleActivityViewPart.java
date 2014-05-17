@@ -131,6 +131,10 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         time1 = DateTime.now().getMillis();
         LOGGER.debug(String.format("Zeit zum Laden von addNoteSection: %s [ms]", time1 - time2)); //$NON-NLS-1$
 
+        addHeartSection(body);
+        time1 = DateTime.now().getMillis();
+        LOGGER.debug(String.format("Zeit zum Laden von addHeartSection: %s [ms]", time1 - time2)); //$NON-NLS-1$
+
         if (lapInfos.size() > 1) {
             addLapSection(body);
         } else {
@@ -142,10 +146,6 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         }
         time2 = DateTime.now().getMillis();
         LOGGER.debug(String.format("Zeit zum Laden von addMapSection: %s [ms]", time2 - time1)); //$NON-NLS-1$
-
-        addHeartSection(body);
-        time1 = DateTime.now().getMillis();
-        LOGGER.debug(String.format("Zeit zum Laden von addHeartSection: %s [ms]", time1 - time2)); //$NON-NLS-1$
 
         addSpeedSection(body);
         time2 = DateTime.now().getMillis();
@@ -189,7 +189,7 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         client.setLayout(layout);
 
         final TableWrapData clientLayoutData = new TableWrapData(TableWrapData.FILL_GRAB);
-        clientLayoutData.maxHeight = 270;
+        clientLayoutData.maxHeight = 250;
         clientLayoutData.grabHorizontal = true;
         clientLayoutData.grabVertical = true;
         client.setLayoutData(clientLayoutData);
