@@ -17,17 +17,17 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package ch.opentrainingcenter.client.views.overview;
+package ch.opentrainingcenter.client.ui.tableviewer.labelprovider;
 
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 
 import ch.opentrainingcenter.transfer.ILapInfo;
 
-abstract class LapInfoColumnLabelProvider extends ColumnLabelProvider {
+public abstract class LapInfoColumnLabelProvider extends ColumnLabelProvider {
     @Override
     public String getText(final Object element) {
         return getLapInfoText((ILapInfo) element);
     }
 
-    abstract String getLapInfoText(final ILapInfo lapInfo);
+    public abstract String getLapInfoText(final ILapInfo lapInfo);
 }

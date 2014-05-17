@@ -2,8 +2,6 @@ package ch.opentrainingcenter.client.views.overview;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -17,8 +15,6 @@ import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTError;
 import org.eclipse.swt.SWTException;
@@ -33,8 +29,6 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -51,12 +45,12 @@ import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.cache.StreckeCache;
 import ch.opentrainingcenter.client.model.Units;
 import ch.opentrainingcenter.client.ui.FormToolkitSupport;
+import ch.opentrainingcenter.client.ui.tableviewer.LapInfoTableViewer;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.core.cache.Cache;
 import ch.opentrainingcenter.core.cache.IRecordListener;
 import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
-import ch.opentrainingcenter.core.helper.DistanceHelper;
 import ch.opentrainingcenter.core.helper.TimeHelper;
 import ch.opentrainingcenter.core.lapinfo.LapInfoCreator;
 import ch.opentrainingcenter.core.service.IDatabaseService;
@@ -137,9 +131,8 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
 
         if (lapInfos.size() > 1) {
             addLapSection(body);
-        } else {
-            addSynthLapSection(body);
         }
+        addSynthLapSection(body);
 
         if (!training.getTrackPoints().isEmpty()) {
             addMapSection(body);
@@ -188,96 +181,10 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         layout.makeColumnsEqualWidth = false;
         client.setLayout(layout);
 
-        final TableWrapData clientLayoutData = new TableWrapData(TableWrapData.FILL_GRAB);
-        clientLayoutData.maxHeight = 250;
-        clientLayoutData.grabHorizontal = true;
-        clientLayoutData.grabVertical = true;
-        client.setLayoutData(clientLayoutData);
+        final LapInfoTableViewer viewer = new LapInfoTableViewer(client, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
+        viewer.createTableViewer(input);
 
-        final TableViewer viewer = new TableViewer(client, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
-        createLapColumns(viewer);
-        final Table table = viewer.getTable();
-        table.setHeaderVisible(true);
-        table.setLinesVisible(true);
-
-        viewer.setContentProvider(new ArrayContentProvider());
-        Collections.sort(input, new Comparator<ILapInfo>() {
-
-            @Override
-            public int compare(final ILapInfo o1, final ILapInfo o2) {
-                return Integer.compare(o1.getLap(), o2.getLap());
-            }
-        });
-        viewer.setInput(input);
-        viewer.refresh();
-        viewer.getControl().setLayoutData(clientLayoutData);
         lapSection.setClient(client);
-
-    }
-
-    private void createLapColumns(final TableViewer tableViewer) {
-        final String[] titles = { Messages.RUNDE, Messages.ZEIT, Messages.DISTANZ, Messages.PACE, Messages.HERZFREQUENZ };
-        final int[] bounds = { 60, 100, 100, 100, 100 };
-
-        // Runde
-        TableViewerColumn col = createTableViewerColumn(titles[0], bounds[0], tableViewer);
-        col.setLabelProvider(new LapInfoColumnLabelProvider() {
-
-            @Override
-            public String getLapInfoText(final ILapInfo lapInfo) {
-                return String.valueOf(lapInfo.getLap());
-            }
-        });
-
-        // Zeit
-        col = createTableViewerColumn(titles[1], bounds[1], tableViewer);
-        col.setLabelProvider(new LapInfoColumnLabelProvider() {
-
-            @Override
-            public String getLapInfoText(final ILapInfo lapInfo) {
-                return TimeHelper.convertSecondsToHumanReadableZeit(lapInfo.getTime() / 1000);
-            }
-        });
-
-        // distanz
-        col = createTableViewerColumn(titles[2], bounds[2], tableViewer);
-        col.setLabelProvider(new LapInfoColumnLabelProvider() {
-
-            @Override
-            public String getLapInfoText(final ILapInfo lapInfo) {
-                return DistanceHelper.roundDistanceFromMeterToKm(lapInfo.getDistance());
-            }
-        });
-
-        // pace
-        col = createTableViewerColumn(titles[3], bounds[3], tableViewer);
-        col.setLabelProvider(new LapInfoColumnLabelProvider() {
-
-            @Override
-            public String getLapInfoText(final ILapInfo lapInfo) {
-                return lapInfo.getPace();
-            }
-        });
-
-        // Herzfrequenz
-        col = createTableViewerColumn(titles[4], bounds[4], tableViewer);
-        col.setLabelProvider(new LapInfoColumnLabelProvider() {
-
-            @Override
-            public String getLapInfoText(final ILapInfo lapInfo) {
-                return String.valueOf(lapInfo.getHeartBeat());
-            }
-        });
-    }
-
-    private TableViewerColumn createTableViewerColumn(final String title, final int bound, final TableViewer viewer) {
-        final TableViewerColumn viewerColumn = new TableViewerColumn(viewer, SWT.NONE);
-        final TableColumn column = viewerColumn.getColumn();
-        column.setText(title);
-        column.setWidth(bound);
-        column.setResizable(true);
-        column.setMoveable(true);
-        return viewerColumn;
 
     }
 
