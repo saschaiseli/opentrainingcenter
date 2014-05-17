@@ -58,6 +58,7 @@ import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.helper.DistanceHelper;
 import ch.opentrainingcenter.core.helper.TimeHelper;
+import ch.opentrainingcenter.core.lapinfo.LapInfoCreator;
 import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.model.ModelFactory;
@@ -132,6 +133,8 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
 
         if (lapInfos.size() > 1) {
             addLapSection(body);
+        } else {
+            addSynthLapSection(body);
         }
 
         if (!training.getTrackPoints().isEmpty()) {
@@ -156,7 +159,17 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
     }
 
     private void addLapSection(final Composite body) {
+        createSection(Messages.RUNDEN, Messages.DETAIL_RUNDEN, new ArrayList<>(training.getLapInfos()), body);
+    }
 
+    private void addSynthLapSection(final Composite body) {
+        final LapInfoCreator creator = new LapInfoCreator(1000);
+        final List<ILapInfo> input = new ArrayList<>(creator.createLapInfos(training));
+        createSection(Messages.SingleActivityViewPart_SYNTH_RUNDEN, Messages.SingleActivityViewPart_SYNTH_RUNDEN_DESC, input, body);
+
+    }
+
+    private void createSection(final String text, final String description, final List<ILapInfo> input, final Composite body) {
         final Section lapSection = toolkit.createSection(body, FormToolkitSupport.SECTION_STYLE);
         lapSection.setExpanded(true);
         final TableWrapData tableWrapData = new TableWrapData(TableWrapData.FILL_GRAB);
@@ -166,8 +179,8 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         tableWrapData.maxHeight = 270;
         lapSection.setLayoutData(tableWrapData);
 
-        lapSection.setText(Messages.RUNDEN);
-        lapSection.setDescription(Messages.DETAIL_RUNDEN);
+        lapSection.setText(text);
+        lapSection.setDescription(description);
 
         final Composite client = toolkit.createComposite(lapSection);
         final TableWrapLayout layout = new TableWrapLayout();
@@ -188,7 +201,6 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         table.setLinesVisible(true);
 
         viewer.setContentProvider(new ArrayContentProvider());
-        final List<ILapInfo> input = new ArrayList<>(training.getLapInfos());
         Collections.sort(input, new Comparator<ILapInfo>() {
 
             @Override
@@ -200,6 +212,7 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         viewer.refresh();
         viewer.getControl().setLayoutData(clientLayoutData);
         lapSection.setClient(client);
+
     }
 
     private void createLapColumns(final TableViewer tableViewer) {

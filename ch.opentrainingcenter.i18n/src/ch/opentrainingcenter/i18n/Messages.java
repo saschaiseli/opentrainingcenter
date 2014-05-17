@@ -311,6 +311,8 @@ public final class Messages extends NLS {
     public static String SingleActivityViewPart_6;
     public static String SingleActivityViewPart_7;
     public static String SingleActivityViewPart_8;
+    public static String SingleActivityViewPart_SYNTH_RUNDEN;
+    public static String SingleActivityViewPart_SYNTH_RUNDEN_DESC;
     public static String SingleActivityViewPart0;
     public static String SingleActivityViewPart1;
     public static String SingleActivityViewPart10;

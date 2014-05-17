@@ -45,7 +45,7 @@ public class LapInfoCreator {
             if (pointsOfLap == null) {
                 result.add(createEmptyLap());
             } else {
-                result.add(createLapInfo(pointsOfLap, previous));
+                result.add(createLapInfo(i, pointsOfLap, previous));
                 previous = pointsOfLap.get(pointsOfLap.size() - 1);
             }
         }
@@ -73,7 +73,7 @@ public class LapInfoCreator {
         return mod;
     }
 
-    private ILapInfo createLapInfo(final List<ITrackPointProperty> points, final ITrackPointProperty previous) {
+    private ILapInfo createLapInfo(final int runde, final List<ITrackPointProperty> points, final ITrackPointProperty previous) {
         final ILapInfo result;
         double initPosition = 0;
         long initTime = 0;
@@ -81,7 +81,7 @@ public class LapInfoCreator {
             initPosition = previous.getDistance();
             initTime = previous.getZeit();
         }
-        result = LapInfoSupport.createLapInfo(points, initPosition, initTime);
+        result = LapInfoSupport.createLapInfo(runde, points, initPosition, initTime);
         return result;
     }
 }

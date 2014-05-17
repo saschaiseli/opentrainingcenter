@@ -76,7 +76,7 @@ public class LapInfoCreatorTest {
 
         final ILapInfo lapInfo = lapInfos.get(0);
 
-        assertLapInfo(EIN_KILOMETER_IN_METER, HEART_BEAT, FUENF_FUENFZENHN_IN_MILLIS, "5:15", lapInfo);
+        assertLapInfo(0, EIN_KILOMETER_IN_METER, HEART_BEAT, FUENF_FUENFZENHN_IN_MILLIS, "5:15", lapInfo);
     }
 
     /**
@@ -95,7 +95,7 @@ public class LapInfoCreatorTest {
 
         final ILapInfo lapInfo = lapInfos.get(1);
 
-        assertLapInfo(EIN_KILOMETER_IN_METER, HEART_BEAT, FUENF_FUENFZENHN_IN_MILLIS, "5:15", lapInfo);
+        assertLapInfo(1, EIN_KILOMETER_IN_METER, HEART_BEAT, FUENF_FUENFZENHN_IN_MILLIS, "5:15", lapInfo);
     }
 
     /**
@@ -119,8 +119,37 @@ public class LapInfoCreatorTest {
         final ILapInfo lapInfo0 = lapInfos.get(1);
         final ILapInfo lapInfo1 = lapInfos.get(2);
 
-        assertLapInfo(EIN_KILOMETER_IN_METER, HEART_BEAT, FUENF_FUENFZENHN_IN_MILLIS, "5:15", lapInfo0);
-        assertLapInfo(EIN_KILOMETER_IN_METER, HEART_BEAT + 20, VIER_MINUTEN_IN_MILLIS, "4:00", lapInfo1);
+        assertLapInfo(1, EIN_KILOMETER_IN_METER, HEART_BEAT, FUENF_FUENFZENHN_IN_MILLIS, "5:15", lapInfo0);
+        assertLapInfo(2, EIN_KILOMETER_IN_METER, HEART_BEAT + 20, VIER_MINUTEN_IN_MILLIS, "4:00", lapInfo1);
     }
 
+    /**
+     * <pre>
+     *               1000m              2000m
+     * |--------------|------------------|----  Intervall
+     * ---*-*-*-*-*-**---*-*-*-*-*-*-*-**-----  Punkte
+     * 
+     * </pre>
+     */
+    @Test
+    public void test_Viele_Elemente() {
+        creator = new LapInfoCreator(1000d);
+        trackPoints.add(createTrackPoint(0, HEART_BEAT, 0));
+        trackPoints.add(createTrackPoint(EIN_KILOMETER_IN_METER / 2, HEART_BEAT, 2 * 60_000));
+        trackPoints.add(createTrackPoint((EIN_KILOMETER_IN_METER / 4) * 3, HEART_BEAT, 3 * 60_000));
+        trackPoints.add(createTrackPoint(EIN_KILOMETER_IN_METER - 1, HEART_BEAT, VIER_MINUTEN_IN_MILLIS));
+        //
+        trackPoints.add(createTrackPoint(EIN_KILOMETER_IN_METER, HEART_BEAT, VIER_MINUTEN_IN_MILLIS + 75_000));
+        trackPoints.add(createTrackPoint(EIN_KILOMETER_IN_METER + (EIN_KILOMETER_IN_METER / 2), HEART_BEAT, VIER_MINUTEN_IN_MILLIS + 2 * 75_000));
+        trackPoints.add(createTrackPoint(EIN_KILOMETER_IN_METER + ((EIN_KILOMETER_IN_METER / 4) * 3), HEART_BEAT, VIER_MINUTEN_IN_MILLIS + 375_000));
+        trackPoints.add(createTrackPoint(EIN_KILOMETER_IN_METER + (EIN_KILOMETER_IN_METER - 1), HEART_BEAT, VIER_MINUTEN_IN_MILLIS + 4 * 75_000));
+
+        final List<ILapInfo> lapInfos = creator.createLapInfos(training);
+
+        final ILapInfo lapInfo0 = lapInfos.get(0);
+        final ILapInfo lapInfo1 = lapInfos.get(1);
+
+        assertLapInfo(0, EIN_KILOMETER_IN_METER - 1, HEART_BEAT, VIER_MINUTEN_IN_MILLIS, "4:00", lapInfo0);
+        assertLapInfo(1, EIN_KILOMETER_IN_METER, HEART_BEAT, VIER_MINUTEN_IN_MILLIS + 60_000, "5:00", lapInfo1);
+    }
 }

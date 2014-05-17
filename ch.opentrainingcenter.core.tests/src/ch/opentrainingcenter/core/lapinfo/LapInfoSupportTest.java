@@ -47,29 +47,29 @@ public class LapInfoSupportTest {
 
         final ILapInfo result = LapInfoSupport.createLapInfo(points);
 
-        assertLapInfo(1000, 152, 240_000, "4:00", result);
+        assertLapInfo(1, 1000, 152, 240_000, "4:00", result);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void test_mit_neg_initPosition() {
         points.add(createTrackPoint(1000, 142, 240_000L));
 
-        LapInfoSupport.createLapInfo(points, -3d, 0);
+        LapInfoSupport.createLapInfo(0, points, -3d, 0);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void test_mit_neg_initTime() {
         points.add(createTrackPoint(1000, 142, 240_000L));
 
-        LapInfoSupport.createLapInfo(points, 0, -3);
+        LapInfoSupport.createLapInfo(0, points, 0, -3);
     }
 
     @Test
     public void testEinPoint_mit_init() {
         points.add(createTrackPoint(1000, 142, 240_000L));
 
-        final ILapInfo result = LapInfoSupport.createLapInfo(points, 0, 0);
+        final ILapInfo result = LapInfoSupport.createLapInfo(0, points, 0, 0);
 
-        assertLapInfo(1000, 142, 240_000, "4:00", result);
+        assertLapInfo(0, 1000, 142, 240_000, "4:00", result);
     }
 }

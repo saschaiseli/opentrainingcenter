@@ -59,16 +59,24 @@ public class LapInfoSupport {
      * 
      * Es muessen mindestens 1 Punkte vorhanden sein!. DIe initiale Position
      * muss einfach noch mitgegeben werden <br>
+     * <br>
      * 
+     * <PRE>
+     * ES WIRD DIE RUNDE VON AUSSEN GESETZT UND NICHT VON DEN POINTS!!!!
+     * </PRE>
+     * 
+     * @param runde
+     *            die Runde der LapInfo.
      * @param points
      *            sortierte Liste von {@link ITrackPointProperty}. Darf nicht
      *            null sein. Muss mindestens 2 Punkte beinhalten.
+     * 
      * @throws IllegalArgumentException
      *             wenn nicht mindestens zwei Trackpoints uebergeben werden.
      * 
      * @return eine {@link ILapInfo}
      */
-    public static ILapInfo createLapInfo(final List<ITrackPointProperty> points, final double initPosition, final long initTime) {
+    public static ILapInfo createLapInfo(final int runde, final List<ITrackPointProperty> points, final double initPosition, final long initTime) {
         Assertions.notNull(points);
         Assertions.isValid(initPosition < 0, "initiale position muss groesser gleich 0 sein"); //$NON-NLS-1$
         Assertions.isValid(initTime < 0, "initiale zeit muss groesser gleich 0 sein"); //$NON-NLS-1$
@@ -78,15 +86,30 @@ public class LapInfoSupport {
             heart += point.getHeartBeat();
         }
         final int heartBeat = heart / points.size();
+
+        final ITrackPointProperty firstPoint = points.get(0);
         final ITrackPointProperty lastPoint = points.get(points.size() - 1);
 
         final int endDist = (int) lastPoint.getDistance();
-        final int distance = endDist - (int) initPosition;
+        final int distance;
 
         final long endTime = lastPoint.getZeit();
-        final long time = endTime - initTime;
+        final long time;
+
+        if (isFirstPoint(points, initTime)) {
+            // erster punkt und mehr als ein punkt
+            time = endTime - firstPoint.getZeit();
+            distance = (int) (endDist - firstPoint.getDistance());
+        } else {
+            time = endTime - initTime;
+            distance = endDist - (int) initPosition;
+        }
 
         final String pace = DistanceHelper.calculatePace(distance, time / 1000);
-        return CommonTransferFactory.createLapInfo(lastPoint.getLap(), distance, time, heartBeat, pace);
+        return CommonTransferFactory.createLapInfo(runde, distance, time, heartBeat, pace);
+    }
+
+    private static boolean isFirstPoint(final List<ITrackPointProperty> points, final long initTime) {
+        return initTime == 0 && points.size() > 1;
     }
 }

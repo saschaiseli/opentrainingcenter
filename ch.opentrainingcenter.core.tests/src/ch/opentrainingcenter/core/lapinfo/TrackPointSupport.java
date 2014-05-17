@@ -14,7 +14,8 @@ public class TrackPointSupport {
         return CommonTransferFactory.createTrackPointProperty(distance, heartbeat, 42, time, 1, null);
     }
 
-    static void assertLapInfo(final int distance, final int heart, final long time, final String pace, final ILapInfo lapInfo) {
+    static void assertLapInfo(final int runde, final int distance, final int heart, final long time, final String pace, final ILapInfo lapInfo) {
+        assertEquals("Runde", runde, lapInfo.getLap());
         assertEquals("Distanz: ", distance, lapInfo.getDistance());
         assertEquals("Herz: ", heart, lapInfo.getHeartBeat());
         assertEquals("Pace: ", pace, lapInfo.getPace());
