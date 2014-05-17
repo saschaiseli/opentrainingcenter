@@ -1,7 +1,6 @@
 package ch.opentrainingcenter.client.views.einstellungen;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -33,10 +32,10 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
 import org.eclipse.ui.part.ViewPart;
 
 import ch.opentrainingcenter.client.ui.FormToolkitSupport;
+import ch.opentrainingcenter.client.ui.tableviewer.TrackTableViewer;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.helper.DistanceHelper;
-import ch.opentrainingcenter.core.helper.TimeHelper;
 import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.transfer.IAthlete;
@@ -69,7 +68,9 @@ public class RoutenView extends ViewPart implements ISelectionListener {
 
     private Section sectionRouten;
 
-    private TableViewer viewerRouten, viewerTracks;
+    private TrackTableViewer viewerTracks;
+
+    private TableViewer viewerRouten;
 
     private final IDatabaseAccess databaseAccess;
 
@@ -170,79 +171,31 @@ public class RoutenView extends ViewPart implements ISelectionListener {
         final Label headRight = new Label(compositeRight, SWT.BOLD);
         headRight.setText(Messages.RoutenView_4);
 
-        viewerTracks = new TableViewer(compositeRight, SWT_TABLE_PATTERN);
-        createTrackColumns();
-
-        final Table table = viewerTracks.getTable();
-        defineTable(table);
-
-        viewerTracks.setContentProvider(new ArrayContentProvider());
-        viewerTracks.setInput(tracks);
-
-        // Layout the viewer
-        final GridData gridData = new GridData();
-        gridData.verticalAlignment = GridData.FILL;
-        gridData.horizontalSpan = 1;
-        gridData.grabExcessHorizontalSpace = true;
-        gridData.grabExcessVerticalSpace = true;
-        gridData.horizontalAlignment = GridData.FILL;
-        gridData.minimumHeight = 300;
-        viewerTracks.getControl().setLayoutData(gridData);
+        viewerTracks = new TrackTableViewer(compositeRight, SWT_TABLE_PATTERN);
+        viewerTracks.createTableViewer(tracks);
+        // viewerTracks = new TableViewer(compositeRight, SWT_TABLE_PATTERN);
+        // createTrackColumns();
+        //
+        // final Table table = viewerTracks.getTable();
+        // defineTable(table);
+        //
+        // viewerTracks.setContentProvider(new ArrayContentProvider());
+        // viewerTracks.setInput(tracks);
+        //
+        // // Layout the viewer
+        // final GridData gridData = new GridData();
+        // gridData.verticalAlignment = GridData.FILL;
+        // gridData.horizontalSpan = 1;
+        // gridData.grabExcessHorizontalSpace = true;
+        // gridData.grabExcessVerticalSpace = true;
+        // gridData.horizontalAlignment = GridData.FILL;
+        // gridData.minimumHeight = 300;
+        // viewerTracks.getControl().setLayoutData(gridData);
     }
 
     private void defineTable(final Table table) {
         table.setHeaderVisible(true);
         table.setLinesVisible(true);
-    }
-
-    private void createTrackColumns() {
-        final String[] titles = { Messages.RoutenView_5, Messages.RoutenView_6, Messages.RoutenView_7, Messages.RoutenView_8 };
-        final int[] bounds = { 120, 80, 200, 100 };
-
-        TableViewerColumn col = createTrackColumn(titles[0], bounds[0]);
-        col.setLabelProvider(new ColumnLabelProvider() {
-            @Override
-            public String getText(final Object element) {
-                final ITraining training = (ITraining) element;
-                return String.valueOf(TimeHelper.convertDateToString(new Date(training.getDatum())));
-            }
-        });
-
-        col = createTrackColumn(titles[1], bounds[1]);
-        col.setLabelProvider(new ColumnLabelProvider() {
-            @Override
-            public String getText(final Object element) {
-                final ITraining training = (ITraining) element;
-                return DistanceHelper.roundDistanceFromMeterToKm(training.getLaengeInMeter());
-            }
-        });
-
-        col = createTrackColumn(titles[2], bounds[2]);
-        col.setLabelProvider(new ColumnLabelProvider() {
-            @Override
-            public String getText(final Object element) {
-                final ITraining training = (ITraining) element;
-                return training.getNote();
-            }
-        });
-
-        col = createTrackColumn(titles[3], bounds[3]);
-        col.setLabelProvider(new ColumnLabelProvider() {
-            @Override
-            public String getText(final Object element) {
-                final ITraining training = (ITraining) element;
-                if (training.getRoute() != null) {
-                    final IRoute route = training.getRoute();
-                    String routenText = route.getName();
-                    if (route.getReferenzTrack() != null && route.getReferenzTrack().getId() == training.getId()) {
-                        routenText += "*"; //$NON-NLS-1$
-                    }
-                    return routenText;
-                } else {
-                    return ""; //$NON-NLS-1$
-                }
-            }
-        });
     }
 
     private void createRouteColumns() {
@@ -280,7 +233,13 @@ public class RoutenView extends ViewPart implements ISelectionListener {
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(final Object element) {
-                return "2.123"; //$NON-NLS-1$
+                final IRoute route = (IRoute) element;
+                final ITraining referenzTrack = route.getReferenzTrack();
+                if (referenzTrack != null) {
+                    return DistanceHelper.roundDistanceFromMeterToKm(referenzTrack.getLaengeInMeter());
+                } else {
+                    return ""; //$NON-NLS-1$
+                }
             }
         });
 
@@ -302,16 +261,6 @@ public class RoutenView extends ViewPart implements ISelectionListener {
 
     private TableViewerColumn createRouteColumn(final String title, final int bound) {
         final TableViewerColumn viewerColumn = new TableViewerColumn(viewerRouten, SWT.NONE);
-        final TableColumn column = viewerColumn.getColumn();
-        column.setText(title);
-        column.setWidth(bound);
-        column.setResizable(true);
-        column.setMoveable(true);
-        return viewerColumn;
-    }
-
-    private TableViewerColumn createTrackColumn(final String title, final int bound) {
-        final TableViewerColumn viewerColumn = new TableViewerColumn(viewerTracks, SWT.NONE);
         final TableColumn column = viewerColumn.getColumn();
         column.setText(title);
         column.setWidth(bound);
