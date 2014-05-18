@@ -82,6 +82,7 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
     private IRecordListener<StreckeModel> streckeListener;
     private final IDatabaseAccess databaseAccess;
     private final List<ILapInfo> lapInfos;
+    private ChartSectionSupport chartSectionSupport;
 
     public SingleActivityViewPart() {
         final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
@@ -104,6 +105,8 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
     public void createPartControl(final Composite parent) {
         LOGGER.debug("create single activity view"); //$NON-NLS-1$
         toolkit = new FormToolkit(parent.getDisplay());
+        chartSectionSupport = new ChartSectionSupport(toolkit, factory);
+
         form = toolkit.createScrolledForm(parent);
 
         toolkit.decorateFormHeading(form.getForm());
@@ -125,7 +128,7 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         time1 = DateTime.now().getMillis();
         LOGGER.debug(String.format("Zeit zum Laden von addNoteSection: %s [ms]", time1 - time2)); //$NON-NLS-1$
 
-        addHeartSection(body);
+        chartSectionSupport.addChartSection(body, ChartType.HEART_DISTANCE);
         time1 = DateTime.now().getMillis();
         LOGGER.debug(String.format("Zeit zum Laden von addHeartSection: %s [ms]", time1 - time2)); //$NON-NLS-1$
 
@@ -140,11 +143,12 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         time2 = DateTime.now().getMillis();
         LOGGER.debug(String.format("Zeit zum Laden von addMapSection: %s [ms]", time2 - time1)); //$NON-NLS-1$
 
-        addSpeedSection(body);
+        chartSectionSupport.addChartSection(body, ChartType.SPEED_DISTANCE);
         time2 = DateTime.now().getMillis();
         LOGGER.debug(String.format("Zeit zum Laden von addSpeedSection: %s [ms]", time2 - time1)); //$NON-NLS-1$
 
-        addAltitudeSection(body);
+        chartSectionSupport.addChartSection(body, ChartType.ALTITUDE_DISTANCE);
+
         time1 = DateTime.now().getMillis();
         LOGGER.debug(String.format("Zeit zum Laden von addAltitudeSection: %s [ms]", time1 - time2)); //$NON-NLS-1$
 
@@ -226,8 +230,8 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         support.addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart6, simpleTraining.getMaxHeartBeat(), Units.BEATS_PER_MINUTE);
         support.addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart7, simpleTraining.getPace(), Units.PACE);
         support.addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart8, simpleTraining.getMaxSpeed(), Units.PACE);
-        support.addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_4, "" + simpleTraining.getUpMeter(), Units.METER); //$NON-NLS-1$
-        support.addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_8, "" + simpleTraining.getDownMeter(), Units.METER); //$NON-NLS-1$
+        support.addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_4, String.valueOf(simpleTraining.getUpMeter()), Units.METER);
+        support.addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_8, String.valueOf(simpleTraining.getDownMeter()), Units.METER);
         overviewSection.setClient(overViewComposite);
     }
 
@@ -463,7 +467,6 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
             @Override
             public void run() {
                 databaseAccess.saveOrUpdate(record);
-
             }
         });
 
@@ -500,83 +503,6 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         } catch (final SWTException | SWTError e) {
             LOGGER.error("Map kann nicht angezeigt werden", e); //$NON-NLS-1$
         }
-    }
-
-    /**
-     * Herz frequenz
-     */
-    private void addHeartSection(final Composite body) {
-        final Section heartSection = toolkit.createSection(body, FormToolkitSupport.SECTION_STYLE);
-        heartSection.setExpanded(true);
-        td = new TableWrapData(TableWrapData.FILL_GRAB);
-        td.colspan = 2;
-        td.grabHorizontal = true;
-        td.grabVertical = true;
-        heartSection.setLayoutData(td);
-        heartSection.setText(Messages.SingleActivityViewPart9);
-        heartSection.setDescription(Messages.SingleActivityViewPart10);
-
-        final Composite client = toolkit.createComposite(heartSection);
-
-        final TableWrapLayout layout = new TableWrapLayout();
-        layout.numColumns = 2;
-        layout.makeColumnsEqualWidth = false;
-
-        client.setLayout(layout);
-
-        factory.addChartToComposite(client, ChartType.HEART_DISTANCE);
-
-        heartSection.setClient(client);
-    }
-
-    private void addSpeedSection(final Composite body) {
-        final Section speedSection = toolkit.createSection(body, FormToolkitSupport.SECTION_STYLE);
-        speedSection.setExpanded(false);
-        td = new TableWrapData(TableWrapData.FILL_GRAB);
-        td.colspan = 2;
-        td.grabHorizontal = true;
-        td.grabVertical = true;
-        speedSection.setLayoutData(td);
-        speedSection.setText(Messages.SingleActivityViewPart11);
-        speedSection.setDescription(Messages.SingleActivityViewPart12);
-
-        final Composite client = toolkit.createComposite(speedSection);
-
-        final TableWrapLayout layout = new TableWrapLayout();
-        layout.numColumns = 2;
-        layout.makeColumnsEqualWidth = false;
-
-        client.setLayout(layout);
-
-        factory.addChartToComposite(client, ChartType.SPEED_DISTANCE);
-
-        speedSection.setClient(client);
-    }
-
-    /**
-     * Verlauf der höhe
-     */
-    private void addAltitudeSection(final Composite body) {
-        final Section altitude = toolkit.createSection(body, FormToolkitSupport.SECTION_STYLE);
-        altitude.setExpanded(false);
-        td = new TableWrapData(TableWrapData.FILL_GRAB);
-        td.colspan = 2;
-        td.grabHorizontal = true;
-        td.grabVertical = true;
-        altitude.setLayoutData(td);
-        altitude.setText(Messages.SingleActivityViewPart13);
-        altitude.setDescription(Messages.SingleActivityViewPart14);
-
-        final Composite client = toolkit.createComposite(altitude);
-
-        final TableWrapLayout layout = new TableWrapLayout();
-        layout.numColumns = 2;
-        layout.makeColumnsEqualWidth = false;
-        client.setLayout(layout);
-
-        factory.addChartToComposite(client, ChartType.ALTITUDE_DISTANCE);
-
-        altitude.setClient(client);
     }
 
     @Override
