@@ -69,8 +69,8 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
             try {
                 LOGGER.info("Versuche DB zu erstellen"); //$NON-NLS-1$
                 databaseConnection.createDatabase();
+                ApplicationContext.getApplicationContext().setDbState(DatabaseConnectionState.createNewOkState());
             } catch (final SqlException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
             LOGGER.info(Messages.ApplicationWorkbenchAdvisorAthleteNotInPreferences);
