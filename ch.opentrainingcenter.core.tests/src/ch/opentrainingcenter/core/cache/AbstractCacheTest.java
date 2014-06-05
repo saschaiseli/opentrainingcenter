@@ -1,5 +1,11 @@
 package ch.opentrainingcenter.core.cache;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -11,11 +17,6 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import ch.opentrainingcenter.transfer.ITraining;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 @SuppressWarnings("nls")
 public class AbstractCacheTest {
@@ -243,6 +244,41 @@ public class AbstractCacheTest {
         assertEquals("Zeitlich sortiert 43 > 42", 43L, all.get(0).getDatum());
     }
 
+    @Test
+    public void testDoNotNotifyListeners() {
+        final JunitListener a = new JunitListener();
+        final JunitListener b = new JunitListener();
+        
+        cache.addListener(a);
+        cache.addListener(b);
+
+        cache.addAll(new ArrayList<ITraining>());
+        
+
+        assertEquals(0, a.getRecordChangeCallCounter());
+        assertEquals(0, b.getRecordChangeCallCounter());
+    }
+    
+    @Test
+    public void testDoNotifyListeners() {
+    	final ITraining trainingA = Mockito.mock(ITraining.class);
+        Mockito.when(trainingA.getDatum()).thenReturn(42L);
+        
+        final JunitListener a = new JunitListener();
+        final JunitListener b = new JunitListener();
+        
+        cache.addListener(a);
+        cache.addListener(b);
+
+        ArrayList<ITraining> values = new ArrayList<ITraining>();
+        values.add(trainingA);
+		cache.addAll(values);
+        
+
+        assertEquals(1, a.getRecordChangeCallCounter());
+        assertEquals(1, b.getRecordChangeCallCounter());
+    }
+    
     @Test
     public void testNotifyListeners() {
         final JunitListener a = new JunitListener();

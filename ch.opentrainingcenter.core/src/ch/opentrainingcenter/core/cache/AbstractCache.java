@@ -24,7 +24,9 @@ public abstract class AbstractCache<K, V> implements ICache<K, V> {
             LOG.info(String.format("Element added -> Cache (%s) Size: %s", value.getClass().getName(), cache.size())); //$NON-NLS-1$
             cache.put(getKey(value), value);
         }
-        fireRecordAdded(values);
+        if(!values.isEmpty()){
+        	fireRecordAdded(values);
+        }
     }
 
     @Override
