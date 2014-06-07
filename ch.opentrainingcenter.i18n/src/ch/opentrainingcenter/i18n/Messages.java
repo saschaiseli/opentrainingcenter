@@ -5,6 +5,7 @@ import org.eclipse.osgi.util.NLS;
 public final class Messages extends NLS {
 
     private static final String BUNDLENAME = "ch.opentrainingcenter.i18n.messages"; //$NON-NLS-1$
+
     public static String AddEditHandler_0;
     public static String AddEditHandler_1;
     public static String AddRoute_0;
@@ -370,6 +371,7 @@ public final class Messages extends NLS {
     public static String TrainingTargetPreferencePage9;
     public static String TrainingTargetPreferencePage10;
     public static String TrainingTargetPreferencePage11;
+    public static String TrainingTargetPreferencePage12;
     public static String Units_0;
     public static String Units0;
     public static String Units1;

@@ -19,6 +19,7 @@
 
 package ch.opentrainingcenter.client.views.overview;
 
+import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
@@ -44,7 +45,7 @@ public class ChartSectionSupport {
      * Fuegt auf dem {@link Composite} ein Chart vom Typ {@link ChartType}
      * hinzu.
      */
-    public void addChartSection(final Composite body, final ChartType chartType) {
+    public ISelectionChangedListener createChartOnSection(final Composite body, final ChartType chartType) {
         final Section altitude = toolkit.createSection(body, FormToolkitSupport.SECTION_STYLE);
         altitude.setExpanded(true);
         final TableWrapData td = new TableWrapData(TableWrapData.FILL_GRAB);
@@ -62,8 +63,10 @@ public class ChartSectionSupport {
         layout.makeColumnsEqualWidth = false;
         client.setLayout(layout);
 
-        factory.addChartToComposite(client, chartType);
+        final ISelectionChangedListener listener = factory.addChartToComposite(client, chartType);
 
         altitude.setClient(client);
+        return listener;
     }
+
 }

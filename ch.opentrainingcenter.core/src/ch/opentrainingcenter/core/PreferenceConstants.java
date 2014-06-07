@@ -24,6 +24,8 @@ public final class PreferenceConstants {
     public static final String CHART_DISTANCE_COLOR_PAST = "DISTANCE_CHART_COLOR_PAST";
     public static final String CHART_HEART_COLOR = "DISTANCE_HEART_COLOR";
     public static final String CHART_HEART_COLOR_PAST = "DISTANCE_HEART_COLOR_PAST";
+    public static final String CHART_COLOR_RANGE = "CHART_COLOR_RANGE";
+
     public static final String RECOM = "RECOM";
     public static final String RECOM_COLOR = RECOM + COLOR_POSTFIX;
     public static final String GA1 = "GA1";
