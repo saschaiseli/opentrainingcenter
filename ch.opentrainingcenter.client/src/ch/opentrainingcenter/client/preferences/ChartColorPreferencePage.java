@@ -19,6 +19,8 @@
 
 package ch.opentrainingcenter.client.preferences;
 
+import static ch.opentrainingcenter.client.preferences.ChartPreferencePage.INDENT;
+
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.preference.ColorFieldEditor;
@@ -33,7 +35,6 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.i18n.Messages;
-import static ch.opentrainingcenter.client.preferences.ChartPreferencePage.INDENT;
 
 public class ChartColorPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
@@ -64,6 +65,9 @@ public class ChartColorPreferencePage extends FieldEditorPreferencePage implemen
 
         addField(new ColorFieldEditor(PreferenceConstants.CHART_DISTANCE_COLOR_PAST, Messages.TrainingTargetPreferencePage10, chart));
         addField(new ColorFieldEditor(PreferenceConstants.CHART_HEART_COLOR_PAST, Messages.TrainingTargetPreferencePage11, chart));
+
+        addField(new ColorFieldEditor(PreferenceConstants.CHART_COLOR_RANGE, Messages.TrainingTargetPreferencePage12, chart));
+
         // ----------- Vital
         final Group groupVitalColors = new Group(parent, SWT.NONE);
         groupVitalColors.setText(Messages.TrainingTargetPreferencePage7);

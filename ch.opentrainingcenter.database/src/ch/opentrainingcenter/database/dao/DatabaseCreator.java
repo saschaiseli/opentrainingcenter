@@ -24,7 +24,7 @@ public class DatabaseCreator {
             final Session session = connectionConfig.getSession();
             connectionConfig.begin();
             for (final String sql : sqlQueries) {
-                LOG.info("Execute: " + sql);
+                LOG.info(String.format("Execute: '%s'", sql));
                 final Query query = session.createSQLQuery(sql);
                 query.executeUpdate();
             }
@@ -40,7 +40,7 @@ public class DatabaseCreator {
         try {
             final Session session = connectionConfig.getSession();
             connectionConfig.begin();
-            final Query query = session.createSQLQuery("BACKUP TO '" + path + File.separator + "myBackup.zip'");
+            final Query query = session.createSQLQuery(String.format("BACKUP TO '%s%smyBackup.zip'", path, File.separator));
             query.executeUpdate();
             connectionConfig.commit();
             session.flush();

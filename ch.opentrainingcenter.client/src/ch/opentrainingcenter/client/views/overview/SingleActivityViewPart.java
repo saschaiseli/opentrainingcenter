@@ -15,6 +15,7 @@ import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTError;
 import org.eclipse.swt.SWTException;
@@ -30,6 +31,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
@@ -46,6 +48,7 @@ import ch.opentrainingcenter.client.cache.StreckeCache;
 import ch.opentrainingcenter.client.model.Units;
 import ch.opentrainingcenter.client.ui.FormToolkitSupport;
 import ch.opentrainingcenter.client.ui.tableviewer.LapInfoTableViewer;
+import ch.opentrainingcenter.client.ui.tableviewer.SelectionProviderIntermediate;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.core.cache.Cache;
 import ch.opentrainingcenter.core.cache.IRecordListener;
@@ -83,6 +86,8 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
     private final IDatabaseAccess databaseAccess;
     private final List<ILapInfo> lapInfos;
     private ChartSectionSupport chartSectionSupport;
+    private final List<ISelectionListener> listeners = new ArrayList<>();
+    private final SelectionProviderIntermediate providerSynth, providerLap;
 
     public SingleActivityViewPart() {
         final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
@@ -99,6 +104,9 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         factory = new ChartFactory(Activator.getDefault().getPreferenceStore(), training, athlete);
 
         setPartName(simpleTraining.getFormattedDate());
+
+        providerSynth = new SelectionProviderIntermediate();
+        providerLap = new SelectionProviderIntermediate();
     }
 
     @Override
@@ -128,14 +136,17 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         time1 = DateTime.now().getMillis();
         LOGGER.debug(String.format("Zeit zum Laden von addNoteSection: %s [ms]", time1 - time2)); //$NON-NLS-1$
 
-        chartSectionSupport.addChartSection(body, ChartType.HEART_DISTANCE);
+        final ISelectionChangedListener heartListener = chartSectionSupport.createChartOnSection(body, ChartType.HEART_DISTANCE);
+        providerLap.addSelectionChangedListener(heartListener);
+        providerSynth.addSelectionChangedListener(heartListener);
+
         time1 = DateTime.now().getMillis();
         LOGGER.debug(String.format("Zeit zum Laden von addHeartSection: %s [ms]", time1 - time2)); //$NON-NLS-1$
 
         if (lapInfos.size() > 1) {
-            addLapSection(body);
+            addLapSection(body, providerLap);
         }
-        addSynthLapSection(body);
+        addSynthLapSection(body, providerSynth);
 
         if (!training.getTrackPoints().isEmpty()) {
             addMapSection(body);
@@ -143,30 +154,35 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         time2 = DateTime.now().getMillis();
         LOGGER.debug(String.format("Zeit zum Laden von addMapSection: %s [ms]", time2 - time1)); //$NON-NLS-1$
 
-        chartSectionSupport.addChartSection(body, ChartType.SPEED_DISTANCE);
+        final ISelectionChangedListener speedListener = chartSectionSupport.createChartOnSection(body, ChartType.SPEED_DISTANCE);
+        providerLap.addSelectionChangedListener(speedListener);
+        providerSynth.addSelectionChangedListener(speedListener);
+
         time2 = DateTime.now().getMillis();
         LOGGER.debug(String.format("Zeit zum Laden von addSpeedSection: %s [ms]", time2 - time1)); //$NON-NLS-1$
 
-        chartSectionSupport.addChartSection(body, ChartType.ALTITUDE_DISTANCE);
-
+        final ISelectionChangedListener distanceListener = chartSectionSupport.createChartOnSection(body, ChartType.ALTITUDE_DISTANCE);
+        providerLap.addSelectionChangedListener(distanceListener);
+        providerSynth.addSelectionChangedListener(distanceListener);
         time1 = DateTime.now().getMillis();
         LOGGER.debug(String.format("Zeit zum Laden von addAltitudeSection: %s [ms]", time1 - time2)); //$NON-NLS-1$
 
         getSite().setSelectionProvider(this);
     }
 
-    private void addLapSection(final Composite body) {
-        createSection(Messages.RUNDEN, Messages.DETAIL_RUNDEN, new ArrayList<>(training.getLapInfos()), body);
+    private void addLapSection(final Composite body, final SelectionProviderIntermediate provider) {
+        final TableViewer viewer = createSection(Messages.RUNDEN, Messages.DETAIL_RUNDEN, new ArrayList<>(training.getLapInfos()), body);
+        provider.setSelectionProviderDelegate(viewer);
     }
 
-    private void addSynthLapSection(final Composite body) {
+    private void addSynthLapSection(final Composite body, final SelectionProviderIntermediate provider) {
         final LapInfoCreator creator = new LapInfoCreator(1000);
         final List<ILapInfo> input = new ArrayList<>(creator.createLapInfos(training));
-        createSection(Messages.SingleActivityViewPart_SYNTH_RUNDEN, Messages.SingleActivityViewPart_SYNTH_RUNDEN_DESC, input, body);
-
+        final TableViewer viewer = createSection(Messages.SingleActivityViewPart_SYNTH_RUNDEN, Messages.SingleActivityViewPart_SYNTH_RUNDEN_DESC, input, body);
+        provider.setSelectionProviderDelegate(viewer);
     }
 
-    private void createSection(final String text, final String description, final List<ILapInfo> input, final Composite body) {
+    private TableViewer createSection(final String text, final String description, final List<ILapInfo> input, final Composite body) {
         final Section lapSection = toolkit.createSection(body, FormToolkitSupport.SECTION_STYLE);
         lapSection.setExpanded(true);
         final TableWrapData tableWrapData = new TableWrapData(TableWrapData.FILL_GRAB);
@@ -186,10 +202,10 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         client.setLayout(layout);
 
         final LapInfoTableViewer viewer = new LapInfoTableViewer(client, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
-        viewer.createTableViewer(input);
-
+        viewer.createTableViewer(input, getSite());
+        // getSite().setSelectionProvider(viewer);
         lapSection.setClient(client);
-
+        return viewer;
     }
 
     @Override
@@ -197,6 +213,9 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         cache.removeListener(listener);
         cacheStrecke.removeListener(streckeListener);
         ApplicationContext.getApplicationContext().setSelectedId(null);
+        for (final ISelectionListener listener : listeners) {
+            getSite().getWorkbenchWindow().getSelectionService().removeSelectionListener(listener);
+        }
         toolkit.dispose();
         super.dispose();
     }
@@ -507,7 +526,6 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
 
     @Override
     public void addSelectionChangedListener(final ISelectionChangedListener l) {
-
     }
 
     @Override

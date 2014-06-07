@@ -30,6 +30,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.ui.IWorkbenchPartSite;
 import org.eclipse.ui.forms.widgets.TableWrapData;
 
 import ch.opentrainingcenter.client.ui.tableviewer.labelprovider.LapInfoColumnLabelProvider;
@@ -44,7 +45,7 @@ public class LapInfoTableViewer extends TableViewer {
         super(parent, style);
     }
 
-    public void createTableViewer(final List<ILapInfo> input) {
+    public void createTableViewer(final List<ILapInfo> input, final IWorkbenchPartSite site) {
         final Table table = getTable();
         table.setHeaderVisible(true);
         table.setLinesVisible(true);
@@ -66,7 +67,6 @@ public class LapInfoTableViewer extends TableViewer {
         clientLayoutData.maxHeight = 250;
         clientLayoutData.grabHorizontal = true;
         clientLayoutData.grabVertical = true;
-        // client.setLayoutData(clientLayoutData);
         getControl().setLayoutData(clientLayoutData);
     }
 
