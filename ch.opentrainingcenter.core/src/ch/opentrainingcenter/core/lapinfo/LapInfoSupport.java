@@ -32,8 +32,11 @@ public class LapInfoSupport {
     public static ILapInfo createLapInfo(final List<ITrackPointProperty> points) {
         Assertions.notNull(points);
         Assertions.isValid(points.size() < 2, "Es braucht mindest 2 Punkte"); //$NON-NLS-1$
-
-        final int heart = 0;
+        
+        int heart = 0;
+        for (final ITrackPointProperty point : points) {
+            heart += point.getHeartBeat();
+        }
         final int heartBeat = heart / points.size();
         final ITrackPointProperty firstPoint = points.get(0);
         final ITrackPointProperty lastPoint = points.get(points.size() - 1);
