@@ -155,9 +155,9 @@ public class ChartFactory {
                 final List<ILapInfo> lapInfos = ss.toList();
                 final ILapInfo first = lapInfos.get(0);
                 final ILapInfo last = lapInfos.get(lapInfos.size() - 1);
-                final int runde = first.getDistance();
+
+                final IntervalMarker marker = new IntervalMarker(first.getStart(), last.getEnd());
                 final Paint paint = ColorFromPreferenceHelper.getColor(store, PreferenceConstants.CHART_COLOR_RANGE, 80);
-                final IntervalMarker marker = new IntervalMarker(runde * first.getLap(), runde * (last.getLap() + 1));
                 marker.setPaint(paint);
                 plot.addDomainMarker(marker);
             }

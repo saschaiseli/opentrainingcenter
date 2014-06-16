@@ -3,15 +3,16 @@ package ch.opentrainingcenter.core.lapinfo;
 import java.util.ArrayList;
 import java.util.List;
 
+import static ch.opentrainingcenter.core.lapinfo.TrackPointSupport.assertLapInfo;
+import static ch.opentrainingcenter.core.lapinfo.TrackPointSupport.createTrackPoint;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import ch.opentrainingcenter.transfer.ILapInfo;
 import ch.opentrainingcenter.transfer.ITrackPointProperty;
 import ch.opentrainingcenter.transfer.ITraining;
-import static ch.opentrainingcenter.core.lapinfo.TrackPointSupport.assertLapInfo;
-import static ch.opentrainingcenter.core.lapinfo.TrackPointSupport.createTrackPoint;
-import static org.junit.Assert.assertTrue;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -76,7 +77,7 @@ public class LapInfoCreatorTest {
 
         final ILapInfo lapInfo = lapInfos.get(0);
 
-        assertLapInfo(0, EIN_KILOMETER_IN_METER, HEART_BEAT, FUENF_FUENFZENHN_IN_MILLIS, "5:15", lapInfo);
+        assertLapInfo(0, 0, EIN_KILOMETER_IN_METER, HEART_BEAT, FUENF_FUENFZENHN_IN_MILLIS, "5:15", lapInfo);
     }
 
     /**
@@ -95,7 +96,7 @@ public class LapInfoCreatorTest {
 
         final ILapInfo lapInfo = lapInfos.get(1);
 
-        assertLapInfo(1, EIN_KILOMETER_IN_METER, HEART_BEAT, FUENF_FUENFZENHN_IN_MILLIS, "5:15", lapInfo);
+        assertLapInfo(1, 0, EIN_KILOMETER_IN_METER, HEART_BEAT, FUENF_FUENFZENHN_IN_MILLIS, "5:15", lapInfo);
     }
 
     /**
@@ -119,8 +120,8 @@ public class LapInfoCreatorTest {
         final ILapInfo lapInfo0 = lapInfos.get(1);
         final ILapInfo lapInfo1 = lapInfos.get(2);
 
-        assertLapInfo(1, EIN_KILOMETER_IN_METER, HEART_BEAT, FUENF_FUENFZENHN_IN_MILLIS, "5:15", lapInfo0);
-        assertLapInfo(2, EIN_KILOMETER_IN_METER, HEART_BEAT + 20, VIER_MINUTEN_IN_MILLIS, "4:00", lapInfo1);
+        assertLapInfo(1, 0, EIN_KILOMETER_IN_METER, HEART_BEAT, FUENF_FUENFZENHN_IN_MILLIS, "5:15", lapInfo0);
+        assertLapInfo(2, EIN_KILOMETER_IN_METER, 2 * EIN_KILOMETER_IN_METER, HEART_BEAT + 20, VIER_MINUTEN_IN_MILLIS, "4:00", lapInfo1);
     }
 
     /**
@@ -149,7 +150,8 @@ public class LapInfoCreatorTest {
         final ILapInfo lapInfo0 = lapInfos.get(0);
         final ILapInfo lapInfo1 = lapInfos.get(1);
 
-        assertLapInfo(0, EIN_KILOMETER_IN_METER - 1, HEART_BEAT, VIER_MINUTEN_IN_MILLIS, "4:00", lapInfo0);
-        assertLapInfo(1, EIN_KILOMETER_IN_METER, HEART_BEAT, VIER_MINUTEN_IN_MILLIS + 60_000, "5:00", lapInfo1);
+        assertLapInfo(0, 0, EIN_KILOMETER_IN_METER - 1, HEART_BEAT, VIER_MINUTEN_IN_MILLIS, "4:00", lapInfo0);
+        assertLapInfo(1, EIN_KILOMETER_IN_METER - 1, EIN_KILOMETER_IN_METER - 1 + EIN_KILOMETER_IN_METER, HEART_BEAT, VIER_MINUTEN_IN_MILLIS + 60_000, "5:00",
+                lapInfo1);
     }
 }

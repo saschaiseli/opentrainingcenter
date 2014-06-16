@@ -117,23 +117,24 @@ public class ConvertTcx implements IConvert2Tcx {
         int maxHeartBeat = 0;
         int lapWithCardio = 0;
         double maximumSpeed = 0;
-        int lapCount = 1;
+        int lapCount = 0;
 
         for (final ActivityLapT lap : laps) {
             LOGGER.info("Runde " + lapCount + " wird konvertiert"); //$NON-NLS-1$//$NON-NLS-2$
-            final double distanceMeters = lap.getDistanceMeters();
+            final double lapDistance = lap.getDistanceMeters();
             final double totalTimeSeconds = lap.getTotalTimeSeconds();
-            final String pace = DistanceHelper.calculatePace(distanceMeters, totalTimeSeconds);
+            final String pace = DistanceHelper.calculatePace(lapDistance, totalTimeSeconds);
             final HeartRateInBeatsPerMinuteT heart = lap.getAverageHeartRateBpm();
             int lapHeart = 0;
             if (heart != null) {
                 lapHeart = heart.getValue();
             }
-            lapInfos.add(CommonTransferFactory.createLapInfo(lapCount, (int) distanceMeters, (int) (totalTimeSeconds * 1000), lapHeart, pace));
+            lapInfos.add(CommonTransferFactory.createLapInfo(lapCount, (int) distance, (int) (lapDistance + distance), (int) (totalTimeSeconds * 1000),
+                    lapHeart, pace));
             final List<ITrackPointProperty> trackPointsOfLap = getTrackPointsOfLap(lap, lapCount);
             trackPoints.addAll(trackPointsOfLap);
             lapCount++;
-            distance += distanceMeters;
+            distance += lapDistance;
             if (lap.getMaximumSpeed() != null && maximumSpeed < lap.getMaximumSpeed()) {
                 maximumSpeed = lap.getMaximumSpeed();
             }
@@ -203,7 +204,7 @@ public class ConvertTcx implements IConvert2Tcx {
         }
     }
 
-    private Sport translate(SportT in) {
+    private Sport translate(final SportT in) {
         if (Sport.RUNNING.toString().equals(in.name())) {
             return Sport.RUNNING;
         } else {

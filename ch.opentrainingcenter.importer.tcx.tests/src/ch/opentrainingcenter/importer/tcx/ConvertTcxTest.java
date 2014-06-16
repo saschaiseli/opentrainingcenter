@@ -1,11 +1,11 @@
 package ch.opentrainingcenter.importer.tcx;
 
+import java.io.File;
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-
-import java.io.File;
-import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -69,9 +69,9 @@ public class ConvertTcxTest {
         assertFalse("Liste der punkte darf nicht leer sein.", points.isEmpty());
         assertEquals(3, points.size());
 
-        assertPoint(points.get(0), 543, 0.576151550, 85, 1, 1364897192000L, 7.43025357, 46.94510135);
-        assertPoint(points.get(1), 544, 1.55577779, 86, 1, 1364897193000L, 7.43026547, 46.94510487);
-        assertPoint(points.get(2), 545, 2.89205694, 87, 1, 1364897194000L, 7.43028106, 46.94511082);
+        assertPoint(points.get(0), 543, 0.576151550, 85, 0, 1364897192000L, 7.43025357, 46.94510135);
+        assertPoint(points.get(1), 544, 1.55577779, 86, 0, 1364897193000L, 7.43026547, 46.94510487);
+        assertPoint(points.get(2), 545, 2.89205694, 87, 0, 1364897194000L, 7.43028106, 46.94511082);
     }
 
     @Test
@@ -82,28 +82,30 @@ public class ConvertTcxTest {
         assertFalse("Liste der punkte darf nicht leer sein.", points.isEmpty());
         assertEquals(6, points.size());
 
-        assertPoint(points.get(0), 543, 0.576151550, 85, 1, 1364897192000L, 7.43025357, 46.94510135);
-        assertPoint(points.get(1), 544, 1.55577779, 86, 1, 1364897193000L, 7.43026547, 46.94510487);
-        assertPoint(points.get(2), 545, 2.89205694, 87, 1, 1364897194000L, 7.43028106, 46.94511082);
+        assertPoint(points.get(0), 543, 0.576151550, 85, 0, 1364897192000L, 7.43025357, 46.94510135);
+        assertPoint(points.get(1), 544, 1.55577779, 86, 0, 1364897193000L, 7.43026547, 46.94510487);
+        assertPoint(points.get(2), 545, 2.89205694, 87, 0, 1364897194000L, 7.43028106, 46.94511082);
 
-        assertPoint(points.get(3), 543, 0.576151550, 85, 2, 1364897192000L, 7.43025357, 46.94510135);
-        assertPoint(points.get(4), 544, 1.55577779, 86, 2, 1364897193000L, 7.43026547, 46.94510487);
-        assertPoint(points.get(5), 545, 2.89205694, 87, 2, 1364897194000L, 7.43028106, 46.94511082);
+        assertPoint(points.get(3), 543, 0.576151550, 85, 1, 1364897192000L, 7.43025357, 46.94510135);
+        assertPoint(points.get(4), 544, 1.55577779, 86, 1, 1364897193000L, 7.43026547, 46.94510487);
+        assertPoint(points.get(5), 545, 2.89205694, 87, 1, 1364897194000L, 7.43028106, 46.94511082);
 
         final List<ILapInfo> lap = training.getLapInfos();
         assertEquals("2 Runden sind vorhanden", 2, lap.size());
         final ILapInfo lap1 = lap.get(0);
-        assertEquals(1, lap1.getLap());
+        assertEquals(0, lap1.getLap());
         assertEquals(154, lap1.getHeartBeat());
         assertEquals(300000, lap1.getTime());
-        assertEquals(1000, lap1.getDistance());
+        assertEquals(0, lap1.getStart());
+        assertEquals(1000, lap1.getEnd());
         assertEquals("5:00", lap1.getPace());
 
         final ILapInfo lap2 = lap.get(1);
-        assertEquals(2, lap2.getLap());
+        assertEquals(1, lap2.getLap());
         assertEquals(254, lap2.getHeartBeat());
         assertEquals(240000, lap2.getTime());
-        assertEquals(1000, lap2.getDistance());
+        assertEquals(1000, lap2.getStart());
+        assertEquals(2000, lap2.getEnd());
         assertEquals("4:00", lap2.getPace());
         assertEquals(Sport.RUNNING, training.getSport());
     }
@@ -116,7 +118,7 @@ public class ConvertTcxTest {
         assertFalse("Liste der punkte darf nicht leer sein.", points.isEmpty());
         assertEquals(1, points.size());
 
-        assertPoint(points.get(0), 543, 0.576151550, 85, 1, 1364897192000L, 7.43025357, 46.94510135);
+        assertPoint(points.get(0), 543, 0.576151550, 85, 0, 1364897192000L, 7.43025357, 46.94510135);
     }
 
     @Test

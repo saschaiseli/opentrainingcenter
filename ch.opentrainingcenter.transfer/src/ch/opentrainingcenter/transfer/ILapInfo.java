@@ -36,11 +36,40 @@ public interface ILapInfo {
     void setLap(int lap);
 
     /**
-     * @return Distanz in Meter [m[
+     * Die Distanz Ursprung in Meter [m]. An diesem Punkt BEGINNT die Lap.
+     * 
+     * <pre>
+     * 
+     *                           LapInfo
+     * |----------------------<--------->-----|
+     * 0m                   140m       180m
+     * 
+     *                     Start       End
+     * 
+     * 
+     * </pre>
      */
-    int getDistance();
+    int getStart();
 
-    void setDistance(int distance);
+    void setStart(int start);
+
+    /**
+     * Die Distanz Ursprung in Meter [m]. An diesem Punkt ENDET die Lap.
+     * 
+     * <pre>
+     * 
+     *                           LapInfo
+     * |----------------------<--------->-----|
+     * 0m                   140m       180m
+     * 
+     *                     Start       End
+     * 
+     * 
+     * </pre>
+     */
+    int getEnd();
+
+    void setEnd(int end);
 
     /**
      * @return Zeit in Millisekunden [ms]

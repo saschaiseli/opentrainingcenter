@@ -14,8 +14,11 @@
 		<property name="time" type="java.lang.Long">
 			<column name="TIME" />
 		</property>
-		<property name="distance" type="java.lang.Integer">
-			<column name="DISTANCE" />
+		<property name="start" type="java.lang.Integer">
+			<column name="START" />
+		</property>
+		<property name="end" type="java.lang.Integer">
+			<column name="END" />
 		</property>
 		<property name="heartBeat" type="java.lang.Integer">
 			<column name="HEARTBEAT" />

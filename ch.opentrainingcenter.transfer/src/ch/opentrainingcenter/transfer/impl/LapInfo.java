@@ -26,7 +26,8 @@ public class LapInfo implements ILapInfo {
 
     private int id;
     private int lap;
-    private int distance;
+    private int start;
+    private int end;
     private long time;
     private int heartBeat;
     private String pace;
@@ -48,9 +49,10 @@ public class LapInfo implements ILapInfo {
      * @param pace
      *            Pace in [min/km]
      */
-    public LapInfo(final int lap, final int distance, final long time, final int heartBeat, final String pace) {
+    public LapInfo(final int lap, final int start, final int end, final long time, final int heartBeat, final String pace) {
         this.lap = lap;
-        this.distance = distance;
+        this.start = start;
+        this.end = end;
         this.time = time;
         this.heartBeat = heartBeat;
         this.pace = pace;
@@ -77,13 +79,23 @@ public class LapInfo implements ILapInfo {
     }
 
     @Override
-    public int getDistance() {
-        return distance;
+    public int getStart() {
+        return start;
     }
 
     @Override
-    public void setDistance(final int distance) {
-        this.distance = distance;
+    public void setStart(final int start) {
+        this.start = start;
+    }
+
+    @Override
+    public int getEnd() {
+        return end;
+    }
+
+    @Override
+    public void setEnd(final int end) {
+        this.end = end;
     }
 
     @Override
@@ -129,8 +141,8 @@ public class LapInfo implements ILapInfo {
     @SuppressWarnings("nls")
     @Override
     public String toString() {
-        return "LapInfo [id=" + id + ", lap=" + lap + ", distance=" + distance + ", time=" + time + ", heartBeat=" + heartBeat + ", pace=" + pace
-                + ", training=" + training + "]";
+        return "LapInfo [id=" + id + ", lap=" + lap + ", start=" + start + ", end=" + end + ", time=" + time + ", heartBeat=" + heartBeat + ", pace=" + pace
+                + "]";
     }
 
 }

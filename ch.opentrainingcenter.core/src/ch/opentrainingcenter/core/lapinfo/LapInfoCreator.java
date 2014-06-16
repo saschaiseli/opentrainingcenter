@@ -53,7 +53,7 @@ public class LapInfoCreator {
     }
 
     private ILapInfo createEmptyLap() {
-        return CommonTransferFactory.createLapInfo(0, 0, 0, 0, "--:--"); //$NON-NLS-1$
+        return CommonTransferFactory.createLapInfo(0, 0, 0, 0, 0, "--:--"); //$NON-NLS-1$
     }
 
     private NavigableMap<Integer, List<ITrackPointProperty>> createLapMap(final ITraining training) {

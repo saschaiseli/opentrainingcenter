@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static ch.opentrainingcenter.core.lapinfo.TrackPointSupport.assertLapInfo;
+import static ch.opentrainingcenter.core.lapinfo.TrackPointSupport.createTrackPoint;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import ch.opentrainingcenter.transfer.ILapInfo;
 import ch.opentrainingcenter.transfer.ITrackPointProperty;
-import static ch.opentrainingcenter.core.lapinfo.TrackPointSupport.assertLapInfo;
-import static ch.opentrainingcenter.core.lapinfo.TrackPointSupport.createTrackPoint;
 
 @SuppressWarnings("nls")
 public class LapInfoSupportTest {
@@ -47,7 +48,7 @@ public class LapInfoSupportTest {
 
         final ILapInfo result = LapInfoSupport.createLapInfo(points);
 
-        assertLapInfo(1, 1000, 152, 240_000, "4:00", result);
+        assertLapInfo(1, 1000, 2000, 152, 240_000, "4:00", result);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -70,6 +71,6 @@ public class LapInfoSupportTest {
 
         final ILapInfo result = LapInfoSupport.createLapInfo(0, points, 0, 0);
 
-        assertLapInfo(0, 1000, 142, 240_000, "4:00", result);
+        assertLapInfo(0, 0, 1000, 142, 240_000, "4:00", result);
     }
 }

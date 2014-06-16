@@ -100,7 +100,7 @@ public class LapInfoTableViewer extends TableViewer {
 
             @Override
             public String getLapInfoText(final ILapInfo lapInfo) {
-                return DistanceHelper.roundDistanceFromMeterToKm(lapInfo.getDistance());
+                return DistanceHelper.roundDistanceFromMeterToKm(lapInfo.getEnd() - lapInfo.getStart());
             }
         });
 
