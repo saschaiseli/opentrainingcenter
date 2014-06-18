@@ -76,7 +76,7 @@ public class DatabaseAccessTest extends DatabaseTestBase {
         routeDao.saveOrUpdate(route);
 
         training.setRoute(route);
-        training.setSport(Sport.BIKE);
+        training.setSport(Sport.BIKING);
 
         dataAccess.saveOrUpdate(training);
 
@@ -87,7 +87,7 @@ public class DatabaseAccessTest extends DatabaseTestBase {
         assertEquals("note", result.getNote());
         assertEquals(weatherA, result.getWeather());
         assertEquals(route, result.getRoute());
-        assertEquals(Sport.BIKE, result.getSport());
+        assertEquals(Sport.BIKING, result.getSport());
     }
 
     @Test

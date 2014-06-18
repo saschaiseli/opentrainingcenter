@@ -205,7 +205,9 @@ public class ConvertTcx implements IConvert2Tcx {
     }
 
     private Sport translate(final SportT in) {
-        if (Sport.RUNNING.toString().equals(in.name())) {
+        if (SportT.BIKING.equals(in)) {
+            return Sport.BIKING;
+        } else if (SportT.RUNNING.equals(in)) {
             return Sport.RUNNING;
         } else {
             return Sport.OTHER;

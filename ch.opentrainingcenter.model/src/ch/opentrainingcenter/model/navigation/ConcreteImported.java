@@ -32,7 +32,11 @@ public class ConcreteImported extends ImportedDecorator implements INavigationIt
 
     @Override
     public String getImage() {
-        return training.getTrainingType().getImageicon();
+        if (Sport.BIKING.equals(training.getSport())) {
+            return training.getSport().getImageIcon();
+        } else {
+            return training.getTrainingType().getImageicon();
+        }
     }
 
     @Override
@@ -181,7 +185,7 @@ public class ConcreteImported extends ImportedDecorator implements INavigationIt
     }
 
     @Override
-    public void setSport(Sport sport) {
+    public void setSport(final Sport sport) {
         training.setSport(sport);
     }
 }
