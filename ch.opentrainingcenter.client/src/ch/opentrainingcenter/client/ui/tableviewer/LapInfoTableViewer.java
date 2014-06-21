@@ -64,7 +64,7 @@ public class LapInfoTableViewer extends TableViewer {
         refresh();
 
         final TableWrapData clientLayoutData = new TableWrapData(TableWrapData.FILL_GRAB);
-        clientLayoutData.maxHeight = 250;
+        clientLayoutData.maxHeight = 200;
         clientLayoutData.grabHorizontal = true;
         clientLayoutData.grabVertical = true;
         getControl().setLayoutData(clientLayoutData);
