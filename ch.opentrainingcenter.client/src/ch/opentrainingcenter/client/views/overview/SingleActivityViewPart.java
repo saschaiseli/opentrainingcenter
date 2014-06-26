@@ -145,8 +145,9 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
 
         if (lapInfos.size() > 1) {
             addLapSection(body, providerLap);
+        } else {
+            addSynthLapSection(body, providerSynth);
         }
-        addSynthLapSection(body, providerSynth);
 
         if (!training.getTrackPoints().isEmpty()) {
             addMapSection(body);
@@ -493,7 +494,7 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
 
     private void addMapSection(final Composite body) {
         final Section mapSection = toolkit.createSection(body, FormToolkitSupport.SECTION_STYLE);
-        mapSection.setExpanded(false);
+        mapSection.setExpanded(true);
         td = new TableWrapData(TableWrapData.FILL_GRAB);
         td.colspan = 2;
         td.grabHorizontal = true;
@@ -504,11 +505,21 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         mapSection.setDescription(Messages.SingleActivityViewPart17);
 
         final Composite client = toolkit.createComposite(mapSection);
+        client.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_CYAN));
         final TableWrapLayout layout = new TableWrapLayout();
         layout.numColumns = 1;
         layout.topMargin = -60;
         layout.bottomMargin = 5;
         client.setLayout(layout);
+
+        // final MapController controller = new MapController();
+        // final MapView map = new MapView(client, controller);
+        // map.setTileFactory(new OpenStreetBrowserFactory());
+        //
+        // map.redraw();
+        // map.queueRedraw();
+        // final GeoPoint position = new GeoPoint(7.481, 46.95);
+        // map.setMapCenter(position);
 
         final String convertTrackpoints = MapConverter.convertTrackpoints(training);
         final String firstPointToPan = MapConverter.getFirstPointToPan(convertTrackpoints);
