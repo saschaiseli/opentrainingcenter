@@ -29,7 +29,6 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
 import ch.opentrainingcenter.charts.single.ChartFactory;
 import ch.opentrainingcenter.charts.single.ChartType;
 import ch.opentrainingcenter.client.ui.FormToolkitSupport;
-import ch.opentrainingcenter.i18n.Messages;
 
 public class ChartSectionSupport {
 
@@ -53,8 +52,7 @@ public class ChartSectionSupport {
         td.grabHorizontal = true;
         td.grabVertical = true;
         altitude.setLayoutData(td);
-        altitude.setText(Messages.SingleActivityViewPart13);
-        altitude.setDescription(Messages.SingleActivityViewPart14);
+        altitude.setText(chartType.getTitel());
 
         final Composite client = toolkit.createComposite(altitude);
 

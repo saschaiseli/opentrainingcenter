@@ -34,11 +34,11 @@ import ch.opentrainingcenter.model.training.IOverviewModel;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.ITraining;
 
-public class WeeklyOverview extends ViewPart {
+public class MonthlyWeekOverview extends ViewPart {
 
-    public static final String ID = "ch.opentrainingcenter.client.weeks.weeklyOverview"; //$NON-NLS-1$
+    public static final String ID = "ch.opentrainingcenter.client.weeks.monthlyOverview"; //$NON-NLS-1$
 
-    private static final Logger LOGGER = Logger.getLogger(WeeklyOverview.class);
+    private static final Logger LOGGER = Logger.getLogger(MonthlyWeekOverview.class);
 
     private final IDatabaseAccess databaseAccess;
 
@@ -50,17 +50,17 @@ public class WeeklyOverview extends ViewPart {
 
     private TableWrapData td;
 
-    private Section sectionWeek;
+    private Section section, sectionWeek;
 
-    private Label kmTotal;
+    private Label kmTotal, kmTotalWeek;
 
-    private Label zeitTotal;
+    private Label zeitTotal, zeitTotalWeek;
 
-    private Label anzahl;
+    private Label anzahl, anzahlWeek;
 
     private Composite weekComposite;
 
-    public WeeklyOverview() {
+    public MonthlyWeekOverview() {
         final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
         databaseAccess = service.getDatabaseAccess();
         athlete = ApplicationContext.getApplicationContext().getAthlete();
@@ -86,10 +86,12 @@ public class WeeklyOverview extends ViewPart {
 
         td = new TableWrapData(TableWrapData.FILL_GRAB);
         body.setLayoutData(td);
-        form.setText(Messages.WeeklyOverview0);
+        form.setText(Messages.MonthlyOverview_0);
 
         addWeek(body);
+        addMonth(body);
 
+        update();
         addListener();
     }
 
@@ -111,34 +113,85 @@ public class WeeklyOverview extends ViewPart {
 
         final FormToolkitSupport support = new FormToolkitSupport(toolkit);
 
-        anzahl = support.addLabelAndValue(weekComposite, Messages.WeeklyOverview_2, "", Units.NONE); //$NON-NLS-1$
-        zeitTotal = support.addLabelAndValue(weekComposite, Messages.WeeklyOverview_6, "", Units.HOUR_MINUTE_SEC); //$NON-NLS-1$
-        kmTotal = support.addLabelAndValue(weekComposite, Messages.WeeklyOverview_4, "", Units.KM); //$NON-NLS-1$
-
-        update();
+        anzahlWeek = support.addLabelAndValue(weekComposite, Messages.WeeklyOverview_2, "", Units.NONE); //$NON-NLS-1$
+        zeitTotalWeek = support.addLabelAndValue(weekComposite, Messages.WeeklyOverview_6, "", Units.NONE); //$NON-NLS-1$
+        kmTotalWeek = support.addLabelAndValue(weekComposite, Messages.WeeklyOverview_4, "", Units.NONE); //$NON-NLS-1$
 
         sectionWeek.setClient(weekComposite);
     }
 
+    private void addMonth(final Composite body) {
+        section = toolkit.createSection(body, FormToolkitSupport.SECTION_STYLE);
+        section.setExpanded(false);
+
+        td = new TableWrapData(TableWrapData.FILL_GRAB);
+        td.colspan = 1;
+        td.grabHorizontal = true;
+        td.grabVertical = true;
+
+        section.setLayoutData(td);
+        section.setText(TimeHelper.getTranslatedMonat(DateTime.now()));
+
+        weekComposite = toolkit.createComposite(section);
+        final GridLayout layoutClient = new GridLayout(3, false);
+
+        weekComposite.setLayout(layoutClient);
+
+        final FormToolkitSupport support = new FormToolkitSupport(toolkit);
+
+        anzahl = support.addLabelAndValue(weekComposite, Messages.WeeklyOverview_2, "", Units.NONE); //$NON-NLS-1$
+        zeitTotal = support.addLabelAndValue(weekComposite, Messages.WeeklyOverview_6, "", Units.NONE); //$NON-NLS-1$
+        kmTotal = support.addLabelAndValue(weekComposite, Messages.WeeklyOverview_4, "", Units.NONE); //$NON-NLS-1$
+
+        section.setClient(weekComposite);
+    }
+
     private void update() {
+        final DateTime now = DateTime.now();
         Display.getDefault().asyncExec(new Runnable() {
 
             @Override
             public void run() {
                 LOGGER.info("update WeeklyOverview"); //$NON-NLS-1$
-                final DateTime now = DateTime.now();
-                final DateTime firstDayInWeek = TimeHelper.getFirstDayOfWeek(now);
-                final List<ITraining> trainings = databaseAccess.getTrainingsByAthleteAndDate(athlete, firstDayInWeek, now);
-                final IOverviewModel model = ModelFactory.createOverview(trainings);
-                kmTotal.setText(String.valueOf(DistanceHelper.roundDistanceFromMeterToKm(model.getTotaleDistanzInMeter())));
-                zeitTotal.setText(TimeHelper.convertTimeToString(model.getTotaleZeitInSekunden() * 1000));
-                anzahl.setText(String.valueOf(model.getAnzahlTrainings()));
+                updateFields(TimeHelper.getFirstDayOfWeek(now), kmTotalWeek, zeitTotalWeek, anzahlWeek, sectionWeek);
+                LOGGER.info("update MonthlyOverview"); //$NON-NLS-1$
+                updateFields(TimeHelper.getFirstDayOfMonth(now), kmTotal, zeitTotal, anzahl, section);
+            }
 
-                sectionWeek.layout();
-                sectionWeek.setExpanded(true);
+            private void updateFields(final DateTime firstDay, final Label km, final Label zeit, final Label anzahl, final Section section) {
+                final List<ITraining> trainingsWeek = databaseAccess.getTrainingsByAthleteAndDate(athlete, firstDay, now);
+                final IOverviewModel model = ModelFactory.createOverview(trainingsWeek);
+                km.setText(String.valueOf(DistanceHelper.roundDistanceFromMeterToKm(model.getTotaleDistanzInMeter())));
+                zeit.setText(TimeHelper.convertTimeToString(model.getTotaleZeitInSekunden() * 1000));
+                anzahl.setText(String.valueOf(model.getAnzahlTrainings()));
+                section.layout();
+                section.setExpanded(true);
             }
         });
     }
+
+    // private void update() {
+    // Display.getDefault().asyncExec(new Runnable() {
+    //
+    // @Override
+    // public void run() {
+    //                LOGGER.info("update MonthlyOverview"); //$NON-NLS-1$
+    // final DateTime now = DateTime.now();
+    // final DateTime firstDayInWeek = TimeHelper.getFirstDayOfMonth(now);
+    // final List<ITraining> trainings =
+    // databaseAccess.getTrainingsByAthleteAndDate(athlete, firstDayInWeek,
+    // now);
+    // final IOverviewModel model = ModelFactory.createOverview(trainings);
+    // kmTotal.setText(String.valueOf(DistanceHelper.roundDistanceFromMeterToKm(model.getTotaleDistanzInMeter())));
+    // zeitTotal.setText(TimeHelper.convertTimeToString(model.getTotaleZeitInSekunden()
+    // * 1000));
+    // anzahl.setText(String.valueOf(model.getAnzahlTrainings()));
+    //
+    // section.layout();
+    // section.setExpanded(true);
+    // }
+    // });
+    // }
 
     private void addListener() {
         cache.addListener(new IRecordListener<ITraining>() {
@@ -158,4 +211,5 @@ public class WeeklyOverview extends ViewPart {
     @Override
     public void setFocus() {
     }
+
 }

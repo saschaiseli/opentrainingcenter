@@ -33,11 +33,11 @@ public final class FormToolkitSupport {
 
         // value
         final Label valueLabel = toolkit.createLabel(parent, value);
-        GridDataFactory.swtDefaults().indent(10, 4).align(SWT.RIGHT, SWT.CENTER).grab(true, true).applyTo(valueLabel);
+        GridDataFactory.swtDefaults().indent(5, 1).align(SWT.RIGHT, SWT.CENTER).grab(true, true).applyTo(valueLabel);
 
         // einheit
         final Label einheit = toolkit.createLabel(parent, unit.getName());
-        GridDataFactory.swtDefaults().indent(10, 4).align(SWT.LEFT, SWT.CENTER).applyTo(einheit);
+        GridDataFactory.swtDefaults().indent(5, 1).align(SWT.LEFT, SWT.CENTER).applyTo(einheit);
 
         return valueLabel;
     }

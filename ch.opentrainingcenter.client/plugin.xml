@@ -137,15 +137,7 @@
       <view
             allowMultiple="false"
             category="ch.opentrainingcenter.client.otccategory"
-            class="ch.opentrainingcenter.client.views.weeks.WeeklyOverview"
-            id="ch.opentrainingcenter.client.weeks.weeklyOverview"
-            name="%wochenuebersicht"
-            restorable="false">
-      </view>
-      <view
-            allowMultiple="false"
-            category="ch.opentrainingcenter.client.otccategory"
-            class="ch.opentrainingcenter.client.views.weeks.MonthlyOverview"
+            class="ch.opentrainingcenter.client.views.weeks.MonthlyWeekOverview"
             id="ch.opentrainingcenter.client.weeks.monthlyOverview"
             name="%monatsuebersicht"
             restorable="false">
@@ -880,5 +872,18 @@
             properties="navigationSelection"
             type="java.lang.Object">
       </propertyTester>
+   </extension>
+   <extension
+         point="net.skweez.geoclipse.tileFactories">
+      <tilefactory
+            class="ch.opentrainingcenter.client.views.overview.TileFactory"
+            name="ch.opentrainingcenter.client.tilefactory">
+      </tilefactory>
+   </extension>
+   <extension
+         point="net.skweez.geoclipse.overlays">
+      <overlay
+            class="ch.opentrainingcenter.client.views.overview.Overlay">
+      </overlay>
    </extension>
 </plugin>
