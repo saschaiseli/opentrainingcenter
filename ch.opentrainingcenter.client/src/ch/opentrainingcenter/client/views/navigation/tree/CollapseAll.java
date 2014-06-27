@@ -15,6 +15,7 @@ public class CollapseAll implements IViewActionDelegate {
     @Override
     public void run(final IAction action) {
         treeViewer.collapseAll();
+        treeViewer.refresh();
     }
 
     @Override

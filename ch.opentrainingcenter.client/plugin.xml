@@ -873,17 +873,4 @@
             type="java.lang.Object">
       </propertyTester>
    </extension>
-   <extension
-         point="net.skweez.geoclipse.tileFactories">
-      <tilefactory
-            class="ch.opentrainingcenter.client.views.overview.TileFactory"
-            name="ch.opentrainingcenter.client.tilefactory">
-      </tilefactory>
-   </extension>
-   <extension
-         point="net.skweez.geoclipse.overlays">
-      <overlay
-            class="ch.opentrainingcenter.client.views.overview.Overlay">
-      </overlay>
-   </extension>
 </plugin>
