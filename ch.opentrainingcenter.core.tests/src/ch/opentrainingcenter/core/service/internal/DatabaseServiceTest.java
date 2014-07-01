@@ -1,20 +1,26 @@
 package ch.opentrainingcenter.core.service.internal;
 
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import org.junit.Before;
 import org.junit.Test;
 
 import ch.opentrainingcenter.core.db.DatabaseConnectionConfiguration;
 import ch.opentrainingcenter.core.db.IDatabaseConnection;
-import static org.junit.Assert.assertNotNull;
-import static org.mockito.Matchers.any;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @SuppressWarnings("nls")
 public class DatabaseServiceTest {
 
     private DatabaseService service;
+
+    @Before
+    public void setUp() {
+        service = null;
+    }
 
     @Test
     public void testGetInstance() {
