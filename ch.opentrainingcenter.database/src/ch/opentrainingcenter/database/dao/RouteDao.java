@@ -38,7 +38,7 @@ public class RouteDao {
         final IRoute route;
         @SuppressWarnings("unchecked")
         final List<IRoute> routes = criteria.list();
-        if (routes != null && routes.size() > 0) {
+        if (routes != null && !routes.isEmpty()) {
             route = routes.get(0);
         } else {
             route = null;
@@ -88,6 +88,6 @@ public class RouteDao {
         final List<IRoute> routen = criteria.list();
         dao.commit();
         session.flush();
-        return routen.size() > 0;
+        return !routen.isEmpty();
     }
 }

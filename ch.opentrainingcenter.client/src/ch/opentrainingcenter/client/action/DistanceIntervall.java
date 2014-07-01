@@ -49,7 +49,7 @@ public class DistanceIntervall {
 
     public Pair<Long, Double> getMax(final Intervall intervall) {
         final List<Pair<Long, Double>> list = PACES.get(intervall);
-        if (list == null || list.size() == 0) {
+        if (list == null || list.isEmpty()) {
             LOGGER.info("Keine pace im intervall: " + intervall); //$NON-NLS-1$
             return new Pair<Long, Double>(null, null);
         } else {
