@@ -244,9 +244,16 @@ public class BestRunsView extends ViewPart {
 
     @Override
     public void setFocus() {
-        // do nothing
+    	
     }
 
+    @Override
+    public void dispose() {
+    	bestPace.dispose();
+    	toolkit.dispose();
+    	super.dispose();
+    }
+    
     private void update() {
         Display.getDefault().asyncExec(new Runnable() {
 

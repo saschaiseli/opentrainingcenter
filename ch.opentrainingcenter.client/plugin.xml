@@ -837,14 +837,13 @@
             targetID="ch.opentrainingcenter.client.kalenderNavigationView">
          <action
                class="ch.opentrainingcenter.client.views.navigation.tree.CollapseAll"
-               definitionId="additions"
                icon="icons/16_16/collapseall.gif"
                id="ch.opentrainingcenter.client.action2"
                label="%collapseall"
                menubarPath="additions"
                style="push"
                toolbarPath="additions"
-               tooltip="Alles einklappen">
+               tooltip="%collapseall">
          </action>
       </viewContribution>
    </extension>

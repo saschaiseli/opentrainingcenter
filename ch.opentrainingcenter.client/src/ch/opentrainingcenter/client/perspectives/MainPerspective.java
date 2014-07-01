@@ -50,7 +50,7 @@ public class MainPerspective implements IPerspectiveFactory {
 
         layout.addView(BestRunsView.ID, IPageLayout.RIGHT, 0.5f, editorArea);
 
-        layout.getViewLayout(BestRunsView.ID).setCloseable(false);
+        layout.getViewLayout(BestRunsView.ID).setCloseable(true);
         layout.getViewLayout(MonthlyWeekOverview.ID).setCloseable(false);
 
         layout.addPerspectiveShortcut(MainPerspective.ID);

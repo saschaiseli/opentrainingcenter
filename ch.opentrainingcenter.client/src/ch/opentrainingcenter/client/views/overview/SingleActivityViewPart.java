@@ -166,9 +166,17 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         providerLap.addSelectionChangedListener(distanceListener);
         providerSynth.addSelectionChangedListener(distanceListener);
         time1 = DateTime.now().getMillis();
-        LOGGER.debug(String.format("Zeit zum Laden von addAltitudeSection: %s [ms]", time1 - time2)); //$NON-NLS-1$
+        logDebug(String.format("Zeit zum Laden von addAltitudeSection: %s [ms]", time1 - time2)); //$NON-NLS-1$
 
         getSite().setSelectionProvider(this);
+    }
+
+    private void logDebug(final String message, final Object... args) {
+        if (args != null) {
+            LOGGER.debug(String.format(message, args));
+        } else {
+            LOGGER.debug(message);
+        }
     }
 
     private void addLapSection(final Composite body, final SelectionProviderIntermediate provider) {
@@ -285,7 +293,9 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
 
             @Override
             public void mouseExit(final MouseEvent e) {
-                safeNote(note.getText());
+                if (!simpleTraining.getNote().equals(note.getText())) {
+                    safeNote(note.getText());
+                }
             }
 
             @Override
@@ -298,12 +308,13 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
 
             @Override
             public void focusLost(final FocusEvent e) {
-                safeNote(note.getText());
+                if (!simpleTraining.getNote().equals(note.getText())) {
+                    safeNote(note.getText());
+                }
             }
 
             @Override
             public void focusGained(final FocusEvent e) {
-
             }
         });
 
@@ -319,7 +330,8 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
 
             @Override
             public void widgetSelected(final SelectionEvent e) {
-                safeWeather(comboWetter.getSelectionIndex());
+                if (simpleTraining.getWetter().getIndex() != (comboWetter.getSelectionIndex()))
+                    safeWeather(comboWetter.getSelectionIndex());
             }
         });
         GridDataFactory.fillDefaults().grab(true, true).align(SWT.FILL, SWT.FILL).applyTo(comboWetter);
@@ -351,7 +363,11 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
             @Override
             public void selectionChanged(final SelectionChangedEvent event) {
                 if (!event.getSelection().isEmpty()) {
-                    safeStrecke((StreckeModel) ((StructuredSelection) event.getSelection()).getFirstElement());
+                    final StructuredSelection selection = (StructuredSelection) event.getSelection();
+                    final StreckeModel streckeModel = (StreckeModel) selection.getFirstElement();
+                    if (!streckeModel.equals(strecke)) {
+                        safeStrecke(streckeModel);
+                    }
                 }
             }
         });

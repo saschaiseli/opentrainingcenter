@@ -21,6 +21,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
     private IAction windowsAction;
     private IWorkbenchAction aboutAction;
     private IWorkbenchAction introAction;
+	private IWorkbenchAction resetPerspective;
 
     public ApplicationActionBarAdvisor(final IActionBarConfigurer configurer) {
         super(configurer);
@@ -41,7 +42,10 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 
         windowsAction = ActionFactory.PREFERENCES.create(window);
         register(windowsAction);
-
+        
+        resetPerspective = ActionFactory.RESET_PERSPECTIVE.create(window);
+        register(resetPerspective);
+        
         introAction = ActionFactory.INTRO.create(window);
         register(introAction);
     }
@@ -61,7 +65,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 
         // Window
         windowsMenu.add(windowsAction);
-
+        windowsMenu.add(resetPerspective);
         // Help
         helpMenu.add(aboutAction);
 
