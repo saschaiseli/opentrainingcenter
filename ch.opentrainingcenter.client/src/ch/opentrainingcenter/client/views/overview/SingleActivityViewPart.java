@@ -19,10 +19,10 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTError;
 import org.eclipse.swt.SWTException;
+import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseTrackListener;
+import org.eclipse.swt.events.MouseTrackAdapter;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridLayout;
@@ -52,6 +52,7 @@ import ch.opentrainingcenter.client.ui.tableviewer.SelectionProviderIntermediate
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.core.cache.Cache;
 import ch.opentrainingcenter.core.cache.IRecordListener;
+import ch.opentrainingcenter.core.cache.RecordAdapter;
 import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.helper.TimeHelper;
@@ -212,7 +213,6 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
 
         final LapInfoTableViewer viewer = new LapInfoTableViewer(client, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
         viewer.createTableViewer(input, getSite());
-        // getSite().setSelectionProvider(viewer);
         lapSection.setClient(client);
         return viewer;
     }
@@ -284,12 +284,7 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
             note.setText(notiz);
         }
 
-        note.addMouseTrackListener(new MouseTrackListener() {
-
-            @Override
-            public void mouseHover(final MouseEvent e) {
-
-            }
+        note.addMouseTrackListener(new MouseTrackAdapter() {
 
             @Override
             public void mouseExit(final MouseEvent e) {
@@ -297,24 +292,15 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
                     safeNote(note.getText());
                 }
             }
-
-            @Override
-            public void mouseEnter(final MouseEvent e) {
-
-            }
         });
 
-        note.addFocusListener(new FocusListener() {
+        note.addFocusListener(new FocusAdapter() {
 
             @Override
             public void focusLost(final FocusEvent e) {
                 if (!simpleTraining.getNote().equals(note.getText())) {
                     safeNote(note.getText());
                 }
-            }
-
-            @Override
-            public void focusGained(final FocusEvent e) {
             }
         });
 
@@ -412,7 +398,7 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
             }
         };
 
-        listener = new IRecordListener<ITraining>() {
+        listener = new RecordAdapter<ITraining>() {
 
             @Override
             public void recordChanged(final Collection<ITraining> entry) {
@@ -427,18 +413,12 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
                                 if (simpleTraining.getNote() != null) {
                                     note.setText(simpleTraining.getNote());
                                 }
-                                // comboStrecke.setSelection(new
-                                // StructuredSelection(simpleTraining.getStrecke()));
                             }
                         }
                         section.update();
                     }
                 });
 
-            }
-
-            @Override
-            public void deleteRecord(final Collection<ITraining> entry) {
             }
         };
 

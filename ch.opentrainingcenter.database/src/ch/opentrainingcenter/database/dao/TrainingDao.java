@@ -52,34 +52,6 @@ public class TrainingDao {
         return list;
     }
 
-    // @Deprecated
-    // public List<ITraining> getAllTrainings(final IAthlete athlete, final int
-    // limit) {
-    // final Session session = dao.getSession();
-    // final long start = DateTime.now().getMillis();
-    // dao.begin();
-    // final Criteria criteria = session.createCriteria(ITraining.class);
-    //
-    // criteria.add(Restrictions.eq("athlete", athlete));
-    // criteria.addOrder(Order.desc("datum"));
-    // criteria.setMaxResults(limit);
-    // criteria.setFetchMode("athlete", FetchMode.JOIN);
-    // criteria.setFetchMode("trainingType", FetchMode.JOIN);
-    // criteria.setFetchMode("weather", FetchMode.JOIN);
-    // criteria.setFetchMode("route", FetchMode.JOIN);
-    // criteria.setFetchMode("trackPoints", FetchMode.SELECT);
-    //
-    // @SuppressWarnings("unchecked")
-    // final List<ITraining> list = criteria.list();
-    //
-    // dao.commit();
-    // session.flush();
-    // final long time = DateTime.now().getMillis() - start;
-    // LOG.info("getAllImported(final IAthlete athlete, final int limit): Time[ms]: "
-    // + time);
-    // return list;
-    // }
-
     public List<ITraining> getTrainingsByAthleteAndDate(final IAthlete athlete, final DateTime von, final DateTime bis) {
         final Session session = dao.getSession();
         dao.begin();

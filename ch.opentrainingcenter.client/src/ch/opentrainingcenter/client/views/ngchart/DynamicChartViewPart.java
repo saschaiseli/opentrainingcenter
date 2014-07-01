@@ -388,7 +388,7 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
 
     @Override
     public void setFocus() {
-
+        dateVon.setFocus();
     }
 
     @Override

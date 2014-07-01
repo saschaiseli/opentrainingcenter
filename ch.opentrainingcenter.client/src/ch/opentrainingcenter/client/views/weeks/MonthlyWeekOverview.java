@@ -170,29 +170,6 @@ public class MonthlyWeekOverview extends ViewPart {
         });
     }
 
-    // private void update() {
-    // Display.getDefault().asyncExec(new Runnable() {
-    //
-    // @Override
-    // public void run() {
-    //                LOGGER.info("update MonthlyOverview"); //$NON-NLS-1$
-    // final DateTime now = DateTime.now();
-    // final DateTime firstDayInWeek = TimeHelper.getFirstDayOfMonth(now);
-    // final List<ITraining> trainings =
-    // databaseAccess.getTrainingsByAthleteAndDate(athlete, firstDayInWeek,
-    // now);
-    // final IOverviewModel model = ModelFactory.createOverview(trainings);
-    // kmTotal.setText(String.valueOf(DistanceHelper.roundDistanceFromMeterToKm(model.getTotaleDistanzInMeter())));
-    // zeitTotal.setText(TimeHelper.convertTimeToString(model.getTotaleZeitInSekunden()
-    // * 1000));
-    // anzahl.setText(String.valueOf(model.getAnzahlTrainings()));
-    //
-    // section.layout();
-    // section.setExpanded(true);
-    // }
-    // });
-    // }
-
     private void addListener() {
         cache.addListener(new IRecordListener<ITraining>() {
 

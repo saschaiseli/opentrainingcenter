@@ -268,7 +268,7 @@ public class UserView extends ViewPart {
         // name
         final Label lName = new Label(overViewComposite, SWT.NONE);
         lName.setText(Messages.CreateAthleteView10);
-        GridData gd = GridDataFactory.swtDefaults().align(SWT.BEGINNING, SWT.CENTER).create();// applyTo(lName);
+        GridData gd = GridDataFactory.swtDefaults().align(SWT.BEGINNING, SWT.CENTER).create();
         gd.minimumWidth = 30;
         GridDataFactory.createFrom(gd).applyTo(lName);
 

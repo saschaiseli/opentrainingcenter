@@ -56,8 +56,6 @@ public class AddRoute extends OtcAbstractHandler {
             delete = MessageDialog.openConfirm(shell, Messages.AddRoute_0, NLS.bind(Messages.AddRoute_1, route.getName()));
         }
         if (delete) {
-            // deleteReferenzen(databaseAccess, training, route);
-
             final RouteDialog dialog = new RouteDialog(shell, databaseAccess, training);
             dialog.open();
         }

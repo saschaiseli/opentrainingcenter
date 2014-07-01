@@ -32,5 +32,6 @@ public class ShowJahresplanungViewPart extends ViewPart {
 
     @Override
     public void setFocus() {
+        this.setFocus();
     }
 }

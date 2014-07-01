@@ -34,10 +34,11 @@ public class RestartOtc extends Action implements ISelectionListener, IWorkbench
 
     @Override
     public void dispose() {
+        // do nothing
     }
 
     @Override
     public void selectionChanged(final IWorkbenchPart part, final ISelection selection) {
+        // do nothing
     }
-
 }
