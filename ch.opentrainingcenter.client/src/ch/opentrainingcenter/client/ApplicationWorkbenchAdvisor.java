@@ -71,7 +71,7 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
                 databaseConnection.createDatabase();
                 ApplicationContext.getApplicationContext().setDbState(DatabaseConnectionState.createNewOkState());
             } catch (final SqlException e) {
-                e.printStackTrace();
+                LOGGER.error(e);
             }
             LOGGER.info(Messages.ApplicationWorkbenchAdvisorAthleteNotInPreferences);
             return EinstellungenPerspective.ID;

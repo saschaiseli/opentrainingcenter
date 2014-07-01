@@ -223,15 +223,15 @@ public class BestRunsView extends ViewPart {
             }
 
             @Override
-            public void linkActivated(final HyperlinkEvent e) {
+            public void linkActivated(final HyperlinkEvent linktEvent) {
                 @SuppressWarnings("unchecked")
                 final long id = ((Pair<Long, String>) link.getData()).getFirst();
                 try {
                     ApplicationContext.getApplicationContext().setSelectedId(id);
                     PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(SingleActivityViewPart.ID, String.valueOf(id),
                             IWorkbenchPage.VIEW_ACTIVATE);
-                } catch (final PartInitException e1) {
-                    e1.printStackTrace();
+                } catch (final PartInitException pie) {
+                    LOGGER.error(pie);
                 }
             }
         });
@@ -244,16 +244,16 @@ public class BestRunsView extends ViewPart {
 
     @Override
     public void setFocus() {
-    	
+
     }
 
     @Override
     public void dispose() {
-    	bestPace.dispose();
-    	toolkit.dispose();
-    	super.dispose();
+        bestPace.dispose();
+        toolkit.dispose();
+        super.dispose();
     }
-    
+
     private void update() {
         Display.getDefault().asyncExec(new Runnable() {
 
