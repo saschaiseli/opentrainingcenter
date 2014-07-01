@@ -242,8 +242,7 @@ public class KalenderWocheNavigationView extends ViewPart {
 
                 final String hash = String.valueOf(record.getDatum());
                 try {
-                    PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-                            .showView(SingleActivityViewPart.ID, hash, IWorkbenchPage.VIEW_ACTIVATE);
+                    PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(SingleActivityViewPart.ID, hash, 1);
                 } catch (final PartInitException e) {
                     LOG.error(e);
                 }
