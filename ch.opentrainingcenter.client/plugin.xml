@@ -380,22 +380,6 @@
       <menuContribution
             allPopups="true"
             locationURI="popup:ch.opentrainingcenter.client.somepopup">
-         <command
-               commandId="ch.opentrainingcenter.client.action.AddEditHandler"
-               label="Add/Edit Note"
-               style="push">
-            <visibleWhen
-                  checkEnabled="true">
-               <iterate
-                     operator="and">
-                  <or>
-                     <instanceof
-                           value="ch.opentrainingcenter.client.model.navigation.impl.ConcreteImported">
-                     </instanceof>
-                  </or>
-               </iterate>
-            </visibleWhen>
-         </command>
          <menu
                label="Lauftyp ändern">
             <command
@@ -696,10 +680,6 @@
    -->
    <extension
          point="org.eclipse.ui.handlers">
-      <handler
-            class="ch.opentrainingcenter.client.commands.AddEditHandler"
-            commandId="ch.opentrainingcenter.client.action.AddEditHandler">
-      </handler>
       <handler
             class="ch.opentrainingcenter.client.commands.SwitchToAthlete"
             commandId="ch.opentrainingcenter.client.commands.SwitchToAthlete"
