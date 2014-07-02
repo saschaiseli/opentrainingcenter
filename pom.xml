@@ -23,6 +23,7 @@
 			h2_lib,
 			ch.opentrainingcenter.tcx/**/*.java,
 			ch.opentrainingcenter.tcx.ObjectFactory.java,
+			**/*Test.java,
 			**/Messages.java,
 			ch/**/Messages.java,
 			com/**/*.java,
