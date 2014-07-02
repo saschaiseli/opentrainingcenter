@@ -13,9 +13,6 @@
 		<eclipse-repository-url>http://download.eclipse.org/eclipse/updates/3.7</eclipse-repository-url>
 		<sonar.host.url>http://localhost:9000</sonar.host.url>
 		<sonar.dynamicAnalysis>true</sonar.dynamicAnalysis>
-<!--
-		<sonar.phase>generate-sources</sonar.phase>
--->
 		<sonar.exclusions>
 			opentrainingcenter,
 			org.hibernate,
@@ -28,9 +25,9 @@
 			ch.opentrainingcenter.tcx.ObjectFactory.java,
 			**/Messages.java,
 			ch/**/Messages.java,
-			**/*Test.java,
 			com/**/*.java,
-			ch/opentrainingcenter/importer/fitnesslog/model/*.java</sonar.exclusions>
+			ch/opentrainingcenter/importer/fitnesslog/model/*.java
+		</sonar.exclusions>
 	</properties>
 
 	<repositories>
