@@ -4,7 +4,6 @@ import java.awt.Paint;
 import java.awt.Point;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -32,8 +31,6 @@ import ch.opentrainingcenter.transfer.ILapInfo;
 import ch.opentrainingcenter.transfer.ITraining;
 
 public class ChartFactory {
-
-    private static final Logger LOGGER = Logger.getLogger(ChartFactory.class);
 
     private final DataSetCreatorImpl dataSetCreator;
     private final ChartCreatorImpl chartCreator;
