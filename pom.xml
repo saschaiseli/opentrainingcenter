@@ -10,7 +10,7 @@
 
 	<properties>
 		<tycho.version>0.19.0</tycho.version>
-		<jacoco.version>0.7.2-SNAPSHOT</jacoco.version>
+		<jacoco.version>0.7.1.201405082137</jacoco.version>
 		<eclipse-repository-url>http://download.eclipse.org/eclipse/updates/3.7</eclipse-repository-url>
 		<sonar.host.url>http://localhost:9000</sonar.host.url>
 		<sonar.dynamicAnalysis>true</sonar.dynamicAnalysis>
