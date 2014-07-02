@@ -69,8 +69,7 @@ public class LapInfoCreator {
     }
 
     private int getLap(final double pointDistance) {
-        final int mod = (int) (pointDistance / distance);
-        return mod;
+        return (int) (pointDistance / distance);
     }
 
     private ILapInfo createLapInfo(final int runde, final List<ITrackPointProperty> points, final ITrackPointProperty previous) {
