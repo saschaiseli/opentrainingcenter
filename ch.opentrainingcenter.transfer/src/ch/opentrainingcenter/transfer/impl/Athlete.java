@@ -2,6 +2,7 @@ package ch.opentrainingcenter.transfer.impl;
 
 // Generated 04.04.2013 20:38:06 by Hibernate Tools 3.4.0.CR1
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -134,7 +135,7 @@ public class Athlete implements java.io.Serializable, IAthlete {
 
     @Override
     public Set<ITraining> getTrainings() {
-        return null;
+        return Collections.emptySet();
     }
 
     @Override

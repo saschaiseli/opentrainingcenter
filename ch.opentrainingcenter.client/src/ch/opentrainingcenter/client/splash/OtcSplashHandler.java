@@ -54,7 +54,7 @@ public class OtcSplashHandler extends BasicSplashHandler {
         setForeground(new RGB((foregroundColorInteger & 0xFF0000) >> 16, (foregroundColorInteger & 0xFF00) >> 8, foregroundColorInteger & 0xFF));
         final Version version = Activator.getDefault().getBundle().getVersion();
         final String buildId;
-        if (version.getQualifier().equalsIgnoreCase("qualifier")) { //$NON-NLS-1$
+        if ("qualifier".equalsIgnoreCase(version.getQualifier())) { //$NON-NLS-1$
             buildId = "DEV"; //$NON-NLS-1$
         } else {
             buildId = version.getMajor() + "." + version.getMinor() + " / " + version.getQualifier(); //$NON-NLS-1$ //$NON-NLS-2$

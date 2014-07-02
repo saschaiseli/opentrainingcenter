@@ -129,7 +129,6 @@ public class RoutenView extends ViewPart implements ISelectionListener {
         createRightComposite(compositeRight);
 
         final Composite compositeUnten = new Composite(composite, SWT.NONE);
-        // compositeUnten.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_MAGENTA));
         GridLayoutFactory.swtDefaults().applyTo(compositeUnten);
         GridDataFactory.swtDefaults().span(2, 1).align(SWT.FILL, SWT.FILL).grab(true, true).applyTo(compositeUnten);
 

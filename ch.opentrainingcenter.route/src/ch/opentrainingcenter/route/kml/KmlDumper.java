@@ -19,6 +19,7 @@ import ch.opentrainingcenter.core.helper.TimeHelper;
  */
 public class KmlDumper {
 
+    private static final String LINE = "#####################################################################"; //$NON-NLS-1$
     private static final Logger LOGGER = Logger.getLogger(KmlDumper.class);
     private final KmlFile kmlFile;
     private final String name;
@@ -78,10 +79,10 @@ public class KmlDumper {
                 }
             }
         } else {
-            LOGGER.info("#####################################################################"); //$NON-NLS-1$
+            LOGGER.info(LINE);
             LOGGER.info("KML File wird geloggt, da kein Pfad für das Speichern angegeben wurde"); //$NON-NLS-1$
             LOGGER.info(kmlFile.getFile());
-            LOGGER.info("#####################################################################"); //$NON-NLS-1$
+            LOGGER.info(LINE);
         }
     }
 }

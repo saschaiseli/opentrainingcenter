@@ -54,7 +54,7 @@ public class ConvertGpx implements IConvert2Tcx {
     private URL getURL(final String schema) {
         final Bundle bundle = Platform.getBundle(Activator.BUNDLE_ID);
         final Path path = new Path(schema);
-        final URL url = FileLocator.find(bundle, path, Collections.EMPTY_MAP);
+        final URL url = FileLocator.find(bundle, path, Collections.emptyMap());
         URL fileUrl = null;
         try {
             fileUrl = FileLocator.toFileURL(url);

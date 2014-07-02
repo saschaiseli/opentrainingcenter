@@ -39,6 +39,10 @@ import org.eclipse.swt.browser.Browser;
 @SuppressWarnings("nls")
 final class HtmlLoader {
 
+    private HtmlLoader() {
+
+    }
+
     static void load(final Browser browser, final String htmlFile) {
         browser.setText(getHtmlContent(htmlFile));
     }

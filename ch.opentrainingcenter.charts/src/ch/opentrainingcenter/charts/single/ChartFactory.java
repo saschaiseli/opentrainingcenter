@@ -2,18 +2,9 @@ package ch.opentrainingcenter.charts.single;
 
 import java.awt.Paint;
 import java.awt.Point;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.net.URL;
-import java.util.Collections;
 import java.util.List;
 
-import javax.imageio.ImageIO;
-
 import org.apache.log4j.Logger;
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -24,17 +15,13 @@ import org.eclipse.ui.forms.widgets.TableWrapData;
 import org.jfree.chart.ChartMouseEvent;
 import org.jfree.chart.ChartMouseListener;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.annotations.XYImageAnnotation;
 import org.jfree.chart.event.ChartProgressEvent;
 import org.jfree.chart.event.ChartProgressListener;
 import org.jfree.chart.plot.IntervalMarker;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.experimental.chart.swt.ChartComposite;
-import org.jfree.ui.RectangleAnchor;
-import org.osgi.framework.Bundle;
 
-import ch.opentrainingcenter.charts.activator.Activator;
 import ch.opentrainingcenter.charts.single.creators.internal.ChartCreatorImpl;
 import ch.opentrainingcenter.charts.single.creators.internal.DataSetCreatorImpl;
 import ch.opentrainingcenter.core.PreferenceConstants;
@@ -108,21 +95,6 @@ public class ChartFactory {
                 if (xy != null) {
                     final String yValue = infos.getYValue(index);
                     AnnotationHelper.addCrossAnnotation(plot, xy, Double.MAX_VALUE, Double.MAX_VALUE, yValue);
-                }
-            }
-
-            @SuppressWarnings("unused")
-            private void addImageAnnotation(final XYPlot plot, final Pair<Number, Number> xy) {
-                try {
-                    final Bundle bundle = Platform.getBundle(Activator.PLUGIN_ID);
-                    final Path path = new Path("icons/man_lj_32_32.gif"); //$NON-NLS-1$
-                    final URL url = FileLocator.find(bundle, path, Collections.EMPTY_MAP);
-                    final URL fileURL = FileLocator.toFileURL(url);
-                    final BufferedImage bimg = ImageIO.read(fileURL);
-                    final XYImageAnnotation a = new XYImageAnnotation(xy.getFirst().doubleValue(), xy.getSecond().doubleValue(), bimg, RectangleAnchor.CENTER);
-                    plot.addAnnotation(a);
-                } catch (final IOException e) {
-                    LOGGER.error("Fehler beim Hinzufügen einer ImageAnnotation", e); //$NON-NLS-1$
                 }
             }
 

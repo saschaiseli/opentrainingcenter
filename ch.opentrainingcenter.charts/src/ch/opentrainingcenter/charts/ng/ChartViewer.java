@@ -1,5 +1,8 @@
 package ch.opentrainingcenter.charts.ng;
 
+import static ch.opentrainingcenter.i18n.Messages.ChartViewer_BPM;
+import static ch.opentrainingcenter.i18n.Messages.ChartViewer_ANZAHL;
+
 import java.awt.Color;
 import java.util.HashMap;
 import java.util.List;
@@ -22,7 +25,6 @@ import ch.opentrainingcenter.core.charts.ScatterDataSupport;
 import ch.opentrainingcenter.core.helper.TimeHelper;
 import ch.opentrainingcenter.transfer.ITraining;
 
-@SuppressWarnings("nls")
 public class ChartViewer {
 
     public ChartViewer(final Composite parent, final List<ITraining> trainings) {
@@ -34,12 +36,12 @@ public class ChartViewer {
         }
         final XYDataset dataset = ScatterDatasetCreator.createDataset(all);
 
-        final NumberAxis domainAxis = new NumberAxis("[bpm]");
+        final NumberAxis domainAxis = new NumberAxis(ChartViewer_BPM);
         domainAxis.setAutoRangeIncludesZero(false);
-        final NumberAxis rangeAxis = new NumberAxis("Anzahl");
+        final NumberAxis rangeAxis = new NumberAxis(ChartViewer_ANZAHL);
         rangeAxis.setAutoRangeIncludesZero(false);
 
-        final JFreeChart chart = ChartFactory.createScatterPlot("", "[bpm]", "Anzahl", dataset, PlotOrientation.VERTICAL, true, true, false);
+        final JFreeChart chart = ChartFactory.createScatterPlot("", ChartViewer_BPM, ChartViewer_ANZAHL, dataset, PlotOrientation.VERTICAL, true, true, false); //$NON-NLS-1$ 
         final XYPlot plot = chart.getXYPlot();
         plot.setBackgroundPaint(Color.white);
         plot.setDomainGridlinePaint(Color.lightGray);

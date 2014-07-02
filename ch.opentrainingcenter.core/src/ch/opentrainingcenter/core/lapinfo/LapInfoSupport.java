@@ -8,7 +8,12 @@ import ch.opentrainingcenter.transfer.ILapInfo;
 import ch.opentrainingcenter.transfer.ITrackPointProperty;
 import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
 
-public class LapInfoSupport {
+public final class LapInfoSupport {
+
+    private LapInfoSupport() {
+
+    }
+
     /**
      * Erstellt aus einer Liste von {@link ITrackPointProperty}s eine
      * {@link ILapInfo}. Eine {@link ILapInfo} ist eine komprimierte Sicht auf

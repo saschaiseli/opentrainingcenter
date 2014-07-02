@@ -316,8 +316,9 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
 
             @Override
             public void widgetSelected(final SelectionEvent e) {
-                if (simpleTraining.getWetter().getIndex() != (comboWetter.getSelectionIndex()))
+                if (simpleTraining.getWetter().getIndex() != (comboWetter.getSelectionIndex())) {
                     safeWeather(comboWetter.getSelectionIndex());
+                }
             }
         });
         GridDataFactory.fillDefaults().grab(true, true).align(SWT.FILL, SWT.FILL).applyTo(comboWetter);

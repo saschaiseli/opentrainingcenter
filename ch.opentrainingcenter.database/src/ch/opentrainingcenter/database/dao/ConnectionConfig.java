@@ -14,6 +14,9 @@ import ch.opentrainingcenter.database.USAGE;
 @SuppressWarnings("nls")
 public class ConnectionConfig implements IConnectionConfig {
 
+    private static final String HIBERNATE_POOL_SIZE = "hibernate.pool_size";
+    private static final String HIBERNATE_FORMAT_SQL = "hibernate.format_sql";
+    private static final String HIBERNATE_SHOW_SQL = "hibernate.show_sql";
     private static final Logger LOG = Logger.getLogger(ConnectionConfig.class);
     private Session session;
     private SessionFactory sessionFactory;
@@ -31,8 +34,8 @@ public class ConnectionConfig implements IConnectionConfig {
         configuration.setProperties(config.getProperties());
         configuration.setProperty("current_session_context_class", "thread");
         configuration.setProperty("cache.provider_class", "org.hibernate.cache.NoCacheProvider");
-        configuration.setProperty("hibernate.show_sql", String.valueOf(usage.isShowSql()));
-        configuration.setProperty("hibernate.format_sql", String.valueOf(usage.isFormatSql()));
+        configuration.setProperty(HIBERNATE_SHOW_SQL, String.valueOf(usage.isShowSql()));
+        configuration.setProperty(HIBERNATE_FORMAT_SQL, String.valueOf(usage.isFormatSql()));
         configuration.setProperty("hibernate.connection.pool_size", String.valueOf(10));
         try {
             configuration.addResource("Athlete.hbm.xml", this.getClass().getClassLoader());
@@ -45,9 +48,9 @@ public class ConnectionConfig implements IConnectionConfig {
             configuration.addResource("Planungwoche.hbm.xml", this.getClass().getClassLoader());
             configuration.addResource("Route.hbm.xml", this.getClass().getClassLoader());
             configuration.addResource("LapInfo.hbm.xml", this.getClass().getClassLoader());
-            LOG.info("Hibernate Config: show_sql=" + configuration.getProperty("hibernate.show_sql"));
-            LOG.info("Hibernate Config: format_sql=" + configuration.getProperty("hibernate.format_sql"));
-            LOG.info("Hibernate Config: pool_size=" + configuration.getProperty("hibernate.pool_size"));
+            LOG.info(String.format("Hibernate Config: show_sql=%s", configuration.getProperty(HIBERNATE_SHOW_SQL)));
+            LOG.info(String.format("Hibernate Config: format_sql=%s", configuration.getProperty(HIBERNATE_FORMAT_SQL)));
+            LOG.info(String.format("Hibernate Config: pool_size=%s", configuration.getProperty(HIBERNATE_POOL_SIZE)));
             sessionFactory = configuration.buildSessionFactory();
         } catch (final MappingException e) {
             LOG.error(e);

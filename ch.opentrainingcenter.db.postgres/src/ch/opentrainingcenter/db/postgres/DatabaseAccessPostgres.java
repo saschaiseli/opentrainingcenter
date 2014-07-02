@@ -163,10 +163,10 @@ public class DatabaseAccessPostgres extends AbstractDatabaseAccess {
             LOG.info(String.format("Connection to database %s successfully", connectionUrl)); //$NON-NLS-1$
         } catch (final PSQLException plsqlEx) {
             final String sqlState = plsqlEx.getSQLState();
-            if (sqlState.equals("08001")) { //$NON-NLS-1$
+            if ("08001".equals(sqlState)) { //$NON-NLS-1$
                 LOG.info(String.format("DBSTATE.PROBLEM: %s", plsqlEx)); //$NON-NLS-1$
                 result = DatabaseConnectionState.createProblemState(Messages.DatabaseAccessPostgres_12);
-            } else if (sqlState.equals("3D000") || sqlState.equals("28P01")) { //$NON-NLS-1$//$NON-NLS-2$
+            } else if ("3D000".equals(sqlState) || "28P01".equals(sqlState)) { //$NON-NLS-1$//$NON-NLS-2$
                 LOG.info(String.format("DBSTATE.CREATE_DB: %s", plsqlEx)); //$NON-NLS-1$
                 result = DatabaseConnectionState.createState(Messages.DatabaseAccessPostgres_14, DBSTATE.CREATE_DB);
             } else {

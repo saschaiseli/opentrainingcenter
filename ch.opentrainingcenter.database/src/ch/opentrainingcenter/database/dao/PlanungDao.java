@@ -13,7 +13,10 @@ import org.hibernate.criterion.SimpleExpression;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IPlanungWoche;
 
+@SuppressWarnings("nls")
 public class PlanungDao {
+    private static final String ATHLETE = "athlete";
+
     private static final Logger LOG = Logger.getLogger(PlanungDao.class);
 
     private final IConnectionConfig dao;
@@ -24,13 +27,13 @@ public class PlanungDao {
 
     public List<IPlanungWoche> getPlanungsWoche(final IAthlete athlete, final int jahr, final int kwStart) {
 
-        LOG.info("load IPlanungWoche from: " + athlete); //$NON-NLS-1$
+        LOG.info("load IPlanungWoche from: " + athlete);
         final Session session = dao.getSession();
         dao.begin();
         final Criteria criteria = session.createCriteria(IPlanungWoche.class);
-        criteria.add(Restrictions.eq("athlete", athlete)); //$NON-NLS-1$
-        final LogicalExpression selbesJahr = Restrictions.and(Restrictions.ge("kw", kwStart), Restrictions.eq("jahr", jahr)); //$NON-NLS-1$ //$NON-NLS-2$
-        final SimpleExpression groesseresJahr = Restrictions.gt("jahr", jahr); //$NON-NLS-1$
+        criteria.add(Restrictions.eq(ATHLETE, athlete));
+        final LogicalExpression selbesJahr = Restrictions.and(Restrictions.ge("kw", kwStart), Restrictions.eq("jahr", jahr));
+        final SimpleExpression groesseresJahr = Restrictions.gt("jahr", jahr);
         final Criterion rest1 = Restrictions.or(selbesJahr, groesseresJahr);
         criteria.add(rest1);
         @SuppressWarnings("unchecked")
@@ -65,13 +68,13 @@ public class PlanungDao {
     }
 
     private IPlanungWoche getPlanung(final IAthlete athlete, final int jahr, final int kw) {
-        LOG.info("load IPlanungWoche from: " + athlete); //$NON-NLS-1$
+        LOG.info("load IPlanungWoche from: " + athlete);
         final Session session = dao.getSession();
         dao.begin();
         final Criteria criteria = session.createCriteria(IPlanungWoche.class);
-        criteria.add(Restrictions.eq("athlete", athlete)); //$NON-NLS-1$
-        criteria.add(Restrictions.eq("jahr", jahr)); //$NON-NLS-1$
-        criteria.add(Restrictions.eq("kw", kw)); //$NON-NLS-1$
+        criteria.add(Restrictions.eq(ATHLETE, athlete));
+        criteria.add(Restrictions.eq("jahr", jahr));
+        criteria.add(Restrictions.eq("kw", kw));
         IPlanungWoche result = null;
         @SuppressWarnings("unchecked")
         final List<IPlanungWoche> records = criteria.list();
@@ -84,11 +87,11 @@ public class PlanungDao {
     }
 
     public List<IPlanungWoche> getPlanungsWoche(final IAthlete athlete) {
-        LOG.info("load IPlanungWoche from: " + athlete); //$NON-NLS-1$
+        LOG.info("load IPlanungWoche from: " + athlete);
         final Session session = dao.getSession();
         dao.begin();
         final Criteria criteria = session.createCriteria(IPlanungWoche.class);
-        criteria.add(Restrictions.eq("athlete", athlete)); //$NON-NLS-1$
+        criteria.add(Restrictions.eq(ATHLETE, athlete));
         @SuppressWarnings("unchecked")
         final List<IPlanungWoche> records = criteria.list();
         dao.commit();

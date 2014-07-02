@@ -6,7 +6,12 @@ import ch.opentrainingcenter.transfer.ITrackPointProperty;
 import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
 
 @SuppressWarnings("nls")
-public class TrackPointSupport {
+public final class TrackPointSupport {
+
+    private TrackPointSupport() {
+
+    }
+
     /**
      * Jaja, das erstellt halt nur einen trackpoint.
      */

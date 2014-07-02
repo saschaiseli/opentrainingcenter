@@ -92,7 +92,6 @@ public class RouteDialog extends TitleAreaDialog {
         noteGd.grabExcessHorizontalSpace = true;
         noteGd.grabExcessVerticalSpace = true;
         noteGd.minimumHeight = 80;
-        // noteGd.minimumWidth = 400;
         noteGd.horizontalAlignment = SWT.FILL;
         noteGd.verticalAlignment = SWT.CENTER;
         beschreibung.setLayoutData(noteGd);

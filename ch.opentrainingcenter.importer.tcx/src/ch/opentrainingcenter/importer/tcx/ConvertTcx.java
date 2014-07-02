@@ -58,7 +58,7 @@ public class ConvertTcx implements IConvert2Tcx {
         LOGGER.info("ConvertTcx erfolgreich instanziert...."); //$NON-NLS-1$
         final Bundle bundle = Platform.getBundle(Activator.BUNDLE_ID);
         final Path path = new Path(RESOURCES_TCX_XSD);
-        final URL url = FileLocator.find(bundle, path, Collections.EMPTY_MAP);
+        final URL url = FileLocator.find(bundle, path, Collections.emptyMap());
         URL fileUrl = null;
         try {
             fileUrl = FileLocator.toFileURL(url);
