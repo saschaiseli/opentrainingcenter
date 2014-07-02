@@ -35,6 +35,10 @@ import com.grum.geocalc.Point;
  */
 public class CompareRoute implements ICompareRoute {
 
+    private static final String TRACK_MIN_EIN_PUNKT = "Jeder Track muss mindestens ein Punkt haben";
+
+    private static final String LINE = "------------------------------";
+
     private static final Logger LOGGER = Logger.getLogger(CompareRoute.class);
 
     private static final int DISTANZ_TOLERANZ_PROZENT = 5;
@@ -102,28 +106,28 @@ public class CompareRoute implements ICompareRoute {
     }
 
     private void logReason(final TrackPoint referencePoint, final TrackPoint firstPoint, final TrackPoint lastPoint, final Point pointOnLine, final double delta) {
-        LOGGER.info("------------------------------"); //$NON-NLS-1$
-        LOGGER.info("Distanz zum punkt: " + delta); //$NON-NLS-1$
-        LOGGER.info("Referenzpunkt: " + referencePoint); //$NON-NLS-1$
-        LOGGER.info("First: " + firstPoint); //$NON-NLS-1$
-        LOGGER.info("Last: " + lastPoint); //$NON-NLS-1$
-        LOGGER.info("Berechneter Punkt " + pointOnLine.getLongitude() + "," + pointOnLine.getLatitude()); //$NON-NLS-1$ //$NON-NLS-2$
-        LOGGER.info("------------------------------"); //$NON-NLS-1$
+        LOGGER.info(LINE);
+        LOGGER.info(String.format("Distanz zum punkt: %s", delta)); //$NON-NLS-1$
+        LOGGER.info(String.format("Referenzpunkt: %s", referencePoint)); //$NON-NLS-1$
+        LOGGER.info(String.format("First: %s", firstPoint)); //$NON-NLS-1$
+        LOGGER.info(String.format("Last: %s", lastPoint)); //$NON-NLS-1$
+        LOGGER.info(String.format("Berechneter Punkt %s,%s", pointOnLine.getLongitude(), pointOnLine.getLatitude())); //$NON-NLS-1$ 
+        LOGGER.info(LINE);
     }
 
     protected boolean isDistanceDifferenceTooBig(final Track reference, final Track track) {
         final double referenceDistance = calculateDistanz(reference);
-        LOGGER.info("Referenzdistanz: " + referenceDistance); //$NON-NLS-1$
+        LOGGER.info(String.format("Referenzdistanz: %s", referenceDistance)); //$NON-NLS-1$
         final double otherDistance = calculateDistanz(track);
-        LOGGER.info("Vergleich distanz: " + otherDistance); //$NON-NLS-1$
+        LOGGER.info(String.format("Vergleich distanz: ", otherDistance)); //$NON-NLS-1$
         return Math.abs(referenceDistance - otherDistance) > referenceDistance * ((DISTANZ_TOLERANZ_PROZENT) / 100.0);
     }
 
     private void checkParameters(final Track reference, final Track track) {
         Assertions.notNull(reference, "Referenz Track darf nicht null sein!"); //$NON-NLS-1$
-        Assertions.isValid(reference.getPoints().isEmpty(), "Jeder Track muss mindestens ein Punkt haben"); //$NON-NLS-1$
+        Assertions.isValid(reference.getPoints().isEmpty(), TRACK_MIN_EIN_PUNKT);
         Assertions.notNull(track, "Track zum Vergleichen darf nicht null sein!"); //$NON-NLS-1$
-        Assertions.isValid(track.getPoints().isEmpty(), "Jeder Track muss mindestens ein Punkt haben"); //$NON-NLS-1$
+        Assertions.isValid(track.getPoints().isEmpty(), TRACK_MIN_EIN_PUNKT);
     }
 
     private double calculateDistanz(final Track track) {

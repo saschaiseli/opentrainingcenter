@@ -20,6 +20,13 @@ import ch.opentrainingcenter.transfer.ITrainingType;
 @SuppressWarnings("nls")
 public class TrainingDao {
 
+    private static final String ATHLETE = "athlete";
+    private static final String TRAINING_TYPE = "trainingType";
+    private static final String TRACK_POINTS = "trackPoints";
+    private static final String ROUTE = "route";
+    private static final String WEATHER = "weather";
+    private static final String DATUM = "datum";
+
     private static final Logger LOG = Logger.getLogger(TrainingDao.class);
 
     private final IConnectionConfig dao;
@@ -34,14 +41,14 @@ public class TrainingDao {
 
         final Criteria criteria = session.createCriteria(ITraining.class);
 
-        criteria.setFetchMode("athlete", FetchMode.JOIN);
-        criteria.setFetchMode("trainingType", FetchMode.JOIN);
-        criteria.setFetchMode("weather", FetchMode.JOIN);
-        criteria.setFetchMode("route", FetchMode.JOIN);
-        criteria.setFetchMode("trackPoints", FetchMode.SELECT);
+        criteria.setFetchMode(ATHLETE, FetchMode.JOIN);
+        criteria.setFetchMode(TRAINING_TYPE, FetchMode.JOIN);
+        criteria.setFetchMode(WEATHER, FetchMode.JOIN);
+        criteria.setFetchMode(ROUTE, FetchMode.JOIN);
+        criteria.setFetchMode(TRACK_POINTS, FetchMode.SELECT);
 
-        criteria.add(Restrictions.eq("athlete", athlete));
-        criteria.addOrder(Order.desc("datum"));
+        criteria.add(Restrictions.eq(ATHLETE, athlete));
+        criteria.addOrder(Order.desc(DATUM));
 
         @SuppressWarnings("unchecked")
         final List<ITraining> list = criteria.list();
@@ -58,16 +65,16 @@ public class TrainingDao {
 
         final Criteria criteria = session.createCriteria(ITraining.class);
 
-        criteria.setFetchMode("athlete", FetchMode.JOIN);
-        criteria.setFetchMode("trainingType", FetchMode.JOIN);
-        criteria.setFetchMode("weather", FetchMode.JOIN);
-        criteria.setFetchMode("route", FetchMode.JOIN);
-        criteria.setFetchMode("trackPoints", FetchMode.SELECT);
+        criteria.setFetchMode(ATHLETE, FetchMode.JOIN);
+        criteria.setFetchMode(TRAINING_TYPE, FetchMode.JOIN);
+        criteria.setFetchMode(WEATHER, FetchMode.JOIN);
+        criteria.setFetchMode(ROUTE, FetchMode.JOIN);
+        criteria.setFetchMode(TRACK_POINTS, FetchMode.SELECT);
 
-        criteria.add(Restrictions.eq("athlete", athlete));
-        criteria.add(Restrictions.ge("datum", von.getMillis()));
-        criteria.add(Restrictions.le("datum", bis.getMillis()));
-        criteria.addOrder(Order.desc("datum"));
+        criteria.add(Restrictions.eq(ATHLETE, athlete));
+        criteria.add(Restrictions.ge(DATUM, von.getMillis()));
+        criteria.add(Restrictions.le(DATUM, bis.getMillis()));
+        criteria.addOrder(Order.desc(DATUM));
 
         @SuppressWarnings("unchecked")
         final List<ITraining> list = criteria.list();
@@ -84,8 +91,8 @@ public class TrainingDao {
         dao.begin();
         final Criteria criteria = session.createCriteria(ITraining.class);
 
-        criteria.add(Restrictions.eq("athlete", athlete));
-        criteria.add(Restrictions.eq("route", route));
+        criteria.add(Restrictions.eq(ATHLETE, athlete));
+        criteria.add(Restrictions.eq(ROUTE, route));
 
         @SuppressWarnings("unchecked")
         final List<ITraining> list = criteria.list();
@@ -102,7 +109,7 @@ public class TrainingDao {
         dao.begin();
 
         final Criteria criteria = session.createCriteria(ITraining.class);
-        criteria.add(Restrictions.eq("datum", dateInMilliseconds)); //$NON-NLS-1$
+        criteria.add(Restrictions.eq(DATUM, dateInMilliseconds)); //$NON-NLS-1$
 
         @SuppressWarnings("unchecked")
         final List<ITraining> all = criteria.list();
@@ -130,7 +137,7 @@ public class TrainingDao {
         final Session session = dao.getSession();
         dao.begin();
         final Query query = session.createQuery("delete Training where DATUM=:datum");
-        query.setParameter("datum", datum);
+        query.setParameter(DATUM, datum);
         query.executeUpdate();
         dao.commit();
         session.flush();
@@ -188,7 +195,7 @@ public class TrainingDao {
         if (exists != null) {
             LOG.info("Training bereits einmal importiert: --> updaten");
         } else {
-            LOG.info("Neues Training abspeichern: " + training);
+            LOG.info(String.format("Neues Training abspeichern: %s", training));
             exists = training;
         }
         final ITrainingType tt = exists.getTrainingType();

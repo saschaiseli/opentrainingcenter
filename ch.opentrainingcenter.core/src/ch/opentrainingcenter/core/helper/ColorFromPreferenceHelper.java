@@ -9,6 +9,8 @@ import org.eclipse.swt.widgets.Display;
 
 public final class ColorFromPreferenceHelper {
 
+    private static final String FARBE_NICHT_GEFUNDEN = "Farbe nicht gefunden: %s";
+    private static final String FARBE_NICHT_KONVERTIERBAR = "Farbe: '%s'  kann nicht konvertiert werden";
     private static final Logger LOGGER = Logger.getLogger(ColorFromPreferenceHelper.class);
 
     private ColorFromPreferenceHelper() {
@@ -33,11 +35,11 @@ public final class ColorFromPreferenceHelper {
         if (cBelow != null) {
             final String[] splitBelow = cBelow.split(","); //$NON-NLS-1$
             if (splitBelow.length != 3) {
-                throw new IllegalArgumentException("Farbe: '" + cBelow + "' kann nicht konvertiert werden"); //$NON-NLS-1$ //$NON-NLS-2$
+                throw new IllegalArgumentException(String.format(FARBE_NICHT_KONVERTIERBAR, cBelow));
             }
             return new Color(Integer.valueOf(splitBelow[0]), Integer.valueOf(splitBelow[1]), Integer.valueOf(splitBelow[2]), alpha);
         } else {
-            LOGGER.error("Farbe nicht gefunden: " + key); //$NON-NLS-1$
+            LOGGER.error(String.format(FARBE_NICHT_GEFUNDEN, key));
             return Color.black;
         }
     }
@@ -48,11 +50,11 @@ public final class ColorFromPreferenceHelper {
         if (cBelow != null) {
             final String[] splitBelow = cBelow.split(","); //$NON-NLS-1$
             if (splitBelow.length != 3) {
-                throw new IllegalArgumentException("Farbe: '" + cBelow + "' kann nicht konvertiert werden"); //$NON-NLS-1$ //$NON-NLS-2$
+                throw new IllegalArgumentException(String.format(FARBE_NICHT_KONVERTIERBAR, cBelow));
             }
             return new org.eclipse.swt.graphics.Color(device, Integer.valueOf(splitBelow[0]), Integer.valueOf(splitBelow[1]), Integer.valueOf(splitBelow[2]));
         } else {
-            LOGGER.error("Farbe nicht gefunden: " + key); //$NON-NLS-1$
+            LOGGER.error(String.format(FARBE_NICHT_GEFUNDEN, key));
             return new org.eclipse.swt.graphics.Color(device, 255, 255, 255);
         }
     }
