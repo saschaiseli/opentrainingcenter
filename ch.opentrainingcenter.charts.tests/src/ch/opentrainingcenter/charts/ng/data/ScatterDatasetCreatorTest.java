@@ -1,13 +1,13 @@
 package ch.opentrainingcenter.charts.ng.data;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.HashMap;
 import java.util.Map;
 
 import org.jfree.data.xy.XYDataset;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
 
 @SuppressWarnings("nls")
 public class ScatterDatasetCreatorTest {
@@ -53,7 +53,7 @@ public class ScatterDatasetCreatorTest {
         assertEquals(185, result.getXValue(1, 0), 0001);
         assertEquals(42, result.getYValue(1, 0), 0001);
 
-        assertEquals(186, result.getXValue(1, 1), 0001);
-        assertEquals(142, result.getYValue(1, 1), 0001);
+        assertEquals(186, result.getXValue(0, 1), 0001);
+        assertEquals(142, result.getYValue(0, 1), 0001);
     }
 }

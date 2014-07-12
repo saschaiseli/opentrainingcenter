@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.6"?>
-
-<target name="indigo" sequenceNumber="21">
+<?pde version="3.6"?><target name="indigo" sequenceNumber="22">
 <locations>
 <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.core.runtime.feature.feature.group" version="1.0.1.R37x_v20110907-7H7KFD5BLfQf2FwVLgjRDAoN_A9d"/>
@@ -22,6 +20,6 @@
 <environment>
 <os>linux</os>
 <ws>gtk</ws>
-<arch>x86</arch>
+<arch>x86_64</arch>
 </environment>
 </target>
