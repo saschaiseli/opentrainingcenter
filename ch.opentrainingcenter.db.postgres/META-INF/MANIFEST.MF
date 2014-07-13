@@ -13,7 +13,7 @@ Require-Bundle: org.eclipse.core.runtime,
  postgres,
  ch.opentrainingcenter.database,
  ch.opentrainingcenter.i18n
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Eclipse-RegisterBuddy: postgres, org.hibernate, logging
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: db/,
