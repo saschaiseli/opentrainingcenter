@@ -18,16 +18,15 @@ import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.database.dao.AthleteDao;
 import ch.opentrainingcenter.database.dao.CommonDao;
 import ch.opentrainingcenter.database.dao.RouteDao;
-import ch.opentrainingcenter.database.dao.TrainingTypeDao;
 import ch.opentrainingcenter.database.dao.WeatherDao;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.IStreckenPunkt;
 import ch.opentrainingcenter.transfer.ITrackPointProperty;
 import ch.opentrainingcenter.transfer.ITraining;
-import ch.opentrainingcenter.transfer.ITrainingType;
 import ch.opentrainingcenter.transfer.IWeather;
 import ch.opentrainingcenter.transfer.Sport;
+import ch.opentrainingcenter.transfer.TrainingType;
 import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
 
 @SuppressWarnings("nls")
@@ -39,7 +38,6 @@ public class DatabaseAccessTest extends DatabaseTestBase {
     private IWeather weatherB;
     private AthleteDao athleteDao;
     private RouteDao routeDao;
-    private TrainingTypeDao trainingTypeDao;
 
     @Before
     public void setUp() {
@@ -50,7 +48,6 @@ public class DatabaseAccessTest extends DatabaseTestBase {
         weatherB = weatherDao.getAllWeather().get(1);
         athleteDao = new AthleteDao(connectionConfig);
         routeDao = new RouteDao(connectionConfig);
-        trainingTypeDao = new TrainingTypeDao(connectionConfig);
         now = DateTime.now().getMillis();
     }
 
@@ -342,11 +339,10 @@ public class DatabaseAccessTest extends DatabaseTestBase {
     public void testTraining_11_updateRecord() {
         final IAthlete athleteA = CommonTransferFactory.createAthlete("testTraining_9", 222);
         athleteDao.save(athleteA);
-        final List<ITrainingType> types = trainingTypeDao.getTrainingType();
         final ITraining trainingA = CommonTransferFactory.createTraining(now, 1, 2, 3, 4, 5, "note1", weatherA, null);
 
         trainingA.setAthlete(athleteA);
-        trainingA.setTrainingType(types.get(0));
+        trainingA.setTrainingType(TrainingType.NONE);
 
         dataAccess.saveOrUpdate(trainingA);
 
@@ -354,7 +350,7 @@ public class DatabaseAccessTest extends DatabaseTestBase {
 
         assertEquals(0, result.getTrainingType().getId());
 
-        trainingA.setTrainingType(types.get(1));
+        trainingA.setTrainingType(TrainingType.EXT_INTERVALL);
 
         dataAccess.saveOrUpdate(trainingA);
 

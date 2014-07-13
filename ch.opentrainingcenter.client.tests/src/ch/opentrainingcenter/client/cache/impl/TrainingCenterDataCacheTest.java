@@ -1,5 +1,11 @@
 package ch.opentrainingcenter.client.cache.impl;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,13 +25,8 @@ import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.ITraining;
-import ch.opentrainingcenter.transfer.ITrainingType;
+import ch.opentrainingcenter.transfer.TrainingType;
 import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 @SuppressWarnings("nls")
 public class TrainingCenterDataCacheTest {
@@ -287,7 +288,7 @@ public class TrainingCenterDataCacheTest {
 
     private ITraining createImported(final Long date) {
         final ITraining overview = CommonTransferFactory.createTraining(date, 1, 1, 1, 1, 1);
-        final ITrainingType type = CommonTransferFactory.createTrainingType(1, "junit", "description");
+        final TrainingType type = TrainingType.NONE;
         overview.setTrainingType(type);
         return overview;
     }

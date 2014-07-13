@@ -1,5 +1,10 @@
 package ch.opentrainingcenter.model;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,12 +23,7 @@ import ch.opentrainingcenter.model.training.internal.SimpleTraining;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
-import ch.opentrainingcenter.transfer.ITrainingType;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import ch.opentrainingcenter.transfer.TrainingType;
 
 @SuppressWarnings("nls")
 public class ModelFactoryTest {
@@ -46,8 +46,7 @@ public class ModelFactoryTest {
         when(overview.getAverageHeartBeat()).thenReturn(avgHeart);
         when(overview.getMaxHeartBeat()).thenReturn(maxHeart);
         when(overview.getMaxSpeed()).thenReturn(maxSpeed);
-        final ITrainingType trainingType = mock(ITrainingType.class);
-        when(trainingType.getId()).thenReturn(0);
+        final TrainingType trainingType = TrainingType.NONE;
         when(overview.getTrainingType()).thenReturn(trainingType);
         final IRoute route = mock(IRoute.class);
         athlete = mock(IAthlete.class);

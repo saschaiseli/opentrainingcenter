@@ -6,7 +6,7 @@ import ch.opentrainingcenter.model.planing.IPastPlanung;
 import ch.opentrainingcenter.model.planing.PlanungStatus;
 import ch.opentrainingcenter.transfer.IPlanungWoche;
 import ch.opentrainingcenter.transfer.ITraining;
-import ch.opentrainingcenter.transfer.ITrainingType;
+import ch.opentrainingcenter.transfer.TrainingType;
 
 public class PastPlanungImpl implements IPastPlanung {
 
@@ -45,7 +45,7 @@ public class PastPlanungImpl implements IPastPlanung {
                 longest = (int) kmTotal;
             }
             km += kmTotal;
-            final ITrainingType type = record.getTrainingType();
+            final TrainingType type = record.getTrainingType();
             if (isInterval(type.getId())) {
                 inter = true;
             }

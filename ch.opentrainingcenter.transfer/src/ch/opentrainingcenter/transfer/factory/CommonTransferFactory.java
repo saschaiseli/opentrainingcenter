@@ -13,7 +13,6 @@ import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.IStreckenPunkt;
 import ch.opentrainingcenter.transfer.ITrackPointProperty;
 import ch.opentrainingcenter.transfer.ITraining;
-import ch.opentrainingcenter.transfer.ITrainingType;
 import ch.opentrainingcenter.transfer.IWeather;
 import ch.opentrainingcenter.transfer.impl.Athlete;
 import ch.opentrainingcenter.transfer.impl.Health;
@@ -23,7 +22,6 @@ import ch.opentrainingcenter.transfer.impl.Route;
 import ch.opentrainingcenter.transfer.impl.Streckenpunkte;
 import ch.opentrainingcenter.transfer.impl.Tracktrainingproperty;
 import ch.opentrainingcenter.transfer.impl.Training;
-import ch.opentrainingcenter.transfer.impl.Trainingtype;
 import ch.opentrainingcenter.transfer.impl.Weather;
 
 public final class CommonTransferFactory {
@@ -38,10 +36,6 @@ public final class CommonTransferFactory {
 
     public static IAthlete createAthlete(final String name, final Date birthday, final Integer maxHeartBeat) {
         return new Athlete(name, birthday, maxHeartBeat);
-    }
-
-    public static ITrainingType createTrainingType(final int id, final String title, final String description) {
-        return new Trainingtype(id, title, description);
     }
 
     public static IWeather createDefaultWeather() {

@@ -107,9 +107,10 @@ CREATE TABLE TRAINING
 	UPMETER INTEGER,
 	DOWNMETER INTEGER,
 	ID_FK_WEATHER INTEGER, 
-	ID_FK_TRAININGTYPE INTEGER, 
 	ID_FK_ROUTE INTEGER,
 	ID_FK_ATHLETE INTEGER,
+    TRAININGTYPE INTEGER,
+	SPORT INTEGER,
 	PRIMARY KEY (ID_TRAINING)
 );
 
@@ -119,7 +120,6 @@ ALTER TABLE HEALTH ADD FOREIGN KEY (ID_FK_ATHLETE) REFERENCES ATHLETE (ID);
 ALTER TABLE TRAINING ADD FOREIGN KEY (ID_FK_WEATHER) REFERENCES WEATHER (ID);
 ALTER TABLE TRAINING ADD FOREIGN KEY (ID_FK_ATHLETE) REFERENCES ATHLETE (ID);
 ALTER TABLE TRAINING ADD FOREIGN KEY (ID_FK_ROUTE) REFERENCES ROUTE (ID) ON DELETE SET NULL;
-ALTER TABLE TRAINING ADD FOREIGN KEY (ID_FK_TRAININGTYPE) REFERENCES TRAININGTYPE (ID); 
 ALTER TABLE TRACKTRAININGPROPERTY ADD FOREIGN KEY(ID_FK_STRECKENPUNKT) REFERENCES STRECKENPUNKTE(ID);
 ALTER TABLE PLANUNGWOCHE ADD FOREIGN KEY (ID_FK_ATHLETE) REFERENCES ATHLETE (ID);
 ALTER TABLE ROUTE ADD FOREIGN KEY (ID_FK_ATHLETE) REFERENCES ATHLETE (ID);
@@ -139,13 +139,6 @@ CREATE sequence LAPINFO_ID_SEQUENCE;
 
 INSERT INTO ATHLETE (ID,NAME,BIRTHDAY,MAXHEARTRATE) values(0,'Sascha',TO_DATE('1974-08-29','yyyy-mm-dd'), 200);
 INSERT INTO ROUTE (ID,ID_FK_ATHLETE,NAME,BESCHREIBUNG) values(0,0,'Unbekannt','');
-
-INSERT INTO TRAININGTYPE (ID,TITLE,DESCRIPTION, IMAGEICON) values(0,'NONE','Unbekannter Typ','icons/man_u_32_32.png');
-INSERT INTO TRAININGTYPE (ID,TITLE,DESCRIPTION, IMAGEICON) values(1,'EXT_INTERVALL','Gleich wie intensives Intervalltraining. Der Unterschied liegt in der Länge der Intervalle und der damit verbundenen geringeren Laufgeschwindigkeit. Beispiel: 5 Minuten schnell, 2 Minuten Trabpause, 5 Minuten schnell etc. Extensive Intervalle werden bereits schon in der Aufbauetappe des Jahresplanes integriert.','icons/man_ei_32_32.png');
-INSERT INTO TRAININGTYPE (ID,TITLE,DESCRIPTION, IMAGEICON) values(2,'INT_INTERVALL','Intervalltrainings werden in Serien gelaufen. Zum Beispiel: 6 x 200 m schnell, jeweils 2 Minuten Trabpause. Intervall bedeutet Pause. Der Kreislauf wird belastet, anschliessend erhält er Zeit, sich zum Teil wieder zu erholen. Dann folgt der nächste Intervall. Intensive Intervalltrainings werden meist in der Wettkampfvorbereitung durchgeführt.','icons/man_ii_32_32.png');
-INSERT INTO TRAININGTYPE (ID,TITLE,DESCRIPTION, IMAGEICON) values(3,'LONG_JOG','Langer Dauerlauf 70-75% maximalen Herzfrequenz.','icons/man_lj_32_32.png');
-INSERT INTO TRAININGTYPE (ID,TITLE,DESCRIPTION, IMAGEICON) values(4,'POWER_LONG_JOG','letztes drittel 80-85% der maximalen Herzfrequenz, die ersten zwei drittel wie {@link RunType#LONG_JOG}','icons/man_plj_32_32.png');
-INSERT INTO TRAININGTYPE (ID,TITLE,DESCRIPTION, IMAGEICON) values(5,'TEMPO_JOG','UNBEKANNT','icons/man_tj_32_32.png');
 
 INSERT INTO WEATHER (ID,WETTER, IMAGEICON) values(0,'SONNE','icons/man_u_32_32.png');
 INSERT INTO WEATHER (ID,WETTER, IMAGEICON) values(1,'LEICHT_BEWOELCKT','icons/man_u_32_32.png');

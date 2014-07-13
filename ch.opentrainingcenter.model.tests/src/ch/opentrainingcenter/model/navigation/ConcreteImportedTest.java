@@ -1,24 +1,23 @@
 package ch.opentrainingcenter.model.navigation;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import org.joda.time.DateTimeZone;
 import org.junit.Before;
 import org.junit.Test;
 
 import ch.opentrainingcenter.transfer.ITraining;
-import ch.opentrainingcenter.transfer.ITrainingType;
 import ch.opentrainingcenter.transfer.Sport;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import ch.opentrainingcenter.transfer.TrainingType;
 
 @SuppressWarnings("nls")
 public class ConcreteImportedTest {
@@ -52,16 +51,14 @@ public class ConcreteImportedTest {
         cal.set(2012, 0, 4, 13, 22, 59);
 
         final ITraining training = mock(ITraining.class);
-        final ITrainingType trainingType = mock(ITrainingType.class);
+        final TrainingType trainingType = TrainingType.NONE;
 
-        final String value = "imageIcon";
-        when(trainingType.getImageicon()).thenReturn(value);
         when(training.getSport()).thenReturn(Sport.RUNNING);
         when(training.getTrainingType()).thenReturn(trainingType);
 
         final ConcreteImported imp = new ConcreteImported(training);
 
-        assertEquals(value, imp.getImage());
+        assertEquals(TrainingType.NONE.getImage(), imp.getImage());
     }
 
     @Test
@@ -70,10 +67,8 @@ public class ConcreteImportedTest {
         cal.set(2012, 0, 4, 13, 22, 59);
 
         final ITraining training = mock(ITraining.class);
-        final ITrainingType trainingType = mock(ITrainingType.class);
+        final TrainingType trainingType = TrainingType.NONE;
 
-        final String value = "imageIcon";
-        when(trainingType.getImageicon()).thenReturn(value);
         when(training.getTrainingType()).thenReturn(trainingType);
         when(training.getSport()).thenReturn(Sport.BIKING);
 

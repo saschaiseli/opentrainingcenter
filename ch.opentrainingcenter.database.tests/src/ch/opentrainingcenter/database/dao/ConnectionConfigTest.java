@@ -1,5 +1,13 @@
 package ch.opentrainingcenter.database.dao;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
+
 import java.util.Properties;
 
 import org.hibernate.SessionFactory;
@@ -12,14 +20,6 @@ import org.junit.Test;
 import ch.opentrainingcenter.core.db.DatabaseConnectionConfiguration;
 import ch.opentrainingcenter.core.db.DbConnection;
 import ch.opentrainingcenter.database.USAGE;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.anyString;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
 
 @SuppressWarnings("nls")
 public class ConnectionConfigTest {
@@ -55,7 +55,6 @@ public class ConnectionConfigTest {
         verify(hibernateCfg, times(1)).addResource("Health.hbm.xml", this.getClass().getClassLoader());
         verify(hibernateCfg, times(1)).addResource("Weather.hbm.xml", this.getClass().getClassLoader());
         verify(hibernateCfg, times(1)).addResource("Training.hbm.xml", this.getClass().getClassLoader());
-        verify(hibernateCfg, times(1)).addResource("Trainingtype.hbm.xml", this.getClass().getClassLoader());
         verify(hibernateCfg, times(1)).addResource("Tracktrainingproperty.hbm.xml", this.getClass().getClassLoader());
         verify(hibernateCfg, times(1)).addResource("Streckenpunkte.hbm.xml", this.getClass().getClassLoader());
         verify(hibernateCfg, times(1)).addResource("Planungwoche.hbm.xml", this.getClass().getClassLoader());

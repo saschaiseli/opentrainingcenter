@@ -74,10 +74,6 @@ public interface ITraining {
 
     void setLapInfos(final List<ILapInfo> lapInfos);
 
-    ITrainingType getTrainingType();
-
-    void setTrainingType(ITrainingType type);
-
     /**
      * Inkrementierte Meter die der Lauf nach oben geht.
      */
@@ -101,4 +97,8 @@ public interface ITraining {
     Sport getSport();
 
     void setSport(Sport sport);
+
+    TrainingType getTrainingType();
+
+    void setTrainingType(TrainingType trainingType);
 }

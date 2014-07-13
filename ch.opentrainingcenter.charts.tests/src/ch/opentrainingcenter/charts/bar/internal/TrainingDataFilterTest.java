@@ -1,5 +1,10 @@
 package ch.opentrainingcenter.charts.bar.internal;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -10,7 +15,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Matchers;
 
-import ch.opentrainingcenter.charts.bar.internal.TrainingDataFilter;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.helper.RunType;
 import ch.opentrainingcenter.core.helper.TimeHelper;
@@ -19,13 +23,8 @@ import ch.opentrainingcenter.model.training.ISimpleTraining;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
-import ch.opentrainingcenter.transfer.ITrainingType;
+import ch.opentrainingcenter.transfer.TrainingType;
 import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 @SuppressWarnings("nls")
 public class TrainingDataFilterTest {
@@ -82,8 +81,7 @@ public class TrainingDataFilterTest {
         final List<ITraining> values = new ArrayList<ITraining>();
         final ITraining mockA = mock(ITraining.class);
         final ITraining training = mock(ITraining.class);
-        final ITrainingType type = mock(ITrainingType.class);
-        when(type.getId()).thenReturn(RunType.NONE.getIndex());
+        final TrainingType type = TrainingType.NONE;
         when(mockA.getTrainingType()).thenReturn(type);
         when(mockA.getAthlete()).thenReturn(athlete);
         values.add(mockA);
@@ -115,8 +113,7 @@ public class TrainingDataFilterTest {
         final List<ITraining> values = new ArrayList<ITraining>();
         final ITraining mockA = mock(ITraining.class);
         final ITraining training = mock(ITraining.class);
-        final ITrainingType type = mock(ITrainingType.class);
-        when(type.getId()).thenReturn(RunType.EXT_INTERVALL.getIndex());
+        final TrainingType type = TrainingType.EXT_INTERVALL;
         when(mockA.getTrainingType()).thenReturn(type);
         when(mockA.getAthlete()).thenReturn(athlete);
 
@@ -141,8 +138,7 @@ public class TrainingDataFilterTest {
         final List<ITraining> values = new ArrayList<ITraining>();
         final ITraining mockA = mock(ITraining.class);
         final ITraining training = mock(ITraining.class);
-        final ITrainingType type = mock(ITrainingType.class);
-        when(type.getId()).thenReturn(RunType.INT_INTERVALL.getIndex());
+        final TrainingType type = TrainingType.INT_INTERVALL;
         when(mockA.getTrainingType()).thenReturn(type);
         when(mockA.getAthlete()).thenReturn(athlete);
 
@@ -169,8 +165,7 @@ public class TrainingDataFilterTest {
         final List<ITraining> values = new ArrayList<ITraining>();
         final ITraining mockA = mock(ITraining.class);
         final ITraining training = mock(ITraining.class);
-        final ITrainingType type = mock(ITrainingType.class);
-        when(type.getId()).thenReturn(RunType.LONG_JOG.getIndex());
+        final TrainingType type = TrainingType.LONG_JOG;
         when(mockA.getTrainingType()).thenReturn(type);
         when(mockA.getAthlete()).thenReturn(athlete);
 
@@ -195,8 +190,7 @@ public class TrainingDataFilterTest {
         final List<ITraining> values = new ArrayList<ITraining>();
         final ITraining mockA = mock(ITraining.class);
         final ITraining training = mock(ITraining.class);
-        final ITrainingType type = mock(ITrainingType.class);
-        when(type.getId()).thenReturn(RunType.POWER_LONG_JOG.getIndex());
+        final TrainingType type = TrainingType.POWER_LONG_JOG;
         when(mockA.getTrainingType()).thenReturn(type);
         when(mockA.getAthlete()).thenReturn(athlete);
 
@@ -221,8 +215,7 @@ public class TrainingDataFilterTest {
         final List<ITraining> values = new ArrayList<ITraining>();
         final ITraining mockA = mock(ITraining.class);
         final ITraining training = mock(ITraining.class);
-        final ITrainingType type = mock(ITrainingType.class);
-        when(type.getId()).thenReturn(RunType.TEMPO_JOG.getIndex());
+        final TrainingType type = TrainingType.TEMPO_JOG;
         when(mockA.getTrainingType()).thenReturn(type);
         when(mockA.getAthlete()).thenReturn(athlete);
 
@@ -253,8 +246,7 @@ public class TrainingDataFilterTest {
         final List<ITraining> values = new ArrayList<ITraining>();
         final ITraining mockA = mock(ITraining.class);
         final ITraining training = mock(ITraining.class);
-        final ITrainingType type = mock(ITrainingType.class);
-        when(type.getId()).thenReturn(RunType.LONG_JOG.getIndex());
+        final TrainingType type = TrainingType.LONG_JOG;
         when(mockA.getTrainingType()).thenReturn(type);
         when(mockA.getAthlete()).thenReturn(athlete);
 
@@ -301,8 +293,7 @@ public class TrainingDataFilterTest {
         when(training.getLaengeInMeter()).thenReturn(1042.0);
         when(training.getAthlete()).thenReturn(athlete);
 
-        final ITrainingType type = mock(ITrainingType.class);
-        when(type.getId()).thenReturn(RunType.LONG_JOG.getIndex());
+        final TrainingType type = TrainingType.LONG_JOG;
         when(training.getTrainingType()).thenReturn(type);
         when(training.getDatum()).thenReturn(date.getTime());
         values.add(training);

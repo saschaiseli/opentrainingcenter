@@ -10,9 +10,9 @@ import ch.opentrainingcenter.transfer.ILapInfo;
 import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITrackPointProperty;
 import ch.opentrainingcenter.transfer.ITraining;
-import ch.opentrainingcenter.transfer.ITrainingType;
 import ch.opentrainingcenter.transfer.IWeather;
 import ch.opentrainingcenter.transfer.Sport;
+import ch.opentrainingcenter.transfer.TrainingType;
 
 // Generated 04.04.2013 20:38:06 by Hibernate Tools 3.4.0.CR1
 
@@ -33,7 +33,6 @@ public class Training implements java.io.Serializable, ITraining {
 
     private String note;
     private IAthlete athlete;
-    private ITrainingType trainingType;
     private IRoute route;
     private IWeather weather;
 
@@ -44,6 +43,7 @@ public class Training implements java.io.Serializable, ITraining {
     private Integer downMeter;
     private List<ILapInfo> lapInfos = new ArrayList<>();
     private Sport sport;
+    private TrainingType trainingType;
 
     public Training() {
     }
@@ -72,12 +72,12 @@ public class Training implements java.io.Serializable, ITraining {
     }
 
     @Override
-    public ITrainingType getTrainingType() {
+    public TrainingType getTrainingType() {
         return this.trainingType;
     }
 
     @Override
-    public void setTrainingType(final ITrainingType trainingType) {
+    public void setTrainingType(final TrainingType trainingType) {
         this.trainingType = trainingType;
     }
 
@@ -255,7 +255,7 @@ public class Training implements java.io.Serializable, ITraining {
     }
 
     @Override
-    public void setSport(Sport sport) {
+    public void setSport(final Sport sport) {
         this.sport = sport;
     }
 }

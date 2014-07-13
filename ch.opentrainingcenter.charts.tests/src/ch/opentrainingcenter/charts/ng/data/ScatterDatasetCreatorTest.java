@@ -5,7 +5,10 @@ import static org.junit.Assert.assertEquals;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.jfree.data.xy.XYDataItem;
 import org.jfree.data.xy.XYDataset;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -38,22 +41,30 @@ public class ScatterDatasetCreatorTest {
         valueA.put(185, 42);
 
         final Map<Integer, Integer> valueB = new HashMap<>();
-        valueB.put(185, 42);
-        valueB.put(186, 142);
+        valueB.put(186, 43);
+        valueB.put(187, 44);
 
-        all.put("testA", valueA);
-        all.put("testB", valueB);
+        final String keyA = "testA";
+        final String keyB = "testB";
+        all.put(keyA, valueA);
+        all.put(keyB, valueB);
 
-        final XYDataset result = ScatterDatasetCreator.createDataset(all);
-
+        final XYSeriesCollection result = (XYSeriesCollection) ScatterDatasetCreator.createDataset(all);
         assertEquals(2, result.getSeriesCount());
-        assertEquals(185, result.getXValue(0, 0), 0001);
-        assertEquals(42, result.getYValue(0, 0), 0001);
 
-        assertEquals(185, result.getXValue(1, 0), 0001);
-        assertEquals(42, result.getYValue(1, 0), 0001);
+        final XYSeries serieA = result.getSeries(keyA);
+        final XYDataItem dataItemA = serieA.getDataItem(0);
+        assertEquals(185.0, dataItemA.getX());
+        assertEquals(42.0, dataItemA.getY());
 
-        assertEquals(186, result.getXValue(0, 1), 0001);
-        assertEquals(142, result.getYValue(0, 1), 0001);
+        final XYSeries serieB = result.getSeries(keyB);
+        final XYDataItem dataItemB0 = serieB.getDataItem(0);
+
+        assertEquals(186.0, dataItemB0.getX());
+        assertEquals(43.0, dataItemB0.getY());
+
+        final XYDataItem dataItemB1 = serieB.getDataItem(1);
+        assertEquals(187.0, dataItemB1.getX());
+        assertEquals(44.0, dataItemB1.getY());
     }
 }

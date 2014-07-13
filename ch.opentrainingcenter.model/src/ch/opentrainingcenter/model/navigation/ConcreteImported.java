@@ -35,7 +35,7 @@ public class ConcreteImported extends ImportedDecorator implements INavigationIt
         if (Sport.BIKING.equals(training.getSport())) {
             return training.getSport().getImageIcon();
         } else {
-            return training.getTrainingType().getImageicon();
+            return training.getTrainingType().getImage();
         }
     }
 

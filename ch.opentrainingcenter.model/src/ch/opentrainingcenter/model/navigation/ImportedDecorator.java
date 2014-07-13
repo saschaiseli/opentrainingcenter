@@ -3,7 +3,7 @@ package ch.opentrainingcenter.model.navigation;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
-import ch.opentrainingcenter.transfer.ITrainingType;
+import ch.opentrainingcenter.transfer.TrainingType;
 
 public abstract class ImportedDecorator implements ITraining {
 
@@ -24,12 +24,12 @@ public abstract class ImportedDecorator implements ITraining {
     }
 
     @Override
-    public ITrainingType getTrainingType() {
+    public TrainingType getTrainingType() {
         return training.getTrainingType();
     }
 
     @Override
-    public void setTrainingType(final ITrainingType type) {
+    public void setTrainingType(final TrainingType type) {
         training.setTrainingType(type);
     }
 

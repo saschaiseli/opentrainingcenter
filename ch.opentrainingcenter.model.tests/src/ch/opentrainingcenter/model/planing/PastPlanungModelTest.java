@@ -1,5 +1,8 @@
 package ch.opentrainingcenter.model.planing;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -15,9 +18,7 @@ import ch.opentrainingcenter.model.planing.internal.PastPlanungModel;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IPlanungWoche;
 import ch.opentrainingcenter.transfer.ITraining;
-import ch.opentrainingcenter.transfer.ITrainingType;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import ch.opentrainingcenter.transfer.TrainingType;
 
 @SuppressWarnings("nls")
 public class PastPlanungModelTest {
@@ -326,8 +327,7 @@ public class PastPlanungModelTest {
         Mockito.when(rec.getDatum()).thenReturn(date.getTime());
         Mockito.when(rec.getLaengeInMeter()).thenReturn(distanzInMeter);
 
-        final ITrainingType type = Mockito.mock(ITrainingType.class);
-        Mockito.when(type.getId()).thenReturn(runType.getIndex());
+        final TrainingType type = TrainingType.getById(runType.getIndex());
         Mockito.when(rec.getTrainingType()).thenReturn(type);
         return rec;
     }

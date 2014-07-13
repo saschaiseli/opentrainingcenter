@@ -15,13 +15,12 @@ import org.joda.time.DateTime;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
-import ch.opentrainingcenter.transfer.ITrainingType;
+import ch.opentrainingcenter.transfer.TrainingType;
 
 @SuppressWarnings("nls")
 public class TrainingDao {
 
     private static final String ATHLETE = "athlete";
-    private static final String TRAINING_TYPE = "trainingType";
     private static final String TRACK_POINTS = "trackPoints";
     private static final String ROUTE = "route";
     private static final String WEATHER = "weather";
@@ -42,7 +41,6 @@ public class TrainingDao {
         final Criteria criteria = session.createCriteria(ITraining.class);
 
         criteria.setFetchMode(ATHLETE, FetchMode.JOIN);
-        criteria.setFetchMode(TRAINING_TYPE, FetchMode.JOIN);
         criteria.setFetchMode(WEATHER, FetchMode.JOIN);
         criteria.setFetchMode(ROUTE, FetchMode.JOIN);
         criteria.setFetchMode(TRACK_POINTS, FetchMode.SELECT);
@@ -66,7 +64,6 @@ public class TrainingDao {
         final Criteria criteria = session.createCriteria(ITraining.class);
 
         criteria.setFetchMode(ATHLETE, FetchMode.JOIN);
-        criteria.setFetchMode(TRAINING_TYPE, FetchMode.JOIN);
         criteria.setFetchMode(WEATHER, FetchMode.JOIN);
         criteria.setFetchMode(ROUTE, FetchMode.JOIN);
         criteria.setFetchMode(TRACK_POINTS, FetchMode.SELECT);
@@ -109,7 +106,7 @@ public class TrainingDao {
         dao.begin();
 
         final Criteria criteria = session.createCriteria(ITraining.class);
-        criteria.add(Restrictions.eq(DATUM, dateInMilliseconds)); //$NON-NLS-1$
+        criteria.add(Restrictions.eq(DATUM, dateInMilliseconds));
 
         @SuppressWarnings("unchecked")
         final List<ITraining> all = criteria.list();
@@ -144,33 +141,12 @@ public class TrainingDao {
     }
 
     public void updateTrainingType(final ITraining record, final int index) {
-        record.setTrainingType(getTrainingType(index));
+        record.setTrainingType(TrainingType.getById(index));
         final Session session = dao.getSession();
         final Transaction tx = session.beginTransaction();
         session.update(record);
         tx.commit();
         session.flush();
-    }
-
-    private ITrainingType getTrainingType(final int index) {
-        LOG.info("load ITrainingType");
-        final Session session = dao.getSession();
-        dao.begin();
-        final Criteria criteria = session.createCriteria(ITrainingType.class);
-        criteria.add(Restrictions.eq("id", index));
-        ITrainingType type = null;
-        @SuppressWarnings("unchecked")
-        final List<ITrainingType> records = criteria.list();
-        if (notEmpty(records)) {
-            type = records.get(0);
-        }
-        dao.commit();
-        session.flush();
-        return type;
-    }
-
-    private boolean notEmpty(final List<?> records) {
-        return records != null && !records.isEmpty();
     }
 
     public void updateTrainingRoute(final ITraining record, final int idRoute) {
@@ -198,9 +174,9 @@ public class TrainingDao {
             LOG.info(String.format("Neues Training abspeichern: %s", training));
             exists = training;
         }
-        final ITrainingType tt = exists.getTrainingType();
+        final TrainingType tt = exists.getTrainingType();
         if (tt != null) {
-            exists.setTrainingType(getTrainingType(tt.getId()));
+            exists.setTrainingType(TrainingType.getById(tt.getId()));
         }
         final Session session = dao.getSession();
         dao.begin();

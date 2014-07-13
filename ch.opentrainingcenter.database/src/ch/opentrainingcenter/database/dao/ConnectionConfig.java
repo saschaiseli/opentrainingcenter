@@ -42,7 +42,6 @@ public class ConnectionConfig implements IConnectionConfig {
             configuration.addResource("Health.hbm.xml", this.getClass().getClassLoader());
             configuration.addResource("Weather.hbm.xml", this.getClass().getClassLoader());
             configuration.addResource("Training.hbm.xml", this.getClass().getClassLoader());
-            configuration.addResource("Trainingtype.hbm.xml", this.getClass().getClassLoader());
             configuration.addResource("Tracktrainingproperty.hbm.xml", this.getClass().getClassLoader());
             configuration.addResource("Streckenpunkte.hbm.xml", this.getClass().getClassLoader());
             configuration.addResource("Planungwoche.hbm.xml", this.getClass().getClassLoader());

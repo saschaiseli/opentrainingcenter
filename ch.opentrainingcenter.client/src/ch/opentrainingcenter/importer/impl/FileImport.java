@@ -22,8 +22,7 @@ import ch.opentrainingcenter.model.strecke.StreckeModel;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
-import ch.opentrainingcenter.transfer.ITrainingType;
-import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
+import ch.opentrainingcenter.transfer.TrainingType;
 
 public class FileImport implements IFileImport {
 
@@ -91,7 +90,7 @@ public class FileImport implements IFileImport {
                 training.setRoute(strecke);
             }
             final RunType typ = model.getTyp();
-            final ITrainingType tt = CommonTransferFactory.createTrainingType(typ.getIndex(), typ.getTitle(), typ.getTitle());
+            final TrainingType tt = TrainingType.getById(typ.getIndex());
             training.setTrainingType(tt);
             LOGGER.info(Messages.FileImport_3);
             final long start = DateTime.now().getMillis();

@@ -1,5 +1,10 @@
 package ch.opentrainingcenter.db.internal;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.List;
 
 import org.joda.time.DateTime;
@@ -14,11 +19,8 @@ import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.IWeather;
+import ch.opentrainingcenter.transfer.TrainingType;
 import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 @SuppressWarnings("nls")
 public class RouteDaoTest extends DatabaseTestBase {
@@ -50,7 +52,7 @@ public class RouteDaoTest extends DatabaseTestBase {
 
         training = CommonTransferFactory.createTraining(now, 1, 2, 3, 4, 5, "note", weatherA, null);
         training.setAthlete(athlete);
-
+        training.setTrainingType(TrainingType.NONE);
         access = new CommonDao(connectionConfig);
 
         access.saveOrUpdate(training);

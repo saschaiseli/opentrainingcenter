@@ -22,12 +22,6 @@
 			<column name="ID_FK_ROUTE" />
 		</many-to-one>
 		
-		<many-to-one name="trainingType"
-			class="ch.opentrainingcenter.transfer.impl.Trainingtype" fetch="join"
-			update="true">
-			<column name="ID_FK_TRAININGTYPE" />
-		</many-to-one>
-		
 		<many-to-one name="weather"
 			class="ch.opentrainingcenter.transfer.impl.Weather" fetch="join"
 			update="true">
@@ -80,6 +74,11 @@
 		<property name="sport">
 			<type name="org.hibernate.type.EnumType">
 				<param name="enumClass">ch.opentrainingcenter.transfer.Sport</param> 
+			</type>
+		</property>
+		<property name="trainingType">
+			<type name="org.hibernate.type.EnumType">
+				<param name="enumClass">ch.opentrainingcenter.transfer.TrainingType</param> 
 			</type>
 		</property>
 	</class>

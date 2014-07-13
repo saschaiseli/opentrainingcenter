@@ -2,6 +2,7 @@ package ch.opentrainingcenter.charts.ng.data;
 
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
@@ -12,6 +13,8 @@ import org.jfree.data.xy.XYSeriesCollection;
  * 
  */
 public final class ScatterDatasetCreator {
+
+    private static final Logger LOGGER = Logger.getLogger(ScatterDatasetCreator.class);
 
     private ScatterDatasetCreator() {
 
@@ -34,6 +37,7 @@ public final class ScatterDatasetCreator {
             for (final Map.Entry<Integer, Integer> entry : singleRun.getValue().entrySet()) {
                 final double x = entry.getKey();
                 final double y = entry.getValue();
+                LOGGER.debug(String.format("x: %s y: %s", x, y)); //$NON-NLS-1$
                 series.add(x, y);
             }
             xySeriesCollection.addSeries(series);

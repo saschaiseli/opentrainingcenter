@@ -1,5 +1,11 @@
 package ch.opentrainingcenter.db.postgres;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -11,7 +17,6 @@ import org.junit.Test;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.database.dao.AthleteDao;
 import ch.opentrainingcenter.database.dao.RouteDao;
-import ch.opentrainingcenter.database.dao.TrainingTypeDao;
 import ch.opentrainingcenter.database.dao.WeatherDao;
 import ch.opentrainingcenter.db.DatabaseAccess;
 import ch.opentrainingcenter.transfer.IAthlete;
@@ -19,14 +24,9 @@ import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.IStreckenPunkt;
 import ch.opentrainingcenter.transfer.ITrackPointProperty;
 import ch.opentrainingcenter.transfer.ITraining;
-import ch.opentrainingcenter.transfer.ITrainingType;
 import ch.opentrainingcenter.transfer.IWeather;
+import ch.opentrainingcenter.transfer.TrainingType;
 import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 @SuppressWarnings("nls")
 public class DatabaseAccessTest extends PostgresDatabaseTestBase {
@@ -37,7 +37,6 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
     private IWeather weatherB;
     private AthleteDao athleteDao;
     private RouteDao routeDao;
-    private TrainingTypeDao trainingTypeDao;
     private IDatabaseAccess dataAccess;
 
     @Before
@@ -49,7 +48,6 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
         weatherB = weatherDao.getAllWeather().get(1);
         athleteDao = new AthleteDao(connectionConfig);
         routeDao = new RouteDao(connectionConfig);
-        trainingTypeDao = new TrainingTypeDao(connectionConfig);
         now = DateTime.now().getMillis();
     }
 
@@ -339,11 +337,10 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
     public void testTraining_11_updateRecord() {
         final IAthlete athleteA = CommonTransferFactory.createAthlete("testTraining_9", 222);
         athleteDao.save(athleteA);
-        final List<ITrainingType> types = trainingTypeDao.getTrainingType();
         final ITraining trainingA = CommonTransferFactory.createTraining(now, 1, 2, 3, 4, 5, "note1", weatherA, null);
 
         trainingA.setAthlete(athleteA);
-        trainingA.setTrainingType(types.get(0));
+        trainingA.setTrainingType(TrainingType.NONE);
 
         dataAccess.saveOrUpdate(trainingA);
 
@@ -351,7 +348,7 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
 
         assertEquals(0, result.getTrainingType().getId());
 
-        trainingA.setTrainingType(types.get(1));
+        trainingA.setTrainingType(TrainingType.getById(1));
 
         dataAccess.saveOrUpdate(trainingA);
 
