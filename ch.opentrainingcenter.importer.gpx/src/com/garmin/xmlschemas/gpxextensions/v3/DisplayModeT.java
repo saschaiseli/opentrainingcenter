@@ -5,19 +5,21 @@
 // Generated on: 2013.11.26 at 11:38:59 AM CET 
 //
 
-
 package com.garmin.xmlschemas.gpxextensions.v3;
 
 import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for DisplayMode_t.
- * 
- * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
+ * Java class for DisplayMode_t.
+ * 
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
+ * <p>
+ * 
  * <pre>
  * &lt;simpleType name="DisplayMode_t">
  *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}token">
@@ -31,17 +33,16 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlType(name = "DisplayMode_t")
 @XmlEnum
+@SuppressWarnings("nls")
 public enum DisplayModeT {
 
     @XmlEnumValue("SymbolOnly")
-    SYMBOL_ONLY("SymbolOnly"),
-    @XmlEnumValue("SymbolAndName")
-    SYMBOL_AND_NAME("SymbolAndName"),
-    @XmlEnumValue("SymbolAndDescription")
+    SYMBOL_ONLY("SymbolOnly"), @XmlEnumValue("SymbolAndName")
+    SYMBOL_AND_NAME("SymbolAndName"), @XmlEnumValue("SymbolAndDescription")
     SYMBOL_AND_DESCRIPTION("SymbolAndDescription");
     private final String value;
 
-    DisplayModeT(String v) {
+    DisplayModeT(final String v) {
         value = v;
     }
 
@@ -49,8 +50,8 @@ public enum DisplayModeT {
         return value;
     }
 
-    public static DisplayModeT fromValue(String v) {
-        for (DisplayModeT c: DisplayModeT.values()) {
+    public static DisplayModeT fromValue(final String v) {
+        for (final DisplayModeT c : DisplayModeT.values()) {
             if (c.value.equals(v)) {
                 return c;
             }

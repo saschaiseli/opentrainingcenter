@@ -26,7 +26,7 @@ import ch.opentrainingcenter.database.dao.IConnectionConfig;
 import ch.opentrainingcenter.i18n.Messages;
 
 public class DatabaseAccessPostgres extends AbstractDatabaseAccess {
-    private static final String COUNT = "count";
+    private static final String COUNT = "count"; //$NON-NLS-1$
     private static final Logger LOG = Logger.getLogger(DatabaseAccessPostgres.class);
     private static final String DRIVER = "org.postgresql.Driver"; //$NON-NLS-1$
     private static final String DIALECT = "org.hibernate.dialect.PostgreSQLDialect"; //$NON-NLS-1$

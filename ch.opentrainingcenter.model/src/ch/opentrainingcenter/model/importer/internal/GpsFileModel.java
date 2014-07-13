@@ -1,20 +1,20 @@
 package ch.opentrainingcenter.model.importer.internal;
 
-import ch.opentrainingcenter.core.helper.RunType;
 import ch.opentrainingcenter.model.importer.IGpsFileModel;
 import ch.opentrainingcenter.model.strecke.StreckeModel;
+import ch.opentrainingcenter.transfer.TrainingType;
 
 public class GpsFileModel implements IGpsFileModel {
 
     private boolean importFile;
     private final String fileName;
-    private RunType typ;
+    private TrainingType typ;
     private StreckeModel strecke;
 
     public GpsFileModel(final String fileName) {
         this.fileName = fileName;
         importFile = true;
-        typ = RunType.NONE;
+        typ = TrainingType.NONE;
     }
 
     @Override
@@ -28,12 +28,12 @@ public class GpsFileModel implements IGpsFileModel {
     }
 
     @Override
-    public RunType getTyp() {
+    public TrainingType getTyp() {
         return typ;
     }
 
     @Override
-    public void setTyp(final RunType typ) {
+    public void setTyp(final TrainingType typ) {
         this.typ = typ;
     }
 

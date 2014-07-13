@@ -124,7 +124,7 @@ public class RunTypeDialog extends TitleAreaDialog {
             @Override
             public String getText(final Object element) {
                 final IGpsFileModel record = (IGpsFileModel) element;
-                return record.getTyp().getTitle();
+                return record.getTyp().getName();
             }
         });
         col.setEditingSupport(new RunTypeEditingSupport(viewer));

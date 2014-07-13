@@ -35,9 +35,9 @@ import com.grum.geocalc.Point;
  */
 public class CompareRoute implements ICompareRoute {
 
-    private static final String TRACK_MIN_EIN_PUNKT = "Jeder Track muss mindestens ein Punkt haben";
+    private static final String TRACK_MIN_EIN_PUNKT = "Jeder Track muss mindestens ein Punkt haben"; //$NON-NLS-1$
 
-    private static final String LINE = "------------------------------";
+    private static final String LINE = "------------------------------"; //$NON-NLS-1$
 
     private static final Logger LOGGER = Logger.getLogger(CompareRoute.class);
 

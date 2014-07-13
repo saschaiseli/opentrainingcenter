@@ -10,10 +10,10 @@ import org.eclipse.ui.PlatformUI;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.core.cache.Cache;
 import ch.opentrainingcenter.core.cache.TrainingCache;
-import ch.opentrainingcenter.core.helper.RunType;
 import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.model.navigation.ConcreteImported;
 import ch.opentrainingcenter.transfer.ITraining;
+import ch.opentrainingcenter.transfer.TrainingType;
 
 /**
  * Lauf Typ.
@@ -50,5 +50,5 @@ public abstract class ChangeRunType extends AbstractHandler {
         return null;
     }
 
-    public abstract RunType getType();
+    public abstract TrainingType getType();
 }

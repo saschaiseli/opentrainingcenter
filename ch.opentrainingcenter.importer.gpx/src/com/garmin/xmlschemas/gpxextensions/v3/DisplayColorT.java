@@ -5,19 +5,21 @@
 // Generated on: 2013.11.26 at 11:38:59 AM CET 
 //
 
-
 package com.garmin.xmlschemas.gpxextensions.v3;
 
 import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for DisplayColor_t.
- * 
- * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
+ * Java class for DisplayColor_t.
+ * 
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
+ * <p>
+ * 
  * <pre>
  * &lt;simpleType name="DisplayColor_t">
  *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}token">
@@ -45,45 +47,30 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlType(name = "DisplayColor_t")
 @XmlEnum
+@SuppressWarnings("nls")
 public enum DisplayColorT {
 
     @XmlEnumValue("Black")
-    BLACK("Black"),
-    @XmlEnumValue("DarkRed")
-    DARK_RED("DarkRed"),
-    @XmlEnumValue("DarkGreen")
-    DARK_GREEN("DarkGreen"),
-    @XmlEnumValue("DarkYellow")
-    DARK_YELLOW("DarkYellow"),
-    @XmlEnumValue("DarkBlue")
-    DARK_BLUE("DarkBlue"),
-    @XmlEnumValue("DarkMagenta")
-    DARK_MAGENTA("DarkMagenta"),
-    @XmlEnumValue("DarkCyan")
-    DARK_CYAN("DarkCyan"),
-    @XmlEnumValue("LightGray")
-    LIGHT_GRAY("LightGray"),
-    @XmlEnumValue("DarkGray")
-    DARK_GRAY("DarkGray"),
-    @XmlEnumValue("Red")
-    RED("Red"),
-    @XmlEnumValue("Green")
-    GREEN("Green"),
-    @XmlEnumValue("Yellow")
-    YELLOW("Yellow"),
-    @XmlEnumValue("Blue")
-    BLUE("Blue"),
-    @XmlEnumValue("Magenta")
-    MAGENTA("Magenta"),
-    @XmlEnumValue("Cyan")
-    CYAN("Cyan"),
-    @XmlEnumValue("White")
-    WHITE("White"),
-    @XmlEnumValue("Transparent")
+    BLACK("Black"), @XmlEnumValue("DarkRed")
+    DARK_RED("DarkRed"), @XmlEnumValue("DarkGreen")
+    DARK_GREEN("DarkGreen"), @XmlEnumValue("DarkYellow")
+    DARK_YELLOW("DarkYellow"), @XmlEnumValue("DarkBlue")
+    DARK_BLUE("DarkBlue"), @XmlEnumValue("DarkMagenta")
+    DARK_MAGENTA("DarkMagenta"), @XmlEnumValue("DarkCyan")
+    DARK_CYAN("DarkCyan"), @XmlEnumValue("LightGray")
+    LIGHT_GRAY("LightGray"), @XmlEnumValue("DarkGray")
+    DARK_GRAY("DarkGray"), @XmlEnumValue("Red")
+    RED("Red"), @XmlEnumValue("Green")
+    GREEN("Green"), @XmlEnumValue("Yellow")
+    YELLOW("Yellow"), @XmlEnumValue("Blue")
+    BLUE("Blue"), @XmlEnumValue("Magenta")
+    MAGENTA("Magenta"), @XmlEnumValue("Cyan")
+    CYAN("Cyan"), @XmlEnumValue("White")
+    WHITE("White"), @XmlEnumValue("Transparent")
     TRANSPARENT("Transparent");
     private final String value;
 
-    DisplayColorT(String v) {
+    DisplayColorT(final String v) {
         value = v;
     }
 
@@ -91,8 +78,8 @@ public enum DisplayColorT {
         return value;
     }
 
-    public static DisplayColorT fromValue(String v) {
-        for (DisplayColorT c: DisplayColorT.values()) {
+    public static DisplayColorT fromValue(final String v) {
+        for (final DisplayColorT c : DisplayColorT.values()) {
             if (c.value.equals(v)) {
                 return c;
             }

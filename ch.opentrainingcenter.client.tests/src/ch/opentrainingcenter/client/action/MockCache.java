@@ -4,15 +4,15 @@ import java.util.List;
 
 import ch.opentrainingcenter.core.cache.Cache;
 import ch.opentrainingcenter.core.cache.IRecordListener;
-import ch.opentrainingcenter.core.helper.RunType;
 import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.IWeather;
+import ch.opentrainingcenter.transfer.TrainingType;
 
 public class MockCache implements Cache {
 
     private List<ITraining> changedRecords;
-    private RunType type;
+    private TrainingType type;
     private List<Long> deletedIds;
 
     @Override
@@ -56,7 +56,7 @@ public class MockCache implements Cache {
         return changedRecords;
     }
 
-    public RunType getType() {
+    public TrainingType getType() {
         return type;
     }
 

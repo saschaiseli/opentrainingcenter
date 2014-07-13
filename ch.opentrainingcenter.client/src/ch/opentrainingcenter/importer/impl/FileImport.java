@@ -11,7 +11,6 @@ import org.joda.time.DateTime;
 
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.exceptions.ConvertException;
-import ch.opentrainingcenter.core.helper.RunType;
 import ch.opentrainingcenter.core.importer.ConvertContainer;
 import ch.opentrainingcenter.core.importer.IFileCopy;
 import ch.opentrainingcenter.i18n.Messages;
@@ -22,7 +21,6 @@ import ch.opentrainingcenter.model.strecke.StreckeModel;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
-import ch.opentrainingcenter.transfer.TrainingType;
 
 public class FileImport implements IFileImport {
 
@@ -89,9 +87,7 @@ public class FileImport implements IFileImport {
                 final IRoute strecke = dbAccess.getRoute(route.getName(), athlete);
                 training.setRoute(strecke);
             }
-            final RunType typ = model.getTyp();
-            final TrainingType tt = TrainingType.getById(typ.getIndex());
-            training.setTrainingType(tt);
+            training.setTrainingType(model.getTyp());
             LOGGER.info(Messages.FileImport_3);
             final long start = DateTime.now().getMillis();
             dbAccess.saveOrUpdate(training);

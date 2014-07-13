@@ -46,7 +46,7 @@ public class PastPlanungImpl implements IPastPlanung {
             }
             km += kmTotal;
             final TrainingType type = record.getTrainingType();
-            if (isInterval(type.getId())) {
+            if (isInterval(type.getIndex())) {
                 inter = true;
             }
         }

@@ -1,5 +1,10 @@
 package ch.opentrainingcenter.model.chart;
 
+import static ch.opentrainingcenter.transfer.TrainingType.EXT_INTERVALL;
+import static ch.opentrainingcenter.transfer.TrainingType.INT_INTERVALL;
+import static ch.opentrainingcenter.transfer.TrainingType.POWER_LONG_JOG;
+import static org.junit.Assert.assertEquals;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,9 +13,7 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
-import ch.opentrainingcenter.core.helper.RunType;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
-import static org.junit.Assert.assertEquals;
 
 public class SimpleTrainingCalculatorTest {
 
@@ -30,13 +33,12 @@ public class SimpleTrainingCalculatorTest {
         allTrainings.put(2012, trainingMap);
 
         final SimpleTrainingDescriptor descriptor = SimpleTrainingDescriptor.createSimpleTraining(2012, 1, 1);
-        descriptor.setAvgHeartRate(80).setDauerInSekunden(60).setDistanz(1000).setMaxHeartRate(120).setSpeed(5.5).setRunType(RunType.EXT_INTERVALL);
+        descriptor.setAvgHeartRate(80).setDauerInSekunden(60).setDistanz(1000).setMaxHeartRate(120).setSpeed(5.5).setRunType(EXT_INTERVALL);
 
         final ISimpleTraining training1 = descriptor.build();
         trainingsProWoche.add(training1);
 
-        descriptor.setAvgHeartRate(90).setDauerInSekunden(1420).setDistanz(1042).setMaxHeartRate(130).setSpeed(5.75).setTag(2)
-                .setRunType(RunType.INT_INTERVALL);
+        descriptor.setAvgHeartRate(90).setDauerInSekunden(1420).setDistanz(1042).setMaxHeartRate(130).setSpeed(5.75).setTag(2).setRunType(INT_INTERVALL);
         final ISimpleTraining training2 = descriptor.build();
         trainingsProWoche.add(training2);
 
@@ -58,17 +60,16 @@ public class SimpleTrainingCalculatorTest {
         allTrainings.put(2012, trainingMap);
 
         final SimpleTrainingDescriptor descriptor = SimpleTrainingDescriptor.createSimpleTraining(2012, 1, 1);
-        descriptor.setAvgHeartRate(80).setDauerInSekunden(60).setDistanz(1000).setMaxHeartRate(120).setSpeed(5.5).setRunType(RunType.EXT_INTERVALL);
+        descriptor.setAvgHeartRate(80).setDauerInSekunden(60).setDistanz(1000).setMaxHeartRate(120).setSpeed(5.5).setRunType(EXT_INTERVALL);
 
         final ISimpleTraining training1 = descriptor.build();
         trainingsProWoche.add(training1);
 
-        descriptor.setAvgHeartRate(90).setDauerInSekunden(1420).setDistanz(1042).setMaxHeartRate(130).setSpeed(5.75).setTag(2)
-                .setRunType(RunType.INT_INTERVALL);
+        descriptor.setAvgHeartRate(90).setDauerInSekunden(1420).setDistanz(1042).setMaxHeartRate(130).setSpeed(5.75).setTag(2).setRunType(INT_INTERVALL);
         final ISimpleTraining training2 = descriptor.build();
         trainingsProWoche.add(training2);
 
-        final List<ISimpleTraining> result = SimpleTrainingCalculator.createSum(allTrainings, RunType.EXT_INTERVALL);
+        final List<ISimpleTraining> result = SimpleTrainingCalculator.createSum(allTrainings, EXT_INTERVALL);
         assertEquals("Zu einem Result zusammengefügt", 1, result.size()); //$NON-NLS-1$
         final ISimpleTraining training = result.get(0);
         assertEquals("Herzrate: ", 80, training.getAvgHeartRate()); //$NON-NLS-1$
@@ -86,17 +87,16 @@ public class SimpleTrainingCalculatorTest {
         allTrainings.put(2012, trainingMap);
 
         final SimpleTrainingDescriptor descriptor = SimpleTrainingDescriptor.createSimpleTraining(2012, 1, 1);
-        descriptor.setAvgHeartRate(80).setDauerInSekunden(60).setDistanz(1000).setMaxHeartRate(120).setSpeed(5.5).setRunType(RunType.EXT_INTERVALL);
+        descriptor.setAvgHeartRate(80).setDauerInSekunden(60).setDistanz(1000).setMaxHeartRate(120).setSpeed(5.5).setRunType(EXT_INTERVALL);
 
         final ISimpleTraining training1 = descriptor.build();
         trainingsProWoche.add(training1);
 
-        descriptor.setAvgHeartRate(90).setDauerInSekunden(1420).setDistanz(1042).setMaxHeartRate(130).setSpeed(5.75).setTag(2)
-                .setRunType(RunType.INT_INTERVALL);
+        descriptor.setAvgHeartRate(90).setDauerInSekunden(1420).setDistanz(1042).setMaxHeartRate(130).setSpeed(5.75).setTag(2).setRunType(INT_INTERVALL);
         final ISimpleTraining training2 = descriptor.build();
         trainingsProWoche.add(training2);
 
-        final List<ISimpleTraining> result = SimpleTrainingCalculator.createSum(allTrainings, RunType.POWER_LONG_JOG);
+        final List<ISimpleTraining> result = SimpleTrainingCalculator.createSum(allTrainings, POWER_LONG_JOG);
         assertEquals("Filter passte nicht", 0, result.size()); //$NON-NLS-1$
     }
 }

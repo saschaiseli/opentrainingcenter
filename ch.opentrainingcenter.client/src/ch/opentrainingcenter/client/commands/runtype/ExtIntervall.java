@@ -1,8 +1,8 @@
 package ch.opentrainingcenter.client.commands.runtype;
 
 import ch.opentrainingcenter.core.cache.Cache;
-import ch.opentrainingcenter.core.helper.RunType;
 import ch.opentrainingcenter.core.service.IDatabaseService;
+import ch.opentrainingcenter.transfer.TrainingType;
 
 /**
  * Extensives Intervall.
@@ -23,7 +23,7 @@ public class ExtIntervall extends ChangeRunType {
     }
 
     @Override
-    public RunType getType() {
-        return RunType.EXT_INTERVALL;
+    public TrainingType getType() {
+        return TrainingType.EXT_INTERVALL;
     }
 }

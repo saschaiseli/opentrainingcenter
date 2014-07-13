@@ -1,12 +1,13 @@
 package ch.opentrainingcenter.model.importer;
 
-import org.junit.Test;
-
-import ch.opentrainingcenter.core.helper.RunType;
-import ch.opentrainingcenter.model.importer.internal.GpsFileModel;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
+
+import ch.opentrainingcenter.model.importer.internal.GpsFileModel;
+import ch.opentrainingcenter.transfer.TrainingType;
 
 @SuppressWarnings("nls")
 public class GpsFileModelTest {
@@ -29,20 +30,20 @@ public class GpsFileModelTest {
     @Test
     public void testTyp() {
         model = new GpsFileModel(FILENAME);
-        assertEquals(RunType.NONE.getIndex(), model.getId());
+        assertEquals(TrainingType.NONE.getIndex(), model.getId());
     }
 
     @Test
     public void testGetTypInit() {
         model = new GpsFileModel(FILENAME);
-        assertEquals(RunType.NONE, model.getTyp());
+        assertEquals(TrainingType.NONE, model.getTyp());
     }
 
     @Test
     public void testGetTypChanged() {
         model = new GpsFileModel(FILENAME);
-        model.setTyp(RunType.EXT_INTERVALL);
-        assertEquals(RunType.EXT_INTERVALL, model.getTyp());
+        model.setTyp(TrainingType.EXT_INTERVALL);
+        assertEquals(TrainingType.EXT_INTERVALL, model.getTyp());
     }
 
     @Test

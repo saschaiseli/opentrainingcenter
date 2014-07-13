@@ -13,7 +13,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import ch.opentrainingcenter.core.helper.RunType;
 import ch.opentrainingcenter.model.planing.internal.PastPlanungModel;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IPlanungWoche;
@@ -85,7 +84,7 @@ public class PastPlanungModelTest {
         final List<ITraining> list = new ArrayList<ITraining>();
         final Calendar cal = Calendar.getInstance(Locale.getDefault());
         cal.set(2012, 07, 28);
-        list.add(createImported(cal.getTime(), 10300d, RunType.INT_INTERVALL));
+        list.add(createImported(cal.getTime(), 10300d, TrainingType.INT_INTERVALL));
         model = new PastPlanungModel(null, list, now);
 
         final List<IPastPlanung> pastPlanungen = model.getPastPlanungen();
@@ -112,7 +111,7 @@ public class PastPlanungModelTest {
         final List<ITraining> list = new ArrayList<ITraining>();
         final Calendar cal = Calendar.getInstance(Locale.GERMAN);
         cal.set(2012, 00, 01);
-        list.add(createImported(cal.getTime(), 10300d, RunType.INT_INTERVALL));
+        list.add(createImported(cal.getTime(), 10300d, TrainingType.INT_INTERVALL));
 
         // execute
         model = new PastPlanungModel(null, list, now);
@@ -132,9 +131,9 @@ public class PastPlanungModelTest {
         final List<ITraining> list = new ArrayList<ITraining>();
         final Calendar cal = Calendar.getInstance(Locale.getDefault());
         cal.set(2012, 07, 28);
-        list.add(createImported(cal.getTime(), 10300d, RunType.INT_INTERVALL));
+        list.add(createImported(cal.getTime(), 10300d, TrainingType.INT_INTERVALL));
         cal.set(2012, 07, 29);
-        list.add(createImported(cal.getTime(), 20300d, RunType.INT_INTERVALL));
+        list.add(createImported(cal.getTime(), 20300d, TrainingType.INT_INTERVALL));
         model = new PastPlanungModel(null, list, now);
 
         final List<IPastPlanung> pastPlanungen = model.getPastPlanungen();
@@ -161,9 +160,9 @@ public class PastPlanungModelTest {
         final List<ITraining> list = new ArrayList<ITraining>();
         final Calendar cal = Calendar.getInstance(Locale.getDefault());
         cal.set(2012, 07, 28);
-        list.add(createImported(cal.getTime(), 10300d, RunType.INT_INTERVALL));
+        list.add(createImported(cal.getTime(), 10300d, TrainingType.INT_INTERVALL));
         cal.set(2012, 8, 05);
-        list.add(createImported(cal.getTime(), 20300d, RunType.INT_INTERVALL));
+        list.add(createImported(cal.getTime(), 20300d, TrainingType.INT_INTERVALL));
         model = new PastPlanungModel(null, list, now);
 
         final List<IPastPlanung> pastPlanungen = model.getPastPlanungen();
@@ -206,7 +205,7 @@ public class PastPlanungModelTest {
         final List<ITraining> list = new ArrayList<ITraining>();
         final Calendar cal = Calendar.getInstance(Locale.getDefault());
         cal.set(2012, 07, 28);
-        list.add(createImported(cal.getTime(), 10300d, RunType.INT_INTERVALL));
+        list.add(createImported(cal.getTime(), 10300d, TrainingType.INT_INTERVALL));
 
         final List<IPlanungWoche> pl = new ArrayList<IPlanungWoche>();
         final IPlanungWoche p = createPlanung(2012, 35, 40, 22, false);
@@ -321,13 +320,13 @@ public class PastPlanungModelTest {
         return p;
     }
 
-    private ITraining createImported(final Date date, final Double distanzInMeter, final RunType runType) {
+    private ITraining createImported(final Date date, final Double distanzInMeter, final TrainingType runType) {
         final ITraining rec = Mockito.mock(ITraining.class);
         Mockito.when(rec.getAthlete()).thenReturn(athlete);
         Mockito.when(rec.getDatum()).thenReturn(date.getTime());
         Mockito.when(rec.getLaengeInMeter()).thenReturn(distanzInMeter);
 
-        final TrainingType type = TrainingType.getById(runType.getIndex());
+        final TrainingType type = TrainingType.getByIndex(runType.getIndex());
         Mockito.when(rec.getTrainingType()).thenReturn(type);
         return rec;
     }

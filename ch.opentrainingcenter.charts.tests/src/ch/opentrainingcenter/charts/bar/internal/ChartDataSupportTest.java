@@ -19,6 +19,11 @@
 
 package ch.opentrainingcenter.charts.bar.internal;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,13 +32,9 @@ import org.junit.Test;
 
 import ch.opentrainingcenter.charts.ng.SimpleTrainingChart;
 import ch.opentrainingcenter.charts.single.XAxisChart;
-import ch.opentrainingcenter.core.helper.RunType;
 import ch.opentrainingcenter.model.ModelFactory;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import ch.opentrainingcenter.transfer.TrainingType;
 
 @SuppressWarnings("nls")
 public class ChartDataSupportTest {
@@ -61,7 +62,7 @@ public class ChartDataSupportTest {
 
         final ArrayList<ISimpleTraining> data = new ArrayList<ISimpleTraining>();
         final DateTime dt = new DateTime(2014, 8, 29, 12, 0);
-        data.add(ModelFactory.createSimpleTraining(1000, 10, dt.toDate(), 142, 159, 3, RunType.LONG_JOG, ""));
+        data.add(ModelFactory.createSimpleTraining(1000, 10, dt.toDate(), 142, 159, 3, TrainingType.LONG_JOG, ""));
 
         final List<ChartDataWrapper> result = support.convertAndSort(data);
 
@@ -129,7 +130,7 @@ public class ChartDataSupportTest {
         final ArrayList<ISimpleTraining> dataPast = new ArrayList<ISimpleTraining>();
         final DateTime datePast = new DateTime(2012, 8, 29, 12, 00);
 
-        dataPast.add(ModelFactory.createSimpleTraining(2000, 2d, datePast.toDate(), 132, 155, 4d, RunType.EXT_INTERVALL, "note"));
+        dataPast.add(ModelFactory.createSimpleTraining(2000, 2d, datePast.toDate(), 132, 155, 4d, TrainingType.EXT_INTERVALL, "note"));
 
         // execute
         final List<ChartDataWrapper> result = support.createPastData(dataPast, now);
@@ -157,7 +158,7 @@ public class ChartDataSupportTest {
         final ArrayList<ISimpleTraining> dataPast = new ArrayList<ISimpleTraining>();
         final DateTime datePast = new DateTime(2012, 9, 29, 12, 00);
 
-        dataPast.add(ModelFactory.createSimpleTraining(2000, 2d, datePast.toDate(), 132, 155, 4d, RunType.EXT_INTERVALL, "note"));
+        dataPast.add(ModelFactory.createSimpleTraining(2000, 2d, datePast.toDate(), 132, 155, 4d, TrainingType.EXT_INTERVALL, "note"));
 
         // execute
         final List<ChartDataWrapper> result = support.createPastData(dataPast, now);
@@ -192,7 +193,7 @@ public class ChartDataSupportTest {
         final ArrayList<ISimpleTraining> dataPast = new ArrayList<ISimpleTraining>();
         final DateTime datePast = new DateTime(2012, 8, 29, 12, 00);
 
-        dataPast.add(ModelFactory.createSimpleTraining(2000, 2d, datePast.toDate(), 132, 155, 4d, RunType.EXT_INTERVALL, "note"));
+        dataPast.add(ModelFactory.createSimpleTraining(2000, 2d, datePast.toDate(), 132, 155, 4d, TrainingType.EXT_INTERVALL, "note"));
 
         // execute
         final List<ChartDataWrapper> result = support.createPastData(dataPast, now);
@@ -221,7 +222,7 @@ public class ChartDataSupportTest {
         final ArrayList<ISimpleTraining> dataPast = new ArrayList<ISimpleTraining>();
         final DateTime datePast = new DateTime(2012, 8, 29, 12, 00);
 
-        dataPast.add(ModelFactory.createSimpleTraining(2000, 2d, datePast.toDate(), 132, 155, 4d, RunType.EXT_INTERVALL, "note"));
+        dataPast.add(ModelFactory.createSimpleTraining(2000, 2d, datePast.toDate(), 132, 155, 4d, TrainingType.EXT_INTERVALL, "note"));
 
         // execute
         final List<ChartDataWrapper> result = support.createPastData(dataPast, now);

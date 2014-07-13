@@ -16,7 +16,6 @@ import org.junit.Test;
 import org.mockito.Matchers;
 
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
-import ch.opentrainingcenter.core.helper.RunType;
 import ch.opentrainingcenter.core.helper.TimeHelper;
 import ch.opentrainingcenter.model.chart.IStatistikCreator;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
@@ -100,7 +99,7 @@ public class TrainingDataFilterTest {
         when(access.getAllTrainings((IAthlete) Matchers.any())).thenReturn(values);
 
         // execute
-        auf.filter(RunType.NONE);
+        auf.filter(TrainingType.NONE);
 
         // assert
         final List<ISimpleTraining> trainingsPerDay = auf.getTrainingsPerDay();
@@ -124,7 +123,7 @@ public class TrainingDataFilterTest {
         values.add(mockA);
         when(access.getAllTrainings((IAthlete) Matchers.any())).thenReturn(values);
         // execute
-        auf.filter(RunType.EXT_INTERVALL);
+        auf.filter(TrainingType.EXT_INTERVALL);
 
         // assert
         final List<ISimpleTraining> trainingsPerDay = auf.getTrainingsPerDay();
@@ -152,7 +151,7 @@ public class TrainingDataFilterTest {
         when(access.getAllTrainings((IAthlete) Matchers.any())).thenReturn(values);
 
         // execute
-        auf.filter(RunType.INT_INTERVALL);
+        auf.filter(TrainingType.INT_INTERVALL);
 
         // assert
         final List<ISimpleTraining> trainingsPerDay = auf.getTrainingsPerDay();
@@ -177,7 +176,7 @@ public class TrainingDataFilterTest {
         when(access.getAllTrainings((IAthlete) Matchers.any())).thenReturn(values);
 
         // execute
-        auf.filter(RunType.LONG_JOG);
+        auf.filter(TrainingType.LONG_JOG);
 
         // assert
         final List<ISimpleTraining> trainingsPerDay = auf.getTrainingsPerDay();
@@ -202,7 +201,7 @@ public class TrainingDataFilterTest {
         when(access.getAllTrainings((IAthlete) Matchers.any())).thenReturn(values);
 
         // execute
-        auf.filter(RunType.POWER_LONG_JOG);
+        auf.filter(TrainingType.POWER_LONG_JOG);
 
         // assert
         final List<ISimpleTraining> trainingsPerDay = auf.getTrainingsPerDay();
@@ -228,7 +227,7 @@ public class TrainingDataFilterTest {
         when(access.getAllTrainings((IAthlete) Matchers.any())).thenReturn(values);
 
         // execute
-        auf.filter(RunType.TEMPO_JOG);
+        auf.filter(TrainingType.TEMPO_JOG);
 
         // assert
         final List<ISimpleTraining> trainingsPerDay = auf.getTrainingsPerDay();
@@ -258,7 +257,7 @@ public class TrainingDataFilterTest {
         values.add(mockA);
         when(access.getAllTrainings((IAthlete) Matchers.any())).thenReturn(values);
         // execute
-        auf.filter(RunType.LONG_JOG);
+        auf.filter(TrainingType.LONG_JOG);
         // assert
         assertEquals(1, auf.getTrainingsPerDay().size());
     }
@@ -304,7 +303,7 @@ public class TrainingDataFilterTest {
 
         when(access.getAllTrainings((IAthlete) Matchers.any())).thenReturn(values);
         // execute
-        auf.filter(RunType.LONG_JOG);
+        auf.filter(TrainingType.LONG_JOG);
         // assert
         assertEquals(EXPECTED + TimeHelper.convertDateToString(date, false) + " " + "1042.0[m] LONG_JOG\n", auf.toString());
     }

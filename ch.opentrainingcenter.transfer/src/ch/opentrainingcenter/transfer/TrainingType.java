@@ -1,12 +1,18 @@
 package ch.opentrainingcenter.transfer;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import ch.opentrainingcenter.i18n.Messages;
+
+@SuppressWarnings("nls")
 public enum TrainingType {
-    NONE(0, "UNBEKANNT", "Unbekannter Typ", "icons/man_u_32_32.png"), //
-    EXT_INTERVALL(1, "EXT_INTERVALL", "Unbekannter Typ", "icons/man_u_32_32.png"), //
-    INT_INTERVALL(2, "INT_INTERVALL", "Unbekannter Typ", "icons/man_u_32_32.png"), //
-    LONG_JOG(3, "LONG_JOG", "Unbekannter Typ", "icons/man_u_32_32.png"), //
-    POWER_LONG_JOG(4, "POWER_LONG_JOG", "Unbekannter Typ", "icons/man_u_32_32.png"), //
-    TEMPO_JOG(5, "TEMPO_JOG", "Unbekannter Typ", "icons/man_u_32_32.png");
+    NONE(0, Messages.RunType0, Messages.RunType0, "icons/man_u_32_32.png"), //
+    EXT_INTERVALL(1, Messages.RunType1, Messages.RunType1, "icons/man_ei_32_32.png"), //
+    INT_INTERVALL(2, Messages.RunType2, Messages.RunType2, "icons/man_ii_32_32.png"), //
+    LONG_JOG(3, Messages.RunType3, Messages.RunType3, "icons/man_lj_32_32.png"), //
+    POWER_LONG_JOG(4, Messages.RunType4, Messages.RunType4, "icons/man_pj_32_32.png"), //
+    TEMPO_JOG(5, Messages.RunType5, Messages.RunType5, "icons/man_tj_32_32.png");
 
     private final int index;
     private final String name;
@@ -20,7 +26,7 @@ public enum TrainingType {
         this.image = image;
     }
 
-    public int getId() {
+    public int getIndex() {
         return index;
     }
 
@@ -36,7 +42,7 @@ public enum TrainingType {
         return image;
     }
 
-    public static TrainingType getById(final int index) {
+    public static TrainingType getByIndex(final int index) {
         switch (index) {
         case 0:
             return NONE;
@@ -53,5 +59,13 @@ public enum TrainingType {
         default:
             throw new IllegalArgumentException(String.format("TrainingTyp mit dem Index %s existiert nicht", index)); //$NON-NLS-1$
         }
+    }
+
+    public static String[] getAllTypes() {
+        final List<String> typeTitles = new ArrayList<String>();
+        for (final TrainingType type : TrainingType.values()) {
+            typeTitles.add(type.getName());
+        }
+        return typeTitles.toArray(new String[0]);
     }
 }

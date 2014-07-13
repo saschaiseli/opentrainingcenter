@@ -4,9 +4,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import ch.opentrainingcenter.core.helper.RunType;
 import ch.opentrainingcenter.model.ModelFactory;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
+import ch.opentrainingcenter.transfer.TrainingType;
 
 public final class SimpleTrainingDescriptor {
 
@@ -18,7 +18,7 @@ public final class SimpleTrainingDescriptor {
     private int avgHeartRate = 0;
     private int maxHeartRate = 0;
     private double speed = 0;
-    private RunType type = RunType.NONE;
+    private TrainingType type = TrainingType.NONE;
     private Date date;
 
     private SimpleTrainingDescriptor(final int year, final int monat, final int day) {
@@ -76,7 +76,7 @@ public final class SimpleTrainingDescriptor {
         return this;
     }
 
-    public SimpleTrainingDescriptor setRunType(final RunType type) {
+    public SimpleTrainingDescriptor setRunType(final TrainingType type) {
         this.type = type;
         return this;
     }

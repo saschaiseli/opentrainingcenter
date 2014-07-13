@@ -346,21 +346,21 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
 
         ITraining result = dataAccess.getTrainingById(now);
 
-        assertEquals(0, result.getTrainingType().getId());
+        assertEquals(0, result.getTrainingType().getIndex());
 
-        trainingA.setTrainingType(TrainingType.getById(1));
+        trainingA.setTrainingType(TrainingType.getByIndex(1));
 
         dataAccess.saveOrUpdate(trainingA);
 
         result = dataAccess.getTrainingById(now);
 
-        assertEquals(1, result.getTrainingType().getId());
+        assertEquals(1, result.getTrainingType().getIndex());
 
         dataAccess.updateTrainingType(trainingA, 2);
 
         result = dataAccess.getTrainingById(now);
 
-        assertEquals(2, result.getTrainingType().getId());
+        assertEquals(2, result.getTrainingType().getIndex());
     }
 
     @Test

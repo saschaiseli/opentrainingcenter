@@ -21,16 +21,16 @@ package ch.opentrainingcenter.model.training.filter;
 
 import java.util.Date;
 
-import ch.opentrainingcenter.core.helper.RunType;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
 import ch.opentrainingcenter.model.training.filter.internal.FilterTrainingByDateProzessor;
 import ch.opentrainingcenter.model.training.filter.internal.FilterTrainingTypeProzessor;
+import ch.opentrainingcenter.transfer.TrainingType;
 
 public class SimpleTrainingFilter {
 
     private final FilterTrainingTypeProzessor process;
 
-    public SimpleTrainingFilter(final Date start, final Date end, final RunType runType) {
+    public SimpleTrainingFilter(final Date start, final Date end, final TrainingType runType) {
 
         final FilterTrainingByDateProzessor first = new FilterTrainingByDateProzessor(start, end);
         process = new FilterTrainingTypeProzessor(first, runType);

@@ -1,7 +1,7 @@
 package ch.opentrainingcenter.model.importer;
 
-import ch.opentrainingcenter.core.helper.RunType;
 import ch.opentrainingcenter.model.strecke.StreckeModel;
+import ch.opentrainingcenter.transfer.TrainingType;
 
 public interface IGpsFileModel {
 
@@ -9,9 +9,9 @@ public interface IGpsFileModel {
 
     String getFileName();
 
-    RunType getTyp();
+    TrainingType getTyp();
 
-    void setTyp(final RunType typ);
+    void setTyp(final TrainingType typ);
 
     boolean isImportFile();
 

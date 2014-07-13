@@ -1,5 +1,11 @@
 package ch.opentrainingcenter.client.commands.runtype;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
+
 import org.eclipse.core.commands.ExecutionException;
 import org.junit.After;
 import org.junit.Before;
@@ -8,16 +14,10 @@ import org.junit.Test;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.core.cache.Cache;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
-import ch.opentrainingcenter.core.helper.RunType;
 import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.model.navigation.ConcreteImported;
 import ch.opentrainingcenter.transfer.ITraining;
-import static org.junit.Assert.assertEquals;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
-import static org.mockito.Mockito.when;
+import ch.opentrainingcenter.transfer.TrainingType;
 
 public class ChangeRunTypeTest {
 
@@ -39,7 +39,7 @@ public class ChangeRunTypeTest {
 
     @Test
     public void testType() {
-        assertEquals(RunType.EXT_INTERVALL, change.getType());
+        assertEquals(TrainingType.EXT_INTERVALL, change.getType());
     }
 
     @Test
@@ -75,7 +75,7 @@ public class ChangeRunTypeTest {
 
         change.execute(null);
 
-        verify(access).updateTrainingType(training, RunType.EXT_INTERVALL.getIndex());
+        verify(access).updateTrainingType(training, TrainingType.EXT_INTERVALL.getIndex());
         verify(cache).notifyListeners();
     }
 
@@ -96,8 +96,8 @@ public class ChangeRunTypeTest {
 
         change.execute(null);
 
-        verify(access).updateTrainingType(trainingA, RunType.EXT_INTERVALL.getIndex());
-        verify(access).updateTrainingType(trainingB, RunType.EXT_INTERVALL.getIndex());
+        verify(access).updateTrainingType(trainingA, TrainingType.EXT_INTERVALL.getIndex());
+        verify(access).updateTrainingType(trainingB, TrainingType.EXT_INTERVALL.getIndex());
         verify(cache).notifyListeners();
     }
 }

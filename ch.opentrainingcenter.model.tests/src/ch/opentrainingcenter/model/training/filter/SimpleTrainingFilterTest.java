@@ -19,19 +19,20 @@
 
 package ch.opentrainingcenter.model.training.filter;
 
+import static ch.opentrainingcenter.transfer.TrainingType.EXT_INTERVALL;
+import static ch.opentrainingcenter.transfer.TrainingType.INT_INTERVALL;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.util.Date;
 
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 
-import ch.opentrainingcenter.core.helper.RunType;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class SimpleTrainingFilterTest {
 
@@ -46,10 +47,10 @@ public class SimpleTrainingFilterTest {
 
     @Test
     public void testUpperRange() {
-        filter = new SimpleTrainingFilter(new Date(1), new Date(100), RunType.EXT_INTERVALL);
+        filter = new SimpleTrainingFilter(new Date(1), new Date(100), EXT_INTERVALL);
 
         when(training.getDatum()).thenReturn(new Date(100));
-        when(training.getType()).thenReturn(RunType.EXT_INTERVALL);
+        when(training.getType()).thenReturn(EXT_INTERVALL);
 
         final ISimpleTraining result = filter.filter(training);
 
@@ -58,10 +59,10 @@ public class SimpleTrainingFilterTest {
 
     @Test
     public void testLowerRange() {
-        filter = new SimpleTrainingFilter(new Date(1), new Date(100), RunType.EXT_INTERVALL);
+        filter = new SimpleTrainingFilter(new Date(1), new Date(100), EXT_INTERVALL);
 
         when(training.getDatum()).thenReturn(new Date(1));
-        when(training.getType()).thenReturn(RunType.EXT_INTERVALL);
+        when(training.getType()).thenReturn(EXT_INTERVALL);
 
         final ISimpleTraining result = filter.filter(training);
 
@@ -73,12 +74,12 @@ public class SimpleTrainingFilterTest {
         final DateTime von = new DateTime(2012, 1, 22, 12, 22);
         final DateTime bis = new DateTime(2012, 3, 22, 12, 22);
 
-        filter = new SimpleTrainingFilter(von.toDate(), bis.toDate(), RunType.EXT_INTERVALL);
+        filter = new SimpleTrainingFilter(von.toDate(), bis.toDate(), EXT_INTERVALL);
 
         final DateTime dt = new DateTime(2012, 3, 23, 0, 0);
 
         when(training.getDatum()).thenReturn(dt.toDate());
-        when(training.getType()).thenReturn(RunType.EXT_INTERVALL);
+        when(training.getType()).thenReturn(EXT_INTERVALL);
 
         final ISimpleTraining result = filter.filter(training);
 
@@ -90,7 +91,7 @@ public class SimpleTrainingFilterTest {
         final DateTime von = new DateTime(2012, 1, 22, 12, 22);
         final DateTime bis = new DateTime(2012, 3, 22, 12, 22);
 
-        filter = new SimpleTrainingFilter(von.toDate(), bis.toDate(), RunType.EXT_INTERVALL);
+        filter = new SimpleTrainingFilter(von.toDate(), bis.toDate(), EXT_INTERVALL);
 
         final DateTime dt = new DateTime(2012, 1, 21, 23, 59);
         when(training.getDatum()).thenReturn(dt.toDate());
@@ -102,10 +103,10 @@ public class SimpleTrainingFilterTest {
 
     @Test
     public void testWrongType() {
-        filter = new SimpleTrainingFilter(new Date(1), new Date(100), RunType.EXT_INTERVALL);
+        filter = new SimpleTrainingFilter(new Date(1), new Date(100), EXT_INTERVALL);
 
         when(training.getDatum()).thenReturn(new Date(101));
-        when(training.getType()).thenReturn(RunType.INT_INTERVALL);
+        when(training.getType()).thenReturn(INT_INTERVALL);
 
         final ISimpleTraining result = filter.filter(training);
 

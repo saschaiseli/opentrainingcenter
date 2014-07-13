@@ -9,7 +9,6 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
-import ch.opentrainingcenter.core.helper.RunType;
 import ch.opentrainingcenter.core.helper.TimeHelper;
 import ch.opentrainingcenter.model.ModelFactory;
 import ch.opentrainingcenter.model.chart.IStatistikCreator;
@@ -18,6 +17,7 @@ import ch.opentrainingcenter.model.chart.StatistikFactory;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.ITraining;
+import ch.opentrainingcenter.transfer.TrainingType;
 
 public class TrainingDataFilter {
 
@@ -48,7 +48,7 @@ public class TrainingDataFilter {
     /**
      * Filtert die Daten nach dem angegeben Lauftyp.
      */
-    public final void filter(final RunType type) {
+    public final void filter(final TrainingType type) {
         LOGGER.debug("update/filter daten vom cache: " + type); //$NON-NLS-1$
         trainingsPerDay.clear();
 
@@ -84,13 +84,13 @@ public class TrainingDataFilter {
         final List<ITraining> allImported = databaseAccess.getAllTrainings(athlete);
         for (final ITraining training : allImported) {
             final ISimpleTraining simpleTraining = ModelFactory.convertToSimpleTraining(training);
-            simpleTraining.setType(RunType.getRunType(training.getTrainingType().getId()));
+            simpleTraining.setType(training.getTrainingType());
             filteredTrainings.add(simpleTraining);
         }
         return filteredTrainings;
     }
 
-    private boolean isTypeMatching(final RunType filterType, final RunType trainingType) {
+    private boolean isTypeMatching(final TrainingType filterType, final TrainingType trainingType) {
         if (filterType == null || filterType.equals(trainingType)) {
             return true;
         }
@@ -134,7 +134,7 @@ public class TrainingDataFilter {
         for (final ISimpleTraining training : trainings) {
             final String date = TimeHelper.convertDateToString(training.getDatum(), false);
             final double distanzInMeter = training.getDistanzInMeter();
-            final RunType type = training.getType();
+            final TrainingType type = training.getType();
             str.append(date).append(' ').append(distanzInMeter).append("[m]").append(" ").append(type).append('\n'); //$NON-NLS-1$ //$NON-NLS-2$
         }
     }

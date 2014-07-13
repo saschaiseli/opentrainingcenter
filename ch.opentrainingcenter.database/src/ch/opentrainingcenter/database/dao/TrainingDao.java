@@ -141,7 +141,7 @@ public class TrainingDao {
     }
 
     public void updateTrainingType(final ITraining record, final int index) {
-        record.setTrainingType(TrainingType.getById(index));
+        record.setTrainingType(TrainingType.getByIndex(index));
         final Session session = dao.getSession();
         final Transaction tx = session.beginTransaction();
         session.update(record);
@@ -176,7 +176,7 @@ public class TrainingDao {
         }
         final TrainingType tt = exists.getTrainingType();
         if (tt != null) {
-            exists.setTrainingType(TrainingType.getById(tt.getId()));
+            exists.setTrainingType(TrainingType.getByIndex(tt.getIndex()));
         }
         final Session session = dao.getSession();
         dao.begin();

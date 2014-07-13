@@ -9,8 +9,8 @@ import org.eclipse.swt.widgets.Display;
 
 public final class ColorFromPreferenceHelper {
 
-    private static final String FARBE_NICHT_GEFUNDEN = "Farbe nicht gefunden: %s";
-    private static final String FARBE_NICHT_KONVERTIERBAR = "Farbe: '%s'  kann nicht konvertiert werden";
+    private static final String FARBE_NICHT_GEFUNDEN = "Farbe nicht gefunden: %s"; //$NON-NLS-1$
+    private static final String FARBE_NICHT_KONVERTIERBAR = "Farbe: '%s'  kann nicht konvertiert werden"; //$NON-NLS-1$
     private static final Logger LOGGER = Logger.getLogger(ColorFromPreferenceHelper.class);
 
     private ColorFromPreferenceHelper() {

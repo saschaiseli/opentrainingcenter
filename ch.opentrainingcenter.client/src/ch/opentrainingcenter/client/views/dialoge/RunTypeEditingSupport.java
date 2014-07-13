@@ -5,8 +5,8 @@ import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TableViewer;
 
-import ch.opentrainingcenter.core.helper.RunType;
 import ch.opentrainingcenter.model.importer.IGpsFileModel;
+import ch.opentrainingcenter.transfer.TrainingType;
 
 class RunTypeEditingSupport extends EditingSupport {
 
@@ -20,7 +20,7 @@ class RunTypeEditingSupport extends EditingSupport {
     @Override
     protected void setValue(final Object element, final Object value) {
         final IGpsFileModel model = (IGpsFileModel) element;
-        model.setTyp(RunType.getRunType((Integer) value));
+        model.setTyp(TrainingType.getByIndex((Integer) value));
         getViewer().refresh();
     }
 
@@ -32,7 +32,7 @@ class RunTypeEditingSupport extends EditingSupport {
 
     @Override
     protected CellEditor getCellEditor(final Object element) {
-        return new ComboBoxCellEditor(viewer.getTable(), RunType.getAllTypes());
+        return new ComboBoxCellEditor(viewer.getTable(), TrainingType.getAllTypes());
     }
 
     @Override

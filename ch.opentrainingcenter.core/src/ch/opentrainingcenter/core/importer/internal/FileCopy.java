@@ -32,9 +32,13 @@ public class FileCopy implements IFileCopy {
 
         FileChannel source = null;
         FileChannel destination = null;
+        FileInputStream fis = null;
+        FileOutputStream fisDest = null;
         try {
-            source = new FileInputStream(sourceFile).getChannel();
-            destination = new FileOutputStream(destFile).getChannel();
+            fis = new FileInputStream(sourceFile);
+            source = fis.getChannel();
+            fisDest = new FileOutputStream(destFile);
+            destination = fisDest.getChannel();
 
             long count = 0;
             final long size = source.size();
@@ -45,8 +49,14 @@ public class FileCopy implements IFileCopy {
             if (source != null) {
                 source.close();
             }
+            if (fis != null) {
+                fis.close();
+            }
             if (destination != null) {
                 destination.close();
+            }
+            if (fisDest != null) {
+                fisDest.close();
             }
         }
     }

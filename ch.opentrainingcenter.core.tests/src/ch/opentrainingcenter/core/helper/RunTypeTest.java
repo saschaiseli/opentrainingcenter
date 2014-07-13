@@ -6,24 +6,25 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ch.opentrainingcenter.i18n.Messages;
+import ch.opentrainingcenter.transfer.TrainingType;
 
 public class RunTypeTest {
 
-    private RunType none;
-    private RunType ext;
-    private RunType inten;
-    private RunType longjog;
-    private RunType powerlongjog;
-    private RunType temp;
+    private TrainingType none;
+    private TrainingType ext;
+    private TrainingType inten;
+    private TrainingType longjog;
+    private TrainingType powerlongjog;
+    private TrainingType temp;
 
     @Before
     public void before() {
-        none = RunType.NONE;
-        ext = RunType.EXT_INTERVALL;
-        inten = RunType.INT_INTERVALL;
-        longjog = RunType.LONG_JOG;
-        powerlongjog = RunType.POWER_LONG_JOG;
-        temp = RunType.TEMPO_JOG;
+        none = TrainingType.NONE;
+        ext = TrainingType.EXT_INTERVALL;
+        inten = TrainingType.INT_INTERVALL;
+        longjog = TrainingType.LONG_JOG;
+        powerlongjog = TrainingType.POWER_LONG_JOG;
+        temp = TrainingType.TEMPO_JOG;
     }
 
     @Test
@@ -37,28 +38,28 @@ public class RunTypeTest {
     }
 
     @Test
-    public void testGetTitle() {
-        assertEquals(Messages.RunType0, none.getTitle());
-        assertEquals(Messages.RunType1, ext.getTitle());
-        assertEquals(Messages.RunType2, inten.getTitle());
-        assertEquals(Messages.RunType3, longjog.getTitle());
-        assertEquals(Messages.RunType4, powerlongjog.getTitle());
-        assertEquals(Messages.RunType5, temp.getTitle());
+    public void testgetName() {
+        assertEquals(Messages.RunType0, none.getName());
+        assertEquals(Messages.RunType1, ext.getName());
+        assertEquals(Messages.RunType2, inten.getName());
+        assertEquals(Messages.RunType3, longjog.getName());
+        assertEquals(Messages.RunType4, powerlongjog.getName());
+        assertEquals(Messages.RunType5, temp.getName());
     }
 
     @Test
-    public void testGetRunType() {
-        assertEquals(none, RunType.getRunType(0));
-        assertEquals(ext, RunType.getRunType(1));
-        assertEquals(inten, RunType.getRunType(2));
-        assertEquals(longjog, RunType.getRunType(3));
-        assertEquals(powerlongjog, RunType.getRunType(4));
-        assertEquals(temp, RunType.getRunType(5));
+    public void testGetTrainingType() {
+        assertEquals(none, TrainingType.getByIndex(0));
+        assertEquals(ext, TrainingType.getByIndex(1));
+        assertEquals(inten, TrainingType.getByIndex(2));
+        assertEquals(longjog, TrainingType.getByIndex(3));
+        assertEquals(powerlongjog, TrainingType.getByIndex(4));
+        assertEquals(temp, TrainingType.getByIndex(5));
     }
 
     @Test
     public void testGetAllTypes() {
-        final String[] allTypes = RunType.getAllTypes();
+        final String[] allTypes = TrainingType.getAllTypes();
         assertEquals(6, allTypes.length);
     }
 

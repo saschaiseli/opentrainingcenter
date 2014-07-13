@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import ch.opentrainingcenter.core.helper.RunType;
 import ch.opentrainingcenter.model.importer.IGpsFileModel;
 import ch.opentrainingcenter.model.importer.IGpsFileModelWrapper;
 import ch.opentrainingcenter.model.importer.internal.GpsFileModel;
@@ -34,6 +33,7 @@ import ch.opentrainingcenter.transfer.IHealth;
 import ch.opentrainingcenter.transfer.IPlanungWoche;
 import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
+import ch.opentrainingcenter.transfer.TrainingType;
 
 public final class ModelFactory {
 
@@ -76,8 +76,8 @@ public final class ModelFactory {
      */
     public static ISimpleTraining convertToSimpleTraining(final ITraining training) {
         final SimpleTraining simpleTraining = new SimpleTraining(training.getLaengeInMeter(), training.getDauer(), new Date(training.getDatum()), training
-                .getAverageHeartBeat(), training.getMaxHeartBeat(), training.getMaxSpeed(), RunType.NONE, training.getNote());
-        simpleTraining.setType(RunType.getRunType(training.getTrainingType().getId()));
+                .getAverageHeartBeat(), training.getMaxHeartBeat(), training.getMaxSpeed(), TrainingType.NONE, training.getNote());
+        simpleTraining.setType(TrainingType.getByIndex(training.getTrainingType().getIndex()));
         if (training.getWeather() != null) {
             simpleTraining.setWetter(Wetter.getRunType(training.getWeather().getId()));
         }
@@ -101,7 +101,7 @@ public final class ModelFactory {
     }
 
     public static ISimpleTraining createSimpleTraining(final double distanzInMeter, final double dauerInSekunden, final Date datum, final int avgHeartRate,
-            final int maxHeartRate, final double maxSpeed, final RunType type, final String note) {
+            final int maxHeartRate, final double maxSpeed, final TrainingType type, final String note) {
         return new SimpleTraining(distanzInMeter, dauerInSekunden, datum, avgHeartRate, maxHeartRate, maxSpeed, type, note);
     }
 

@@ -1,6 +1,6 @@
 package ch.opentrainingcenter.client.commands.runtype;
 
-import ch.opentrainingcenter.core.helper.RunType;
+import ch.opentrainingcenter.transfer.TrainingType;
 
 /**
  * Unbekannt.
@@ -10,7 +10,7 @@ public class UnknownJog extends ChangeRunType {
     public static final String ID = "ch.opentrainingcenter.client.commands.Unknown"; //$NON-NLS-1$
 
     @Override
-    public RunType getType() {
-        return RunType.NONE;
+    public TrainingType getType() {
+        return TrainingType.NONE;
     }
 }

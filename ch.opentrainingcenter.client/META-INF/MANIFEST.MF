@@ -28,7 +28,7 @@ Require-Bundle: ch.opentrainingcenter.core,
  jodatime,
  com.ibm.icu,
  org.eclipse.core.expressions
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Localization: plugin
 Export-Package: ch.opentrainingcenter.client,
  ch.opentrainingcenter.importer

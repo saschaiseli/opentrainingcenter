@@ -70,8 +70,8 @@ public class DatabaseAccess extends AbstractDatabaseAccess {
             } else if (message != null && message.contains("Wrong user name or password")) { //$NON-NLS-1$
                 LOG.error("Wrong user name or password"); //$NON-NLS-1$
                 result = DatabaseConnectionState.createState(Messages.DatabaseAccess_1, DBSTATE.CONFIG_PROBLEM);
-            } else if (message != null && message.contains("Tabelle x existiert nicht")) {
-                result = DatabaseConnectionState.createState("Datenbank existier nicht", DBSTATE.CREATE_DB);
+            } else if (message != null && message.contains("Tabelle x existiert nicht")) { //$NON-NLS-1$
+                result = DatabaseConnectionState.createState("Datenbank existier nicht", DBSTATE.CREATE_DB); //$NON-NLS-1$
             } else {
                 LOG.error(String.format("Fehler mit der Datenbank: %s", message), e); //$NON-NLS-1$
                 result = DatabaseConnectionState.createProblemState(NLS.bind(Messages.DatabaseAccess_2, message));

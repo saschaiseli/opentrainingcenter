@@ -2,8 +2,8 @@ package ch.opentrainingcenter.model.training;
 
 import java.util.Date;
 
-import ch.opentrainingcenter.core.helper.RunType;
 import ch.opentrainingcenter.model.strecke.StreckeModel;
+import ch.opentrainingcenter.transfer.TrainingType;
 
 public interface ISimpleTraining {
 
@@ -27,9 +27,9 @@ public interface ISimpleTraining {
 
     String getMaxSpeed();
 
-    RunType getType();
+    TrainingType getType();
 
-    void setType(RunType type);
+    void setType(TrainingType type);
 
     String getNote();
 

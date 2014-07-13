@@ -13,7 +13,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ch.opentrainingcenter.core.helper.DistanceHelper;
-import ch.opentrainingcenter.core.helper.RunType;
 import ch.opentrainingcenter.model.importer.IGpsFileModel;
 import ch.opentrainingcenter.model.importer.IGpsFileModelWrapper;
 import ch.opentrainingcenter.model.planing.IPlanungModel;
@@ -64,14 +63,14 @@ public class ModelFactoryTest {
 
     @Test
     public void testFullTraining() {
-        final RunType type = RunType.INT_INTERVALL;
+        final TrainingType type = TrainingType.INT_INTERVALL;
         final ISimpleTraining training = ModelFactory.createSimpleTraining(distanz, dauer, date, avgHeart, maxHeart, maxSpeed, type, null);
         assertTraining(training, type);
     }
 
     @Test
     public void testSimpleTrainingMitTyp() {
-        final RunType type = RunType.EXT_INTERVALL;
+        final TrainingType type = TrainingType.EXT_INTERVALL;
         final ISimpleTraining training = new SimpleTraining(overview.getLaengeInMeter(), overview.getDauer(), new Date(overview.getDatum()), overview
                 .getAverageHeartBeat(), overview.getMaxHeartBeat(), overview.getMaxSpeed(), type, "");
         assertTraining(training, type);
@@ -80,16 +79,16 @@ public class ModelFactoryTest {
     /**
      * Nur für tests
      */
-    protected static ISimpleTraining createSimpleTraining(final ITraining overview, final RunType runType, final String note) {
+    protected static ISimpleTraining createSimpleTraining(final ITraining overview, final TrainingType runType, final String note) {
         return new SimpleTraining(overview.getLaengeInMeter(), overview.getDauer(), new Date(overview.getDatum()), overview.getAverageHeartBeat(), overview
                 .getMaxHeartBeat(), overview.getMaxSpeed(), runType, note);
     }
 
     private void assertTraining(final ISimpleTraining training) {
-        assertTraining(training, RunType.getRunType(0));
+        assertTraining(training, TrainingType.getByIndex(0));
     }
 
-    private void assertTraining(final ISimpleTraining training, final RunType type) {
+    private void assertTraining(final ISimpleTraining training, final TrainingType type) {
         assertEquals("Distanz:", distanz, training.getDistanzInMeter(), 0.001);
         assertEquals("Dauer:", dauer, training.getDauerInSekunden(), 0.001);
         assertEquals("Datum:", date, training.getDatum());
@@ -103,10 +102,10 @@ public class ModelFactoryTest {
     public void testGpsFileModel() {
         final String fileName = "test.gmn";
         final IGpsFileModel model = ModelFactory.createGpsFileModel(fileName);
-        assertEquals(RunType.NONE, model.getTyp());
+        assertEquals(TrainingType.NONE, model.getTyp());
         assertEquals(true, model.isImportFile());
         assertEquals(fileName, model.getFileName());
-        assertEquals(RunType.NONE.getIndex(), model.getId());
+        assertEquals(TrainingType.NONE.getIndex(), model.getId());
     }
 
     @Test

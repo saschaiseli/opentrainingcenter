@@ -3,11 +3,11 @@ package ch.opentrainingcenter.model.training.internal;
 import java.util.Date;
 
 import ch.opentrainingcenter.core.helper.DistanceHelper;
-import ch.opentrainingcenter.core.helper.RunType;
 import ch.opentrainingcenter.core.helper.TimeHelper;
 import ch.opentrainingcenter.model.strecke.StreckeModel;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
 import ch.opentrainingcenter.model.training.Wetter;
+import ch.opentrainingcenter.transfer.TrainingType;
 
 public class SimpleTraining implements ISimpleTraining {
     private final double distanzInMeter;
@@ -20,14 +20,14 @@ public class SimpleTraining implements ISimpleTraining {
     private final String pace;
     private final String speed;
     private String note;
-    private RunType type;
+    private TrainingType type;
     private Wetter wetter;
     private StreckeModel strecke;
     private int upMeter;
     private int downMeter;
 
     public SimpleTraining(final double distanzInMeter, final double dauerInSekunden, final Date datum, final int avgHeartRate, final int maxHeartRate,
-            final double speed, final RunType type, final String note) {
+            final double speed, final TrainingType type, final String note) {
         this.distanzInMeter = distanzInMeter;
         this.avgHeartRate = avgHeartRate;
         this.maxHeartRate = maxHeartRate;
@@ -97,12 +97,12 @@ public class SimpleTraining implements ISimpleTraining {
     }
 
     @Override
-    public RunType getType() {
+    public TrainingType getType() {
         return type;
     }
 
     @Override
-    public void setType(final RunType type) {
+    public void setType(final TrainingType type) {
         this.type = type;
     }
 

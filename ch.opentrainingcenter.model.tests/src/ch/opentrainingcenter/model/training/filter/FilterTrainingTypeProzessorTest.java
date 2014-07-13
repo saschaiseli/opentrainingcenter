@@ -19,18 +19,18 @@
 
 package ch.opentrainingcenter.model.training.filter;
 
-import org.junit.Before;
-import org.junit.Test;
-
-import ch.opentrainingcenter.core.helper.RunType;
-import ch.opentrainingcenter.core.process.ElementProzessor;
-import ch.opentrainingcenter.model.training.ISimpleTraining;
-import ch.opentrainingcenter.model.training.filter.internal.FilterTrainingTypeProzessor;
-
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import ch.opentrainingcenter.core.process.ElementProzessor;
+import ch.opentrainingcenter.model.training.ISimpleTraining;
+import ch.opentrainingcenter.model.training.filter.internal.FilterTrainingTypeProzessor;
+import ch.opentrainingcenter.transfer.TrainingType;
 
 public class FilterTrainingTypeProzessorTest {
     private FilterTrainingTypeProzessor prozessor;
@@ -47,8 +47,8 @@ public class FilterTrainingTypeProzessorTest {
 
     @Test
     public void testOnNextDoNotFilter() {
-        prozessor = new FilterTrainingTypeProzessor(next, RunType.EXT_INTERVALL);
-        when(training.getType()).thenReturn(RunType.EXT_INTERVALL);
+        prozessor = new FilterTrainingTypeProzessor(next, TrainingType.EXT_INTERVALL);
+        when(training.getType()).thenReturn(TrainingType.EXT_INTERVALL);
 
         prozessor.onNext(training);
 
@@ -57,8 +57,8 @@ public class FilterTrainingTypeProzessorTest {
 
     @Test
     public void testOnNextDoFilter() {
-        prozessor = new FilterTrainingTypeProzessor(next, RunType.EXT_INTERVALL);
-        when(training.getType()).thenReturn(RunType.INT_INTERVALL);
+        prozessor = new FilterTrainingTypeProzessor(next, TrainingType.EXT_INTERVALL);
+        when(training.getType()).thenReturn(TrainingType.INT_INTERVALL);
 
         prozessor.onNext(training);
 
@@ -68,7 +68,7 @@ public class FilterTrainingTypeProzessorTest {
     @Test
     public void testOnNextDoFilterWithNullType() {
         prozessor = new FilterTrainingTypeProzessor(next, null);
-        when(training.getType()).thenReturn(RunType.INT_INTERVALL);
+        when(training.getType()).thenReturn(TrainingType.INT_INTERVALL);
 
         prozessor.onNext(training);
 

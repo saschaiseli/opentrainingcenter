@@ -19,16 +19,16 @@
 
 package ch.opentrainingcenter.model.training.filter.internal;
 
-import ch.opentrainingcenter.core.helper.RunType;
 import ch.opentrainingcenter.core.process.ElementProzessor;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
+import ch.opentrainingcenter.transfer.TrainingType;
 
 public class FilterTrainingTypeProzessor implements ElementProzessor<ISimpleTraining> {
 
-    private final RunType runType;
+    private final TrainingType runType;
     private final ElementProzessor<ISimpleTraining> next;
 
-    public FilterTrainingTypeProzessor(final ElementProzessor<ISimpleTraining> next, final RunType runType) {
+    public FilterTrainingTypeProzessor(final ElementProzessor<ISimpleTraining> next, final TrainingType runType) {
         this.next = next;
         this.runType = runType;
     }

@@ -1,5 +1,10 @@
 package ch.opentrainingcenter.model.planing;
 
+import static ch.opentrainingcenter.transfer.TrainingType.EXT_INTERVALL;
+import static ch.opentrainingcenter.transfer.TrainingType.INT_INTERVALL;
+import static ch.opentrainingcenter.transfer.TrainingType.LONG_JOG;
+import static ch.opentrainingcenter.transfer.TrainingType.NONE;
+import static ch.opentrainingcenter.transfer.TrainingType.getByIndex;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
@@ -9,7 +14,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import ch.opentrainingcenter.core.helper.RunType;
 import ch.opentrainingcenter.model.planing.internal.PastPlanungImpl;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IPlanungWoche;
@@ -58,7 +62,7 @@ public class PastPlanungTest {
     @Test
     public void testExtInterval() {
 
-        final ITraining recordA = createRecord(100001.0d, RunType.EXT_INTERVALL);
+        final ITraining recordA = createRecord(100001.0d, EXT_INTERVALL);
         effective.add(recordA);
 
         planung = new PastPlanungImpl(pl, effective);
@@ -72,8 +76,8 @@ public class PastPlanungTest {
     @Test
     public void testIntInterval() {
 
-        final ITraining recordA = createRecord(100001.0d, RunType.EXT_INTERVALL);
-        final ITraining recordB = createRecord(200001.0d, RunType.EXT_INTERVALL);
+        final ITraining recordA = createRecord(100001.0d, EXT_INTERVALL);
+        final ITraining recordB = createRecord(200001.0d, EXT_INTERVALL);
         effective.add(recordA);
         effective.add(recordB);
 
@@ -88,8 +92,8 @@ public class PastPlanungTest {
     @Test
     public void testKeinInterval() {
 
-        final ITraining recordA = createRecord(100001.0d, RunType.LONG_JOG);
-        final ITraining recordB = createRecord(200001.0d, RunType.NONE);
+        final ITraining recordA = createRecord(100001.0d, LONG_JOG);
+        final ITraining recordB = createRecord(200001.0d, NONE);
         effective.add(recordA);
         effective.add(recordB);
 
@@ -104,8 +108,8 @@ public class PastPlanungTest {
     @Test
     public void testExtUndIntInterval() {
 
-        final ITraining recordA = createRecord(100001.0d, RunType.EXT_INTERVALL);
-        final ITraining recordB = createRecord(200001.0d, RunType.INT_INTERVALL);
+        final ITraining recordA = createRecord(100001.0d, EXT_INTERVALL);
+        final ITraining recordB = createRecord(200001.0d, INT_INTERVALL);
         effective.add(recordA);
         effective.add(recordB);
 
@@ -120,8 +124,8 @@ public class PastPlanungTest {
     @Test
     public void testLaengerLauf() {
 
-        final ITraining recordA = createRecord(100001.0d, RunType.EXT_INTERVALL);
-        final ITraining recordB = createRecord(200001.0d, RunType.INT_INTERVALL);
+        final ITraining recordA = createRecord(100001.0d, EXT_INTERVALL);
+        final ITraining recordB = createRecord(200001.0d, INT_INTERVALL);
         effective.add(recordB);
         effective.add(recordA);
 
@@ -136,10 +140,10 @@ public class PastPlanungTest {
     @Test
     public void testRechnenFehlerMitRunden() {
 
-        final ITraining recordA = createRecord(10200.0d, RunType.EXT_INTERVALL);
-        final ITraining recordB = createRecord(20300.0d, RunType.INT_INTERVALL);
-        final ITraining recordC = createRecord(20400.0d, RunType.INT_INTERVALL);
-        final ITraining recordD = createRecord(20400.0d, RunType.INT_INTERVALL);
+        final ITraining recordA = createRecord(10200.0d, EXT_INTERVALL);
+        final ITraining recordB = createRecord(20300.0d, INT_INTERVALL);
+        final ITraining recordC = createRecord(20400.0d, INT_INTERVALL);
+        final ITraining recordD = createRecord(20400.0d, INT_INTERVALL);
 
         effective.add(recordA);
         effective.add(recordB);
@@ -154,9 +158,9 @@ public class PastPlanungTest {
 
     @Test
     public void testSuccess() {
-        final ITraining recordA = createRecord(100001.0d, RunType.EXT_INTERVALL);
-        final ITraining recordB = createRecord(100001.0d, RunType.EXT_INTERVALL);
-        final ITraining recordC = createRecord(100001.0d, RunType.EXT_INTERVALL);
+        final ITraining recordA = createRecord(100001.0d, EXT_INTERVALL);
+        final ITraining recordB = createRecord(100001.0d, EXT_INTERVALL);
+        final ITraining recordC = createRecord(100001.0d, EXT_INTERVALL);
         effective.add(recordA);
         effective.add(recordB);
         effective.add(recordC);
@@ -170,9 +174,9 @@ public class PastPlanungTest {
 
     @Test
     public void testNotSuccess() {
-        final ITraining recordA = createRecord(50001.0d, RunType.EXT_INTERVALL);
-        final ITraining recordB = createRecord(50001.0d, RunType.EXT_INTERVALL);
-        final ITraining recordC = createRecord(50001.0d, RunType.EXT_INTERVALL);
+        final ITraining recordA = createRecord(50001.0d, EXT_INTERVALL);
+        final ITraining recordB = createRecord(50001.0d, EXT_INTERVALL);
+        final ITraining recordC = createRecord(50001.0d, EXT_INTERVALL);
         effective.add(recordA);
         effective.add(recordB);
         effective.add(recordC);
@@ -186,9 +190,9 @@ public class PastPlanungTest {
 
     @Test
     public void testNotSuccess2() {
-        final ITraining recordA = createRecord(100001.0d, RunType.LONG_JOG);
-        final ITraining recordB = createRecord(100001.0d, RunType.LONG_JOG);
-        final ITraining recordC = createRecord(100001.0d, RunType.LONG_JOG);
+        final ITraining recordA = createRecord(100001.0d, LONG_JOG);
+        final ITraining recordB = createRecord(100001.0d, LONG_JOG);
+        final ITraining recordC = createRecord(100001.0d, LONG_JOG);
         effective.add(recordA);
         effective.add(recordB);
         effective.add(recordC);
@@ -202,9 +206,9 @@ public class PastPlanungTest {
 
     @Test
     public void testNotSuccess3() {
-        final ITraining recordA = createRecord(1001.0d, RunType.LONG_JOG);
-        final ITraining recordB = createRecord(1001.0d, RunType.EXT_INTERVALL);
-        final ITraining recordC = createRecord(1001.0d, RunType.LONG_JOG);
+        final ITraining recordA = createRecord(1001.0d, LONG_JOG);
+        final ITraining recordB = createRecord(1001.0d, EXT_INTERVALL);
+        final ITraining recordC = createRecord(1001.0d, LONG_JOG);
         effective.add(recordA);
         effective.add(recordB);
         effective.add(recordC);
@@ -218,9 +222,9 @@ public class PastPlanungTest {
 
     @Test
     public void testNoPlanung() {
-        final ITraining recordA = createRecord(1001.0d, RunType.LONG_JOG);
-        final ITraining recordB = createRecord(1001.0d, RunType.LONG_JOG);
-        final ITraining recordC = createRecord(1001.0d, RunType.LONG_JOG);
+        final ITraining recordA = createRecord(1001.0d, LONG_JOG);
+        final ITraining recordB = createRecord(1001.0d, LONG_JOG);
+        final ITraining recordC = createRecord(1001.0d, LONG_JOG);
         effective.add(recordA);
         effective.add(recordB);
         effective.add(recordC);
@@ -234,10 +238,10 @@ public class PastPlanungTest {
         assertEquals("Keine Planung, also alles erfolgreich", PlanungStatus.UNBEKANNT, planung.isSuccess());
     }
 
-    private ITraining createRecord(final double km, final RunType t) {
+    private ITraining createRecord(final double km, final TrainingType t) {
         final ITraining recordA = Mockito.mock(ITraining.class);
         Mockito.when(recordA.getLaengeInMeter()).thenReturn(km);
-        final TrainingType type = TrainingType.getById(t.getIndex());
+        final TrainingType type = getByIndex(t.getIndex());
         Mockito.when(recordA.getTrainingType()).thenReturn(type);
         return recordA;
     }

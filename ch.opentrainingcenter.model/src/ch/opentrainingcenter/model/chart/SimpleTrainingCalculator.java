@@ -7,9 +7,9 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import ch.opentrainingcenter.core.helper.RunType;
 import ch.opentrainingcenter.model.ModelFactory;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
+import ch.opentrainingcenter.transfer.TrainingType;
 
 public final class SimpleTrainingCalculator {
 
@@ -30,7 +30,7 @@ public final class SimpleTrainingCalculator {
      *  Output:  Jedes ISimpleTraining der Liste ist die Summe der Trainings pro Monat mit dem Datum des letzten Laufes
      * </pre>
      */
-    public static List<ISimpleTraining> createSum(final Map<Integer, Map<Integer, List<ISimpleTraining>>> trainings, final RunType filter) {
+    public static List<ISimpleTraining> createSum(final Map<Integer, Map<Integer, List<ISimpleTraining>>> trainings, final TrainingType filter) {
         final List<ISimpleTraining> result = new ArrayList<ISimpleTraining>();
         for (final Map.Entry<Integer, Map<Integer, List<ISimpleTraining>>> trainingProJahr : trainings.entrySet()) {
             for (final Map.Entry<Integer, List<ISimpleTraining>> trainingsProWocheOderMonat : trainingProJahr.getValue().entrySet()) {
@@ -41,7 +41,7 @@ public final class SimpleTrainingCalculator {
     }
 
     private static void compressTrainings(final List<ISimpleTraining> result, final Map.Entry<Integer, List<ISimpleTraining>> trainingsProWocheOderMonat,
-            final RunType filter) {
+            final TrainingType filter) {
         double distance = 0;
         double seconds = 0;
         int heartRate = 0;
@@ -86,7 +86,7 @@ public final class SimpleTrainingCalculator {
      * @return true wenn filter passt oder nicht gefiltert werden soll,
      *         andernfalls false.
      */
-    private static boolean matchFilter(final RunType filter, final boolean filterResults, final ISimpleTraining training) {
+    private static boolean matchFilter(final TrainingType filter, final boolean filterResults, final ISimpleTraining training) {
         if (filterResults) {
             return training.getType().equals(filter);
         } else {
