@@ -17,10 +17,12 @@ import ch.opentrainingcenter.core.db.IDatabaseConnection;
 public class DatabaseServiceTest {
 
     private DatabaseService service;
+    private final String dbName = "dbName";
 
     @Before
     public void setUp() {
         service = null;
+
     }
 
     @Test
@@ -32,7 +34,7 @@ public class DatabaseServiceTest {
     @Test(expected = IllegalArgumentException.class)
     public void testInitOhneAdminDBExisitertNicht() {
         service = DatabaseService.getInstance();
-        service.init("dbName", "url", "user", "pw", null, null, null);
+        service.init(dbName, "url", "user", "pw", null, null, null);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -48,7 +50,7 @@ public class DatabaseServiceTest {
         final IDatabaseConnection databaseConnection = mock(IDatabaseConnection.class);
         when(databaseConnection.getDriver()).thenReturn("junit_driver");
         when(databaseConnection.getDialect()).thenReturn("junit_dialect");
-        final String dbName = "junit";
+
         service.getAvailableConnections().put(dbName, databaseConnection);
 
         service.init(dbName, "url", "sa", "", null, null, null);
@@ -63,7 +65,6 @@ public class DatabaseServiceTest {
         final IDatabaseConnection databaseConnection = mock(IDatabaseConnection.class);
         when(databaseConnection.getDriver()).thenReturn("junit_driver");
         when(databaseConnection.getDialect()).thenReturn("junit_dialect");
-        final String dbName = "junit";
         service.getAvailableConnections().put(dbName, databaseConnection);
 
         service.init(dbName, "url", "sa", "", "urlAdmin", "adminUser", "");

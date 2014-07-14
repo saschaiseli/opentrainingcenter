@@ -210,6 +210,17 @@ public class TimeHelperTest {
     }
 
     @Test
+    public void testConvertDateToString_Millis() {
+        final DateTime dateTime = new DateTime(2013, 1, 13, 0, 0);
+        final Date datum = dateTime.toDate();
+
+        final Calendar calendar = Calendar.getInstance(Locale.GERMAN);
+        calendar.setTime(datum);
+        final String converted = TimeHelper.convertDateToString(datum.getTime());
+        assertEquals("13.01.2013", converted);
+    }
+
+    @Test
     public void testConvertDateToStringMitTag() {
         final DateTime dateTime = new DateTime(2013, 1, 13, 0, 0);
         final Date datum = dateTime.toDate();

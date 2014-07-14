@@ -73,7 +73,7 @@ public class FileCopyTest {
         final IConvert2Tcx converter = Mockito.mock(IConvert2Tcx.class);
         converters.put("txt", converter);
         final FilenameFilter filter = new GpsFileNameFilter(converters);
-        final String destinationFolder = sourceFolder + File.separator + "junit";
+        final String destinationFolder = sourceFolder + File.separator + "junit" + (int) Math.random() * 100;
         fileCopy.copyFiles(sourceFolder, destinationFolder, filter);
 
         assertFileCopy(new File(destinationFolder, source.getName()));
@@ -88,5 +88,6 @@ public class FileCopyTest {
         }
         reader.close();
         assertEquals("Text '" + HELLO_FROM_JUNIT + "' sollte kopiert worden sein", HELLO_FROM_JUNIT, str.toString());//$NON-NLS-1$//$NON-NLS-2$
+        file.deleteOnExit();
     }
 }
