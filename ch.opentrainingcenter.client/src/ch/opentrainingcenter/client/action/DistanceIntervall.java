@@ -16,7 +16,7 @@ import ch.opentrainingcenter.model.training.Intervall;
  * Definition der Distanz Kategorien.
  * 
  */
-public class DistanceIntervall {
+class DistanceIntervall {
 
     private static final int KILOMETER_IN_METER = 1000;
 
@@ -32,7 +32,7 @@ public class DistanceIntervall {
         PACES.put(Intervall.PLUS25, new ArrayList<Pair<Long, Double>>());
     }
 
-    public void addPace(final long date, final double pace, final double distanceInMeter) {
+    void addPace(final long date, final double pace, final double distanceInMeter) {
         final int distanceInKilometer = (int) distanceInMeter / KILOMETER_IN_METER;
         if (distanceInKilometer >= Intervall.PLUS25.getVon()) {
             PACES.get(Intervall.PLUS25).add(new Pair<Long, Double>(date, pace));
@@ -47,7 +47,7 @@ public class DistanceIntervall {
         }
     }
 
-    public Pair<Long, Double> getMax(final Intervall intervall) {
+    Pair<Long, Double> getMax(final Intervall intervall) {
         final List<Pair<Long, Double>> list = PACES.get(intervall);
         if (list == null || list.isEmpty()) {
             LOGGER.info("Keine pace im intervall: " + intervall); //$NON-NLS-1$

@@ -18,7 +18,7 @@ public final class ScatterDataSupport {
      * Pairs. Wobei der Key die Herzfrequenz ist und der Value die Anzahl des
      * Vorkommens dieser Herzfrequenz im Training.
      */
-    public static float[][] populateHeartData(final ITraining training) {
+    static float[][] populateHeartData(final ITraining training) {
         final Map<Integer, Integer> map = populate(training);
         final float[][] result = new float[2][map.size()];
         int i = 0;

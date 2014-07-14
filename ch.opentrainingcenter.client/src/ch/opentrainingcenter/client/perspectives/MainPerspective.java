@@ -22,7 +22,7 @@ public class MainPerspective implements IPerspectiveFactory {
 
     public static final String ID = "ch.opentrainingcenter.client.perspective"; //$NON-NLS-1$
 
-    static final String MULTI_VIEW = ":*"; //$NON-NLS-1$
+    private static final String MULTI_VIEW = ":*"; //$NON-NLS-1$
 
     @Override
     public void createInitialLayout(final IPageLayout layout) {
