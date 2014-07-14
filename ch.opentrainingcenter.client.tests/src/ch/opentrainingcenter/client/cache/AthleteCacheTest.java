@@ -1,14 +1,16 @@
 package ch.opentrainingcenter.client.cache;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
-import static org.junit.Assert.assertEquals;
 
 @SuppressWarnings("nls")
 public class AthleteCacheTest {
@@ -29,7 +31,7 @@ public class AthleteCacheTest {
     @Test
     public void testGefunden() {
         final String name = "junit";
-        final IAthlete athlete = CommonTransferFactory.createAthlete(name, 200);
+        final IAthlete athlete = createAthlete(name, 200);
 
         final List<IAthlete> models = new ArrayList<>();
         models.add(athlete);
@@ -37,5 +39,9 @@ public class AthleteCacheTest {
         cache.addAll(models);
 
         assertEquals("Athlete gefunden...", athlete, cache.get(name));
+    }
+
+    private static IAthlete createAthlete(final String name, final Integer maxHeartBeat) {
+        return CommonTransferFactory.createAthlete(name, DateTime.now().toDate(), maxHeartBeat);
     }
 }

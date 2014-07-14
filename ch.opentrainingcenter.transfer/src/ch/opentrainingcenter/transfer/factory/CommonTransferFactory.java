@@ -2,8 +2,6 @@ package ch.opentrainingcenter.transfer.factory;
 
 import java.util.Date;
 
-import org.joda.time.DateTime;
-
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IHealth;
@@ -28,10 +26,6 @@ public final class CommonTransferFactory {
 
     private CommonTransferFactory() {
 
-    }
-
-    public static IAthlete createAthlete(final String name, final Integer maxHeartBeat) {
-        return createAthlete(name, DateTime.now().toDate(), maxHeartBeat);
     }
 
     public static IAthlete createAthlete(final String name, final Date birthday, final Integer maxHeartBeat) {

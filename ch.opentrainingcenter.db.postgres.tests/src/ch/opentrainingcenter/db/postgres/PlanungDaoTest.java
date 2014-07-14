@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -24,8 +25,8 @@ public class PlanungDaoTest extends PostgresDatabaseTestBase {
     @Before
     public void setUp() {
         planungDao = new PlanungDao(connectionConfig);
-        athlete = CommonTransferFactory.createAthlete("junit", 220);
-        athleteOther = CommonTransferFactory.createAthlete("junit2", 2203);
+        athlete = CommonTransferFactory.createAthlete("junit", DateTime.now().toDate(), 220);
+        athleteOther = CommonTransferFactory.createAthlete("junit2", DateTime.now().toDate(), 2203);
 
         final AthleteDao athleteDao = new AthleteDao(connectionConfig);
         athleteDao.save(athlete);

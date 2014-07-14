@@ -1,8 +1,14 @@
 package ch.opentrainingcenter.core.cache;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -12,10 +18,6 @@ import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.IWeather;
 import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 @SuppressWarnings("nls")
 public class TrainingCacheTest {
@@ -24,7 +26,7 @@ public class TrainingCacheTest {
 
     @Before
     public void before() {
-        athlete = CommonTransferFactory.createAthlete("name", 42);
+        athlete = CommonTransferFactory.createAthlete("name", DateTime.now().toDate(), 42);
     }
 
     @Test

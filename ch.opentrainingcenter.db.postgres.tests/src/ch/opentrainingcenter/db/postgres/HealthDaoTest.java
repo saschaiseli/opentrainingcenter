@@ -29,9 +29,9 @@ public class HealthDaoTest extends PostgresDatabaseTestBase {
     public void setUp() {
         healthDao = new HealthDao(connectionConfig);
         athleteDao = new AthleteDao(connectionConfig);
-        athlete = CommonTransferFactory.createAthlete("healthdao", 220);
         athleteDao.save(athlete);
         now = DateTime.now().toDate();
+        athlete = CommonTransferFactory.createAthlete("healthdao", DateTime.now().toDate(), 220);
     }
 
     @Test

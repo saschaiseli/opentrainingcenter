@@ -29,7 +29,7 @@ public class HealthDaoTest extends DatabaseTestBase {
     public void setUp() {
         healthDao = new HealthDao(connectionConfig);
         athleteDao = new AthleteDao(connectionConfig);
-        athlete = CommonTransferFactory.createAthlete("healthdao", 220);
+        athlete = CommonTransferFactory.createAthlete("healthdao", DateTime.now().toDate(), 220);
         athleteDao.save(athlete);
         now = DateTime.now().toDate();
     }

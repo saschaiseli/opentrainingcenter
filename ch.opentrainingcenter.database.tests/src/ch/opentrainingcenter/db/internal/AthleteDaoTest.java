@@ -34,7 +34,7 @@ public class AthleteDaoTest extends DatabaseTestBase {
     @Test
     public void testSave() {
 
-        final IAthlete athlete = CommonTransferFactory.createAthlete("junit", 300);
+        final IAthlete athlete = createAthlete("junit", 300);
         final int id = athleteDao.save(athlete);
 
         final IAthlete result = athleteDao.getAthlete(id);
@@ -44,7 +44,7 @@ public class AthleteDaoTest extends DatabaseTestBase {
     @Test
     public void testUpdatePuls() {
 
-        final IAthlete athlete = CommonTransferFactory.createAthlete("junit", 300);
+        final IAthlete athlete = createAthlete("junit", 300);
 
         athleteDao.save(athlete);
 
@@ -57,7 +57,7 @@ public class AthleteDaoTest extends DatabaseTestBase {
 
     @Test
     public void testGetMitHealth() {
-        final IAthlete athlete = CommonTransferFactory.createAthlete("junit", 300);
+        final IAthlete athlete = createAthlete("junit", 300);
         final IHealth h = CommonTransferFactory.createHealth(athlete, 12.0, 13, now);
 
         athleteDao.save(athlete);
@@ -91,5 +91,9 @@ public class AthleteDaoTest extends DatabaseTestBase {
     public void testGetByNameNotFound() {
         final IAthlete athlete = athleteDao.getAthlete("1q1q1q1q1q1q1");
         assertNull("Athlete nicht gefunden", athlete);
+    }
+
+    private static IAthlete createAthlete(final String name, final Integer maxHeartBeat) {
+        return CommonTransferFactory.createAthlete(name, DateTime.now().toDate(), maxHeartBeat);
     }
 }

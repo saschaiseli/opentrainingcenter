@@ -30,23 +30,6 @@ public class Athlete implements java.io.Serializable, IAthlete {
     public Athlete() {
     }
 
-    public Athlete(final int id, final Date birthday) {
-        this.id = id;
-        this.birthday = birthday;
-    }
-
-    public Athlete(final int id, final String name, final Date birthday, final Integer maxheartrate, final Set<IRoute> routes, final Set<IHealth> healths,
-            final Set<ITraining> trainings, final Set<IPlanungWoche> planungwoches) {
-        this.id = id;
-        this.name = name;
-        this.birthday = birthday;
-        this.maxheartrate = maxheartrate;
-        this.routes = routes;
-        this.healths = healths;
-        this.trainings = trainings;
-        this.planungwoches = planungwoches;
-    }
-
     public Athlete(final String name, final Date birthday, final Integer maxHeartBeat) {
         this.name = name;
         this.birthday = birthday;

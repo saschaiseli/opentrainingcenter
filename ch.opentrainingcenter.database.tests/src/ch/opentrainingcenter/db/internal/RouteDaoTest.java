@@ -42,7 +42,7 @@ public class RouteDaoTest extends DatabaseTestBase {
         routeDao = new RouteDao(connectionConfig);
 
         final AthleteDao athleteDao = new AthleteDao(connectionConfig);
-        athlete = CommonTransferFactory.createAthlete("junit", 220);
+        athlete = CommonTransferFactory.createAthlete("junit", DateTime.now().toDate(), 220);
         athleteDao.save(athlete);
 
         now = DateTime.now().getMillis();

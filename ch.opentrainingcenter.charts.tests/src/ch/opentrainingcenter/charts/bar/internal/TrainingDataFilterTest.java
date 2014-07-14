@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Matchers;
@@ -71,7 +72,7 @@ public class TrainingDataFilterTest {
                 return trainingsProTag;
             }
         }, access, athlete);
-        athlete = CommonTransferFactory.createAthlete("name", 42);
+        athlete = createAthlete("name", 42);
     }
 
     @Test
@@ -306,5 +307,9 @@ public class TrainingDataFilterTest {
         auf.filter(TrainingType.LONG_JOG);
         // assert
         assertEquals(EXPECTED + TimeHelper.convertDateToString(date, false) + " " + "1042.0[m] LONG_JOG\n", auf.toString());
+    }
+
+    private static IAthlete createAthlete(final String name, final Integer maxHeartBeat) {
+        return CommonTransferFactory.createAthlete(name, DateTime.now().toDate(), maxHeartBeat);
     }
 }
