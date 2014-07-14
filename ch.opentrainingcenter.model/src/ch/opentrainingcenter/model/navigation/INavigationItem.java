@@ -14,6 +14,10 @@ public interface INavigationItem extends Comparable<INavigationItem> {
      */
     String getName();
 
+    String getTooltip();
+
+    double getLaengeInMeter();
+
     Date getDate();
 
     /**

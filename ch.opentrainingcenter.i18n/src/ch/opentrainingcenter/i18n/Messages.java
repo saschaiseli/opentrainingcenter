@@ -217,6 +217,12 @@ public final class Messages extends NLS {
     public static String MapConverter0;
     public static String MapConverter1;
     public static String MonthlyOverview_0;
+
+    public static String NAVIGATION_TOOLTIP_KW;
+    public static String NAVIGATION_TOOLTIP_OTHER;
+    public static String NAVIGATION_TOOLTIP_RUNNING;
+    public static String NAVIGATION_TOOLTIP_RUNNING_RUNDEN;
+
     public static String NavigationParent_0;
     public static String NavigationParent_1;
     public static String NavigationView0;

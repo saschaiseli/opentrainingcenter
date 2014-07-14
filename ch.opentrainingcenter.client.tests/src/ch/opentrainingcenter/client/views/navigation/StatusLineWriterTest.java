@@ -38,6 +38,16 @@ public class StatusLineWriterTest {
         public String getImage() {
             return null;
         }
+
+        @Override
+        public String getTooltip() {
+            return null;
+        }
+
+        @Override
+        public double getLaengeInMeter() {
+            return 0;
+        }
     }
 
     @Before

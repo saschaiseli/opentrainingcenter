@@ -33,4 +33,14 @@ public class ConcreteHealth extends HealthDecorator implements INavigationItem {
     public int compareTo(final INavigationItem other) {
         return other.getDate().compareTo(getDate());
     }
+
+    @Override
+    public String getTooltip() {
+        return null;
+    }
+
+    @Override
+    public double getLaengeInMeter() {
+        return 0;
+    }
 }

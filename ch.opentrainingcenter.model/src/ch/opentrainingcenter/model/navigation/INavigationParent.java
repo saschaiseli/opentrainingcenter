@@ -2,10 +2,11 @@ package ch.opentrainingcenter.model.navigation;
 
 import java.util.List;
 
-
 public interface INavigationParent {
 
     String getName();
+
+    String getTooltip();
 
     /**
      * @return eine sortierte Liste. Der neuste Eintrag erscheint als erstes.

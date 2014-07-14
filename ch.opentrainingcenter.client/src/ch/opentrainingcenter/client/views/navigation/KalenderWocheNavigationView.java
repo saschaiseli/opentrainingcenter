@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
@@ -117,6 +118,7 @@ public class KalenderWocheNavigationView extends ViewPart {
         viewer.setComparer(new NavigationElementComparer());
         viewer.setUseHashlookup(true);
         viewer.setInput(treeModel);
+        ColumnViewerToolTipSupport.enableFor(viewer);
 
         final MenuManager menuManager = new MenuManager("KontextMenu"); //$NON-NLS-1$
         final IWorkbenchPartSite site = getSite();

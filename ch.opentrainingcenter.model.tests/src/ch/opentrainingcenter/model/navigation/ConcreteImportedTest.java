@@ -6,15 +6,20 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import org.eclipse.osgi.util.NLS;
 import org.joda.time.DateTimeZone;
 import org.junit.Before;
 import org.junit.Test;
 
+import ch.opentrainingcenter.i18n.Messages;
+import ch.opentrainingcenter.transfer.ILapInfo;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.Sport;
 import ch.opentrainingcenter.transfer.TrainingType;
@@ -42,7 +47,68 @@ public class ConcreteImportedTest {
 
         final String result = imp.getName();
 
-        assertEquals("04.01.2012 13:22:59", result);
+        assertEquals("04.01.2012", result);
+    }
+
+    @Test
+    public void testTooltipRunning() {
+        final Calendar cal = Calendar.getInstance(Locale.getDefault());
+        cal.set(2012, 0, 4, 13, 22, 59);
+
+        final ITraining imported = mock(ITraining.class);
+        when(imported.getDatum()).thenReturn(cal.getTime().getTime());
+        when(imported.getSport()).thenReturn(Sport.RUNNING);
+        when(imported.getLaengeInMeter()).thenReturn(12345.6789);
+        final List<ILapInfo> lapInfos = new ArrayList<>();
+        final ILapInfo lapInfo = mock(ILapInfo.class);
+        lapInfos.add(lapInfo);
+        when(imported.getLapInfos()).thenReturn(lapInfos);
+        final ConcreteImported imp = new ConcreteImported(imported);
+
+        final String result = imp.getTooltip();
+
+        assertEquals(NLS.bind(Messages.NAVIGATION_TOOLTIP_RUNNING, "04.01.2012 13:22:59", "12.346"), result);
+    }
+
+    @Test
+    public void testTooltipRunningRunden() {
+        final Calendar cal = Calendar.getInstance(Locale.getDefault());
+        cal.set(2012, 0, 4, 13, 22, 59);
+
+        final ITraining imported = mock(ITraining.class);
+        when(imported.getDatum()).thenReturn(cal.getTime().getTime());
+        when(imported.getSport()).thenReturn(Sport.RUNNING);
+        when(imported.getLaengeInMeter()).thenReturn(12345.6789);
+        final List<ILapInfo> lapInfos = new ArrayList<>();
+        final ILapInfo lapInfo = mock(ILapInfo.class);
+        lapInfos.add(lapInfo);
+        lapInfos.add(lapInfo);
+        when(imported.getLapInfos()).thenReturn(lapInfos);
+        final ConcreteImported imp = new ConcreteImported(imported);
+
+        final String result = imp.getTooltip();
+
+        assertEquals(NLS.bind(Messages.NAVIGATION_TOOLTIP_RUNNING_RUNDEN, new Object[] { "04.01.2012 13:22:59", "12.346", "2" }), result);
+    }
+
+    @Test
+    public void testTooltipOTHER() {
+        final Calendar cal = Calendar.getInstance(Locale.getDefault());
+        cal.set(2012, 0, 4, 13, 22, 59);
+
+        final ITraining imported = mock(ITraining.class);
+        when(imported.getDatum()).thenReturn(cal.getTime().getTime());
+        when(imported.getSport()).thenReturn(Sport.BIKING);
+        when(imported.getLaengeInMeter()).thenReturn(12345.6789);
+        final List<ILapInfo> lapInfos = new ArrayList<>();
+        final ILapInfo lapInfo = mock(ILapInfo.class);
+        lapInfos.add(lapInfo);
+        when(imported.getLapInfos()).thenReturn(lapInfos);
+        final ConcreteImported imp = new ConcreteImported(imported);
+
+        final String result = imp.getTooltip();
+
+        assertEquals(NLS.bind(Messages.NAVIGATION_TOOLTIP_OTHER, "04.01.2012 13:22:59", "12.346"), result);
     }
 
     @Test

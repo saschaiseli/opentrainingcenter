@@ -3,14 +3,18 @@ package ch.opentrainingcenter.model.navigation;
 import java.util.Date;
 import java.util.List;
 
+import org.eclipse.osgi.util.NLS;
+
+import ch.opentrainingcenter.core.helper.DistanceHelper;
 import ch.opentrainingcenter.core.helper.TimeHelper;
+import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.transfer.ILapInfo;
 import ch.opentrainingcenter.transfer.ITrackPointProperty;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.IWeather;
 import ch.opentrainingcenter.transfer.Sport;
 
-public class ConcreteImported extends ImportedDecorator implements INavigationItem, ITraining {
+public class ConcreteImported extends ImportedDecorator implements INavigationItem {
 
     public ConcreteImported(final ITraining training) {
         super(training);
@@ -22,7 +26,24 @@ public class ConcreteImported extends ImportedDecorator implements INavigationIt
 
     @Override
     public String getName() {
-        return TimeHelper.convertDateToString(new Date(training.getDatum()), false);
+        return TimeHelper.convertDateToString(new Date(training.getDatum()));
+    }
+
+    @Override
+    public String getTooltip() {
+        final String tooltip;
+        final String datum = TimeHelper.convertDateToString(new Date(training.getDatum()), false);
+        final String distanz = DistanceHelper.roundDistanceFromMeterToKm(training.getLaengeInMeter());
+        if (Sport.RUNNING.equals(training.getSport())) {
+            if (training.getLapInfos().size() > 1) {
+                tooltip = NLS.bind(Messages.NAVIGATION_TOOLTIP_RUNNING_RUNDEN, new Object[] { datum, distanz, Integer.valueOf(training.getLapInfos().size()) });
+            } else {
+                tooltip = NLS.bind(Messages.NAVIGATION_TOOLTIP_RUNNING, datum, distanz);
+            }
+        } else {
+            tooltip = NLS.bind(Messages.NAVIGATION_TOOLTIP_OTHER, datum, distanz);
+        }
+        return tooltip;
     }
 
     @Override
