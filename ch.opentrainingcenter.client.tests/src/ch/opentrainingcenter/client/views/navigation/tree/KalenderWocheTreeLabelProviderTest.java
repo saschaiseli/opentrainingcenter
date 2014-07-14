@@ -1,6 +1,9 @@
 package ch.opentrainingcenter.client.views.navigation.tree;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -13,6 +16,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import ch.opentrainingcenter.model.ModelFactory;
+import ch.opentrainingcenter.model.navigation.ConcreteImported;
 import ch.opentrainingcenter.model.navigation.INavigationItem;
 import ch.opentrainingcenter.model.navigation.INavigationParent;
 import ch.opentrainingcenter.transfer.IHealth;
@@ -65,6 +69,43 @@ public class KalenderWocheTreeLabelProviderTest {
 
         final String result = provider.getText(item);
         assertEquals("Das Jahr wird dargestellt", "25.12.2013", result);
+    }
+
+    @Test
+    public void testGetTooltip_Jahr() {
+        final String result = provider.getToolTipText(2014);
+        assertNull("Das Jahr hat keinen Tooltip", result);
+    }
+
+    @Test
+    public void testGetTooltip_INavigationItem() {
+        final Calendar cal = Calendar.getInstance(Locale.GERMAN);
+        cal.set(2013, 11, 25);
+        final ConcreteImported item = mock(ConcreteImported.class);
+        final String tooltip = "tooltip";
+        when(item.getTooltip()).thenReturn(tooltip);
+
+        final String result = provider.getToolTipText(item);
+
+        assertEquals(tooltip, result);
+    }
+
+    @Test
+    public void testGetTooltip_NavigationParent() {
+        final Calendar cal = Calendar.getInstance(Locale.GERMAN);
+        cal.set(2013, 11, 25);
+        final INavigationParent item = mock(INavigationParent.class);
+        final String tooltip = "tooltip";
+        when(item.getTooltip()).thenReturn(tooltip);
+
+        final String result = provider.getToolTipText(item);
+
+        assertEquals(tooltip, result);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetTooltip_Other() {
+        provider.getToolTipText(Boolean.FALSE);
     }
 
     @Test(expected = IllegalArgumentException.class)

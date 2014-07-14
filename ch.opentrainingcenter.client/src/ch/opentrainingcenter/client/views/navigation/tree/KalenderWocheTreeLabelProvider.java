@@ -14,10 +14,9 @@ public class KalenderWocheTreeLabelProvider extends ColumnLabelProvider {
     @Override
     public String getToolTipText(final Object element) {
         if (element instanceof INavigationParent) {
-            final INavigationParent parent = (INavigationParent) element;
-            return parent.getTooltip();
+            return ((INavigationParent) element).getTooltip();
         } else if (element instanceof Integer) {
-            return String.valueOf(element);
+            return null;
         } else if (element instanceof INavigationItem) {
             return ((INavigationItem) element).getTooltip();
         } else {
