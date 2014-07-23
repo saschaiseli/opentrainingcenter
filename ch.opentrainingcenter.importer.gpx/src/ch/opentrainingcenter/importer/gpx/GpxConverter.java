@@ -58,14 +58,13 @@ public class GpxConverter {
         return training;
     }
 
-    private List<ITrackPointProperty> addTrackPointsFromLaps(final TrksegType trkseg, int lap) {
+    private List<ITrackPointProperty> addTrackPointsFromLaps(final TrksegType trkseg, final int lap) {
         final List<ITrackPointProperty> trackPoints = new ArrayList<>();
         WptType previous = null;
         for (final WptType wptType : trkseg.getTrkpt()) {
             trackPoints.add(convertWaypoint2TrackPoint(wptType, previous, lap));
             previous = wptType;
         }
-        lap++;
         return trackPoints;
     }
 
