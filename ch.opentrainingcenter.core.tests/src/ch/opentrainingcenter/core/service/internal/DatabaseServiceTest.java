@@ -32,6 +32,7 @@ public class DatabaseServiceTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
+    @Ignore
     public void testInitOhneAdminDBExisitertNicht() {
         service = DatabaseService.getInstance();
         service.init(dbName, "url", "user", "pw", null, null, null);
