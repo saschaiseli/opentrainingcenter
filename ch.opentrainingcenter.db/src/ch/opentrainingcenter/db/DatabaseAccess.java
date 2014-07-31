@@ -62,7 +62,6 @@ public class DatabaseAccess extends AbstractDatabaseAccess {
         } catch (final Exception e) {
             final Throwable cause = e.getCause();
 
-            // TODO Mapping auf sql nummer
             final String message = cause != null ? cause.getMessage() : e.getMessage();
             if (message != null && message.contains("Locked by another process")) { //$NON-NLS-1$
                 LOG.error("Database Locked by another process"); //$NON-NLS-1$
