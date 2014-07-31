@@ -187,6 +187,7 @@ public class MonthlyWeekOverview extends ViewPart {
 
     @Override
     public void setFocus() {
+        section.setFocus();
     }
 
 }

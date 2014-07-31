@@ -1,7 +1,6 @@
 package ch.opentrainingcenter.client;
 
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.action.ICoolBarManager;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.ui.IWorkbenchActionConstants;
@@ -67,9 +66,5 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 
         // Intro
         helpMenu.add(introAction);
-    }
-
-    @Override
-    protected void fillCoolBar(final ICoolBarManager coolBar) {
     }
 }

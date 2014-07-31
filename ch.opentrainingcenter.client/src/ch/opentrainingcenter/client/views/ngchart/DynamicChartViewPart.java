@@ -279,8 +279,6 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
         labelTextPast = new Label(container, SWT.NONE);
         labelTextPast.setVisible(false);
 
-        updateLegende(SimpleTrainingChart.getByIndex(comboChartType.getSelectionIndex()), compareWithLastYear.getSelection());
-
         sectionLegende.setClient(container);
     }
 
@@ -348,10 +346,6 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
             }
 
         });
-    }
-
-    private void updateLegende(final SimpleTrainingChart chartType, final boolean compareLast) {
-
     }
 
     private List<ISimpleTraining> getFilteredData(final XAxisChart chartSerieType, final Date start, final Date end) {

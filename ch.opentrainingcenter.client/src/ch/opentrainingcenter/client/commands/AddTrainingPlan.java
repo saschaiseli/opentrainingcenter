@@ -27,10 +27,6 @@ public class AddTrainingPlan extends OtcAbstractHandler {
     }
 
     @Override
-    public void dispose() {
-    }
-
-    @Override
     public Object execute(final ExecutionEvent event) throws ExecutionException {
         job.schedule();
         return null;

@@ -153,6 +153,7 @@ public class RoutenView extends ViewPart implements ISelectionListener {
 
     @Override
     public void setFocus() {
+        sectionRouten.setFocus();
     }
 
     @Override

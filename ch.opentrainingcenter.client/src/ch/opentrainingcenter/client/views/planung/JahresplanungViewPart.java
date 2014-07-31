@@ -173,7 +173,7 @@ public class JahresplanungViewPart extends ViewPart {
 
     @Override
     public void setFocus() {
-
+        save.setFocus();
     }
 
 }

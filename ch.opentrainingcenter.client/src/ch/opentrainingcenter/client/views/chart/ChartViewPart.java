@@ -60,6 +60,7 @@ public class ChartViewPart extends ViewPart {
 
     @Override
     public void setFocus() {
+        form.setFocus();
     }
 
 }

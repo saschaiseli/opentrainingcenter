@@ -244,7 +244,7 @@ public class BestRunsView extends ViewPart {
 
     @Override
     public void setFocus() {
-
+        bestPace.setFocus();
     }
 
     @Override

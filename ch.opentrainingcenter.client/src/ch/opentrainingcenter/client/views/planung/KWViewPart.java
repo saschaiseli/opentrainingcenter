@@ -5,8 +5,8 @@ import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -90,18 +90,13 @@ public class KWViewPart {
         buttonInterval.setLayoutData(gdButton);
         buttonInterval.setSelection(interval);
 
-        buttonInterval.addSelectionListener(new SelectionListener() {
+        buttonInterval.addSelectionListener(new SelectionAdapter() {
             private boolean toggle = buttonInterval.getSelection();
 
             @Override
             public void widgetSelected(final SelectionEvent e) {
                 toggle = !toggle;
                 model.setInterval(toggle);
-            }
-
-            @Override
-            public void widgetDefaultSelected(final SelectionEvent e) {
-
             }
         });
 
