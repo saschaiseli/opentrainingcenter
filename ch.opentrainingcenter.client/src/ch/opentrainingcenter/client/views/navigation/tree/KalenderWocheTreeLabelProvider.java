@@ -20,7 +20,7 @@ public class KalenderWocheTreeLabelProvider extends ColumnLabelProvider {
         } else if (element instanceof INavigationItem) {
             return ((INavigationItem) element).getTooltip();
         } else {
-            throw new IllegalArgumentException("Der Typ '" + element + "' ist nicht definiert"); //$NON-NLS-1$ //$NON-NLS-2$
+            throw new IllegalArgumentException(String.format("Der Typ '%s' ist nicht definiert", element)); //$NON-NLS-1$ 
         }
     }
 
@@ -34,7 +34,7 @@ public class KalenderWocheTreeLabelProvider extends ColumnLabelProvider {
         } else if (element instanceof INavigationItem) {
             return getNavigationItemName((INavigationItem) element);
         } else {
-            throw new IllegalArgumentException("Der Typ '" + element + "' ist nicht definiert"); //$NON-NLS-1$ //$NON-NLS-2$
+            throw new IllegalArgumentException(String.format("Der Typ '%s' ist nicht definiert", element)); //$NON-NLS-1$ 
         }
     }
 

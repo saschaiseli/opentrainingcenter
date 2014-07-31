@@ -1,5 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
+Bundle-Vendor: Sascha Iseli
 Bundle-Name: Client
 Bundle-SymbolicName: ch.opentrainingcenter.client;singleton:=true
 Bundle-Version: 1.0.0.qualifier

@@ -46,7 +46,7 @@ public class NavigationParent implements INavigationParent {
                 final INavigationItem last = childs.get(childs.size() - 1);
                 final String end = TimeHelper.convertDateToString(last.getDate());
                 final Object[] binding = new Object[] { childs.size(), start, end, DistanceHelper.roundDistanceFromMeterToKm(distance) };
-                return NLS.bind(Messages.NAVIGATION_TOOLTIP_KW, binding);// "{0} Eintrage: vom {1} bis {2} Total km: {3}"
+                return NLS.bind(Messages.NAVIGATION_TOOLTIP_KW, binding);
             }
         }
         return null;

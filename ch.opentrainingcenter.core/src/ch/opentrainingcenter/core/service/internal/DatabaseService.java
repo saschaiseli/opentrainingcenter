@@ -30,6 +30,7 @@ public class DatabaseService implements IDatabaseService {
     static {
         final IConfigurationElement[] daos = Platform.getExtensionRegistry().getConfigurationElementsFor("ch.opentrainingdatabase.db"); //$NON-NLS-1$
         DB_ACCESS = DatabaseExtensionSupport.getDao(daos, IDatabaseConnection.EXTENSION_POINT_NAME);
+        System.out.println("***************** DB_ACCESS initialisiert");
     }
 
     private DatabaseService() {
