@@ -15,6 +15,7 @@ import ch.opentrainingcenter.core.db.DatabaseConnectionConfiguration;
 import ch.opentrainingcenter.core.db.DbConnection;
 import ch.opentrainingcenter.core.db.SqlException;
 import ch.opentrainingcenter.database.USAGE;
+import ch.opentrainingcenter.database.dao.CommonDao;
 import ch.opentrainingcenter.database.dao.ConnectionConfig;
 
 @SuppressWarnings("nls")
@@ -32,15 +33,20 @@ public class PostgresDatabaseTestBase {
     private static final String DIALECT = "org.hibernate.dialect.PostgreSQLDialect";
     protected static ConnectionConfig connectionConfig = null;
 
+    protected static DatabaseAccessPostgres dataConnection;
+    protected static CommonDao dataAccess;
+
     @BeforeClass
     public static void createDb() throws SqlException {
         final DbConnection appConnection = new DbConnection(DRIVER, DIALECT, URL, USER, PASS);
         final DbConnection adminConnection = new DbConnection(DRIVER, DIALECT, URL_ADMIN, USER_ADMIN, PASS_ADMIN);
         final DatabaseConnectionConfiguration config = new DatabaseConnectionConfiguration(appConnection, adminConnection);
         connectionConfig = new ConnectionConfig(USAGE.TEST, config);
-        final DatabaseAccessPostgres access = new DatabaseAccessPostgres(connectionConfig);
-        access.setConfig(config);
-        access.createDatabase();
+        dataConnection = new DatabaseAccessPostgres(connectionConfig);
+        dataConnection.setConfig(config);
+        dataConnection.createDatabase();
+
+        dataAccess = new CommonDao(connectionConfig);
     }
 
     @After

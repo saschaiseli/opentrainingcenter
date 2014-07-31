@@ -3,6 +3,7 @@ package ch.opentrainingcenter.transfer.factory;
 import java.util.Date;
 
 import ch.opentrainingcenter.i18n.Messages;
+import ch.opentrainingcenter.transfer.HeartRate;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IHealth;
 import ch.opentrainingcenter.transfer.ILapInfo;
@@ -12,6 +13,7 @@ import ch.opentrainingcenter.transfer.IStreckenPunkt;
 import ch.opentrainingcenter.transfer.ITrackPointProperty;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.IWeather;
+import ch.opentrainingcenter.transfer.RunData;
 import ch.opentrainingcenter.transfer.impl.Athlete;
 import ch.opentrainingcenter.transfer.impl.Health;
 import ch.opentrainingcenter.transfer.impl.LapInfo;
@@ -44,14 +46,13 @@ public final class CommonTransferFactory {
         return new Health(athlete, weight, cardio, dateofmeasure);
     }
 
-    public static ITraining createTraining(final long dateOfStart, final double timeInSeconds, final double distance, final int avgHeartRate,
-            final int maxHeartBeat, final double maximumSpeed, final String note, final IWeather weather, final IRoute route) {
-        return new Training(dateOfStart, timeInSeconds, distance, avgHeartRate, maxHeartBeat, maximumSpeed, note, weather, route);
+    public static ITraining createTraining(final RunData runData, final HeartRate heart, final double maximumSpeed, final String note, final IWeather weather,
+            final IRoute route) {
+        return new Training(runData, heart, note, weather, route);
     }
 
     /**
      * Factory
-     * 
      * @param dateOfStart
      *            start datum
      * @param timeInSeconds
@@ -62,13 +63,11 @@ public final class CommonTransferFactory {
      *            durchschnittliche herzrate
      * @param maxHeartBeat
      *            maximale Herzrate
-     * @param maximumSpeed
-     *            schnellste pace [min/km]
+     * 
      * @return {@link ITraining}
      */
-    public static ITraining createTraining(final long dateOfStart, final double timeInSeconds, final double distance, final int avgHeartRate,
-            final int maxHeartBeat, final double maximumSpeed) {
-        return new Training(dateOfStart, timeInSeconds, distance, avgHeartRate, maxHeartBeat, maximumSpeed, "", CommonTransferFactory //$NON-NLS-1$
+    public static ITraining createTraining(final RunData runData, final HeartRate heart) {
+        return new Training(runData, heart, "", CommonTransferFactory //$NON-NLS-1$
                 .createDefaultWeather(), null);
     }
 
@@ -149,4 +148,5 @@ public final class CommonTransferFactory {
     public static ILapInfo createLapInfo(final int lap, final int start, final int end, final long time, final int heartBeat, final String pace) {
         return new LapInfo(lap, start, end, time, heartBeat, pace);
     }
+
 }

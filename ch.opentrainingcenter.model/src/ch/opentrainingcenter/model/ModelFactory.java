@@ -28,6 +28,7 @@ import ch.opentrainingcenter.model.training.Wetter;
 import ch.opentrainingcenter.model.training.internal.GoldMedalModel;
 import ch.opentrainingcenter.model.training.internal.OverviewModel;
 import ch.opentrainingcenter.model.training.internal.SimpleTraining;
+import ch.opentrainingcenter.transfer.HeartRate;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IHealth;
 import ch.opentrainingcenter.transfer.IPlanungWoche;
@@ -75,8 +76,9 @@ public final class ModelFactory {
      * Erstellt ein SimpleTraining mit dem Lauf Typ NONE
      */
     public static ISimpleTraining convertToSimpleTraining(final ITraining training) {
-        final SimpleTraining simpleTraining = new SimpleTraining(training.getLaengeInMeter(), training.getDauer(), new Date(training.getDatum()), training
-                .getAverageHeartBeat(), training.getMaxHeartBeat(), training.getMaxSpeed(), TrainingType.NONE, training.getNote());
+        final HeartRate heart = new HeartRate(training.getAverageHeartBeat(), training.getMaxHeartBeat());
+        final SimpleTraining simpleTraining = new SimpleTraining(training.getLaengeInMeter(), training.getDauer(), new Date(training.getDatum()), heart,
+                training.getMaxSpeed(), TrainingType.NONE, training.getNote());
         simpleTraining.setType(TrainingType.getByIndex(training.getTrainingType().getIndex()));
         if (training.getWeather() != null) {
             simpleTraining.setWetter(Wetter.getRunType(training.getWeather().getId()));
@@ -102,7 +104,8 @@ public final class ModelFactory {
 
     public static ISimpleTraining createSimpleTraining(final double distanzInMeter, final double dauerInSekunden, final Date datum, final int avgHeartRate,
             final int maxHeartRate, final double maxSpeed, final TrainingType type, final String note) {
-        return new SimpleTraining(distanzInMeter, dauerInSekunden, datum, avgHeartRate, maxHeartRate, maxSpeed, type, note);
+        final HeartRate heart = new HeartRate(avgHeartRate, maxHeartRate);
+        return new SimpleTraining(distanzInMeter, dauerInSekunden, datum, heart, maxSpeed, type, note);
     }
 
     public static IGoldMedalModel createGoldMedalModel() {

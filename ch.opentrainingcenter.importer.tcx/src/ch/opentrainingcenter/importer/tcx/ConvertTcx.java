@@ -37,10 +37,12 @@ import ch.opentrainingcenter.tcx.SportT;
 import ch.opentrainingcenter.tcx.TrackT;
 import ch.opentrainingcenter.tcx.TrackpointT;
 import ch.opentrainingcenter.tcx.TrainingCenterDatabaseT;
+import ch.opentrainingcenter.transfer.HeartRate;
 import ch.opentrainingcenter.transfer.ILapInfo;
 import ch.opentrainingcenter.transfer.IStreckenPunkt;
 import ch.opentrainingcenter.transfer.ITrackPointProperty;
 import ch.opentrainingcenter.transfer.ITraining;
+import ch.opentrainingcenter.transfer.RunData;
 import ch.opentrainingcenter.transfer.Sport;
 import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
 
@@ -155,7 +157,9 @@ public class ConvertTcx implements IConvert2Tcx {
         } else {
             avgHr = 0;
         }
-        final ITraining training = CommonTransferFactory.createTraining(dateOfStart.getTime(), timeInSeconds, distance, avgHr, maxHeartBeat, maximumSpeed);
+        final RunData runData = new RunData(dateOfStart.getTime(), timeInSeconds, distance, maximumSpeed);
+        final HeartRate heart = new HeartRate(avgHr, maxHeartBeat);
+        final ITraining training = CommonTransferFactory.createTraining(runData, heart);
         training.setTrackPoints(trackPoints);
         training.setLapInfos(lapInfos);
         final Ascending ascending = AltitudeCalculator.calculateAscending(trackPoints);

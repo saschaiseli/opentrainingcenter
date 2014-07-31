@@ -23,8 +23,10 @@ import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.core.cache.Cache;
 import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
+import ch.opentrainingcenter.transfer.HeartRate;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.ITraining;
+import ch.opentrainingcenter.transfer.RunData;
 import ch.opentrainingcenter.transfer.TrainingType;
 import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
 
@@ -287,7 +289,7 @@ public class TrainingCenterDataCacheTest {
     }
 
     private ITraining createImported(final Long date) {
-        final ITraining overview = CommonTransferFactory.createTraining(date, 1, 1, 1, 1, 1);
+        final ITraining overview = CommonTransferFactory.createTraining(new RunData(date, 1, 1, 1), new HeartRate(1, 1));
         final TrainingType type = TrainingType.NONE;
         overview.setTrainingType(type);
         return overview;

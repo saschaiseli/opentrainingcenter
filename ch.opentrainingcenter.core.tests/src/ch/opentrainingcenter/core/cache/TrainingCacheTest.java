@@ -13,10 +13,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import ch.opentrainingcenter.transfer.HeartRate;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.IWeather;
+import ch.opentrainingcenter.transfer.RunData;
 import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
 
 @SuppressWarnings("nls")
@@ -49,7 +51,9 @@ public class TrainingCacheTest {
         final TrainingCache cache = TrainingCache.getInstance();
         cache.resetCache();
 
-        final ITraining training = CommonTransferFactory.createTraining(1, 2, 3, 4, 5, 6, "blabla", null, null);
+        final RunData runData = new RunData(1, 2, 3, 6);
+        final HeartRate heart = new HeartRate(4, 5);
+        final ITraining training = CommonTransferFactory.createTraining(runData, heart, 6, "blabla", null, null);
         training.setDatum(42);
         final List<ITraining> models = new ArrayList<>();
         models.add(training);

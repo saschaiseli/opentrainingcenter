@@ -16,10 +16,12 @@ import ch.opentrainingcenter.database.dao.AthleteDao;
 import ch.opentrainingcenter.database.dao.RouteDao;
 import ch.opentrainingcenter.database.dao.WeatherDao;
 import ch.opentrainingcenter.db.DatabaseAccess;
+import ch.opentrainingcenter.transfer.HeartRate;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.IWeather;
+import ch.opentrainingcenter.transfer.RunData;
 import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
 
 @SuppressWarnings("nls")
@@ -46,7 +48,9 @@ public class RouteDaoTest extends PostgresDatabaseTestBase {
         final WeatherDao weatherDao = new WeatherDao(connectionConfig);
         weatherA = weatherDao.getAllWeather().get(0);
 
-        training = CommonTransferFactory.createTraining(now, 1, 2, 3, 4, 5, "note", weatherA, null);
+        final RunData runData = new RunData(now + 100, 1, 2, 5);
+        final HeartRate heart = new HeartRate(3, 4);
+        training = CommonTransferFactory.createTraining(runData, heart, 5, "note", weatherA, null);
         training.setAthlete(athlete);
 
         access = new DatabaseAccess(connectionConfig);

@@ -5,12 +5,14 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import ch.opentrainingcenter.transfer.HeartRate;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.ILapInfo;
 import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITrackPointProperty;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.IWeather;
+import ch.opentrainingcenter.transfer.RunData;
 import ch.opentrainingcenter.transfer.Sport;
 import ch.opentrainingcenter.transfer.TrainingType;
 
@@ -48,14 +50,13 @@ public class Training implements java.io.Serializable, ITraining {
     public Training() {
     }
 
-    public Training(final long dateOfStart, final double timeInSeconds, final double distance, final int avgHeartRate, final int mxHeartBeat,
-            final double maximumSpeed, final String note, final IWeather weather, final IRoute route) {
-        datum = dateOfStart;
-        dauer = timeInSeconds;
-        laengeInMeter = distance;
-        averageHeartBeat = avgHeartRate;
-        maxHeartBeat = mxHeartBeat;
-        maxSpeed = maximumSpeed;
+    public Training(final RunData runData, final HeartRate heart, final String note, final IWeather weather, final IRoute route) {
+        datum = runData.getDateOfStart();
+        dauer = runData.getTimeInSeconds();
+        laengeInMeter = runData.getDistanceInMeter();
+        averageHeartBeat = heart.getAverage();
+        maxHeartBeat = heart.getMax();
+        maxSpeed = runData.getMaxSpeed();
         this.note = note;
         this.weather = weather;
         this.route = route;

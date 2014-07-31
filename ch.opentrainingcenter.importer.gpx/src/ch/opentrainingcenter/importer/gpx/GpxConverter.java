@@ -7,9 +7,11 @@ import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
 
+import ch.opentrainingcenter.transfer.HeartRate;
 import ch.opentrainingcenter.transfer.IStreckenPunkt;
 import ch.opentrainingcenter.transfer.ITrackPointProperty;
 import ch.opentrainingcenter.transfer.ITraining;
+import ch.opentrainingcenter.transfer.RunData;
 import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
 
 import com.grum.geocalc.DegreeCoordinate;
@@ -53,7 +55,7 @@ public class GpxConverter {
         }
         final int avg = heartRateHandler.getAverage();
         final int max = heartRateHandler.getMax();
-        final ITraining training = CommonTransferFactory.createTraining(start, timeInSeconds, distance, avg, max, 0d);
+        final ITraining training = CommonTransferFactory.createTraining(new RunData(start, timeInSeconds, distance, 0d), new HeartRate(avg, max));
         training.setTrackPoints(trackPoints);
         return training;
     }

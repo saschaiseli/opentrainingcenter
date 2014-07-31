@@ -7,6 +7,7 @@ import ch.opentrainingcenter.core.helper.TimeHelper;
 import ch.opentrainingcenter.model.strecke.StreckeModel;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
 import ch.opentrainingcenter.model.training.Wetter;
+import ch.opentrainingcenter.transfer.HeartRate;
 import ch.opentrainingcenter.transfer.TrainingType;
 
 public class SimpleTraining implements ISimpleTraining {
@@ -26,11 +27,11 @@ public class SimpleTraining implements ISimpleTraining {
     private int upMeter;
     private int downMeter;
 
-    public SimpleTraining(final double distanzInMeter, final double dauerInSekunden, final Date datum, final int avgHeartRate, final int maxHeartRate,
-            final double speed, final TrainingType type, final String note) {
+    public SimpleTraining(final double distanzInMeter, final double dauerInSekunden, final Date datum, final HeartRate heart, final double speed,
+            final TrainingType type, final String note) {
         this.distanzInMeter = distanzInMeter;
-        this.avgHeartRate = avgHeartRate;
-        this.maxHeartRate = maxHeartRate;
+        this.avgHeartRate = heart.getAverage();
+        this.maxHeartRate = heart.getMax();
         this.type = type;
         this.note = note;
         laengeInKilometer = DistanceHelper.roundDistanceFromMeterToKm(distanzInMeter);

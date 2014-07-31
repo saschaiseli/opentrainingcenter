@@ -19,6 +19,7 @@ import ch.opentrainingcenter.model.planing.IPlanungModel;
 import ch.opentrainingcenter.model.planing.IPlanungWocheModel;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
 import ch.opentrainingcenter.model.training.internal.SimpleTraining;
+import ch.opentrainingcenter.transfer.HeartRate;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
@@ -71,8 +72,9 @@ public class ModelFactoryTest {
     @Test
     public void testSimpleTrainingMitTyp() {
         final TrainingType type = TrainingType.EXT_INTERVALL;
-        final ISimpleTraining training = new SimpleTraining(overview.getLaengeInMeter(), overview.getDauer(), new Date(overview.getDatum()), overview
-                .getAverageHeartBeat(), overview.getMaxHeartBeat(), overview.getMaxSpeed(), type, "");
+        final HeartRate heart = new HeartRate(overview.getAverageHeartBeat(), overview.getMaxHeartBeat());
+        final ISimpleTraining training = new SimpleTraining(overview.getLaengeInMeter(), overview.getDauer(), new Date(overview.getDatum()), heart, overview
+                .getMaxSpeed(), type, "");
         assertTraining(training, type);
     }
 
@@ -80,8 +82,8 @@ public class ModelFactoryTest {
      * Nur für tests
      */
     protected static ISimpleTraining createSimpleTraining(final ITraining overview, final TrainingType runType, final String note) {
-        return new SimpleTraining(overview.getLaengeInMeter(), overview.getDauer(), new Date(overview.getDatum()), overview.getAverageHeartBeat(), overview
-                .getMaxHeartBeat(), overview.getMaxSpeed(), runType, note);
+        final HeartRate heart = new HeartRate(overview.getAverageHeartBeat(), overview.getMaxHeartBeat());
+        return new SimpleTraining(overview.getLaengeInMeter(), overview.getDauer(), new Date(overview.getDatum()), heart, overview.getMaxSpeed(), runType, note);
     }
 
     private void assertTraining(final ISimpleTraining training) {

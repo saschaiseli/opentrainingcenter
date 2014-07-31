@@ -19,14 +19,17 @@
 
 package ch.opentrainingcenter.client.views.search.dialog;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import ch.opentrainingcenter.core.helper.TimeHelper;
+import ch.opentrainingcenter.transfer.HeartRate;
 import ch.opentrainingcenter.transfer.ITraining;
+import ch.opentrainingcenter.transfer.RunData;
 import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 @SuppressWarnings("nls")
 public class TrainingLabelProviderTest {
@@ -67,7 +70,7 @@ public class TrainingLabelProviderTest {
     }
 
     private ITraining createTraining(final long dateOfStart, final double distance, final String note) {
-        final ITraining training = CommonTransferFactory.createTraining(dateOfStart, 42, distance, 123, 180, 12);
+        final ITraining training = CommonTransferFactory.createTraining(new RunData(dateOfStart, 42, distance, 12), new HeartRate(123, 180));
         training.setNote(note);
         return training;
     }
