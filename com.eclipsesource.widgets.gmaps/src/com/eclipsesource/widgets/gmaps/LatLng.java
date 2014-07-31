@@ -12,8 +12,8 @@ package com.eclipsesource.widgets.gmaps;
 @SuppressWarnings("nls")
 public final class LatLng {
 
-    public final double latitude;
-    public final double longitude;
+    private final double latitude;
+    private final double longitude;
 
     public LatLng(final double latitude, final double longitude) {
         this.latitude = latitude;

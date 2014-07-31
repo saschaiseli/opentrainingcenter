@@ -86,7 +86,7 @@ public final class LapInfoSupport {
         Assertions.notNull(points);
         Assertions.isValid(initPosition < 0, "initiale position muss groesser gleich 0 sein"); //$NON-NLS-1$
         Assertions.isValid(initTime < 0, "initiale zeit muss groesser gleich 0 sein"); //$NON-NLS-1$
-        Assertions.isValid(points.size() < 1, "Es braucht mindest einen Punkt, ha"); //$NON-NLS-1$
+        Assertions.isValid(points.isEmpty(), "Es braucht mindest einen Punkt, ha"); //$NON-NLS-1$
         int heart = 0;
         for (final ITrackPointProperty point : points) {
             heart += point.getHeartBeat();

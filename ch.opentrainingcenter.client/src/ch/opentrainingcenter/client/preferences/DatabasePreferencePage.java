@@ -2,7 +2,6 @@ package ch.opentrainingcenter.client.preferences;
 
 import java.util.Map;
 
-import org.apache.log4j.Logger;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.preference.ComboFieldEditor;
@@ -32,7 +31,6 @@ import ch.opentrainingcenter.i18n.Messages;
 public class DatabasePreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
     private static final int INTENT = 5;
-    private static final Logger LOGGER = Logger.getLogger(DatabasePreferencePage.class);
     private IPreferenceStore store;
     private IDatabaseConnection access;
     private boolean connectionSuccess = false;

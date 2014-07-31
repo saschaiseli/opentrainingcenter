@@ -1,6 +1,5 @@
 package ch.opentrainingcenter.client;
 
-import org.apache.log4j.Logger;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.swt.widgets.Display;
@@ -13,8 +12,6 @@ import ch.opentrainingcenter.i18n.Messages;
  * This class controls all aspects of the application's execution
  */
 public class Application implements IApplication {
-
-    private static final Logger LOGGER = Logger.getLogger(Application.class);
 
     public static final String ID = "ch.opentrainingcenter.client"; //$NON-NLS-1$
 
