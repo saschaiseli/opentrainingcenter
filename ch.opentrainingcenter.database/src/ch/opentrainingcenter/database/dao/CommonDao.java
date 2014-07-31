@@ -58,7 +58,7 @@ public class CommonDao implements IDatabaseAccess {
     @Override
     public final List<ITraining> getAllTrainings(final IAthlete athlete) {
         if (useCache) {
-            if (cache.size() == 0) {
+            if (cache.isEmpty()) {
                 cache.addAll(trainingDao.getAllTrainings(athlete));
                 LOGGER.info(String.format("load %s records from database", cache.size())); //$NON-NLS-1$
             }

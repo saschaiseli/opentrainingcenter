@@ -59,5 +59,4 @@ public class TrainingCache extends AbstractCache<Long, ITraining> implements Cac
     public String toString() {
         return "Cache: Anzahl Elemente: " + size(); //$NON-NLS-1$
     }
-
 }

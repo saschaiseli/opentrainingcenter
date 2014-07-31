@@ -194,7 +194,7 @@ public class InitialLoadRunnable implements IRunnableWithProgress {
     }
 
     private boolean hasMoreThanOneLap(final List<ITrackPointProperty> trackPoints) {
-        return trackPoints.size() > 0 && trackPoints.get(trackPoints.size() - 1).getLap() > 1;
+        return !trackPoints.isEmpty() && trackPoints.get(trackPoints.size() - 1).getLap() > 1;
     }
 
 }
