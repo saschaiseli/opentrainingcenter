@@ -115,7 +115,7 @@ public class TrainingDataFilter {
 
     @Override
     public String toString() {
-        final StringBuffer str = new StringBuffer();
+        final StringBuilder str = new StringBuilder();
         str.append("Übersicht auf die aufbereiteten Daten:\n"); //$NON-NLS-1$
 
         str.append("Trainings pro Monat:\n"); //$NON-NLS-1$
@@ -130,7 +130,7 @@ public class TrainingDataFilter {
         return str.toString();
     }
 
-    private void printTraining(final StringBuffer str, final List<ISimpleTraining> trainings) {
+    private void printTraining(final StringBuilder str, final List<ISimpleTraining> trainings) {
         for (final ISimpleTraining training : trainings) {
             final String date = TimeHelper.convertDateToString(training.getDatum(), false);
             final double distanzInMeter = training.getDistanzInMeter();

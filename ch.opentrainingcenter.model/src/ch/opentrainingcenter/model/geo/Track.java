@@ -33,7 +33,7 @@ public class Track {
     }
 
     public String toKml() {
-        final StringBuffer kml = new StringBuffer("\n"); //$NON-NLS-1$
+        final StringBuilder kml = new StringBuilder("\n"); //$NON-NLS-1$
         for (final TrackPoint point : points) {
             kml.append(point.toKml());
         }

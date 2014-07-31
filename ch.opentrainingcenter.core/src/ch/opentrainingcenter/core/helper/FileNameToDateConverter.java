@@ -13,7 +13,7 @@ public final class FileNameToDateConverter {
         if (fileName.length() <= 16) {
             return fileName;
         }
-        final StringBuffer str = new StringBuffer();
+        final StringBuilder str = new StringBuilder();
         try {
             Integer.parseInt(fileName.substring(0, 4));
             Integer.parseInt(fileName.substring(4, 6));

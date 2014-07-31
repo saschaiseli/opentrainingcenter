@@ -27,7 +27,7 @@ public final class HealthCache extends AbstractCache<Integer, ConcreteHealth> {
 
     @Override
     public String toString() {
-        final StringBuffer str = new StringBuffer();
+        final StringBuilder str = new StringBuilder();
         final List<ConcreteHealth> all = super.getAll();
         for (final ConcreteHealth element : all) {
             str.append(element.getId()).append(' ').append(element.getDate()).append("\n"); //$NON-NLS-1$

@@ -29,7 +29,7 @@ public class KmlLine {
     private static final String HEAD_END = "</name><description>nix</description><Style><LineStyle><color>"; //$NON-NLS-1$
     private static final String EXTENDED_DATA = "</color></LineStyle><PolyStyle><fill>0</fill></PolyStyle></Style><ExtendedData><SchemaData schemaUrl=\"#Test\"><SimpleData name=\"Name\">TestRoute</SimpleData><SimpleData name=\"Description\">nix</SimpleData><SimpleData name=\"comment\">nix</SimpleData><SimpleData name=\"source\">Digitized in QGIS</SimpleData><SimpleData name=\"url\">nix</SimpleData><SimpleData name=\"url name\">nix</SimpleData></SchemaData></ExtendedData><LineString><coordinates>"; //$NON-NLS-1$
     private static final String END = "</coordinates></LineString></Placemark>"; //$NON-NLS-1$
-    private final StringBuffer content;
+    private final StringBuilder content;
 
     /**
      * @param name
@@ -41,7 +41,7 @@ public class KmlLine {
      *            7.43013446,46.94523915'
      */
     public KmlLine(final String name, final String color, final String coordinates) {
-        content = new StringBuffer(HEAD);
+        content = new StringBuilder(HEAD);
         content.append(name).append(HEAD_END).append(color).append(EXTENDED_DATA).append(coordinates).append(END);
     }
 

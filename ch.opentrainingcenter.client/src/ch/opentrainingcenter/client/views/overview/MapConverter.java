@@ -44,7 +44,7 @@ public final class MapConverter {
      */
     public static String convertTrackpoints(final ITraining training) {
         final long start = DateTime.now().getMillis();
-        final StringBuffer str = new StringBuffer();
+        final StringBuilder str = new StringBuilder();
         str.append('[');
         final List<ITrackPointProperty> points = training.getTrackPoints();
         boolean pointAdded = false;
