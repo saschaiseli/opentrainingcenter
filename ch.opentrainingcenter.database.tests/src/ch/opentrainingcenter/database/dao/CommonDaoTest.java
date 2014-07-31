@@ -19,6 +19,13 @@
 
 package ch.opentrainingcenter.database.dao;
 
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,13 +35,6 @@ import org.junit.Test;
 import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.ITraining;
-import static org.mockito.Matchers.any;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.verifyZeroInteractions;
-import static org.mockito.Mockito.when;
 
 public class CommonDaoTest {
     CommonDao dao;
@@ -52,7 +52,7 @@ public class CommonDaoTest {
     @Test
     public void testGetAllTrainingsIAthlete_Cache_Empty() {
         final IAthlete athlete = mock(IAthlete.class);
-        when(trainingCache.size()).thenReturn(0);
+        when(trainingCache.isEmpty()).thenReturn(true);
 
         dao.getAllTrainings(athlete);
 
@@ -76,7 +76,7 @@ public class CommonDaoTest {
     @Test
     public void testGetAllTrainingsIAthlete_Limited_Cache_Empty() {
         final IAthlete athlete = mock(IAthlete.class);
-        when(trainingCache.size()).thenReturn(0);
+        when(trainingCache.isEmpty()).thenReturn(true);
 
         dao.getAllTrainings(athlete);
 
