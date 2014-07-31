@@ -34,6 +34,7 @@ import ch.opentrainingcenter.transfer.IHealth;
 import ch.opentrainingcenter.transfer.IPlanungWoche;
 import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
+import ch.opentrainingcenter.transfer.RunData;
 import ch.opentrainingcenter.transfer.TrainingType;
 
 public final class ModelFactory {
@@ -77,8 +78,8 @@ public final class ModelFactory {
      */
     public static ISimpleTraining convertToSimpleTraining(final ITraining training) {
         final HeartRate heart = new HeartRate(training.getAverageHeartBeat(), training.getMaxHeartBeat());
-        final SimpleTraining simpleTraining = new SimpleTraining(training.getLaengeInMeter(), training.getDauer(), new Date(training.getDatum()), heart,
-                training.getMaxSpeed(), TrainingType.NONE, training.getNote());
+        final RunData runData = new RunData(training.getDatum(), training.getDauer(), training.getLaengeInMeter(), training.getMaxSpeed());
+        final SimpleTraining simpleTraining = new SimpleTraining(runData, heart, TrainingType.NONE, training.getNote());
         simpleTraining.setType(TrainingType.getByIndex(training.getTrainingType().getIndex()));
         if (training.getWeather() != null) {
             simpleTraining.setWetter(Wetter.getRunType(training.getWeather().getId()));
@@ -104,8 +105,9 @@ public final class ModelFactory {
 
     public static ISimpleTraining createSimpleTraining(final double distanzInMeter, final double dauerInSekunden, final Date datum, final int avgHeartRate,
             final int maxHeartRate, final double maxSpeed, final TrainingType type, final String note) {
+        final RunData runData = new RunData(datum.getTime(), dauerInSekunden, distanzInMeter, maxSpeed);
         final HeartRate heart = new HeartRate(avgHeartRate, maxHeartRate);
-        return new SimpleTraining(distanzInMeter, dauerInSekunden, datum, heart, maxSpeed, type, note);
+        return new SimpleTraining(runData, heart, type, note);
     }
 
     public static IGoldMedalModel createGoldMedalModel() {

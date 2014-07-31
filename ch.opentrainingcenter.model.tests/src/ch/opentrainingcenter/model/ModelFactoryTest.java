@@ -23,6 +23,7 @@ import ch.opentrainingcenter.transfer.HeartRate;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
+import ch.opentrainingcenter.transfer.RunData;
 import ch.opentrainingcenter.transfer.TrainingType;
 
 @SuppressWarnings("nls")
@@ -73,8 +74,8 @@ public class ModelFactoryTest {
     public void testSimpleTrainingMitTyp() {
         final TrainingType type = TrainingType.EXT_INTERVALL;
         final HeartRate heart = new HeartRate(overview.getAverageHeartBeat(), overview.getMaxHeartBeat());
-        final ISimpleTraining training = new SimpleTraining(overview.getLaengeInMeter(), overview.getDauer(), new Date(overview.getDatum()), heart, overview
-                .getMaxSpeed(), type, "");
+        final RunData runData = new RunData(overview.getDatum(), overview.getDauer(), overview.getLaengeInMeter(), overview.getMaxSpeed());
+        final ISimpleTraining training = new SimpleTraining(runData, heart, type, "");
         assertTraining(training, type);
     }
 
@@ -83,7 +84,8 @@ public class ModelFactoryTest {
      */
     protected static ISimpleTraining createSimpleTraining(final ITraining overview, final TrainingType runType, final String note) {
         final HeartRate heart = new HeartRate(overview.getAverageHeartBeat(), overview.getMaxHeartBeat());
-        return new SimpleTraining(overview.getLaengeInMeter(), overview.getDauer(), new Date(overview.getDatum()), heart, overview.getMaxSpeed(), runType, note);
+        final RunData runData = new RunData(overview.getDatum(), overview.getDauer(), overview.getLaengeInMeter(), overview.getMaxSpeed());
+        return new SimpleTraining(runData, heart, runType, note);
     }
 
     private void assertTraining(final ISimpleTraining training) {

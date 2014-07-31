@@ -8,6 +8,7 @@ import ch.opentrainingcenter.model.strecke.StreckeModel;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
 import ch.opentrainingcenter.model.training.Wetter;
 import ch.opentrainingcenter.transfer.HeartRate;
+import ch.opentrainingcenter.transfer.RunData;
 import ch.opentrainingcenter.transfer.TrainingType;
 
 public class SimpleTraining implements ISimpleTraining {
@@ -27,19 +28,18 @@ public class SimpleTraining implements ISimpleTraining {
     private int upMeter;
     private int downMeter;
 
-    public SimpleTraining(final double distanzInMeter, final double dauerInSekunden, final Date datum, final HeartRate heart, final double speed,
-            final TrainingType type, final String note) {
-        this.distanzInMeter = distanzInMeter;
+    public SimpleTraining(final RunData runData, final HeartRate heart, final TrainingType type, final String note) {
+        this.distanzInMeter = runData.getDistanceInMeter();
         this.avgHeartRate = heart.getAverage();
         this.maxHeartRate = heart.getMax();
         this.type = type;
         this.note = note;
         laengeInKilometer = DistanceHelper.roundDistanceFromMeterToKm(distanzInMeter);
-        this.dauerInSekunden = dauerInSekunden;
+        this.dauerInSekunden = runData.getTimeInSeconds();
         readableZeit = TimeHelper.convertSecondsToHumanReadableZeit(dauerInSekunden);
-        this.datum = datum;
+        this.datum = new Date(runData.getDateOfStart());
         pace = DistanceHelper.calculatePace(distanzInMeter, dauerInSekunden);
-        this.speed = DistanceHelper.calculatePace(speed);
+        this.speed = DistanceHelper.calculatePace(runData.getMaxSpeed());
         wetter = Wetter.UNBEKANNT;
     }
 
