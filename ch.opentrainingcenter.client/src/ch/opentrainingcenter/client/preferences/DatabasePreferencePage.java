@@ -32,7 +32,7 @@ import ch.opentrainingcenter.i18n.Messages;
 public class DatabasePreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
     private static final int INTENT = 5;
-    public static final Logger LOGGER = Logger.getLogger(DatabasePreferencePage.class);
+    private static final Logger LOGGER = Logger.getLogger(DatabasePreferencePage.class);
     private IPreferenceStore store;
     private IDatabaseConnection access;
     private boolean connectionSuccess = false;

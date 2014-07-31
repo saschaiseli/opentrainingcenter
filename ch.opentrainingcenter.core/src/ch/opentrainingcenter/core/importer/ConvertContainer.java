@@ -6,11 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-
 public class ConvertContainer {
-
-    public static final Logger LOGGER = Logger.getLogger(ConvertContainer.class);
 
     private final Map<String, IConvert2Tcx> converters;
 

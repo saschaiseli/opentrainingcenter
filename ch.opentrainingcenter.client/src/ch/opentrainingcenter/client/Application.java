@@ -14,7 +14,7 @@ import ch.opentrainingcenter.i18n.Messages;
  */
 public class Application implements IApplication {
 
-    public static final Logger LOGGER = Logger.getLogger(Application.class);
+    private static final Logger LOGGER = Logger.getLogger(Application.class);
 
     public static final String ID = "ch.opentrainingcenter.client"; //$NON-NLS-1$
 

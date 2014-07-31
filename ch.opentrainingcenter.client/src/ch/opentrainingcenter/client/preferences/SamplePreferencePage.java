@@ -42,7 +42,7 @@ import ch.opentrainingcenter.transfer.IAthlete;
 
 public class SamplePreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
-    public static final Logger LOGGER = Logger.getLogger(SamplePreferencePage.class);
+    private static final Logger LOGGER = Logger.getLogger(SamplePreferencePage.class);
 
     private final List<IAthlete> allAthletes;
 

@@ -12,7 +12,7 @@ public final class ExtensionHelper {
 
     private static final String IMPORT_EXTENSION_POINT = "ch.opentrainingcenter.myimporter"; //$NON-NLS-1$
 
-    public static final Logger LOGGER = Logger.getLogger(ExtensionHelper.class);
+    private static final Logger LOGGER = Logger.getLogger(ExtensionHelper.class);
 
     private static final Map<String, IConvert2Tcx> CONVERTERS = new HashMap<String, IConvert2Tcx>();
 
