@@ -38,8 +38,8 @@ public class GMap extends Composite {
     private final ListenerList listeners = new ListenerList();
 
     /**
-   *
-   */
+     *
+     */
     public GMap(final Composite parent, final int style, final String path) {
         super(parent, style);
         super.setLayout(new FillLayout());
@@ -242,7 +242,6 @@ public class GMap extends Composite {
     }
 
     private void resolvedAddress(final String string) {
-        // TODO : - Failed or obsolete results are handled neither here nor in
         // js.
         // - Multiple results are ignored.
         // - Calling the GeoCoder from client is somewhat unnecessary, could
