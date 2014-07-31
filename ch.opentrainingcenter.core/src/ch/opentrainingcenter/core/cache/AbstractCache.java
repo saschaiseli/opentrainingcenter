@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.log4j.Logger;
@@ -13,7 +14,7 @@ import org.eclipse.core.runtime.ListenerList;
 public abstract class AbstractCache<K, V> implements ICache<K, V> {
 
     private static final Logger LOG = Logger.getLogger(AbstractCache.class);
-    private final ConcurrentHashMap<K, V> cache = new ConcurrentHashMap<K, V>();
+    private final Map<K, V> cache = new ConcurrentHashMap<K, V>();
     private ListenerList listeners;
 
     public abstract K getKey(V value);
@@ -24,8 +25,8 @@ public abstract class AbstractCache<K, V> implements ICache<K, V> {
             LOG.info(String.format("Element added -> Cache (%s) Size: %s", value.getClass().getName(), cache.size())); //$NON-NLS-1$
             cache.put(getKey(value), value);
         }
-        if(!values.isEmpty()){
-        	fireRecordAdded(values);
+        if (!values.isEmpty()) {
+            fireRecordAdded(values);
         }
     }
 
