@@ -60,7 +60,7 @@ import ch.opentrainingcenter.charts.ng.SimpleTrainingChart;
 import ch.opentrainingcenter.charts.single.XAxisChart;
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.ui.FormToolkitSupport;
-import ch.opentrainingcenter.client.ui.datepicker.DatePickerCombo;
+import ch.opentrainingcenter.client.ui.datepicker.DateWidget;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.core.cache.IRecordListener;
@@ -101,8 +101,8 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
     private Section sectionChart;
     private Section sectionLegende;
 
-    private DatePickerCombo dateVon;
-    private DatePickerCombo dateBis;
+    private DateWidget dateVon;
+    private DateWidget dateBis;
 
     private Combo comboFilter;
     private Combo comboChartType;
@@ -212,19 +212,15 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
         final DateFormatSymbols symbols = DateFormatSymbols.getInstance(Locale.getDefault());
         symbols.setShortWeekdays(NEW_SHORT_WEEKDAYS);
 
-        dateVon = new DatePickerCombo(container, SWT.BORDER | SWT.DATE | SWT.DROP_DOWN);
-        dateVon.setFormat(DATE_FORMAT);
-        dateVon.setDateSymbols(symbols);
-        dateVon.setDate(von.toDate());
+        dateVon = new DateWidget(container, SWT.BORDER | SWT.DATE | SWT.DROP_DOWN);
+        dateVon.setDate(von);
         dateVon.addSelectionListener(new UpdateSelectionAdapter());
         GridDataFactory.swtDefaults().align(SWT.RIGHT, SWT.CENTER).applyTo(vonLabel);
 
         final Label bisLabel = toolkit.createLabel(container, Messages.DynamicChartViewPart_7);
 
-        dateBis = new DatePickerCombo(container, SWT.BORDER | SWT.DATE | SWT.DROP_DOWN);
-        dateBis.setFormat(DATE_FORMAT);
-        dateBis.setDate(DateTime.now().toDate());
-        dateBis.setDateSymbols(symbols);
+        dateBis = new DateWidget(container, SWT.BORDER | SWT.DATE | SWT.DROP_DOWN);
+        dateBis.setDate(DateTime.now());
         dateBis.addSelectionListener(new UpdateSelectionAdapter());
         GridDataFactory.swtDefaults().align(SWT.RIGHT, SWT.CENTER).applyTo(bisLabel);
 
@@ -310,8 +306,8 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
                 final boolean year = XAxisChart.YEAR.equals(xAxis);
                 dateVon.setEnabled(!year);
                 dateBis.setEnabled(!year);
-                Date start = dateVon.getDate();
-                Date end = dateBis.getDate();
+                Date start = dateVon.getDate().toDate();
+                Date end = dateBis.getDate().toDate();
                 if (year) {
                     final int yStart = new DateTime(end.getTime()).get(DateTimeFieldType.year());
                     start = TimeHelper.getDate(yStart, 0, 1);
