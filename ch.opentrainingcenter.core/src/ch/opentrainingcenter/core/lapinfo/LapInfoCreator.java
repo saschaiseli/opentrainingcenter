@@ -9,6 +9,7 @@ import ch.opentrainingcenter.core.assertions.Assertions;
 import ch.opentrainingcenter.transfer.ILapInfo;
 import ch.opentrainingcenter.transfer.ITrackPointProperty;
 import ch.opentrainingcenter.transfer.ITraining;
+import ch.opentrainingcenter.transfer.Sport;
 import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
 
 public class LapInfoCreator {
@@ -45,7 +46,7 @@ public class LapInfoCreator {
             if (pointsOfLap == null) {
                 result.add(createEmptyLap());
             } else {
-                result.add(createLapInfo(i, pointsOfLap, previous));
+                result.add(createLapInfo(i, pointsOfLap, previous, training.getSport()));
                 previous = pointsOfLap.get(pointsOfLap.size() - 1);
             }
         }
@@ -72,7 +73,7 @@ public class LapInfoCreator {
         return (int) (pointDistance / distance);
     }
 
-    private ILapInfo createLapInfo(final int runde, final List<ITrackPointProperty> points, final ITrackPointProperty previous) {
+    private ILapInfo createLapInfo(final int runde, final List<ITrackPointProperty> points, final ITrackPointProperty previous, final Sport sport) {
         final ILapInfo result;
         double initPosition = 0;
         long initTime = 0;
@@ -80,7 +81,7 @@ public class LapInfoCreator {
             initPosition = previous.getDistance();
             initTime = previous.getZeit();
         }
-        result = LapInfoSupport.createLapInfo(runde, points, initPosition, initTime);
+        result = LapInfoSupport.createLapInfo(runde, points, initPosition, initTime, sport);
         return result;
     }
 }

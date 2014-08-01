@@ -108,6 +108,7 @@ public class ConvertTcx implements IConvert2Tcx {
 
     private ITraining create(final ActivityT activity) {
         // datum
+        final Sport sport = translate(activity.getSport());
         final XMLGregorianCalendar date = activity.getId();
         final Date dateOfStart = date.toGregorianCalendar().getTime();
         final List<ActivityLapT> laps = activity.getLap();
@@ -125,7 +126,7 @@ public class ConvertTcx implements IConvert2Tcx {
             LOGGER.info("Runde " + lapCount + " wird konvertiert"); //$NON-NLS-1$//$NON-NLS-2$
             final double lapDistance = lap.getDistanceMeters();
             final double totalTimeSeconds = lap.getTotalTimeSeconds();
-            final String pace = DistanceHelper.calculatePace(lapDistance, totalTimeSeconds);
+            final String pace = DistanceHelper.calculatePace(lapDistance, totalTimeSeconds, sport);
             final HeartRateInBeatsPerMinuteT heart = lap.getAverageHeartRateBpm();
             int lapHeart = 0;
             if (heart != null) {
@@ -165,7 +166,7 @@ public class ConvertTcx implements IConvert2Tcx {
         final Ascending ascending = AltitudeCalculator.calculateAscending(trackPoints);
         training.setUpMeter(ascending.getUp());
         training.setDownMeter(ascending.getDown());
-        training.setSport(translate(activity.getSport()));
+        training.setSport(sport);
         if (trackPoints.isEmpty()) {
             training.setNote(NO_DATA);
         }

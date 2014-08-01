@@ -3,6 +3,7 @@ package ch.opentrainingcenter.model.training;
 import java.util.Date;
 
 import ch.opentrainingcenter.model.strecke.StreckeModel;
+import ch.opentrainingcenter.transfer.Sport;
 import ch.opentrainingcenter.transfer.TrainingType;
 
 public interface ISimpleTraining {
@@ -30,6 +31,8 @@ public interface ISimpleTraining {
     TrainingType getType();
 
     void setType(TrainingType type);
+
+    Sport getSport();
 
     String getNote();
 

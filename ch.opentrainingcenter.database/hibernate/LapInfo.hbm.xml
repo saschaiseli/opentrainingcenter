@@ -26,6 +26,9 @@
 		<property name="pace" type="string">
 			<column name="PACE" />
 		</property>
+		<property name="geschwindigkeit" type="string">
+			<column name="GESCHWINDIGKEIT" />
+		</property>
 		<property name="lap" type="java.lang.Integer">
 			<column name="LAP" />
 		</property>

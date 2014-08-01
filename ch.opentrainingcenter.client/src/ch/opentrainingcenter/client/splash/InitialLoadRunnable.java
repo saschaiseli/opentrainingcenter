@@ -181,7 +181,7 @@ public class InitialLoadRunnable implements IRunnableWithProgress {
                     if (perRound.size() > 1) {
                         final List<ILapInfo> lapInfos = new ArrayList<>();
                         for (final Map.Entry<Integer, List<ITrackPointProperty>> entry : perRound.entrySet()) {
-                            lapInfos.add(LapInfoSupport.createLapInfo(entry.getValue()));
+                            lapInfos.add(LapInfoSupport.createLapInfo(entry.getValue(), training.getSport()));
                         }
                         training.setLapInfos(lapInfos);
                         db.saveOrUpdate(training);
