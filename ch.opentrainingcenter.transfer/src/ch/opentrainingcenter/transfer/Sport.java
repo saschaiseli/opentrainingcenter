@@ -3,9 +3,9 @@ package ch.opentrainingcenter.transfer;
 import ch.opentrainingcenter.i18n.Messages;
 
 public enum Sport {
-    RUNNING(0, "RUNNING", Messages.Sport_JOGGEN, "icons/man_u_32_32.png"), //$NON-NLS-1$ //$NON-NLS-2$
+    RUNNING(0, "RUNNING", Messages.Sport_JOGGEN, "icons/16_16/running_16_16.png"), //$NON-NLS-1$ //$NON-NLS-2$
 
-    BIKING(1, "BIKE", Messages.Sport_BIKE, "icons/32_32/bike_32_32.png"), //$NON-NLS-1$ //$NON-NLS-2$
+    BIKING(1, "BIKE", Messages.Sport_BIKE, "icons/16_16/bike_16_16.png"), //$NON-NLS-1$ //$NON-NLS-2$
 
     OTHER(2, "OTHER", Messages.Sport_UNBEKANNT, "icons/man_u_32_32.png"); //$NON-NLS-1$ //$NON-NLS-2$
 

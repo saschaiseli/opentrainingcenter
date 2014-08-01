@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import ch.opentrainingcenter.core.helper.DistanceHelper;
+import ch.opentrainingcenter.transfer.Sport;
 
 public class DistanceHelperTest {
     @Test
@@ -56,8 +56,50 @@ public class DistanceHelperTest {
     }
 
     @Test
-    public void testCalculatePaceFromMperSecond() {
-        final String pace = DistanceHelper.calculatePace(6.32446337);
+    public void testCalculateGeschwindigkeit() {
+        final String pace = DistanceHelper.calculateGeschwindigkeit(42000, 3600);
+        assertEquals("42.0", pace);//$NON-NLS-1$
+    }
+
+    @Test
+    public void testCalculateGeschwindigkeit_2() {
+        final String pace = DistanceHelper.calculateGeschwindigkeit(42111.213, 3600);
+        assertEquals("42.1", pace);//$NON-NLS-1$
+    }
+
+    @Test
+    public void testCalculatePaceBike() {
+        final String pace = DistanceHelper.calculatePace(42111.213, 3600, Sport.BIKING);
+        assertEquals("42.1", pace);//$NON-NLS-1$
+    }
+
+    @Test
+    public void testCalculatePaceOTHER() {
+        final String pace = DistanceHelper.calculatePace(42111.213, 3600, Sport.OTHER);
+        assertEquals("1:25", pace);//$NON-NLS-1$
+    }
+
+    @Test
+    public void testCalculatePaceRunning() {
+        final String pace = DistanceHelper.calculatePace(42111.213, 3600, Sport.RUNNING);
+        assertEquals("1:25", pace);//$NON-NLS-1$
+    }
+
+    @Test
+    public void testCalculatePaceFromMperSecondRunning() {
+        final String pace = DistanceHelper.calculatePace(6.32446337, Sport.RUNNING);
+        assertEquals("2:38", pace);//$NON-NLS-1$
+    }
+
+    @Test
+    public void testCalculatePaceFromMperSecondBiking() {
+        final String pace = DistanceHelper.calculatePace(6.32446337, Sport.BIKING);
+        assertEquals("22.7", pace);//$NON-NLS-1$
+    }
+
+    @Test
+    public void testCalculatePaceFromMperSecondOTHER() {
+        final String pace = DistanceHelper.calculatePace(6.32446337, Sport.OTHER);
         assertEquals("2:38", pace);//$NON-NLS-1$
     }
 }

@@ -90,7 +90,14 @@ public interface ILapInfo {
      */
     String getPace();
 
-    void setPace(String string);
+    void setPace(String pace);
+
+    /**
+     * @return durchschnittliche Geschwindigkeit [km/h]
+     */
+    String getGeschwindigkeit();
+
+    void setGeschwindigkeit(String geschwindigkeit);
 
     ITraining getTraining();
 

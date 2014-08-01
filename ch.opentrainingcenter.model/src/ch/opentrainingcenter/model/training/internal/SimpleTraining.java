@@ -9,6 +9,7 @@ import ch.opentrainingcenter.model.training.ISimpleTraining;
 import ch.opentrainingcenter.model.training.Wetter;
 import ch.opentrainingcenter.transfer.HeartRate;
 import ch.opentrainingcenter.transfer.RunData;
+import ch.opentrainingcenter.transfer.Sport;
 import ch.opentrainingcenter.transfer.TrainingType;
 
 public class SimpleTraining implements ISimpleTraining {
@@ -27,19 +28,28 @@ public class SimpleTraining implements ISimpleTraining {
     private StreckeModel strecke;
     private int upMeter;
     private int downMeter;
+    private final Sport sport;
 
+    /**
+     * SimpleTraining mit Sport Running
+     */
     public SimpleTraining(final RunData runData, final HeartRate heart, final TrainingType type, final String note) {
+        this(runData, heart, type, Sport.RUNNING, note);
+    }
+
+    public SimpleTraining(final RunData runData, final HeartRate heart, final TrainingType type, final Sport sport, final String note) {
         this.distanzInMeter = runData.getDistanceInMeter();
         this.avgHeartRate = heart.getAverage();
         this.maxHeartRate = heart.getMax();
         this.type = type;
+        this.sport = sport;
         this.note = note;
         laengeInKilometer = DistanceHelper.roundDistanceFromMeterToKm(distanzInMeter);
         this.dauerInSekunden = runData.getTimeInSeconds();
         readableZeit = TimeHelper.convertSecondsToHumanReadableZeit(dauerInSekunden);
         this.datum = new Date(runData.getDateOfStart());
-        pace = DistanceHelper.calculatePace(distanzInMeter, dauerInSekunden);
-        this.speed = DistanceHelper.calculatePace(runData.getMaxSpeed());
+        pace = DistanceHelper.calculatePace(distanzInMeter, dauerInSekunden, sport);
+        this.speed = DistanceHelper.calculatePace(runData.getMaxSpeed(), sport);
         wetter = Wetter.UNBEKANNT;
     }
 
@@ -155,6 +165,11 @@ public class SimpleTraining implements ISimpleTraining {
     @Override
     public void setDownMeter(final int downMeter) {
         this.downMeter = downMeter;
+    }
+
+    @Override
+    public Sport getSport() {
+        return sport;
     }
 
     @SuppressWarnings("nls")

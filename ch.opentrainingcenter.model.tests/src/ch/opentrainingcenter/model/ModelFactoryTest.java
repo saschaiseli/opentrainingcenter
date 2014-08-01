@@ -24,6 +24,7 @@ import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.RunData;
+import ch.opentrainingcenter.transfer.Sport;
 import ch.opentrainingcenter.transfer.TrainingType;
 
 @SuppressWarnings("nls")
@@ -98,7 +99,7 @@ public class ModelFactoryTest {
         assertEquals("Datum:", date, training.getDatum());
         assertEquals("Herzrfequenz:", avgHeart, training.getAvgHeartRate());
         assertEquals("max Herzrfequenz:", Integer.toString(maxHeart), training.getMaxHeartBeat());
-        assertEquals("max Speed:", DistanceHelper.calculatePace(maxSpeed), training.getMaxSpeed());
+        assertEquals("max Speed:", DistanceHelper.calculatePace(maxSpeed, Sport.RUNNING), training.getMaxSpeed());
         assertEquals(type, training.getType());
     }
 

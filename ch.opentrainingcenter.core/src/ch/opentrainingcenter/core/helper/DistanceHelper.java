@@ -3,6 +3,8 @@ package ch.opentrainingcenter.core.helper;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
+import ch.opentrainingcenter.transfer.Sport;
+
 public final class DistanceHelper {
 
     private static final int MINUTE_IN_SEKUNDEN = 60;
@@ -38,6 +40,37 @@ public final class DistanceHelper {
     }
 
     /**
+     * Berechnet die Pace je nach sport in (min/km) oder (km/h)
+     * 
+     * <pre>
+     * z.b 1km in 5 min 15 sekunden 
+     * --> muss 5:15 ergeben
+     * </pre>
+     * 
+     * @param distanceInMeter
+     * @param timeInSeconds
+     * @return min/km im format MM:SS
+     */
+    public static String calculatePace(final double distanzInMeter, final double dauerInSekunden, final Sport sport) {
+        if (Sport.BIKING.equals(sport)) {
+            return calculateGeschwindigkeit(distanzInMeter, dauerInSekunden);
+        } else {
+            return calculatePace(distanzInMeter, dauerInSekunden);
+        }
+    }
+
+    /**
+     * Berechnet die Pace (km/h)
+     */
+    static String calculateGeschwindigkeit(final double distanceInMeter, final double timeInSeconds) {
+        final double km = distanceInMeter / KILOMETER_IN_METER;
+        final double h = timeInSeconds / 3600;
+        final double d = km / h;
+        final double rounded = (int) (d * 10.0) / 10d;
+        return Double.toString(rounded);
+    }
+
+    /**
      * Berechnet die Pace (min/km)
      * 
      * <pre>
@@ -49,7 +82,7 @@ public final class DistanceHelper {
      * @param timeInSeconds
      * @return min/km im format MM:SS
      */
-    public static String calculatePace(final double distanceInMeter, final double timeInSeconds) {
+    static String calculatePace(final double distanceInMeter, final double timeInSeconds) {
         final double km = distanceInMeter / KILOMETER_IN_METER;
         final double min = timeInSeconds / MINUTE_IN_SEKUNDEN;
         final double d = min / km;
@@ -66,13 +99,10 @@ public final class DistanceHelper {
     }
 
     /**
-     * Berechnet aus m/s die pace
-     * 
-     * @param maximumSpeed
-     * @return
+     * Berechnet je nach Sport die maximale min/km oder km/h
      */
-    public static String calculatePace(final double speedMperSecond) {
+    public static String calculatePace(final double speedMperSecond, final Sport sport) {
         final double secPerKm = KILOMETER_IN_METER / speedMperSecond;
-        return calculatePace(KILOMETER_IN_METER, secPerKm);
+        return calculatePace(KILOMETER_IN_METER, secPerKm, sport);
     }
 }

@@ -79,7 +79,7 @@ public final class ModelFactory {
     public static ISimpleTraining convertToSimpleTraining(final ITraining training) {
         final HeartRate heart = new HeartRate(training.getAverageHeartBeat(), training.getMaxHeartBeat());
         final RunData runData = new RunData(training.getDatum(), training.getDauer(), training.getLaengeInMeter(), training.getMaxSpeed());
-        final SimpleTraining simpleTraining = new SimpleTraining(runData, heart, TrainingType.NONE, training.getNote());
+        final SimpleTraining simpleTraining = new SimpleTraining(runData, heart, TrainingType.NONE, training.getSport(), training.getNote());
         simpleTraining.setType(TrainingType.getByIndex(training.getTrainingType().getIndex()));
         if (training.getWeather() != null) {
             simpleTraining.setWetter(Wetter.getRunType(training.getWeather().getId()));

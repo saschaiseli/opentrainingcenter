@@ -67,6 +67,7 @@ import ch.opentrainingcenter.model.training.Wetter;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.ILapInfo;
 import ch.opentrainingcenter.transfer.ITraining;
+import ch.opentrainingcenter.transfer.Sport;
 import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
 
 public class SingleActivityViewPart extends ViewPart implements ISelectionProvider {
@@ -89,6 +90,7 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
     private ChartSectionSupport chartSectionSupport;
     private final List<ISelectionListener> listeners = new ArrayList<>();
     private final SelectionProviderIntermediate providerSynth, providerLap;
+    private final Sport sport;
 
     public SingleActivityViewPart() {
         final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
@@ -103,11 +105,16 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         LOGGER.info(String.format("Training mit %s Trackpoints geladen", training.getTrackPoints().size())); //$NON-NLS-1$
 
         factory = new ChartFactory(Activator.getDefault().getPreferenceStore(), training, athlete);
-
-        setPartName(simpleTraining.getFormattedDate());
-
+        sport = simpleTraining.getSport();
+        setTitleImage(Activator.getImageDescriptor(sport.getImageIcon()).createImage());
+        setPartName(null);
         providerSynth = new SelectionProviderIntermediate();
         providerLap = new SelectionProviderIntermediate();
+    }
+
+    @Override
+    public String getPartName() {
+        return sport.getTranslated();
     }
 
     @Override
@@ -256,11 +263,23 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
             support.addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart5, "-", Units.BEATS_PER_MINUTE); //$NON-NLS-1$
         }
         support.addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart6, simpleTraining.getMaxHeartBeat(), Units.BEATS_PER_MINUTE);
-        support.addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart7, simpleTraining.getPace(), Units.PACE);
-        support.addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart8, simpleTraining.getMaxSpeed(), Units.PACE);
+
+        final Units unit = getUnitFuerGeschwindigkeit();
+        support.addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart7, simpleTraining.getPace(), unit);
+        support.addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart8, simpleTraining.getMaxSpeed(), unit);
         support.addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_4, String.valueOf(simpleTraining.getUpMeter()), Units.METER);
         support.addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_8, String.valueOf(simpleTraining.getDownMeter()), Units.METER);
         overviewSection.setClient(overViewComposite);
+    }
+
+    private Units getUnitFuerGeschwindigkeit() {
+        final Units unit;
+        if (Sport.BIKING.equals(sport)) {
+            unit = Units.GESCHWINDIGKEIT;
+        } else {
+            unit = Units.PACE;
+        }
+        return unit;
     }
 
     private void addNoteSection(final Composite body) {

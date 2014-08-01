@@ -147,7 +147,7 @@ public class OverviewViewer extends ViewPart {
             @Override
             public String getText(final Object element) {
                 final ITraining record = (ITraining) element;
-                return DistanceHelper.calculatePace(record.getLaengeInMeter(), record.getDauer());
+                return DistanceHelper.calculatePace(record.getLaengeInMeter(), record.getDauer(), record.getSport());
             }
         });
 
