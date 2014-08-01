@@ -53,6 +53,7 @@ public final class CommonTransferFactory {
 
     /**
      * Factory
+     * 
      * @param dateOfStart
      *            start datum
      * @param timeInSeconds
@@ -145,8 +146,9 @@ public final class CommonTransferFactory {
         return new Tracktrainingproperty(distance, heartbeat, altitude, time, lap, streckenPunkt);
     }
 
-    public static ILapInfo createLapInfo(final int lap, final int start, final int end, final long time, final int heartBeat, final String pace) {
-        return new LapInfo(lap, start, end, time, heartBeat, pace);
+    public static ILapInfo createLapInfo(final int lap, final int start, final int end, final long time, final int heartBeat, final String pace,
+            final String geschwindigkeit) {
+        return new LapInfo(lap, start, end, time, heartBeat, pace, geschwindigkeit);
     }
 
 }

@@ -38,11 +38,15 @@ import ch.opentrainingcenter.core.helper.DistanceHelper;
 import ch.opentrainingcenter.core.helper.TimeHelper;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.transfer.ILapInfo;
+import ch.opentrainingcenter.transfer.Sport;
 
 public class LapInfoTableViewer extends TableViewer {
 
-    public LapInfoTableViewer(final Composite parent, final int style) {
-        super(parent, style);
+    private final Sport sport;
+
+    public LapInfoTableViewer(final Composite parent, final Sport sport) {
+        super(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
+        this.sport = sport;
     }
 
     public void createTableViewer(final List<ILapInfo> input, final IWorkbenchPartSite site) {
@@ -110,7 +114,11 @@ public class LapInfoTableViewer extends TableViewer {
 
             @Override
             public String getLapInfoText(final ILapInfo lapInfo) {
-                return lapInfo.getPace();
+                if (Sport.BIKING.equals(sport)) {
+                    return lapInfo.getGeschwindigkeit();
+                } else {
+                    return lapInfo.getPace();
+                }
             }
         });
 

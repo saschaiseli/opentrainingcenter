@@ -218,7 +218,7 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         layout.makeColumnsEqualWidth = false;
         client.setLayout(layout);
 
-        final LapInfoTableViewer viewer = new LapInfoTableViewer(client, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
+        final LapInfoTableViewer viewer = new LapInfoTableViewer(client, sport);
         viewer.createTableViewer(input, getSite());
         lapSection.setClient(client);
         return viewer;

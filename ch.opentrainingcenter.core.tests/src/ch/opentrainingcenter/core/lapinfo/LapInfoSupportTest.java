@@ -12,7 +12,6 @@ import org.junit.Test;
 
 import ch.opentrainingcenter.transfer.ILapInfo;
 import ch.opentrainingcenter.transfer.ITrackPointProperty;
-import ch.opentrainingcenter.transfer.Sport;
 
 @SuppressWarnings("nls")
 public class LapInfoSupportTest {
@@ -26,20 +25,20 @@ public class LapInfoSupportTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testNull() {
-        LapInfoSupport.createLapInfo(null, Sport.RUNNING);
+        LapInfoSupport.createLapInfo(null);
     }
 
     @SuppressWarnings("unchecked")
     @Test(expected = IllegalArgumentException.class)
     public void testLeer() {
-        LapInfoSupport.createLapInfo(Collections.EMPTY_LIST, Sport.RUNNING);
+        LapInfoSupport.createLapInfo(Collections.EMPTY_LIST);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testEinPoint() {
         points.add(createTrackPoint(1000, 142, 240_000L));
 
-        LapInfoSupport.createLapInfo(points, Sport.RUNNING);
+        LapInfoSupport.createLapInfo(points);
     }
 
     @Test
@@ -47,7 +46,7 @@ public class LapInfoSupportTest {
         points.add(createTrackPoint(1000, 142, 240_000L));
         points.add(createTrackPoint(2000, 162, 480_000L));
 
-        final ILapInfo result = LapInfoSupport.createLapInfo(points, Sport.RUNNING);
+        final ILapInfo result = LapInfoSupport.createLapInfo(points);
 
         assertLapInfo(1, 1000, 2000, 152, 240_000, "4:00", result);
     }
@@ -56,21 +55,21 @@ public class LapInfoSupportTest {
     public void test_mit_neg_initPosition() {
         points.add(createTrackPoint(1000, 142, 240_000L));
 
-        LapInfoSupport.createLapInfo(0, points, -3d, 0, Sport.RUNNING);
+        LapInfoSupport.createLapInfo(0, points, -3d, 0);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void test_mit_neg_initTime() {
         points.add(createTrackPoint(1000, 142, 240_000L));
 
-        LapInfoSupport.createLapInfo(0, points, 0, -3, Sport.RUNNING);
+        LapInfoSupport.createLapInfo(0, points, 0, -3);
     }
 
     @Test
     public void testEinPoint_mit_init() {
         points.add(createTrackPoint(1000, 142, 240_000L));
 
-        final ILapInfo result = LapInfoSupport.createLapInfo(0, points, 0, 0, Sport.RUNNING);
+        final ILapInfo result = LapInfoSupport.createLapInfo(0, points, 0, 0);
 
         assertLapInfo(0, 0, 1000, 142, 240_000, "4:00", result);
     }

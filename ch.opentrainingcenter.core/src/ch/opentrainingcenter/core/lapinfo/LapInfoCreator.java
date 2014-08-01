@@ -9,7 +9,6 @@ import ch.opentrainingcenter.core.assertions.Assertions;
 import ch.opentrainingcenter.transfer.ILapInfo;
 import ch.opentrainingcenter.transfer.ITrackPointProperty;
 import ch.opentrainingcenter.transfer.ITraining;
-import ch.opentrainingcenter.transfer.Sport;
 import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
 
 public class LapInfoCreator {
@@ -46,7 +45,7 @@ public class LapInfoCreator {
             if (pointsOfLap == null) {
                 result.add(createEmptyLap());
             } else {
-                result.add(createLapInfo(i, pointsOfLap, previous, training.getSport()));
+                result.add(createLapInfo(i, pointsOfLap, previous));
                 previous = pointsOfLap.get(pointsOfLap.size() - 1);
             }
         }
@@ -54,7 +53,7 @@ public class LapInfoCreator {
     }
 
     private ILapInfo createEmptyLap() {
-        return CommonTransferFactory.createLapInfo(0, 0, 0, 0, 0, "--:--"); //$NON-NLS-1$
+        return CommonTransferFactory.createLapInfo(0, 0, 0, 0, 0, "--:--", "--.-"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     private NavigableMap<Integer, List<ITrackPointProperty>> createLapMap(final ITraining training) {
@@ -73,7 +72,7 @@ public class LapInfoCreator {
         return (int) (pointDistance / distance);
     }
 
-    private ILapInfo createLapInfo(final int runde, final List<ITrackPointProperty> points, final ITrackPointProperty previous, final Sport sport) {
+    private ILapInfo createLapInfo(final int runde, final List<ITrackPointProperty> points, final ITrackPointProperty previous) {
         final ILapInfo result;
         double initPosition = 0;
         long initTime = 0;
@@ -81,7 +80,7 @@ public class LapInfoCreator {
             initPosition = previous.getDistance();
             initTime = previous.getZeit();
         }
-        result = LapInfoSupport.createLapInfo(runde, points, initPosition, initTime, sport);
+        result = LapInfoSupport.createLapInfo(runde, points, initPosition, initTime);
         return result;
     }
 }

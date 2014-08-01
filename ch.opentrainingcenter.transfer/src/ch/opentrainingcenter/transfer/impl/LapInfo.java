@@ -50,13 +50,14 @@ public class LapInfo implements ILapInfo {
      * @param pace
      *            Pace in [min/km]
      */
-    public LapInfo(final int lap, final int start, final int end, final long time, final int heartBeat, final String pace) {
+    public LapInfo(final int lap, final int start, final int end, final long time, final int heartBeat, final String pace, final String geschwindigkeit) {
         this.lap = lap;
         this.start = start;
         this.end = end;
         this.time = time;
         this.heartBeat = heartBeat;
         this.pace = pace;
+        this.geschwindigkeit = geschwindigkeit;
     }
 
     @Override

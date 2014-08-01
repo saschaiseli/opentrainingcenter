@@ -126,14 +126,15 @@ public class ConvertTcx implements IConvert2Tcx {
             LOGGER.info("Runde " + lapCount + " wird konvertiert"); //$NON-NLS-1$//$NON-NLS-2$
             final double lapDistance = lap.getDistanceMeters();
             final double totalTimeSeconds = lap.getTotalTimeSeconds();
-            final String pace = DistanceHelper.calculatePace(lapDistance, totalTimeSeconds, sport);
+            final String pace = DistanceHelper.calculatePace(lapDistance, totalTimeSeconds, Sport.RUNNING);
+            final String gesch = DistanceHelper.calculatePace(lapDistance, totalTimeSeconds, Sport.BIKING);
             final HeartRateInBeatsPerMinuteT heart = lap.getAverageHeartRateBpm();
             int lapHeart = 0;
             if (heart != null) {
                 lapHeart = heart.getValue();
             }
             lapInfos.add(CommonTransferFactory.createLapInfo(lapCount, (int) distance, (int) (lapDistance + distance), (int) (totalTimeSeconds * 1000),
-                    lapHeart, pace));
+                    lapHeart, pace, gesch));
             final List<ITrackPointProperty> trackPointsOfLap = getTrackPointsOfLap(lap, lapCount);
             trackPoints.addAll(trackPointsOfLap);
             lapCount++;

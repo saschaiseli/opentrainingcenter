@@ -35,7 +35,7 @@ public final class LapInfoSupport {
      * 
      * @return eine {@link ILapInfo}
      */
-    public static ILapInfo createLapInfo(final List<ITrackPointProperty> points, final Sport sport) {
+    public static ILapInfo createLapInfo(final List<ITrackPointProperty> points) {
         Assertions.notNull(points);
         Assertions.isValid(points.size() < 2, "Es braucht mindest 2 Punkte"); //$NON-NLS-1$
 
@@ -55,8 +55,9 @@ public final class LapInfoSupport {
         final long endTime = lastPoint.getZeit();
         final long time = endTime - startTime;
 
-        final String pace = DistanceHelper.calculatePace(distance, time / 1000, sport);
-        return CommonTransferFactory.createLapInfo(firstPoint.getLap(), startDist, endDist, time, heartBeat, pace);
+        final String pace = DistanceHelper.calculatePace(distance, time / 1000, Sport.RUNNING);
+        final String geschw = DistanceHelper.calculatePace(distance, time / 1000, Sport.BIKING);
+        return CommonTransferFactory.createLapInfo(firstPoint.getLap(), startDist, endDist, time, heartBeat, pace, geschw);
     }
 
     /**
@@ -83,8 +84,7 @@ public final class LapInfoSupport {
      * 
      * @return eine {@link ILapInfo}
      */
-    public static ILapInfo createLapInfo(final int runde, final List<ITrackPointProperty> points, final double initPosition, final long initTime,
-            final Sport sport) {
+    public static ILapInfo createLapInfo(final int runde, final List<ITrackPointProperty> points, final double initPosition, final long initTime) {
         Assertions.notNull(points);
         Assertions.isValid(initPosition < 0, "initiale position muss groesser gleich 0 sein"); //$NON-NLS-1$
         Assertions.isValid(initTime < 0, "initiale zeit muss groesser gleich 0 sein"); //$NON-NLS-1$
@@ -116,8 +116,9 @@ public final class LapInfoSupport {
         }
         distance = end - start;
 
-        final String pace = DistanceHelper.calculatePace(distance, time / 1000, sport);
-        return CommonTransferFactory.createLapInfo(runde, start, end, time, heartBeat, pace);
+        final String pace = DistanceHelper.calculatePace(distance, time / 1000, Sport.RUNNING);
+        final String geschw = DistanceHelper.calculatePace(distance, time / 1000, Sport.BIKING);
+        return CommonTransferFactory.createLapInfo(runde, start, end, time, heartBeat, pace, geschw);
     }
 
     private static boolean isFirstPoint(final List<ITrackPointProperty> points, final long initTime) {
