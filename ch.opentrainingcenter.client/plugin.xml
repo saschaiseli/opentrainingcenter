@@ -144,6 +144,7 @@
       <view
             allowMultiple="false"
             class="ch.opentrainingcenter.client.views.best.BestRunsView"
+            icon="icons/16_16/medal_gold_1.png"
             id="ch.opentrainingcenter.client.best.bestof"
             name="%bestzeiten"
             restorable="true">
