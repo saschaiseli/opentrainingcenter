@@ -828,9 +828,6 @@
       </viewContribution>
    </extension>
    <extension
-         point="org.eclipse.ui.perspectives">
-   </extension>
-   <extension
          point="org.eclipse.ui.bindings">
       <key
             commandId="ch.opentrainingcenter.client.commands.CreateHeapDump"

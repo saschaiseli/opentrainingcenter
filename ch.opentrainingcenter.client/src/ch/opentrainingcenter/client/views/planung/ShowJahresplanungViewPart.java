@@ -13,12 +13,13 @@ import ch.opentrainingcenter.i18n.Messages;
 public class ShowJahresplanungViewPart extends ViewPart {
     public static final String ID = "ch.opentrainingcenter.client.views.planung.ShowJahresplanungViewPart"; //$NON-NLS-1$
     private final IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+    private Label futureLabel;
 
     @Override
     public void createPartControl(final Composite parent) {
         final GridLayout layout = new GridLayout(2, false);
         parent.setLayout(layout);
-        final Label futureLabel = new Label(parent, SWT.NONE);
+        futureLabel = new Label(parent, SWT.NONE);
 
         futureLabel.setText(Messages.ShowJahresplanungViewPart_0);
         final PlanungFutureViewer future = new PlanungFutureViewer();
@@ -32,6 +33,6 @@ public class ShowJahresplanungViewPart extends ViewPart {
 
     @Override
     public void setFocus() {
-        this.setFocus();
+        futureLabel.setFocus();
     }
 }

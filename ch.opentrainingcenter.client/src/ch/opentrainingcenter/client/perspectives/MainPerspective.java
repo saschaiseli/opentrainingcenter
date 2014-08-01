@@ -47,9 +47,7 @@ public class MainPerspective implements IPerspectiveFactory {
         folderMiddle.addPlaceholder(ShowJahresplanungViewPart.ID);
         folderMiddle.addPlaceholder(ChartViewPart.ID + MULTI_VIEW);
         folderMiddle.addPlaceholder(DynamicChartViewPart.ID);
-
-        layout.addView(BestRunsView.ID, IPageLayout.RIGHT, 0.5f, editorArea);
-
+        folderMiddle.addView(BestRunsView.ID);
         layout.getViewLayout(BestRunsView.ID).setCloseable(false);
         layout.getViewLayout(MonthlyWeekOverview.ID).setCloseable(false);
 
