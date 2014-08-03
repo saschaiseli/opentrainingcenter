@@ -33,4 +33,6 @@ public final class IImageKeys {
     public static final String ROUTE6464 = "icons/64_64/route_64_64.png";
 
     public static final String DATABASE = "icons/16_16/repository_rep.png";
+
+    public static final String VERSION = "icons/16_16/flash-icon_16_16.png";
 }

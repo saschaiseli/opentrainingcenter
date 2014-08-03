@@ -19,6 +19,7 @@ import ch.opentrainingcenter.client.splash.InitialLoadRunnable;
 import ch.opentrainingcenter.client.splash.OtcSplashHandler;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.client.views.statusline.DatabaseContributeItem;
+import ch.opentrainingcenter.client.views.statusline.VersionContributeItem;
 import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.core.db.DBSTATE;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
@@ -104,6 +105,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
         configurer.getWindow().getShell().setMaximized(true);
         final IStatusLineManager manager = getWindowConfigurer().getActionBarConfigurer().getStatusLineManager();
         manager.add(new DatabaseContributeItem(databaseConnection.getName(), databaseConnection.getDbConnection().getUrl()));
+        manager.add(new VersionContributeItem());
         manager.update(true);
     }
 
