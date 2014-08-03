@@ -126,8 +126,6 @@ public class BestRunsComposite {
 
             @Override
             public void run() {
-                final List<ITraining> allTrainings = databaseAccess.getAllTrainings(athlete);
-                model = action.getModel(allTrainings);
                 update();
             }
         });
@@ -240,6 +238,8 @@ public class BestRunsComposite {
                 @Override
                 public void run() {
                     LOGGER.info(String.format("Update BestRun Composite mit Sport %s", sport)); //$NON-NLS-1$
+                    final List<ITraining> allTrainings = databaseAccess.getAllTrainings(athlete);
+                    model = action.getModel(allTrainings);
                     bestPace.setData(model.getSchnellstePace());
                     bestPace.setText(model.getSchnellstePace().getSecond());
 
