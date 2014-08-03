@@ -1,5 +1,6 @@
 package ch.opentrainingcenter.client.action;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
@@ -23,6 +24,14 @@ public class DistanceIntervallTest {
             assertNull(intervall.getMax(inter).getFirst());
             assertNull(intervall.getMax(inter).getSecond());
         }
+    }
+
+    @Test
+    public void testMax() {
+        intervall.addPace(1, 10, 10001);
+        intervall.addPace(1, 10.1, 10001);
+
+        assertEquals(10.1, intervall.getMax(Intervall.VON10_BIS_15).getSecond(), 0.001);
     }
 
     @Test

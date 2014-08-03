@@ -15,6 +15,7 @@ import ch.opentrainingcenter.model.training.IGoldMedalModel;
 import ch.opentrainingcenter.transfer.HeartRate;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.RunData;
+import ch.opentrainingcenter.transfer.Sport;
 import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
 
 @SuppressWarnings("nls")
@@ -29,11 +30,12 @@ public class GoldMedalActionTest {
     public void setUp() {
         Locale.setDefault(Locale.GERMAN);
         TimeZone.setDefault(TimeZone.getTimeZone("GMT+1"));
-        action = new GoldMedalAction();
+        action = new GoldMedalAction(Sport.RUNNING);
         allImported = new ArrayList<ITraining>();
         final RunData runData = new RunData(1000L, 0, 0, 0);
         final HeartRate heart = new HeartRate(0, 0);
         trainingA = CommonTransferFactory.createTraining(runData, heart);
+        trainingA.setSport(Sport.RUNNING);
         allImported.add(trainingA);
     }
 
@@ -76,6 +78,7 @@ public class GoldMedalActionTest {
         final RunData runData = new RunData(1234, 0, 0, 0);
         final HeartRate heart = new HeartRate(0, 0);
         trainingB = CommonTransferFactory.createTraining(runData, heart);
+        trainingB.setSport(Sport.RUNNING);
 
         trainingA.setMaxHeartBeat(2);
         trainingB.setMaxHeartBeat(4);
@@ -87,10 +90,27 @@ public class GoldMedalActionTest {
     }
 
     @Test
+    public void testMaxHeartRate4_FilterBiking() {
+        final RunData runData = new RunData(1234, 0, 0, 0);
+        final HeartRate heart = new HeartRate(0, 0);
+        trainingB = CommonTransferFactory.createTraining(runData, heart);
+        trainingB.setSport(Sport.BIKING);
+
+        trainingA.setMaxHeartBeat(2);
+        trainingB.setMaxHeartBeat(4);
+        allImported.add(trainingA);
+        allImported.add(trainingB);
+        final IGoldMedalModel model = action.getModel(allImported);
+
+        assertEquals("Grösserer Wert muss ausgegeben werden", "2", model.getHighestPulse().getSecond());
+    }
+
+    @Test
     public void testMaxHeartRate5() {
         final RunData runData = new RunData(2345, 0, 0, 0);
         final HeartRate heart = new HeartRate(0, 0);
         trainingB = CommonTransferFactory.createTraining(runData, heart);
+        trainingB.setSport(Sport.RUNNING);
 
         trainingA.setMaxHeartBeat(-1);
         trainingB.setMaxHeartBeat(4);
@@ -133,6 +153,8 @@ public class GoldMedalActionTest {
         final RunData runData = new RunData(463463, 0, 0, 0);
         final HeartRate heart = new HeartRate(0, 0);
         trainingB = CommonTransferFactory.createTraining(runData, heart);
+        trainingB.setSport(Sport.RUNNING);
+
         trainingA.setAverageHeartBeat(2);
         trainingB.setAverageHeartBeat(4);
         allImported.add(trainingA);
@@ -147,6 +169,7 @@ public class GoldMedalActionTest {
         final RunData runData = new RunData(1234, 0, 0, 0);
         final HeartRate heart = new HeartRate(0, 0);
         trainingB = CommonTransferFactory.createTraining(runData, heart);
+        trainingB.setSport(Sport.RUNNING);
         trainingA.setAverageHeartBeat(-1);
         trainingB.setAverageHeartBeat(4);
         allImported.add(trainingA);
@@ -201,6 +224,7 @@ public class GoldMedalActionTest {
         final RunData runData = new RunData(234234, 0, 0, 0);
         final HeartRate heart = new HeartRate(0, 0);
         trainingB = CommonTransferFactory.createTraining(runData, heart);
+        trainingB.setSport(Sport.RUNNING);
 
         trainingA.setAverageHeartBeat(-1);
         trainingB.setAverageHeartBeat(4);
@@ -241,6 +265,7 @@ public class GoldMedalActionTest {
         final RunData runData = new RunData(353453, 0, 0, 0);
         final HeartRate heart = new HeartRate(0, 0);
         trainingB = CommonTransferFactory.createTraining(runData, heart);
+        trainingB.setSport(Sport.RUNNING);
 
         trainingA.setDauer(2);
         trainingB.setDauer(4);
@@ -255,6 +280,7 @@ public class GoldMedalActionTest {
         final RunData runData = new RunData(1234, 0, 0, 0);
         final HeartRate heart = new HeartRate(0, 0);
         trainingB = CommonTransferFactory.createTraining(runData, heart);
+        trainingB.setSport(Sport.RUNNING);
 
         trainingA.setDauer(-1);
         trainingB.setDauer(4);
@@ -289,7 +315,7 @@ public class GoldMedalActionTest {
 
         final IGoldMedalModel model = action.getModel(allImported);
 
-        assertEquals("Bei einem negativen Wert soll nichts ausgegeben werden", "1.0", model.getSchnellstePace().getSecond());
+        assertEquals("Bei einem negativen Wert soll nichts ausgegeben werden", "1:00", model.getSchnellstePace().getSecond());
     }
 
     @Test
@@ -300,9 +326,10 @@ public class GoldMedalActionTest {
         trainingA.setDauer(60);
         trainingA.setLaengeInMeter(1000);
         allImported.add(trainingB);
+
         final IGoldMedalModel model = action.getModel(allImported);
 
-        assertEquals("kleinere Pace muss ausgegeben werden", "1.0", model.getSchnellstePace().getSecond());
+        assertEquals("kleinere Pace muss ausgegeben werden", "1:00", model.getSchnellstePace().getSecond());
     }
 
     @Test
@@ -310,13 +337,15 @@ public class GoldMedalActionTest {
         final RunData runData = new RunData(42, 30, 1000, 0);
         final HeartRate heart = new HeartRate(0, 0);
         trainingB = CommonTransferFactory.createTraining(runData, heart);
+        trainingB.setSport(Sport.RUNNING);
 
         trainingA.setDauer(60);
         trainingA.setLaengeInMeter(1000);
         allImported.add(trainingB);
+
         final IGoldMedalModel model = action.getModel(allImported);
 
-        assertEquals("kleinere Pace muss ausgegeben werden", "0.3", model.getSchnellstePace().getSecond());
+        assertEquals("kleinere Pace muss ausgegeben werden", "0:30", model.getSchnellstePace().getSecond());
     }
 
     @Test
@@ -351,6 +380,7 @@ public class GoldMedalActionTest {
         final RunData runData = new RunData(42, 0, 0, 0);
         final HeartRate heart = new HeartRate(0, 0);
         trainingB = CommonTransferFactory.createTraining(runData, heart);
+        trainingB.setSport(Sport.RUNNING);
 
         trainingA.setLaengeInMeter(2);
         trainingB.setLaengeInMeter(4);
@@ -365,6 +395,7 @@ public class GoldMedalActionTest {
         final RunData runData = new RunData(42, 0, 0, 0);
         final HeartRate heart = new HeartRate(0, 0);
         trainingB = CommonTransferFactory.createTraining(runData, heart);
+        trainingB.setSport(Sport.RUNNING);
 
         trainingA.setLaengeInMeter(-1);
         trainingB.setLaengeInMeter(4);

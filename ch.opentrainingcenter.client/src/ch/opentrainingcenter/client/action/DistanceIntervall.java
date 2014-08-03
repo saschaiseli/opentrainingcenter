@@ -32,18 +32,18 @@ class DistanceIntervall {
         PACES.put(Intervall.PLUS25, new ArrayList<Pair<Long, Double>>());
     }
 
-    void addPace(final long date, final double pace, final double distanceInMeter) {
+    void addPace(final long date, final double speedMps, final double distanceInMeter) {
         final int distanceInKilometer = (int) distanceInMeter / KILOMETER_IN_METER;
         if (distanceInKilometer >= Intervall.PLUS25.getVon()) {
-            PACES.get(Intervall.PLUS25).add(new Pair<Long, Double>(date, pace));
+            PACES.get(Intervall.PLUS25).add(new Pair<Long, Double>(date, speedMps));
         } else if (distanceInKilometer >= Intervall.VON20_BIS_25.getVon()) {
-            PACES.get(Intervall.VON20_BIS_25).add(new Pair<Long, Double>(date, pace));
+            PACES.get(Intervall.VON20_BIS_25).add(new Pair<Long, Double>(date, speedMps));
         } else if (distanceInKilometer >= Intervall.VON15_BIS_20.getVon()) {
-            PACES.get(Intervall.VON15_BIS_20).add(new Pair<Long, Double>(date, pace));
+            PACES.get(Intervall.VON15_BIS_20).add(new Pair<Long, Double>(date, speedMps));
         } else if (distanceInKilometer >= Intervall.VON10_BIS_15.getVon()) {
-            PACES.get(Intervall.VON10_BIS_15).add(new Pair<Long, Double>(date, pace));
+            PACES.get(Intervall.VON10_BIS_15).add(new Pair<Long, Double>(date, speedMps));
         } else {
-            PACES.get(Intervall.KLEINER_10).add(new Pair<Long, Double>(date, pace));
+            PACES.get(Intervall.KLEINER_10).add(new Pair<Long, Double>(date, speedMps));
         }
     }
 
@@ -53,7 +53,7 @@ class DistanceIntervall {
             LOGGER.info("Keine pace im intervall: " + intervall); //$NON-NLS-1$
             return new Pair<Long, Double>(null, null);
         } else {
-            return Collections.min(list, new PairComparator<Double>());
+            return Collections.max(list, new PairComparator<Double>());
         }
     }
 }

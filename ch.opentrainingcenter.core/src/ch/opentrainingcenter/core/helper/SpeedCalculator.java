@@ -21,9 +21,9 @@ public final class SpeedCalculator {
      *            zeit in sekunden
      * @return geschwindigkeit in meter pro sekunde
      */
-    public static double calculateSpeedMpS(final double d1, final double d2, final int t1, final int t2) {
+    public static double calculateSpeedMpS(final double d1, final double d2, final double t1, final double t2) {
         final double deltaStrecke = d2 - d1;
-        final int deltaTime = t2 - t1;
+        final double deltaTime = t2 - t1;
         return deltaStrecke / deltaTime;
     }
 

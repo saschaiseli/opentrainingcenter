@@ -3,6 +3,7 @@ package ch.opentrainingcenter.client.action;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import ch.opentrainingcenter.core.data.Pair;
 import ch.opentrainingcenter.core.data.PairComparator;
@@ -13,6 +14,7 @@ import ch.opentrainingcenter.model.ModelFactory;
 import ch.opentrainingcenter.model.training.IGoldMedalModel;
 import ch.opentrainingcenter.model.training.Intervall;
 import ch.opentrainingcenter.transfer.ITraining;
+import ch.opentrainingcenter.transfer.Sport;
 
 /**
  * Sucht die besten Resultate in den verschiedenen Kategorien
@@ -21,10 +23,17 @@ import ch.opentrainingcenter.transfer.ITraining;
  */
 public class GoldMedalAction {
     private static final String UNKNOWN = "-"; //$NON-NLS-1$
+    private final Sport sport;
+
+    public GoldMedalAction(final Sport sport) {
+        this.sport = sport;
+    }
 
     public IGoldMedalModel getModel(final List<ITraining> trainings) {
+        final List<ITraining> relevante = trainings.stream().filter(element -> sport.equals(element.getSport())).collect(Collectors.toList());
+
         final IGoldMedalModel result = ModelFactory.createGoldMedalModel();
-        if (trainings == null || trainings.isEmpty()) {
+        if (relevante == null || relevante.isEmpty()) {
             return result;
         }
         final List<Pair<Long, Double>> maxSpeed = new ArrayList<>();
@@ -34,11 +43,13 @@ public class GoldMedalAction {
         final List<Pair<Long, Integer>> averageHeart = new ArrayList<>();
 
         final DistanceIntervall di = new DistanceIntervall();
-        for (final ITraining training : trainings) {
+        for (final ITraining training : relevante) {
             final long datum = training.getDatum();
-            final double pace = SpeedCalculator.calculatePace(0, training.getLaengeInMeter(), 0, training.getDauer());
-            maxSpeed.add(new Pair<Long, Double>(datum, pace));
-            di.addPace(datum, pace, training.getLaengeInMeter());
+            // final double pace = SpeedCalculator.calculatePace(0,
+            // training.getLaengeInMeter(), 0, training.getDauer());
+            final double mps = SpeedCalculator.calculateSpeedMpS(0, training.getLaengeInMeter(), 0, training.getDauer());
+            maxSpeed.add(new Pair<Long, Double>(datum, mps));
+            di.addPace(datum, mps, training.getLaengeInMeter());
             laenge.add(new Pair<Long, Double>(datum, training.getLaengeInMeter()));
             dauer.add(new Pair<Long, Double>(datum, training.getDauer()));
             heart.add(new Pair<Long, Integer>(datum, training.getMaxHeartBeat()));
@@ -102,8 +113,10 @@ public class GoldMedalAction {
     private Pair<Long, String> getPace(final DistanceIntervall di, final Intervall intervall) {
         final Pair<Long, String> result;
         final Pair<Long, Double> max = di.getMax(intervall);
-        if (max.getSecond() != null) {
-            result = new Pair<Long, String>(max.getFirst(), max.getSecond().toString());
+        final Double speedMperSecond = max.getSecond();
+        if (speedMperSecond != null) {
+            final String pace = DistanceHelper.calculatePace(speedMperSecond, sport);
+            result = new Pair<Long, String>(max.getFirst(), pace);
         } else {
             result = new Pair<Long, String>();
         }
@@ -111,15 +124,13 @@ public class GoldMedalAction {
     }
 
     private Pair<Long, String> calculateBestePace(final List<Pair<Long, Double>> maxSpeed) {
-        Pair<Long, String> result = null;
+        Pair<Long, String> result = new Pair<Long, String>(null, UNKNOWN);
         if (!maxSpeed.isEmpty()) {
-            final Pair<Long, Double> min = Collections.min(maxSpeed, new PairComparator<Double>());
-            if (min != null && min.getSecond().doubleValue() > 0) {
-                result = new Pair<Long, String>(min.getFirst(), String.valueOf(min.getSecond()));
+            final Pair<Long, Double> maxMps = Collections.max(maxSpeed, new PairComparator<Double>());
+            if (maxMps != null && maxMps.getSecond().doubleValue() > 0) {
+                final String pace = DistanceHelper.calculatePace(maxMps.getSecond(), sport);
+                result = new Pair<Long, String>(maxMps.getFirst(), pace);
             }
-        }
-        if (result == null) {
-            result = new Pair<Long, String>(null, UNKNOWN);
         }
         return result;
     }
