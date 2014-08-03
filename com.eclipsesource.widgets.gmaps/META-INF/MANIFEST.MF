@@ -5,7 +5,7 @@ Bundle-SymbolicName: com.eclipsesource.widgets.gmaps;singleton:=true
 Bundle-Version: 1.1.0
 Import-Package: org.eclipse.jface;resolution:=optional
 Export-Package: com.eclipsesource.widgets.gmaps
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-Vendor: EclipseSource
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime

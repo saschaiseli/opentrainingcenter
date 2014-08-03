@@ -15,6 +15,6 @@ Require-Bundle: org.eclipse.core.runtime,
  ch.opentrainingcenter.i18n
 Bundle-ActivationPolicy: lazy
 Eclipse-RegisterBuddy: org.hibernate, logging
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ClassPath: db/,
  .

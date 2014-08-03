@@ -8,4 +8,4 @@ Require-Bundle: org.junit,
  mockito,
  ch.opentrainingcenter.db,
  org.eclipse.ui
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
