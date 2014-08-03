@@ -3,7 +3,6 @@ package ch.opentrainingcenter.client.action;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import ch.opentrainingcenter.core.data.Pair;
 import ch.opentrainingcenter.core.data.PairComparator;
@@ -30,8 +29,14 @@ public class GoldMedalAction {
     }
 
     public IGoldMedalModel getModel(final List<ITraining> trainings) {
-        final List<ITraining> relevante = trainings.stream().filter(element -> sport.equals(element.getSport())).collect(Collectors.toList());
-
+        // final List<ITraining> relevante = trainings.stream().filter(element
+        // -> sport.equals(element.getSport())).collect(Collectors.toList());
+        final List<ITraining> relevante = new ArrayList<>();
+        for (final ITraining training : trainings) {
+            if (sport.equals(training.getSport())) {
+                relevante.add(training);
+            }
+        }
         final IGoldMedalModel result = ModelFactory.createGoldMedalModel();
         if (relevante == null || relevante.isEmpty()) {
             return result;
