@@ -85,9 +85,9 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
     private static final DateFormat DATE_FORMAT = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
 
     private static final String[] NEW_SHORT_WEEKDAYS = new String[] { "", Messages.DynamicChartViewPart_Montag, // //$NON-NLS-1$
-            Messages.DynamicChartViewPart_Dienstag, Messages.DynamicChartViewPart_Mittwoch, //
-            Messages.DynamicChartViewPart_Donnerstag, Messages.DynamicChartViewPart_Freitag, //
-            Messages.DynamicChartViewPart_Samstag, Messages.DynamicChartViewPart_Sonntag };
+        Messages.DynamicChartViewPart_Dienstag, Messages.DynamicChartViewPart_Mittwoch, //
+        Messages.DynamicChartViewPart_Donnerstag, Messages.DynamicChartViewPart_Freitag, //
+        Messages.DynamicChartViewPart_Samstag, Messages.DynamicChartViewPart_Sonntag };
 
     private static final Logger LOGGER = Logger.getLogger(DynamicChartViewPart.class);
 
@@ -378,12 +378,16 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
 
     @Override
     public void setFocus() {
-        dateVon.setFocus();
+        if (dateVon != null) {
+            dateVon.setFocus();
+        }
     }
 
     @Override
     public void dispose() {
         TrainingCache.getInstance().removeListener(this);
+        dateVon.dispose();
+        dateBis.dispose();
         super.dispose();
     }
 
