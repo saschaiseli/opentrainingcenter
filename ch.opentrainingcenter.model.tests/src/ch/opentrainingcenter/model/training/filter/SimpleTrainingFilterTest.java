@@ -19,97 +19,105 @@
 
 package ch.opentrainingcenter.model.training.filter;
 
-import static ch.opentrainingcenter.transfer.TrainingType.EXT_INTERVALL;
-import static ch.opentrainingcenter.transfer.TrainingType.INT_INTERVALL;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 
 import ch.opentrainingcenter.model.training.ISimpleTraining;
 
+@SuppressWarnings("unchecked")
 public class SimpleTrainingFilterTest {
 
     SimpleTrainingFilter filter;
+    List<Filter<ISimpleTraining>> filters;
     private ISimpleTraining training;
 
     @Before
     public void setUp() {
         training = mock(ISimpleTraining.class);
+        filters = new ArrayList<>();
+    }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testFilterLeer() {
+        filter = new SimpleTrainingFilter(filters);
+
+        filter.select(training);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testTrainingNull() {
+        final Filter<ISimpleTraining> filterA = mock(Filter.class);
+        filters.add(filterA);
+        filter = new SimpleTrainingFilter(filters);
+
+        filter.select(null);
     }
 
     @Test
-    public void testUpperRange() {
-        filter = new SimpleTrainingFilter(new Date(1), new Date(100), EXT_INTERVALL);
+    public void testEinerOk() {
+        filters.add(createFilter(true));
+        filter = new SimpleTrainingFilter(filters);
 
-        when(training.getDatum()).thenReturn(new Date(100));
-        when(training.getType()).thenReturn(EXT_INTERVALL);
+        final boolean result = filter.select(training);
 
-        final ISimpleTraining result = filter.filter(training);
-
-        assertNotNull(result);
+        assertTrue(result);
     }
 
     @Test
-    public void testLowerRange() {
-        filter = new SimpleTrainingFilter(new Date(1), new Date(100), EXT_INTERVALL);
+    public void testEinerNOk() {
+        filters.add(createFilter(false));
+        filter = new SimpleTrainingFilter(filters);
 
-        when(training.getDatum()).thenReturn(new Date(1));
-        when(training.getType()).thenReturn(EXT_INTERVALL);
+        final boolean result = filter.select(training);
 
-        final ISimpleTraining result = filter.filter(training);
-
-        assertNotNull(result);
+        assertFalse(result);
     }
 
     @Test
-    public void testTooLate() {
-        final DateTime von = new DateTime(2012, 1, 22, 12, 22);
-        final DateTime bis = new DateTime(2012, 3, 22, 12, 22);
+    public void testZweiOk() {
+        filters.add(createFilter(true));
+        filters.add(createFilter(true));
+        filter = new SimpleTrainingFilter(filters);
 
-        filter = new SimpleTrainingFilter(von.toDate(), bis.toDate(), EXT_INTERVALL);
+        final boolean result = filter.select(training);
 
-        final DateTime dt = new DateTime(2012, 3, 23, 0, 0);
-
-        when(training.getDatum()).thenReturn(dt.toDate());
-        when(training.getType()).thenReturn(EXT_INTERVALL);
-
-        final ISimpleTraining result = filter.filter(training);
-
-        assertNull(result);
+        assertTrue(result);
     }
 
     @Test
-    public void testTooLow() {
-        final DateTime von = new DateTime(2012, 1, 22, 12, 22);
-        final DateTime bis = new DateTime(2012, 3, 22, 12, 22);
+    public void testEinerAusZweiOk() {
+        filters.add(createFilter(false));
+        filters.add(createFilter(true));
+        filter = new SimpleTrainingFilter(filters);
 
-        filter = new SimpleTrainingFilter(von.toDate(), bis.toDate(), EXT_INTERVALL);
+        final boolean result = filter.select(training);
 
-        final DateTime dt = new DateTime(2012, 1, 21, 23, 59);
-        when(training.getDatum()).thenReturn(dt.toDate());
+        assertFalse(result);
+    }
 
-        final ISimpleTraining result = filter.filter(training);
-
-        assertNull(result);
+    private Filter<ISimpleTraining> createFilter(final boolean value) {
+        final Filter<ISimpleTraining> mock = mock(Filter.class);
+        when(mock.select((ISimpleTraining) any())).thenReturn(value);
+        return mock;
     }
 
     @Test
-    public void testWrongType() {
-        filter = new SimpleTrainingFilter(new Date(1), new Date(100), EXT_INTERVALL);
+    public void testKeinerAusZweiOk() {
+        filters.add(createFilter(false));
+        filters.add(createFilter(false));
+        filter = new SimpleTrainingFilter(filters);
 
-        when(training.getDatum()).thenReturn(new Date(101));
-        when(training.getType()).thenReturn(INT_INTERVALL);
+        final boolean result = filter.select(training);
 
-        final ISimpleTraining result = filter.filter(training);
-
-        assertNull(result);
+        assertFalse(result);
     }
 }

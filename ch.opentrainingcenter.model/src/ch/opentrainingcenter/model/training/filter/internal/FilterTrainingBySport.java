@@ -17,9 +17,29 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package ch.opentrainingcenter.core.process;
+package ch.opentrainingcenter.model.training.filter.internal;
 
-public interface ElementProzessor<T> {
+import ch.opentrainingcenter.core.assertions.Assertions;
+import ch.opentrainingcenter.model.training.ISimpleTraining;
+import ch.opentrainingcenter.model.training.filter.Filter;
+import ch.opentrainingcenter.transfer.Sport;
 
-    T onNext(T item);
+public class FilterTrainingBySport implements Filter<ISimpleTraining> {
+
+    private final Sport sport;
+
+    public FilterTrainingBySport(final Sport sport) {
+        Assertions.notNull(sport);
+        this.sport = sport;
+    }
+
+    @Override
+    public boolean select(final ISimpleTraining item) {
+        Assertions.notNull(item);
+        if (Sport.OTHER.equals(sport)) {
+            return true;
+        }
+        return sport.equals(item.getSport());
+    }
+
 }

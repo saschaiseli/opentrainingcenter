@@ -13,6 +13,7 @@ import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.core.importer.ConvertContainer;
 import ch.opentrainingcenter.core.importer.ExtensionHelper;
 import ch.opentrainingcenter.core.importer.IConvert2Tcx;
+import ch.opentrainingcenter.transfer.Sport;
 
 /**
  * Class used to initialize default preference values.
@@ -92,6 +93,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
         // charts
         defaults.putInt(PreferenceConstants.CHART_XAXIS_CHART, 1);
         defaults.putInt(PreferenceConstants.CHART_YAXIS_CHART, 0);
+        defaults.putInt(PreferenceConstants.CHART_SPORT, Sport.RUNNING.getIndex());
         defaults.putBoolean(PreferenceConstants.CHART_COMPARE, true);
         defaults.putInt(PreferenceConstants.CHART_WEEKS, 16);
     }

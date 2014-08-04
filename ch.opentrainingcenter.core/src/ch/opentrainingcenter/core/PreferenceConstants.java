@@ -60,6 +60,7 @@ public final class PreferenceConstants {
     public static final String CHART_YAXIS_CHART = "CHART_YAXIS_CHART";
     public static final String CHART_COMPARE = "CHART_COMPARE";
     public static final String CHART_WEEKS = "CHART_WEEKS";
+    public static final String CHART_SPORT = "CHART_SPORT";
 
     private PreferenceConstants() {
 

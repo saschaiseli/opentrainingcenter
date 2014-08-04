@@ -36,4 +36,24 @@ public enum Sport {
     public String getImageIcon() {
         return imageIcon;
     }
+
+    /**
+     * @return String Array mit allen ChartFilter Namen.
+     */
+    public static String[] items() {
+        final String[] result = new String[Sport.values().length];
+        for (final Sport item : Sport.values()) {
+            result[item.index] = item.getTranslated();
+        }
+        return result;
+    }
+
+    public static Sport getByIndex(final int sportIndex) {
+        for (final Sport sport : Sport.values()) {
+            if (sport.getIndex() == sportIndex) {
+                return sport;
+            }
+        }
+        throw new IllegalArgumentException(String.format("Mit dem Index '%s' kann kein Sport gefunden werden. '%s'", sportIndex, Sport.values())); //$NON-NLS-1$
+    }
 }
