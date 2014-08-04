@@ -19,6 +19,11 @@
 
 package ch.opentrainingcenter.model.training.filter;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.util.Date;
 
 import org.joda.time.DateTime;
@@ -26,15 +31,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ch.opentrainingcenter.model.training.ISimpleTraining;
-import ch.opentrainingcenter.model.training.filter.internal.FilterTrainingByDateProzessor;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import ch.opentrainingcenter.model.training.filter.internal.FilterTrainingByDate;
 
 public class FilterTrainingByDateProzessorTest {
-    FilterTrainingByDateProzessor prozessor;
+    FilterTrainingByDate prozessor;
     private ISimpleTraining item;
 
     @Before
@@ -45,62 +45,62 @@ public class FilterTrainingByDateProzessorTest {
 
     @Test
     public void testUpperMargin() {
-        prozessor = new FilterTrainingByDateProzessor(new Date(1), new Date(1000));
+        prozessor = new FilterTrainingByDate(new Date(1), new Date(1000));
 
         when(item.getDatum()).thenReturn(new Date(1000));
 
-        final ISimpleTraining result = prozessor.onNext(item);
+        final boolean result = prozessor.select(item);
 
-        assertNotNull(result);
+        assertTrue(result);
     }
 
     @Test
     public void testLowerMargin() {
-        prozessor = new FilterTrainingByDateProzessor(new Date(1), new Date(1000));
+        prozessor = new FilterTrainingByDate(new Date(1), new Date(1000));
 
         when(item.getDatum()).thenReturn(new Date(1));
 
-        final ISimpleTraining result = prozessor.onNext(item);
+        final boolean result = prozessor.select(item);
 
-        assertNotNull(result);
+        assertTrue(result);
     }
 
     @Test
     public void testTooLow() {
         final DateTime von = new DateTime(2012, 1, 22, 12, 22);
         final DateTime bis = new DateTime(2012, 3, 22, 12, 22);
-        prozessor = new FilterTrainingByDateProzessor(von.toDate(), bis.toDate());
+        prozessor = new FilterTrainingByDate(von.toDate(), bis.toDate());
         final DateTime training = new DateTime(2012, 1, 21, 23, 59);
         when(item.getDatum()).thenReturn(training.toDate());
 
-        final ISimpleTraining result = prozessor.onNext(item);
+        final boolean result = prozessor.select(item);
 
-        assertNull(result);
+        assertFalse(result);
     }
 
     @Test
     public void testTooLate() {
         final DateTime von = new DateTime(2012, 1, 22, 12, 22);
         final DateTime bis = new DateTime(2012, 3, 22, 12, 22);
-        prozessor = new FilterTrainingByDateProzessor(von.toDate(), bis.toDate());
+        prozessor = new FilterTrainingByDate(von.toDate(), bis.toDate());
         final DateTime training = new DateTime(2012, 3, 23, 0, 0);
         when(item.getDatum()).thenReturn(training.toDate());
 
-        final ISimpleTraining result = prozessor.onNext(item);
+        final boolean result = prozessor.select(item);
 
-        assertNull(result);
+        assertFalse(result);
     }
 
     @Test
     public void testRoundedByDay() {
         final DateTime von = new DateTime(2012, 1, 22, 12, 22);
         final DateTime bis = new DateTime(2012, 3, 22, 12, 22);
-        prozessor = new FilterTrainingByDateProzessor(von.toDate(), bis.toDate());
+        prozessor = new FilterTrainingByDate(von.toDate(), bis.toDate());
         final DateTime training = new DateTime(2012, 3, 22, 16, 22);
         when(item.getDatum()).thenReturn(training.toDate());
 
-        final ISimpleTraining result = prozessor.onNext(item);
+        final boolean result = prozessor.select(item);
 
-        assertNotNull(result);
+        assertTrue(result);
     }
 }

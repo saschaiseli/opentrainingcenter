@@ -19,24 +19,28 @@
 
 package ch.opentrainingcenter.model.training.filter;
 
-import java.util.Date;
+import java.util.List;
 
+import ch.opentrainingcenter.core.assertions.Assertions;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
-import ch.opentrainingcenter.model.training.filter.internal.FilterTrainingByDateProzessor;
-import ch.opentrainingcenter.model.training.filter.internal.FilterTrainingTypeProzessor;
-import ch.opentrainingcenter.transfer.TrainingType;
 
-public class SimpleTrainingFilter {
+public class SimpleTrainingFilter implements Filter<ISimpleTraining> {
 
-    private final FilterTrainingTypeProzessor process;
+    private final List<Filter<ISimpleTraining>> filters;
 
-    public SimpleTrainingFilter(final Date start, final Date end, final TrainingType runType) {
-
-        final FilterTrainingByDateProzessor first = new FilterTrainingByDateProzessor(start, end);
-        process = new FilterTrainingTypeProzessor(first, runType);
+    public SimpleTrainingFilter(final List<Filter<ISimpleTraining>> filters) {
+        Assertions.isValid(filters.isEmpty(), "Keine Filter im Container"); //$NON-NLS-1$
+        this.filters = filters;
     }
 
-    public ISimpleTraining filter(final ISimpleTraining input) {
-        return process.onNext(input);
+    @Override
+    public boolean select(final ISimpleTraining training) {
+        Assertions.notNull(training);
+        for (final Filter<ISimpleTraining> filter : filters) {
+            if (!filter.select(training)) {
+                return false;
+            }
+        }
+        return true;
     }
 }

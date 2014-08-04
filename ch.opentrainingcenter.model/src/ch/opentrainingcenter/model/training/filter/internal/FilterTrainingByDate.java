@@ -23,14 +23,14 @@ import java.util.Date;
 
 import org.joda.time.DateTime;
 
-import ch.opentrainingcenter.core.process.ElementProzessor;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
+import ch.opentrainingcenter.model.training.filter.Filter;
 
-public class FilterTrainingByDateProzessor implements ElementProzessor<ISimpleTraining> {
+public class FilterTrainingByDate implements Filter<ISimpleTraining> {
     private final long startMillis;
     private final long endMillis;
 
-    public FilterTrainingByDateProzessor(final Date start, final Date end) {
+    public FilterTrainingByDate(final Date start, final Date end) {
         this.startMillis = round(start, 0, 0);
         this.endMillis = round(end, 23, 59);
     }
@@ -45,12 +45,12 @@ public class FilterTrainingByDateProzessor implements ElementProzessor<ISimpleTr
     }
 
     @Override
-    public ISimpleTraining onNext(final ISimpleTraining item) {
+    public boolean select(final ISimpleTraining item) {
         final long time = item.getDatum().getTime();
         if (time < startMillis || time > endMillis) {
-            return null;
+            return false;
         }
-        return item;
+        return true;
     }
 
 }

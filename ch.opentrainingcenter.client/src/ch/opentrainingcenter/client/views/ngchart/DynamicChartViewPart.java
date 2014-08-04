@@ -75,8 +75,11 @@ import ch.opentrainingcenter.model.chart.IStatistikCreator;
 import ch.opentrainingcenter.model.chart.SimpleTrainingCalculator;
 import ch.opentrainingcenter.model.chart.StatistikFactory;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
+import ch.opentrainingcenter.model.training.filter.Filter;
+import ch.opentrainingcenter.model.training.filter.FilterFactory;
 import ch.opentrainingcenter.model.training.filter.SimpleTrainingFilter;
 import ch.opentrainingcenter.transfer.ITraining;
+import ch.opentrainingcenter.transfer.Sport;
 
 public class DynamicChartViewPart extends ViewPart implements IRecordListener<ITraining> {
 
@@ -85,9 +88,9 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
     private static final DateFormat DATE_FORMAT = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
 
     private static final String[] NEW_SHORT_WEEKDAYS = new String[] { "", Messages.DynamicChartViewPart_Montag, // //$NON-NLS-1$
-        Messages.DynamicChartViewPart_Dienstag, Messages.DynamicChartViewPart_Mittwoch, //
-        Messages.DynamicChartViewPart_Donnerstag, Messages.DynamicChartViewPart_Freitag, //
-        Messages.DynamicChartViewPart_Samstag, Messages.DynamicChartViewPart_Sonntag };
+            Messages.DynamicChartViewPart_Dienstag, Messages.DynamicChartViewPart_Mittwoch, //
+            Messages.DynamicChartViewPart_Donnerstag, Messages.DynamicChartViewPart_Freitag, //
+            Messages.DynamicChartViewPart_Samstag, Messages.DynamicChartViewPart_Sonntag };
 
     private static final Logger LOGGER = Logger.getLogger(DynamicChartViewPart.class);
 
@@ -111,6 +114,7 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
     private Label labelTextPast;
     private Label labelIconNow;
     private Label labelTextNow;
+    private Combo comboSport;
 
     public DynamicChartViewPart() {
         final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
@@ -224,6 +228,18 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
         dateBis.addSelectionListener(new UpdateSelectionAdapter());
         GridDataFactory.swtDefaults().align(SWT.RIGHT, SWT.CENTER).applyTo(bisLabel);
 
+        comboSport = new Combo(container, SWT.READ_ONLY);
+        comboSport.setItems(Sport.items());
+        comboSport.select(store.getInt(PreferenceConstants.CHART_SPORT));
+        comboSport.addSelectionListener(new SelectionAdapter() {
+
+            @Override
+            public void widgetSelected(final SelectionEvent e) {
+                update();
+            }
+
+        });
+
         sectionFilter.setClient(container);
     }
 
@@ -314,12 +330,15 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
                     end = TimeHelper.getDate(yEnd, 11, 31);
                 }
 
+                final int sportIndex = comboSport.getSelectionIndex();
+                final Sport sport = Sport.getByIndex(sportIndex);
+
                 final DateTime dtStart = new DateTime(start.getTime());
                 final DateTime dtEnd = new DateTime(end.getTime());
                 final Date startPast = dtStart.minusYears(1).toDate();
                 final Date endPast = dtEnd.minusYears(1).toDate();
-                final List<ISimpleTraining> dataPast = getFilteredData(xAxis, startPast, endPast);
-                final List<ISimpleTraining> dataNow = getFilteredData(xAxis, start, end);
+                final List<ISimpleTraining> dataPast = getFilteredData(xAxis, startPast, endPast, sport);
+                final List<ISimpleTraining> dataNow = getFilteredData(xAxis, start, end, sport);
                 final SimpleTrainingChart chartType = SimpleTrainingChart.getByIndex(comboChartType.getSelectionIndex());
                 final boolean compareLast = compareWithLastYear.getSelection();
 
@@ -348,15 +367,18 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
         });
     }
 
-    private List<ISimpleTraining> getFilteredData(final XAxisChart chartSerieType, final Date start, final Date end) {
+    private List<ISimpleTraining> getFilteredData(final XAxisChart chartSerieType, final Date start, final Date end, final Sport sport) {
         final IStatistikCreator sc = StatistikFactory.createStatistik();
         final List<ITraining> allTrainings = databaseAccess.getAllTrainings(ApplicationContext.getApplicationContext().getAthlete());
         final List<ISimpleTraining> filteredData = new ArrayList<>();
-        final SimpleTrainingFilter filter = new SimpleTrainingFilter(start, end, null);
-        for (final ISimpleTraining tr : ModelFactory.convertToSimpleTraining(allTrainings)) {
-            final ISimpleTraining st = filter.filter(tr);
-            if (st != null) {
-                filteredData.add(st);
+        final List<Filter<ISimpleTraining>> filters = new ArrayList<>();
+        filters.add(FilterFactory.createFilterByDate(start, end));
+        filters.add(FilterFactory.createFilterBySport(sport));
+        final SimpleTrainingFilter filter = new SimpleTrainingFilter(filters);
+        for (final ISimpleTraining training : ModelFactory.convertToSimpleTraining(allTrainings)) {
+            final boolean st = filter.select(training);
+            if (st) {
+                filteredData.add(training);
             }
         }
         switch (chartSerieType) {

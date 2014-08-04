@@ -83,6 +83,7 @@ public final class Messages extends NLS {
     public static String ChartPreferencePage_3;
     public static String ChartPreferencePage_4;
     public static String ChartPreferencePage_5;
+    public static String ChartPreferencePage_6;
     public static String ChartSerieType0;
     public static String ChartSerieType1;
     public static String ChartSerieType2;
