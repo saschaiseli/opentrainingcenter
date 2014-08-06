@@ -9,6 +9,9 @@ import org.eclipse.jface.preference.ComboFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IWorkbench;
@@ -66,6 +69,22 @@ public class AllgemeinePreferencePage extends FieldEditorPreferencePage implemen
     @Override
     public void createFieldEditors() {
         final Composite training = getFieldEditorParent();
+
+        final Label sport = new Label(training, SWT.NONE);
+        sport.setText(Messages.ChartPreferencePage_6);
+
+        final Combo comboSport = new Combo(training, SWT.READ_ONLY);
+        comboSport.setBounds(50, 50, 150, 65);
+
+        comboSport.setItems(Sport.items());
+        comboSport.select(getPreferenceStore().getInt(PreferenceConstants.CHART_SPORT));
+        comboSport.addSelectionListener(new SelectionAdapter() {
+
+            @Override
+            public void widgetSelected(final SelectionEvent e) {
+                getPreferenceStore().setValue(PreferenceConstants.CHART_SPORT, comboSport.getSelectionIndex());
+            }
+        });
 
         final Label head = new Label(training, SWT.NONE);
         head.setText(Messages.AllgemeinePreferencePage_Sportarten);

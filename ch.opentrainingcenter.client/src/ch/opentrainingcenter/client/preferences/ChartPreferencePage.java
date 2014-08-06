@@ -40,7 +40,6 @@ import ch.opentrainingcenter.charts.single.XAxisChart;
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.i18n.Messages;
-import ch.opentrainingcenter.transfer.Sport;
 
 public class ChartPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
@@ -96,22 +95,6 @@ public class ChartPreferencePage extends FieldEditorPreferencePage implements IW
             @Override
             public void widgetSelected(final SelectionEvent e) {
                 getPreferenceStore().setValue(PreferenceConstants.CHART_YAXIS_CHART, comboDist.getSelectionIndex());
-            }
-        });
-
-        final Label sport = new Label(training, SWT.NONE);
-        sport.setText(Messages.ChartPreferencePage_6);
-
-        final Combo comboSport = new Combo(training, SWT.READ_ONLY);
-        comboSport.setBounds(50, 50, 150, 65);
-
-        comboSport.setItems(Sport.items());
-        comboSport.select(getPreferenceStore().getInt(PreferenceConstants.CHART_SPORT));
-        comboSport.addSelectionListener(new SelectionAdapter() {
-
-            @Override
-            public void widgetSelected(final SelectionEvent e) {
-                getPreferenceStore().setValue(PreferenceConstants.CHART_SPORT, comboSport.getSelectionIndex());
             }
         });
 
