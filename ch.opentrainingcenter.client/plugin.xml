@@ -330,8 +330,8 @@
          name="kein prefPage Name"
          point="org.eclipse.ui.preferencePages">
       <page
-            class="ch.opentrainingcenter.client.preferences.SamplePreferencePage"
-            id="ch.opentrainingcenter.client.preferences.SamplePreferencePage"
+            class="ch.opentrainingcenter.client.preferences.AllgemeinePreferencePage"
+            id="ch.opentrainingcenter.client.preferences.allgemein"
             name="%preferences_allgemein">
       </page>
       <page
@@ -365,6 +365,12 @@
             class="ch.opentrainingcenter.client.preferences.DatabasePreferencePage"
             id="ch.opentrainingcenter.client.preferences.TrainingTargetPage"
             name="%preferences_datenbank">
+      </page>
+      <page
+            category="ch.opentrainingcenter.client.preferences.allgemein"
+            class="ch.opentrainingcenter.client.preferences.AllgemeineFarbenPreferencePage"
+            id="ch.opentrainingcenter.client.preferences.allgemeinFarben"
+            name="%preferences_farben_allgemein">
       </page>
    </extension>
    <extension

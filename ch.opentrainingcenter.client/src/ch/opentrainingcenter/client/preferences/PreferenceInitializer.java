@@ -96,5 +96,8 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
         defaults.putInt(PreferenceConstants.CHART_SPORT, Sport.RUNNING.getIndex());
         defaults.putBoolean(PreferenceConstants.CHART_COMPARE, true);
         defaults.putInt(PreferenceConstants.CHART_WEEKS, 16);
+
+        defaults.putBoolean(Sport.RUNNING.getMessage(), true);
+        defaults.putBoolean(Sport.BIKING.getMessage(), false);
     }
 }

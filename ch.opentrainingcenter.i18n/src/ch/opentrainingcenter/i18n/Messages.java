@@ -11,6 +11,12 @@ public final class Messages extends NLS {
     public static String AddRoute_0;
     public static String AddRoute_1;
     public static String AddTrainingPlan_0;
+    public static String AllgemeineFarbenPreferencePage_AllgemeineFarben;
+
+    public static String AllgemeinePreferencePage_ErrorMessage_EineSportartwaehlen;
+
+    public static String AllgemeinePreferencePage_Sportarten;
+
     public static String AnnotationHelper_0;
     public static String AnnotationHelper_1;
     public static String Application_0;
