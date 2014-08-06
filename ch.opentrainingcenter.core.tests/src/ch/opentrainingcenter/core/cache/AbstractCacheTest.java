@@ -248,37 +248,35 @@ public class AbstractCacheTest {
     public void testDoNotNotifyListeners() {
         final JunitListener a = new JunitListener();
         final JunitListener b = new JunitListener();
-        
+
         cache.addListener(a);
         cache.addListener(b);
 
         cache.addAll(new ArrayList<ITraining>());
-        
 
         assertEquals(0, a.getRecordChangeCallCounter());
         assertEquals(0, b.getRecordChangeCallCounter());
     }
-    
+
     @Test
     public void testDoNotifyListeners() {
-    	final ITraining trainingA = Mockito.mock(ITraining.class);
+        final ITraining trainingA = Mockito.mock(ITraining.class);
         Mockito.when(trainingA.getDatum()).thenReturn(42L);
-        
+
         final JunitListener a = new JunitListener();
         final JunitListener b = new JunitListener();
-        
+
         cache.addListener(a);
         cache.addListener(b);
 
-        ArrayList<ITraining> values = new ArrayList<ITraining>();
+        final ArrayList<ITraining> values = new ArrayList<ITraining>();
         values.add(trainingA);
-		cache.addAll(values);
-        
+        cache.addAll(values);
 
         assertEquals(1, a.getRecordChangeCallCounter());
         assertEquals(1, b.getRecordChangeCallCounter());
     }
-    
+
     @Test
     public void testNotifyListeners() {
         final JunitListener a = new JunitListener();
@@ -355,6 +353,11 @@ public class AbstractCacheTest {
             assertEquals("Element muss im cache gefunden werden", cacheElement, testCache.get(cacheElement.getK()));
             assertTrue("Element muss im cache gefunden werden", testCache.contains(cacheElement.getK()));
         }
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testAddNull() {
+        testCache.addAll(null);
     }
 
     @Test

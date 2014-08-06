@@ -1,5 +1,6 @@
 package ch.opentrainingcenter.model.cache;
 
+import ch.opentrainingcenter.core.assertions.Assertions;
 import ch.opentrainingcenter.core.cache.AbstractCache;
 import ch.opentrainingcenter.model.planing.IPlanungModel;
 import ch.opentrainingcenter.model.planing.KwJahrKey;
@@ -18,6 +19,7 @@ public final class TrainingsPlanCache extends AbstractCache<KwJahrKey, IPlanungM
 
     @Override
     public KwJahrKey getKey(final IPlanungModel value) {
+        Assertions.notNull(value);
         return new KwJahrKey(value.getJahr(), value.getKw());
     }
 }
