@@ -33,6 +33,7 @@ import ch.opentrainingcenter.model.ModelFactory;
 import ch.opentrainingcenter.model.training.IOverviewModel;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.ITraining;
+import ch.opentrainingcenter.transfer.Sport;
 
 public class MonthlyWeekOverview extends ViewPart {
 
@@ -161,9 +162,9 @@ public class MonthlyWeekOverview extends ViewPart {
             private void updateFields(final DateTime firstDay, final Label km, final Label zeit, final Label anzahl, final Section section) {
                 final List<ITraining> trainingsWeek = databaseAccess.getTrainingsByAthleteAndDate(athlete, firstDay, now);
                 final IOverviewModel model = ModelFactory.createOverview(trainingsWeek);
-                km.setText(String.valueOf(DistanceHelper.roundDistanceFromMeterToKm(model.getTotaleDistanzInMeter())));
-                zeit.setText(TimeHelper.convertTimeToString(model.getTotaleZeitInSekunden() * 1000));
-                anzahl.setText(String.valueOf(model.getAnzahlTrainings()));
+                km.setText(String.valueOf(DistanceHelper.roundDistanceFromMeterToKm(model.getTotaleDistanzInMeter(Sport.RUNNING))));
+                zeit.setText(TimeHelper.convertTimeToString(model.getTotaleZeitInSekunden(Sport.RUNNING) * 1000));
+                anzahl.setText(String.valueOf(model.getAnzahlTrainings(Sport.RUNNING)));
                 section.layout();
                 section.setExpanded(true);
             }
