@@ -1,11 +1,11 @@
 package ch.opentrainingcenter.importer.tcx;
 
-import java.io.File;
-import java.util.List;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+
+import java.io.File;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -21,6 +21,7 @@ public class ConvertTcxTest {
     private static final double DELTA = 0.00000001;
     private ConvertTcx converter;
     private File simple, simple_one_lap, simple_one_lap_bike, simple_two_lap, simple_out_of_memory, simple_null_values;
+    private File simple_one_lap_other;
 
     @Before
     public void setUp() {
@@ -28,6 +29,7 @@ public class ConvertTcxTest {
         simple = new File("resources", "simple.tcx");
         simple_one_lap = new File("resources", "simple_one_lap.tcx");
         simple_one_lap_bike = new File("resources", "simple_one_lap_bike.tcx");
+        simple_one_lap_other = new File("resources", "simple_one_lap_other.tcx");
         simple_two_lap = new File("resources", "simple_two_lap.tcx");
         simple_out_of_memory = new File("resources", "simple_out_of_memory.tcx");
         simple_null_values = new File("resources", "simple_null_values.tcx");
@@ -85,6 +87,12 @@ public class ConvertTcxTest {
     public void testTrainingSport_bike() throws Exception {
         final ITraining training = converter.convert(simple_one_lap_bike);
         assertEquals(Sport.BIKING, training.getSport());
+    }
+
+    @Test
+    public void testTrainingSport_dudelidu() throws Exception {
+        final ITraining training = converter.convert(simple_one_lap_other);
+        assertEquals(Sport.OTHER, training.getSport());
     }
 
     @Test
