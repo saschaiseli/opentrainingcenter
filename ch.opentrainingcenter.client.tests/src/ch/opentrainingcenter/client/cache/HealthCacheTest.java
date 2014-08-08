@@ -2,6 +2,7 @@ package ch.opentrainingcenter.client.cache;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -59,6 +60,7 @@ public class HealthCacheTest {
         final String result = cache.toString();
 
         assertNotNull(result);
+        assertTrue(result.length() > 0);
     }
 
 }
