@@ -13,19 +13,22 @@ public class HealthModel implements PropertyChangeListener {
 
     private Double weight;
     private Integer ruhePuls;
-
     private Date dateOfMeasure;
 
-    private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
+    private final PropertyChangeSupport propertyChangeSupport;
 
-    public HealthModel() {
-
+    /**
+     * fuer tests
+     */
+    public HealthModel(final PropertyChangeSupport propertyChangeSupport) {
+        this.propertyChangeSupport = propertyChangeSupport;
     }
 
     public HealthModel(final Double gewicht, final Integer ruhePuls, final Date date) {
         this.weight = gewicht;
         this.ruhePuls = ruhePuls;
         this.dateOfMeasure = date;
+        propertyChangeSupport = new PropertyChangeSupport(this);
     }
 
     public Integer getRuhePuls() {
@@ -34,7 +37,8 @@ public class HealthModel implements PropertyChangeListener {
 
     public void setRuhePuls(final Integer ruhePuls) {
         LOG.info("Puls eingegeben: " + ruhePuls); //$NON-NLS-1$
-        propertyChangeSupport.firePropertyChange("ruhePuls", this.ruhePuls, this.ruhePuls = ruhePuls); //$NON-NLS-1$
+        propertyChangeSupport.firePropertyChange("ruhePuls", this.ruhePuls, ruhePuls); //$NON-NLS-1$
+        this.ruhePuls = ruhePuls;
     }
 
     public Date getDateOfMeasure() {
@@ -52,19 +56,8 @@ public class HealthModel implements PropertyChangeListener {
 
     public void setWeight(final Double weight) {
         LOG.info("Gewicht eingegeben: " + weight); //$NON-NLS-1$
-        propertyChangeSupport.firePropertyChange("weight", this.weight, this.weight = weight); //$NON-NLS-1$
-    }
-
-    public PropertyChangeSupport getPropertyChangeSupport() {
-        return propertyChangeSupport;
-    }
-
-    public void addPropertyChangeListener(final String propertyName, final PropertyChangeListener listener) {
-        propertyChangeSupport.addPropertyChangeListener(propertyName, listener);
-    }
-
-    public void removePropertyChangeListener(final PropertyChangeListener listener) {
-        propertyChangeSupport.removePropertyChangeListener(listener);
+        propertyChangeSupport.firePropertyChange("weight", this.weight, weight); //$NON-NLS-1$
+        this.weight = weight;
     }
 
     @Override
