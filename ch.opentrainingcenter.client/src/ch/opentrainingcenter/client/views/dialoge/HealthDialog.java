@@ -101,7 +101,7 @@ public class HealthDialog extends TitleAreaDialog {
         if (healt != null) {
             model = new HealthModel(healt.getWeight(), healt.getCardio(), healt.getDateofmeasure());
         } else {
-            model = new HealthModel();
+            model = new HealthModel(0d, 0, new Date());
         }
         Assert.isNotNull(athlete);
     }
