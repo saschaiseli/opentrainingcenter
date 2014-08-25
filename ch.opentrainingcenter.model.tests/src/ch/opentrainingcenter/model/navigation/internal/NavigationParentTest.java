@@ -75,8 +75,8 @@ public class NavigationParentTest {
         when(item2.getDate()).thenReturn(cal2.getTime());
         when(item2.getLaengeInMeter()).thenReturn(10000.000);
 
-        parent.add(item1);
         parent.add(item2);
+        parent.add(item1);
 
         final String result = parent.getTooltip();
 

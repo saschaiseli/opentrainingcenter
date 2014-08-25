@@ -42,9 +42,9 @@ public class NavigationParent implements INavigationParent {
                     distance += child.getLaengeInMeter();
                 }
                 final INavigationItem first = childs.get(0);
-                final String start = TimeHelper.convertDateToString(first.getDate());
+                final String end = TimeHelper.convertDateToString(first.getDate());
                 final INavigationItem last = childs.get(childs.size() - 1);
-                final String end = TimeHelper.convertDateToString(last.getDate());
+                final String start = TimeHelper.convertDateToString(last.getDate());
                 final Object[] binding = new Object[] { childs.size(), start, end, DistanceHelper.roundDistanceFromMeterToKm(distance) };
                 return NLS.bind(Messages.NAVIGATION_TOOLTIP_KW, binding);
             }
