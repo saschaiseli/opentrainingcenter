@@ -32,7 +32,7 @@ public class ConcreteImported extends ImportedDecorator implements INavigationIt
     @Override
     public String getTooltip() {
         final String tooltip;
-        final String datum = TimeHelper.convertDateToString(new Date(training.getDatum()), false);
+        final String datum = TimeHelper.convertDateToString(new Date(training.getDatum()));
         final String distanz = DistanceHelper.roundDistanceFromMeterToKm(training.getLaengeInMeter());
         if (Sport.RUNNING.equals(training.getSport())) {
             if (training.getLapInfos().size() > 1) {

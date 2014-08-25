@@ -67,7 +67,7 @@ public class ConcreteImportedTest {
 
         final String result = imp.getTooltip();
 
-        assertEquals(NLS.bind(Messages.NAVIGATION_TOOLTIP_RUNNING, "04.01.2012 13:22:59", "12.346"), result);
+        assertEquals(NLS.bind(Messages.NAVIGATION_TOOLTIP_RUNNING, "04.01.2012", "12.346"), result);
     }
 
     @Test
@@ -88,7 +88,7 @@ public class ConcreteImportedTest {
 
         final String result = imp.getTooltip();
 
-        assertEquals(NLS.bind(Messages.NAVIGATION_TOOLTIP_RUNNING_RUNDEN, new Object[] { "04.01.2012 13:22:59", "12.346", "2" }), result);
+        assertEquals(NLS.bind(Messages.NAVIGATION_TOOLTIP_RUNNING_RUNDEN, new Object[] { "04.01.2012", "12.346", "2" }), result);
     }
 
     @Test
@@ -108,7 +108,7 @@ public class ConcreteImportedTest {
 
         final String result = imp.getTooltip();
 
-        assertEquals(NLS.bind(Messages.NAVIGATION_TOOLTIP_OTHER, "04.01.2012 13:22:59", "12.346"), result);
+        assertEquals(NLS.bind(Messages.NAVIGATION_TOOLTIP_OTHER, "04.01.2012", "12.346"), result);
     }
 
     @Test
