@@ -23,7 +23,6 @@ public class EinstellungenPerspective implements IPerspectiveFactory {
         layout.getViewLayout(RoutenView.ID).setCloseable(false);
 
         layout.addPerspectiveShortcut(MainPerspective.ID);
-        layout.addPerspectiveShortcut(TablePerspective.ID);
         layout.addPerspectiveShortcut(EinstellungenPerspective.ID);
     }
 

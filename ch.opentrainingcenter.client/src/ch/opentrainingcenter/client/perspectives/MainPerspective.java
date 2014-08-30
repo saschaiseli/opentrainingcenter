@@ -52,7 +52,6 @@ public class MainPerspective implements IPerspectiveFactory {
         layout.getViewLayout(MonthlyWeekOverview.ID).setCloseable(false);
 
         layout.addPerspectiveShortcut(MainPerspective.ID);
-        layout.addPerspectiveShortcut(TablePerspective.ID);
         layout.addPerspectiveShortcut(EinstellungenPerspective.ID);
 
     }

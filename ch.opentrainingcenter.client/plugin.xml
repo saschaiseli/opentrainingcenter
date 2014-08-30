@@ -127,14 +127,6 @@
       </view>
       <view
             allowMultiple="false"
-            class="ch.opentrainingcenter.client.views.table.OverviewViewer"
-            icon="icons/16_16/table_16_16.png"
-            id="ch.opentrainingcenter.client.table.overview"
-            name="%tabelle"
-            restorable="true">
-      </view>
-      <view
-            allowMultiple="false"
             category="ch.opentrainingcenter.client.otccategory"
             class="ch.opentrainingcenter.client.views.weeks.MonthlyWeekOverview"
             id="ch.opentrainingcenter.client.weeks.monthlyOverview"
@@ -223,11 +215,6 @@
             description="Öffnet die Athlete Perspective"
             id="ch.opentrainingcenter.client.commands.SwitchToAthlete"
             name="%switch_to_athlete">
-      </command>
-      <command
-            description="Öffnet die Tabellen Perspective"
-            id="ch.opentrainingcenter.client.commands.SwitchToTable"
-            name="%switch_to_table">
       </command>
       <command
             description="Öffnet die Main Perspective"
