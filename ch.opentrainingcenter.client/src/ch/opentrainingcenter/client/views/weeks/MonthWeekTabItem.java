@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
@@ -17,6 +19,7 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
 import org.joda.time.DateTime;
 
+import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.model.Units;
 import ch.opentrainingcenter.client.ui.FormToolkitSupport;
 import ch.opentrainingcenter.core.cache.Cache;
@@ -103,6 +106,13 @@ public class MonthWeekTabItem {
         final DateTime now = DateTime.now();
         update(now);
         addListener(now);
+
+        Activator.getDefault().getPreferenceStore().addPropertyChangeListener(new IPropertyChangeListener() {
+            @Override
+            public void propertyChange(final PropertyChangeEvent event) {
+                update(now);
+            }
+        });
     }
 
     private OverviewWidgets createSection(final Composite body, final String title, final boolean week) {
@@ -165,5 +175,9 @@ public class MonthWeekTabItem {
         widget.getKm().setText(String.valueOf(DistanceHelper.roundDistanceFromMeterToKm(model.getTotaleDistanzInMeter(sport))));
         widget.getZeit().setText(TimeHelper.convertTimeToString(model.getTotaleZeitInSekunden(sport) * 1000));
         widget.getAnzahl().setText(String.valueOf(model.getAnzahlTrainings(sport)));
+    }
+
+    public Sport getSport() {
+        return sport;
     }
 }
