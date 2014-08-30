@@ -620,13 +620,6 @@
                   style="push"
                   tooltip="%einstellungen">
             </command>
-            <command
-                  commandId="ch.opentrainingcenter.client.commands.SwitchToTable"
-                  icon="icons/16_16/table_16_16.png"
-                  label="%tabelle"
-                  style="push"
-                  tooltip="%tabelle">
-            </command>
             <separator
                   name="ch.opentrainingcenter.client.separator1"
                   visible="true">
@@ -696,20 +689,6 @@
                <not>
                   <equals
                         value="ch.opentrainingcenter.client.perspective">
-                  </equals>
-               </not>
-            </with>
-         </enabledWhen>
-      </handler>
-      <handler
-            class="ch.opentrainingcenter.client.commands.SwitchToTable"
-            commandId="ch.opentrainingcenter.client.commands.SwitchToTable">
-         <enabledWhen>
-            <with
-                  variable="activeWorkbenchWindow.activePerspective">
-               <not>
-                  <equals
-                        value="ch.opentrainingcenter.client.OverviewPerspective">
                   </equals>
                </not>
             </with>

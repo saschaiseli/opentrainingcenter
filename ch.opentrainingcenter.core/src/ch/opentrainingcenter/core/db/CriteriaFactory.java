@@ -19,8 +19,12 @@
 
 package ch.opentrainingcenter.core.db;
 
+import java.util.Set;
+
 import ch.opentrainingcenter.core.db.criteria.DistanceCriteria;
 import ch.opentrainingcenter.core.db.criteria.NoteCriteria;
+import ch.opentrainingcenter.core.db.criteria.SportCriteria;
+import ch.opentrainingcenter.transfer.Sport;
 
 public final class CriteriaFactory {
 
@@ -34,6 +38,10 @@ public final class CriteriaFactory {
 
     public static ISearchCriteria createDistanceCriteria(final int laenge) {
         return new DistanceCriteria(laenge);
+    }
+
+    public static ISearchCriteria createSportCriteria(final Set<Sport> sports) {
+        return new SportCriteria(sports);
     }
 
     public static CriteriaContainer createCriteriaContainer() {

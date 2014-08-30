@@ -23,13 +23,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -41,6 +44,7 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -62,6 +66,7 @@ import ch.opentrainingcenter.core.db.CriteriaFactory;
 import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.transfer.ITraining;
+import ch.opentrainingcenter.transfer.Sport;
 
 /**
  * Dialog um Tracks zu suchen.
@@ -80,10 +85,24 @@ public class SearchDialog extends TitleAreaDialog {
 
     private final List<ITraining> trainings;
 
+    private final IPreferenceStore store;
+
+    private final boolean running, biking, other;
+
+    private Button runButton;
+
+    private Button bikeButton;
+
+    private Button otherButton;
+
     public SearchDialog(final Shell parentShell) {
         super(parentShell);
         final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
         trainings = service.getDatabaseAccess().getAllTrainings(ApplicationContext.getApplicationContext().getAthlete());
+        store = Activator.getDefault().getPreferenceStore();
+        running = store.getBoolean(Sport.RUNNING.getMessage());
+        biking = store.getBoolean(Sport.BIKING.getMessage());
+        other = store.getBoolean(Sport.OTHER.getMessage());
     }
 
     @Override
@@ -92,6 +111,7 @@ public class SearchDialog extends TitleAreaDialog {
 
         setMessage(Messages.SearchDialog_SEARCH_DESCRIPTION);
         setTitleImage(Activator.getImageDescriptor(IImageKeys.SEARCH_72).createImage());
+
         final Composite search = new Composite(parent, SWT.NONE);
         GridLayoutFactory.swtDefaults().numColumns(3).applyTo(search);
         GridDataFactory.swtDefaults().align(SWT.FILL, SWT.FILL).grab(true, false).applyTo(search);
@@ -133,6 +153,49 @@ public class SearchDialog extends TitleAreaDialog {
         scaleLabel.setText(scale.getSelection() + Messages.SearchDialog_COMMON_KM);
         GridDataFactory.swtDefaults().grab(false, false).hint(50, 20).applyTo(scaleLabel);
 
+        // sportart
+        final Composite sport = new Composite(search, SWT.NONE);
+        GridLayoutFactory.swtDefaults().numColumns(3).applyTo(sport);
+        GridDataFactory.swtDefaults().grab(true, true).span(3, 1).align(SWT.FILL, SWT.FILL).applyTo(sport);
+        runButton = new Button(sport, SWT.CHECK);
+        runButton.setText(Sport.RUNNING.getTranslated());
+        runButton.setVisible(running);
+        runButton.setSelection(running);
+        runButton.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(final SelectionEvent e) {
+                super.widgetSelected(e);
+                update();
+
+            }
+        });
+
+        bikeButton = new Button(sport, SWT.CHECK);
+        bikeButton.setText(Sport.BIKING.getTranslated());
+        bikeButton.setVisible(biking);
+        bikeButton.setSelection(biking);
+        bikeButton.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(final SelectionEvent e) {
+                super.widgetSelected(e);
+                update();
+
+            }
+        });
+
+        otherButton = new Button(sport, SWT.CHECK);
+        otherButton.setText(Sport.OTHER.getTranslated());
+        otherButton.setVisible(other);
+        otherButton.setSelection(biking);
+        otherButton.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(final SelectionEvent e) {
+                super.widgetSelected(e);
+                update();
+
+            }
+        });
+
         // result ---------------------------
         final Composite result = new Composite(parent, SWT.NONE);
         GridLayoutFactory.swtDefaults().applyTo(result);
@@ -169,6 +232,17 @@ public class SearchDialog extends TitleAreaDialog {
                 // damit es meter werden * 1000
                 container.addCriteria(CriteriaFactory.createDistanceCriteria(scale.getSelection() * 1000));
                 container.addCriteria(CriteriaFactory.createNoteCriteria(beschreibungSearch.getText()));
+                final Set<Sport> sports = new HashSet<>();
+                if (runButton.getSelection()) {
+                    sports.add(Sport.RUNNING);
+                }
+                if (bikeButton.getSelection()) {
+                    sports.add(Sport.BIKING);
+                }
+                if (otherButton.getSelection()) {
+                    sports.add(Sport.OTHER);
+                }
+                container.addCriteria(CriteriaFactory.createSportCriteria(sports));
                 final long start = DateTime.now().getMillis();
 
                 final List<ITraining> result = new ArrayList<>();
