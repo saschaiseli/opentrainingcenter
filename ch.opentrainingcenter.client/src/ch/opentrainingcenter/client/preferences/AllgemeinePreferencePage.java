@@ -46,8 +46,8 @@ public class AllgemeinePreferencePage extends FieldEditorPreferencePage implemen
     private final IDatabaseAccess databaseAccess;
 
     private BooleanFieldEditor running;
-
     private BooleanFieldEditor biking;
+    private BooleanFieldEditor other;
 
     public AllgemeinePreferencePage() {
         super(GRID);
@@ -91,8 +91,10 @@ public class AllgemeinePreferencePage extends FieldEditorPreferencePage implemen
 
         running = new BooleanFieldEditor(Sport.RUNNING.getMessage(), Sport.RUNNING.getTranslated(), getFieldEditorParent());
         biking = new BooleanFieldEditor(Sport.BIKING.getMessage(), Sport.BIKING.getTranslated(), getFieldEditorParent());
+        other = new BooleanFieldEditor(Sport.OTHER.getMessage(), Sport.OTHER.getTranslated(), getFieldEditorParent());
         addField(running);
         addField(biking);
+        addField(other);
 
         final List<String[]> vals = new ArrayList<String[]>();
         for (final IAthlete ath : allAthletes) {
@@ -113,7 +115,6 @@ public class AllgemeinePreferencePage extends FieldEditorPreferencePage implemen
     @Override
     protected void checkState() {
         final boolean valid = running.getBooleanValue() || biking.getBooleanValue();
-        System.out.println(valid);
         setValid(valid);
         if (!valid) {
             setErrorMessage(Messages.AllgemeinePreferencePage_ErrorMessage_EineSportartwaehlen);
@@ -126,22 +127,6 @@ public class AllgemeinePreferencePage extends FieldEditorPreferencePage implemen
     public void propertyChange(final PropertyChangeEvent event) {
         super.propertyChange(event);
         final Object source = event.getSource();
-        // if (source instanceof DirectoryFieldEditor) {
-        // final DirectoryFieldEditor dfe = (DirectoryFieldEditor) source;
-        // final String preferenceName = dfe.getPreferenceName();
-        // if
-        // (preferenceName.equals(PreferenceConstants.GPS_FILE_LOCATION_PROG)) {
-        //                LOGGER.debug("Neuer Ort für GPS files ausgewählt. Files von: " + event.getOldValue() + " nach: " + event.getNewValue() + " kopieren"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        //
-        // try {
-        // ImporterFactory.createFileCopy().copyFiles(event.getOldValue().toString(),
-        // event.getNewValue().toString(),
-        // new GpsFileNameFilter(ExtensionHelper.getConverters()));
-        // } catch (final IOException e) {
-        // LOGGER.error(e.getMessage(), e.fillInStackTrace());
-        // }
-        // }
-        // }
         if (source instanceof BooleanFieldEditor) {
             checkState();
         }

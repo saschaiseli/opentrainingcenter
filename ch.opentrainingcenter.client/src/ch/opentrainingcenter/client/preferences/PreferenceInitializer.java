@@ -99,5 +99,6 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 
         defaults.putBoolean(Sport.RUNNING.getMessage(), true);
         defaults.putBoolean(Sport.BIKING.getMessage(), false);
+        defaults.putBoolean(Sport.OTHER.getMessage(), false);
     }
 }

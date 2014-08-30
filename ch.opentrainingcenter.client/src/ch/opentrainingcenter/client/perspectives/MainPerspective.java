@@ -31,7 +31,7 @@ public class MainPerspective implements IPerspectiveFactory {
         layout.setEditorAreaVisible(false);
 
         layout.addView(KalenderWocheNavigationView.ID, IPageLayout.LEFT, LEFT, editorArea);
-        layout.addStandaloneView(MonthlyWeekOverview.ID, false, IPageLayout.BOTTOM, 0.72F, KalenderWocheNavigationView.ID);
+        layout.addStandaloneView(MonthlyWeekOverview.ID, false, IPageLayout.BOTTOM, 0.70F, KalenderWocheNavigationView.ID);
 
         layout.getViewLayout(KalenderWocheNavigationView.ID).setCloseable(false);
 
