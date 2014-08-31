@@ -34,7 +34,9 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
@@ -58,6 +60,7 @@ import org.eclipse.ui.PlatformUI;
 import org.joda.time.DateTime;
 
 import ch.opentrainingcenter.client.Activator;
+import ch.opentrainingcenter.client.cache.StreckeCache;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.client.views.IImageKeys;
 import ch.opentrainingcenter.client.views.overview.SingleActivityViewPart;
@@ -65,6 +68,8 @@ import ch.opentrainingcenter.core.db.CriteriaContainer;
 import ch.opentrainingcenter.core.db.CriteriaFactory;
 import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
+import ch.opentrainingcenter.model.strecke.StreckeModel;
+import ch.opentrainingcenter.model.strecke.StreckeModelComparator;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.Sport;
 
@@ -74,7 +79,7 @@ import ch.opentrainingcenter.transfer.Sport;
 public class SearchDialog extends TitleAreaDialog {
 
     private static final Logger LOGGER = Logger.getLogger(SearchDialog.class);
-
+    private final StreckeCache cacheStrecke = StreckeCache.getInstance();
     private TableViewer viewer;
 
     private Scale scale;
@@ -94,6 +99,10 @@ public class SearchDialog extends TitleAreaDialog {
     private Button bikeButton;
 
     private Button otherButton;
+
+    private ComboViewer comboStrecke;
+
+    private int referenzTrainingId;
 
     public SearchDialog(final Shell parentShell) {
         super(parentShell);
@@ -196,6 +205,42 @@ public class SearchDialog extends TitleAreaDialog {
             }
         });
 
+        // Strecke
+        final Composite strecke = new Composite(search, SWT.NONE);
+        GridLayoutFactory.swtDefaults().numColumns(3).applyTo(strecke);
+        final Label l = new Label(strecke, SWT.NONE);
+        l.setText(Messages.STRECKE);
+        GridDataFactory.swtDefaults().grab(true, true).span(3, 1).align(SWT.FILL, SWT.FILL).applyTo(strecke);
+
+        comboStrecke = new ComboViewer(strecke);
+        comboStrecke.setContentProvider(ArrayContentProvider.getInstance());
+        comboStrecke.setLabelProvider(new LabelProvider() {
+            @Override
+            public String getText(final Object element) {
+                String label = ""; //$NON-NLS-1$
+                if (element instanceof StreckeModel) {
+                    final StreckeModel route = (StreckeModel) element;
+                    label = route.getName();
+                }
+                return label;
+            }
+        });
+        GridDataFactory.fillDefaults().grab(true, true).align(SWT.FILL, SWT.FILL).applyTo(comboStrecke.getControl());
+
+        final List<StreckeModel> all = cacheStrecke.getSortedElements(new StreckeModelComparator());
+        comboStrecke.setInput(all);
+
+        comboStrecke.addSelectionChangedListener(new ISelectionChangedListener() {
+
+            @Override
+            public void selectionChanged(final SelectionChangedEvent event) {
+                final StructuredSelection selection = (StructuredSelection) event.getSelection();
+                final StreckeModel model = (StreckeModel) selection.getFirstElement();
+                referenzTrainingId = model.getId();
+                update();
+            }
+        });
+
         // result ---------------------------
         final Composite result = new Composite(parent, SWT.NONE);
         GridLayoutFactory.swtDefaults().applyTo(result);
@@ -243,6 +288,7 @@ public class SearchDialog extends TitleAreaDialog {
                     sports.add(Sport.OTHER);
                 }
                 container.addCriteria(CriteriaFactory.createSportCriteria(sports));
+                container.addCriteria(CriteriaFactory.createStreckeCriteria(referenzTrainingId));
                 final long start = DateTime.now().getMillis();
 
                 final List<ITraining> result = new ArrayList<>();

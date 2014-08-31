@@ -343,7 +343,7 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         GridDataFactory.fillDefaults().grab(true, true).align(SWT.FILL, SWT.FILL).applyTo(comboWetter);
 
         final Label labelStrecke = toolkit.createLabel(container, ""); //$NON-NLS-1$
-        labelStrecke.setText(Messages.SingleActivityViewPart_2);
+        labelStrecke.setText(Messages.STRECKE);
 
         final ComboViewer comboStrecke = new ComboViewer(container);
         comboStrecke.setContentProvider(ArrayContentProvider.getInstance());
