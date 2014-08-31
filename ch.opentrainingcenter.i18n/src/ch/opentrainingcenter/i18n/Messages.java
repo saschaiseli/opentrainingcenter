@@ -323,7 +323,7 @@ public final class Messages extends NLS {
     public static String SimpleTrainingChart_7;
     public static String SingleActivityViewPart_0;
     public static String SingleActivityViewPart_1;
-    public static String SingleActivityViewPart_2;
+    public static String STRECKE;
     public static String SingleActivityViewPart_3;
     public static String SingleActivityViewPart_4;
     public static String SingleActivityViewPart_6;

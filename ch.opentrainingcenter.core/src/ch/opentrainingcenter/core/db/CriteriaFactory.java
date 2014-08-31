@@ -24,6 +24,7 @@ import java.util.Set;
 import ch.opentrainingcenter.core.db.criteria.DistanceCriteria;
 import ch.opentrainingcenter.core.db.criteria.NoteCriteria;
 import ch.opentrainingcenter.core.db.criteria.SportCriteria;
+import ch.opentrainingcenter.core.db.criteria.StreckeCriteria;
 import ch.opentrainingcenter.transfer.Sport;
 
 public final class CriteriaFactory {
@@ -46,5 +47,10 @@ public final class CriteriaFactory {
 
     public static CriteriaContainer createCriteriaContainer() {
         return new CriteriaContainer();
+    }
+
+    public static ISearchCriteria createStreckeCriteria(final int referenzTrainingId) {
+        // TODO Auto-generated method stub
+        return new StreckeCriteria(referenzTrainingId);
     }
 }
