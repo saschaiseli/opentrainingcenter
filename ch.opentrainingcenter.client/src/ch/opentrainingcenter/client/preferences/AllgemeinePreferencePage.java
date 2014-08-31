@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.ComboFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
@@ -68,7 +69,8 @@ public class AllgemeinePreferencePage extends FieldEditorPreferencePage implemen
      */
     @Override
     public void createFieldEditors() {
-        final Composite training = getFieldEditorParent();
+        final Composite parent = getFieldEditorParent();
+        final Composite training = parent;
 
         final Label sport = new Label(training, SWT.NONE);
         sport.setText(Messages.ChartPreferencePage_6);
@@ -89,12 +91,20 @@ public class AllgemeinePreferencePage extends FieldEditorPreferencePage implemen
         final Label head = new Label(training, SWT.NONE);
         head.setText(Messages.AllgemeinePreferencePage_Sportarten);
 
-        running = new BooleanFieldEditor(Sport.RUNNING.getMessage(), Sport.RUNNING.getTranslated(), getFieldEditorParent());
-        biking = new BooleanFieldEditor(Sport.BIKING.getMessage(), Sport.BIKING.getTranslated(), getFieldEditorParent());
-        other = new BooleanFieldEditor(Sport.OTHER.getMessage(), Sport.OTHER.getTranslated(), getFieldEditorParent());
+        running = new BooleanFieldEditor(Sport.RUNNING.getMessage(), Sport.RUNNING.getTranslated(), parent);
+        biking = new BooleanFieldEditor(Sport.BIKING.getMessage(), Sport.BIKING.getTranslated(), parent);
+        other = new BooleanFieldEditor(Sport.OTHER.getMessage(), Sport.OTHER.getTranslated(), parent);
         addField(running);
         addField(biking);
         addField(other);
+
+        final Label separator = new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL);
+        GridDataFactory.fillDefaults().span(2, 1).grab(true, false).applyTo(separator);
+
+        addField(new BooleanFieldEditor(PreferenceConstants.SYNTH_RUNDEN, Messages.AllgemeinePreferencePage_SYNTH_RUNDEN_ANZEIGEN, parent));
+
+        final Label separator2 = new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL);
+        GridDataFactory.fillDefaults().span(2, 1).grab(true, false).applyTo(separator2);
 
         final List<String[]> vals = new ArrayList<String[]>();
         for (final IAthlete ath : allAthletes) {

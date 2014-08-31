@@ -17,6 +17,8 @@ public final class Messages extends NLS {
 
     public static String AllgemeinePreferencePage_Sportarten;
 
+    public static String AllgemeinePreferencePage_SYNTH_RUNDEN_ANZEIGEN;
+
     public static String AnnotationHelper_0;
     public static String AnnotationHelper_1;
     public static String Application_0;

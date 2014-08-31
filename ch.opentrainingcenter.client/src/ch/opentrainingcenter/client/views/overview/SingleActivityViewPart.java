@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelection;
@@ -50,6 +51,7 @@ import ch.opentrainingcenter.client.ui.FormToolkitSupport;
 import ch.opentrainingcenter.client.ui.tableviewer.LapInfoTableViewer;
 import ch.opentrainingcenter.client.ui.tableviewer.SelectionProviderIntermediate;
 import ch.opentrainingcenter.client.views.ApplicationContext;
+import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.core.cache.Cache;
 import ch.opentrainingcenter.core.cache.IRecordListener;
 import ch.opentrainingcenter.core.cache.RecordAdapter;
@@ -78,6 +80,8 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
     private final StreckeCache cacheStrecke = StreckeCache.getInstance();
     private final ISimpleTraining simpleTraining;
     private final ITraining training;
+    private final IPreferenceStore store;
+
     private FormToolkit toolkit;
     private ScrolledForm form;
     private TableWrapData td;
@@ -104,7 +108,8 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
 
         LOGGER.info(String.format("Training mit %s Trackpoints geladen", training.getTrackPoints().size())); //$NON-NLS-1$
 
-        factory = new ChartFactory(Activator.getDefault().getPreferenceStore(), training, athlete);
+        store = Activator.getDefault().getPreferenceStore();
+        factory = new ChartFactory(store, training, athlete);
         sport = simpleTraining.getSport();
         setTitleImage(Activator.getImageDescriptor(sport.getImageIcon()).createImage());
         setPartName(null);
@@ -153,7 +158,8 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
 
         if (lapInfos.size() > 1) {
             addLapSection(body, providerLap);
-        } else {
+        }
+        if (store.getBoolean(PreferenceConstants.SYNTH_RUNDEN)) {
             addSynthLapSection(body, providerSynth);
         }
 
