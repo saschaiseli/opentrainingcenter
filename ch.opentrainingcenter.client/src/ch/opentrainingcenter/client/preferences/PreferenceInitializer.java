@@ -28,12 +28,6 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
     private static final int WETTKAMPF = 100;
     private static final int EINSTELLIGER_MONAT = 9;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer#
-     * initializeDefaultPreferences()
-     */
     @Override
     public void initializeDefaultPreferences() {
         final IEclipsePreferences defaults = DefaultScope.INSTANCE.getNode(Application.ID);
@@ -42,7 +36,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
         final Calendar cal = Calendar.getInstance(Locale.getDefault());
         final int month = cal.get(Calendar.MONTH) + 1;
         final String monthString;
-        if (month < EINSTELLIGER_MONAT) {
+        if (month <= EINSTELLIGER_MONAT) {
             monthString = "0" + month; //$NON-NLS-1$
         } else {
             monthString = String.valueOf(month);
