@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Garmin Fit Importer
-Bundle-SymbolicName: ch.opentrainingcenter.importer.fit
+Bundle-SymbolicName: ch.opentrainingcenter.importer.fit;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: ch.opentrainingcenter.importer.fit.Activator
 Bundle-Vendor: Sascha Iseli
