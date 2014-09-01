@@ -54,6 +54,7 @@
 		<module>ch.opentrainingcenter.i18n</module>
 		<module>ch.opentrainingcenter.importer.tcx</module>
 		<module>ch.opentrainingcenter.importer.gpx</module>
+		<module>ch.opentrainingcenter.importer.fit</module>
 		<module>ch.opentrainingcenter.tcx</module>
 		<module>ch.opentrainingcenter.transfer</module>
 		<module>ch.opentrainingcenter.route</module>
@@ -77,6 +78,7 @@
 		<!--<module>ch.opentrainingcenter.db.postgres.tests</module -->
 		<module>ch.opentrainingcenter.importer.tcx.tests</module>
 		<module>ch.opentrainingcenter.importer.gpx.tests</module>
+		<module>ch.opentrainingcenter.importer.fit.tests</module>
 		<module>ch.opentrainingcenter.model.tests</module>
 		<module>ch.opentrainingcenter.route.tests</module>
 	</modules>

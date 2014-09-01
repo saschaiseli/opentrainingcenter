@@ -45,6 +45,7 @@
       <plugin id="ch.opentrainingcenter.i18n"/>
       <plugin id="ch.opentrainingcenter.importer.tcx"/>
       <plugin id="ch.opentrainingcenter.importer.gpx"/>
+      <plugin id="ch.opentrainingcenter.importer.fit"/>
       <plugin id="ch.opentrainingcenter.model"/>
       <plugin id="ch.opentrainingcenter.route"/>
       <plugin id="ch.opentrainingcenter.tcx"/>

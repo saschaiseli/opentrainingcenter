@@ -5,7 +5,6 @@ public class RunData {
     private final long dateOfStart;
     private final double timeInSeconds;
     private final double distanceInMeter;
-
     private final double maxSpeed;
 
     /**

@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Garmin Fit Importer
+Bundle-SymbolicName: ch.opentrainingcenter.importer.fit
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: ch.opentrainingcenter.importer.fit.Activator
+Bundle-Vendor: Sascha Iseli
+Require-Bundle: org.eclipse.core.runtime,
+ ch.opentrainingcenter.core,
+ ch.opentrainingcenter.transfer
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy
