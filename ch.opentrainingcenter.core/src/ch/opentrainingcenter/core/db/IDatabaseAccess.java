@@ -10,6 +10,7 @@ import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IHealth;
 import ch.opentrainingcenter.transfer.IPlanungWoche;
 import ch.opentrainingcenter.transfer.IRoute;
+import ch.opentrainingcenter.transfer.IShoe;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.IWeather;
 
@@ -127,6 +128,11 @@ public interface IDatabaseAccess {
      * Liefert alle Strecken von dem Athleten
      */
     List<IRoute> getRoute(IAthlete athlete);
+
+    /**
+     * Liefert alle Schuhe von dem Athleten.
+     */
+    List<IShoe> getShoes(IAthlete athlete);
 
     /**
      * @param name

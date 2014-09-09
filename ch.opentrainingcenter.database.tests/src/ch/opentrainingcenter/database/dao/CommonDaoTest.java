@@ -45,7 +45,7 @@ public class CommonDaoTest {
     public void setUp() {
         trainingDao = mock(TrainingDao.class);
         trainingCache = mock(TrainingCache.class);
-        dao = new CommonDao(null, null, null, null, null, trainingDao, trainingCache);
+        dao = new CommonDao(null, null, null, null, null, trainingDao, null, trainingCache);
     }
 
     @SuppressWarnings("unchecked")

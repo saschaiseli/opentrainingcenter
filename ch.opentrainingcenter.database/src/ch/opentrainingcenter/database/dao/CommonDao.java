@@ -14,6 +14,7 @@ import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IHealth;
 import ch.opentrainingcenter.transfer.IPlanungWoche;
 import ch.opentrainingcenter.transfer.IRoute;
+import ch.opentrainingcenter.transfer.IShoe;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.IWeather;
 
@@ -28,11 +29,16 @@ public class CommonDao implements IDatabaseAccess {
     private final HealthDao healthDao;
     private final PlanungDao planungsDao;
     private final RouteDao routeDao;
+    private final ShoeDao shoeDao;
     private final WeatherDao wetterDao;
     private final TrainingDao trainingDao;
     private final TrainingCache cache;
     private final boolean useCache = true;
 
+    /**
+     * @param dao
+     *            {@link IConnectionConfig}
+     */
     public CommonDao(final IConnectionConfig dao) {
         athleteDao = new AthleteDao(dao);
         healthDao = new HealthDao(dao);
@@ -40,17 +46,37 @@ public class CommonDao implements IDatabaseAccess {
         routeDao = new RouteDao(dao);
         trainingDao = new TrainingDao(dao);
         wetterDao = new WeatherDao(dao);
+        shoeDao = new ShoeDao(dao);
         cache = TrainingCache.getInstance();
     }
 
+    /**
+     * @param athleteDao
+     *            {@link AthleteDao}
+     * @param healthDao
+     *            {@link HealthDao}
+     * @param planungsDao
+     *            {@link PlanungDao}
+     * @param routeDao
+     *            {@link RouteDao}
+     * @param wetterDao
+     *            {@link WeatherDao}
+     * @param trainingDao
+     *            {@link TrainingDao}
+     * @param shoeDao
+     *            {@link ShoeDao}
+     * @param cache
+     *            {@link TrainingCache}
+     */
     public CommonDao(final AthleteDao athleteDao, final HealthDao healthDao, final PlanungDao planungsDao, final RouteDao routeDao, final WeatherDao wetterDao,
-            final TrainingDao trainingDao, final TrainingCache cache) {
+            final TrainingDao trainingDao, final ShoeDao shoeDao, final TrainingCache cache) {
         this.athleteDao = athleteDao;
         this.healthDao = healthDao;
         this.planungsDao = planungsDao;
         this.routeDao = routeDao;
         this.wetterDao = wetterDao;
         this.trainingDao = trainingDao;
+        this.shoeDao = shoeDao;
         this.cache = cache;
     }
 
@@ -240,5 +266,10 @@ public class CommonDao implements IDatabaseAccess {
     @Override
     public final List<IWeather> getWeather() {
         return wetterDao.getAllWeather();
+    }
+
+    @Override
+    public List<IShoe> getShoes(final IAthlete athlete) {
+        return shoeDao.getShoes(athlete);
     }
 }

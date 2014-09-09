@@ -9,6 +9,7 @@ import ch.opentrainingcenter.transfer.HeartRate;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.ILapInfo;
 import ch.opentrainingcenter.transfer.IRoute;
+import ch.opentrainingcenter.transfer.IShoe;
 import ch.opentrainingcenter.transfer.ITrackPointProperty;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.IWeather;
@@ -37,6 +38,7 @@ public class Training implements java.io.Serializable, ITraining {
     private IAthlete athlete;
     private IRoute route;
     private IWeather weather;
+    private IShoe shoe;
 
     private List<ITrackPointProperty> trackPoints = new ArrayList<>();
     private Date dateOfImport;
@@ -90,6 +92,16 @@ public class Training implements java.io.Serializable, ITraining {
     @Override
     public void setWeather(final IWeather weather) {
         this.weather = weather;
+    }
+
+    @Override
+    public IShoe getShoe() {
+        return this.shoe;
+    }
+
+    @Override
+    public void setShoe(final IShoe shoe) {
+        this.shoe = shoe;
     }
 
     @Override

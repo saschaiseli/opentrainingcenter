@@ -58,6 +58,10 @@ public interface ITraining {
 
     void setWeather(IWeather weather);
 
+    IShoe getShoe();
+
+    void setShoe(final IShoe shoe);
+
     IRoute getRoute();
 
     void setRoute(IRoute route);
