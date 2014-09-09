@@ -20,8 +20,6 @@ import org.eclipse.ui.forms.events.ExpansionEvent;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
-import org.eclipse.ui.forms.widgets.TableWrapData;
-import org.eclipse.ui.forms.widgets.TableWrapLayout;
 import org.eclipse.ui.part.ViewPart;
 
 import ch.opentrainingcenter.client.ui.FormToolkitSupport;
@@ -47,8 +45,6 @@ public class RoutenView extends ViewPart implements ISelectionListener {
 
     private final List<ITraining> tracks = new ArrayList<>();
 
-    private Composite parent;
-
     private FormToolkit toolkit;
 
     private ScrolledForm form;
@@ -57,8 +53,6 @@ public class RoutenView extends ViewPart implements ISelectionListener {
 
     private IAthlete selectedAthlete;
 
-    private TableWrapData td;
-
     private Section sectionRouten;
 
     private TrackTableViewer viewerTracks;
@@ -66,6 +60,8 @@ public class RoutenView extends ViewPart implements ISelectionListener {
     private RoutenTableViewer viewerRouten;
 
     private final IDatabaseAccess databaseAccess;
+
+    private ScrolledForm formSchuhe;
 
     public RoutenView() {
         athlete = ApplicationContext.getApplicationContext().getAthlete();
@@ -76,26 +72,25 @@ public class RoutenView extends ViewPart implements ISelectionListener {
     @Override
     public void createPartControl(final Composite parent) {
         LOGGER.info("create Route view"); //$NON-NLS-1$
-        this.parent = parent;
+        toolkit = new FormToolkit(parent.getDisplay());
+        final Composite main = toolkit.createComposite(parent);
+        //
+        GridLayoutFactory.fillDefaults().applyTo(main);
+        GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL).grab(true, true).applyTo(main);
 
-        toolkit = new FormToolkit(this.parent.getDisplay());
+        form = toolkit.createScrolledForm(main);
+        GridLayoutFactory.swtDefaults().applyTo(form);
+        GridDataFactory.swtDefaults().align(SWT.FILL, SWT.FILL).grab(true, true).applyTo(form);
 
-        form = toolkit.createScrolledForm(this.parent);
         toolkit.decorateFormHeading(form.getForm());
         form.setText(Messages.RoutenView_0);
 
         final ISelectionService selectionService = getSite().getWorkbenchWindow().getSelectionService();
         selectionService.addSelectionListener(this);
 
-        final TableWrapLayout layout = new TableWrapLayout();
-        layout.numColumns = 1;
-        layout.makeColumnsEqualWidth = false;
-
         final Composite body = form.getBody();
-        body.setLayout(layout);
-
-        td = new TableWrapData(TableWrapData.FILL_GRAB);
-        body.setLayoutData(td);
+        GridLayoutFactory.swtDefaults().applyTo(body);
+        GridDataFactory.swtDefaults().align(SWT.FILL, SWT.FILL).grab(true, true).applyTo(body);
 
         sectionRouten = toolkit.createSection(body, FormToolkitSupport.SECTION_STYLE);
         sectionRouten.addExpansionListener(new ExpansionAdapter() {
@@ -105,12 +100,11 @@ public class RoutenView extends ViewPart implements ISelectionListener {
             }
         });
         sectionRouten.setExpanded(true);
-        td = new TableWrapData(TableWrapData.FILL_GRAB);
-        td.colspan = 1;
-        td.grabHorizontal = true;
-        sectionRouten.setLayoutData(td);
+
         sectionRouten.setText(Messages.RoutenView_1);
         sectionRouten.setDescription(Messages.RoutenView_2);
+        GridLayoutFactory.swtDefaults().applyTo(sectionRouten);
+        GridDataFactory.swtDefaults().align(SWT.FILL, SWT.FILL).grab(true, true).applyTo(sectionRouten);
 
         final Composite composite = toolkit.createComposite(sectionRouten);
         GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(true).applyTo(composite);
@@ -133,6 +127,12 @@ public class RoutenView extends ViewPart implements ISelectionListener {
         GridDataFactory.swtDefaults().span(2, 1).align(SWT.FILL, SWT.FILL).grab(true, true).applyTo(compositeUnten);
 
         sectionRouten.setClient(composite);
+
+        formSchuhe = toolkit.createScrolledForm(main);
+        toolkit.decorateFormHeading(formSchuhe.getForm());
+        formSchuhe.setText("Schuhe");
+        GridLayoutFactory.swtDefaults().applyTo(formSchuhe);
+        GridDataFactory.swtDefaults().align(SWT.FILL, SWT.FILL).grab(true, true).applyTo(formSchuhe);
     }
 
     private void createLeftComposite(final Composite compositeLeft) {

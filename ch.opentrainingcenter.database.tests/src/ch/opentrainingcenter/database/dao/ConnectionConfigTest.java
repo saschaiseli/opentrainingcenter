@@ -60,6 +60,7 @@ public class ConnectionConfigTest {
         verify(hibernateCfg, times(1)).addResource("Planungwoche.hbm.xml", this.getClass().getClassLoader());
         verify(hibernateCfg, times(1)).addResource("Route.hbm.xml", this.getClass().getClassLoader());
         verify(hibernateCfg, times(1)).addResource("LapInfo.hbm.xml", this.getClass().getClassLoader());
+        verify(hibernateCfg, times(1)).addResource("Shoe.hbm.xml", this.getClass().getClassLoader());
         verify(hibernateCfg, times(1)).buildSessionFactory();
         verify(hibernateCfg, times(3)).getProperty(anyString());
         verifyNoMoreInteractions(hibernateCfg);

@@ -28,6 +28,12 @@
 			<column name="ID_FK_WEATHER" />
 		</many-to-one>
 
+	    <many-to-one name="shoe"
+			class="ch.opentrainingcenter.transfer.impl.Shoe" fetch="join"
+			update="true">
+			<column name="ID_FK_SHOES" />
+		</many-to-one>
+		
 		<property name="datum" type="java.lang.Long">
 			<column name="DATUM" />
 		</property>

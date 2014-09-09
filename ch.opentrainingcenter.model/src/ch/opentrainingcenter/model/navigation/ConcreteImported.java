@@ -9,6 +9,7 @@ import ch.opentrainingcenter.core.helper.DistanceHelper;
 import ch.opentrainingcenter.core.helper.TimeHelper;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.transfer.ILapInfo;
+import ch.opentrainingcenter.transfer.IShoe;
 import ch.opentrainingcenter.transfer.ITrackPointProperty;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.IWeather;
@@ -208,5 +209,15 @@ public class ConcreteImported extends ImportedDecorator implements INavigationIt
     @Override
     public void setSport(final Sport sport) {
         training.setSport(sport);
+    }
+
+    @Override
+    public IShoe getShoe() {
+        return training.getShoe();
+    }
+
+    @Override
+    public void setShoe(final IShoe shoe) {
+        training.setShoe(shoe);
     }
 }
