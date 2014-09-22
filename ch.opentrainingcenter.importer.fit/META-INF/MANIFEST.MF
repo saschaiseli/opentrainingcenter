@@ -7,6 +7,8 @@ Bundle-Activator: ch.opentrainingcenter.importer.fit.Activator
 Bundle-Vendor: Sascha Iseli
 Require-Bundle: org.eclipse.core.runtime,
  ch.opentrainingcenter.core,
- ch.opentrainingcenter.transfer
+ ch.opentrainingcenter.transfer,
+ jodatime,
+ logging
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
