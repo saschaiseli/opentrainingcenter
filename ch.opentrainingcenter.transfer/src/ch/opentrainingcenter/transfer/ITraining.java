@@ -9,12 +9,24 @@ public interface ITraining {
 
     int getId();
 
+    /**
+     * Startzeitpunkt in Millisekunden
+     */
     long getDatum();
 
+    /**
+     * Startzeitpunkt in Millisekunden
+     */
     void setDatum(long dateOfStart);
 
+    /**
+     * Zeitpunkt wann der Record importiert wurde.
+     */
     Date getDateOfImport();
 
+    /**
+     * Setzt den Zeitpunkt wann der Record importiert wurde.
+     */
     void setDateOfImport(Date dateOfImport);
 
     String getFileName();
