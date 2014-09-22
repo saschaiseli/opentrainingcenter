@@ -22,6 +22,7 @@ import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
+import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import ch.opentrainingcenter.core.exceptions.ConvertException;
@@ -31,6 +32,7 @@ import ch.opentrainingcenter.core.helper.DistanceHelper;
 import ch.opentrainingcenter.core.importer.IConvert2Tcx;
 import ch.opentrainingcenter.tcx.ActivityLapT;
 import ch.opentrainingcenter.tcx.ActivityT;
+import ch.opentrainingcenter.tcx.ExtensionsT;
 import ch.opentrainingcenter.tcx.HeartRateInBeatsPerMinuteT;
 import ch.opentrainingcenter.tcx.PositionT;
 import ch.opentrainingcenter.tcx.SportT;
@@ -45,6 +47,9 @@ import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.RunData;
 import ch.opentrainingcenter.transfer.Sport;
 import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
+
+import com.sun.org.apache.xerces.internal.dom.ElementNSImpl;
+import com.sun.org.apache.xerces.internal.dom.TextImpl;
 
 public class ConvertTcx implements IConvert2Tcx {
     private static final Logger LOGGER = Logger.getLogger(ConvertTcx.class);
@@ -187,6 +192,18 @@ public class ConvertTcx implements IConvert2Tcx {
                     int heartbeat = 0;
                     if (heartRateBpm != null) {
                         heartbeat = heartRateBpm.getValue();
+                    }
+                    if (trackpoint.getExtensions() != null) {
+                        final ExtensionsT extensions = trackpoint.getExtensions();
+                        final List<Object> any = extensions.getAny();
+                        for (final Object object : any) {
+                            final ElementNSImpl ns = (ElementNSImpl) object;
+                            final Node firstChild = ns.getFirstChild();
+                            final String localName = firstChild.getLocalName();
+                            final Node value = firstChild.getFirstChild();
+                            final TextImpl text = (TextImpl) value;
+                            LOGGER.error(trackpoint.getDistanceMeters() + ": " + localName + "-->" + text.getData()); //$NON-NLS-1$ //$NON-NLS-2$
+                        }
                     }
                     final long time = trackpoint.getTime().toGregorianCalendar().getTime().getTime();
                     final PositionT position = trackpoint.getPosition();
