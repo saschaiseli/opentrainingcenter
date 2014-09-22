@@ -54,8 +54,7 @@ public class ImportFileDialog implements IFilterDialog {
     private void readCurrentPreferences() {
         for (final IConvert2Tcx tcx : cc.getAllConverter()) {
             if (preferenceStore.getBoolean(PreferenceConstants.FILE_SUFFIX_FOR_BACKUP + tcx.getFilePrefix())) {
-                filePrefixes.add("*." + tcx.getFilePrefix()); //$NON-NLS-1$
-                filePrefixes.add("*." + tcx.getFilePrefix().toUpperCase()); //$NON-NLS-1$
+                filePrefixes.add("*." + tcx.getFilePrefix() + ";*." + tcx.getFilePrefix().toUpperCase()); //$NON-NLS-1$ //$NON-NLS-2$
             }
         }
     }
