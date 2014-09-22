@@ -26,7 +26,7 @@ public class ConvertContainer {
     public IConvert2Tcx getMatchingConverter(final File fileToImport) {
         final String name = fileToImport.getName();
         final String prefix = name.substring(name.indexOf('.') + 1, name.length());
-        return converters.get(prefix);
+        return converters.get(prefix.toUpperCase());
     }
 
     /**
@@ -38,7 +38,6 @@ public class ConvertContainer {
         for (final Map.Entry<String, IConvert2Tcx> entry : converters.entrySet()) {
             final String key = entry.getKey();
             suffixes.add("*." + key.toLowerCase()); //$NON-NLS-1$
-            suffixes.add("*." + key.toUpperCase()); //$NON-NLS-1$
         }
         return suffixes;
     }

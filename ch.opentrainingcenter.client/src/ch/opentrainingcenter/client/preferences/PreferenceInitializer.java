@@ -54,7 +54,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
         defaults.putInt(PreferenceConstants.WSA, WETTKAMPF);
         defaults.put(PreferenceConstants.WSA_COLOR, "255,64,34"); //$NON-NLS-1$
 
-        defaults.put(PreferenceConstants.BACKUP_FILE_LOCATION, System.getProperty("user.home") + File.separator + ".otc/backup"); //$NON-NLS-1$ //$NON-NLS-2$
+        defaults.put(PreferenceConstants.BACKUP_FILE_LOCATION, userHome + File.separator + ".otc/backup"); //$NON-NLS-1$ 
         final ConvertContainer cc = new ConvertContainer(ExtensionHelper.getConverters());
         for (final IConvert2Tcx tcx : cc.getAllConverter()) {
             defaults.putBoolean(PreferenceConstants.FILE_SUFFIX_FOR_BACKUP + tcx.getFilePrefix(), true);

@@ -22,13 +22,17 @@ public class GpsFileNameFilter implements FilenameFilter {
 
     @Override
     public boolean accept(final File dir, final String name) {
-        LOG.debug("Filename zum filtern: " + name); //$NON-NLS-1$
         for (final String suffix : cc.getSupportedFileSuffixes()) {
-            if (name != null && name.endsWith(suffix.replace("*.", ""))) { //$NON-NLS-1$ //$NON-NLS-2$
-                return true;
+            final String endung = suffix.replace("*.", "");//$NON-NLS-1$ //$NON-NLS-2$
+            if (name != null) {
+                final String nameEndung = name.substring(name.indexOf('.') + 1, name.length());
+                if (nameEndung.equalsIgnoreCase(endung)) {
+                    LOG.info(String.format("'%s' wird exportiert", name)); //$NON-NLS-1$
+                    return true;
+                }
             }
         }
+        LOG.debug(String.format("'%s' wird NICHT exportiert, da es dem Filter nicht entspricht", name)); //$NON-NLS-1$
         return false;
     }
-
 }

@@ -23,7 +23,7 @@ public final class ExtensionHelper {
             try {
                 final IConvert2Tcx tcx = (IConvert2Tcx) element.createExecutableExtension(IConvert2Tcx.PROPERETY);
                 LOGGER.info("Beginne mit Extensions einzulesen.......: " + element.getAttribute(IConvert2Tcx.PROPERETY)); //$NON-NLS-1$
-                getConverters().put(tcx.getFilePrefix(), tcx);
+                CONVERTERS.put(tcx.getFilePrefix().toUpperCase(), tcx);
             } catch (final CoreException e) {
                 LOGGER.error(e.getMessage());
             }

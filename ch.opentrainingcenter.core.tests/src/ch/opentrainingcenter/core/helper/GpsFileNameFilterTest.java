@@ -39,12 +39,36 @@ public class GpsFileNameFilterTest {
                 return null;
             }
         });
+        converters.put("FIT", new IConvert2Tcx() {
+
+            @Override
+            public String getName() {
+                return null;
+            }
+
+            @Override
+            public String getFilePrefix() {
+                return "fit";
+            }
+
+            @Override
+            public ITraining convert(final File file) throws ConvertException {
+                return null;
+            }
+        });
         filter = new GpsFileNameFilter(converters);
     }
 
     @Test
-    public void test() throws IOException {
+    public void testLower() throws IOException {
         assertTrue(filter.accept(null, "test.gmn"));
+        assertTrue(filter.accept(null, "test.fit"));
+    }
+
+    @Test
+    public void testUpper() throws IOException {
+        assertTrue(filter.accept(null, "test.GMN"));
+        assertTrue(filter.accept(null, "test.FIT"));
     }
 
     @Test
