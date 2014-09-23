@@ -20,13 +20,15 @@ public class ConvertContainer {
 
     /**
      * @param fileToImport
-     *            file welches importiert werden möchte
-     * @return dem cpmverter, der dieses file brauch
+     *            file welches importiert werden möchte. Die Fileendung ist
+     *            caseinsensitiv. Es wird gross sowie kleinschreibung getestet.
+     * @return dem converter, der dieses file braucht
      */
     public IConvert2Tcx getMatchingConverter(final File fileToImport) {
         final String name = fileToImport.getName();
         final String prefix = name.substring(name.indexOf('.') + 1, name.length());
-        return converters.get(prefix.toUpperCase());
+        final IConvert2Tcx result = converters.get(prefix);
+        return result != null ? result : converters.get(prefix.toUpperCase());
     }
 
     /**
