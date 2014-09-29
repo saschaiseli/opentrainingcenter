@@ -29,6 +29,7 @@
 			**/Messages.java,
 			ch/**/Messages.java,
 			com/**/*.java,
+			com/garmin/fit/**/*.java,
 			ch/opentrainingcenter/importer/fitnesslog/model/*.java
 		</sonar.exclusions>
 	</properties>
