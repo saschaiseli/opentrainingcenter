@@ -15,6 +15,7 @@ import org.joda.time.DateTime;
 
 import ch.opentrainingcenter.client.cache.AthleteCache;
 import ch.opentrainingcenter.client.cache.HealthCache;
+import ch.opentrainingcenter.client.cache.SchuhCache;
 import ch.opentrainingcenter.client.cache.StreckeCache;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.client.views.IImageKeys;
@@ -36,6 +37,7 @@ import ch.opentrainingcenter.transfer.IHealth;
 import ch.opentrainingcenter.transfer.ILapInfo;
 import ch.opentrainingcenter.transfer.IPlanungWoche;
 import ch.opentrainingcenter.transfer.IRoute;
+import ch.opentrainingcenter.transfer.IShoe;
 import ch.opentrainingcenter.transfer.ITrackPointProperty;
 import ch.opentrainingcenter.transfer.ITraining;
 
@@ -54,6 +56,7 @@ public class InitialLoadRunnable implements IRunnableWithProgress {
             loadAllHealths(monitor, athlete, databaseAccess);
             loadAllPlaene(monitor, athlete, databaseAccess);
             loadAllRouten(monitor, athlete, databaseAccess);
+            loadAllShoes(monitor, athlete, databaseAccess);
             doMaintenance(monitor, athlete, databaseAccess);
         }
         loadAllAthleten(monitor, databaseAccess);
@@ -105,6 +108,11 @@ public class InitialLoadRunnable implements IRunnableWithProgress {
             LOG.info(String.format("Strecke dem Cache hinzugefügt: %s Strecke: %s", route, strecke)); //$NON-NLS-1$ 
         }
         cache.addAll(strecken);
+    }
+
+    private void loadAllShoes(final IProgressMonitor monitor, final IAthlete athlete, final IDatabaseAccess db) {
+        final List<IShoe> shoes = db.getShoes(athlete);
+        SchuhCache.getInstance().addAll(shoes);
     }
 
     private void loadAllAthleten(final IProgressMonitor monitor, final IDatabaseAccess db) {

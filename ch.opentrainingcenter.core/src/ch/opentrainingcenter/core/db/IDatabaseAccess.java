@@ -174,4 +174,8 @@ public interface IDatabaseAccess {
 
     boolean existsRoute(final String name, final IAthlete athlete);
 
+    boolean existsSchuh(IAthlete athlete, String schuhName);
+
+    void saveOrUpdate(IShoe shoe);
+
 }

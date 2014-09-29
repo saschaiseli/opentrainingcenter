@@ -222,6 +222,7 @@ public final class Messages extends NLS {
     public static String InitialLoadRunnable_5;
     public static String InitialLoadRunnable_6;
     public static String InitialLoadRunnable_7;
+    public static String InitialLoadRunnable_8;
     public static String InitialLoadRunnable_BERECHNE_RUNDEN;
     public static String MapConverter0;
     public static String MapConverter1;
@@ -307,6 +308,14 @@ public final class Messages extends NLS {
     public static String SamplePreferencePage7;
     public static String SamplePreferencePage8;
     public static String SamplePreferencePage9;
+
+    public static String SchuhDialog_Add_Schuh;
+
+    public static String SchuhDialog_Beschreibung;
+
+    public static String SchuhDialog_Fehlermeldung;
+
+    public static String SchuhDialog_Label_Name_Marke;
     public static String SearchDialog_COMMON_KM;
     public static String SearchDialog_SEARCH;
     public static String SearchDialog_SEARCH_DESC_LABEL;
@@ -490,6 +499,14 @@ public final class Messages extends NLS {
     public static String RoutenView_7;
     public static String RoutenView_8;
     public static String RoutenView_9;
+    public static String RoutenView_Icon;
+
+    public static String RoutenView_ID;
+
+    public static String RoutenView_Name_Marke;
+
+    public static String RoutenView_Schuhe;
+
     public static String RUNDE;
     public static String RUNDEN;
     public static String HEAVYRAIN;

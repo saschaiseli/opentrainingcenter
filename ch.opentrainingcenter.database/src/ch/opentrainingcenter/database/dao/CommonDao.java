@@ -272,4 +272,14 @@ public class CommonDao implements IDatabaseAccess {
     public List<IShoe> getShoes(final IAthlete athlete) {
         return shoeDao.getShoes(athlete);
     }
+
+    @Override
+    public boolean existsSchuh(final IAthlete athlete, final String schuhName) {
+        return shoeDao.exists(athlete, schuhName);
+    }
+
+    @Override
+    public final void saveOrUpdate(final IShoe route) {
+        shoeDao.saveOrUpdate(route);
+    }
 }

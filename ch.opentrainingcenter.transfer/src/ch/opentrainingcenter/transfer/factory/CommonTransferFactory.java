@@ -9,6 +9,7 @@ import ch.opentrainingcenter.transfer.IHealth;
 import ch.opentrainingcenter.transfer.ILapInfo;
 import ch.opentrainingcenter.transfer.IPlanungWoche;
 import ch.opentrainingcenter.transfer.IRoute;
+import ch.opentrainingcenter.transfer.IShoe;
 import ch.opentrainingcenter.transfer.IStreckenPunkt;
 import ch.opentrainingcenter.transfer.ITrackPointProperty;
 import ch.opentrainingcenter.transfer.ITraining;
@@ -19,6 +20,7 @@ import ch.opentrainingcenter.transfer.impl.Health;
 import ch.opentrainingcenter.transfer.impl.LapInfo;
 import ch.opentrainingcenter.transfer.impl.Planungwoche;
 import ch.opentrainingcenter.transfer.impl.Route;
+import ch.opentrainingcenter.transfer.impl.Shoe;
 import ch.opentrainingcenter.transfer.impl.Streckenpunkte;
 import ch.opentrainingcenter.transfer.impl.Tracktrainingproperty;
 import ch.opentrainingcenter.transfer.impl.Training;
@@ -149,6 +151,10 @@ public final class CommonTransferFactory {
     public static ILapInfo createLapInfo(final int lap, final int start, final int end, final long time, final int heartBeat, final String pace,
             final String geschwindigkeit) {
         return new LapInfo(lap, start, end, time, heartBeat, pace, geschwindigkeit);
+    }
+
+    public static IShoe createSchuh(final IAthlete athlete, final String schuhName, final String imageicon) {
+        return new Shoe(athlete, schuhName, imageicon);
     }
 
 }

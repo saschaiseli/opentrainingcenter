@@ -3,17 +3,31 @@ package ch.opentrainingcenter.transfer.impl;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IShoe;
 
-public class Shoe implements IShoe {
+public class Shoe implements java.io.Serializable, IShoe {
+
+    private static final long serialVersionUID = 1L;
+
     private int id;
     private String schuhname;
     private String imageicon;
     private IAthlete athlete;
+
+    public Shoe() {
+        // fuer hibernate
+    }
+
+    public Shoe(final IAthlete athlete, final String schuhname, final String imageicon) {
+        this.athlete = athlete;
+        this.schuhname = schuhname;
+        this.imageicon = imageicon;
+    }
 
     @Override
     public int getId() {
         return id;
     }
 
+    @Override
     public void setId(final int id) {
         this.id = id;
     }
@@ -23,24 +37,34 @@ public class Shoe implements IShoe {
         return schuhname;
     }
 
+    @Override
     public void setSchuhname(final String schuhname) {
         this.schuhname = schuhname;
     }
 
+    @Override
     public String getImageicon() {
         return imageicon;
     }
 
+    @Override
     public void setImageicon(final String imageicon) {
         this.imageicon = imageicon;
     }
 
+    @Override
     public IAthlete getAthlete() {
         return athlete;
     }
 
+    @Override
     public void setAthlete(final IAthlete athlete) {
         this.athlete = athlete;
     }
 
+    @SuppressWarnings("nls")
+    @Override
+    public String toString() {
+        return "Shoe [id=" + id + ", schuhname=" + schuhname + ", imageicon=" + imageicon + ", athlete=" + athlete + "]";
+    }
 }

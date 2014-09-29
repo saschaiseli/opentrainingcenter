@@ -3,10 +3,12 @@
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
     <class name="ch.opentrainingcenter.transfer.impl.Shoe" table="SHOES">
-        <id name="id" type="int">
-            <column name="ID" />
-            <generator class="assigned" />
-        </id>
+		<id name="id" type="int">
+			<column name="ID" />
+			<generator class="sequence">
+				<param name="sequence">shoe_id_sequence</param>
+			</generator>
+		</id>
         <property name="schuhname" type="string">
             <column name="SCHUHNAME" />
         </property>

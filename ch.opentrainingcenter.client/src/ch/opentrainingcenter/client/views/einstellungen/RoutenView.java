@@ -1,6 +1,7 @@
 package ch.opentrainingcenter.client.views.einstellungen;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -9,6 +10,9 @@ import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.ISelectionListener;
@@ -22,15 +26,20 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.ViewPart;
 
+import ch.opentrainingcenter.client.cache.SchuhCache;
 import ch.opentrainingcenter.client.ui.FormToolkitSupport;
 import ch.opentrainingcenter.client.ui.tableviewer.RoutenTableViewer;
+import ch.opentrainingcenter.client.ui.tableviewer.SchuhTableViewer;
 import ch.opentrainingcenter.client.ui.tableviewer.TrackTableViewer;
 import ch.opentrainingcenter.client.views.ApplicationContext;
+import ch.opentrainingcenter.client.views.dialoge.SchuhDialog;
+import ch.opentrainingcenter.core.cache.IRecordListener;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IRoute;
+import ch.opentrainingcenter.transfer.IShoe;
 import ch.opentrainingcenter.transfer.ITraining;
 
 public class RoutenView extends ViewPart implements ISelectionListener {
@@ -42,6 +51,8 @@ public class RoutenView extends ViewPart implements ISelectionListener {
     private static final int SWT_TABLE_PATTERN = SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER;
 
     private final List<IRoute> routen = new ArrayList<>();
+
+    private final List<IShoe> schuhe = new ArrayList<>();
 
     private final List<ITraining> tracks = new ArrayList<>();
 
@@ -59,9 +70,15 @@ public class RoutenView extends ViewPart implements ISelectionListener {
 
     private RoutenTableViewer viewerRouten;
 
+    private SchuhTableViewer schuhTable;
+
     private final IDatabaseAccess databaseAccess;
 
     private ScrolledForm formSchuhe;
+
+    private Section sectionSchuhe;
+
+    private final SchuhCache shoeCache = SchuhCache.getInstance();
 
     public RoutenView() {
         athlete = ApplicationContext.getApplicationContext().getAthlete();
@@ -121,25 +138,70 @@ public class RoutenView extends ViewPart implements ISelectionListener {
         GridDataFactory.swtDefaults().align(SWT.FILL, SWT.FILL).grab(true, true).applyTo(compositeRight);
 
         createRightComposite(compositeRight);
-
-        final Composite compositeUnten = new Composite(composite, SWT.NONE);
-        GridLayoutFactory.swtDefaults().applyTo(compositeUnten);
-        GridDataFactory.swtDefaults().span(2, 1).align(SWT.FILL, SWT.FILL).grab(true, true).applyTo(compositeUnten);
-
         sectionRouten.setClient(composite);
 
+        // -------------------------------
         formSchuhe = toolkit.createScrolledForm(main);
         toolkit.decorateFormHeading(formSchuhe.getForm());
-        formSchuhe.setText("Schuhe");
+        formSchuhe.setText(Messages.RoutenView_Schuhe);
         GridLayoutFactory.swtDefaults().applyTo(formSchuhe);
         GridDataFactory.swtDefaults().align(SWT.FILL, SWT.FILL).grab(true, true).applyTo(formSchuhe);
+
+        final Composite bodySchuhe = formSchuhe.getBody();
+        GridLayoutFactory.swtDefaults().applyTo(bodySchuhe);
+        GridDataFactory.swtDefaults().align(SWT.FILL, SWT.FILL).grab(true, true).applyTo(bodySchuhe);
+
+        sectionSchuhe = toolkit.createSection(bodySchuhe, FormToolkitSupport.SECTION_STYLE);
+        sectionSchuhe.addExpansionListener(new ExpansionAdapter() {
+            @Override
+            public void expansionStateChanged(final ExpansionEvent e) {
+                formSchuhe.reflow(true);
+            }
+        });
+        sectionSchuhe.setExpanded(true);
+
+        sectionSchuhe.setText(Messages.RoutenView_1);
+        sectionSchuhe.setDescription(Messages.RoutenView_2);
+        GridLayoutFactory.swtDefaults().applyTo(sectionRouten);
+        GridDataFactory.swtDefaults().align(SWT.FILL, SWT.FILL).grab(true, true).applyTo(sectionSchuhe);
+
+        final Composite compositeSchuhe = toolkit.createComposite(sectionSchuhe);
+        GridLayoutFactory.swtDefaults().applyTo(compositeSchuhe);
+        GridDataFactory.swtDefaults().align(SWT.FILL, SWT.FILL).grab(true, true).applyTo(compositeSchuhe);
+
+        schuhTable = new SchuhTableViewer(compositeSchuhe, SWT_TABLE_PATTERN);
+        schuhTable.createTableViewer(shoeCache.getAll());
+        final Button addSchuh = new Button(compositeSchuhe, SWT.PUSH);
+        addSchuh.setText("+"); //$NON-NLS-1$
+
+        addSchuh.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(final SelectionEvent e) {
+                final SchuhDialog dialog = new SchuhDialog(main.getShell(), databaseAccess, athlete);
+                dialog.open();
+            }
+        });
+        shoeCache.addListener(new IRecordListener<IShoe>() {
+
+            @Override
+            public void recordChanged(final Collection<IShoe> entry) {
+                schuhTable.setInput(entry);
+                schuhTable.refresh();
+            }
+
+            @Override
+            public void deleteRecord(final Collection<IShoe> entry) {
+
+            }
+        });
+        sectionSchuhe.setClient(compositeSchuhe);
     }
 
-    private void createLeftComposite(final Composite compositeLeft) {
-        final Label headLeft = new Label(compositeLeft, SWT.BOLD);
+    private void createLeftComposite(final Composite composite) {
+        final Label headLeft = new Label(composite, SWT.BOLD);
         headLeft.setText(Messages.RoutenView_3);
 
-        viewerRouten = new RoutenTableViewer(compositeLeft, SWT_TABLE_PATTERN);
+        viewerRouten = new RoutenTableViewer(composite, SWT_TABLE_PATTERN);
         viewerRouten.createTableViewer(routen, tracks);
     }
 
