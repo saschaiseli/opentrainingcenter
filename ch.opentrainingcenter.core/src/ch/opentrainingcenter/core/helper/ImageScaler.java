@@ -29,7 +29,6 @@ public final class ImageScaler {
         gc.setInterpolation(SWT.HIGH);
         gc.drawImage(image, 0, 0, bounds.width, bounds.height, 0, 0, width, height);
         gc.dispose();
-        // image.dispose();
         return scaled;
     }
 }
