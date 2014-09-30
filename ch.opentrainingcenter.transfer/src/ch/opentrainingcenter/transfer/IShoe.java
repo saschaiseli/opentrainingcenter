@@ -1,5 +1,7 @@
 package ch.opentrainingcenter.transfer;
 
+import java.util.Date;
+
 public interface IShoe {
 
     void setId(int id);
@@ -17,5 +19,13 @@ public interface IShoe {
     IAthlete getAthlete();
 
     void setAthlete(IAthlete athlete);
+
+    int getPreis();
+
+    void setPreis(int preis);
+
+    Date getKaufdatum();
+
+    void setKaufdatum(Date kaufdatum);
 
 }

@@ -309,13 +309,31 @@ public final class Messages extends NLS {
     public static String SamplePreferencePage8;
     public static String SamplePreferencePage9;
 
+    public static String SchuhDialog_add;
+
     public static String SchuhDialog_Add_Schuh;
 
     public static String SchuhDialog_Beschreibung;
 
+    public static String SchuhDialog_BildLabel;
+
+    public static String SchuhDialog_Error_Preis;
+
+    public static String SchuhDialog_Error_Schuhname;
+
     public static String SchuhDialog_Fehlermeldung;
 
+    public static String SchuhDialog_KaufdatumLabel;
+
     public static String SchuhDialog_Label_Name_Marke;
+
+    public static String SchuhDialog_ModelLabel;
+
+    public static String SchuhDialog_PreisLabel;
+    public static String SchuhTableViewer_KaufDatumTableHeader;
+
+    public static String SchuhTableViewer_PreisTableHeader;
+
     public static String SearchDialog_COMMON_KM;
     public static String SearchDialog_SEARCH;
     public static String SearchDialog_SEARCH_DESC_LABEL;

@@ -35,4 +35,8 @@ public final class IImageKeys {
     public static final String DATABASE = "icons/16_16/repository_rep.png";
 
     public static final String VERSION = "icons/16_16/flash-icon_16_16.png";
+
+    public static final String SHOE = "icons/32_32/shoe_32_32.png";
+
+    public static final String SHOE_64 = "icons/64_64/shoe_64_64.png";
 }

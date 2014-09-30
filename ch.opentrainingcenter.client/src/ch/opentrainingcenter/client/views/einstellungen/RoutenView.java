@@ -52,8 +52,6 @@ public class RoutenView extends ViewPart implements ISelectionListener {
 
     private final List<IRoute> routen = new ArrayList<>();
 
-    private final List<IShoe> schuhe = new ArrayList<>();
-
     private final List<ITraining> tracks = new ArrayList<>();
 
     private FormToolkit toolkit;
@@ -160,8 +158,8 @@ public class RoutenView extends ViewPart implements ISelectionListener {
         });
         sectionSchuhe.setExpanded(true);
 
-        sectionSchuhe.setText(Messages.RoutenView_1);
-        sectionSchuhe.setDescription(Messages.RoutenView_2);
+        sectionSchuhe.setText("Übersicht der Schuhe.");
+        sectionSchuhe.setDescription("Schuhe welche in Trainings verwendet werden.");
         GridLayoutFactory.swtDefaults().applyTo(sectionRouten);
         GridDataFactory.swtDefaults().align(SWT.FILL, SWT.FILL).grab(true, true).applyTo(sectionSchuhe);
 

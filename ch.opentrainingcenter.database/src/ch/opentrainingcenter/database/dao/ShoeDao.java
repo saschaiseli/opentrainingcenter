@@ -51,6 +51,9 @@ public class ShoeDao {
         IShoe exists = getShoe(schuh.getSchuhname(), schuh.getAthlete());
         if (exists != null) {
             LOG.info("Schuh überschreiben alt: " + exists + " neu: " + schuh); //$NON-NLS-2$
+            exists.setImageicon(schuh.getImageicon());
+            exists.setKaufdatum(schuh.getKaufdatum());
+            exists.setPreis(schuh.getPreis());
         } else {
             LOG.info("Neuer Schuh abspeichern: " + schuh);
             exists = schuh;

@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Date;
 import java.util.List;
 
 import org.joda.time.DateTime;
@@ -22,9 +23,11 @@ public class ShoeDaoTest extends DatabaseTestBase {
 
     private ShoeDao shoeDao;
     private IAthlete athlete;
+    private Date now;
 
     @Before
     public void setUp() {
+        now = new Date();
 
         shoeDao = new ShoeDao(connectionConfig);
 
@@ -39,20 +42,22 @@ public class ShoeDaoTest extends DatabaseTestBase {
     public void testSaveSchuh() {
         final String schuhName = "Asics";
         final String imageicon = "pathtoimage";
-        final IShoe schuh = CommonTransferFactory.createSchuh(athlete, schuhName, imageicon);
+        final IShoe schuh = CommonTransferFactory.createSchuh(athlete, schuhName, imageicon, 10, now);
         final int id = shoeDao.saveOrUpdate(schuh);
         assertTrue(0 <= id);
         final List<IShoe> schuhe = shoeDao.getShoes(athlete);
         assertNotNull(schuhe);
         assertEquals(schuhName, schuhe.get(0).getSchuhname());
         assertEquals(imageicon, schuhe.get(0).getImageicon());
+        assertEquals(10, schuhe.get(0).getPreis());
+        assertEquals(now, schuhe.get(0).getKaufdatum());
     }
 
     @Test
     public void testExistiertSchuh() {
         final String schuhName = "Asics";
         final String imageicon = "pathtoimage";
-        final IShoe schuh = CommonTransferFactory.createSchuh(athlete, schuhName, imageicon);
+        final IShoe schuh = CommonTransferFactory.createSchuh(athlete, schuhName, imageicon, 10, now);
         shoeDao.saveOrUpdate(schuh);
 
         assertTrue("Schuh muss existieren", shoeDao.exists(athlete, schuhName));
@@ -68,7 +73,7 @@ public class ShoeDaoTest extends DatabaseTestBase {
     public void testGetSchuh() {
         final String schuhName = "Asics";
         final String imageicon = "pathtoimage";
-        final IShoe schuh = CommonTransferFactory.createSchuh(athlete, schuhName, imageicon);
+        final IShoe schuh = CommonTransferFactory.createSchuh(athlete, schuhName, imageicon, 10, now);
         shoeDao.saveOrUpdate(schuh);
 
         IShoe result = shoeDao.getShoe(schuhName, athlete);
@@ -86,7 +91,7 @@ public class ShoeDaoTest extends DatabaseTestBase {
     public void testUpdateSchuh() {
         final String schuhName = "Asics";
         final String imageicon = "pathtoimage";
-        final IShoe schuh = CommonTransferFactory.createSchuh(athlete, schuhName, imageicon);
+        final IShoe schuh = CommonTransferFactory.createSchuh(athlete, schuhName, imageicon, 10, now);
         int id = shoeDao.saveOrUpdate(schuh);
 
         schuh.setImageicon("updatedIcon");

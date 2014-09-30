@@ -153,8 +153,8 @@ public final class CommonTransferFactory {
         return new LapInfo(lap, start, end, time, heartBeat, pace, geschwindigkeit);
     }
 
-    public static IShoe createSchuh(final IAthlete athlete, final String schuhName, final String imageicon) {
-        return new Shoe(athlete, schuhName, imageicon);
+    public static IShoe createSchuh(final IAthlete athlete, final String schuhName, final String image, final int preis, final Date kaufdatum) {
+        return new Shoe(athlete, schuhName, image, preis, kaufdatum);
     }
 
 }
