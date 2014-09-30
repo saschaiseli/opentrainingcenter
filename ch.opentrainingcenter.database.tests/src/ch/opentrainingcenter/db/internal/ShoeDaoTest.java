@@ -95,12 +95,14 @@ public class ShoeDaoTest extends DatabaseTestBase {
         int id = shoeDao.saveOrUpdate(schuh);
 
         schuh.setImageicon("updatedIcon");
+        schuh.setPreis(42);
         id = shoeDao.saveOrUpdate(schuh);
         assertTrue(0 <= id);
         final List<IShoe> schuhe = shoeDao.getShoes(athlete);
         assertNotNull(schuhe);
         assertEquals(schuhName, schuhe.get(0).getSchuhname());
         assertEquals("updatedIcon", schuhe.get(0).getImageicon());
+        assertEquals("neuer preis", 42, schuhe.get(0).getPreis());
 
         assertTrue(schuhe.size() == 1);
     }
