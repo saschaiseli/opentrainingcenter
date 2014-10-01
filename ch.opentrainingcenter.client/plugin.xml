@@ -87,13 +87,6 @@
             id="ch.opentrainingcenter.client.einstellungen"
             name="%einstellungen">
       </perspective>
-      <perspective
-            class="ch.opentrainingcenter.client.perspectives.TablePerspective"
-            fixed="true"
-            icon="icons/table_green_24_24.png"
-            id="ch.opentrainingcenter.client.OverviewPerspective"
-            name="Tabellarische Übersicht">
-      </perspective>
    </extension>
    <extension
          point="org.eclipse.ui.views">
