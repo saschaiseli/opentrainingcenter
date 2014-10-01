@@ -14,6 +14,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ch.opentrainingcenter.core.exceptions.ConvertException;
+import ch.opentrainingcenter.core.helper.DistanceHelper;
+import ch.opentrainingcenter.transfer.ILapInfo;
 import ch.opentrainingcenter.transfer.ITrackPointProperty;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.Sport;
@@ -55,6 +57,43 @@ public class ConvertFitTest {
         assertTrackPoint(4, "2014-09-11 17:18:55", 51.47, 554.0, 46.95492133, 7.448757458, points.get(4));
         // noch letzter punkt
         assertTrackPoint(301, "2014-09-11 17:51:57", 5294.86, 562.0, 46.9547371, 7.448976813, points.get(points.size() - 1));
+
+        final List<ILapInfo> lapInfos = training.getLapInfos();
+        assertEquals(1, lapInfos.size());
+        final ILapInfo lap = lapInfos.get(0);
+        assertEquals(0, lap.getStart());
+        assertEquals((int) training.getLaengeInMeter(), lap.getEnd());
+        assertEquals(2003000, lap.getTime());
+        assertEquals(132, lap.getHeartBeat());
+        assertEquals(DistanceHelper.calculatePace(training.getLaengeInMeter(), lap.getTime() / 1000, Sport.RUNNING), lap.getPace());
+        assertEquals(DistanceHelper.calculatePace(training.getLaengeInMeter(), lap.getTime() / 1000, Sport.BIKING), lap.getGeschwindigkeit());
+    }
+
+    @Test
+    public void testActivityConvertMit2Runden() throws ConvertException, ParseException {
+        final ITraining training = converter.convert(new File("resources/2_runden.fit"));
+
+        assertNotNull(training);
+        assertNull("Ist null, da dieser Timestamp erst vom importer gesetzt", training.getDateOfImport());
+
+        final List<ILapInfo> lapInfos = training.getLapInfos();
+        assertEquals(2, lapInfos.size());
+
+        final ILapInfo lap1 = lapInfos.get(0);
+        assertEquals(0, lap1.getLap());
+        assertEquals(0, lap1.getStart());
+        assertEquals(5495, lap1.getEnd());
+        assertEquals(1959000, lap1.getTime());
+        assertEquals(DistanceHelper.calculatePace(5495, 1959, Sport.RUNNING), lap1.getPace());
+        assertEquals(DistanceHelper.calculatePace(5495, 1959, Sport.BIKING), lap1.getGeschwindigkeit());
+
+        final ILapInfo lap2 = lapInfos.get(1);
+        assertEquals(1, lap2.getLap());
+        assertEquals(5495, lap2.getStart());
+        assertEquals(10499, lap2.getEnd()); // kleiner rundungsfehler
+        assertEquals(1745000, lap2.getTime());
+        assertEquals(DistanceHelper.calculatePace(10500 - 5495, lap2.getTime() / 1000, Sport.RUNNING), lap2.getPace());
+        assertEquals(DistanceHelper.calculatePace(10500 - 5495, lap2.getTime() / 1000, Sport.BIKING), lap2.getGeschwindigkeit());
     }
 
     private void assertTrackPoint(final int index, final String datum, final double distanz, final double hoehe, final double latitude, final double longitude,

@@ -3,13 +3,17 @@ package ch.opentrainingcenter.importer.tcx;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.io.File;
+import java.text.ParseException;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import ch.opentrainingcenter.core.exceptions.ConvertException;
+import ch.opentrainingcenter.core.helper.DistanceHelper;
 import ch.opentrainingcenter.transfer.ILapInfo;
 import ch.opentrainingcenter.transfer.IStreckenPunkt;
 import ch.opentrainingcenter.transfer.ITrackPointProperty;
@@ -21,7 +25,7 @@ public class ConvertTcxTest {
     private static final double DELTA = 0.00000001;
     private ConvertTcx converter;
     private File simple, simple_one_lap, simple_one_lap_bike, simple_two_lap, simple_out_of_memory, simple_null_values;
-    private File simple_one_lap_other;
+    private File simple_one_lap_other, zwei_runden;
 
     @Before
     public void setUp() {
@@ -33,6 +37,7 @@ public class ConvertTcxTest {
         simple_two_lap = new File("resources", "simple_two_lap.tcx");
         simple_out_of_memory = new File("resources", "simple_out_of_memory.tcx");
         simple_null_values = new File("resources", "simple_null_values.tcx");
+        zwei_runden = new File("resources", "2_runden.tcx");
     }
 
     @Test
@@ -75,6 +80,40 @@ public class ConvertTcxTest {
         assertPoint(points.get(0), 543, 0.576151550, 85, 0, 1364897192000L, 7.43025357, 46.94510135);
         assertPoint(points.get(1), 544, 1.55577779, 86, 0, 1364897193000L, 7.43026547, 46.94510487);
         assertPoint(points.get(2), 545, 2.89205694, 87, 0, 1364897194000L, 7.43028106, 46.94511082);
+
+        final List<ILapInfo> lap = training.getLapInfos();
+        assertEquals("1 Runde ist vorhanden", 1, lap.size());
+        final ILapInfo lapInfo = lap.get(0);
+        assertEquals(0, lapInfo.getStart());
+        assertEquals((int) training.getLaengeInMeter(), lapInfo.getEnd());
+        assertEquals(0, lapInfo.getLap());
+    }
+
+    @Test
+    public void testActivityConvertMit2Runden() throws ConvertException, ParseException {
+        final ITraining training = converter.convert(zwei_runden);
+
+        assertNotNull(training);
+        assertNull("Ist null, da dieser Timestamp erst vom importer gesetzt", training.getDateOfImport());
+
+        final List<ILapInfo> lapInfos = training.getLapInfos();
+        assertEquals(2, lapInfos.size());
+
+        final ILapInfo lap1 = lapInfos.get(0);
+        assertEquals(0, lap1.getLap());
+        assertEquals(0, lap1.getStart());
+        assertEquals(5495, lap1.getEnd());
+        assertEquals(1959510, lap1.getTime());
+        assertEquals(DistanceHelper.calculatePace(5495, 1959, Sport.RUNNING), lap1.getPace());
+        assertEquals(DistanceHelper.calculatePace(5495, 1959, Sport.BIKING), lap1.getGeschwindigkeit());
+
+        final ILapInfo lap2 = lapInfos.get(1);
+        assertEquals(1, lap2.getLap());
+        assertEquals(5495, lap2.getStart());
+        assertEquals(10500, lap2.getEnd()); // kleiner rundungsfehler
+        assertEquals(1745760, lap2.getTime());
+        assertEquals(DistanceHelper.calculatePace(10500 - 5495, lap2.getTime() / 1000, Sport.RUNNING), lap2.getPace());
+        assertEquals(DistanceHelper.calculatePace(10500 - 5495, lap2.getTime() / 1000, Sport.BIKING), lap2.getGeschwindigkeit());
     }
 
     @Test

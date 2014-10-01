@@ -39,16 +39,33 @@ public class LapInfo implements ILapInfo {
     }
 
     /**
+     * Start und End beziehen sich immer auf die kilometrierung der strecke.
+     * 
+     * <pre>
+     * 
+     *                           LapInfo
+     * |----------------------<--------->-----|
+     * 0m                   140m       180m
+     * 
+     *                     Start       End
+     * 
+     * 
+     * </pre>
+     * 
      * @param lap
      *            Runde [Anzahl]
-     * @param distance
-     *            Distanz in Meter [m]
+     * @param start
+     *            start in Meter [m]
+     * @param end
+     *            ende der runde in [m]
      * @param time
      *            Zeit in Millisekunden [ms]
      * @param heartBeat
      *            Herzschlag in [Bpm]
      * @param pace
      *            Pace in [min/km]
+     * @param geschwindigkeit
+     *            durchschnittliche Geschwindigkeit [km/h]
      */
     public LapInfo(final int lap, final int start, final int end, final long time, final int heartBeat, final String pace, final String geschwindigkeit) {
         this.lap = lap;
