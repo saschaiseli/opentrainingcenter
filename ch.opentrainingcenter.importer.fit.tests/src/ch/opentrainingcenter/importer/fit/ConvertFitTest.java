@@ -31,6 +31,13 @@ public class ConvertFitTest {
     }
 
     @Test
+    public void testActivityFehlerhafteGeoKoordinaten() throws ConvertException, ParseException {
+        final ITraining training = converter.convert(new File("resources/fehlerhafte_geodaten.fit"));
+
+        assertEquals("Fehlerhafter Prozentwert", 17.7295913, training.getGeoQuality(), 0.00001);
+    }
+
+    @Test
     public void testRealActivityConvert() throws ConvertException, ParseException {
         final ITraining training = converter.convert(new File("resources/2014_09_11.fit"));
 

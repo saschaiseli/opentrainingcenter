@@ -52,6 +52,8 @@ public class ConvertTcx implements IConvert2Tcx {
     protected static final String NO_DATA = "NO GPS DATA"; //$NON-NLS-1$
 
     private final String locationOfSchema;
+    private int error = 0;
+    private int valid = 0;
 
     /**
      * Contructor for Eclipse Extension
@@ -171,6 +173,10 @@ public class ConvertTcx implements IConvert2Tcx {
         if (trackPoints.isEmpty()) {
             training.setNote(NO_DATA);
         }
+        final int total = error + valid;
+        final float fehlerInProzent = 100 * (error / (float) total);
+        training.setGeoQuality(fehlerInProzent);
+        LOGGER.info(String.format("Qualität der Geodaten: '%s' [prozent] fehlerhafte Geodaten", fehlerInProzent)); //$NON-NLS-1$
         return training;
     }
 
@@ -204,8 +210,10 @@ public class ConvertTcx implements IConvert2Tcx {
     private boolean isTrackPointValid(final TrackpointT t) {
         if (t.getAltitudeMeters() == null || t.getDistanceMeters() == null || t.getPosition() == null) {
             LOGGER.info("Ungültiger Trackpoint um '" + t.getTime() + "' gefunden"); //$NON-NLS-1$ //$NON-NLS-2$
+            error++;
             return false;
         } else {
+            valid++;
             return true;
         }
     }

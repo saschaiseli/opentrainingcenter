@@ -220,4 +220,15 @@ public class ConcreteImported extends ImportedDecorator implements INavigationIt
     public void setShoe(final IShoe shoe) {
         training.setShoe(shoe);
     }
+
+    @Override
+    public float getGeoQuality() {
+        return training.getGeoQuality();
+    }
+
+    @Override
+    public void setGeoQuality(final float fehlerInProzent) {
+        training.setGeoQuality(fehlerInProzent);
+
+    }
 }

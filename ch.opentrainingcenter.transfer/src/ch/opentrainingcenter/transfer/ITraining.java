@@ -117,4 +117,11 @@ public interface ITraining {
     TrainingType getTrainingType();
 
     void setTrainingType(TrainingType trainingType);
+
+    /**
+     * @return Prozentwert von fehlenden Koordinaten.
+     */
+    float getGeoQuality();
+
+    void setGeoQuality(float fehlerInProzent);
 }

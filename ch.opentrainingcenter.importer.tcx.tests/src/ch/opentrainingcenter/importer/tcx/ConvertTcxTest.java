@@ -25,7 +25,7 @@ public class ConvertTcxTest {
     private static final double DELTA = 0.00000001;
     private ConvertTcx converter;
     private File simple, simple_one_lap, simple_one_lap_bike, simple_two_lap, simple_out_of_memory, simple_null_values;
-    private File simple_one_lap_other, zwei_runden;
+    private File simple_one_lap_other, zwei_runden, fehlerhaft;
 
     @Before
     public void setUp() {
@@ -38,6 +38,14 @@ public class ConvertTcxTest {
         simple_out_of_memory = new File("resources", "simple_out_of_memory.tcx");
         simple_null_values = new File("resources", "simple_null_values.tcx");
         zwei_runden = new File("resources", "2_runden.tcx");
+        fehlerhaft = new File("resources", "fehlerhafte_geodaten.tcx");
+    }
+
+    @Test
+    public void testActivityFehlerhafteGeoKoordinaten() throws ConvertException, ParseException {
+        final ITraining training = converter.convert(fehlerhaft);
+
+        assertEquals("Fehlerhafter Prozentwert", 17.7295913, training.getGeoQuality(), 0.00001);
     }
 
     @Test

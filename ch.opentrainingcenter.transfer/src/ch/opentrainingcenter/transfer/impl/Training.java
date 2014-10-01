@@ -48,6 +48,7 @@ public class Training implements java.io.Serializable, ITraining {
     private List<ILapInfo> lapInfos = new ArrayList<>();
     private Sport sport;
     private TrainingType trainingType;
+    private float fehlerInProzent;
 
     public Training() {
     }
@@ -270,5 +271,15 @@ public class Training implements java.io.Serializable, ITraining {
     @Override
     public void setSport(final Sport sport) {
         this.sport = sport;
+    }
+
+    @Override
+    public float getGeoQuality() {
+        return fehlerInProzent;
+    }
+
+    @Override
+    public void setGeoQuality(final float fehlerInProzent) {
+        this.fehlerInProzent = fehlerInProzent;
     }
 }

@@ -38,6 +38,8 @@ public class TrainingListener implements MesgListener {
     private SessionMesg session;
     private LapMesg lapMesg;
     private ILapInfo lap = null;
+    private int error = 0;
+    private int valid = 0;
 
     public TrainingListener() {
 
@@ -69,20 +71,28 @@ public class TrainingListener implements MesgListener {
             }
             lapInfos.add(lap);
         }
-        logMessage(mesg);
+        // logMessage(mesg);
     }
 
     private ITrackPointProperty convertTrackPoint(final RecordMesg record) {
         final double distance = record.getDistance();
+
         final Integer positionLong = record.getPositionLong();
         final Integer positionLat = record.getPositionLat();
-        final BigDecimal longDms = ConvertGarminSemicircles.convertSemicircleToDms(positionLong);
-        final BigDecimal latDms = ConvertGarminSemicircles.convertSemicircleToDms(positionLat);
+        final IStreckenPunkt streckenPunkt;
+        if (positionLong != null || positionLat != null) {
+            final BigDecimal longDms = ConvertGarminSemicircles.convertSemicircleToDms(positionLong);
+            final BigDecimal latDms = ConvertGarminSemicircles.convertSemicircleToDms(positionLat);
+            streckenPunkt = CommonTransferFactory.createStreckenPunkt(distance, longDms.doubleValue(), latDms.doubleValue());
+            valid++;
+        } else {
+            streckenPunkt = null;
+            error++;
+        }
 
         final int heartbeat = record.getHeartRate() != null ? record.getHeartRate() : -1;
         final int altitude = record.getAltitude() != null ? record.getAltitude().intValue() : -1;
         final long time = ConvertGarminUtcTime.convertToLocalMillis(record.getTimestamp().getDate());
-        final IStreckenPunkt streckenPunkt = CommonTransferFactory.createStreckenPunkt(distance, longDms.doubleValue(), latDms.doubleValue());
         return CommonTransferFactory.createTrackPointProperty(distance, heartbeat, altitude, time, 0, streckenPunkt);
     }
 
@@ -113,8 +123,10 @@ public class TrainingListener implements MesgListener {
         training.setUpMeter(session.getTotalAscent());
         training.setSport(Sport.RUNNING);
         training.setLapInfos(lapInfos);
-
+        final int total = error + valid;
+        final float fehlerInProzent = 100 * (error / (float) total);
+        training.setGeoQuality(fehlerInProzent);
+        LOGGER.info(String.format("Qualität der Geodaten: '%s' [prozent] fehlerhafte Geodaten", fehlerInProzent)); //$NON-NLS-1$
         return training;
     }
-
 }
