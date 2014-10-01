@@ -52,7 +52,8 @@ public class SchuhTableViewer extends TableViewer {
     }
 
     private void createColumns() {
-        final String[] titles = { Messages.RoutenView_ID, Messages.RoutenView_Name_Marke, Messages.RoutenView_Icon, Messages.SchuhTableViewer_PreisTableHeader, Messages.SchuhTableViewer_KaufDatumTableHeader };
+        final String[] titles = { Messages.RoutenView_ID, Messages.RoutenView_Name_Marke, Messages.RoutenView_Icon, Messages.SchuhTableViewer_PreisTableHeader,
+                Messages.SchuhTableViewer_KaufDatumTableHeader };
         final int[] bounds = { 40, 400, 300, 50, 80 };
 
         TableViewerColumn col = createTableViewerColumn(titles[0], bounds[0], 0);

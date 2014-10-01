@@ -178,4 +178,6 @@ public interface IDatabaseAccess {
 
     void saveOrUpdate(IShoe shoe);
 
+    void deleteShoe(int id);
+
 }

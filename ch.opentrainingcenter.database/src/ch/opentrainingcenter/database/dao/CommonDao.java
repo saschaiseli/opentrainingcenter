@@ -282,4 +282,9 @@ public class CommonDao implements IDatabaseAccess {
     public final void saveOrUpdate(final IShoe route) {
         shoeDao.saveOrUpdate(route);
     }
+
+    @Override
+    public void deleteShoe(final int id) {
+        shoeDao.delete(id);
+    }
 }

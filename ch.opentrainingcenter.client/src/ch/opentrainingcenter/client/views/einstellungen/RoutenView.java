@@ -5,16 +5,23 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.ISelectionService;
 import org.eclipse.ui.IWorkbenchPart;
@@ -158,8 +165,8 @@ public class RoutenView extends ViewPart implements ISelectionListener {
         });
         sectionSchuhe.setExpanded(true);
 
-        sectionSchuhe.setText("Übersicht der Schuhe.");
-        sectionSchuhe.setDescription("Schuhe welche in Trainings verwendet werden.");
+        sectionSchuhe.setText(Messages.RoutenView_12);
+        sectionSchuhe.setDescription(Messages.RoutenView_14);
         GridLayoutFactory.swtDefaults().applyTo(sectionRouten);
         GridDataFactory.swtDefaults().align(SWT.FILL, SWT.FILL).grab(true, true).applyTo(sectionSchuhe);
 
@@ -169,13 +176,58 @@ public class RoutenView extends ViewPart implements ISelectionListener {
 
         schuhTable = new SchuhTableViewer(compositeSchuhe, SWT_TABLE_PATTERN);
         schuhTable.createTableViewer(shoeCache.getAll());
+
+        final MenuManager menuManager = new MenuManager();
+        final Table table = schuhTable.getTable();
+        final Menu contextMenu = menuManager.createContextMenu(table);
+        table.setMenu(contextMenu);
+        getSite().registerContextMenu(menuManager, schuhTable);
+
+        menuManager.add(new Action(Messages.RoutenView_15, null) {
+            @Override
+            public void run() {
+                final StructuredSelection ss = (StructuredSelection) schuhTable.getSelection();
+                final IShoe shoe = (IShoe) ss.getFirstElement();
+                final SchuhDialog dialog = new SchuhDialog(main.getShell(), databaseAccess, shoe, Messages.RoutenView_16);
+                dialog.open();
+            }
+        });
+
+        menuManager.add(new Action(Messages.RoutenView_17, null) {
+            @Override
+            public void run() {
+                final StructuredSelection ss = (StructuredSelection) schuhTable.getSelection();
+                final IShoe shoe = (IShoe) ss.getFirstElement();
+                databaseAccess.deleteShoe(shoe.getId());
+                shoeCache.remove(String.valueOf(shoe.getId()));
+            }
+        });
+
+        menuManager.add(new Action(Messages.RoutenView_18, null) {
+            @Override
+            public void run() {
+                final SchuhDialog dialog = new SchuhDialog(main.getShell(), databaseAccess, athlete, Messages.SchuhDialog_Add_Schuh);
+                dialog.open();
+            }
+        });
+
+        schuhTable.addDoubleClickListener(new IDoubleClickListener() {
+
+            @Override
+            public void doubleClick(final DoubleClickEvent event) {
+                final StructuredSelection ss = (StructuredSelection) event.getSelection();
+                final IShoe shoe = (IShoe) ss.getFirstElement();
+                final SchuhDialog dialog = new SchuhDialog(main.getShell(), databaseAccess, shoe, Messages.RoutenView_19);
+                dialog.open();
+            }
+        });
         final Button addSchuh = new Button(compositeSchuhe, SWT.PUSH);
-        addSchuh.setText("+"); //$NON-NLS-1$
+        addSchuh.setText(" + "); //$NON-NLS-1$
 
         addSchuh.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(final SelectionEvent e) {
-                final SchuhDialog dialog = new SchuhDialog(main.getShell(), databaseAccess, athlete);
+                final SchuhDialog dialog = new SchuhDialog(main.getShell(), databaseAccess, athlete, Messages.SchuhDialog_Add_Schuh);
                 dialog.open();
             }
         });
@@ -183,14 +235,19 @@ public class RoutenView extends ViewPart implements ISelectionListener {
 
             @Override
             public void recordChanged(final Collection<IShoe> entry) {
-                schuhTable.setInput(entry);
-                schuhTable.refresh();
+                update();
             }
 
             @Override
             public void deleteRecord(final Collection<IShoe> entry) {
-
+                update();
             }
+
+            private void update() {
+                schuhTable.setInput(databaseAccess.getShoes(athlete));
+                schuhTable.refresh();
+            }
+
         });
         sectionSchuhe.setClient(compositeSchuhe);
     }

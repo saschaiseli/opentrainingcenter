@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
@@ -48,10 +49,11 @@ public class ShoeDao {
     }
 
     public int saveOrUpdate(final IShoe schuh) {
-        IShoe exists = getShoe(schuh.getSchuhname(), schuh.getAthlete());
+        IShoe exists = getShoe(schuh.getId());
         if (exists != null) {
             LOG.info("Schuh überschreiben alt: " + exists + " neu: " + schuh); //$NON-NLS-2$
             exists.setImageicon(schuh.getImageicon());
+            exists.setSchuhname(schuh.getSchuhname());
             exists.setKaufdatum(schuh.getKaufdatum());
             exists.setPreis(schuh.getPreis());
         } else {
@@ -66,14 +68,13 @@ public class ShoeDao {
         return exists.getId();
     }
 
-    public IShoe getShoe(final String schuhname, final IAthlete athlete) {
-        LOG.info(String.format("lade Schuh mit dem namen '%s' und dem Athleten: '%s'", schuhname, athlete));
+    public IShoe getShoe(final int id) {
+        LOG.info(String.format("lade Schuh mit der id '%s'", id));
         final Session session = dao.getSession();
         dao.begin();
 
         final Criteria criteria = session.createCriteria(IShoe.class);
-        criteria.add(Restrictions.eq("schuhname", schuhname));
-        criteria.add(Restrictions.eq("athlete", athlete));
+        criteria.add(Restrictions.eq("id", id));
         final IShoe schuh;
         @SuppressWarnings("unchecked")
         final List<IShoe> schuhe = criteria.list();
@@ -85,5 +86,15 @@ public class ShoeDao {
         dao.commit();
         session.flush();
         return schuh;
+    }
+
+    public void delete(final int id) {
+        final Session session = dao.getSession();
+        dao.begin();
+        final Query query = session.createQuery("delete Shoe where id=:id"); //$NON-NLS-1$
+        query.setParameter("id", id); //$NON-NLS-1$
+        query.executeUpdate();
+        dao.commit();
+        session.flush();
     }
 }

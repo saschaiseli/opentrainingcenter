@@ -54,6 +54,27 @@ public class ShoeDaoTest extends DatabaseTestBase {
     }
 
     @Test
+    public void testDeleteSchuh() {
+        final String schuhName = "Asics";
+        final String imageicon = "pathtoimage";
+        final IShoe schuh = CommonTransferFactory.createSchuh(athlete, schuhName, imageicon, 10, now);
+        final int id = shoeDao.saveOrUpdate(schuh);
+        assertTrue(0 <= id);
+        List<IShoe> schuhe = shoeDao.getShoes(athlete);
+        assertNotNull(schuhe);
+        assertEquals(schuhName, schuhe.get(0).getSchuhname());
+        assertEquals(imageicon, schuhe.get(0).getImageicon());
+        assertEquals(10, schuhe.get(0).getPreis());
+        assertEquals(now, schuhe.get(0).getKaufdatum());
+
+        shoeDao.delete(schuhe.get(0).getId());
+
+        schuhe = shoeDao.getShoes(athlete);
+
+        assertEquals(0, schuhe.size());
+    }
+
+    @Test
     public void testExistiertSchuh() {
         final String schuhName = "Asics";
         final String imageicon = "pathtoimage";
@@ -74,15 +95,15 @@ public class ShoeDaoTest extends DatabaseTestBase {
         final String schuhName = "Asics";
         final String imageicon = "pathtoimage";
         final IShoe schuh = CommonTransferFactory.createSchuh(athlete, schuhName, imageicon, 10, now);
-        shoeDao.saveOrUpdate(schuh);
+        final int id = shoeDao.saveOrUpdate(schuh);
 
-        IShoe result = shoeDao.getShoe(schuhName, athlete);
+        IShoe result = shoeDao.getShoe(id);
 
         assertNotNull(result);
         assertEquals(schuhName, result.getSchuhname());
         assertEquals(imageicon, result.getImageicon());
 
-        result = shoeDao.getShoe(schuhName + "_1", athlete);
+        result = shoeDao.getShoe(2);
 
         assertNull(result);
     }

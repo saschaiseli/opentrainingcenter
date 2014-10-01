@@ -17,7 +17,7 @@ public class SchuhCache extends AbstractCache<String, IShoe> {
 
     @Override
     public String getKey(final IShoe schuh) {
-        return schuh.getSchuhname();
+        return String.valueOf(schuh.getId());
     }
 
 }

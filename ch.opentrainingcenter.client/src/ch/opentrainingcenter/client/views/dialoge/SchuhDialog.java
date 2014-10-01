@@ -61,19 +61,37 @@ public class SchuhDialog extends TitleAreaDialog {
 
     private Text bild;
     private final String location;
+    private final String title;
 
-    public SchuhDialog(final Shell parent, final IDatabaseAccess databaseAccess, final IAthlete athlete) {
+    public SchuhDialog(final Shell parent, final IDatabaseAccess databaseAccess, final IAthlete athlete, final String title) {
         super(parent);
         this.parent = parent;
         this.databaseAccess = databaseAccess;
+        this.title = title;
         model = new SchuhModel(athlete);
         model.setKaufdatum(new Date());
+        // model.setId(-1); // neuer eintrag
+        location = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.GPS_FILE_LOCATION_PROG);
+    }
+
+    public SchuhDialog(final Shell parent, final IDatabaseAccess databaseAccess, final IShoe shoe, final String title) {
+        super(parent);
+        this.parent = parent;
+        this.databaseAccess = databaseAccess;
+        this.title = title;
+        model = new SchuhModel(shoe.getAthlete());
+        model.setKaufdatum(shoe.getKaufdatum());
+        model.setId(shoe.getId());
+        model.setImage(shoe.getImageicon());
+        model.setPreis(shoe.getPreis());
+        model.setSchuhName(shoe.getSchuhname());
+
         location = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.GPS_FILE_LOCATION_PROG);
     }
 
     @Override
     protected Control createDialogArea(final Composite parent) {
-        setTitle(Messages.SchuhDialog_Add_Schuh);
+        setTitle(title);
         setMessage(Messages.SchuhDialog_Beschreibung);
         setTitleImage(Activator.getImageDescriptor(IImageKeys.SHOE_64).createImage());
 
@@ -106,6 +124,12 @@ public class SchuhDialog extends TitleAreaDialog {
                 super.widgetSelected(e);
             }
         });
+
+        if (model.getKaufdatum() != null) {
+            final org.joda.time.DateTime dt = new org.joda.time.DateTime(model.getKaufdatum().getTime());
+            kaufDatum.setDate(dt.getYear(), dt.getMonthOfYear(), dt.getDayOfMonth());
+        }
+
         GridDataFactory.fillDefaults().span(2, 1).align(SWT.FILL, SWT.CENTER).grab(true, true).applyTo(kaufDatum);
         // --- Preis -------------------------------------------------------
         final Label labelPreis = new Label(container, SWT.NONE);
@@ -211,9 +235,7 @@ public class SchuhDialog extends TitleAreaDialog {
 
             boolean confirm = true;
 
-            final boolean exists = databaseAccess.existsSchuh(model.getAthlete(), model.getSchuhName());
-
-            if (exists) {
+            if (model.getId() > 0) {
                 confirm = MessageDialog.openConfirm(parent, Messages.SchuhDialog_Error_Schuhname, Messages.HealthDialog_1);
             }
             if (confirm) {
@@ -230,25 +252,25 @@ public class SchuhDialog extends TitleAreaDialog {
 
                         final IShoe schuh = CommonTransferFactory.createSchuh(model.getAthlete(), model.getSchuhName(), realPath, model.getPreis(), model
                                 .getKaufdatum());
-
+                        schuh.setId(model.getId());
                         databaseAccess.saveOrUpdate(schuh);
 
                         LOG.info("Konvert Image und Copy it"); //$NON-NLS-1$
-                        final Image image = new Image(Display.getDefault(), model.getImage());
-                        final Image scaled = ImageScaler.scale(image, 200);
-                        image.dispose();
+                        if (model.getImage() != null) {
+                            final Image image = new Image(Display.getDefault(), model.getImage());
+                            final Image scaled = ImageScaler.scale(image, 200);
+                            image.dispose();
 
-                        final ImageLoader loader = new ImageLoader();
-                        loader.data = new ImageData[] { scaled.getImageData() };
-                        final String newFileName = location + File.separator + "Schuh_" + schuh.getId() + ".png"; //$NON-NLS-1$ //$NON-NLS-2$
-                        loader.save(newFileName, SWT.IMAGE_PNG);
+                            final ImageLoader loader = new ImageLoader();
+                            loader.data = new ImageData[] { scaled.getImageData() };
+                            final String newFileName = location + File.separator + "Schuh_" + schuh.getId() + ".png"; //$NON-NLS-1$ //$NON-NLS-2$
+                            loader.save(newFileName, SWT.IMAGE_PNG);
 
-                        final File destination = new File(newFileName);
-                        model.setImage(destination.getAbsolutePath());
-
-                        schuh.setImageicon(destination.getAbsolutePath());
-                        databaseAccess.saveOrUpdate(schuh);
-
+                            final File destination = new File(newFileName);
+                            model.setImage(destination.getAbsolutePath());
+                            schuh.setImageicon(destination.getAbsolutePath());
+                            databaseAccess.saveOrUpdate(schuh);
+                        }
                         all = SchuhCache.getInstance().getAll();
                         all.add(schuh);
                         SchuhCache.getInstance().addAll(all);
