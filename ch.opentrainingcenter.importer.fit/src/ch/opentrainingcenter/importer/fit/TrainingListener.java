@@ -96,7 +96,7 @@ public class TrainingListener implements MesgListener {
         return CommonTransferFactory.createTrackPointProperty(distance, heartbeat, altitude, time, 0, streckenPunkt);
     }
 
-    @SuppressWarnings("nls")
+    @SuppressWarnings({ "nls", "unused" })
     private void logMessage(final Mesg mesg) {
         LOGGER.info("[" + mesg.getName() + "] ");
         final StringBuilder message = new StringBuilder();
