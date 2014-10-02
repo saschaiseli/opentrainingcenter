@@ -31,6 +31,7 @@ import ch.opentrainingcenter.model.importer.IGpsFileModelWrapper;
 import ch.opentrainingcenter.model.strecke.StreckeModel;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IRoute;
+import ch.opentrainingcenter.transfer.IShoe;
 
 /**
  * Importiert GPS Files.
@@ -83,12 +84,14 @@ public class ImportManualGpsFiles extends OtcAbstractHandler {
             final int id = Integer.parseInt(athleteId);
             final IAthlete athlete = databaseAccess.getAthlete(id);
             final List<IRoute> routen = databaseAccess.getRoute(athlete);
+            final List<IShoe> schuhe = databaseAccess.getShoes(athlete);
+
             final List<StreckeModel> strecken = new ArrayList<StreckeModel>();
             for (final IRoute route : routen) {
                 final int idReferenzStrecke = route.getReferenzTrack() != null ? route.getReferenzTrack().getId() : 0;
                 strecken.add(ModelFactory.createStreckeModel(route, athlete, idReferenzStrecke));
             }
-            final RunTypeDialog dialog = new RunTypeDialog(window.getShell(), fileNames, strecken);
+            final RunTypeDialog dialog = new RunTypeDialog(window.getShell(), fileNames, strecken, schuhe);
             final int open = dialog.open();
             if (open >= 0) {
                 if (validId(athleteId)) {

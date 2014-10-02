@@ -81,7 +81,7 @@ public class FileImport implements IFileImport {
             training.setAthlete(athlete);
             training.setFileName(fileName);
             training.setDateOfImport(DateTime.now().toDate());
-
+            training.setShoe(model.getSchuh());
             final StreckeModel route = model.getRoute();
             if (route != null) {
                 final IRoute strecke = dbAccess.getRoute(route.getName(), athlete);

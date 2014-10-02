@@ -429,6 +429,8 @@ public final class Messages extends NLS {
     public static String RuhePulsChart_1;
     public static String RuhePulsChart_2;
     public static String RunTypeDialog_0;
+
+    public static String RunTypeDialog_Schuhe;
     public static String RunTypeDialog0;
     public static String RunTypeDialog1;
     public static String RunTypeDialog2;

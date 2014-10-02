@@ -2,6 +2,7 @@ package ch.opentrainingcenter.model.importer.internal;
 
 import ch.opentrainingcenter.model.importer.IGpsFileModel;
 import ch.opentrainingcenter.model.strecke.StreckeModel;
+import ch.opentrainingcenter.transfer.IShoe;
 import ch.opentrainingcenter.transfer.TrainingType;
 
 public class GpsFileModel implements IGpsFileModel {
@@ -10,6 +11,7 @@ public class GpsFileModel implements IGpsFileModel {
     private final String fileName;
     private TrainingType typ;
     private StreckeModel strecke;
+    private IShoe shoe;
 
     public GpsFileModel(final String fileName) {
         this.fileName = fileName;
@@ -55,5 +57,15 @@ public class GpsFileModel implements IGpsFileModel {
     @Override
     public void setRoute(final StreckeModel strecke) {
         this.strecke = strecke;
+    }
+
+    @Override
+    public IShoe getSchuh() {
+        return shoe;
+    }
+
+    @Override
+    public void setSchuh(final IShoe shoe) {
+        this.shoe = shoe;
     }
 }

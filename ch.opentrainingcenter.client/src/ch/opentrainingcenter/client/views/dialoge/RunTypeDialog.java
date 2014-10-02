@@ -26,6 +26,7 @@ import ch.opentrainingcenter.model.ModelFactory;
 import ch.opentrainingcenter.model.importer.IGpsFileModel;
 import ch.opentrainingcenter.model.importer.IGpsFileModelWrapper;
 import ch.opentrainingcenter.model.strecke.StreckeModel;
+import ch.opentrainingcenter.transfer.IShoe;
 
 public class RunTypeDialog extends TitleAreaDialog {
 
@@ -35,16 +36,23 @@ public class RunTypeDialog extends TitleAreaDialog {
 
     private final List<StreckeModel> strecken;
 
-    public RunTypeDialog(final Shell parentShell, final String[] fileNames, final List<StreckeModel> strecken) {
+    private final List<IShoe> schuhe;
+
+    public RunTypeDialog(final Shell parentShell, final String[] fileNames, final List<StreckeModel> strecken, final List<IShoe> schuhe) {
         super(parentShell);
         this.strecken = strecken;
-
+        this.schuhe = schuhe;
         initModel(fileNames);
     }
 
     private void initModel(final String[] fileNames) {
+        final StreckeModel defRoute = strecken.isEmpty() ? null : strecken.get(0);
+        final IShoe defShoe = schuhe.isEmpty() ? null : schuhe.get(0);
         for (final String fileName : fileNames) {
-            models.add(ModelFactory.createGpsFileModel(fileName));
+            final IGpsFileModel model = ModelFactory.createGpsFileModel(fileName);
+            model.setRoute(defRoute);
+            model.setSchuh(defShoe);
+            models.add(model);
         }
     }
 
@@ -69,8 +77,6 @@ public class RunTypeDialog extends TitleAreaDialog {
         table.setLinesVisible(true);
 
         viewer.setContentProvider(new ArrayContentProvider());
-        // Get the content for the viewer, setInput will call getElements in the
-        // contentProvider
 
         viewer.setInput(models);
 
@@ -86,8 +92,8 @@ public class RunTypeDialog extends TitleAreaDialog {
     }
 
     private void createColumns() {
-        final String[] titles = { Messages.RunTypeDialog2, Messages.RunTypeDialog3, Messages.RunTypeDialog4, Messages.RunTypeDialog_0 };
-        final int[] bounds = { 80, 250, 250, 100 };
+        final String[] titles = { Messages.RunTypeDialog2, Messages.RunTypeDialog3, Messages.RunTypeDialog4, Messages.RunTypeDialog_0, Messages.RunTypeDialog_Schuhe };
+        final int[] bounds = { 80, 250, 250, 100, 100 };
 
         // Flag
         TableViewerColumn col = createTableViewerColumn(titles[0], bounds[0]);
@@ -138,6 +144,17 @@ public class RunTypeDialog extends TitleAreaDialog {
             }
         });
         col.setEditingSupport(new StreckeEditingSupport(viewer, strecken));
+
+        // Schuh
+        col = createTableViewerColumn(titles[4], bounds[4]);
+        col.setLabelProvider(new ColumnLabelProvider() {
+            @Override
+            public String getText(final Object element) {
+                return schuhe.get(0).getSchuhname();
+            }
+        });
+        final SchuhEditingSupport schuhEditingSupport = new SchuhEditingSupport(viewer, schuhe);
+        col.setEditingSupport(schuhEditingSupport);
     }
 
     public IGpsFileModelWrapper getModelWrapper() {
