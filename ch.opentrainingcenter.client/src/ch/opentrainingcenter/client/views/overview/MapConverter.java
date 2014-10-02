@@ -50,7 +50,9 @@ public final class MapConverter {
         boolean pointAdded = false;
         for (final ITrackPointProperty point : points) {
             final IStreckenPunkt geoPoint = point.getStreckenPunkt();
-            str.append('[').append(geoPoint.getLatitude()).append(',').append(geoPoint.getLongitude()).append("],"); //$NON-NLS-1$
+            if (geoPoint != null) {
+                str.append('[').append(geoPoint.getLatitude()).append(',').append(geoPoint.getLongitude()).append("],"); //$NON-NLS-1$
+            }
             pointAdded = true;
         }
         if (pointAdded) {
