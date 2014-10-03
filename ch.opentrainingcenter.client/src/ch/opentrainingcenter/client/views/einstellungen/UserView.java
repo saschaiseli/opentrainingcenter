@@ -2,6 +2,7 @@ package ch.opentrainingcenter.client.views.einstellungen;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -53,6 +54,7 @@ import ch.opentrainingcenter.client.cache.AthleteCache;
 import ch.opentrainingcenter.client.ui.FormToolkitSupport;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.core.PreferenceConstants;
+import ch.opentrainingcenter.core.cache.IRecordListener;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
@@ -172,6 +174,7 @@ public class UserView extends ViewPart {
         } else {
             viewer.setSelection(new StructuredSelection(allAthletes.get(0)));
         }
+
         getSite().setSelectionProvider(viewer);
 
         gridData = new GridData();
@@ -180,6 +183,28 @@ public class UserView extends ViewPart {
         gridData.verticalIndent = 25;
         gridData.horizontalIndent = 5;
         viewer.getCombo().setLayoutData(gridData);
+
+        athleteCache.addListener(new IRecordListener<IAthlete>() {
+
+            @Override
+            public void recordChanged(final Collection<IAthlete> entry) {
+                updateComboViewer(viewer);
+            }
+
+            @Override
+            public void deleteRecord(final Collection<IAthlete> entry) {
+                updateComboViewer(viewer);
+            }
+
+            private void updateComboViewer(final ComboViewer viewer) {
+                allAthletes.clear();
+                allAthletes.add(new Object());
+                allAthletes.addAll(athleteCache.getAll());
+                viewer.setInput(allAthletes);
+                viewer.refresh();
+                viewer.setSelection(new StructuredSelection(allAthletes.get(allAthletes.size() - 1)));
+            }
+        });
 
         // Buttons
         final Button btnSelectUser = new Button(sportlerComposite, SWT.PUSH);
@@ -192,6 +217,16 @@ public class UserView extends ViewPart {
         gridData.grabExcessHorizontalSpace = false;
         btnSelectUser.setLayoutData(gridData);
         btnSelectUser.setEnabled(false);
+
+        viewer.addSelectionChangedListener(new ISelectionChangedListener() {
+
+            @Override
+            public void selectionChanged(final SelectionChangedEvent event) {
+                final StructuredSelection ss = (StructuredSelection) event.getSelection();
+                btnSelectUser.setEnabled(ss.getFirstElement() instanceof IAthlete);
+            }
+        });
+
         btnSelectUser.addSelectionListener(new SelectionAdapter() {
 
             @Override
