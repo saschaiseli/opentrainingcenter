@@ -25,15 +25,6 @@ CREATE TABLE PUBLIC.WEATHER
 	PRIMARY KEY (ID)
 );
 
-CREATE TABLE PUBLIC.TRAININGTYPE 
-(
-	ID INTEGER NOT NULL, 
-	TITLE VARCHAR(2147483647), 
-	DESCRIPTION VARCHAR(2147483647), 
-	IMAGEICON VARCHAR(2147483647), 
-	PRIMARY KEY (ID)
-);
-
 CREATE TABLE PUBLIC.PLANUNGWOCHE
 ( 
 	ID INTEGER NOT NULL, 
@@ -138,7 +129,6 @@ ALTER TABLE PUBLIC.PLANUNGWOCHE ADD FOREIGN KEY (ID_FK_ATHLETE) REFERENCES PUBLI
 ALTER TABLE PUBLIC.ROUTE ADD FOREIGN KEY (ID_FK_ATHLETE) REFERENCES PUBLIC.ATHLETE (ID);
 ALTER TABLE PUBLIC.ROUTE ADD FOREIGN KEY (ID_FK_TRAINING) REFERENCES PUBLIC.TRAINING (ID_TRAINING) ON DELETE SET NULL;
 ALTER TABLE PUBLIC.SHOES ADD FOREIGN KEY (ID_FK_ATHLETE) REFERENCES PUBLIC.ATHLETE (ID);
--- alter table route add ID_FK_TRAINING int;
 
 -- Unique 
 alter table athlete add unique ( name );
@@ -150,19 +140,8 @@ CREATE sequence HEALTH_ID_SEQUENCE;
 CREATE sequence PLANUNGWOCHE_ID_SEQUENCE; 
 CREATE sequence ROUTE_ID_SEQUENCE; 
 CREATE sequence STRECKENPUNKTE_ID_SEQUENCE; 
-CREATE sequence MAINTENANCE_ID_SEQUENCE; 
 CREATE sequence LAPINFO_ID_SEQUENCE;
 CREATE sequence SHOE_ID_SEQUENCE; 
-
-INSERT INTO PUBLIC.ATHLETE (ID,NAME,BIRTHDAY,MAXHEARTRATE) values(0,'Sascha','1974-08-29', 200);
-INSERT INTO PUBLIC.ROUTE (ID,ID_FK_ATHLETE,NAME,BESCHREIBUNG) values(0,0,'Unbekannt','');
-
--- INSERT INTO PUBLIC.TRAININGTYPE (ID,TITLE,DESCRIPTION, IMAGEICON) values(0,'NONE','Unbekannter Typ','icons/man_u_32_32.png');
--- INSERT INTO PUBLIC.TRAININGTYPE (ID,TITLE,DESCRIPTION, IMAGEICON) values(1,'EXT_INTERVALL','Gleich wie intensives Intervalltraining. Der Unterschied liegt in der Länge der Intervalle und der damit verbundenen geringeren Laufgeschwindigkeit. Beispiel: 5 Minuten schnell, 2 Minuten Trabpause, 5 Minuten schnell etc. Extensive Intervalle werden bereits schon in der Aufbauetappe des Jahresplanes integriert.','icons/man_ei_32_32.png');
--- INSERT INTO PUBLIC.TRAININGTYPE (ID,TITLE,DESCRIPTION, IMAGEICON) values(2,'INT_INTERVALL','Intervalltrainings werden in Serien gelaufen. Zum Beispiel: 6 x 200 m schnell, jeweils 2 Minuten Trabpause. Intervall bedeutet Pause. Der Kreislauf wird belastet, anschliessend erhält er Zeit, sich zum Teil wieder zu erholen. Dann folgt der nächste Intervall. Intensive Intervalltrainings werden meist in der Wettkampfvorbereitung durchgeführt.','icons/man_ii_32_32.png');
--- INSERT INTO PUBLIC.TRAININGTYPE (ID,TITLE,DESCRIPTION, IMAGEICON) values(3,'LONG_JOG','Langer Dauerlauf 70-75% maximalen Herzfrequenz.','icons/man_lj_32_32.png');
--- INSERT INTO PUBLIC.TRAININGTYPE (ID,TITLE,DESCRIPTION, IMAGEICON) values(4,'POWER_LONG_JOG','letztes drittel 80-85% der maximalen Herzfrequenz, die ersten zwei drittel wie {@link RunType#LONG_JOG}','icons/man_plj_32_32.png');
--- INSERT INTO PUBLIC.TRAININGTYPE (ID,TITLE,DESCRIPTION, IMAGEICON) values(5,'TEMPO_JOG','UNBEKANNT','icons/man_tj_32_32.png');
 
 INSERT INTO PUBLIC.WEATHER (ID,WETTER, IMAGEICON) values(0,'SONNE','icons/man_u_32_32.png');
 INSERT INTO PUBLIC.WEATHER (ID,WETTER, IMAGEICON) values(1,'LEICHT_BEWOELCKT','icons/man_u_32_32.png');
