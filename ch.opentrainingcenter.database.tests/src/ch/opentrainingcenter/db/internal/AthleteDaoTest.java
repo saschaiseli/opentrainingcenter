@@ -1,9 +1,7 @@
 package ch.opentrainingcenter.db.internal;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
 
@@ -66,25 +64,6 @@ public class AthleteDaoTest extends DatabaseTestBase {
         final IHealth result = healthDao.getHealth(athlete, now);
         assertEquals(h, result);
         assertEquals(athlete, result.getAthlete());
-    }
-
-    @Test
-    public void testGetAll() {
-        assertTrue("Mindestens ein Athlete in der DB", 1 <= athleteDao.getAllAthletes().size());
-    }
-
-    @Test
-    public void testGetById() {
-        final IAthlete athlete = athleteDao.getAthlete(0);
-        assertNotNull("Initial soll ich schon mal erfasst sein", athlete);
-        assertEquals("Sascha", athlete.getName());
-    }
-
-    @Test
-    public void testGetByNamePositiv() {
-        final IAthlete athlete = athleteDao.getAthlete("Sascha");
-        assertNotNull("Initial soll ich schon mal erfasst sein", athlete);
-        assertEquals("Sascha", athlete.getName());
     }
 
     @Test
