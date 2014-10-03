@@ -48,10 +48,10 @@ public class DatabaseTestBase {
     public void tearDown() throws SqlException {
         final Session session = connectionConfig.getSession();
         connectionConfig.begin();
-        session.createSQLQuery("delete from SHOES").executeUpdate();
         session.createSQLQuery("delete from ROUTE").executeUpdate();
         session.createSQLQuery("delete from TRACKTRAININGPROPERTY").executeUpdate();
         session.createSQLQuery("delete from TRAINING").executeUpdate();
+        session.createSQLQuery("delete from SHOES").executeUpdate();
         session.createSQLQuery("delete from STRECKENPUNKTE").executeUpdate();
         session.createSQLQuery("delete from HEALTH").executeUpdate();
         session.createSQLQuery("delete from PLANUNGWOCHE").executeUpdate();

@@ -62,6 +62,8 @@ public interface IDatabaseAccess {
      */
     ITraining getNewestTraining(IAthlete athlete);
 
+    int getTotalLaengeInMeter(IShoe shoe);
+
     int saveOrUpdate(ITraining training);
 
     void saveOrUpdateAll(Collection<ITraining> trainings);

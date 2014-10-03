@@ -92,7 +92,8 @@ public class RunTypeDialog extends TitleAreaDialog {
     }
 
     private void createColumns() {
-        final String[] titles = { Messages.RunTypeDialog2, Messages.RunTypeDialog3, Messages.RunTypeDialog4, Messages.RunTypeDialog_0, Messages.RunTypeDialog_Schuhe };
+        final String[] titles = { Messages.RunTypeDialog2, Messages.RunTypeDialog3, Messages.RunTypeDialog4, Messages.RunTypeDialog_0,
+                Messages.RunTypeDialog_Schuhe };
         final int[] bounds = { 80, 250, 250, 100, 100 };
 
         // Flag
@@ -150,7 +151,7 @@ public class RunTypeDialog extends TitleAreaDialog {
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(final Object element) {
-                return schuhe.get(0).getSchuhname();
+                return schuhe.isEmpty() ? "" : schuhe.get(0).getSchuhname(); //$NON-NLS-1$
             }
         });
         final SchuhEditingSupport schuhEditingSupport = new SchuhEditingSupport(viewer, schuhe);

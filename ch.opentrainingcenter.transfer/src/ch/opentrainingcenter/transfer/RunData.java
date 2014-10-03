@@ -1,5 +1,8 @@
 package ch.opentrainingcenter.transfer;
 
+/**
+ * Info zu einem Lauf
+ */
 public class RunData {
 
     private final long dateOfStart;
@@ -14,6 +17,7 @@ public class RunData {
      *            Dauer des Laufes in Sekunden
      * @param distanceInMeter
      *            Distanz in meter
+     * @param maxSpeed
      */
     public RunData(final long dateOfStart, final double timeInSeconds, final double distanceInMeter, final double maxSpeed) {
         this.dateOfStart = dateOfStart;

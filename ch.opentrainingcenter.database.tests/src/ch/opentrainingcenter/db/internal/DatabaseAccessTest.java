@@ -17,10 +17,12 @@ import org.junit.Test;
 import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.database.dao.AthleteDao;
 import ch.opentrainingcenter.database.dao.RouteDao;
+import ch.opentrainingcenter.database.dao.ShoeDao;
 import ch.opentrainingcenter.database.dao.WeatherDao;
 import ch.opentrainingcenter.transfer.HeartRate;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IRoute;
+import ch.opentrainingcenter.transfer.IShoe;
 import ch.opentrainingcenter.transfer.IStreckenPunkt;
 import ch.opentrainingcenter.transfer.ITrackPointProperty;
 import ch.opentrainingcenter.transfer.ITraining;
@@ -38,6 +40,7 @@ public class DatabaseAccessTest extends DatabaseTestBase {
     private IWeather weatherB;
     private AthleteDao athleteDao;
     private RouteDao routeDao;
+    private ShoeDao shoeDao;
 
     @Before
     public void setUp() {
@@ -47,6 +50,7 @@ public class DatabaseAccessTest extends DatabaseTestBase {
         weatherB = weatherDao.getAllWeather().get(1);
         athleteDao = new AthleteDao(connectionConfig);
         routeDao = new RouteDao(connectionConfig);
+        shoeDao = new ShoeDao(connectionConfig);
         now = DateTime.now().getMillis();
     }
 
@@ -258,45 +262,6 @@ public class DatabaseAccessTest extends DatabaseTestBase {
         assertTrue(first.getDatum() > second.getDatum());
     }
 
-    // @Test
-    // public void testTraining_7_getAllImported_Sort_And_Limit() {
-    // final IAthlete athleteA =
-    // CommonTransferFactory.createAthlete("testTraining_7", 222);
-    // athleteDao.save(athleteA);
-    //
-    // final ITraining trainingA = CommonTransferFactory.createTraining(now -
-    // 20, 1, 2, 3, 4, 5, "note1", weatherA, null);
-    // final ITraining trainingB = CommonTransferFactory.createTraining(now +
-    // 1000, 1, 2, 3, 4, 5, "note1", weatherA, null);
-    // final ITraining trainingC = CommonTransferFactory.createTraining(now +
-    // 1001, 1, 2, 3, 4, 5, "note1", weatherA, null);
-    // final ITraining trainingD = CommonTransferFactory.createTraining(now +
-    // 1002, 1, 2, 3, 4, 5, "note1", weatherA, null);
-    // final ITraining trainingE = CommonTransferFactory.createTraining(now +
-    // 1003, 1, 2, 3, 4, 5, "note1", weatherA, null);
-    //
-    // trainingA.setAthlete(athleteA);
-    // trainingB.setAthlete(athleteA);
-    // trainingC.setAthlete(athleteA);
-    // trainingD.setAthlete(athleteA);
-    // trainingE.setAthlete(athleteA);
-    //
-    // dataAccess.saveOrUpdate(trainingA);
-    // dataAccess.saveOrUpdate(trainingB);
-    // dataAccess.saveOrUpdate(trainingC);
-    // dataAccess.saveOrUpdate(trainingD);
-    // dataAccess.saveOrUpdate(trainingE);
-    //
-    // final List<ITraining> allFromAthleteA =
-    // dataAccess.getAllTrainings(athleteA);
-    //
-    // assertEquals(5, allFromAthleteA.size());
-    //
-    // final List<ITraining> limited = dataAccess.getAllTrainings(athleteA, 2);
-    //
-    // assertEquals(2, limited.size());
-    // }
-
     @Test
     public void testTraining_8_getNewest() {
         final IAthlete athleteA = createAthlete("testTraining_8", 222);
@@ -329,6 +294,54 @@ public class DatabaseAccessTest extends DatabaseTestBase {
         final ITraining newest = dataAccess.getNewestTraining(athleteA);
 
         assertEquals(now + 2000, newest.getDatum());
+    }
+
+    @Test
+    public void testTraining_getTotalLaengeInMeter() {
+        final IAthlete athleteA = createAthlete("testTraining_8", 222);
+        athleteDao.save(athleteA);
+
+        final IShoe shoeA = CommonTransferFactory.createSchuh(athleteA, "junitA", null, 2, new Date());
+        shoeDao.saveOrUpdate(shoeA);
+        final IShoe shoeB = CommonTransferFactory.createSchuh(athleteA, "junitA", null, 2, new Date());
+        shoeDao.saveOrUpdate(shoeB);
+
+        final HeartRate heart = new HeartRate(3, 4);
+
+        final RunData runDataA = new RunData(now - 22, 1, 2, 5);
+        final ITraining trainingA = CommonTransferFactory.createTraining(runDataA, heart, 5, "note1", weatherA, null);
+        final RunData runDataB = new RunData(now + 1200, 1, 3, 6);
+        final ITraining trainingB = CommonTransferFactory.createTraining(runDataB, heart, 5, "note1", weatherA, null);
+        final RunData runDataC = new RunData(now + 1201, 1, 4, 7);
+        final ITraining trainingC = CommonTransferFactory.createTraining(runDataC, heart, 5, "note1", weatherA, null);
+        // ---------------------------
+        final RunData runDataD = new RunData(now + 1202, 1, 5, 8);
+        final ITraining trainingD = CommonTransferFactory.createTraining(runDataD, heart, 5, "note1", weatherA, null);
+        final RunData runDataE = new RunData(now + 2000, 1, 6, 9);
+        final ITraining trainingE = CommonTransferFactory.createTraining(runDataE, heart, 5, "note1", weatherA, null);
+
+        trainingA.setAthlete(athleteA);
+        trainingA.setShoe(shoeA);
+        trainingB.setAthlete(athleteA);
+        trainingB.setShoe(shoeA);
+        trainingC.setAthlete(athleteA);
+        trainingC.setShoe(shoeA);
+
+        trainingD.setAthlete(athleteA);
+        trainingD.setShoe(shoeB);
+        trainingE.setAthlete(athleteA);
+        trainingE.setShoe(shoeB);
+
+        dataAccess.saveOrUpdate(trainingA);
+        dataAccess.saveOrUpdate(trainingB);
+        dataAccess.saveOrUpdate(trainingC);
+        dataAccess.saveOrUpdate(trainingD);
+        dataAccess.saveOrUpdate(trainingE);
+
+        final int laengeA = dataAccess.getTotalLaengeInMeter(shoeA);
+        assertEquals(9, laengeA);
+        final int laengeB = dataAccess.getTotalLaengeInMeter(shoeB);
+        assertEquals(11, laengeB);
     }
 
     @Test

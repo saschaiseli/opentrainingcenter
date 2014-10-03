@@ -176,6 +176,18 @@ public class CommonDao implements IDatabaseAccess {
     }
 
     @Override
+    public int getTotalLaengeInMeter(final IShoe shoe) {
+        final List<ITraining> allTrainings = getAllTrainings(shoe.getAthlete());
+        int result = 0;
+        for (final ITraining training : allTrainings) {
+            if (shoe.equals(training.getShoe())) {
+                result += training.getLaengeInMeter();
+            }
+        }
+        return result;
+    }
+
+    @Override
     public final void removeTrainingByDate(final long datum) {
         trainingDao.removeTrainingByDate(datum);
         if (useCache) {
@@ -287,4 +299,5 @@ public class CommonDao implements IDatabaseAccess {
     public void deleteShoe(final int id) {
         shoeDao.delete(id);
     }
+
 }
