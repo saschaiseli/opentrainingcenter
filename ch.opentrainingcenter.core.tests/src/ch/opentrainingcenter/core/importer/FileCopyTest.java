@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.After;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -61,6 +62,7 @@ public class FileCopyTest {
     }
 
     @Test
+    @Ignore
     public void copyFiles() throws IOException {
         source = File.createTempFile("testa", "testa.txt");
         final FileWriter writer = new FileWriter(source);
