@@ -55,7 +55,9 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
         final DatabaseConnectionState dbState = databaseConnection.validateConnection(url, user, pw, false);
         ApplicationContext.getApplicationContext().setDbState(dbState);
         final String athleteId = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.ATHLETE_ID);
-        if (isDbOkAndAthleteSelected(dbState.getState(), athleteId)) {
+        if (DBSTATE.LOCKED.equals(dbState.getState())) {
+            return EinstellungenPerspective.ID;
+        } else if (isDbOkAndAthleteSelected(dbState.getState(), athleteId)) {
             final IAthlete athlete = databaseAccess.getAthlete(Integer.parseInt(athleteId));
             if (athlete == null) {
                 LOGGER.info(Messages.ApplicationWorkbenchAdvisorAthleteNotFound);
