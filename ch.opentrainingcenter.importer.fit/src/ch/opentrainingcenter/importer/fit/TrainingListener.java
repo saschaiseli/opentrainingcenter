@@ -41,10 +41,6 @@ public class TrainingListener implements MesgListener {
     private int error = 0;
     private int valid = 0;
 
-    public TrainingListener() {
-
-    }
-
     @Override
     public void onMesg(final Mesg mesg) {
         final String messageName = mesg.getName();

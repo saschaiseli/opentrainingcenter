@@ -55,47 +55,58 @@ public class FileImport implements IFileImport {
     }
 
     @Override
-    public List<ITraining> importFile(final String filterPath, final IGpsFileModelWrapper modelWrapper, final IProgressMonitor monitor) {
-        final List<ITraining> activitiesToImport = new ArrayList<ITraining>();
+    public void importFile(final String filterPath, final IGpsFileModelWrapper modelWrapper, final IProgressMonitor monitor) {
+        LOGGER.info("------------------------------- START Converting -------------------------------------------"); //$NON-NLS-1$
+        int count = 1;
+        final List<ITraining> trainings = new ArrayList<ITraining>();
         for (final IGpsFileModel model : modelWrapper.getGpsFileModels()) {
-            final File file = new File(filterPath, model.getFileName());
-            final String fileName = file.getName();
-            monitor.setTaskName(Messages.FileImport_0 + fileName);
-            LOGGER.info(Messages.FileImport_1 + fileName);
-
-            try {
-                fileCopy.copyFile(file, new File(locationBackupFiles, fileName));
-            } catch (final IOException e) {
-                LOGGER.error(String.format("File %s konnte nicht kopiert werden", fileName), e); //$NON-NLS-1$
-                continue;
+            final ITraining training = convert(filterPath, model, monitor);
+            if (training != null) {
+                trainings.add(training);
             }
-
-            final ITraining training;
-            try {
-                training = cc.getMatchingConverter(file).convert(file);
-            } catch (final ConvertException e) {
-                LOGGER.error(String.format(Messages.FileImport_2, fileName), e);
-                continue;
-            }
-
-            training.setAthlete(athlete);
-            training.setFileName(fileName);
-            training.setDateOfImport(DateTime.now().toDate());
-            training.setShoe(model.getSchuh());
-            final StreckeModel route = model.getRoute();
-            if (route != null) {
-                final IRoute strecke = dbAccess.getRoute(route.getName(), athlete);
-                training.setRoute(strecke);
-            }
-            training.setTrainingType(model.getTyp());
-            LOGGER.info(Messages.FileImport_3);
-            final long start = DateTime.now().getMillis();
-            dbAccess.saveOrUpdate(training);
-            LOGGER.info(Messages.FileImport_4 + (DateTime.now().getMillis() - start) + Messages.FileImport_5);
-            activitiesToImport.add(training);
-
-            monitor.worked(1);
+            monitor.worked(count);
+            count++;
         }
-        return activitiesToImport;
+        LOGGER.info("------------------------------- END Converting-------------------------------------------"); //$NON-NLS-1$
+        LOGGER.info(String.format("Die konvertierten Trainings (%s Stueck) werden in der DB gespeichert.", trainings.size())); //$NON-NLS-1$
+        final long start = DateTime.now().getMillis();
+        dbAccess.saveOrUpdateAll(trainings);
+        LOGGER.info(String.format("Das Speichern aller '%s' Datensätze dauerte  %s[ms]", trainings.size(), (DateTime.now().getMillis() - start))); //$NON-NLS-1$
+    }
+
+    private ITraining convert(final String filterPath, final IGpsFileModel model, final IProgressMonitor monitor) {
+        final long start = DateTime.now().getMillis();
+        final File file = new File(filterPath, model.getFileName());
+        final String fileName = file.getName();
+        monitor.setTaskName(Messages.FileImport_0 + fileName);
+        LOGGER.info(Messages.FileImport_0 + fileName);
+
+        try {
+            fileCopy.copyFile(file, new File(locationBackupFiles, fileName));
+        } catch (final IOException e) {
+            LOGGER.error(String.format("File %s konnte nicht kopiert werden", fileName), e); //$NON-NLS-1$
+            return null;
+        }
+
+        final ITraining training;
+        try {
+            training = cc.getMatchingConverter(file).convert(file);
+        } catch (final ConvertException e) {
+            LOGGER.error(String.format(Messages.FileImport_2, fileName), e);
+            return null;
+        }
+
+        training.setAthlete(athlete);
+        training.setFileName(fileName);
+        training.setDateOfImport(DateTime.now().toDate());
+        training.setShoe(model.getSchuh());
+        final StreckeModel route = model.getRoute();
+        if (route != null) {
+            final IRoute strecke = dbAccess.getRoute(route.getName(), athlete);
+            training.setRoute(strecke);
+        }
+        training.setTrainingType(model.getTyp());
+        LOGGER.info(String.format("Konvertierung von '%s' dauerte %s[ms]", fileName, (DateTime.now().getMillis() - start))); //$NON-NLS-1$
+        return training;
     }
 }

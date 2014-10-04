@@ -1,5 +1,10 @@
 package ch.opentrainingcenter.client.action.job;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,11 +23,6 @@ import ch.opentrainingcenter.importer.IFileImport;
 import ch.opentrainingcenter.model.importer.IGpsFileModel;
 import ch.opentrainingcenter.model.importer.IGpsFileModelWrapper;
 import ch.opentrainingcenter.transfer.ITraining;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 @SuppressWarnings("nls")
 public class ImportManualJobTest {
@@ -76,7 +76,6 @@ public class ImportManualJobTest {
         when(convert.convert(new File(""))).thenReturn(element);
 
         final IProgressMonitor monitor = mock(IProgressMonitor.class);
-        when(importer.importFile(filterPath, modelWrapper, monitor)).thenReturn(new ArrayList<ITraining>());
 
         final IStatus status = job.run(monitor);
 

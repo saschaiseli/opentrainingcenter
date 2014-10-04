@@ -96,6 +96,8 @@ public class ConvertTcx implements IConvert2Tcx {
     @Override
     public ITraining convert(final File file) throws ConvertException {
         LOGGER.info("Start unmarshalling TCX File"); //$NON-NLS-1$
+        error = 0;
+        valid = 0;
         TrainingCenterDatabaseT completeFile;
         try {
             completeFile = unmarshall(file);
@@ -176,7 +178,7 @@ public class ConvertTcx implements IConvert2Tcx {
         final int total = error + valid;
         final float fehlerInProzent = 100 * (error / (float) total);
         training.setGeoQuality(fehlerInProzent);
-        LOGGER.info(String.format("Qualität der Geodaten: '%s' [prozent] fehlerhafte Geodaten", fehlerInProzent)); //$NON-NLS-1$
+        LOGGER.info(String.format("Qualität der Geodaten: '%s' [prozent] fehlerhafte Geodaten (%s von %s sind fehlerhaft)", fehlerInProzent, error, total)); //$NON-NLS-1$
         return training;
     }
 
@@ -209,7 +211,7 @@ public class ConvertTcx implements IConvert2Tcx {
 
     private boolean isTrackPointValid(final TrackpointT t) {
         if (t.getAltitudeMeters() == null || t.getDistanceMeters() == null || t.getPosition() == null) {
-            LOGGER.info("Ungültiger Trackpoint um '" + t.getTime() + "' gefunden"); //$NON-NLS-1$ //$NON-NLS-2$
+            LOGGER.warn("Ungültiger Trackpoint um '" + t.getTime() + "' gefunden"); //$NON-NLS-1$ //$NON-NLS-2$
             error++;
             return false;
         } else {
