@@ -1,8 +1,5 @@
 package ch.opentrainingcenter.client.views.dialoge;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
@@ -20,7 +17,7 @@ public class ImportFileDialog implements IFilterDialog {
     private final IPreferenceStore preferenceStore;
     private final String defaultLocation;
     private final ConvertContainer cc;
-    private final List<String> filePrefixes = new ArrayList<String>();
+    private final StringBuilder filePrefixes = new StringBuilder();
     private final FileDialog dialog;
 
     public ImportFileDialog(final Shell parent) {
@@ -31,8 +28,7 @@ public class ImportFileDialog implements IFilterDialog {
 
         cc = new ConvertContainer(ExtensionHelper.getConverters());
         readCurrentPreferences();
-        filePrefixes.add("*.*"); //$NON-NLS-1$
-        dialog.setFilterExtensions(filePrefixes.toArray(new String[0]));
+        dialog.setFilterExtensions(new String[] { filePrefixes.toString() });
         dialog.setText(Messages.ImportManualGpsFilesFileDialog);
     }
 
@@ -52,11 +48,15 @@ public class ImportFileDialog implements IFilterDialog {
     }
 
     private void readCurrentPreferences() {
+        boolean first = true;
         for (final IConvert2Tcx tcx : cc.getAllConverter()) {
             if (preferenceStore.getBoolean(PreferenceConstants.FILE_SUFFIX_FOR_BACKUP + tcx.getFilePrefix())) {
-                filePrefixes.add("*." + tcx.getFilePrefix() + ";*." + tcx.getFilePrefix().toUpperCase()); //$NON-NLS-1$ //$NON-NLS-2$
+                if (!first) {
+                    filePrefixes.append(";"); //$NON-NLS-1$
+                }
+                filePrefixes.append("*.").append(tcx.getFilePrefix()).append(";*.").append(tcx.getFilePrefix().toUpperCase()); //$NON-NLS-1$ //$NON-NLS-2$
+                first = false;
             }
         }
     }
-
 }
