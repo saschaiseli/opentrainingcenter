@@ -8,6 +8,7 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
@@ -37,8 +38,14 @@ public class DeleteImportedRecord extends AbstractHandler {
         for (final Object obj : records) {
             final ITraining record = (ITraining) obj;
             final int dbId = record.getId();
-            LOGGER.info("Lösche den Lauf mit der ID " + record.getDatum() + " und der DB Id: " + dbId); //$NON-NLS-1$ //$NON-NLS-2$
-            service.getDatabaseAccess().removeTrainingByDate(record.getDatum());
+            Display.getCurrent().asyncExec(new Runnable() {
+
+                @Override
+                public void run() {
+                    LOGGER.info("Lösche den Lauf mit der ID " + record.getDatum() + " und der DB Id: " + dbId); //$NON-NLS-1$ //$NON-NLS-2$
+                    service.getDatabaseAccess().removeTrainingByDate(record.getDatum());
+                }
+            });
         }
         return null;
     }
