@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Date;
 import java.util.List;
 
 import org.joda.time.DateTime;
@@ -14,10 +15,12 @@ import org.junit.Test;
 import ch.opentrainingcenter.database.dao.AthleteDao;
 import ch.opentrainingcenter.database.dao.CommonDao;
 import ch.opentrainingcenter.database.dao.RouteDao;
+import ch.opentrainingcenter.database.dao.ShoeDao;
 import ch.opentrainingcenter.database.dao.WeatherDao;
 import ch.opentrainingcenter.transfer.HeartRate;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IRoute;
+import ch.opentrainingcenter.transfer.IShoe;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.IWeather;
 import ch.opentrainingcenter.transfer.RunData;
@@ -28,6 +31,7 @@ import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
 public class RouteDaoTest extends DatabaseTestBase {
 
     private RouteDao routeDao;
+    private ShoeDao shoeDao;
     private IAthlete athlete;
     private long now;
     private IWeather weatherA;
@@ -35,6 +39,7 @@ public class RouteDaoTest extends DatabaseTestBase {
     private String name;
     private String beschreibung;
     private CommonDao access;
+    private IShoe shoe;
 
     @Before
     public void setUp() {
@@ -42,10 +47,14 @@ public class RouteDaoTest extends DatabaseTestBase {
         beschreibung = "testet ob route gespeichert wird";
 
         routeDao = new RouteDao(connectionConfig);
+        shoeDao = new ShoeDao(connectionConfig);
 
         final AthleteDao athleteDao = new AthleteDao(connectionConfig);
         athlete = CommonTransferFactory.createAthlete("junit", DateTime.now().toDate(), 220);
         athleteDao.save(athlete);
+
+        shoe = CommonTransferFactory.createSchuh(athlete, "schuhName", "image", 100, new Date());
+        shoeDao.saveOrUpdate(shoe);
 
         now = DateTime.now().getMillis();
 
@@ -56,6 +65,7 @@ public class RouteDaoTest extends DatabaseTestBase {
         final HeartRate heart = new HeartRate(3, 4);
         training = CommonTransferFactory.createTraining(runData, heart, 5, "note", weatherA, null);
         training.setAthlete(athlete);
+        training.setShoe(shoe);
         training.setTrainingType(TrainingType.NONE);
         access = new CommonDao(connectionConfig);
 
@@ -88,6 +98,8 @@ public class RouteDaoTest extends DatabaseTestBase {
         final HeartRate heart = new HeartRate(3, 4);
         final ITraining trainingB = CommonTransferFactory.createTraining(runData, heart, 5, "noteb", weatherA, null);
         trainingB.setAthlete(athlete);
+        trainingB.setShoe(shoe);
+
         access.saveOrUpdate(trainingB);
 
         final IRoute route = CommonTransferFactory.createRoute(name, beschreibung, training);
