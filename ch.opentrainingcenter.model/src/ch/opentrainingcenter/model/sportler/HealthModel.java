@@ -65,4 +65,6 @@ public class HealthModel implements PropertyChangeListener {
         propertyChangeSupport.firePropertyChange("health", null, this); //$NON-NLS-1$
     }
 
+    public void addPropertyChangeListener(final PropertyChangeListener pcl) {
+    }
 }

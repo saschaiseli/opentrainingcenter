@@ -29,6 +29,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.DateTime;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
@@ -174,24 +175,36 @@ public class HealthDialog extends TitleAreaDialog {
             cal.set(dateTime.getYear(), dateTime.getMonth(), dateTime.getDay());
             final Date dateOfMeasure = cal.getTime();
             model.setDateOfMeasure(dateOfMeasure);
-            final IHealth health = db.getHealth(athlete, dateOfMeasure);
-            boolean confirm = true;
-            if (health != null) {
-                confirm = MessageDialog.openConfirm(parent, Messages.HealthDialog_0, Messages.HealthDialog_1);
-            }
-            if (confirm) {
-                final IHealth healthToSave = CommonTransferFactory.createHealth(athlete, model.getWeight(), model.getRuhePuls(), model.getDateOfMeasure());
-                final int id = db.saveOrUpdate(healthToSave);
-                healthToSave.setId(id);
-                final ConcreteHealth healthModel = ModelFactory.createConcreteHealth(healthToSave, IImageKeys.CARDIO3232);
-                final List<ConcreteHealth> models = new ArrayList<>();
-                models.add(healthModel);
-                HealthCache.getInstance().addAll(models);
-            }
-        } else {
-            super.buttonPressed(buttonId);
-        }
+            Display.getDefault().asyncExec(new Runnable() {
 
+                @Override
+                public void run() {
+                    IHealth health = db.getHealth(athlete, dateOfMeasure);
+                    boolean confirm = true;
+                    if (health != null) {
+                        confirm = MessageDialog.openConfirm(parent, Messages.HealthDialog_0, Messages.HealthDialog_1);
+                    }
+                    if (confirm) {
+                        final Integer ruhePuls = model.getRuhePuls();
+                        final Double weight = model.getWeight();
+                        final Date dateOfMeasure = model.getDateOfMeasure();
+                        if (health != null) {
+                            health.setCardio(ruhePuls);
+                            health.setWeight(weight);
+                            health.setDateofmeasure(dateOfMeasure);
+                        } else {
+                            health = CommonTransferFactory.createHealth(athlete, weight, ruhePuls, dateOfMeasure);
+                        }
+                        db.saveOrUpdate(health);
+                        final ConcreteHealth healthModel = ModelFactory.createConcreteHealth(health, IImageKeys.CARDIO3232);
+                        final List<ConcreteHealth> models = new ArrayList<>();
+                        models.add(healthModel);
+                        HealthCache.getInstance().addAll(models);
+                    }
+                }
+            });
+        }
+        super.buttonPressed(buttonId);
     }
 
     @Override

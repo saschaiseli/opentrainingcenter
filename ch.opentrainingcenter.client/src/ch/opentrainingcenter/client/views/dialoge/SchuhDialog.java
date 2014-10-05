@@ -286,7 +286,6 @@ public class SchuhDialog extends TitleAreaDialog {
                     }
                 });
             }
-
         }
         super.buttonPressed(buttonId);
     }
