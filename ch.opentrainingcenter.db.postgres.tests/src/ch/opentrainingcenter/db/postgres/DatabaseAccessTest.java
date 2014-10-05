@@ -406,8 +406,8 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
         final IRoute routeA = CommonTransferFactory.createRoute("nameA", "beschreibungA", training);
         final IRoute routeB = CommonTransferFactory.createRoute("nameB", "beschreibungB", training);
 
-        final int idA = routeDao.saveOrUpdate(routeA);
-        final int idB = routeDao.saveOrUpdate(routeB);
+        routeDao.saveOrUpdate(routeA);
+        routeDao.saveOrUpdate(routeB);
 
         ITraining result = dataAccess.getTrainingById(now);
 
