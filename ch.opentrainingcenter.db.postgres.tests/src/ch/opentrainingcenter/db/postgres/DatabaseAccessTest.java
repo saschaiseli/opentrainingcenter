@@ -17,10 +17,12 @@ import org.junit.Test;
 import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.database.dao.AthleteDao;
 import ch.opentrainingcenter.database.dao.RouteDao;
+import ch.opentrainingcenter.database.dao.ShoeDao;
 import ch.opentrainingcenter.database.dao.WeatherDao;
 import ch.opentrainingcenter.transfer.HeartRate;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IRoute;
+import ch.opentrainingcenter.transfer.IShoe;
 import ch.opentrainingcenter.transfer.IStreckenPunkt;
 import ch.opentrainingcenter.transfer.ITrackPointProperty;
 import ch.opentrainingcenter.transfer.ITraining;
@@ -32,12 +34,12 @@ import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
 
 @SuppressWarnings("nls")
 public class DatabaseAccessTest extends PostgresDatabaseTestBase {
-
     private long now;
     private IWeather weatherA;
     private IWeather weatherB;
     private AthleteDao athleteDao;
     private RouteDao routeDao;
+    private ShoeDao shoeDao;
 
     @Before
     public void setUp() {
@@ -47,6 +49,7 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
         weatherB = weatherDao.getAllWeather().get(1);
         athleteDao = new AthleteDao(connectionConfig);
         routeDao = new RouteDao(connectionConfig);
+        shoeDao = new ShoeDao(connectionConfig);
         now = DateTime.now().getMillis();
     }
 
@@ -55,6 +58,16 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
         final RunData runData = new RunData(now, 1, 2, 5);
         final HeartRate heart = new HeartRate(3, 4);
         final ITraining training = CommonTransferFactory.createTraining(runData, heart, 5, "note", weatherA, null);
+
+        final IAthlete athlete = createAthlete("testTraining_1", 222);
+        athleteDao.save(athlete);
+
+        final IShoe shoe = CommonTransferFactory.createSchuh(athlete, "schuhName", "image", 100, new Date());
+        shoeDao.saveOrUpdate(shoe);
+
+        training.setAthlete(athlete);
+        training.setShoe(shoe);
+
         final int id = dataAccess.saveOrUpdate(training);
         assertTrue("Id ist sicherlich grösser als 0", 0 <= id);
     }
@@ -68,8 +81,11 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
         final HeartRate heart = new HeartRate(3, 4);
         final ITraining training = CommonTransferFactory.createTraining(runData, heart, 5, "note", weatherA, null);
         training.setAthlete(athlete);
-        // training.setRoute(route);
 
+        final IShoe shoe = CommonTransferFactory.createSchuh(athlete, "schuhName", "image", 100, new Date());
+        shoeDao.saveOrUpdate(shoe);
+
+        training.setShoe(shoe);
         dataAccess.saveOrUpdate(training);
 
         final IRoute route = CommonTransferFactory.createRoute("name", "beschreibung", training);
@@ -83,7 +99,7 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
         final ITraining result = dataAccess.getTrainingById(now);
 
         assertNotNull(result);
-
+        assertNotNull(result.getShoe());
         assertEquals("note", result.getNote());
         assertEquals(weatherA, result.getWeather());
         assertEquals(route, result.getRoute());
@@ -106,7 +122,9 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
 
         trackPoints.add(property);
         training.setTrackPoints(trackPoints);
+        training.setShoe(CommonTransferFactory.createSchuh(athlete, "schuhName", "image", 100, new Date()));
 
+        dataAccess.saveOrUpdate(training.getShoe());
         dataAccess.saveOrUpdate(training);
 
         final IRoute route = CommonTransferFactory.createRoute("testTraining_3_route", "beschreibung", training);
@@ -144,8 +162,11 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
         final HeartRate heart = new HeartRate(3, 4);
         final ITraining training = CommonTransferFactory.createTraining(runData, heart, 5, "note1", weatherA, null);
 
-        training.setAthlete(athlete);
+        final IShoe shoe = CommonTransferFactory.createSchuh(athlete, "schuhName", "image", 100, new Date());
+        shoeDao.saveOrUpdate(shoe);
 
+        training.setShoe(shoe);
+        training.setAthlete(athlete);
         dataAccess.saveOrUpdate(training);
 
         final IRoute routeA = CommonTransferFactory.createRoute("testTraining_4_route", "beschreibungA", training);
@@ -184,8 +205,16 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
         final RunData runDataB = new RunData(now + 1, 1, 2, 5);
         final ITraining trainingB = CommonTransferFactory.createTraining(runDataB, heart, 5, "note1", weatherA, null);
         trainingB.setAthlete(athleteB);
+        final IShoe shoe = CommonTransferFactory.createSchuh(athleteA, "schuhName", "image", 100, new Date());
+        shoeDao.saveOrUpdate(shoe);
 
+        trainingA.setShoe(shoe);
         dataAccess.saveOrUpdate(trainingA);
+
+        final IShoe shoeB = CommonTransferFactory.createSchuh(athleteB, "schuhName", "image", 100, new Date());
+        shoeDao.saveOrUpdate(shoeB);
+
+        trainingB.setShoe(shoeB);
         dataAccess.saveOrUpdate(trainingB);
 
         final List<ITraining> allFromAthleteA = dataAccess.getAllTrainings(athleteA);
@@ -205,9 +234,15 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
         final ITraining referenzTraining = CommonTransferFactory.createTraining(runData, heart, 5, "note1", weatherA, null);
         referenzTraining.setAthlete(athleteA);
 
+        final IShoe shoe = CommonTransferFactory.createSchuh(athleteA, "schuhName", "image", 100, new Date());
+        shoeDao.saveOrUpdate(shoe);
+
+        referenzTraining.setShoe(shoe);
         final RunData runDataB = new RunData(now + 1, 1, 2, 5);
         final ITraining training = CommonTransferFactory.createTraining(runDataB, heart, 5, "note1", weatherA, null);
         training.setAthlete(athleteA);
+
+        training.setShoe(shoe);
 
         dataAccess.saveOrUpdate(referenzTraining);
         dataAccess.saveOrUpdate(training);
@@ -243,7 +278,13 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
         final ITraining trainingB = CommonTransferFactory.createTraining(runData2, heart, 5, "note1", weatherA, null);
 
         trainingA.setAthlete(athleteA);
+        final IShoe shoe = CommonTransferFactory.createSchuh(athleteA, "schuhName", "image", 100, new Date());
+        shoeDao.saveOrUpdate(shoe);
+
+        trainingA.setShoe(shoe);
+
         trainingB.setAthlete(athleteA);
+        trainingB.setShoe(shoe);
 
         dataAccess.saveOrUpdate(trainingA);
         dataAccess.saveOrUpdate(trainingB);
@@ -257,45 +298,6 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
 
         assertTrue(first.getDatum() > second.getDatum());
     }
-
-    // @Test
-    // public void testTraining_7_getAllImported_Sort_And_Limit() {
-    // final IAthlete athleteA =
-    // CommonTransferFactory.createAthlete("testTraining_7", 222);
-    // athleteDao.save(athleteA);
-    //
-    // final ITraining trainingA = CommonTransferFactory.createTraining(now -
-    // 20, 1, 2, 3, 4, 5, "note1", weatherA, null);
-    // final ITraining trainingB = CommonTransferFactory.createTraining(now +
-    // 1000, 1, 2, 3, 4, 5, "note1", weatherA, null);
-    // final ITraining trainingC = CommonTransferFactory.createTraining(now +
-    // 1001, 1, 2, 3, 4, 5, "note1", weatherA, null);
-    // final ITraining trainingD = CommonTransferFactory.createTraining(now +
-    // 1002, 1, 2, 3, 4, 5, "note1", weatherA, null);
-    // final ITraining trainingE = CommonTransferFactory.createTraining(now +
-    // 1003, 1, 2, 3, 4, 5, "note1", weatherA, null);
-    //
-    // trainingA.setAthlete(athleteA);
-    // trainingB.setAthlete(athleteA);
-    // trainingC.setAthlete(athleteA);
-    // trainingD.setAthlete(athleteA);
-    // trainingE.setAthlete(athleteA);
-    //
-    // dataAccess.saveOrUpdate(trainingA);
-    // dataAccess.saveOrUpdate(trainingB);
-    // dataAccess.saveOrUpdate(trainingC);
-    // dataAccess.saveOrUpdate(trainingD);
-    // dataAccess.saveOrUpdate(trainingE);
-    //
-    // final List<ITraining> allFromAthleteA =
-    // dataAccess.getAllTrainings(athleteA);
-    //
-    // assertEquals(5, allFromAthleteA.size());
-    //
-    // final List<ITraining> limited = dataAccess.getAllTrainings(athleteA, 2);
-    //
-    // assertEquals(2, limited.size());
-    // }
 
     @Test
     public void testTraining_8_getNewest() {
@@ -315,10 +317,22 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
         final ITraining trainingE = CommonTransferFactory.createTraining(runDataE, heart, 5, "note1", weatherA, null);
 
         trainingA.setAthlete(athleteA);
+        final IShoe shoe = CommonTransferFactory.createSchuh(athleteA, "schuhName", "image", 100, new Date());
+        shoeDao.saveOrUpdate(shoe);
+
+        trainingA.setShoe(shoe);
+
         trainingB.setAthlete(athleteA);
+        trainingB.setShoe(shoe);
+
         trainingC.setAthlete(athleteA);
+        trainingC.setShoe(shoe);
+
         trainingD.setAthlete(athleteA);
+        trainingD.setShoe(shoe);
+
         trainingE.setAthlete(athleteA);
+        trainingE.setShoe(shoe);
 
         dataAccess.saveOrUpdate(trainingA);
         dataAccess.saveOrUpdate(trainingB);
@@ -329,6 +343,54 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
         final ITraining newest = dataAccess.getNewestTraining(athleteA);
 
         assertEquals(now + 2000, newest.getDatum());
+    }
+
+    @Test
+    public void testTraining_getTotalLaengeInMeter() {
+        final IAthlete athleteA = createAthlete("testTraining_8", 222);
+        athleteDao.save(athleteA);
+
+        final IShoe shoeA = CommonTransferFactory.createSchuh(athleteA, "junitA", null, 2, new Date());
+        shoeDao.saveOrUpdate(shoeA);
+        final IShoe shoeB = CommonTransferFactory.createSchuh(athleteA, "junitA", null, 2, new Date());
+        shoeDao.saveOrUpdate(shoeB);
+
+        final HeartRate heart = new HeartRate(3, 4);
+
+        final RunData runDataA = new RunData(now - 22, 1, 2, 5);
+        final ITraining trainingA = CommonTransferFactory.createTraining(runDataA, heart, 5, "note1", weatherA, null);
+        final RunData runDataB = new RunData(now + 1200, 1, 3, 6);
+        final ITraining trainingB = CommonTransferFactory.createTraining(runDataB, heart, 5, "note1", weatherA, null);
+        final RunData runDataC = new RunData(now + 1201, 1, 4, 7);
+        final ITraining trainingC = CommonTransferFactory.createTraining(runDataC, heart, 5, "note1", weatherA, null);
+        // ---------------------------
+        final RunData runDataD = new RunData(now + 1202, 1, 5, 8);
+        final ITraining trainingD = CommonTransferFactory.createTraining(runDataD, heart, 5, "note1", weatherA, null);
+        final RunData runDataE = new RunData(now + 2000, 1, 6, 9);
+        final ITraining trainingE = CommonTransferFactory.createTraining(runDataE, heart, 5, "note1", weatherA, null);
+
+        trainingA.setAthlete(athleteA);
+        trainingA.setShoe(shoeA);
+        trainingB.setAthlete(athleteA);
+        trainingB.setShoe(shoeA);
+        trainingC.setAthlete(athleteA);
+        trainingC.setShoe(shoeA);
+
+        trainingD.setAthlete(athleteA);
+        trainingD.setShoe(shoeB);
+        trainingE.setAthlete(athleteA);
+        trainingE.setShoe(shoeB);
+
+        dataAccess.saveOrUpdate(trainingA);
+        dataAccess.saveOrUpdate(trainingB);
+        dataAccess.saveOrUpdate(trainingC);
+        dataAccess.saveOrUpdate(trainingD);
+        dataAccess.saveOrUpdate(trainingE);
+
+        final int laengeA = dataAccess.getTotalLaengeInMeter(shoeA);
+        assertEquals(9, laengeA);
+        final int laengeB = dataAccess.getTotalLaengeInMeter(shoeB);
+        assertEquals(11, laengeB);
     }
 
     @Test
@@ -344,11 +406,15 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
         final IAthlete athleteA = createAthlete("testTraining_9", 222);
         athleteDao.save(athleteA);
 
+        final IShoe shoeB = CommonTransferFactory.createSchuh(athleteA, "junitA", null, 2, new Date());
+        shoeDao.saveOrUpdate(shoeB);
+
         final RunData runData = new RunData(now, 1, 2, 5);
         final HeartRate heart = new HeartRate(3, 4);
         final ITraining trainingA = CommonTransferFactory.createTraining(runData, heart, 5, "note1", weatherA, null);
 
         trainingA.setAthlete(athleteA);
+        trainingA.setShoe(shoeB);
 
         dataAccess.saveOrUpdate(trainingA);
 
@@ -363,12 +429,17 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
     public void testTraining_11_updateRecord() {
         final IAthlete athleteA = createAthlete("testTraining_9", 222);
         athleteDao.save(athleteA);
+
+        final IShoe shoe = CommonTransferFactory.createSchuh(athleteA, "junitA", null, 2, new Date());
+        shoeDao.saveOrUpdate(shoe);
+
         final RunData runData = new RunData(now, 1, 2, 5);
         final HeartRate heart = new HeartRate(3, 4);
         final ITraining trainingA = CommonTransferFactory.createTraining(runData, heart, 5, "note1", weatherA, null);
 
         trainingA.setAthlete(athleteA);
         trainingA.setTrainingType(TrainingType.NONE);
+        trainingA.setShoe(shoe);
 
         dataAccess.saveOrUpdate(trainingA);
 
@@ -396,10 +467,14 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
         final IAthlete athlete = createAthlete("testTraining_12", 222);
         athleteDao.save(athlete);
 
+        final IShoe shoe = CommonTransferFactory.createSchuh(athlete, "junitA", null, 2, new Date());
+        shoeDao.saveOrUpdate(shoe);
+
         final RunData runData = new RunData(now, 1, 2, 5);
         final HeartRate heart = new HeartRate(3, 4);
         final ITraining training = CommonTransferFactory.createTraining(runData, heart, 5, "note", weatherA, null);
         training.setAthlete(athlete);
+        training.setShoe(shoe);
 
         dataAccess.saveOrUpdate(training);
 
@@ -430,12 +505,16 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
         final IAthlete athlete = createAthlete("testTraining_13", 222);
         athleteDao.save(athlete);
 
+        final IShoe shoe = CommonTransferFactory.createSchuh(athlete, "junitA", null, 2, new Date());
+        shoeDao.saveOrUpdate(shoe);
+
         final RunData runData = new RunData(now, 1, 2, 5);
         final HeartRate heart = new HeartRate(3, 4);
         final ITraining training = CommonTransferFactory.createTraining(runData, heart, 5, "note", weatherA, null);
         training.setAthlete(athlete);
         training.setDateOfImport(new Date(now));
         training.setFileName("22342342skflsdjfs.gpx");
+        training.setShoe(shoe);
 
         dataAccess.saveOrUpdate(training);
 
