@@ -501,6 +501,14 @@ public final class Messages extends NLS {
     public static String FileImport_3;
     public static String FileImport_4;
     public static String FileImport_5;
+
+    public static String FileImport_KonvertGpsFile;
+
+    public static String FileImport_KonvertiereGpsFile;
+    public static String FileImport_SaveGpsFile;
+
+    public static String FileImport_SaveGpsFiles;
+
     public static String HEAVYCLOUDY;
     public static String LIGHTRAIN;
     public static String RAIN;
