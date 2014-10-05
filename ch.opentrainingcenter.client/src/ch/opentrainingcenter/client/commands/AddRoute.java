@@ -45,19 +45,25 @@ public class AddRoute extends OtcAbstractHandler {
         final ISelection selection = HandlerUtil.getCurrentSelection(event);
 
         final List<?> tracks = ((StructuredSelection) selection).toList();
-        final ITraining training = (ITraining) tracks.get(0);
+        if (isSelectionValid(tracks)) {
+            final ITraining training = (ITraining) tracks.get(0);
 
-        final Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
-        final IRoute route = training.getRoute();
-        boolean delete = true;
-        if (route != null && route.getReferenzTrack() != null && route.getReferenzTrack().getId() == training.getId()) {
-            // bereits eine Referenzroute darauf erstellt
-            delete = MessageDialog.openConfirm(shell, Messages.AddRoute_0, NLS.bind(Messages.AddRoute_1, route.getName()));
-        }
-        if (delete) {
-            final RouteDialog dialog = new RouteDialog(shell, databaseAccess, training);
-            dialog.open();
+            final Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+            final IRoute route = training.getRoute();
+            boolean delete = true;
+            if (route != null && route.getReferenzTrack() != null && route.getReferenzTrack().getId() == training.getId()) {
+                // bereits eine Referenzroute darauf erstellt
+                delete = MessageDialog.openConfirm(shell, Messages.AddRoute_0, NLS.bind(Messages.AddRoute_1, route.getName()));
+            }
+            if (delete) {
+                final RouteDialog dialog = new RouteDialog(shell, databaseAccess, training);
+                dialog.open();
+            }
         }
         return null;
+    }
+
+    private boolean isSelectionValid(final List<?> tracks) {
+        return tracks != null && !tracks.isEmpty() && tracks.get(0) instanceof ITraining;
     }
 }
