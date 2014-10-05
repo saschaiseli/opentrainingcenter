@@ -12,6 +12,7 @@ import ch.opentrainingcenter.client.views.ngchart.DynamicChartViewPart;
 import ch.opentrainingcenter.client.views.overview.SingleActivityViewPart;
 import ch.opentrainingcenter.client.views.planung.JahresplanungViewPart;
 import ch.opentrainingcenter.client.views.planung.ShowJahresplanungViewPart;
+import ch.opentrainingcenter.client.views.shoes.ShoeViewPart;
 import ch.opentrainingcenter.client.views.weeks.MonthlyWeekOverview;
 
 public class MainPerspective implements IPerspectiveFactory {
@@ -42,7 +43,7 @@ public class MainPerspective implements IPerspectiveFactory {
         } else {
             folderMiddle.addPlaceholder(SingleActivityViewPart.ID + MULTI_VIEW);
         }
-
+        folderMiddle.addPlaceholder(ShoeViewPart.ID);
         folderMiddle.addPlaceholder(JahresplanungViewPart.ID);
         folderMiddle.addPlaceholder(ShowJahresplanungViewPart.ID);
         folderMiddle.addPlaceholder(ChartViewPart.ID + MULTI_VIEW);

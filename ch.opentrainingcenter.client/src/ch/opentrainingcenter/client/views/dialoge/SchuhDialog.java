@@ -228,7 +228,6 @@ public class SchuhDialog extends TitleAreaDialog {
 
     @Override
     protected void buttonPressed(final int buttonId) {
-        System.out.println(Messages.SchuhDialog_ModelLabel + model.toString());
         if (IDialogConstants.OK_ID == buttonId) {
             // speichern
             LOG.debug("Neue Schuhe speichern"); //$NON-NLS-1$

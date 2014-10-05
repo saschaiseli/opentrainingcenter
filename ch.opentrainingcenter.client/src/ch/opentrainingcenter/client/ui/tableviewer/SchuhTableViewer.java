@@ -58,7 +58,7 @@ public class SchuhTableViewer extends TableViewer {
     private void createColumns() {
         final String[] titles = { Messages.RoutenView_ID, Messages.RoutenView_Name_Marke, Messages.RoutenView_Icon, Messages.SchuhTableViewer_PreisTableHeader,
                 Messages.SchuhTableViewer_KaufDatumTableHeader, Messages.SchuhTableViewer_AnzahlLaeufe, Messages.SchuhTableViewer_TotalDistanz };
-        final int[] bounds = { 40, 300, 200, 50, 110, 60, 50 };
+        final int[] bounds = { 40, 300, 200, 50, 110, 110, 50 };
 
         TableViewerColumn col = createTableViewerColumn(titles[0], bounds[0], 0);
         col.setLabelProvider(new ColumnLabelProvider() {
