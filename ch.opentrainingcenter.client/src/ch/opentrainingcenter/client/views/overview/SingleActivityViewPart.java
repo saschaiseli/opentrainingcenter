@@ -428,7 +428,7 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         };
         // ------------------------------- Schuhe
         final Label labelSchuhe = toolkit.createLabel(container, ""); //$NON-NLS-1$
-        labelSchuhe.setText("Schuhe:");
+        labelSchuhe.setText(Messages.SingleActivityViewPart_Schuhe);
 
         final ComboViewer comboSchuhe = new ComboViewer(container);
         comboSchuhe.setContentProvider(ArrayContentProvider.getInstance());
