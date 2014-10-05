@@ -1,7 +1,6 @@
 package ch.opentrainingcenter.client.views.best;
 
 import java.util.Collection;
-import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jface.layout.GridDataFactory;
@@ -238,8 +237,7 @@ public class BestRunsComposite {
                 @Override
                 public void run() {
                     LOGGER.info(String.format("Update BestRun Composite mit Sport %s", sport)); //$NON-NLS-1$
-                    final List<ITraining> allTrainings = databaseAccess.getAllTrainings(athlete);
-                    model = action.getModel(TrainingCache.getInstance().getAll(athlete));
+                    model = action.getModel(databaseAccess.getAllTrainings(athlete));
                     bestPace.setData(model.getSchnellstePace());
                     bestPace.setText(model.getSchnellstePace().getSecond());
 
