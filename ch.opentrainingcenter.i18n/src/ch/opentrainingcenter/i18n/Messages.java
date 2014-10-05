@@ -330,9 +330,13 @@ public final class Messages extends NLS {
     public static String SchuhDialog_ModelLabel;
 
     public static String SchuhDialog_PreisLabel;
+    public static String SchuhTableViewer_AnzahlLaeufe;
+
     public static String SchuhTableViewer_KaufDatumTableHeader;
 
     public static String SchuhTableViewer_PreisTableHeader;
+
+    public static String SchuhTableViewer_TotalDistanz;
 
     public static String SearchDialog_COMMON_KM;
     public static String SearchDialog_SEARCH;

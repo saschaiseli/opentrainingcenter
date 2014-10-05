@@ -248,11 +248,20 @@ public class SchuhDialog extends TitleAreaDialog {
 
                         LOG.info("write in database"); //$NON-NLS-1$
 
-                        final String realPath = model.getImage();
-
-                        final IShoe schuh = CommonTransferFactory.createSchuh(model.getAthlete(), model.getSchuhName(), realPath, model.getPreis(), model
-                                .getKaufdatum());
-                        schuh.setId(model.getId());
+                        final IShoe schuh;
+                        final String imageIcon = model.getImage();
+                        final Date kaufDatum = model.getKaufdatum();
+                        final int preis = model.getPreis();
+                        final String name = model.getSchuhName();
+                        if (model.getId() > 0) {
+                            schuh = SchuhCache.getInstance().get(String.valueOf(model.getId()));
+                            schuh.setImageicon(imageIcon);
+                            schuh.setKaufdatum(kaufDatum);
+                            schuh.setPreis(preis);
+                            schuh.setSchuhname(name);
+                        } else {
+                            schuh = CommonTransferFactory.createSchuh(model.getAthlete(), name, imageIcon, preis, kaufDatum);
+                        }
                         databaseAccess.saveOrUpdate(schuh);
 
                         LOG.info("Konvert Image und Copy it"); //$NON-NLS-1$

@@ -2,7 +2,9 @@ package ch.opentrainingcenter.client.views.einstellungen;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jface.action.Action;
@@ -12,13 +14,16 @@ import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Table;
@@ -41,6 +46,8 @@ import ch.opentrainingcenter.client.ui.tableviewer.TrackTableViewer;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.client.views.dialoge.SchuhDialog;
 import ch.opentrainingcenter.core.cache.IRecordListener;
+import ch.opentrainingcenter.core.cache.TrainingCache;
+import ch.opentrainingcenter.core.data.Pair;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
@@ -84,6 +91,8 @@ public class RoutenView extends ViewPart implements ISelectionListener {
     private Section sectionSchuhe;
 
     private final SchuhCache shoeCache = SchuhCache.getInstance();
+
+    private Action deleteAction;
 
     public RoutenView() {
         athlete = ApplicationContext.getApplicationContext().getAthlete();
@@ -175,8 +184,9 @@ public class RoutenView extends ViewPart implements ISelectionListener {
         GridDataFactory.swtDefaults().align(SWT.FILL, SWT.FILL).grab(true, true).applyTo(compositeSchuhe);
 
         schuhTable = new SchuhTableViewer(compositeSchuhe, SWT_TABLE_PATTERN);
-        schuhTable.createTableViewer(shoeCache.getAll());
-
+        final List<IShoe> all = shoeCache.getAll();
+        schuhTable.setAnzahlUndKilometer(getAnzahlUndKilometer(all));
+        schuhTable.createTableViewer(all);
         final MenuManager menuManager = new MenuManager();
         final Table table = schuhTable.getTable();
         final Menu contextMenu = menuManager.createContextMenu(table);
@@ -193,7 +203,7 @@ public class RoutenView extends ViewPart implements ISelectionListener {
             }
         });
 
-        menuManager.add(new Action(Messages.RoutenView_17, null) {
+        deleteAction = new Action(Messages.RoutenView_17, null) {
             @Override
             public void run() {
                 final StructuredSelection ss = (StructuredSelection) schuhTable.getSelection();
@@ -201,13 +211,24 @@ public class RoutenView extends ViewPart implements ISelectionListener {
                 databaseAccess.deleteShoe(shoe.getId());
                 shoeCache.remove(String.valueOf(shoe.getId()));
             }
-        });
-
+        };
+        menuManager.add(deleteAction);
         menuManager.add(new Action(Messages.RoutenView_18, null) {
             @Override
             public void run() {
                 final SchuhDialog dialog = new SchuhDialog(main.getShell(), databaseAccess, athlete, Messages.SchuhDialog_Add_Schuh);
                 dialog.open();
+            }
+        });
+        schuhTable.addSelectionChangedListener(new ISelectionChangedListener() {
+
+            @Override
+            public void selectionChanged(final SelectionChangedEvent event) {
+                final StructuredSelection ss = (StructuredSelection) event.getSelection();
+                final IShoe shoe = (IShoe) ss.getFirstElement();
+                if (shoe != null) {
+                    deleteAction.setEnabled(!hasTraining(shoe));
+                }
             }
         });
 
@@ -231,6 +252,20 @@ public class RoutenView extends ViewPart implements ISelectionListener {
                 dialog.open();
             }
         });
+
+        TrainingCache.getInstance().addListener(new IRecordListener<ITraining>() {
+
+            @Override
+            public void recordChanged(final Collection<ITraining> entry) {
+                update();
+            }
+
+            @Override
+            public void deleteRecord(final Collection<ITraining> entry) {
+                update();
+            }
+        });
+
         shoeCache.addListener(new IRecordListener<IShoe>() {
 
             @Override
@@ -243,13 +278,53 @@ public class RoutenView extends ViewPart implements ISelectionListener {
                 update();
             }
 
-            private void update() {
-                schuhTable.setInput(databaseAccess.getShoes(athlete));
+        });
+        sectionSchuhe.setClient(compositeSchuhe);
+    }
+
+    private void update() {
+        Display.getDefault().asyncExec(new Runnable() {
+
+            @Override
+            public void run() {
+                final List<IShoe> shoes = databaseAccess.getShoes(athlete);
+                schuhTable.setAnzahlUndKilometer(getAnzahlUndKilometer(shoes));
+                schuhTable.setInput(shoes);
                 schuhTable.refresh();
             }
 
         });
-        sectionSchuhe.setClient(compositeSchuhe);
+    }
+
+    private Map<IShoe, Pair<Integer, Double>> getAnzahlUndKilometer(final List<IShoe> shoes) {
+        final Map<IShoe, Pair<Integer, Double>> result = new HashMap<>();
+        for (final IShoe shoe : shoes) {
+            result.put(shoe, getAnzahlUndKilometer(shoe));
+        }
+        return result;
+    }
+
+    private Pair<Integer, Double> getAnzahlUndKilometer(final IShoe shoe) {
+        final List<ITraining> all = TrainingCache.getInstance().getAll(shoe.getAthlete());
+        int count = 0;
+        double km = 0;
+        for (final ITraining training : all) {
+            if (shoe.equals(training.getShoe())) {
+                count++;
+                km += training.getLaengeInMeter();
+            }
+        }
+        return new Pair<Integer, Double>(count, km);
+    }
+
+    private boolean hasTraining(final IShoe shoe) {
+        final List<ITraining> all = TrainingCache.getInstance().getAll(shoe.getAthlete());
+        for (final ITraining training : all) {
+            if (shoe.equals(training.getShoe())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void createLeftComposite(final Composite composite) {
