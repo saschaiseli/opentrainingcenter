@@ -45,6 +45,7 @@ import org.joda.time.DateTime;
 import ch.opentrainingcenter.charts.single.ChartFactory;
 import ch.opentrainingcenter.charts.single.ChartType;
 import ch.opentrainingcenter.client.Activator;
+import ch.opentrainingcenter.client.cache.SchuhCache;
 import ch.opentrainingcenter.client.cache.StreckeCache;
 import ch.opentrainingcenter.client.model.Units;
 import ch.opentrainingcenter.client.ui.FormToolkitSupport;
@@ -69,6 +70,7 @@ import ch.opentrainingcenter.model.training.Wetter;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.ILapInfo;
 import ch.opentrainingcenter.transfer.IRoute;
+import ch.opentrainingcenter.transfer.IShoe;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.Sport;
 import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
@@ -424,6 +426,28 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
                 }
             }
         };
+        // ------------------------------- Schuhe
+        final Label labelSchuhe = toolkit.createLabel(container, ""); //$NON-NLS-1$
+        labelSchuhe.setText("Schuhe:");
+
+        final ComboViewer comboSchuhe = new ComboViewer(container);
+        comboSchuhe.setContentProvider(ArrayContentProvider.getInstance());
+        comboSchuhe.setLabelProvider(new LabelProvider() {
+            @Override
+            public String getText(final Object element) {
+                final IShoe shoe = (IShoe) element;
+                return shoe.getSchuhname();
+            }
+        });
+        GridDataFactory.fillDefaults().grab(true, true).align(SWT.FILL, SWT.FILL).applyTo(comboSchuhe.getControl());
+        final List<IShoe> allShoes = SchuhCache.getInstance().getAll();
+        comboSchuhe.setInput(allShoes);
+
+        if (training.getShoe() != null) {
+            final StructuredSelection selection = new StructuredSelection(training.getShoe());
+            comboSchuhe.setSelection(selection);
+        }
+        // -------------------------------
 
         listener = new RecordAdapter<ITraining>() {
 

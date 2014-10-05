@@ -425,6 +425,7 @@ public class UserView extends ViewPart {
             private void save(final IAthlete athlete) {
                 databaseAccess.save(athlete);
                 databaseAccess.saveOrUpdate(CommonTransferFactory.createDefaultRoute(athlete));
+                databaseAccess.saveOrUpdate(CommonTransferFactory.createSchuh(athlete, Messages.UserView_Unbekannt, null, 100, new Date()));
                 if (currentAthlete == null) {
                     resetAthleteForm();
                 }

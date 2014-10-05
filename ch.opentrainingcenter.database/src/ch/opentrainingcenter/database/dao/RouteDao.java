@@ -66,14 +66,6 @@ public class RouteDao {
     }
 
     public int saveOrUpdate(final IRoute route) {
-        // IRoute exists = getRoute(route.getName(), route.getAthlete());
-        // if (exists != null) {
-        //            LOG.info("Strecke überschreiben alt: " + exists + " neu: " + route); //$NON-NLS-2$
-        // exists.setBeschreibung(route.getBeschreibung());
-        // } else {
-        // LOG.info("Neue Strecke abspeichern: " + route);
-        // exists = route;
-        // }
         final Session session = dao.getSession();
         dao.begin();
         session.saveOrUpdate(route);
