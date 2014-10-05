@@ -73,11 +73,6 @@ public interface IDatabaseAccess {
      */
     void updateTrainingType(ITraining record, int index);
 
-    /**
-     * updated training type
-     */
-    void updateTrainingRoute(ITraining record, int idRoute);
-
     // ------------------------------------------------------------------------------------------
 
     /**
@@ -181,5 +176,7 @@ public interface IDatabaseAccess {
     void saveOrUpdate(IShoe shoe);
 
     void deleteShoe(int id);
+
+    IRoute getRoute(int idRoute);
 
 }

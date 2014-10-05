@@ -414,13 +414,13 @@ public class DatabaseAccessTest extends PostgresDatabaseTestBase {
         assertNotNull(result);
 
         training.setRoute(routeB);
-
-        dataAccess.updateTrainingRoute(training, idB);
+        dataAccess.saveOrUpdate(training);
 
         result = dataAccess.getTrainingById(now);
         assertEquals(routeB, result.getRoute());
 
-        dataAccess.updateTrainingRoute(training, idA);
+        training.setRoute(routeA);
+        dataAccess.saveOrUpdate(training);
         result = dataAccess.getTrainingById(now);
         assertEquals(routeA, result.getRoute());
     }

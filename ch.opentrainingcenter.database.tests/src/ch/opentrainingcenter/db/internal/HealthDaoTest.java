@@ -47,10 +47,11 @@ public class HealthDaoTest extends DatabaseTestBase {
 
     @Test
     public void testGetHealth() {
-        IHealth health = CommonTransferFactory.createHealth(athlete, 201.0, 201, now);
+        final IHealth health = CommonTransferFactory.createHealth(athlete, 201.0, 201, now);
         healthDao.saveOrUpdate(health);
 
-        health = CommonTransferFactory.createHealth(athlete, 101.0, 20, now);
+        health.setWeight(101.0);
+        health.setCardio(20);
         healthDao.saveOrUpdate(health);
 
         final IHealth result = healthDao.getHealth(athlete, now);

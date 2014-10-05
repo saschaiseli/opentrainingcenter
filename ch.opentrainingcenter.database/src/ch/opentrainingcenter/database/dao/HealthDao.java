@@ -23,20 +23,12 @@ public class HealthDao {
 
     public int saveOrUpdate(final IHealth health) {
         LOG.info("save daily health: " + health); //$NON-NLS-1$
-
-        IHealth exists = getHealth(health.getAthlete(), health.getDateofmeasure());
-        if (exists != null) {
-            exists.setCardio(health.getCardio());
-            exists.setWeight(health.getWeight());
-        } else {
-            exists = health;
-        }
         final Session session = dao.getSession();
         dao.begin();
-        session.saveOrUpdate(exists);
+        session.saveOrUpdate(health);
         dao.commit();
         session.flush();
-        return exists.getId();
+        return health.getId();
     }
 
     /**

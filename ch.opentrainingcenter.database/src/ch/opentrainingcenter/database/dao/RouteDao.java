@@ -20,13 +20,30 @@ public class RouteDao {
         this.dao = dao;
     }
 
+    public IRoute getById(final int idRoute) {
+        final Session session = dao.getSession();
+        dao.begin();
+        final Criteria criteria = session.createCriteria(IRoute.class);
+        criteria.add(Restrictions.eq("id", idRoute));
+        final IRoute route;
+        @SuppressWarnings("unchecked")
+        final List<IRoute> routes = criteria.list();
+        if (routes != null && !routes.isEmpty()) {
+            route = routes.get(0);
+        } else {
+            route = null;
+        }
+        dao.commit();
+        session.flush();
+        return route;
+    }
+
     /**
      * Gibt die Strecke zurück. Wenn nichts gefunden wird, wird null
      * zurückgegeben.
      * 
      * @param athlete
      */
-
     public IRoute getRoute(final String name, final IAthlete athlete) {
         LOG.info(String.format("lade Route mit dem namen %s und dem Athleten: %s", name, athlete));
         final Session session = dao.getSession();
@@ -49,20 +66,20 @@ public class RouteDao {
     }
 
     public int saveOrUpdate(final IRoute route) {
-        IRoute exists = getRoute(route.getName(), route.getAthlete());
-        if (exists != null) {
-            LOG.info("Strecke überschreiben alt: " + exists + " neu: " + route); //$NON-NLS-2$
-            exists.setBeschreibung(route.getBeschreibung());
-        } else {
-            LOG.info("Neue Strecke abspeichern: " + route);
-            exists = route;
-        }
+        // IRoute exists = getRoute(route.getName(), route.getAthlete());
+        // if (exists != null) {
+        //            LOG.info("Strecke überschreiben alt: " + exists + " neu: " + route); //$NON-NLS-2$
+        // exists.setBeschreibung(route.getBeschreibung());
+        // } else {
+        // LOG.info("Neue Strecke abspeichern: " + route);
+        // exists = route;
+        // }
         final Session session = dao.getSession();
         dao.begin();
-        session.saveOrUpdate(exists);
+        session.saveOrUpdate(route);
         dao.commit();
         session.flush();
-        return exists.getId();
+        return route.getId();
     }
 
     public List<IRoute> getRoute(final IAthlete athlete) {
@@ -90,4 +107,5 @@ public class RouteDao {
         session.flush();
         return !routen.isEmpty();
     }
+
 }

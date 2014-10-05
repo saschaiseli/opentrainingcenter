@@ -167,22 +167,11 @@ public class TrainingDao {
     }
 
     public int saveOrUpdate(final ITraining training) {
-        ITraining exists = getTrainingByDate(training.getDatum());
-        if (exists != null) {
-            LOG.info("Training bereits einmal importiert: --> updaten");
-        } else {
-            LOG.info(String.format("Neues Training abspeichern: %s", training));
-            exists = training;
-        }
-        final TrainingType tt = exists.getTrainingType();
-        if (tt != null) {
-            exists.setTrainingType(TrainingType.getByIndex(tt.getIndex()));
-        }
         final Session session = dao.getSession();
         dao.begin();
-        session.saveOrUpdate(exists);
+        session.saveOrUpdate(training);
         session.flush();
-        return exists.getId();
+        return training.getId();
     }
 
 }

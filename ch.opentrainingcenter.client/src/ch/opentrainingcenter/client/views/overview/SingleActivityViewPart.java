@@ -68,6 +68,7 @@ import ch.opentrainingcenter.model.training.ISimpleTraining;
 import ch.opentrainingcenter.model.training.Wetter;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.ILapInfo;
+import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.Sport;
 import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
@@ -498,7 +499,9 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
 
             @Override
             public void run() {
-                databaseAccess.updateTrainingRoute(record, idRoute);
+                final IRoute route = databaseAccess.getRoute(idRoute);
+                record.setRoute(route);
+                databaseAccess.saveOrUpdate(record);
             }
         });
     }

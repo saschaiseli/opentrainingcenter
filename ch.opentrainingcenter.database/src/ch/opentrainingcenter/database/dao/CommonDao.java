@@ -142,16 +142,6 @@ public class CommonDao implements IDatabaseAccess {
     }
 
     @Override
-    public final void updateTrainingRoute(final ITraining training, final int idRoute) {
-        trainingDao.updateTrainingRoute(training, idRoute);
-        if (useCache) {
-            final List<ITraining> models = new ArrayList<>();
-            models.add(trainingDao.getTrainingByDate(training.getDatum()));
-            cache.addAll(models);
-        }
-    }
-
-    @Override
     public final ITraining getTrainingById(final long datum) {
         if (useCache) {
             ITraining training = cache.get(datum);
@@ -257,6 +247,11 @@ public class CommonDao implements IDatabaseAccess {
     @Override
     public final List<IRoute> getRoute(final IAthlete athlete) {
         return routeDao.getRoute(athlete);
+    }
+
+    @Override
+    public IRoute getRoute(final int idRoute) {
+        return routeDao.getById(idRoute);
     }
 
     @Override

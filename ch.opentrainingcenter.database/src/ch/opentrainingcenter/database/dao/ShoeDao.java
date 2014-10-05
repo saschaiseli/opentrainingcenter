@@ -49,23 +49,12 @@ public class ShoeDao {
     }
 
     public int saveOrUpdate(final IShoe schuh) {
-        IShoe exists = getShoe(schuh.getId());
-        if (exists != null) {
-            LOG.info("Schuh überschreiben alt: " + exists + " neu: " + schuh); //$NON-NLS-2$
-            exists.setImageicon(schuh.getImageicon());
-            exists.setSchuhname(schuh.getSchuhname());
-            exists.setKaufdatum(schuh.getKaufdatum());
-            exists.setPreis(schuh.getPreis());
-        } else {
-            LOG.info("Neuer Schuh abspeichern: " + schuh);
-            exists = schuh;
-        }
         final Session session = dao.getSession();
         dao.begin();
-        session.saveOrUpdate(exists);
+        session.saveOrUpdate(schuh);
         dao.commit();
         session.flush();
-        return exists.getId();
+        return schuh.getId();
     }
 
     public IShoe getShoe(final int id) {

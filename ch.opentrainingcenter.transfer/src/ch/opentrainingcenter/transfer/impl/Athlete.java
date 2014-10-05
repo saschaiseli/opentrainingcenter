@@ -130,7 +130,6 @@ public class Athlete implements java.io.Serializable, IAthlete {
     @SuppressWarnings("nls")
     @Override
     public String toString() {
-        return "Athlete [name=" + name + "]";
+        return "Athlete [id=" + id + ", name=" + name + ", birthday=" + birthday + ", maxheartrate=" + maxheartrate + "]";
     }
-
 }

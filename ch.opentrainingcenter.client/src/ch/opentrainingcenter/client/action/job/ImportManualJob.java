@@ -5,7 +5,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
-import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.importer.IFileImport;
 import ch.opentrainingcenter.model.importer.IGpsFileModelWrapper;
 
@@ -38,7 +37,6 @@ public class ImportManualJob extends Job {
 
     @Override
     protected IStatus run(final IProgressMonitor monitor) {
-        monitor.beginTask(Messages.ImportManualGpsFiles4, modelWrapper.size());
         importer.importFile(filterPath, modelWrapper, monitor);
         return Status.OK_STATUS;
     }

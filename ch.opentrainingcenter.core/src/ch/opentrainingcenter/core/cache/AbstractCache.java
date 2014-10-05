@@ -11,8 +11,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.ListenerList;
 
-import ch.opentrainingcenter.core.assertions.Assertions;
-
 public abstract class AbstractCache<K, V> implements ICache<K, V> {
 
     private static final Logger LOG = Logger.getLogger(AbstractCache.class);
@@ -23,7 +21,7 @@ public abstract class AbstractCache<K, V> implements ICache<K, V> {
 
     @Override
     public void addAll(final List<V> values) {
-        Assertions.notNull(values);
+        // Assertions.notNull(values);
         for (final V value : values) {
             LOG.info(String.format("Element added -> Cache (%s) Size: %s", value.getClass().getName(), cache.size())); //$NON-NLS-1$
             cache.put(getKey(value), value);

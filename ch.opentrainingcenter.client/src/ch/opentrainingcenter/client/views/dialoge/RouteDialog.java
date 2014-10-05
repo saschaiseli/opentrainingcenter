@@ -130,7 +130,7 @@ public class RouteDialog extends TitleAreaDialog {
                         StreckeCache.getInstance().addAll(models);
 
                         tr.setRoute(newRoute);
-                        databaseAccess.updateTrainingRoute(tr, newRoute.getId());
+                        databaseAccess.saveOrUpdate(tr);
                     }
                 });
 

@@ -57,28 +57,39 @@ public class FileImport implements IFileImport {
     @Override
     public void importFile(final String filterPath, final IGpsFileModelWrapper modelWrapper, final IProgressMonitor monitor) {
         LOGGER.info("------------------------------- START Converting -------------------------------------------"); //$NON-NLS-1$
-        int count = 1;
+        final long startConvert = DateTime.now().getMillis();
+        monitor.beginTask("Konvertiere GPS File", modelWrapper.size() * 2);
         final List<ITraining> trainings = new ArrayList<ITraining>();
         for (final IGpsFileModel model : modelWrapper.getGpsFileModels()) {
             final ITraining training = convert(filterPath, model, monitor);
             if (training != null) {
                 trainings.add(training);
             }
-            monitor.worked(count);
-            count++;
+            monitor.worked(1);
         }
         LOGGER.info("------------------------------- END Converting-------------------------------------------"); //$NON-NLS-1$
+        final long convertTime = DateTime.now().getMillis() - startConvert;
         LOGGER.info(String.format("Die konvertierten Trainings (%s Stueck) werden in der DB gespeichert.", trainings.size())); //$NON-NLS-1$
-        final long start = DateTime.now().getMillis();
-        dbAccess.saveOrUpdateAll(trainings);
-        LOGGER.info(String.format("Das Speichern aller '%s' Datensätze dauerte  %s[ms]", trainings.size(), (DateTime.now().getMillis() - start))); //$NON-NLS-1$
+        final long startDb = DateTime.now().getMillis();
+        monitor.beginTask("Speichere GPS Files in der Datenbank", trainings.size());
+        for (final ITraining training : trainings) {
+            monitor.setTaskName(String.format("Speichere Training '%s'", training.getFileName()));
+            dbAccess.saveOrUpdate(training);
+            monitor.worked(1);
+        }
+        final long dbTime = DateTime.now().getMillis() - startDb;
+        LOGGER.info("*******************************************************************************"); //$NON-NLS-1$
+        LOGGER.info("Import Report");
+        LOGGER.info(String.format("Das Konvertieren aller '%s' GPS Files dauerte  %s[ms]", modelWrapper.size(), convertTime)); //$NON-NLS-1$
+        LOGGER.info(String.format("Das Speichern aller '%s' Datensätze dauerte  %s[ms]", trainings.size(), dbTime)); //$NON-NLS-1$
+        LOGGER.info("*******************************************************************************"); //$NON-NLS-1$
     }
 
     private ITraining convert(final String filterPath, final IGpsFileModel model, final IProgressMonitor monitor) {
         final long start = DateTime.now().getMillis();
         final File file = new File(filterPath, model.getFileName());
         final String fileName = file.getName();
-        monitor.setTaskName(Messages.FileImport_0 + fileName);
+        monitor.setTaskName(String.format("Konvertiere File '%s'", fileName));
         LOGGER.info(Messages.FileImport_0 + fileName);
 
         try {

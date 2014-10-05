@@ -239,7 +239,7 @@ public class BestRunsComposite {
                 public void run() {
                     LOGGER.info(String.format("Update BestRun Composite mit Sport %s", sport)); //$NON-NLS-1$
                     final List<ITraining> allTrainings = databaseAccess.getAllTrainings(athlete);
-                    model = action.getModel(allTrainings);
+                    model = action.getModel(TrainingCache.getInstance().getAll(athlete));
                     bestPace.setData(model.getSchnellstePace());
                     bestPace.setText(model.getSchnellstePace().getSecond());
 

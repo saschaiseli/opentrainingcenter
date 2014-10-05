@@ -419,21 +419,21 @@ public class DatabaseAccessTest extends DatabaseTestBase {
         final IRoute routeA = CommonTransferFactory.createRoute("nameA", "beschreibungA", training);
         final IRoute routeB = CommonTransferFactory.createRoute("nameB", "beschreibungB", training);
 
-        final int idA = routeDao.saveOrUpdate(routeA);
-        final int idB = routeDao.saveOrUpdate(routeB);
+        routeDao.saveOrUpdate(routeA);
+        routeDao.saveOrUpdate(routeB);
 
         ITraining result = dataAccess.getTrainingById(now);
 
         assertNotNull(result);
 
         training.setRoute(routeB);
-
-        dataAccess.updateTrainingRoute(training, idB);
+        dataAccess.saveOrUpdate(training);
 
         result = dataAccess.getTrainingById(now);
         assertEquals(routeB, result.getRoute());
 
-        dataAccess.updateTrainingRoute(training, idA);
+        training.setRoute(routeA);
+        dataAccess.saveOrUpdate(training);
         result = dataAccess.getTrainingById(now);
         assertEquals(routeA, result.getRoute());
     }
