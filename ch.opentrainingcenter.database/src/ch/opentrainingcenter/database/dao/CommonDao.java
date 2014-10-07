@@ -269,6 +269,11 @@ public class CommonDao implements IDatabaseAccess {
         routeDao.saveOrUpdate(route);
     }
 
+    @Override
+    public void deleteRoute(final int id) {
+        routeDao.delete(id);
+    }
+
     // -------------------------------wetterDao--------------------------------------------------
     @Override
     public final List<IWeather> getWeather() {

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
@@ -98,6 +99,16 @@ public class RouteDao {
         dao.commit();
         session.flush();
         return !routen.isEmpty();
+    }
+
+    public void delete(final int id) {
+        final Session session = dao.getSession();
+        dao.begin();
+        final Query query = session.createQuery("delete Route where id=:id"); //$NON-NLS-1$
+        query.setParameter("id", id); //$NON-NLS-1$
+        query.executeUpdate();
+        dao.commit();
+        session.flush();
     }
 
 }

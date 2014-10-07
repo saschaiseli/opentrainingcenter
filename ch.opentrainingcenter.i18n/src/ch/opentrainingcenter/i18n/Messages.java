@@ -10,6 +10,10 @@ public final class Messages extends NLS {
     public static String AddEditHandler_1;
     public static String AddRoute_0;
     public static String AddRoute_1;
+    public static String AddRoute_ERROR_TEXT;
+
+    public static String AddRoute_ERROR_TITLE;
+
     public static String AddTrainingPlan_0;
     public static String AllgemeineFarbenPreferencePage_AllgemeineFarben;
 
@@ -520,6 +524,8 @@ public final class Messages extends NLS {
     public static String RouteDialog_3;
     public static String RouteDialog_4;
     public static String RouteDialog_5;
+
+    public static String RouteDialog_Route_existiert_bereits;
     public static String RoutenView_0;
     public static String RoutenView_1;
     public static String RoutenView_10;

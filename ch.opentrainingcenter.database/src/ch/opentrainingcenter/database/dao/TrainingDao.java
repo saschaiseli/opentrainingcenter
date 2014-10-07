@@ -1,5 +1,6 @@
 package ch.opentrainingcenter.database.dao;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -172,6 +173,10 @@ public class TrainingDao {
         session.saveOrUpdate(training);
         session.flush();
         return training.getId();
+    }
+
+    public Collection<? extends ITraining> getTrainingByRoute(final int id) {
+        return null;
     }
 
 }

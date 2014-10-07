@@ -179,4 +179,6 @@ public interface IDatabaseAccess {
 
     IRoute getRoute(int idRoute);
 
+    void deleteRoute(int id);
+
 }

@@ -154,6 +154,23 @@ public class RouteDaoTest extends DatabaseTestBase {
     }
 
     @Test
+    public void testDeleteRoute() {
+        final String beschreibung = "testet ob route gespeichert wird";
+        final String name = "id2";
+        final IRoute route = CommonTransferFactory.createRoute(name, beschreibung, training);
+        routeDao.saveOrUpdate(route);
+
+        final IRoute result = routeDao.getRoute(name, athlete);
+        assertNotNull(result);
+        assertEquals(name, result.getName());
+        assertEquals(beschreibung, result.getBeschreibung());
+
+        routeDao.delete(result.getId());
+
+        assertNull(routeDao.getById(result.getId()));
+    }
+
+    @Test
     public void testGetRouteNegativ() {
         final String beschreibung = "testet ob route gespeichert wird";
         final String name = "id3";
