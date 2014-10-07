@@ -2,6 +2,7 @@ package ch.opentrainingcenter.client.commands;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -27,6 +28,7 @@ import ch.opentrainingcenter.transfer.ITraining;
 public class AddRoute extends OtcAbstractHandler {
 
     public static final String ID = "ch.opentrainingcenter.client.commands.AddRoute"; //$NON-NLS-1$
+    private static final Logger LOGGER = Logger.getLogger(AddRoute.class);
     private final IDatabaseService service;
 
     public AddRoute() {
@@ -50,17 +52,39 @@ public class AddRoute extends OtcAbstractHandler {
 
             final Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
             final IRoute route = training.getRoute();
-            boolean delete = true;
-            if (route != null && route.getReferenzTrack() != null && route.getReferenzTrack().getId() == training.getId()) {
-                // bereits eine Referenzroute darauf erstellt
-                delete = MessageDialog.openConfirm(shell, Messages.AddRoute_0, NLS.bind(Messages.AddRoute_1, route.getName()));
-            }
-            if (delete) {
+            // final boolean delete = true;
+            if (isReferenzTrack(training, route)) {
+                LOGGER.info("Referenztracks koennen noch nicht bearbeitet oder geändert werden"); //$NON-NLS-1$
+                MessageDialog.openError(shell, Messages.AddRoute_ERROR_TITLE, NLS.bind(Messages.AddRoute_ERROR_TEXT, route.getName()));
+                //                LOGGER.info("bereits eine Referenzroute auf diesem Training erstellt"); //$NON-NLS-1$
+                // delete = MessageDialog.openConfirm(shell,
+                // Messages.AddRoute_0, NLS.bind(Messages.AddRoute_1,
+                // route.getName()));
+                // if (delete) {
+                //                    LOGGER.info("Die Referenz wird geloescht"); //$NON-NLS-1$
+                // final List<ITraining> trainingsMitRoute =
+                // databaseAccess.getAllTrainingByRoute(route.getAthlete(),
+                // route);
+                // if (trainingsMitRoute.size() <= 1) {
+                //                        LOGGER.info("Die Route wird geloescht, da es keine Referenzstrecke mehr gibt"); //$NON-NLS-1$
+                // databaseAccess.deleteRoute(route.getId());
+                // } else {
+                // route.setReferenzTrack(trainingsMitRoute.get(0));
+                //                        LOGGER.info("Als Referenzstrecke dient nun ein anderer Track"); //$NON-NLS-1$
+                // databaseAccess.saveOrUpdate(route);
+                // }
+                // }
+            } else {
+                // if (delete) {
                 final RouteDialog dialog = new RouteDialog(shell, databaseAccess, training);
                 dialog.open();
             }
         }
         return null;
+    }
+
+    private boolean isReferenzTrack(final ITraining training, final IRoute route) {
+        return route != null && route.getReferenzTrack() != null && route.getReferenzTrack().getId() == training.getId();
     }
 
     private boolean isSelectionValid(final List<?> tracks) {
