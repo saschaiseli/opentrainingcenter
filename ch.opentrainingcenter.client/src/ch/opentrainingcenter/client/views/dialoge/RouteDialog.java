@@ -12,7 +12,6 @@ import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
@@ -51,13 +50,10 @@ public class RouteDialog extends TitleAreaDialog {
 
     private final IDatabaseAccess databaseAccess;
 
-    private final Shell parent;
-
     private final ITraining training;
 
     public RouteDialog(final Shell parent, final IDatabaseAccess databaseAccess, final ITraining training) {
         super(parent);
-        this.parent = parent;
         this.databaseAccess = databaseAccess;
         this.training = training;
         model = new StreckeModel(training.getAthlete());
@@ -107,35 +103,24 @@ public class RouteDialog extends TitleAreaDialog {
         if (IDialogConstants.OK_ID == buttonId) {
             // speichern
             LOG.debug("Neue Route speichern"); //$NON-NLS-1$
+            Display.getDefault().asyncExec(new Runnable() {
 
-            boolean confirm = true;
+                @Override
+                public void run() {
+                    final ITraining tr = ((ConcreteImported) training).getImported();
+                    final IRoute newRoute = CommonTransferFactory.createRoute(model.getName(), model.getBeschreibung(), tr);
+                    databaseAccess.saveOrUpdate(newRoute);
+                    model.setId(newRoute.getId());
+                    model.setReferenzTrainingId(tr.getId());
+                    final List<StreckeModel> models = new ArrayList<>();
+                    models.add(model);
 
-            final boolean exists = databaseAccess.existsRoute(model.getName(), model.getAthlete());
-
-            if (exists) {
-                confirm = MessageDialog.openConfirm(parent, Messages.RouteDialog_4, Messages.HealthDialog_1);
-            }
-            if (confirm) {
-                Display.getDefault().asyncExec(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        final ITraining tr = ((ConcreteImported) training).getImported();
-                        final IRoute newRoute = CommonTransferFactory.createRoute(model.getName(), model.getBeschreibung(), tr);
-                        databaseAccess.saveOrUpdate(newRoute);
-                        model.setId(newRoute.getId());
-                        model.setReferenzTrainingId(tr.getId());
-                        final List<StreckeModel> models = new ArrayList<>();
-                        models.add(model);
-                        StreckeCache.getInstance().addAll(models);
-
-                        tr.setRoute(newRoute);
-                        databaseAccess.saveOrUpdate(tr);
-                    }
-                });
-
-                super.buttonPressed(buttonId);
-            }
+                    tr.setRoute(newRoute);
+                    databaseAccess.saveOrUpdate(tr);
+                    StreckeCache.getInstance().addAll(models);
+                }
+            });
+            super.buttonPressed(buttonId);
         } else {
             super.buttonPressed(buttonId);
         }
@@ -170,7 +155,11 @@ public class RouteDialog extends TitleAreaDialog {
                 if (nameVonModel != null && nameVonModel.length() > 3) {
                     nameValid = true;
                 }
-
+                if (StreckeCache.getInstance().contains(nameVonModel)) {
+                    getButton(OK).setEnabled(false);
+                    setErrorMessage(Messages.RouteDialog_Route_existiert_bereits);
+                    return ValidationStatus.error("Mist"); //$NON-NLS-1$
+                }
                 if (nameValid) {
                     getButton(OK).setEnabled(true);
                     setErrorMessage(null);
