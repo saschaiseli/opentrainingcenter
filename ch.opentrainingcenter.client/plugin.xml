@@ -470,7 +470,7 @@
          </menu>
          <command
                commandId="ch.opentrainingcenter.client.commands.DeleteImportedRecord"
-               label="Löscht den Record"
+               label="Löscht den Training Record"
                style="push">
             <visibleWhen
                   checkEnabled="true">
@@ -486,7 +486,7 @@
          </command>
          <command
                commandId="ch.opentrainingcenter.client.commands.DeleteHealthRecord"
-               label="Löscht den Record"
+               label="Löscht den Health Record"
                style="push">
             <visibleWhen
                   checkEnabled="true">
