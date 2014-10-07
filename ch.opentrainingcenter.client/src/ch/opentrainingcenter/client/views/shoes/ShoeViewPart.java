@@ -36,7 +36,7 @@ import ch.opentrainingcenter.client.ui.FormToolkitSupport;
 import ch.opentrainingcenter.client.ui.tableviewer.SchuhTableViewer;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.client.views.dialoge.SchuhDialog;
-import ch.opentrainingcenter.client.views.einstellungen.RoutenView;
+import ch.opentrainingcenter.client.views.routen.RoutenView;
 import ch.opentrainingcenter.core.cache.IRecordListener;
 import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.core.data.Pair;

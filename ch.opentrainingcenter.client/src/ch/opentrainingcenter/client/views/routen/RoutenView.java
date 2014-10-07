@@ -1,4 +1,4 @@
-package ch.opentrainingcenter.client.views.einstellungen;
+package ch.opentrainingcenter.client.views.routen;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +26,7 @@ import ch.opentrainingcenter.client.ui.FormToolkitSupport;
 import ch.opentrainingcenter.client.ui.tableviewer.RoutenTableViewer;
 import ch.opentrainingcenter.client.ui.tableviewer.TrackTableViewer;
 import ch.opentrainingcenter.client.views.ApplicationContext;
+import ch.opentrainingcenter.client.views.einstellungen.UserView;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;

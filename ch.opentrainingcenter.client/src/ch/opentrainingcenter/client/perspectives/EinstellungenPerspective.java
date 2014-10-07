@@ -3,8 +3,8 @@ package ch.opentrainingcenter.client.perspectives;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 
-import ch.opentrainingcenter.client.views.einstellungen.RoutenView;
 import ch.opentrainingcenter.client.views.einstellungen.UserView;
+import ch.opentrainingcenter.client.views.routen.RoutenView;
 
 public class EinstellungenPerspective implements IPerspectiveFactory {
 

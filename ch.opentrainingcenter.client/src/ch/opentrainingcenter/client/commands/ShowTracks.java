@@ -9,15 +9,14 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
 import ch.opentrainingcenter.client.Activator;
-import ch.opentrainingcenter.client.views.shoes.ShoeViewPart;
+import ch.opentrainingcenter.client.views.routen.RoutenView;
 
-public class ShowShoes extends OtcAbstractHandler {
+public class ShowTracks extends OtcAbstractHandler {
 
-    public static final String ID = "ch.opentrainingcenter.client.commands.ShowShoes"; //$NON-NLS-1$
+    private static final Logger LOGGER = Logger.getLogger(ShowTracks.class);
+    public static final String ID = "ch.opentrainingcenter.client.commands.ShowTracks"; //$NON-NLS-1$
 
-    private static final Logger LOGGER = Logger.getLogger(ShowShoes.class);
-
-    public ShowShoes() {
+    public ShowTracks() {
         super(Activator.getDefault().getPreferenceStore());
     }
 
@@ -29,7 +28,7 @@ public class ShowShoes extends OtcAbstractHandler {
             public void run() {
                 try {
                     final IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-                    page.showView(ShoeViewPart.ID);
+                    page.showView(RoutenView.ID);
                 } catch (final PartInitException e) {
                     LOGGER.error(e);
                 }

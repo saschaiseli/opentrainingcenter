@@ -162,7 +162,7 @@
       </view>
       <view
             category="ch.opentrainingcenter.client.otccategory"
-            class="ch.opentrainingcenter.client.views.einstellungen.RoutenView"
+            class="ch.opentrainingcenter.client.views.routen.RoutenView"
             icon="icons/16_16/map_16_16.png"
             id="ch.opentrainingcenter.client.views.einstellungen.routen"
             name="%routenverwaltung"
@@ -317,6 +317,11 @@
             description="%search"
             id="ch.opentrainingcenter.client.commands.search"
             name="%search">
+      </command>
+      <command
+            description="%show_tracks_command_description"
+            id="ch.opentrainingcenter.client.commands.ShowTracks"
+            name="%show_tracks_command_name">
       </command>
    </extension>
    <extension
@@ -592,18 +597,11 @@
                   tooltip="%trainingsplaene_uebersicht_tooltip">
             </command>
             <command
-                  commandId="ch.opentrainingcenter.client.commands.AddRoute"
+                  commandId="ch.opentrainingcenter.client.commands.ShowTracks"
                   icon="icons/16_16/route_16_16.png"
-                  label="%neuestrecke"
+                  label="%strecken_uebersicht"
                   style="push"
-                  tooltip="%neuestrecke">
-            </command>
-            <command
-                  commandId="ch.opentrainingcenter.client.commands.DynamicChart"
-                  icon="icons/16_16/charts.png"
-                  label="%dynamic_chart_label"
-                  style="push"
-                  tooltip="%dynamic_chart_tooltip">
+                  tooltip="%strecken_tooltip">
             </command>
             <command
                   commandId="ch.opentrainingcenter.client.commands.ShowShoes"
@@ -611,6 +609,13 @@
                   label="%schuhe_uebersicht"
                   style="push"
                   tooltip="%schuhe_uebersicht_tooltip">
+            </command>
+            <command
+                  commandId="ch.opentrainingcenter.client.commands.DynamicChart"
+                  icon="icons/16_16/charts.png"
+                  label="%dynamic_chart_label"
+                  style="push"
+                  tooltip="%dynamic_chart_tooltip">
             </command>
          </toolbar>
       </menuContribution>
@@ -755,6 +760,10 @@
       <handler
             class="ch.opentrainingcenter.client.commands.ShowTrainingPlan"
             commandId="ch.opentrainingcenter.client.commands.ShowTrainingPlan">
+      </handler>
+      <handler
+            class="ch.opentrainingcenter.client.commands.ShowTracks"
+            commandId="ch.opentrainingcenter.client.commands.ShowTracks">
       </handler>
       <handler
             class="ch.opentrainingcenter.client.commands.ShowShoes"
