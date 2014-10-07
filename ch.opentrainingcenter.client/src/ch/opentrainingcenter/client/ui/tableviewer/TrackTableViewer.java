@@ -66,7 +66,7 @@ public class TrackTableViewer extends TableViewer {
 
     private void createTrackColumns() {
         final String[] titles = { Messages.RoutenView_5, Messages.RoutenView_6, Messages.RoutenView_7, Messages.RoutenView_8 };
-        final int[] bounds = { 120, 80, 200, 100 };
+        final int[] bounds = { 100, 80, 200, 100 };
 
         TableViewerColumn col = createTrackColumn(titles[0], bounds[0]);
         col.setLabelProvider(new TrackColumnLabelProviderZeit());

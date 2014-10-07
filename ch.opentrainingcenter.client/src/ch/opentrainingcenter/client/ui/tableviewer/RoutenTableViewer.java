@@ -32,7 +32,6 @@ import org.eclipse.swt.widgets.TableColumn;
 
 import ch.opentrainingcenter.client.ui.tableviewer.labelprovider.RouteColumnLabelProviderAnzahl;
 import ch.opentrainingcenter.client.ui.tableviewer.labelprovider.RouteColumnLabelProviderBeschreibung;
-import ch.opentrainingcenter.client.ui.tableviewer.labelprovider.RouteColumnLabelProviderId;
 import ch.opentrainingcenter.client.ui.tableviewer.labelprovider.RouteColumnLabelProviderLaenge;
 import ch.opentrainingcenter.client.ui.tableviewer.labelprovider.RouteColumnLabelProviderName;
 import ch.opentrainingcenter.i18n.Messages;
@@ -67,22 +66,19 @@ public class RoutenTableViewer extends TableViewer {
     }
 
     private void createRouteColumns(final List<ITraining> tracks) {
-        final String[] titles = { Messages.RoutenView_9, Messages.RoutenView_10, Messages.RoutenView_11, Messages.RoutenView_6, Messages.RoutenView_13 };
-        final int[] bounds = { 40, 100, 200, 100, 40 };
+        final String[] titles = { Messages.RoutenView_10, Messages.RoutenView_11, Messages.RoutenView_6, Messages.RoutenView_13 };
+        final int[] bounds = { 80, 200, 100, 40 };
 
         TableViewerColumn col = createRouteColumn(titles[0], bounds[0]);
-        col.setLabelProvider(new RouteColumnLabelProviderId());
-
-        col = createRouteColumn(titles[1], bounds[1]);
         col.setLabelProvider(new RouteColumnLabelProviderName());
 
-        col = createRouteColumn(titles[2], bounds[2]);
+        col = createRouteColumn(titles[1], bounds[1]);
         col.setLabelProvider(new RouteColumnLabelProviderBeschreibung());
 
-        col = createRouteColumn(titles[3], bounds[3]);
+        col = createRouteColumn(titles[2], bounds[2]);
         col.setLabelProvider(new RouteColumnLabelProviderLaenge());
 
-        col = createRouteColumn(titles[4], bounds[4]);
+        col = createRouteColumn(titles[3], bounds[3]);
         col.setLabelProvider(new RouteColumnLabelProviderAnzahl(tracks));
     }
 
