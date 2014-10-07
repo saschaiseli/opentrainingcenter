@@ -138,7 +138,7 @@
             allowMultiple="false"
             category="ch.opentrainingcenter.client.otccategory"
             class="ch.opentrainingcenter.client.views.planung.JahresplanungViewPart"
-            icon="icons/16_16/container_obj.gif"
+            icon="icons/16_16/plaene_erfassen.gif"
             id="ch.opentrainingcenter.client.views.planung.JahresplanungViewPart"
             name="%planung"
             restorable="true">
@@ -147,7 +147,7 @@
             allowMultiple="false"
             category="ch.opentrainingcenter.client.otccategory"
             class="ch.opentrainingcenter.client.views.planung.ShowJahresplanungViewPart"
-            icon="icons/16_16/container_obj.gif"
+            icon="icons/16_16/plaeneuebersicht.gif"
             id="ch.opentrainingcenter.client.views.planung.ShowJahresplanungViewPart"
             name="%aktuelleplanung"
             restorable="true">
@@ -598,7 +598,7 @@
             </command>
             <command
                   commandId="ch.opentrainingcenter.client.commands.ShowTracks"
-                  icon="icons/16_16/route_16_16.png"
+                  icon="icons/16_16/map_16_16.png"
                   label="%strecken_uebersicht"
                   style="push"
                   tooltip="%strecken_tooltip">

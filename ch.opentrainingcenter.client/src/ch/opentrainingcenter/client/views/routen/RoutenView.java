@@ -1,19 +1,16 @@
 package ch.opentrainingcenter.client.views.routen;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.ui.ISelectionListener;
-import org.eclipse.ui.ISelectionService;
-import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.events.ExpansionAdapter;
 import org.eclipse.ui.forms.events.ExpansionEvent;
@@ -26,7 +23,8 @@ import ch.opentrainingcenter.client.ui.FormToolkitSupport;
 import ch.opentrainingcenter.client.ui.tableviewer.RoutenTableViewer;
 import ch.opentrainingcenter.client.ui.tableviewer.TrackTableViewer;
 import ch.opentrainingcenter.client.views.ApplicationContext;
-import ch.opentrainingcenter.client.views.einstellungen.UserView;
+import ch.opentrainingcenter.core.cache.IRecordListener;
+import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
@@ -34,7 +32,8 @@ import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
 
-public class RoutenView extends ViewPart implements ISelectionListener {
+@SuppressWarnings("rawtypes")
+public class RoutenView extends ViewPart implements IRecordListener {
 
     public static final String ID = "ch.opentrainingcenter.client.views.einstellungen.routen"; //$NON-NLS-1$
 
@@ -52,8 +51,6 @@ public class RoutenView extends ViewPart implements ISelectionListener {
 
     private final IAthlete athlete;
 
-    private IAthlete selectedAthlete;
-
     private Section sectionRouten;
 
     private TrackTableViewer viewerTracks;
@@ -68,6 +65,7 @@ public class RoutenView extends ViewPart implements ISelectionListener {
         databaseAccess = service.getDatabaseAccess();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void createPartControl(final Composite parent) {
         LOGGER.info("create Route view"); //$NON-NLS-1$
@@ -83,9 +81,6 @@ public class RoutenView extends ViewPart implements ISelectionListener {
 
         toolkit.decorateFormHeading(form.getForm());
         form.setText(Messages.RoutenView_0);
-
-        final ISelectionService selectionService = getSite().getWorkbenchWindow().getSelectionService();
-        selectionService.addSelectionListener(this);
 
         final Composite body = form.getBody();
         GridLayoutFactory.swtDefaults().applyTo(body);
@@ -123,7 +118,9 @@ public class RoutenView extends ViewPart implements ISelectionListener {
         sectionRouten.setClient(composite);
 
         // -------------------------------
-
+        // StreckeCache.getInstance().addListener(this);
+        TrainingCache.getInstance().addListener(this);
+        update();
     }
 
     private void createLeftComposite(final Composite composite) {
@@ -148,32 +145,27 @@ public class RoutenView extends ViewPart implements ISelectionListener {
     }
 
     @Override
-    public void dispose() {
-        final ISelectionService s = getSite().getWorkbenchWindow().getSelectionService();
-        s.removeSelectionListener(this);
-        super.dispose();
+    public void recordChanged(final Collection entry) {
+        update();
     }
 
     @Override
-    public void selectionChanged(final IWorkbenchPart part, final ISelection selection) {
-        if (part instanceof UserView && selection instanceof IStructuredSelection) {
-            final IStructuredSelection sel = (IStructuredSelection) selection;
-            final Object firstElement = sel.getFirstElement();
-            routen.clear();
-            tracks.clear();
-            if (firstElement instanceof IAthlete) {
-                selectedAthlete = (IAthlete) firstElement;
-                routen.addAll(databaseAccess.getRoute(selectedAthlete));
-                tracks.addAll(databaseAccess.getAllTrainings(selectedAthlete));
-                LOGGER.info(String.format("Neuer Athlete selektiert: %s mit %s Routen und %s Tracks", firstElement, routen.size(), tracks.size())); //$NON-NLS-1$      
+    public void deleteRecord(final Collection entry) {
+        update();
+    }
+
+    private void update() {
+        routen.clear();
+        tracks.clear();
+        Display.getDefault().asyncExec(new Runnable() {
+
+            @Override
+            public void run() {
+                routen.addAll(databaseAccess.getRoute(athlete));
+                tracks.addAll(databaseAccess.getAllTrainings(athlete));
+                viewerRouten.refresh();
+                viewerTracks.refresh();
             }
-            final boolean enabled = athlete != null && athlete.equals(selectedAthlete);
-            viewerRouten.getTable().setEnabled(enabled);
-            viewerTracks.getTable().setEnabled(enabled);
-            viewerRouten.refresh();
-            viewerTracks.refresh();
-        } else {
-            LOGGER.info(String.format("Part: %s Selection: %s", part, selection)); //$NON-NLS-1$
-        }
+        });
     }
 }
