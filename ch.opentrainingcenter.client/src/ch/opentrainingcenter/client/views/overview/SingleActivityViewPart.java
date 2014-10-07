@@ -414,7 +414,7 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
                     final StructuredSelection selection = new StructuredSelection(next);
                     if (next.getReferenzTrainingId() == training.getId()) {
                         comboStrecke.setSelection(selection);
-                        comboStrecke.refresh();
+                        comboStrecke.getCombo().setEnabled(false);
                     } else {
                         // select old selection
                         comboStrecke.setSelection(sel);
@@ -482,8 +482,18 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
             comboStrecke.setSelection(new StructuredSelection(all.get(0)));
         }
         comboStrecke.refresh();
-
+        handleStreckenCombo(strecke, comboStrecke);
         section.setClient(container);
+    }
+
+    private void handleStreckenCombo(final StreckeModel strecke, final ComboViewer comboStrecke) {
+        if (isReferenzTrack(training, strecke)) {
+            comboStrecke.getCombo().setEnabled(false);
+        }
+    }
+
+    private boolean isReferenzTrack(final ITraining training, final StreckeModel route) {
+        return route != null && route.getReferenzTrainingId() == training.getId() && !Messages.OTCKonstanten_0.equals(route.getName());
     }
 
     private void safeStrecke(final StreckeModel model) {
