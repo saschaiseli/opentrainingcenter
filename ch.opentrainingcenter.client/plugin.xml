@@ -518,7 +518,7 @@
          </command>
          <command
                commandId="ch.opentrainingcenter.client.commands.AddRoute"
-               icon="icons/16_16/route_16_16.png"
+               icon="icons/16_16/map_16_16.png"
                label="%referenzstrecke"
                style="push">
             <visibleWhen
