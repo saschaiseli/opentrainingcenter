@@ -41,8 +41,6 @@ public class AllgemeinePreferencePage extends FieldEditorPreferencePage implemen
 
     private ComboFieldEditor combo;
 
-    private ComboFieldEditor comboSchuh2;
-
     public AllgemeinePreferencePage() {
         super(GRID);
         setDescription(Messages.SamplePreferencePage_1);
