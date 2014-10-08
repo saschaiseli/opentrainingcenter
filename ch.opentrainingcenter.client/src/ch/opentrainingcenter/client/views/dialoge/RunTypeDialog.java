@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jface.dialogs.TitleAreaDialog;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
@@ -21,6 +22,7 @@ import org.eclipse.swt.widgets.TableColumn;
 
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.views.IImageKeys;
+import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.model.ModelFactory;
 import ch.opentrainingcenter.model.importer.IGpsFileModel;
@@ -38,16 +40,19 @@ public class RunTypeDialog extends TitleAreaDialog {
 
     private final List<IShoe> schuhe;
 
+    private final IPreferenceStore preferenceStore;
+
     public RunTypeDialog(final Shell parentShell, final String[] fileNames, final List<StreckeModel> strecken, final List<IShoe> schuhe) {
         super(parentShell);
         this.strecken = strecken;
         this.schuhe = schuhe;
+        preferenceStore = Activator.getDefault().getPreferenceStore();
         initModel(fileNames);
     }
 
     private void initModel(final String[] fileNames) {
         final StreckeModel defRoute = strecken.isEmpty() ? null : strecken.get(0);
-        final IShoe defShoe = schuhe.isEmpty() ? null : schuhe.get(0);
+        final IShoe defShoe = schuhe.isEmpty() ? null : getDefaultSchuh();
         for (final String fileName : fileNames) {
             final IGpsFileModel model = ModelFactory.createGpsFileModel(fileName);
             model.setRoute(defRoute);
@@ -147,15 +152,26 @@ public class RunTypeDialog extends TitleAreaDialog {
         col.setEditingSupport(new StreckeEditingSupport(viewer, strecken));
 
         // Schuh
+
         col = createTableViewerColumn(titles[4], bounds[4]);
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(final Object element) {
-                return schuhe.isEmpty() ? "" : schuhe.get(0).getSchuhname(); //$NON-NLS-1$
+                return schuhe.isEmpty() ? "" : models.get(0).getSchuh().getSchuhname(); //$NON-NLS-1$
             }
         });
         final SchuhEditingSupport schuhEditingSupport = new SchuhEditingSupport(viewer, schuhe);
         col.setEditingSupport(schuhEditingSupport);
+    }
+
+    private IShoe getDefaultSchuh() {
+        final String id = preferenceStore.getString(PreferenceConstants.DEFAULT_SCHUH_1);
+        for (final IShoe shoe : schuhe) {
+            if (String.valueOf(shoe.getId()).equals(id)) {
+                return shoe;
+            }
+        }
+        return null;
     }
 
     public IGpsFileModelWrapper getModelWrapper() {

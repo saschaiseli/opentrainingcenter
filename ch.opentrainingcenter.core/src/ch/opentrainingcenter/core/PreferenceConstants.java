@@ -62,6 +62,7 @@ public final class PreferenceConstants {
     public static final String CHART_WEEKS = "CHART_WEEKS";
     public static final String CHART_SPORT = "CHART_SPORT";
     public static final String SYNTH_RUNDEN = "SYNTH_RUNDEN";
+    public static final String DEFAULT_SCHUH_1 = "DEFAULT_SCHUH_1";
 
     private PreferenceConstants() {
 

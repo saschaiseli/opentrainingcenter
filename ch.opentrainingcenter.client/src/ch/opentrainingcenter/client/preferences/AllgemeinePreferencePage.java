@@ -26,23 +26,12 @@ import ch.opentrainingcenter.core.db.DBSTATE;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
-import ch.opentrainingcenter.transfer.IAthlete;
+import ch.opentrainingcenter.transfer.IShoe;
 import ch.opentrainingcenter.transfer.Sport;
-
-/**
- * This class represents a preference page that is contributed to the
- * Preferences dialog. By subclassing <samp>FieldEditorPreferencePage</samp>, we
- * can use the field support built into JFace that allows us to create a page
- * that is small and knows how to save, restore and apply itself.
- * <p>
- * This page is used to modify preferences only. They are stored in the
- * preference store that belongs to the main plug-in class. That way,
- * preferences can be accessed directly via the preference store.
- */
 
 public class AllgemeinePreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
-    private final List<IAthlete> allAthletes;
+    private final List<IShoe> shoes;
 
     private final IDatabaseAccess databaseAccess;
 
@@ -50,15 +39,19 @@ public class AllgemeinePreferencePage extends FieldEditorPreferencePage implemen
     private BooleanFieldEditor biking;
     private BooleanFieldEditor other;
 
+    private ComboFieldEditor combo;
+
+    private ComboFieldEditor comboSchuh2;
+
     public AllgemeinePreferencePage() {
         super(GRID);
         setDescription(Messages.SamplePreferencePage_1);
         final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
         databaseAccess = service.getDatabaseAccess();
         if (DBSTATE.OK.equals(ApplicationContext.getApplicationContext().getDbState().getState())) {
-            allAthletes = databaseAccess.getAllAthletes();
+            shoes = databaseAccess.getShoes(ApplicationContext.getApplicationContext().getAthlete());
         } else {
-            allAthletes = Collections.emptyList();
+            shoes = Collections.emptyList();
         }
     }
 
@@ -70,12 +63,11 @@ public class AllgemeinePreferencePage extends FieldEditorPreferencePage implemen
     @Override
     public void createFieldEditors() {
         final Composite parent = getFieldEditorParent();
-        final Composite training = parent;
 
-        final Label sport = new Label(training, SWT.NONE);
+        final Label sport = new Label(parent, SWT.NONE);
         sport.setText(Messages.ChartPreferencePage_6);
 
-        final Combo comboSport = new Combo(training, SWT.READ_ONLY);
+        final Combo comboSport = new Combo(parent, SWT.READ_ONLY);
         comboSport.setBounds(50, 50, 150, 65);
 
         comboSport.setItems(Sport.items());
@@ -88,7 +80,7 @@ public class AllgemeinePreferencePage extends FieldEditorPreferencePage implemen
             }
         });
 
-        final Label head = new Label(training, SWT.NONE);
+        final Label head = new Label(parent, SWT.NONE);
         head.setText(Messages.AllgemeinePreferencePage_Sportarten);
 
         running = new BooleanFieldEditor(Sport.RUNNING.getMessage(), Sport.RUNNING.getTranslated(), parent);
@@ -103,18 +95,20 @@ public class AllgemeinePreferencePage extends FieldEditorPreferencePage implemen
 
         addField(new BooleanFieldEditor(PreferenceConstants.SYNTH_RUNDEN, Messages.AllgemeinePreferencePage_SYNTH_RUNDEN_ANZEIGEN, parent));
 
+        // -----------------------------------------------
         final Label separator2 = new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL);
         GridDataFactory.fillDefaults().span(2, 1).grab(true, false).applyTo(separator2);
 
-        final List<String[]> vals = new ArrayList<String[]>();
-        for (final IAthlete ath : allAthletes) {
-            vals.add(new String[] { ath.getName(), String.valueOf(ath.getId()) });
-        }
-        final ComboFieldEditor comboField = new ComboFieldEditor(PreferenceConstants.ATHLETE_ID, Messages.SamplePreferencePage3,
-                vals.toArray(new String[0][0]), training);
-        addField(comboField);
-        comboField.setEnabled(false, training);
+        final Label schuheLabel = new Label(parent, SWT.NONE);
+        schuheLabel.setText(Messages.AllgemeinePreferencePage_DefaultSchuh);
+        GridDataFactory.fillDefaults().span(2, 1).grab(true, false).applyTo(schuheLabel);
 
+        final List<String[]> vals = new ArrayList<String[]>();
+        for (final IShoe shoe : shoes) {
+            vals.add(new String[] { shoe.getSchuhname(), String.valueOf(shoe.getId()) });
+        }
+        combo = new ComboFieldEditor(PreferenceConstants.DEFAULT_SCHUH_1, Messages.AllgemeinePreferencePage_1_Wahl, vals.toArray(new String[0][0]), parent);
+        addField(combo);
     }
 
     @Override
