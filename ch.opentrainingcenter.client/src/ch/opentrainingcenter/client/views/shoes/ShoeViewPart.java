@@ -210,6 +210,7 @@ public class ShoeViewPart extends ViewPart {
 
         });
         section.setClient(compositeSchuhe);
+        update();
     }
 
     @Override
@@ -223,9 +224,11 @@ public class ShoeViewPart extends ViewPart {
             @Override
             public void run() {
                 final List<IShoe> shoes = databaseAccess.getShoes(athlete);
-                tableViewer.setAnzahlUndKilometer(getAnzahlUndKilometer(shoes));
-                tableViewer.setInput(shoes);
-                tableViewer.refresh();
+                if (!tableViewer.getTable().isDisposed()) {
+                    tableViewer.setAnzahlUndKilometer(getAnzahlUndKilometer(shoes));
+                    tableViewer.setInput(shoes);
+                    tableViewer.refresh();
+                }
             }
         });
     }

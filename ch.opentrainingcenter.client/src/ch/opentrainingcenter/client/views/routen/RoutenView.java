@@ -163,8 +163,12 @@ public class RoutenView extends ViewPart implements IRecordListener {
             public void run() {
                 routen.addAll(databaseAccess.getRoute(athlete));
                 tracks.addAll(databaseAccess.getAllTrainings(athlete));
-                viewerRouten.refresh();
-                viewerTracks.refresh();
+                if (!viewerRouten.getTable().isDisposed()) {
+                    viewerRouten.refresh();
+                }
+                if (!viewerTracks.getTable().isDisposed()) {
+                    viewerTracks.refresh();
+                }
             }
         });
     }

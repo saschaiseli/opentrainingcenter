@@ -84,8 +84,10 @@ public final class ModelFactory {
         if (training.getWeather() != null) {
             simpleTraining.setWetter(Wetter.getRunType(training.getWeather().getId()));
         }
-        if (training.getRoute() != null) {
-            simpleTraining.setStrecke(ModelFactory.createStreckeModel(training.getRoute(), training.getAthlete(), training.getId()));
+        final IRoute route = training.getRoute();
+        if (route != null) {
+            final ITraining referenzTrack = route.getReferenzTrack();
+            simpleTraining.setStrecke(ModelFactory.createStreckeModel(route, training.getAthlete(), referenzTrack == null ? 0 : referenzTrack.getId()));
         }
         simpleTraining.setUpMeter(training.getUpMeter());
         simpleTraining.setDownMeter(training.getDownMeter());

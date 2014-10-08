@@ -17,6 +17,7 @@ import ch.opentrainingcenter.model.importer.IGpsFileModel;
 import ch.opentrainingcenter.model.importer.IGpsFileModelWrapper;
 import ch.opentrainingcenter.model.planing.IPlanungModel;
 import ch.opentrainingcenter.model.planing.IPlanungWocheModel;
+import ch.opentrainingcenter.model.strecke.StreckeModel;
 import ch.opentrainingcenter.model.training.ISimpleTraining;
 import ch.opentrainingcenter.model.training.internal.SimpleTraining;
 import ch.opentrainingcenter.transfer.HeartRate;
@@ -78,6 +79,21 @@ public class ModelFactoryTest {
         final RunData runData = new RunData(overview.getDatum(), overview.getDauer(), overview.getLaengeInMeter(), overview.getMaxSpeed());
         final ISimpleTraining training = new SimpleTraining(runData, heart, type, "");
         assertTraining(training, type);
+    }
+
+    @Test
+    public void testCreateStreckeModel() {
+        final IRoute route = mock(IRoute.class);
+        when(route.getId()).thenReturn(11);
+        final ITraining training = mock(ITraining.class);
+        when(route.getReferenzTrack()).thenReturn(training);
+        when(route.getName()).thenReturn("junit");
+        when(training.getId()).thenReturn(1042);
+
+        final StreckeModel model = ModelFactory.createStreckeModel(route, athlete, 42);
+
+        assertEquals(42, model.getReferenzTrainingId());
+        assertEquals(11, model.getId());
     }
 
     /**

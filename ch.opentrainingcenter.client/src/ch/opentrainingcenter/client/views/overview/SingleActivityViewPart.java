@@ -380,9 +380,7 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
                 if (!event.getSelection().isEmpty()) {
                     final StructuredSelection selection = (StructuredSelection) event.getSelection();
                     final StreckeModel streckeModel = (StreckeModel) selection.getFirstElement();
-                    if (!streckeModel.equals(strecke)) {
-                        safeStrecke(streckeModel);
-                    }
+                    safeStrecke(streckeModel);
                 }
             }
         });
@@ -447,6 +445,19 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
             final StructuredSelection selection = new StructuredSelection(training.getShoe());
             comboSchuhe.setSelection(selection);
         }
+
+        comboSchuhe.addSelectionChangedListener(new ISelectionChangedListener() {
+
+            @Override
+            public void selectionChanged(final SelectionChangedEvent event) {
+                if (!event.getSelection().isEmpty()) {
+                    final StructuredSelection selection = (StructuredSelection) event.getSelection();
+                    final IShoe shoe = (IShoe) selection.getFirstElement();
+                    training.setShoe(shoe);
+                    update(training);
+                }
+            }
+        });
         // -------------------------------
 
         listener = new RecordAdapter<ITraining>() {
