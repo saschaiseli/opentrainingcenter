@@ -70,7 +70,6 @@ import ch.opentrainingcenter.transfer.ILapInfo;
 import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.IShoe;
 import ch.opentrainingcenter.transfer.ITraining;
-import ch.opentrainingcenter.transfer.IWeather;
 import ch.opentrainingcenter.transfer.Sport;
 import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
 
@@ -513,18 +512,6 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
     private boolean isReferenzTrack(final ITraining training, final IRoute route) {
         return route != null && route.getReferenzTrack() != null && route.getReferenzTrack().getId() == training.getId()
                 && !Messages.OTCKonstanten_0.equals(route.getName());
-    }
-
-    private void safeWeather(final int index) {
-        final IWeather wetter = training.getWeather();
-        if (index != wetter.getId()) {
-            // änderungen
-            final ITraining record = databaseAccess.getTrainingById(training.getDatum());
-            if (record != null) {
-                training.setWeather(CommonTransferFactory.createWeather(index));
-            }
-            update(record);
-        }
     }
 
     private void update(final ITraining record) {
