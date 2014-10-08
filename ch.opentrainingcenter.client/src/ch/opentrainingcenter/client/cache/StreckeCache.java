@@ -5,7 +5,6 @@ import ch.opentrainingcenter.model.strecke.StreckeModel;
 
 /**
  * Cache für die verschiedenen Strecken.
- * 
  */
 public final class StreckeCache extends AbstractCache<String, StreckeModel> {
 
@@ -22,5 +21,10 @@ public final class StreckeCache extends AbstractCache<String, StreckeModel> {
     @Override
     public String getKey(final StreckeModel value) {
         return value.getName();
+    }
+
+    @Override
+    public String getName() {
+        return "StreckeModel"; //$NON-NLS-1$
     }
 }

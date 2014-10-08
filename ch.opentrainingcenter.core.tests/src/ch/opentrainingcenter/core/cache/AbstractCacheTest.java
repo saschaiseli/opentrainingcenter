@@ -74,6 +74,11 @@ public class AbstractCacheTest {
         public Integer getKey(final CacheElement value) {
             return value.getK();
         }
+
+        @Override
+        public String getName() {
+            return "Junit";
+        }
     }
 
     public class CacheElement {

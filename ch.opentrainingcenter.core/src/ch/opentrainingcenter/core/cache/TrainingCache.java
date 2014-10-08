@@ -56,7 +56,8 @@ public class TrainingCache extends AbstractCache<Long, ITraining> implements Cac
     }
 
     @Override
-    public String toString() {
-        return "Cache: Anzahl Elemente: " + size(); //$NON-NLS-1$
+    public String getName() {
+        return "Training"; //$NON-NLS-1$
     }
+
 }

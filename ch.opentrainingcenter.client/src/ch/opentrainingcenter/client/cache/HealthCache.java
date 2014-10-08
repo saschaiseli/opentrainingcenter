@@ -34,4 +34,9 @@ public final class HealthCache extends AbstractCache<Integer, ConcreteHealth> {
         }
         return str.toString();
     }
+
+    @Override
+    public String getName() {
+        return "ConcreteHealth"; //$NON-NLS-1$
+    }
 }

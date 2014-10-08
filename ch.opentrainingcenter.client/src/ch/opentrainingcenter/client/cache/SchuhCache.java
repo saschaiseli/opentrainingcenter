@@ -20,4 +20,9 @@ public class SchuhCache extends AbstractCache<String, IShoe> {
         return String.valueOf(schuh.getId());
     }
 
+    @Override
+    public String getName() {
+        return "IShoe"; //$NON-NLS-1$
+    }
+
 }

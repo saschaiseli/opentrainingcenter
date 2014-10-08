@@ -20,4 +20,9 @@ public class AthleteCache extends AbstractCache<String, IAthlete> {
         return value.getName();
     }
 
+    @Override
+    public String getName() {
+        return "IAthlete"; //$NON-NLS-1$
+    }
+
 }

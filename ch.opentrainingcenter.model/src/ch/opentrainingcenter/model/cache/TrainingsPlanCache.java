@@ -22,4 +22,9 @@ public final class TrainingsPlanCache extends AbstractCache<KwJahrKey, IPlanungM
         Assertions.notNull(value);
         return new KwJahrKey(value.getJahr(), value.getKw());
     }
+
+    @Override
+    public String getName() {
+        return "IPlanungModel"; //$NON-NLS-1$
+    }
 }

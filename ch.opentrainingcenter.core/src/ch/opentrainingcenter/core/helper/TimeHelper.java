@@ -70,6 +70,23 @@ public final class TimeHelper {
      * 
      * @param datum
      *            {@link Date}
+     * @param withDay
+     *            flag ob der wochenag auch mitgegeben werden soll.
+     * @return das datum '13.01.2013 00:00:00' und wenn das flag with Day ist
+     *         wird noch der ausgeschreibene wochentag vorangestellt.
+     */
+    public static String convertDateToString(final Long datum, final boolean withDay) {
+        return convertDateToString(new Date(datum), withDay);
+    }
+
+    /**
+     * konvertiere ein {@link Date} in ein lesbareres format.
+     * 
+     * wenn der parameter withDay true ist wird der wochentag noch mit
+     * ausgegeben
+     * 
+     * @param datum
+     *            {@link Date}
      * @return das datum '201011231423'.
      */
     public static String convertDateToFileName(final Date datum) {

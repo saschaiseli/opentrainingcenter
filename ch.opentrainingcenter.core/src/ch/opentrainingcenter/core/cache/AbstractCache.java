@@ -21,6 +21,13 @@ public abstract class AbstractCache<K, V> implements ICache<K, V> {
 
     public abstract K getKey(V value);
 
+    public abstract String getName();
+
+    @Override
+    public String toString() {
+        return String.format("%s-Cache: Anzahl Elemente: %s", getName(), size()); //$NON-NLS-1$
+    }
+
     @Override
     public void addAll(final List<V> values) {
         Assertions.notNull(values);

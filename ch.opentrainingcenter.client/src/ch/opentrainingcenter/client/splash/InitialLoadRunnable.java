@@ -20,6 +20,7 @@ import ch.opentrainingcenter.client.cache.StreckeCache;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.client.views.IImageKeys;
 import ch.opentrainingcenter.core.cache.ICache;
+import ch.opentrainingcenter.core.cache.RouteCache;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.helper.AltitudeCalculator;
 import ch.opentrainingcenter.core.helper.AltitudeCalculator.Ascending;
@@ -98,7 +99,8 @@ public class InitialLoadRunnable implements IRunnableWithProgress {
     private void loadAllRouten(final IProgressMonitor monitor, final IAthlete athlete, final IDatabaseAccess db) {
         int i = 0;
         final List<IRoute> routen = db.getRoute(athlete);
-        final ICache<String, StreckeModel> cache = StreckeCache.getInstance();
+        final ICache<String, StreckeModel> cacheOld = StreckeCache.getInstance();
+        final RouteCache cache = RouteCache.getInstance();
         final List<StreckeModel> strecken = new ArrayList<>();
         for (final IRoute route : routen) {
             final int referenzTrainingId = route.getReferenzTrack() != null ? route.getReferenzTrack().getId() : 0;
@@ -107,7 +109,8 @@ public class InitialLoadRunnable implements IRunnableWithProgress {
             monitor.subTask(NLS.bind(Messages.InitialLoadRunnable_5, i++));
             LOG.info(String.format("Strecke dem Cache hinzugefügt: %s Strecke: %s", route, strecke)); //$NON-NLS-1$ 
         }
-        cache.addAll(strecken);
+        cacheOld.addAll(strecken);
+        cache.addAll(routen);
     }
 
     private void loadAllShoes(final IProgressMonitor monitor, final IAthlete athlete, final IDatabaseAccess db) {
