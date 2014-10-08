@@ -96,7 +96,7 @@ public class SchuhTableViewer extends TableViewer {
                         return null;
                     }
                 }
-                return imageicon != null ? new Image(Display.getDefault(), imageicon) : Activator.getImageDescriptor(IImageKeys.SHOE).createImage();
+                return imageicon != null ? new Image(Display.getDefault(), imageicon) : Activator.getImageDescriptor(IImageKeys.SHOE_64).createImage();
             }
         });
         col = createTableViewerColumn(titles[3], bounds[3], 3);
