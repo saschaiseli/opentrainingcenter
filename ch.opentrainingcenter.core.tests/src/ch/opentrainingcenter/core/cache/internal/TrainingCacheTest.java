@@ -39,6 +39,7 @@ public class TrainingCacheTest {
     public void before() {
         mockDataAccess = Mockito.mock(IDatabaseAccess.class);
         cache = TrainingCache.getInstance();
+        cache.resetCache();
         // ApplicationContext.getApplicationContext().clear();
     }
 
