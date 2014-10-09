@@ -9,7 +9,6 @@ import org.apache.log4j.Logger;
 import ch.opentrainingcenter.core.assertions.Assertions;
 import ch.opentrainingcenter.core.helper.DistanceHelper;
 import ch.opentrainingcenter.importer.fit.internal.ConvertGarminSemicircles;
-import ch.opentrainingcenter.importer.fit.internal.ConvertGarminUtcTime;
 import ch.opentrainingcenter.transfer.HeartRate;
 import ch.opentrainingcenter.transfer.ILapInfo;
 import ch.opentrainingcenter.transfer.IStreckenPunkt;
@@ -88,7 +87,7 @@ public class TrainingListener implements MesgListener {
 
         final int heartbeat = record.getHeartRate() != null ? record.getHeartRate() : -1;
         final int altitude = record.getAltitude() != null ? record.getAltitude().intValue() : -1;
-        final long time = ConvertGarminUtcTime.convertToLocalMillis(record.getTimestamp().getDate());
+        final long time = record.getTimestamp().getDate().getTime();
         return CommonTransferFactory.createTrackPointProperty(distance, heartbeat, altitude, time, 0, streckenPunkt);
     }
 
@@ -104,8 +103,9 @@ public class TrainingListener implements MesgListener {
 
     public ITraining getTraining() {
         Assertions.notNull(session);
-        final long dateOfStart = ConvertGarminUtcTime.convertToLocalMillis(session.getStartTime().getDate());
-        final double timeInSeconds = (ConvertGarminUtcTime.convertToLocalMillis(session.getTimestamp().getDate()) - dateOfStart) / 1000;
+        final long dateOfStart = session.getStartTime().getDate().getTime();
+        final long end = session.getTimestamp().getDate().getTime();
+        final double timeInSeconds = (end - dateOfStart) / 1000;
         final double distanceInMeter = session.getTotalDistance();
         final double maxSpeed = session.getMaxSpeed();
         final RunData runData = new RunData(dateOfStart, timeInSeconds, distanceInMeter, maxSpeed);
