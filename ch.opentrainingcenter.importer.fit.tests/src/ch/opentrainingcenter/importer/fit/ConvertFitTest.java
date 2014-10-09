@@ -8,7 +8,10 @@ import java.io.File;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -28,6 +31,8 @@ public class ConvertFitTest {
     @Before
     public void setUp() {
         converter = new ConvertFit();
+        Locale.setDefault(Locale.GERMAN);
+        TimeZone.setDefault(TimeZone.getTimeZone("GMT+1"));
     }
 
     @Test
@@ -38,12 +43,19 @@ public class ConvertFitTest {
     }
 
     @Test
+    public void testActivityConvertStartDatum() throws ConvertException, ParseException {
+        final ITraining training = converter.convert(new File("resources/2014_09_09.fit"));
+        System.out.println(new Date(training.getDatum()));
+        assertEquals(convertToDate("2014-09-09 19:28:50"), training.getDatum());
+    }
+
+    @Test
     public void testRealActivityConvert() throws ConvertException, ParseException {
         final ITraining training = converter.convert(new File("resources/2014_09_11.fit"));
 
         assertNotNull(training);
         assertNull("Ist null, da dieser Timestamp erst vom importer gesetzt", training.getDateOfImport());
-        assertEquals("Lauf startet um 2014-09-11 17:18:35", convertToDate("2014-09-11 17:18:35"), training.getDatum());
+        assertEquals("Lauf startet um 2014-09-11 17:18:35", convertToDate("2014-09-11 19:18:35"), training.getDatum());
         assertEquals("<TotalTimeSeconds>2003.2</TotalTimeSeconds>", 2008.0, training.getDauer(), 0.001);
         assertEquals("<DistanceMeters>5297.08</DistanceMeters>", 5297.08, training.getLaengeInMeter(), 0.001);
         assertEquals("<MaximumSpeed>5.067</MaximumSpeed>", 5.067, training.getMaxSpeed(), 0.001);
@@ -57,13 +69,13 @@ public class ConvertFitTest {
 
         final List<ITrackPointProperty> points = training.getTrackPoints();
 
-        assertTrackPoint(0, "2014-09-11 17:18:35", 0.0, 558.0, 46.95485311, 7.449236233, points.get(0));
-        assertTrackPoint(1, "2014-09-11 17:18:43", 12.57, 555.0, 46.95496534, 7.449198263, points.get(1));
-        assertTrackPoint(2, "2014-09-11 17:18:48", 31.83, 555.0, 46.95501345, 7.448971029, points.get(2));
-        assertTrackPoint(3, "2014-09-11 17:18:52", 45.68, 554.0, 46.95496056, 7.448805906, points.get(3));
-        assertTrackPoint(4, "2014-09-11 17:18:55", 51.47, 554.0, 46.95492133, 7.448757458, points.get(4));
+        assertTrackPoint(0, "2014-09-11 19:18:35", 0.0, 558.0, 46.95485311, 7.449236233, points.get(0));
+        assertTrackPoint(1, "2014-09-11 19:18:43", 12.57, 555.0, 46.95496534, 7.449198263, points.get(1));
+        assertTrackPoint(2, "2014-09-11 19:18:48", 31.83, 555.0, 46.95501345, 7.448971029, points.get(2));
+        assertTrackPoint(3, "2014-09-11 19:18:52", 45.68, 554.0, 46.95496056, 7.448805906, points.get(3));
+        assertTrackPoint(4, "2014-09-11 19:18:55", 51.47, 554.0, 46.95492133, 7.448757458, points.get(4));
         // noch letzter punkt
-        assertTrackPoint(301, "2014-09-11 17:51:57", 5294.86, 562.0, 46.9547371, 7.448976813, points.get(points.size() - 1));
+        assertTrackPoint(301, "2014-09-11 19:51:57", 5294.86, 562.0, 46.9547371, 7.448976813, points.get(points.size() - 1));
 
         final List<ILapInfo> lapInfos = training.getLapInfos();
         assertEquals(1, lapInfos.size());

@@ -2,6 +2,7 @@ package ch.opentrainingcenter.importer.fit;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -104,8 +105,10 @@ public class TrainingListener implements MesgListener {
 
     public ITraining getTraining() {
         Assertions.notNull(session);
-        final long dateOfStart = session.getStartTime().getTimestamp() * 1000;
-        final double timeInSeconds = (session.getTimestamp().getTimestamp() * 1000 - dateOfStart) / 1000;
+        final long dateOfStart = ConvertGarminUtcTime.convertToLocalMillis(session.getStartTime().getDate());
+        final Date date2 = session.getStartTime().getDate();
+        final Date date = new Date(dateOfStart);
+        final double timeInSeconds = (ConvertGarminUtcTime.convertToLocalMillis(session.getTimestamp().getDate()) - dateOfStart) / 1000;
         final double distanceInMeter = session.getTotalDistance();
         final double maxSpeed = session.getMaxSpeed();
         final RunData runData = new RunData(dateOfStart, timeInSeconds, distanceInMeter, maxSpeed);
@@ -113,7 +116,7 @@ public class TrainingListener implements MesgListener {
         final int max = session.getMaxHeartRate() != null ? session.getMaxHeartRate().intValue() : -1;
         final HeartRate heart = new HeartRate(average, max);
         final ITraining training = CommonTransferFactory.createTraining(runData, heart);
-        training.setDatum(ConvertGarminUtcTime.convertToLocalMillis(session.getStartTime().getDate()));
+        training.setDatum(dateOfStart);
         training.setTrackPoints(trackpoints);
         training.setDownMeter(session.getTotalDescent());
         training.setUpMeter(session.getTotalAscent());
