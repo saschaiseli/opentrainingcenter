@@ -1,6 +1,7 @@
 package ch.opentrainingcenter.importer.fit;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
@@ -48,6 +49,7 @@ public class ConvertFitTest {
         System.out.println(new Date(training.getDatum()) + " " + TimeZone.getDefault());
         // assertEquals(convertToDate("2014-09-09 19:28:50"),
         // training.getDatum());
+        assertFalse(true);
         assertEquals(new Date(convertToDate("2014-09-09 19:28:50")), new Date(training.getDatum()));
     }
 
