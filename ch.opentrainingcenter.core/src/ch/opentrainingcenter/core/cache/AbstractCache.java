@@ -32,7 +32,7 @@ public abstract class AbstractCache<K, V> implements ICache<K, V> {
     public void addAll(final List<V> values) {
         Assertions.notNull(values);
         for (final V value : values) {
-            LOG.info(String.format("Element added -> Cache (%s) Size: %s", value.getClass().getName(), cache.size())); //$NON-NLS-1$
+            LOG.info(String.format("Element added in Cache '%s' Size: %s", getName(), cache.size())); //$NON-NLS-1$
             cache.put(getKey(value), value);
         }
         if (!values.isEmpty()) {

@@ -96,13 +96,13 @@ public class CommonDao implements IDatabaseAccess {
 
     @Override
     public List<ITraining> getTrainingsByAthleteAndDate(final IAthlete athlete, final DateTime von, final DateTime bis) {
-        LOGGER.info("Load records direct from database"); //$NON-NLS-1$
+        LOGGER.info("Load records direct from database [getTrainingsByAthleteAndDate]"); //$NON-NLS-1$
         return trainingDao.getTrainingsByAthleteAndDate(athlete, von, bis);
     }
 
     @Override
     public final List<ITraining> getAllTrainingByRoute(final IAthlete athlete, final IRoute route) {
-        LOGGER.info("Load records direct from database"); //$NON-NLS-1$
+        LOGGER.info("Load records direct from database [getAllTrainingByRoute]"); //$NON-NLS-1$
         return trainingDao.getAllTrainingsByRoute(athlete, route);
     }
 
@@ -119,15 +119,15 @@ public class CommonDao implements IDatabaseAccess {
 
     @Override
     public final void saveOrUpdateAll(final Collection<ITraining> trainings) {
-        final List<ITraining> models = new ArrayList<>();
+        final List<ITraining> cachedTrainings = new ArrayList<>();
         for (final ITraining training : trainings) {
             trainingDao.saveOrUpdate(training);
             if (useCache) {
-                models.add(training);
+                cachedTrainings.add(training);
             }
         }
-        if (!models.isEmpty()) {
-            cache.addAll(models);
+        if (!cachedTrainings.isEmpty()) {
+            cache.addAll(cachedTrainings);
         }
     }
 

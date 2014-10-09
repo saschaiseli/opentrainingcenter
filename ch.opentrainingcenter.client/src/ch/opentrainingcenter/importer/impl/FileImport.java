@@ -56,7 +56,7 @@ public class FileImport implements IFileImport {
     public void importFile(final String filterPath, final IGpsFileModelWrapper modelWrapper, final IProgressMonitor monitor) {
         LOGGER.info("------------------------------- START Converting -------------------------------------------"); //$NON-NLS-1$
         final long startConvert = DateTime.now().getMillis();
-        monitor.beginTask(Messages.FileImport_KonvertGpsFile, modelWrapper.size() * 2);
+        monitor.beginTask(Messages.FileImport_KonvertGpsFile, modelWrapper.size());
         final List<ITraining> trainings = new ArrayList<ITraining>();
         for (final IGpsFileModel model : modelWrapper.getGpsFileModels()) {
             final ITraining training = convert(filterPath, model, monitor);
@@ -69,12 +69,7 @@ public class FileImport implements IFileImport {
         final long convertTime = DateTime.now().getMillis() - startConvert;
         LOGGER.info(String.format("Die konvertierten Trainings (%s Stueck) werden in der DB gespeichert.", trainings.size())); //$NON-NLS-1$
         final long startDb = DateTime.now().getMillis();
-        monitor.beginTask(Messages.FileImport_SaveGpsFiles, trainings.size());
-        for (final ITraining training : trainings) {
-            monitor.setTaskName(String.format(Messages.FileImport_SaveGpsFile, training.getFileName()));
-            dbAccess.saveOrUpdate(training);
-            monitor.worked(1);
-        }
+        dbAccess.saveOrUpdateAll(trainings);
         final long dbTime = DateTime.now().getMillis() - startDb;
         LOGGER.info("*******************************************************************************"); //$NON-NLS-1$
         LOGGER.info("Import Report"); //$NON-NLS-1$

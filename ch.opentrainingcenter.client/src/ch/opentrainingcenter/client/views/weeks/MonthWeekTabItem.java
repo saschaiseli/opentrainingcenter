@@ -157,15 +157,17 @@ public class MonthWeekTabItem {
 
             @Override
             public void run() {
-                week.getSection().setExpanded(false);
-                final List<ITraining> trainingsWeek = databaseAccess.getTrainingsByAthleteAndDate(athlete, firstDayOfWeek, end);
-                update(trainingsWeek, week);
-                week.getSection().setExpanded(true);
+                if (week != null && !week.getSection().isDisposed()) {
+                    week.getSection().setExpanded(false);
+                    final List<ITraining> trainingsWeek = databaseAccess.getTrainingsByAthleteAndDate(athlete, firstDayOfWeek, end);
+                    update(trainingsWeek, week);
+                    week.getSection().setExpanded(true);
 
-                month.getSection().setExpanded(false);
-                final List<ITraining> trainingsMonth = databaseAccess.getTrainingsByAthleteAndDate(athlete, firstDayOfMonth, end);
-                update(trainingsMonth, month);
-                month.getSection().setExpanded(true);
+                    month.getSection().setExpanded(false);
+                    final List<ITraining> trainingsMonth = databaseAccess.getTrainingsByAthleteAndDate(athlete, firstDayOfMonth, end);
+                    update(trainingsMonth, month);
+                    month.getSection().setExpanded(true);
+                }
             }
         });
     }

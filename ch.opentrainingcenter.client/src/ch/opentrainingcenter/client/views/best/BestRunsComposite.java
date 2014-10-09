@@ -276,7 +276,7 @@ public class BestRunsComposite {
 
                     sectionOverall.redraw();
                     sectionPace.redraw();
-
+                    LOGGER.info(String.format("Update BestRun DONE...")); //$NON-NLS-1$
                 }
             });
         }
