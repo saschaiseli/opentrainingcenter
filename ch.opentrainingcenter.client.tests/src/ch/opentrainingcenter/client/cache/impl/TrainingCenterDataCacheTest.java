@@ -270,7 +270,7 @@ public class TrainingCenterDataCacheTest {
 
     @Test
     public void testToStringInit() {
-        assertEquals("Cache: Anzahl Elemente: 0", cache.toString());
+        assertEquals("Training-Cache: Anzahl Elemente: 0", cache.toString());
     }
 
     @Test
@@ -285,7 +285,7 @@ public class TrainingCenterDataCacheTest {
 
         cache.addAll(models);
 
-        assertEquals("Cache: Anzahl Elemente: 2", cache.toString());
+        assertEquals("Training-Cache: Anzahl Elemente: 2", cache.toString());
     }
 
     private ITraining createImported(final Long date) {

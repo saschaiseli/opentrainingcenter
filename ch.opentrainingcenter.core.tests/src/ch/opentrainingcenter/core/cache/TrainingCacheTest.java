@@ -115,7 +115,7 @@ public class TrainingCacheTest {
 
         cache.addAll(models);
 
-        assertEquals("Cache: Anzahl Elemente: 1", cache.toString());
+        assertEquals("Training-Cache: Anzahl Elemente: 1", cache.toString());
     }
 
     @Test
