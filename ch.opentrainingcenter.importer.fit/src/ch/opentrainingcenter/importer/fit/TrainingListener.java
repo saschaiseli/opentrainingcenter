@@ -2,7 +2,6 @@ package ch.opentrainingcenter.importer.fit;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -106,8 +105,6 @@ public class TrainingListener implements MesgListener {
     public ITraining getTraining() {
         Assertions.notNull(session);
         final long dateOfStart = ConvertGarminUtcTime.convertToLocalMillis(session.getStartTime().getDate());
-        final Date date2 = session.getStartTime().getDate();
-        final Date date = new Date(dateOfStart);
         final double timeInSeconds = (ConvertGarminUtcTime.convertToLocalMillis(session.getTimestamp().getDate()) - dateOfStart) / 1000;
         final double distanceInMeter = session.getTotalDistance();
         final double maxSpeed = session.getMaxSpeed();
