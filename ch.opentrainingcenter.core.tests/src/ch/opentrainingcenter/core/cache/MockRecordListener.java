@@ -1,4 +1,4 @@
-package ch.opentrainingcenter.client.cache;
+package ch.opentrainingcenter.core.cache;
 
 import java.util.ArrayList;
 import java.util.Collection;

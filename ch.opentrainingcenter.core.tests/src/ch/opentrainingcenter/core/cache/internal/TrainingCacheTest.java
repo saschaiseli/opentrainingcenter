@@ -1,4 +1,4 @@
-package ch.opentrainingcenter.client.cache.impl;
+package ch.opentrainingcenter.core.cache.internal;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -11,27 +11,24 @@ import java.util.List;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 
-import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import ch.opentrainingcenter.client.cache.ActivityTTestHelper;
-import ch.opentrainingcenter.client.cache.MockRecordListener;
-import ch.opentrainingcenter.client.views.ApplicationContext;
+import ch.opentrainingcenter.core.cache.ActivityTTestHelper;
 import ch.opentrainingcenter.core.cache.Cache;
+import ch.opentrainingcenter.core.cache.MockRecordListener;
 import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.transfer.HeartRate;
-import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.RunData;
 import ch.opentrainingcenter.transfer.TrainingType;
 import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
 
 @SuppressWarnings("nls")
-public class TrainingCenterDataCacheTest {
+public class TrainingCacheTest {
 
     private static IDatabaseAccess mockDataAccess;
     private static Cache cache;
@@ -42,7 +39,7 @@ public class TrainingCenterDataCacheTest {
     public void before() {
         mockDataAccess = Mockito.mock(IDatabaseAccess.class);
         cache = TrainingCache.getInstance();
-        ApplicationContext.getApplicationContext().clear();
+        // ApplicationContext.getApplicationContext().clear();
     }
 
     @After
@@ -154,20 +151,6 @@ public class TrainingCenterDataCacheTest {
     public void removeListenerTest() {
         // prepare
         cache.removeListener(listener);
-    }
-
-    @Test
-    public void testAthlete() {
-        assertNull("Athlete ist initial null", ApplicationContext.getApplicationContext().getAthlete());
-        // prepare
-        final IAthlete athlete = CommonTransferFactory.createAthlete("Junit", DateTime.now().toDate(), Integer.valueOf(200));
-        ApplicationContext.getApplicationContext().setAthlete(athlete);
-
-        // execute
-        final IAthlete selectedProfile = ApplicationContext.getApplicationContext().getAthlete();
-
-        // assert
-        assertEquals("Athlete korrekt gesetzt", athlete, selectedProfile);
     }
 
     @Test

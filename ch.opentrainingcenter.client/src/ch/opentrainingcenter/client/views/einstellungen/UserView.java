@@ -50,10 +50,10 @@ import org.eclipse.ui.part.ViewPart;
 
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.Application;
-import ch.opentrainingcenter.client.cache.AthleteCache;
 import ch.opentrainingcenter.client.ui.FormToolkitSupport;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.core.PreferenceConstants;
+import ch.opentrainingcenter.core.cache.AthleteCache;
 import ch.opentrainingcenter.core.cache.IRecordListener;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.service.IDatabaseService;

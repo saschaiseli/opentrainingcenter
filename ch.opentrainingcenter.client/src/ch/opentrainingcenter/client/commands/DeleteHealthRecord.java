@@ -12,7 +12,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import ch.opentrainingcenter.client.cache.HealthCache;
+import ch.opentrainingcenter.core.cache.HealthCache;
 import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.transfer.IHealth;
 

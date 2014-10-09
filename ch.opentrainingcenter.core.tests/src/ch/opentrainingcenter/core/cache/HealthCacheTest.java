@@ -1,4 +1,4 @@
-package ch.opentrainingcenter.client.cache;
+package ch.opentrainingcenter.core.cache;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -13,8 +13,8 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import ch.opentrainingcenter.model.navigation.ConcreteHealth;
 import ch.opentrainingcenter.transfer.IAthlete;
+import ch.opentrainingcenter.transfer.IHealth;
 import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
 
 public class HealthCacheTest {
@@ -29,7 +29,7 @@ public class HealthCacheTest {
 
     @Test
     public void testGetKey() {
-        final ConcreteHealth value = mock(ConcreteHealth.class);
+        final IHealth value = mock(IHealth.class);
 
         cache.getKey(value);
 
@@ -39,7 +39,7 @@ public class HealthCacheTest {
     @SuppressWarnings("nls")
     @Test
     public void testToStringLeererCache() {
-        final List<ConcreteHealth> values = new ArrayList<>();
+        final List<IHealth> values = new ArrayList<>();
         cache.addAll(values);
 
         final String result = cache.toString();
@@ -47,13 +47,12 @@ public class HealthCacheTest {
         assertEquals("", result);
     }
 
-    @SuppressWarnings("nls")
     @Test
     public void testToString() {
-        final List<ConcreteHealth> values = new ArrayList<>();
+        final List<IHealth> values = new ArrayList<>();
         final IAthlete athlete = mock(IAthlete.class);
         final Date dateofmeasure = new Date(100_000_000);
-        final ConcreteHealth health = new ConcreteHealth(CommonTransferFactory.createHealth(athlete, 22d, 66, dateofmeasure), "");
+        final IHealth health = CommonTransferFactory.createHealth(athlete, 22d, 66, dateofmeasure);
         values.add(health);
         cache.addAll(values);
 

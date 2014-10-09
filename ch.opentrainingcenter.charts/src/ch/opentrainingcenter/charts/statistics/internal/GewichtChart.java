@@ -8,18 +8,18 @@ import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.core.cache.AbstractCache;
 import ch.opentrainingcenter.core.helper.ColorFromPreferenceHelper;
 import ch.opentrainingcenter.i18n.Messages;
-import ch.opentrainingcenter.model.navigation.ConcreteHealth;
+import ch.opentrainingcenter.transfer.IHealth;
 
 public class GewichtChart extends VitaldatenChartViewer {
     private final IPreferenceStore store;
 
-    public GewichtChart(final AbstractCache<Integer, ConcreteHealth> cache, final IPreferenceStore store) {
+    public GewichtChart(final AbstractCache<Integer, IHealth> cache, final IPreferenceStore store) {
         super(cache);
         this.store = store;
     }
 
     @Override
-    protected Number getValue(final ConcreteHealth health) {
+    protected Number getValue(final IHealth health) {
         return health.getWeight();
     }
 

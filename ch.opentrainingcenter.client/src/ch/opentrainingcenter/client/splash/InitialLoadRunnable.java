@@ -13,13 +13,12 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.PlatformUI;
 import org.joda.time.DateTime;
 
-import ch.opentrainingcenter.client.cache.AthleteCache;
-import ch.opentrainingcenter.client.cache.HealthCache;
-import ch.opentrainingcenter.client.cache.SchuhCache;
 import ch.opentrainingcenter.client.views.ApplicationContext;
-import ch.opentrainingcenter.client.views.IImageKeys;
+import ch.opentrainingcenter.core.cache.AthleteCache;
+import ch.opentrainingcenter.core.cache.HealthCache;
 import ch.opentrainingcenter.core.cache.ICache;
 import ch.opentrainingcenter.core.cache.RouteCache;
+import ch.opentrainingcenter.core.cache.SchuhCache;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.helper.AltitudeCalculator;
 import ch.opentrainingcenter.core.helper.AltitudeCalculator.Ascending;
@@ -27,9 +26,7 @@ import ch.opentrainingcenter.core.helper.TimeHelper;
 import ch.opentrainingcenter.core.lapinfo.LapInfoSupport;
 import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
-import ch.opentrainingcenter.model.ModelFactory;
 import ch.opentrainingcenter.model.cache.TrainingsPlanCache;
-import ch.opentrainingcenter.model.navigation.ConcreteHealth;
 import ch.opentrainingcenter.model.planing.IPlanungModel;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IHealth;
@@ -82,16 +79,9 @@ public class InitialLoadRunnable implements IRunnableWithProgress {
     }
 
     private void loadAllHealths(final IProgressMonitor monitor, final IAthlete athlete, final IDatabaseAccess db) {
-        int i = 0;
         final List<IHealth> healths = db.getHealth(athlete);
-        final ICache<Integer, ConcreteHealth> healthCache = HealthCache.getInstance();
-        final List<ConcreteHealth> values = new ArrayList<>();
-        for (final IHealth health : healths) {
-            values.add(ModelFactory.createConcreteHealth(health, IImageKeys.CARDIO3232));
-            monitor.subTask(NLS.bind(Messages.InitialLoadRunnable_1, i++));
-            LOG.info(Messages.InitialLoadRunnable_2);
-        }
-        healthCache.addAll(values);
+        final HealthCache healthCache = HealthCache.getInstance();
+        healthCache.addAll(healths);
     }
 
     private void loadAllRouten(final IProgressMonitor monitor, final IAthlete athlete, final IDatabaseAccess db) {

@@ -1,9 +1,8 @@
 package ch.opentrainingcenter.client.views.dialoge;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 import org.apache.log4j.Logger;
@@ -36,16 +35,14 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 
 import ch.opentrainingcenter.client.Activator;
-import ch.opentrainingcenter.client.cache.HealthCache;
 import ch.opentrainingcenter.client.views.IImageKeys;
 import ch.opentrainingcenter.client.views.databinding.NumberValidator;
 import ch.opentrainingcenter.client.views.databinding.StringToIntegerConverter;
 import ch.opentrainingcenter.core.PreferenceConstants;
+import ch.opentrainingcenter.core.cache.HealthCache;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
-import ch.opentrainingcenter.model.ModelFactory;
-import ch.opentrainingcenter.model.navigation.ConcreteHealth;
 import ch.opentrainingcenter.model.sportler.HealthModel;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IHealth;
@@ -196,10 +193,7 @@ public class HealthDialog extends TitleAreaDialog {
                             health = CommonTransferFactory.createHealth(athlete, weight, ruhePuls, dateOfMeasure);
                         }
                         db.saveOrUpdate(health);
-                        final ConcreteHealth healthModel = ModelFactory.createConcreteHealth(health, IImageKeys.CARDIO3232);
-                        final List<ConcreteHealth> models = new ArrayList<>();
-                        models.add(healthModel);
-                        HealthCache.getInstance().addAll(models);
+                        HealthCache.getInstance().addAll(Arrays.asList(health));
                     }
                 }
             });

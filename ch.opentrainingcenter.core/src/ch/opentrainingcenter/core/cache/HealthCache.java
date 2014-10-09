@@ -1,14 +1,13 @@
-package ch.opentrainingcenter.client.cache;
+package ch.opentrainingcenter.core.cache;
 
 import java.util.List;
 
-import ch.opentrainingcenter.core.cache.AbstractCache;
-import ch.opentrainingcenter.model.navigation.ConcreteHealth;
+import ch.opentrainingcenter.transfer.IHealth;
 
 /**
  * Cache um die Gesundheitszustände zu verwalten. Ruhepuls und Gewicht.
  */
-public final class HealthCache extends AbstractCache<Integer, ConcreteHealth> {
+public final class HealthCache extends AbstractCache<Integer, IHealth> {
 
     private static final HealthCache INSTANCE = new HealthCache();
 
@@ -21,16 +20,16 @@ public final class HealthCache extends AbstractCache<Integer, ConcreteHealth> {
     }
 
     @Override
-    public Integer getKey(final ConcreteHealth value) {
+    public Integer getKey(final IHealth value) {
         return value.getId();
     }
 
     @Override
     public String toString() {
         final StringBuilder str = new StringBuilder();
-        final List<ConcreteHealth> all = super.getAll();
-        for (final ConcreteHealth element : all) {
-            str.append(element.getId()).append(' ').append(element.getDate()).append("\n"); //$NON-NLS-1$
+        final List<IHealth> all = super.getAll();
+        for (final IHealth element : all) {
+            str.append(element.getId()).append(' ').append(element.getDateofmeasure()).append("\n"); //$NON-NLS-1$
         }
         return str.toString();
     }

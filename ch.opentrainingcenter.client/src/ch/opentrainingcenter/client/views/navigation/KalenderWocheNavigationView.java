@@ -33,7 +33,6 @@ import org.eclipse.ui.part.ViewPart;
 
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.action.job.LoadJahresplanung;
-import ch.opentrainingcenter.client.cache.HealthCache;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.client.views.dialoge.HealthDialog;
 import ch.opentrainingcenter.client.views.navigation.tree.KalenderWocheTreeContentProvider;
@@ -41,13 +40,13 @@ import ch.opentrainingcenter.client.views.navigation.tree.KalenderWocheTreeLabel
 import ch.opentrainingcenter.client.views.overview.SingleActivityViewPart;
 import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.core.cache.Cache;
+import ch.opentrainingcenter.core.cache.HealthCache;
 import ch.opentrainingcenter.core.cache.IRecordListener;
 import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.model.ModelFactory;
-import ch.opentrainingcenter.model.navigation.ConcreteHealth;
 import ch.opentrainingcenter.model.navigation.ConcreteImported;
 import ch.opentrainingcenter.model.navigation.DecoratImported;
 import ch.opentrainingcenter.model.navigation.IKalenderWocheNavigationModel;
@@ -95,9 +94,9 @@ public class KalenderWocheNavigationView extends ViewPart {
             public void run() {
                 final List<ITraining> training = databaseAccess.getAllTrainings(athlete);
                 treeModel.reset();
-                treeModel.addItems(healthCache.getAll());
+                treeModel.addItems(DecoratImported.decorateHealth(healthCache.getAll()));
                 treeModel.addItems(DecoratImported.decorate(training));
-                if (viewer != null) {
+                if (viewer != null && !viewer.getTree().isDisposed()) {
                     viewer.refresh();
                 }
             }
@@ -172,15 +171,15 @@ public class KalenderWocheNavigationView extends ViewPart {
 
         });
 
-        healthCache.addListener(new IRecordListener<ConcreteHealth>() {
+        healthCache.addListener(new IRecordListener<IHealth>() {
 
             @Override
-            public void recordChanged(final Collection<ConcreteHealth> entry) {
+            public void recordChanged(final Collection<IHealth> entry) {
                 updateModel();
             }
 
             @Override
-            public void deleteRecord(final Collection<ConcreteHealth> entry) {
+            public void deleteRecord(final Collection<IHealth> entry) {
                 updateModel();
             }
         });
@@ -216,9 +215,11 @@ public class KalenderWocheNavigationView extends ViewPart {
                     if (firstElement instanceof ITraining) {
                         final ITraining training = (ITraining) firstElement;
                         final INavigationItem model = treeModel.getImportedItem(new Date(training.getDatum()));
-                        if (model != null) {
+                        System.out.println(new Date(training.getDatum()));
+                        System.out.println(model.getDate());
+                        if (model != null && !(part instanceof KalenderWocheNavigationView)) {
                             final StructuredSelection element = new StructuredSelection(model);
-                            viewer.setSelection(element, true);
+                            viewer.setSelection(element, false);
                         }
                     }
                 }

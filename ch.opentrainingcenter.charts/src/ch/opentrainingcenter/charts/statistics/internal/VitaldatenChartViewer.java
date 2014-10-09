@@ -38,9 +38,9 @@ import ch.opentrainingcenter.charts.bar.internal.OTCXYBarPainter;
 import ch.opentrainingcenter.core.cache.AbstractCache;
 import ch.opentrainingcenter.core.cache.IRecordListener;
 import ch.opentrainingcenter.i18n.Messages;
-import ch.opentrainingcenter.model.navigation.ConcreteHealth;
+import ch.opentrainingcenter.transfer.IHealth;
 
-public abstract class VitaldatenChartViewer extends ViewPart implements ISelectionProvider, IRecordListener<ConcreteHealth> {
+public abstract class VitaldatenChartViewer extends ViewPart implements ISelectionProvider, IRecordListener<IHealth> {
 
     private final ListenerList selectionListeners = new ListenerList(ListenerList.IDENTITY);
     private Composite composite;
@@ -48,9 +48,9 @@ public abstract class VitaldatenChartViewer extends ViewPart implements ISelecti
     private ChartComposite chartComposite;
     private JFreeChart chart;
     private final TimeSeries serie = new TimeSeries(getTabName());
-    private final AbstractCache<Integer, ConcreteHealth> cache;
+    private final AbstractCache<Integer, IHealth> cache;
 
-    public VitaldatenChartViewer(final AbstractCache<Integer, ConcreteHealth> cache) {
+    public VitaldatenChartViewer(final AbstractCache<Integer, IHealth> cache) {
         this.cache = cache;
         this.cache.addListener(this);
     }
@@ -58,7 +58,7 @@ public abstract class VitaldatenChartViewer extends ViewPart implements ISelecti
     /**
      * Hook Methode welche den Wert aus dem Konkreten Objekt zurückgibt.
      */
-    protected abstract Number getValue(ConcreteHealth health);
+    protected abstract Number getValue(IHealth health);
 
     /**
      * @return Beschriftung der Y Achse
@@ -128,8 +128,8 @@ public abstract class VitaldatenChartViewer extends ViewPart implements ISelecti
     private IntervalXYDataset createOrUpdate() {
         timeSeries.removeAllSeries();
         serie.clear();
-        final List<ConcreteHealth> all = cache.getAll();
-        for (final ConcreteHealth health : all) {
+        final List<IHealth> all = cache.getAll();
+        for (final IHealth health : all) {
             final TimeZone zone = Calendar.getInstance(Locale.getDefault()).getTimeZone();
             final RegularTimePeriod period = RegularTimePeriod.createInstance(Day.class, health.getDateofmeasure(), zone);
             final Number value = getValue(health);
@@ -177,12 +177,12 @@ public abstract class VitaldatenChartViewer extends ViewPart implements ISelecti
     }
 
     @Override
-    public void recordChanged(final Collection<ConcreteHealth> entry) {
+    public void recordChanged(final Collection<IHealth> entry) {
         updateChart();
     }
 
     @Override
-    public void deleteRecord(final Collection<ConcreteHealth> entry) {
+    public void deleteRecord(final Collection<IHealth> entry) {
         updateChart();
     }
 }

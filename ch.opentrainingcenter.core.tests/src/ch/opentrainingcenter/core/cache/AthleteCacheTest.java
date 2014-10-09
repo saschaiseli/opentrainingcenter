@@ -1,4 +1,4 @@
-package ch.opentrainingcenter.client.cache;
+package ch.opentrainingcenter.core.cache;
 
 import static org.junit.Assert.assertEquals;
 
@@ -9,6 +9,7 @@ import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 
+import ch.opentrainingcenter.core.cache.AthleteCache;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
 

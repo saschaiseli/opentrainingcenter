@@ -1,6 +1,5 @@
-package ch.opentrainingcenter.client.cache;
+package ch.opentrainingcenter.core.cache;
 
-import ch.opentrainingcenter.core.cache.AbstractCache;
 import ch.opentrainingcenter.transfer.IAthlete;
 
 public class AthleteCache extends AbstractCache<String, IAthlete> {
