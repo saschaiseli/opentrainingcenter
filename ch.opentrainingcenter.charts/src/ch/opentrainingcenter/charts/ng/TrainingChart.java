@@ -24,7 +24,7 @@ import ch.opentrainingcenter.i18n.Messages;
 /**
  * Herz oder Distanz Chart. Definiert X- und Y-Achsen sowie Titel vom Chart
  */
-public enum SimpleTrainingChart {
+public enum TrainingChart {
 
     /**
      * Distanz = f(zeit)
@@ -41,7 +41,7 @@ public enum SimpleTrainingChart {
     private final String yAchse;
     private final String comboTitle;
 
-    private SimpleTrainingChart(final int index, final String title, final String xAchse, final String yAchse, final String comboTitle) {
+    private TrainingChart(final int index, final String title, final String xAchse, final String yAchse, final String comboTitle) {
         this.index = index;
         this.title = title;
         this.xAchse = xAchse;
@@ -72,12 +72,12 @@ public enum SimpleTrainingChart {
     /**
      * @return den ChartFilter mit dem angegebenen Index.
      */
-    public static SimpleTrainingChart getByIndex(final int index) {
+    public static TrainingChart getByIndex(final int index) {
         switch (index) {
         case 0:
-            return SimpleTrainingChart.DISTANZ;
+            return TrainingChart.DISTANZ;
         case 1:
-            return SimpleTrainingChart.HERZ;
+            return TrainingChart.HERZ;
         default:
             throw new IllegalArgumentException(String.format("SimpleTrainingChart mit Index %s ist unbekannt", index)); //$NON-NLS-1$
         }
@@ -86,7 +86,7 @@ public enum SimpleTrainingChart {
     /**
      * @return den ChartFilter mit dem angegebenen Index.
      */
-    public static String getEinheit(final SimpleTrainingChart stc) {
+    public static String getEinheit(final TrainingChart stc) {
         switch (stc) {
         case DISTANZ:
             return Messages.Einheit_Kilometer;
@@ -101,8 +101,8 @@ public enum SimpleTrainingChart {
      * @return String Array mit allen ChartFilter Namen.
      */
     public static String[] items() {
-        final String[] result = new String[SimpleTrainingChart.values().length];
-        for (final SimpleTrainingChart item : SimpleTrainingChart.values()) {
+        final String[] result = new String[TrainingChart.values().length];
+        for (final TrainingChart item : TrainingChart.values()) {
             result[item.index] = item.comboTitle;
         }
         return result;

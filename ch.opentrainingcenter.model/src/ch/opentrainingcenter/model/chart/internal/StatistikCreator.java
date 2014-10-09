@@ -12,7 +12,7 @@ import java.util.TreeMap;
 import org.apache.log4j.Logger;
 
 import ch.opentrainingcenter.model.chart.IStatistikCreator;
-import ch.opentrainingcenter.model.training.ISimpleTraining;
+import ch.opentrainingcenter.transfer.ITraining;
 
 public class StatistikCreator implements IStatistikCreator {
 
@@ -20,16 +20,16 @@ public class StatistikCreator implements IStatistikCreator {
     private static final Logger LOGGER = Logger.getLogger(StatistikCreator.class);
 
     @Override
-    public Map<Integer, List<ISimpleTraining>> getTrainingsProJahr(final List<ISimpleTraining> allTrainings) {
-        final Map<Integer, List<ISimpleTraining>> trainingsPer = new HashMap<Integer, List<ISimpleTraining>>();
-        for (final ISimpleTraining training : allTrainings) {
+    public Map<Integer, List<ITraining>> getTrainingsProJahr(final List<ITraining> allTrainings) {
+        final Map<Integer, List<ITraining>> trainingsPer = new HashMap<Integer, List<ITraining>>();
+        for (final ITraining training : allTrainings) {
             final Calendar cal = Calendar.getInstance(Locale.GERMAN);
-            cal.setTime(training.getDatum());
+            cal.setTimeInMillis(training.getDatum());
             final int year = cal.get(Calendar.YEAR);
             LOGGER.debug("Lauf aus dem Jahr " + year); //$NON-NLS-1$
-            List<ISimpleTraining> perYear = trainingsPer.get(year);
+            List<ITraining> perYear = trainingsPer.get(year);
             if (perYear == null) {
-                perYear = new ArrayList<ISimpleTraining>();
+                perYear = new ArrayList<ITraining>();
             }
             perYear.add(training);
             trainingsPer.put(year, perYear);
@@ -38,8 +38,8 @@ public class StatistikCreator implements IStatistikCreator {
     }
 
     @Override
-    public Map<Integer, Map<Integer, List<ISimpleTraining>>> getTrainingsProMonat(final List<ISimpleTraining> allTrainings) {
-        final Map<Integer, Map<Integer, List<ISimpleTraining>>> trainingsPer = new HashMap<Integer, Map<Integer, List<ISimpleTraining>>>();
+    public Map<Integer, Map<Integer, List<ITraining>>> getTrainingsProMonat(final List<ITraining> allTrainings) {
+        final Map<Integer, Map<Integer, List<ITraining>>> trainingsPer = new HashMap<Integer, Map<Integer, List<ITraining>>>();
         final int outer = Calendar.YEAR;
         final int inner = Calendar.MONTH;
         calculate(allTrainings, trainingsPer, outer, inner);
@@ -47,19 +47,18 @@ public class StatistikCreator implements IStatistikCreator {
     }
 
     @Override
-    public Map<Integer, Map<Integer, List<ISimpleTraining>>> getTrainingsProWoche(final List<ISimpleTraining> allTrainings) {
-        final Map<Integer, Map<Integer, List<ISimpleTraining>>> trainingsPer = new HashMap<Integer, Map<Integer, List<ISimpleTraining>>>();
+    public Map<Integer, Map<Integer, List<ITraining>>> getTrainingsProWoche(final List<ITraining> allTrainings) {
+        final Map<Integer, Map<Integer, List<ITraining>>> trainingsPer = new HashMap<Integer, Map<Integer, List<ITraining>>>();
         final int outer = Calendar.YEAR;
         final int inner = Calendar.WEEK_OF_YEAR;
         calculate(allTrainings, trainingsPer, outer, inner);
         return trainingsPer;
     }
 
-    private void calculate(final List<ISimpleTraining> allTrainings, final Map<Integer, Map<Integer, List<ISimpleTraining>>> trainingsPer, final int outer,
-            final int inner) {
-        for (final ISimpleTraining training : allTrainings) {
+    private void calculate(final List<ITraining> allTrainings, final Map<Integer, Map<Integer, List<ITraining>>> trainingsPer, final int outer, final int inner) {
+        for (final ITraining training : allTrainings) {
             final Calendar cal = Calendar.getInstance(Locale.GERMAN);
-            final Date datum = training.getDatum();
+            final Date datum = new Date(training.getDatum());
             cal.setTime(datum);
             final int year;
             // da monat mit 0 beginnt muss noch eins addiert werden.
@@ -76,13 +75,13 @@ public class StatistikCreator implements IStatistikCreator {
                 year = cal.get(outer);
             }
             LOGGER.debug("Lauf aus der inner " + week + " vom Jahr: " + year); //$NON-NLS-1$//$NON-NLS-2$
-            Map<Integer, List<ISimpleTraining>> yearMap = trainingsPer.get(year);
+            Map<Integer, List<ITraining>> yearMap = trainingsPer.get(year);
             if (yearMap == null) {
-                yearMap = new TreeMap<Integer, List<ISimpleTraining>>();
+                yearMap = new TreeMap<Integer, List<ITraining>>();
             }
-            List<ISimpleTraining> weekMap = yearMap.get(week);
+            List<ITraining> weekMap = yearMap.get(week);
             if (weekMap == null) {
-                weekMap = new ArrayList<ISimpleTraining>();
+                weekMap = new ArrayList<ITraining>();
             }
             weekMap.add(training);
             yearMap.put(week, weekMap);
@@ -101,7 +100,7 @@ public class StatistikCreator implements IStatistikCreator {
     }
 
     @Override
-    public List<ISimpleTraining> getTrainingsProTag(final List<ISimpleTraining> allTrainings) {
+    public List<ITraining> getTrainingsProTag(final List<ITraining> allTrainings) {
         return allTrainings;
     }
 }

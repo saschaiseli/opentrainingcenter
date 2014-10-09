@@ -16,7 +16,6 @@ import org.joda.time.DateTime;
 import ch.opentrainingcenter.client.cache.AthleteCache;
 import ch.opentrainingcenter.client.cache.HealthCache;
 import ch.opentrainingcenter.client.cache.SchuhCache;
-import ch.opentrainingcenter.client.cache.StreckeCache;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.client.views.IImageKeys;
 import ch.opentrainingcenter.core.cache.ICache;
@@ -32,7 +31,6 @@ import ch.opentrainingcenter.model.ModelFactory;
 import ch.opentrainingcenter.model.cache.TrainingsPlanCache;
 import ch.opentrainingcenter.model.navigation.ConcreteHealth;
 import ch.opentrainingcenter.model.planing.IPlanungModel;
-import ch.opentrainingcenter.model.strecke.StreckeModel;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IHealth;
 import ch.opentrainingcenter.transfer.ILapInfo;
@@ -97,20 +95,8 @@ public class InitialLoadRunnable implements IRunnableWithProgress {
     }
 
     private void loadAllRouten(final IProgressMonitor monitor, final IAthlete athlete, final IDatabaseAccess db) {
-        int i = 0;
-        final List<IRoute> routen = db.getRoute(athlete);
-        final ICache<String, StreckeModel> cacheOld = StreckeCache.getInstance();
         final RouteCache cache = RouteCache.getInstance();
-        final List<StreckeModel> strecken = new ArrayList<>();
-        for (final IRoute route : routen) {
-            final int referenzTrainingId = route.getReferenzTrack() != null ? route.getReferenzTrack().getId() : 0;
-            final StreckeModel strecke = ModelFactory.createStreckeModel(route, athlete, referenzTrainingId);
-            strecken.add(strecke);
-            monitor.subTask(NLS.bind(Messages.InitialLoadRunnable_5, i++));
-            LOG.info(String.format("Strecke dem Cache hinzugefügt: %s Strecke: %s", route, strecke)); //$NON-NLS-1$ 
-        }
-        cacheOld.addAll(strecken);
-        cache.addAll(routen);
+        cache.addAll(db.getRoute(athlete));
     }
 
     private void loadAllShoes(final IProgressMonitor monitor, final IAthlete athlete, final IDatabaseAccess db) {

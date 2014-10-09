@@ -7,7 +7,7 @@ import java.util.Date;
 
 import org.junit.Test;
 
-import ch.opentrainingcenter.model.training.ISimpleTraining;
+import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.Sport;
 
 public class FilterFactoryTest {
@@ -17,14 +17,14 @@ public class FilterFactoryTest {
         final Date start = mock(Date.class);
         final Date end = mock(Date.class);
 
-        final Filter<ISimpleTraining> filter = FilterFactory.createFilterByDate(start, end);
+        final Filter<ITraining> filter = FilterFactory.createFilterByDate(start, end);
 
         assertNotNull(filter);
     }
 
     @Test
     public void testFilterBySport() {
-        final Filter<ISimpleTraining> filter = FilterFactory.createFilterBySport(Sport.BIKING);
+        final Filter<ITraining> filter = FilterFactory.createFilterBySport(Sport.BIKING);
 
         assertNotNull(filter);
     }

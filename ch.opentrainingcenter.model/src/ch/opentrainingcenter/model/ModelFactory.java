@@ -1,7 +1,5 @@
 package ch.opentrainingcenter.model;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import ch.opentrainingcenter.model.importer.IGpsFileModel;
@@ -23,19 +21,13 @@ import ch.opentrainingcenter.model.planing.internal.PlanungWocheModel;
 import ch.opentrainingcenter.model.strecke.StreckeModel;
 import ch.opentrainingcenter.model.training.IGoldMedalModel;
 import ch.opentrainingcenter.model.training.IOverviewModel;
-import ch.opentrainingcenter.model.training.ISimpleTraining;
-import ch.opentrainingcenter.model.training.Wetter;
 import ch.opentrainingcenter.model.training.internal.GoldMedalModel;
 import ch.opentrainingcenter.model.training.internal.OverviewModel;
-import ch.opentrainingcenter.model.training.internal.SimpleTraining;
-import ch.opentrainingcenter.transfer.HeartRate;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IHealth;
 import ch.opentrainingcenter.transfer.IPlanungWoche;
 import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
-import ch.opentrainingcenter.transfer.RunData;
-import ch.opentrainingcenter.transfer.TrainingType;
 
 public final class ModelFactory {
 
@@ -71,45 +63,6 @@ public final class ModelFactory {
 
     public static IGpsFileModelWrapper createGpsFileModelWrapper(final List<IGpsFileModel> fileModels) {
         return new GpsFileModelWrapper(fileModels);
-    }
-
-    /**
-     * Erstellt ein SimpleTraining mit dem Lauf Typ NONE
-     */
-    public static ISimpleTraining convertToSimpleTraining(final ITraining training) {
-        final HeartRate heart = new HeartRate(training.getAverageHeartBeat(), training.getMaxHeartBeat());
-        final RunData runData = new RunData(training.getDatum(), training.getDauer(), training.getLaengeInMeter(), training.getMaxSpeed());
-        final SimpleTraining simpleTraining = new SimpleTraining(runData, heart, TrainingType.NONE, training.getSport(), training.getNote());
-        simpleTraining.setType(TrainingType.getByIndex(training.getTrainingType().getIndex()));
-        if (training.getWeather() != null) {
-            simpleTraining.setWetter(Wetter.getRunType(training.getWeather().getId()));
-        }
-        final IRoute route = training.getRoute();
-        if (route != null) {
-            final ITraining referenzTrack = route.getReferenzTrack();
-            simpleTraining.setStrecke(ModelFactory.createStreckeModel(route, training.getAthlete(), referenzTrack == null ? 0 : referenzTrack.getId()));
-        }
-        simpleTraining.setUpMeter(training.getUpMeter());
-        simpleTraining.setDownMeter(training.getDownMeter());
-        return simpleTraining;
-    }
-
-    /**
-     * Erstellt ein SimpleTraining mit dem entsprechenden Lauf Typ
-     */
-    public static List<ISimpleTraining> convertToSimpleTraining(final List<ITraining> allImported) {
-        final List<ISimpleTraining> result = new ArrayList<>();
-        for (final ITraining training : allImported) {
-            result.add(convertToSimpleTraining(training));
-        }
-        return result;
-    }
-
-    public static ISimpleTraining createSimpleTraining(final double distanzInMeter, final double dauerInSekunden, final Date datum, final int avgHeartRate,
-            final int maxHeartRate, final double maxSpeed, final TrainingType type, final String note) {
-        final RunData runData = new RunData(datum.getTime(), dauerInSekunden, distanzInMeter, maxSpeed);
-        final HeartRate heart = new HeartRate(avgHeartRate, maxHeartRate);
-        return new SimpleTraining(runData, heart, type, note);
     }
 
     public static IGoldMedalModel createGoldMedalModel() {

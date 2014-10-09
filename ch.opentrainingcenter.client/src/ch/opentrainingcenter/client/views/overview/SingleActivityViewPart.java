@@ -63,7 +63,6 @@ import ch.opentrainingcenter.core.helper.TimeHelper;
 import ch.opentrainingcenter.core.lapinfo.LapInfoCreator;
 import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
-import ch.opentrainingcenter.model.strecke.StreckeModel;
 import ch.opentrainingcenter.model.training.Wetter;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.ILapInfo;
@@ -363,10 +362,6 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
             @Override
             public String getText(final Object element) {
                 String label = ""; //$NON-NLS-1$
-                if (element instanceof StreckeModel) {
-                    final StreckeModel route = (StreckeModel) element;
-                    label = route.getName();
-                }
                 if (element instanceof IRoute) {
                     final IRoute route = (IRoute) element;
                     label = route.getName();

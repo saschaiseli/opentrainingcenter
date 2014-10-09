@@ -8,21 +8,21 @@ import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TableViewer;
 
 import ch.opentrainingcenter.model.importer.IGpsFileModel;
-import ch.opentrainingcenter.model.strecke.StreckeModel;
+import ch.opentrainingcenter.transfer.IRoute;
 
 public class StreckeEditingSupport extends EditingSupport {
     private final TableViewer viewer;
     private final String[] routenNamen;
-    private final List<StreckeModel> strecken;
+    private final List<IRoute> routen;
 
-    public StreckeEditingSupport(final TableViewer viewer, final List<StreckeModel> strecken) {
+    public StreckeEditingSupport(final TableViewer viewer, final List<IRoute> routen) {
         super(viewer);
         this.viewer = viewer;
-        this.strecken = strecken;
-        routenNamen = new String[strecken.size()];
+        this.routen = routen;
+        routenNamen = new String[routen.size()];
         int i = 0;
-        for (final StreckeModel strecke : strecken) {
-            routenNamen[i] = strecke.getName();
+        for (final IRoute route : routen) {
+            routenNamen[i] = route.getName();
             i++;
         }
     }
@@ -50,7 +50,7 @@ public class StreckeEditingSupport extends EditingSupport {
     @Override
     protected void setValue(final Object element, final Object value) {
         final IGpsFileModel model = (IGpsFileModel) element;
-        model.setRoute(strecken.get((Integer) value));
+        model.setRoute(routen.get((Integer) value));
         getViewer().refresh();
     }
 }

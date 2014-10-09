@@ -56,7 +56,7 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeFieldType;
 
 import ch.opentrainingcenter.charts.bar.OTCCategoryChartViewer;
-import ch.opentrainingcenter.charts.ng.SimpleTrainingChart;
+import ch.opentrainingcenter.charts.ng.TrainingChart;
 import ch.opentrainingcenter.charts.single.XAxisChart;
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.ui.FormToolkitSupport;
@@ -70,14 +70,12 @@ import ch.opentrainingcenter.core.helper.ColorFromPreferenceHelper;
 import ch.opentrainingcenter.core.helper.TimeHelper;
 import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
-import ch.opentrainingcenter.model.ModelFactory;
 import ch.opentrainingcenter.model.chart.IStatistikCreator;
-import ch.opentrainingcenter.model.chart.SimpleTrainingCalculator;
+import ch.opentrainingcenter.model.chart.TrainingCalculator;
 import ch.opentrainingcenter.model.chart.StatistikFactory;
-import ch.opentrainingcenter.model.training.ISimpleTraining;
 import ch.opentrainingcenter.model.training.filter.Filter;
 import ch.opentrainingcenter.model.training.filter.FilterFactory;
-import ch.opentrainingcenter.model.training.filter.SimpleTrainingFilter;
+import ch.opentrainingcenter.model.training.filter.TrainingFilter;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.Sport;
 
@@ -88,9 +86,9 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
     private static final DateFormat DATE_FORMAT = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
 
     private static final String[] NEW_SHORT_WEEKDAYS = new String[] { "", Messages.DynamicChartViewPart_Montag, // //$NON-NLS-1$
-            Messages.DynamicChartViewPart_Dienstag, Messages.DynamicChartViewPart_Mittwoch, //
-            Messages.DynamicChartViewPart_Donnerstag, Messages.DynamicChartViewPart_Freitag, //
-            Messages.DynamicChartViewPart_Samstag, Messages.DynamicChartViewPart_Sonntag };
+        Messages.DynamicChartViewPart_Dienstag, Messages.DynamicChartViewPart_Mittwoch, //
+        Messages.DynamicChartViewPart_Donnerstag, Messages.DynamicChartViewPart_Freitag, //
+        Messages.DynamicChartViewPart_Samstag, Messages.DynamicChartViewPart_Sonntag };
 
     private static final Logger LOGGER = Logger.getLogger(DynamicChartViewPart.class);
 
@@ -189,7 +187,7 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
         GridDataFactory.swtDefaults().align(SWT.RIGHT, SWT.CENTER).applyTo(y);
 
         comboChartType = new Combo(container, SWT.READ_ONLY);
-        comboChartType.setItems(SimpleTrainingChart.items());
+        comboChartType.setItems(TrainingChart.items());
         comboChartType.select(store.getInt(PreferenceConstants.CHART_YAXIS_CHART));
         comboChartType.addSelectionListener(new SelectionAdapter() {
 
@@ -337,9 +335,9 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
                 final DateTime dtEnd = new DateTime(end.getTime());
                 final Date startPast = dtStart.minusYears(1).toDate();
                 final Date endPast = dtEnd.minusYears(1).toDate();
-                final List<ISimpleTraining> dataPast = getFilteredData(xAxis, startPast, endPast, sport);
-                final List<ISimpleTraining> dataNow = getFilteredData(xAxis, start, end, sport);
-                final SimpleTrainingChart chartType = SimpleTrainingChart.getByIndex(comboChartType.getSelectionIndex());
+                final List<ITraining> dataPast = getFilteredData(xAxis, startPast, endPast, sport);
+                final List<ITraining> dataNow = getFilteredData(xAxis, start, end, sport);
+                final TrainingChart chartType = TrainingChart.getByIndex(comboChartType.getSelectionIndex());
                 final boolean compareLast = compareWithLastYear.getSelection();
 
                 chartViewer.updateData(dataPast, dataNow, xAxis, chartType, compareLast);
@@ -347,7 +345,7 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
                 chartViewer.forceRedraw();
                 sectionChart.setExpanded(true);
 
-                if (SimpleTrainingChart.DISTANZ.equals(chartType)) {
+                if (TrainingChart.DISTANZ.equals(chartType)) {
                     labelIconPast.setImage(createImage(ColorFromPreferenceHelper.getSwtColor(store, PreferenceConstants.CHART_DISTANCE_COLOR_PAST)));
                     labelIconNow.setImage(createImage(ColorFromPreferenceHelper.getSwtColor(store, PreferenceConstants.CHART_DISTANCE_COLOR)));
                 } else {
@@ -367,15 +365,15 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
         });
     }
 
-    private List<ISimpleTraining> getFilteredData(final XAxisChart chartSerieType, final Date start, final Date end, final Sport sport) {
+    private List<ITraining> getFilteredData(final XAxisChart chartSerieType, final Date start, final Date end, final Sport sport) {
         final IStatistikCreator sc = StatistikFactory.createStatistik();
         final List<ITraining> allTrainings = databaseAccess.getAllTrainings(ApplicationContext.getApplicationContext().getAthlete());
-        final List<ISimpleTraining> filteredData = new ArrayList<>();
-        final List<Filter<ISimpleTraining>> filters = new ArrayList<>();
+        final List<ITraining> filteredData = new ArrayList<>();
+        final List<Filter<ITraining>> filters = new ArrayList<>();
         filters.add(FilterFactory.createFilterByDate(start, end));
         filters.add(FilterFactory.createFilterBySport(sport));
-        final SimpleTrainingFilter filter = new SimpleTrainingFilter(filters);
-        for (final ISimpleTraining training : ModelFactory.convertToSimpleTraining(allTrainings)) {
+        final TrainingFilter filter = new TrainingFilter(filters);
+        for (final ITraining training : allTrainings) {
             final boolean st = filter.select(training);
             if (st) {
                 filteredData.add(training);
@@ -385,14 +383,14 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
         case DAY:
             return sc.getTrainingsProTag(filteredData);
         case WEEK:
-            return SimpleTrainingCalculator.createSum(sc.getTrainingsProWoche(filteredData), null);
+            return TrainingCalculator.createSum(sc.getTrainingsProWoche(filteredData), null);
         case MONTH:
-            return SimpleTrainingCalculator.createSum(sc.getTrainingsProMonat(filteredData), null);
+            return TrainingCalculator.createSum(sc.getTrainingsProMonat(filteredData), null);
         case YEAR:
-            final Map<Integer, List<ISimpleTraining>> trainingsProJahr = sc.getTrainingsProJahr(filteredData);
-            final Map<Integer, Map<Integer, List<ISimpleTraining>>> tmp = new HashMap<Integer, Map<Integer, List<ISimpleTraining>>>();
+            final Map<Integer, List<ITraining>> trainingsProJahr = sc.getTrainingsProJahr(filteredData);
+            final Map<Integer, Map<Integer, List<ITraining>>> tmp = new HashMap<Integer, Map<Integer, List<ITraining>>>();
             tmp.put(1, trainingsProJahr);
-            return SimpleTrainingCalculator.createSum(tmp, null);
+            return TrainingCalculator.createSum(tmp, null);
         default:
             return sc.getTrainingsProTag(filteredData);
         }

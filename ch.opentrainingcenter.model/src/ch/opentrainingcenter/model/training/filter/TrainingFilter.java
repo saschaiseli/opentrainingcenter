@@ -17,26 +17,30 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package ch.opentrainingcenter.model.chart;
+package ch.opentrainingcenter.model.training.filter;
 
-import java.util.Date;
+import java.util.List;
 
-import ch.opentrainingcenter.model.training.ISimpleTraining;
+import ch.opentrainingcenter.core.assertions.Assertions;
+import ch.opentrainingcenter.transfer.ITraining;
 
-public abstract class SimpleTrainingWrapper {
+public class TrainingFilter implements Filter<ITraining> {
 
-    private final ISimpleTraining simpleTraining;
+    private final List<Filter<ITraining>> filters;
 
-    public SimpleTrainingWrapper(final ISimpleTraining simpleTraining) {
-        this.simpleTraining = simpleTraining;
+    public TrainingFilter(final List<Filter<ITraining>> filters) {
+        Assertions.isValid(filters.isEmpty(), "Keine Filter im Container"); //$NON-NLS-1$
+        this.filters = filters;
     }
 
-    Date getDate() {
-        return simpleTraining.getDatum();
+    @Override
+    public boolean select(final ITraining training) {
+        Assertions.notNull(training);
+        for (final Filter<ITraining> filter : filters) {
+            if (!filter.select(training)) {
+                return false;
+            }
+        }
+        return true;
     }
-
-    /**
-     * @return den wert, der fuer die charts relevant ist.
-     */
-    abstract double getValue();
 }

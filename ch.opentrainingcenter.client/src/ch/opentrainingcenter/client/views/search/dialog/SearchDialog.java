@@ -60,16 +60,15 @@ import org.eclipse.ui.PlatformUI;
 import org.joda.time.DateTime;
 
 import ch.opentrainingcenter.client.Activator;
-import ch.opentrainingcenter.client.cache.StreckeCache;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.client.views.IImageKeys;
 import ch.opentrainingcenter.client.views.overview.SingleActivityViewPart;
+import ch.opentrainingcenter.core.cache.RouteCache;
 import ch.opentrainingcenter.core.db.CriteriaContainer;
 import ch.opentrainingcenter.core.db.CriteriaFactory;
 import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
-import ch.opentrainingcenter.model.strecke.StreckeModel;
-import ch.opentrainingcenter.model.strecke.StreckeModelComparator;
+import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.Sport;
 
@@ -79,7 +78,8 @@ import ch.opentrainingcenter.transfer.Sport;
 public class SearchDialog extends TitleAreaDialog {
 
     private static final Logger LOGGER = Logger.getLogger(SearchDialog.class);
-    private final StreckeCache cacheStrecke = StreckeCache.getInstance();
+    // private final StreckeCache cacheStrecke = StreckeCache.getInstance();
+    private final RouteCache cache = RouteCache.getInstance();
     private TableViewer viewer;
 
     private Scale scale;
@@ -218,8 +218,8 @@ public class SearchDialog extends TitleAreaDialog {
             @Override
             public String getText(final Object element) {
                 String label = ""; //$NON-NLS-1$
-                if (element instanceof StreckeModel) {
-                    final StreckeModel route = (StreckeModel) element;
+                if (element instanceof IRoute) {
+                    final IRoute route = (IRoute) element;
                     label = route.getName();
                 }
                 return label;
@@ -227,7 +227,7 @@ public class SearchDialog extends TitleAreaDialog {
         });
         GridDataFactory.fillDefaults().grab(true, true).align(SWT.FILL, SWT.FILL).applyTo(comboStrecke.getControl());
 
-        final List<StreckeModel> all = cacheStrecke.getSortedElements(new StreckeModelComparator());
+        final List<IRoute> all = cache.getAll();
         comboStrecke.setInput(all);
 
         comboStrecke.addSelectionChangedListener(new ISelectionChangedListener() {
@@ -235,8 +235,8 @@ public class SearchDialog extends TitleAreaDialog {
             @Override
             public void selectionChanged(final SelectionChangedEvent event) {
                 final StructuredSelection selection = (StructuredSelection) event.getSelection();
-                final StreckeModel model = (StreckeModel) selection.getFirstElement();
-                referenzTrainingId = model.getId();
+                final IRoute route = (IRoute) selection.getFirstElement();
+                referenzTrainingId = route.getId();
                 update();
             }
         });

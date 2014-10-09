@@ -17,9 +17,7 @@ import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.importer.IFileImport;
 import ch.opentrainingcenter.model.importer.IGpsFileModel;
 import ch.opentrainingcenter.model.importer.IGpsFileModelWrapper;
-import ch.opentrainingcenter.model.strecke.StreckeModel;
 import ch.opentrainingcenter.transfer.IAthlete;
-import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
 
 public class FileImport implements IFileImport {
@@ -111,11 +109,7 @@ public class FileImport implements IFileImport {
         training.setFileName(fileName);
         training.setDateOfImport(DateTime.now().toDate());
         training.setShoe(model.getSchuh());
-        final StreckeModel route = model.getRoute();
-        if (route != null) {
-            final IRoute strecke = dbAccess.getRoute(route.getName(), athlete);
-            training.setRoute(strecke);
-        }
+        training.setRoute(model.getRoute());
         training.setTrainingType(model.getTyp());
         LOGGER.info(String.format("Konvertierung von '%s' dauerte %s[ms]", fileName, (DateTime.now().getMillis() - start))); //$NON-NLS-1$
         return training;

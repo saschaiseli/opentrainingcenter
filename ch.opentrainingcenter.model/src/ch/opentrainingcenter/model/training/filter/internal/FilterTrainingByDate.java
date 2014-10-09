@@ -23,10 +23,10 @@ import java.util.Date;
 
 import org.joda.time.DateTime;
 
-import ch.opentrainingcenter.model.training.ISimpleTraining;
 import ch.opentrainingcenter.model.training.filter.Filter;
+import ch.opentrainingcenter.transfer.ITraining;
 
-public class FilterTrainingByDate implements Filter<ISimpleTraining> {
+public class FilterTrainingByDate implements Filter<ITraining> {
     private final long startMillis;
     private final long endMillis;
 
@@ -45,8 +45,8 @@ public class FilterTrainingByDate implements Filter<ISimpleTraining> {
     }
 
     @Override
-    public boolean select(final ISimpleTraining item) {
-        final long time = item.getDatum().getTime();
+    public boolean select(final ITraining item) {
+        final long time = item.getDatum();
         if (time < startMillis || time > endMillis) {
             return false;
         }

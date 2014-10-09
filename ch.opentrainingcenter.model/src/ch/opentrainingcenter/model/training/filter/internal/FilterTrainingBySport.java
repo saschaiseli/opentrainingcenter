@@ -20,11 +20,11 @@
 package ch.opentrainingcenter.model.training.filter.internal;
 
 import ch.opentrainingcenter.core.assertions.Assertions;
-import ch.opentrainingcenter.model.training.ISimpleTraining;
 import ch.opentrainingcenter.model.training.filter.Filter;
+import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.Sport;
 
-public class FilterTrainingBySport implements Filter<ISimpleTraining> {
+public class FilterTrainingBySport implements Filter<ITraining> {
 
     private final Sport sport;
 
@@ -34,7 +34,7 @@ public class FilterTrainingBySport implements Filter<ISimpleTraining> {
     }
 
     @Override
-    public boolean select(final ISimpleTraining item) {
+    public boolean select(final ITraining item) {
         Assertions.notNull(item);
         if (Sport.OTHER.equals(sport)) {
             return true;

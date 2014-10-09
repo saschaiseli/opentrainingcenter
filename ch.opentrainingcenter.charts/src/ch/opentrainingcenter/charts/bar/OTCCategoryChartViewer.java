@@ -53,11 +53,11 @@ import ch.opentrainingcenter.charts.bar.internal.CategoryHelper;
 import ch.opentrainingcenter.charts.bar.internal.ChartDataSupport;
 import ch.opentrainingcenter.charts.bar.internal.ChartDataWrapper;
 import ch.opentrainingcenter.charts.bar.internal.OTCBarPainter;
-import ch.opentrainingcenter.charts.ng.SimpleTrainingChart;
+import ch.opentrainingcenter.charts.ng.TrainingChart;
 import ch.opentrainingcenter.charts.single.XAxisChart;
 import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.core.helper.ColorFromPreferenceHelper;
-import ch.opentrainingcenter.model.training.ISimpleTraining;
+import ch.opentrainingcenter.transfer.ITraining;
 
 public class OTCCategoryChartViewer {
 
@@ -130,8 +130,8 @@ public class OTCCategoryChartViewer {
      * @param compareLast
      *            mit letztem Jahr vergleichen
      */
-    public void updateData(final List<ISimpleTraining> dataPast, final List<ISimpleTraining> dataNow, final XAxisChart chartSerieType,
-            final SimpleTrainingChart chartType, final boolean compareLast) {
+    public void updateData(final List<ITraining> dataPast, final List<ITraining> dataNow, final XAxisChart chartSerieType, final TrainingChart chartType,
+            final boolean compareLast) {
 
         updateAxis(chartType, chartSerieType);
 
@@ -147,13 +147,13 @@ public class OTCCategoryChartViewer {
         addValues(now, DIESES_JAHR, chartType);
     }
 
-    private void addValues(final List<ChartDataWrapper> now, final String rowName, final SimpleTrainingChart stc) {
+    private void addValues(final List<ChartDataWrapper> now, final String rowName, final TrainingChart stc) {
         for (final ChartDataWrapper t : now) {
             dataset.addValue(t.getValue(stc), rowName, t.getCategory());
         }
     }
 
-    void updateAxis(final SimpleTrainingChart chartType, final XAxisChart chartSerieType) {
+    void updateAxis(final TrainingChart chartType, final XAxisChart chartSerieType) {
         if (chart != null) {
             chart.setTitle(chartType.getTitle());
             ((CategoryPlot) chart.getPlot()).getRangeAxis().setLabel(chartType.getyAchse());
@@ -167,7 +167,7 @@ public class OTCCategoryChartViewer {
         }
     }
 
-    public void updateRenderer(final XAxisChart type, final SimpleTrainingChart chartType, final boolean compareLast) {
+    public void updateRenderer(final XAxisChart type, final TrainingChart chartType, final boolean compareLast) {
         renderer = new BarRenderer();
         setSeriesPaint(renderer, chartType, type, compareLast);
 
@@ -175,7 +175,7 @@ public class OTCCategoryChartViewer {
         renderer.setBarPainter(painter);
         renderer.setItemMargin(0.0);
 
-        final String labelPattern = String.format("{2} ", SimpleTrainingChart.getEinheit(chartType)); //$NON-NLS-1$
+        final String labelPattern = String.format("{2} ", TrainingChart.getEinheit(chartType)); //$NON-NLS-1$
         renderer.setBaseToolTipGenerator(new StandardCategoryToolTipGenerator(labelPattern, new DecimalFormat(DECIMAL)));
 
         final ItemLabelPosition position = new ItemLabelPosition(ItemLabelAnchor.CENTER, TextAnchor.CENTER, TextAnchor.CENTER, -Math.PI / 2.0);
@@ -189,10 +189,10 @@ public class OTCCategoryChartViewer {
         }
     }
 
-    private void setSeriesPaint(final AbstractRenderer renderer, final SimpleTrainingChart chartType, final XAxisChart type, final boolean compareLast) {
+    private void setSeriesPaint(final AbstractRenderer renderer, final TrainingChart chartType, final XAxisChart type, final boolean compareLast) {
         final String firstColor;
         final String secondColor;
-        if (SimpleTrainingChart.DISTANZ.equals(chartType)) {
+        if (TrainingChart.DISTANZ.equals(chartType)) {
             if (isComparable(type, compareLast)) {
                 firstColor = PreferenceConstants.CHART_DISTANCE_COLOR_PAST;
                 secondColor = PreferenceConstants.CHART_DISTANCE_COLOR;

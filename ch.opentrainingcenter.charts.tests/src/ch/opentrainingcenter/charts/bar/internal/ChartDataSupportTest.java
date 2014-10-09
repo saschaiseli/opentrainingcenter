@@ -30,11 +30,12 @@ import java.util.List;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
-import ch.opentrainingcenter.charts.ng.SimpleTrainingChart;
+import ch.opentrainingcenter.charts.ng.TrainingChart;
 import ch.opentrainingcenter.charts.single.XAxisChart;
-import ch.opentrainingcenter.model.ModelFactory;
-import ch.opentrainingcenter.model.training.ISimpleTraining;
-import ch.opentrainingcenter.transfer.TrainingType;
+import ch.opentrainingcenter.transfer.HeartRate;
+import ch.opentrainingcenter.transfer.ITraining;
+import ch.opentrainingcenter.transfer.RunData;
+import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
 
 @SuppressWarnings("nls")
 public class ChartDataSupportTest {
@@ -50,7 +51,7 @@ public class ChartDataSupportTest {
     public void testConvertAndSortEmpty() {
         final ChartDataSupport support = new ChartDataSupport(XAxisChart.MONTH);
 
-        final List<ChartDataWrapper> result = support.convertAndSort(new ArrayList<ISimpleTraining>());
+        final List<ChartDataWrapper> result = support.convertAndSort(new ArrayList<ITraining>());
 
         assertNotNull(result);
         assertTrue(result.isEmpty());
@@ -60,16 +61,18 @@ public class ChartDataSupportTest {
     public void testConvertAndSortOneTraining() {
         final ChartDataSupport support = new ChartDataSupport(XAxisChart.MONTH);
 
-        final ArrayList<ISimpleTraining> data = new ArrayList<ISimpleTraining>();
+        final ArrayList<ITraining> data = new ArrayList<ITraining>();
         final DateTime dt = new DateTime(2014, 8, 29, 12, 0);
-        data.add(ModelFactory.createSimpleTraining(1000, 10, dt.toDate(), 142, 159, 3, TrainingType.LONG_JOG, ""));
 
+        final RunData runData = new RunData(dt.getMillis(), 10, 1000, 100000);
+        final HeartRate heartRate = new HeartRate(142, 159);
+        data.add(CommonTransferFactory.createTraining(runData, heartRate));
         final List<ChartDataWrapper> result = support.convertAndSort(data);
 
         assertFalse(result.isEmpty());
 
-        assertEquals("Distanz", 1.0, result.get(0).getValue(SimpleTrainingChart.DISTANZ), 0.0001);
-        assertEquals("Distanz", 142, result.get(0).getValue(SimpleTrainingChart.HERZ), 0.0001);
+        assertEquals("Distanz", 1.0, result.get(0).getValue(TrainingChart.DISTANZ), 0.0001);
+        assertEquals("Distanz", 142, result.get(0).getValue(TrainingChart.HERZ), 0.0001);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -83,14 +86,14 @@ public class ChartDataSupportTest {
     public void testCreatePastData_empty_null() {
         final ChartDataSupport support = new ChartDataSupport(XAxisChart.MONTH);
 
-        support.createPastData(new ArrayList<ISimpleTraining>(), null);
+        support.createPastData(new ArrayList<ITraining>(), null);
     }
 
     @Test
     public void testCreatePastData_empty_empty() {
         final ChartDataSupport support = new ChartDataSupport(XAxisChart.MONTH);
 
-        final List<ChartDataWrapper> result = support.createPastData(new ArrayList<ISimpleTraining>(), new ArrayList<ChartDataWrapper>());
+        final List<ChartDataWrapper> result = support.createPastData(new ArrayList<ITraining>(), new ArrayList<ChartDataWrapper>());
 
         assertNotNull(result);
         assertTrue(result.isEmpty());
@@ -106,12 +109,12 @@ public class ChartDataSupportTest {
         now.add(new ChartDataWrapper(1000, 142, category, datum.toDate()));
 
         // execute
-        final List<ChartDataWrapper> result = support.createPastData(new ArrayList<ISimpleTraining>(), now);
+        final List<ChartDataWrapper> result = support.createPastData(new ArrayList<ITraining>(), now);
 
         final ChartDataWrapper cdw = result.get(0);
         assertEquals(category, cdw.getCategory());
-        assertEquals(0, cdw.getValue(SimpleTrainingChart.DISTANZ), 0.001);
-        assertEquals(0, cdw.getValue(SimpleTrainingChart.HERZ), 0.001);
+        assertEquals(0, cdw.getValue(TrainingChart.DISTANZ), 0.001);
+        assertEquals(0, cdw.getValue(TrainingChart.HERZ), 0.001);
         final DateTime date = new DateTime(cdw.getDate().getTime());
         assertEquals("Wird mit der Vorjahresperiode verglichen", 2012, date.getYear());
     }
@@ -127,19 +130,20 @@ public class ChartDataSupportTest {
         now.add(new ChartDataWrapper(1000, 142, category, datum.toDate()));
 
         // PAST
-        final ArrayList<ISimpleTraining> dataPast = new ArrayList<ISimpleTraining>();
+        final ArrayList<ITraining> dataPast = new ArrayList<ITraining>();
         final DateTime datePast = new DateTime(2012, 8, 29, 12, 00);
 
-        dataPast.add(ModelFactory.createSimpleTraining(2000, 2d, datePast.toDate(), 132, 155, 4d, TrainingType.EXT_INTERVALL, "note"));
-
+        final RunData runData = new RunData(datePast.getMillis(), 2, 2000, 100000);
+        final HeartRate heartRate = new HeartRate(132, 155);
+        dataPast.add(CommonTransferFactory.createTraining(runData, heartRate));
         // execute
         final List<ChartDataWrapper> result = support.createPastData(dataPast, now);
 
         assertEquals("Gibt nur eine Kategorie", 1, result.size());
         final ChartDataWrapper cdw = result.get(0);
         assertEquals(category, cdw.getCategory());
-        assertEquals(2, cdw.getValue(SimpleTrainingChart.DISTANZ), 0.001);
-        assertEquals(132, cdw.getValue(SimpleTrainingChart.HERZ), 0.001);
+        assertEquals(2, cdw.getValue(TrainingChart.DISTANZ), 0.001);
+        assertEquals(132, cdw.getValue(TrainingChart.HERZ), 0.001);
         final DateTime date = new DateTime(cdw.getDate().getTime());
         assertEquals("Wird mit der Vorjahresperiode verglichen", 2012, date.getYear());
     }
@@ -155,26 +159,27 @@ public class ChartDataSupportTest {
         now.add(new ChartDataWrapper(1000, 142, category, datum.toDate()));
 
         // PAST
-        final ArrayList<ISimpleTraining> dataPast = new ArrayList<ISimpleTraining>();
+        final ArrayList<ITraining> dataPast = new ArrayList<ITraining>();
         final DateTime datePast = new DateTime(2012, 9, 29, 12, 00);
 
-        dataPast.add(ModelFactory.createSimpleTraining(2000, 2d, datePast.toDate(), 132, 155, 4d, TrainingType.EXT_INTERVALL, "note"));
-
+        final RunData runData = new RunData(datePast.getMillis(), 2, 2000, 4);
+        final HeartRate heartRate = new HeartRate(132, 155);
+        dataPast.add(CommonTransferFactory.createTraining(runData, heartRate));
         // execute
         final List<ChartDataWrapper> result = support.createPastData(dataPast, now);
 
         assertEquals("Gibt zwei Kategorien", 2, result.size());
         final ChartDataWrapper cdw1 = result.get(0);
         assertEquals(category, cdw1.getCategory());
-        assertEquals(0, cdw1.getValue(SimpleTrainingChart.DISTANZ), 0.001);
-        assertEquals(0, cdw1.getValue(SimpleTrainingChart.HERZ), 0.001);
+        assertEquals(0, cdw1.getValue(TrainingChart.DISTANZ), 0.001);
+        assertEquals(0, cdw1.getValue(TrainingChart.HERZ), 0.001);
         final DateTime date1 = new DateTime(cdw1.getDate().getTime());
         assertEquals("Wird mit der Vorjahresperiode verglichen", 2012, date1.getYear());
 
         final ChartDataWrapper cdw2 = result.get(1);
         assertEquals(CategoryHelper.getMonthCategory(datePast.toDate()), cdw2.getCategory());
-        assertEquals(2, cdw2.getValue(SimpleTrainingChart.DISTANZ), 0.001);
-        assertEquals(132, cdw2.getValue(SimpleTrainingChart.HERZ), 0.001);
+        assertEquals(2, cdw2.getValue(TrainingChart.DISTANZ), 0.001);
+        assertEquals(132, cdw2.getValue(TrainingChart.HERZ), 0.001);
         final DateTime date2 = new DateTime(cdw2.getDate().getTime());
         assertEquals("Wird mit der Vorjahresperiode verglichen", 2012, date2.getYear());
     }
@@ -190,11 +195,12 @@ public class ChartDataSupportTest {
         now.add(new ChartDataWrapper(1000, 142, category, datum.toDate()));
 
         // PAST
-        final ArrayList<ISimpleTraining> dataPast = new ArrayList<ISimpleTraining>();
+        final ArrayList<ITraining> dataPast = new ArrayList<ITraining>();
         final DateTime datePast = new DateTime(2012, 8, 29, 12, 00);
 
-        dataPast.add(ModelFactory.createSimpleTraining(2000, 2d, datePast.toDate(), 132, 155, 4d, TrainingType.EXT_INTERVALL, "note"));
-
+        final RunData runData = new RunData(datePast.getMillis(), 2, 2000, 4);
+        final HeartRate heartRate = new HeartRate(132, 155);
+        dataPast.add(CommonTransferFactory.createTraining(runData, heartRate));
         // execute
         final List<ChartDataWrapper> result = support.createPastData(dataPast, now);
 
@@ -202,8 +208,8 @@ public class ChartDataSupportTest {
         assertEquals("Es gibt nur eine Past Kategorie", 1, result.size());
         final ChartDataWrapper cdw1 = result.get(0);
         assertEquals("2012", cdw1.getCategory());
-        assertEquals(2, cdw1.getValue(SimpleTrainingChart.DISTANZ), 0.001);
-        assertEquals(132, cdw1.getValue(SimpleTrainingChart.HERZ), 0.001);
+        assertEquals(2, cdw1.getValue(TrainingChart.DISTANZ), 0.001);
+        assertEquals(132, cdw1.getValue(TrainingChart.HERZ), 0.001);
         final DateTime date1 = new DateTime(cdw1.getDate().getTime());
         assertEquals("Wird mit der Vorjahresperiode verglichen", 2012, date1.getYear());
     }
@@ -219,11 +225,12 @@ public class ChartDataSupportTest {
         now.add(new ChartDataWrapper(1000, 142, category, datum.toDate()));
 
         // PAST
-        final ArrayList<ISimpleTraining> dataPast = new ArrayList<ISimpleTraining>();
+        final ArrayList<ITraining> dataPast = new ArrayList<ITraining>();
         final DateTime datePast = new DateTime(2012, 8, 29, 12, 00);
 
-        dataPast.add(ModelFactory.createSimpleTraining(2000, 2d, datePast.toDate(), 132, 155, 4d, TrainingType.EXT_INTERVALL, "note"));
-
+        final RunData runData = new RunData(datePast.getMillis(), 2, 2000, 4);
+        final HeartRate heartRate = new HeartRate(132, 155);
+        dataPast.add(CommonTransferFactory.createTraining(runData, heartRate));
         // execute
         final List<ChartDataWrapper> result = support.createPastData(dataPast, now);
 

@@ -30,24 +30,24 @@ import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 
-import ch.opentrainingcenter.model.training.ISimpleTraining;
 import ch.opentrainingcenter.model.training.filter.internal.FilterTrainingByDate;
+import ch.opentrainingcenter.transfer.ITraining;
 
 public class FilterTrainingByDateProzessorTest {
     FilterTrainingByDate prozessor;
-    private ISimpleTraining item;
+    private ITraining item;
 
     @Before
     public void setUp() {
 
-        item = mock(ISimpleTraining.class);
+        item = mock(ITraining.class);
     }
 
     @Test
     public void testUpperMargin() {
         prozessor = new FilterTrainingByDate(new Date(1), new Date(1000));
 
-        when(item.getDatum()).thenReturn(new Date(1000));
+        when(item.getDatum()).thenReturn(1000L);
 
         final boolean result = prozessor.select(item);
 
@@ -58,7 +58,7 @@ public class FilterTrainingByDateProzessorTest {
     public void testLowerMargin() {
         prozessor = new FilterTrainingByDate(new Date(1), new Date(1000));
 
-        when(item.getDatum()).thenReturn(new Date(1));
+        when(item.getDatum()).thenReturn(1L);
 
         final boolean result = prozessor.select(item);
 
@@ -71,7 +71,7 @@ public class FilterTrainingByDateProzessorTest {
         final DateTime bis = new DateTime(2012, 3, 22, 12, 22);
         prozessor = new FilterTrainingByDate(von.toDate(), bis.toDate());
         final DateTime training = new DateTime(2012, 1, 21, 23, 59);
-        when(item.getDatum()).thenReturn(training.toDate());
+        when(item.getDatum()).thenReturn(training.getMillis());
 
         final boolean result = prozessor.select(item);
 
@@ -84,7 +84,7 @@ public class FilterTrainingByDateProzessorTest {
         final DateTime bis = new DateTime(2012, 3, 22, 12, 22);
         prozessor = new FilterTrainingByDate(von.toDate(), bis.toDate());
         final DateTime training = new DateTime(2012, 3, 23, 0, 0);
-        when(item.getDatum()).thenReturn(training.toDate());
+        when(item.getDatum()).thenReturn(training.getMillis());
 
         final boolean result = prozessor.select(item);
 
@@ -97,7 +97,7 @@ public class FilterTrainingByDateProzessorTest {
         final DateTime bis = new DateTime(2012, 3, 22, 12, 22);
         prozessor = new FilterTrainingByDate(von.toDate(), bis.toDate());
         final DateTime training = new DateTime(2012, 3, 22, 16, 22);
-        when(item.getDatum()).thenReturn(training.toDate());
+        when(item.getDatum()).thenReturn(training.getMillis());
 
         final boolean result = prozessor.select(item);
 

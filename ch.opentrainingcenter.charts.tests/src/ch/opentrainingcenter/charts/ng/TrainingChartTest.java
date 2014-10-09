@@ -25,40 +25,40 @@ import ch.opentrainingcenter.i18n.Messages;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-public class SimpleTrainingChartTest {
+public class TrainingChartTest {
 
     @Test
     public void testDistanz() {
-        assertEquals(0, SimpleTrainingChart.DISTANZ.getIndex());
-        assertEquals(Messages.SimpleTrainingChart_0, SimpleTrainingChart.DISTANZ.getTitle());
-        assertEquals(Messages.SimpleTrainingChart_1, SimpleTrainingChart.DISTANZ.getxAchse());
-        assertEquals(Messages.SimpleTrainingChart_2, SimpleTrainingChart.DISTANZ.getyAchse());
-        assertEquals(Messages.SimpleTrainingChart_3, SimpleTrainingChart.DISTANZ.getComboTitle());
+        assertEquals(0, TrainingChart.DISTANZ.getIndex());
+        assertEquals(Messages.SimpleTrainingChart_0, TrainingChart.DISTANZ.getTitle());
+        assertEquals(Messages.SimpleTrainingChart_1, TrainingChart.DISTANZ.getxAchse());
+        assertEquals(Messages.SimpleTrainingChart_2, TrainingChart.DISTANZ.getyAchse());
+        assertEquals(Messages.SimpleTrainingChart_3, TrainingChart.DISTANZ.getComboTitle());
     }
 
     @Test
     public void testHerz() {
-        assertEquals(1, SimpleTrainingChart.HERZ.getIndex());
-        assertEquals(Messages.SimpleTrainingChart_4, SimpleTrainingChart.HERZ.getTitle());
-        assertEquals(Messages.SimpleTrainingChart_5, SimpleTrainingChart.HERZ.getxAchse());
-        assertEquals(Messages.SimpleTrainingChart_6, SimpleTrainingChart.HERZ.getyAchse());
-        assertEquals(Messages.SimpleTrainingChart_7, SimpleTrainingChart.HERZ.getComboTitle());
+        assertEquals(1, TrainingChart.HERZ.getIndex());
+        assertEquals(Messages.SimpleTrainingChart_4, TrainingChart.HERZ.getTitle());
+        assertEquals(Messages.SimpleTrainingChart_5, TrainingChart.HERZ.getxAchse());
+        assertEquals(Messages.SimpleTrainingChart_6, TrainingChart.HERZ.getyAchse());
+        assertEquals(Messages.SimpleTrainingChart_7, TrainingChart.HERZ.getComboTitle());
     }
 
     @Test
     public void testByIndex() {
-        assertEquals(SimpleTrainingChart.DISTANZ, SimpleTrainingChart.getByIndex(0));
-        assertEquals(SimpleTrainingChart.HERZ, SimpleTrainingChart.getByIndex(1));
+        assertEquals(TrainingChart.DISTANZ, TrainingChart.getByIndex(0));
+        assertEquals(TrainingChart.HERZ, TrainingChart.getByIndex(1));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testByIndexUnknown() {
-        SimpleTrainingChart.getByIndex(2);
+        TrainingChart.getByIndex(2);
     }
 
     @Test
     public void testItems() {
-        assertNotNull(SimpleTrainingChart.items());
-        assertEquals(2, SimpleTrainingChart.items().length);
+        assertNotNull(TrainingChart.items());
+        assertEquals(2, TrainingChart.items().length);
     }
 }

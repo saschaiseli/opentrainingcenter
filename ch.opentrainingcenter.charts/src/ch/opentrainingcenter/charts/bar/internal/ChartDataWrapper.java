@@ -21,9 +21,9 @@ package ch.opentrainingcenter.charts.bar.internal;
 
 import java.util.Date;
 
-import ch.opentrainingcenter.charts.ng.SimpleTrainingChart;
+import ch.opentrainingcenter.charts.ng.TrainingChart;
 import ch.opentrainingcenter.charts.single.XAxisChart;
-import ch.opentrainingcenter.model.training.ISimpleTraining;
+import ch.opentrainingcenter.transfer.ITraining;
 
 /**
  * Kapselt Wert(Herz- und Distanz Daten) und Category
@@ -35,9 +35,9 @@ public class ChartDataWrapper implements Comparable<ChartDataWrapper> {
     private final String category;
     private final Date date;
 
-    public ChartDataWrapper(final ISimpleTraining training, final XAxisChart type) {
-        this(training.getDistanzInMeter() / KILOMETER_IN_METER, training.getAvgHeartRate(), CategoryHelper.getCategory(training.getDatum(), type), training
-                .getDatum());
+    public ChartDataWrapper(final ITraining training, final XAxisChart type) {
+        this(training.getLaengeInMeter() / KILOMETER_IN_METER, training.getAverageHeartBeat(), CategoryHelper.getCategory(new Date(training.getDatum()), type),
+                new Date(training.getDatum()));
     }
 
     public ChartDataWrapper(final double distanceInMeter, final int avgHeartRate, final String category, final Date date) {
@@ -47,7 +47,7 @@ public class ChartDataWrapper implements Comparable<ChartDataWrapper> {
         this.date = date;
     }
 
-    public double getValue(final SimpleTrainingChart stc) {
+    public double getValue(final TrainingChart stc) {
         switch (stc) {
         case DISTANZ:
             return distance;

@@ -29,7 +29,7 @@ import org.joda.time.DateTime;
 
 import ch.opentrainingcenter.charts.single.XAxisChart;
 import ch.opentrainingcenter.core.assertions.Assertions;
-import ch.opentrainingcenter.model.training.ISimpleTraining;
+import ch.opentrainingcenter.transfer.ITraining;
 
 public class ChartDataSupport {
 
@@ -40,14 +40,14 @@ public class ChartDataSupport {
     }
 
     /**
-     * Konvertiert und sortiert die {@link ISimpleTraining} zu
+     * Konvertiert und sortiert die {@link ITraining} zu
      * {@link ChartDataWrapper}. Der {@link ChartDataWrapper} beinhaltet puls
      * und distanz daten.
      */
-    public List<ChartDataWrapper> convertAndSort(final List<ISimpleTraining> data) {
+    public List<ChartDataWrapper> convertAndSort(final List<ITraining> data) {
         final List<ChartDataWrapper> result = new ArrayList<>();
         Assertions.notNull(data);
-        for (final ISimpleTraining training : data) {
+        for (final ITraining training : data) {
             result.add(new ChartDataWrapper(training, type));
         }
         Collections.sort(result);
@@ -58,7 +58,7 @@ public class ChartDataSupport {
      * Kreiert aus den NOW Daten die PAST Daten. Basierend auf den NOW Daten
      * werden nichtexistente PAST Daten mit null Werten erzeugt.
      */
-    public List<ChartDataWrapper> createPastData(final List<ISimpleTraining> dataPast, final List<ChartDataWrapper> now) {
+    public List<ChartDataWrapper> createPastData(final List<ITraining> dataPast, final List<ChartDataWrapper> now) {
         Assertions.notNull(dataPast);
         Assertions.notNull(now);
         final List<ChartDataWrapper> past = new ArrayList<>();

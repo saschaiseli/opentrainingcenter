@@ -1,6 +1,6 @@
 package ch.opentrainingcenter.model.importer;
 
-import ch.opentrainingcenter.model.strecke.StreckeModel;
+import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.IShoe;
 import ch.opentrainingcenter.transfer.TrainingType;
 
@@ -18,9 +18,9 @@ public interface IGpsFileModel {
 
     void setImportFile(final boolean importFile);
 
-    StreckeModel getRoute();
+    IRoute getRoute();
 
-    void setRoute(StreckeModel strecke);
+    void setRoute(IRoute strecke);
 
     IShoe getSchuh();
 

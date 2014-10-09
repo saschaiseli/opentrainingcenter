@@ -1,6 +1,7 @@
 package ch.opentrainingcenter.client.views.navigation;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -52,7 +53,6 @@ import ch.opentrainingcenter.model.navigation.DecoratImported;
 import ch.opentrainingcenter.model.navigation.IKalenderWocheNavigationModel;
 import ch.opentrainingcenter.model.navigation.INavigationItem;
 import ch.opentrainingcenter.model.navigation.NavigationElementComparer;
-import ch.opentrainingcenter.model.training.ISimpleTraining;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IHealth;
 import ch.opentrainingcenter.transfer.ITraining;
@@ -213,9 +213,9 @@ public class KalenderWocheNavigationView extends ViewPart {
             public void selectionChanged(final IWorkbenchPart part, final ISelection selection) {
                 if (selection instanceof StructuredSelection && !selection.isEmpty()) {
                     final Object firstElement = ((StructuredSelection) selection).getFirstElement();
-                    if (firstElement instanceof ISimpleTraining) {
-                        final ISimpleTraining training = (ISimpleTraining) firstElement;
-                        final INavigationItem model = treeModel.getImportedItem(training.getDatum());
+                    if (firstElement instanceof ITraining) {
+                        final ITraining training = (ITraining) firstElement;
+                        final INavigationItem model = treeModel.getImportedItem(new Date(training.getDatum()));
                         if (model != null) {
                             final StructuredSelection element = new StructuredSelection(model);
                             viewer.setSelection(element, true);

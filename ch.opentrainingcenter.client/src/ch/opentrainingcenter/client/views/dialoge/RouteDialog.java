@@ -1,7 +1,6 @@
 package ch.opentrainingcenter.client.views.dialoge;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.databinding.DataBindingContext;
@@ -27,8 +26,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import ch.opentrainingcenter.client.Activator;
-import ch.opentrainingcenter.client.cache.StreckeCache;
 import ch.opentrainingcenter.client.views.IImageKeys;
+import ch.opentrainingcenter.core.cache.RouteCache;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.helper.TimeHelper;
 import ch.opentrainingcenter.i18n.Messages;
@@ -110,14 +109,10 @@ public class RouteDialog extends TitleAreaDialog {
                     final ITraining tr = ((ConcreteImported) training).getImported();
                     final IRoute newRoute = CommonTransferFactory.createRoute(model.getName(), model.getBeschreibung(), tr);
                     databaseAccess.saveOrUpdate(newRoute);
-                    model.setId(newRoute.getId());
-                    model.setReferenzTrainingId(tr.getId());
-                    final List<StreckeModel> models = new ArrayList<>();
-                    models.add(model);
 
                     tr.setRoute(newRoute);
                     databaseAccess.saveOrUpdate(tr);
-                    StreckeCache.getInstance().addAll(models);
+                    RouteCache.getInstance().addAll(Arrays.asList(newRoute));
                 }
             });
             super.buttonPressed(buttonId);
@@ -155,7 +150,7 @@ public class RouteDialog extends TitleAreaDialog {
                 if (nameVonModel != null && nameVonModel.length() > 3) {
                     nameValid = true;
                 }
-                if (StreckeCache.getInstance().contains(nameVonModel)) {
+                if (RouteCache.getInstance().contains(nameVonModel)) {
                     getButton(OK).setEnabled(false);
                     setErrorMessage(Messages.RouteDialog_Route_existiert_bereits);
                     return ValidationStatus.error("Mist"); //$NON-NLS-1$

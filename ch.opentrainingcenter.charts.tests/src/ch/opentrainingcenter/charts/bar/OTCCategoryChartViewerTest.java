@@ -19,9 +19,15 @@
 
 package ch.opentrainingcenter.charts.bar;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -41,17 +47,10 @@ import org.junit.Test;
 
 import ch.opentrainingcenter.charts.bar.internal.CategoryHelper;
 import ch.opentrainingcenter.charts.bar.internal.OTCBarPainter;
-import ch.opentrainingcenter.charts.ng.SimpleTrainingChart;
+import ch.opentrainingcenter.charts.ng.TrainingChart;
 import ch.opentrainingcenter.charts.single.XAxisChart;
 import ch.opentrainingcenter.core.PreferenceConstants;
-import ch.opentrainingcenter.model.training.ISimpleTraining;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import ch.opentrainingcenter.transfer.ITraining;
 
 @SuppressWarnings("nls")
 public class OTCCategoryChartViewerTest {
@@ -75,15 +74,14 @@ public class OTCCategoryChartViewerTest {
 
     @Test
     public void testUpdateData_Herz() {
-        final List<ISimpleTraining> data = new ArrayList<>();
-        final ISimpleTraining simpleTraining = mock(ISimpleTraining.class);
+        final List<ITraining> data = new ArrayList<>();
+        final ITraining simpleTraining = mock(ITraining.class);
         final Integer heart = Integer.valueOf(170);
-        when(simpleTraining.getAvgHeartRate()).thenReturn(heart);
-        final Date date = new Date(1000);
-        when(simpleTraining.getDatum()).thenReturn(date);
+        when(simpleTraining.getAverageHeartBeat()).thenReturn(heart);
+        when(simpleTraining.getDatum()).thenReturn(1000L);
         data.add(simpleTraining);
 
-        viewer.updateData(data, data, XAxisChart.DAY, SimpleTrainingChart.HERZ, false);
+        viewer.updateData(data, data, XAxisChart.DAY, TrainingChart.HERZ, false);
 
         final DefaultCategoryDataset dataset = viewer.getDataset();
         final Number value = dataset.getValue(OTCCategoryChartViewer.DIESES_JAHR, "1");
@@ -93,16 +91,15 @@ public class OTCCategoryChartViewerTest {
 
     @Test
     public void testInitData_Distanz() {
-        final List<ISimpleTraining> data = new ArrayList<>();
-        final ISimpleTraining simpleTraining = mock(ISimpleTraining.class);
+        final List<ITraining> data = new ArrayList<>();
+        final ITraining simpleTraining = mock(ITraining.class);
         final Double distanz = Double.valueOf(42000);
-        when(simpleTraining.getDistanzInMeter()).thenReturn(distanz);
-        final Date date = new Date(1000);
-        when(simpleTraining.getDatum()).thenReturn(date);
+        when(simpleTraining.getLaengeInMeter()).thenReturn(distanz);
+        when(simpleTraining.getDatum()).thenReturn(1000L);
         data.add(simpleTraining);
 
         viewer.createChart();
-        viewer.updateData(data, data, XAxisChart.DAY, SimpleTrainingChart.DISTANZ, false);
+        viewer.updateData(data, data, XAxisChart.DAY, TrainingChart.DISTANZ, false);
 
         final DefaultCategoryDataset dataset = viewer.getDataset();
         final Number value = dataset.getValue(OTCCategoryChartViewer.DIESES_JAHR, "1");
@@ -112,15 +109,14 @@ public class OTCCategoryChartViewerTest {
 
     @Test
     public void testUpdateData_Distanz() {
-        final List<ISimpleTraining> data = new ArrayList<>();
-        final ISimpleTraining simpleTraining = mock(ISimpleTraining.class);
+        final List<ITraining> data = new ArrayList<>();
+        final ITraining simpleTraining = mock(ITraining.class);
         final Double distanz = Double.valueOf(42000);
-        when(simpleTraining.getDistanzInMeter()).thenReturn(distanz);
-        final Date date = new Date(1000);
-        when(simpleTraining.getDatum()).thenReturn(date);
+        when(simpleTraining.getLaengeInMeter()).thenReturn(distanz);
+        when(simpleTraining.getDatum()).thenReturn(1000L);
         data.add(simpleTraining);
 
-        viewer.updateData(data, data, XAxisChart.DAY, SimpleTrainingChart.DISTANZ, false);
+        viewer.updateData(data, data, XAxisChart.DAY, TrainingChart.DISTANZ, false);
 
         final DefaultCategoryDataset dataset = viewer.getDataset();
         final Number value = dataset.getValue(OTCCategoryChartViewer.DIESES_JAHR, "1");
@@ -130,7 +126,7 @@ public class OTCCategoryChartViewerTest {
 
     @Test
     public void updateAxisChart_NotCreated() {
-        viewer.updateAxis(SimpleTrainingChart.DISTANZ, XAxisChart.DAY);
+        viewer.updateAxis(TrainingChart.DISTANZ, XAxisChart.DAY);
     }
 
     @Test
@@ -144,11 +140,11 @@ public class OTCCategoryChartViewerTest {
         when(mockedChart.getPlot()).thenReturn(plot);
         viewer.setChart(mockedChart);
 
-        viewer.updateAxis(SimpleTrainingChart.DISTANZ, XAxisChart.DAY);
+        viewer.updateAxis(TrainingChart.DISTANZ, XAxisChart.DAY);
 
-        verify(rangeAxis).setLabel(SimpleTrainingChart.DISTANZ.getyAchse());
+        verify(rangeAxis).setLabel(TrainingChart.DISTANZ.getyAchse());
         verify(domainAxis).setLabel(CategoryHelper.getDomainAxis(XAxisChart.DAY));
-        verify(mockedChart).setTitle(SimpleTrainingChart.DISTANZ.getTitle());
+        verify(mockedChart).setTitle(TrainingChart.DISTANZ.getTitle());
     }
 
     @Test
@@ -158,7 +154,7 @@ public class OTCCategoryChartViewerTest {
         when(store.getString(PreferenceConstants.CHART_DISTANCE_COLOR_PAST)).thenReturn("2,3,4");
 
         // Execute
-        viewer.updateRenderer(XAxisChart.DAY, SimpleTrainingChart.DISTANZ, true);
+        viewer.updateRenderer(XAxisChart.DAY, TrainingChart.DISTANZ, true);
 
         final BarRenderer renderer = viewer.getRenderer();
 
@@ -190,7 +186,7 @@ public class OTCCategoryChartViewerTest {
         viewer.setChart(mockedChart);
 
         // Execute
-        viewer.updateRenderer(XAxisChart.MONTH, SimpleTrainingChart.DISTANZ, true);
+        viewer.updateRenderer(XAxisChart.MONTH, TrainingChart.DISTANZ, true);
 
         final BarRenderer renderer = viewer.getRenderer();
 
@@ -215,12 +211,12 @@ public class OTCCategoryChartViewerTest {
 
         final JFreeChart chart = viewer.createChart();
 
-        viewer.updateData(new ArrayList<ISimpleTraining>(), new ArrayList<ISimpleTraining>(), XAxisChart.MONTH, SimpleTrainingChart.DISTANZ, false);
+        viewer.updateData(new ArrayList<ITraining>(), new ArrayList<ITraining>(), XAxisChart.MONTH, TrainingChart.DISTANZ, false);
 
         assertNotNull(chart);
 
-        assertEquals(SimpleTrainingChart.DISTANZ.getTitle(), chart.getTitle().getText());
-        assertEquals(SimpleTrainingChart.DISTANZ.getyAchse(), chart.getCategoryPlot().getRangeAxis().getLabel());
+        assertEquals(TrainingChart.DISTANZ.getTitle(), chart.getTitle().getText());
+        assertEquals(TrainingChart.DISTANZ.getyAchse(), chart.getCategoryPlot().getRangeAxis().getLabel());
         assertEquals(CategoryHelper.getDomainAxis(XAxisChart.MONTH), chart.getCategoryPlot().getDomainAxis().getLabel());
     }
 }

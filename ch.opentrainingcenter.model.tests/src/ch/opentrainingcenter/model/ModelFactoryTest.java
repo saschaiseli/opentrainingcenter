@@ -12,20 +12,14 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import ch.opentrainingcenter.core.helper.DistanceHelper;
 import ch.opentrainingcenter.model.importer.IGpsFileModel;
 import ch.opentrainingcenter.model.importer.IGpsFileModelWrapper;
 import ch.opentrainingcenter.model.planing.IPlanungModel;
 import ch.opentrainingcenter.model.planing.IPlanungWocheModel;
 import ch.opentrainingcenter.model.strecke.StreckeModel;
-import ch.opentrainingcenter.model.training.ISimpleTraining;
-import ch.opentrainingcenter.model.training.internal.SimpleTraining;
-import ch.opentrainingcenter.transfer.HeartRate;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
-import ch.opentrainingcenter.transfer.RunData;
-import ch.opentrainingcenter.transfer.Sport;
 import ch.opentrainingcenter.transfer.TrainingType;
 
 @SuppressWarnings("nls")
@@ -60,28 +54,6 @@ public class ModelFactoryTest {
     }
 
     @Test
-    public void testSimpleTraining() {
-        final ISimpleTraining training = ModelFactory.convertToSimpleTraining(overview);
-        assertTraining(training);
-    }
-
-    @Test
-    public void testFullTraining() {
-        final TrainingType type = TrainingType.INT_INTERVALL;
-        final ISimpleTraining training = ModelFactory.createSimpleTraining(distanz, dauer, date, avgHeart, maxHeart, maxSpeed, type, null);
-        assertTraining(training, type);
-    }
-
-    @Test
-    public void testSimpleTrainingMitTyp() {
-        final TrainingType type = TrainingType.EXT_INTERVALL;
-        final HeartRate heart = new HeartRate(overview.getAverageHeartBeat(), overview.getMaxHeartBeat());
-        final RunData runData = new RunData(overview.getDatum(), overview.getDauer(), overview.getLaengeInMeter(), overview.getMaxSpeed());
-        final ISimpleTraining training = new SimpleTraining(runData, heart, type, "");
-        assertTraining(training, type);
-    }
-
-    @Test
     public void testCreateStreckeModel() {
         final IRoute route = mock(IRoute.class);
         when(route.getId()).thenReturn(11);
@@ -94,29 +66,6 @@ public class ModelFactoryTest {
 
         assertEquals(42, model.getReferenzTrainingId());
         assertEquals(11, model.getId());
-    }
-
-    /**
-     * Nur für tests
-     */
-    protected static ISimpleTraining createSimpleTraining(final ITraining overview, final TrainingType runType, final String note) {
-        final HeartRate heart = new HeartRate(overview.getAverageHeartBeat(), overview.getMaxHeartBeat());
-        final RunData runData = new RunData(overview.getDatum(), overview.getDauer(), overview.getLaengeInMeter(), overview.getMaxSpeed());
-        return new SimpleTraining(runData, heart, runType, note);
-    }
-
-    private void assertTraining(final ISimpleTraining training) {
-        assertTraining(training, TrainingType.getByIndex(0));
-    }
-
-    private void assertTraining(final ISimpleTraining training, final TrainingType type) {
-        assertEquals("Distanz:", distanz, training.getDistanzInMeter(), 0.001);
-        assertEquals("Dauer:", dauer, training.getDauerInSekunden(), 0.001);
-        assertEquals("Datum:", date, training.getDatum());
-        assertEquals("Herzrfequenz:", avgHeart, training.getAvgHeartRate());
-        assertEquals("max Herzrfequenz:", Integer.toString(maxHeart), training.getMaxHeartBeat());
-        assertEquals("max Speed:", DistanceHelper.calculatePace(maxSpeed, Sport.RUNNING), training.getMaxSpeed());
-        assertEquals(type, training.getType());
     }
 
     @Test

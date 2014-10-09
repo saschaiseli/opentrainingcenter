@@ -4,11 +4,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import ch.opentrainingcenter.model.ModelFactory;
-import ch.opentrainingcenter.model.training.ISimpleTraining;
+import ch.opentrainingcenter.transfer.HeartRate;
+import ch.opentrainingcenter.transfer.ITraining;
+import ch.opentrainingcenter.transfer.RunData;
 import ch.opentrainingcenter.transfer.TrainingType;
+import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
 
-public final class SimpleTrainingDescriptor {
+public final class TrainingDescriptor {
 
     private int year;
     private int monat;
@@ -21,67 +23,67 @@ public final class SimpleTrainingDescriptor {
     private TrainingType type = TrainingType.NONE;
     private Date date;
 
-    private SimpleTrainingDescriptor(final int year, final int monat, final int day) {
+    private TrainingDescriptor(final int year, final int monat, final int day) {
         this.year = year;
         this.monat = monat;
         this.day = day;
     }
 
-    public static SimpleTrainingDescriptor createSimpleTraining(final int year, final int monat, final int day) {
-        return new SimpleTrainingDescriptor(year, monat, day);
+    public static TrainingDescriptor createSimpleTraining(final int year, final int monat, final int day) {
+        return new TrainingDescriptor(year, monat, day);
     }
 
-    public SimpleTrainingDescriptor setJahr(final int year) {
+    public TrainingDescriptor setJahr(final int year) {
         this.year = year;
         return this;
     }
 
-    public SimpleTrainingDescriptor setMonat(final int monat) {
+    public TrainingDescriptor setMonat(final int monat) {
         this.monat = monat;
         return this;
     }
 
-    public SimpleTrainingDescriptor setTag(final int day) {
+    public TrainingDescriptor setTag(final int day) {
         this.day = day;
         return this;
     }
 
-    public SimpleTrainingDescriptor setDate(final Date date) {
+    public TrainingDescriptor setDate(final Date date) {
         this.date = date;
         return this;
     }
 
-    public SimpleTrainingDescriptor setDistanz(final int distanzInMeter) {
+    public TrainingDescriptor setDistanz(final int distanzInMeter) {
         this.distanzInMeter = distanzInMeter;
         return this;
     }
 
-    public SimpleTrainingDescriptor setDauerInSekunden(final int dauerInSekunden) {
+    public TrainingDescriptor setDauerInSekunden(final int dauerInSekunden) {
         this.dauerInSekunden = dauerInSekunden;
         return this;
     }
 
-    public SimpleTrainingDescriptor setAvgHeartRate(final int avgHeartRate) {
+    public TrainingDescriptor setAvgHeartRate(final int avgHeartRate) {
         this.avgHeartRate = avgHeartRate;
         return this;
     }
 
-    public SimpleTrainingDescriptor setMaxHeartRate(final int maxHeartRate) {
+    public TrainingDescriptor setMaxHeartRate(final int maxHeartRate) {
         this.maxHeartRate = maxHeartRate;
         return this;
     }
 
-    public SimpleTrainingDescriptor setSpeed(final double speed) {
+    public TrainingDescriptor setSpeed(final double speed) {
         this.speed = speed;
         return this;
     }
 
-    public SimpleTrainingDescriptor setRunType(final TrainingType type) {
+    public TrainingDescriptor setRunType(final TrainingType type) {
         this.type = type;
         return this;
     }
 
-    public ISimpleTraining build() {
+    public ITraining build() {
         final Calendar cal = Calendar.getInstance(Locale.GERMAN);
         final Date datum;
         if (date == null) {
@@ -92,6 +94,10 @@ public final class SimpleTrainingDescriptor {
         } else {
             datum = date;
         }
-        return ModelFactory.createSimpleTraining(distanzInMeter, dauerInSekunden, datum, avgHeartRate, maxHeartRate, speed, type, null);
+        final RunData runData = new RunData(datum.getTime(), dauerInSekunden, distanzInMeter, speed);
+        final HeartRate heart = new HeartRate(avgHeartRate, maxHeartRate);
+        final ITraining training = CommonTransferFactory.createTraining(runData, heart);
+        training.setTrainingType(type);
+        return training;
     }
 }

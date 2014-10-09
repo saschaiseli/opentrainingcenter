@@ -35,7 +35,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
-import ch.opentrainingcenter.charts.ng.SimpleTrainingChart;
+import ch.opentrainingcenter.charts.ng.TrainingChart;
 import ch.opentrainingcenter.charts.single.XAxisChart;
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.core.PreferenceConstants;
@@ -88,7 +88,7 @@ public class ChartPreferencePage extends FieldEditorPreferencePage implements IW
         final Combo comboDist = new Combo(training, SWT.READ_ONLY);
         comboDist.setBounds(50, 50, 150, 65);
 
-        comboDist.setItems(SimpleTrainingChart.items());
+        comboDist.setItems(TrainingChart.items());
         comboDist.select(getPreferenceStore().getInt(PreferenceConstants.CHART_YAXIS_CHART));
         comboDist.addSelectionListener(new SelectionAdapter() {
 

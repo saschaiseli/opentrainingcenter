@@ -31,33 +31,33 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import ch.opentrainingcenter.model.training.ISimpleTraining;
+import ch.opentrainingcenter.transfer.ITraining;
 
 @SuppressWarnings("unchecked")
-public class SimpleTrainingFilterTest {
+public class TrainingFilterTest {
 
-    SimpleTrainingFilter filter;
-    List<Filter<ISimpleTraining>> filters;
-    private ISimpleTraining training;
+    TrainingFilter filter;
+    List<Filter<ITraining>> filters;
+    private ITraining training;
 
     @Before
     public void setUp() {
-        training = mock(ISimpleTraining.class);
+        training = mock(ITraining.class);
         filters = new ArrayList<>();
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testFilterLeer() {
-        filter = new SimpleTrainingFilter(filters);
+        filter = new TrainingFilter(filters);
 
         filter.select(training);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testTrainingNull() {
-        final Filter<ISimpleTraining> filterA = mock(Filter.class);
+        final Filter<ITraining> filterA = mock(Filter.class);
         filters.add(filterA);
-        filter = new SimpleTrainingFilter(filters);
+        filter = new TrainingFilter(filters);
 
         filter.select(null);
     }
@@ -65,7 +65,7 @@ public class SimpleTrainingFilterTest {
     @Test
     public void testEinerOk() {
         filters.add(createFilter(true));
-        filter = new SimpleTrainingFilter(filters);
+        filter = new TrainingFilter(filters);
 
         final boolean result = filter.select(training);
 
@@ -75,7 +75,7 @@ public class SimpleTrainingFilterTest {
     @Test
     public void testEinerNOk() {
         filters.add(createFilter(false));
-        filter = new SimpleTrainingFilter(filters);
+        filter = new TrainingFilter(filters);
 
         final boolean result = filter.select(training);
 
@@ -86,7 +86,7 @@ public class SimpleTrainingFilterTest {
     public void testZweiOk() {
         filters.add(createFilter(true));
         filters.add(createFilter(true));
-        filter = new SimpleTrainingFilter(filters);
+        filter = new TrainingFilter(filters);
 
         final boolean result = filter.select(training);
 
@@ -97,16 +97,16 @@ public class SimpleTrainingFilterTest {
     public void testEinerAusZweiOk() {
         filters.add(createFilter(false));
         filters.add(createFilter(true));
-        filter = new SimpleTrainingFilter(filters);
+        filter = new TrainingFilter(filters);
 
         final boolean result = filter.select(training);
 
         assertFalse(result);
     }
 
-    private Filter<ISimpleTraining> createFilter(final boolean value) {
-        final Filter<ISimpleTraining> mock = mock(Filter.class);
-        when(mock.select((ISimpleTraining) any())).thenReturn(value);
+    private Filter<ITraining> createFilter(final boolean value) {
+        final Filter<ITraining> mock = mock(Filter.class);
+        when(mock.select((ITraining) any())).thenReturn(value);
         return mock;
     }
 
@@ -114,7 +114,7 @@ public class SimpleTrainingFilterTest {
     public void testKeinerAusZweiOk() {
         filters.add(createFilter(false));
         filters.add(createFilter(false));
-        filter = new SimpleTrainingFilter(filters);
+        filter = new TrainingFilter(filters);
 
         final boolean result = filter.select(training);
 

@@ -27,7 +27,7 @@ import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.model.ModelFactory;
 import ch.opentrainingcenter.model.importer.IGpsFileModel;
 import ch.opentrainingcenter.model.importer.IGpsFileModelWrapper;
-import ch.opentrainingcenter.model.strecke.StreckeModel;
+import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.IShoe;
 
 public class RunTypeDialog extends TitleAreaDialog {
@@ -36,22 +36,22 @@ public class RunTypeDialog extends TitleAreaDialog {
 
     private TableViewer viewer;
 
-    private final List<StreckeModel> strecken;
+    private final List<IRoute> routen;
 
     private final List<IShoe> schuhe;
 
     private final IPreferenceStore preferenceStore;
 
-    public RunTypeDialog(final Shell parentShell, final String[] fileNames, final List<StreckeModel> strecken, final List<IShoe> schuhe) {
+    public RunTypeDialog(final Shell parentShell, final String[] fileNames, final List<IRoute> routen, final List<IShoe> schuhe) {
         super(parentShell);
-        this.strecken = strecken;
+        this.routen = routen;
         this.schuhe = schuhe;
         preferenceStore = Activator.getDefault().getPreferenceStore();
         initModel(fileNames);
     }
 
     private void initModel(final String[] fileNames) {
-        final StreckeModel defRoute = strecken.isEmpty() ? null : strecken.get(0);
+        final IRoute defRoute = routen.isEmpty() ? null : routen.get(0);
         final IShoe defShoe = schuhe.isEmpty() ? null : getDefaultSchuh();
         for (final String fileName : fileNames) {
             final IGpsFileModel model = ModelFactory.createGpsFileModel(fileName);
@@ -146,10 +146,10 @@ public class RunTypeDialog extends TitleAreaDialog {
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(final Object element) {
-                return strecken.get(0).getName();
+                return routen.get(0).getName();
             }
         });
-        col.setEditingSupport(new StreckeEditingSupport(viewer, strecken));
+        col.setEditingSupport(new StreckeEditingSupport(viewer, routen));
 
         // Schuh
 

@@ -3,7 +3,7 @@ package ch.opentrainingcenter.model.chart;
 import java.util.List;
 import java.util.Map;
 
-import ch.opentrainingcenter.model.training.ISimpleTraining;
+import ch.opentrainingcenter.transfer.ITraining;
 
 public interface IStatistikCreator {
 
@@ -14,19 +14,19 @@ public interface IStatistikCreator {
      *         zugeordnet sind. Der Key der Map ist das Jahr, der Value eine
      *         Liste mit den Trainings dazu.
      */
-    Map<Integer, List<ISimpleTraining>> getTrainingsProJahr(List<ISimpleTraining> allTrainings);
+    Map<Integer, List<ITraining>> getTrainingsProJahr(List<ITraining> allTrainings);
 
     /**
      * Erster Key ist das Jahr. Zweiter Key ist der Monat, Value ist eine Liste
      * der Trainings der entsprechender KW.
      */
-    Map<Integer, Map<Integer, List<ISimpleTraining>>> getTrainingsProMonat(List<ISimpleTraining> allTrainings);
+    Map<Integer, Map<Integer, List<ITraining>>> getTrainingsProMonat(List<ITraining> allTrainings);
 
     /**
      * Erster Key ist das Jahr. Zweiter Key ist die KW, Value ist eine Liste der
      * Trainings der entsprechender KW.
      */
-    Map<Integer, Map<Integer, List<ISimpleTraining>>> getTrainingsProWoche(List<ISimpleTraining> allTrainings);
+    Map<Integer, Map<Integer, List<ITraining>>> getTrainingsProWoche(List<ITraining> allTrainings);
 
-    List<ISimpleTraining> getTrainingsProTag(List<ISimpleTraining> allTrainings);
+    List<ITraining> getTrainingsProTag(List<ITraining> allTrainings);
 }

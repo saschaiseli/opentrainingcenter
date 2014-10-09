@@ -27,18 +27,18 @@ import static org.mockito.Mockito.when;
 import org.junit.Before;
 import org.junit.Test;
 
-import ch.opentrainingcenter.model.training.ISimpleTraining;
 import ch.opentrainingcenter.model.training.filter.internal.FilterTrainingBySport;
+import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.Sport;
 
 public class FilterTrainingBySportTest {
     private FilterTrainingBySport filter;
 
-    private ISimpleTraining training;
+    private ITraining training;
 
     @Before
     public void setUp() {
-        training = mock(ISimpleTraining.class);
+        training = mock(ITraining.class);
     }
 
     @Test
