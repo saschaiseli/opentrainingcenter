@@ -7,7 +7,7 @@ import ch.opentrainingcenter.transfer.IHealth;
 
 public abstract class HealthDecorator implements IHealth {
 
-    private final IHealth health;
+    protected final IHealth health;
 
     public HealthDecorator(final IHealth health) {
         this.health = health;

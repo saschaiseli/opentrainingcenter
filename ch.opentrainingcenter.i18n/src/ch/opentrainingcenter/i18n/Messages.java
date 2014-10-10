@@ -441,6 +441,7 @@ public final class Messages extends NLS {
     public static String Units3;
     public static String Units4;
     public static String Units5;
+    public static String Units6;
     public static String RuhePulsChart_0;
     public static String RuhePulsChart_1;
     public static String RuhePulsChart_2;
