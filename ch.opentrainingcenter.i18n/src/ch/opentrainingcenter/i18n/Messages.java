@@ -489,7 +489,6 @@ public final class Messages extends NLS {
     public static String StatusLineWriter_16;
     public static String StatusLineWriter_17;
     public static String StatusLineWriter_18;
-    public static String StatusLineWriter_19;
     public static String StatusLineWriter_2;
     public static String StatusLineWriter_20;
     public static String StatusLineWriter_21;
@@ -500,6 +499,8 @@ public final class Messages extends NLS {
     public static String StatusLineWriter_7;
     public static String StatusLineWriter_8;
     public static String StatusLineWriter_9;
+
+    public static String StatusLineWriter_LetzteVitaldaten;
     public static String ViewLabelProvider_0;
     public static String SUN;
     public static String LIGHTCLOUDY;
