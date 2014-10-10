@@ -5,7 +5,6 @@ import static org.junit.Assert.assertNotNull;
 
 import java.io.File;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -58,7 +57,6 @@ public class ConvertGpxTest {
         final ITraining result = converter.convert(new File("resources", "twoTrackPoints.gpx")); //$NON-NLS-1$//$NON-NLS-2$
         assertEquals(80, result.getMaxHeartBeat());
         assertEquals(70, result.getAverageHeartBeat());
-        final Date time = cal.getTime();
         assertEquals(cal.getTime().getTime() / 1000, result.getDatum() / 1000);
         assertEquals(60, result.getDauer(), 0.0001);
         assertEquals(23.737725, result.getLaengeInMeter(), 0.0001);
