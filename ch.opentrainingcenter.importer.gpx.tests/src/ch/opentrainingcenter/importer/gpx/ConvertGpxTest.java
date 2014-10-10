@@ -59,10 +59,6 @@ public class ConvertGpxTest {
         assertEquals(80, result.getMaxHeartBeat());
         assertEquals(70, result.getAverageHeartBeat());
         final Date time = cal.getTime();
-        System.out.println(time);
-        System.out.println(time.getTime());
-        System.out.println(result.getDatum());
-        System.out.println(new Date(result.getDatum()));
         assertEquals(cal.getTime().getTime() / 1000, result.getDatum() / 1000);
         assertEquals(60, result.getDauer(), 0.0001);
         assertEquals(23.737725, result.getLaengeInMeter(), 0.0001);

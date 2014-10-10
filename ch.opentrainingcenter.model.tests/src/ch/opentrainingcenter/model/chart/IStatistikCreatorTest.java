@@ -120,9 +120,7 @@ public class IStatistikCreatorTest {
 
     @Test
     public void testGetTrainingsProWoche_1() {
-        System.out.println("--------------------------------------");
         trainings.add(createTraining(2012, 2, 19));
-        System.out.println("--------------------------------------:" + trainings.size());
         final Map<Integer, Map<Integer, List<ITraining>>> trainingsProMonat = stats.getTrainingsProWoche(trainings);
         for (final Map.Entry<Integer, Map<Integer, List<ITraining>>> entry : trainingsProMonat.entrySet()) {
             final Map<Integer, List<ITraining>> value = entry.getValue();

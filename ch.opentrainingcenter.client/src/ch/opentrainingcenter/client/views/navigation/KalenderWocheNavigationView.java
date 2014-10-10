@@ -215,8 +215,6 @@ public class KalenderWocheNavigationView extends ViewPart {
                     if (firstElement instanceof ITraining) {
                         final ITraining training = (ITraining) firstElement;
                         final INavigationItem model = treeModel.getImportedItem(new Date(training.getDatum()));
-                        System.out.println(new Date(training.getDatum()));
-                        System.out.println(model.getDate());
                         if (model != null && !(part instanceof KalenderWocheNavigationView)) {
                             final StructuredSelection element = new StructuredSelection(model);
                             viewer.setSelection(element, false);

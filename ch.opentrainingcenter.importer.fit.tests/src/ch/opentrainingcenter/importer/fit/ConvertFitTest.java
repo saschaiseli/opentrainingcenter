@@ -45,9 +45,6 @@ public class ConvertFitTest {
     @Test
     public void testActivityConvertStartDatum() throws ConvertException, ParseException {
         final ITraining training = converter.convert(new File("resources/2014_09_09.fit"));
-        System.out.println(new Date(training.getDatum()) + " " + TimeZone.getDefault());
-        // assertEquals(convertToDate("2014-09-09 19:28:50"),
-        // training.getDatum());
         assertEquals(new Date(convertToDate("2014-09-09 19:28:50")), new Date(training.getDatum()));
     }
 
