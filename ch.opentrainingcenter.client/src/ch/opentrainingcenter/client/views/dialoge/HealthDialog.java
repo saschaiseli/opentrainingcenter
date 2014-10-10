@@ -6,22 +6,14 @@ import java.util.Date;
 import java.util.Locale;
 
 import org.apache.log4j.Logger;
-import org.eclipse.core.databinding.DataBindingContext;
-import org.eclipse.core.databinding.UpdateValueStrategy;
-import org.eclipse.core.databinding.beans.BeansObservables;
-import org.eclipse.core.databinding.conversion.IConverter;
-import org.eclipse.core.databinding.conversion.StringToNumberConverter;
-import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.core.databinding.validation.MultiValidator;
-import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -36,19 +28,14 @@ import org.eclipse.ui.PlatformUI;
 
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.views.IImageKeys;
-import ch.opentrainingcenter.client.views.databinding.NumberValidator;
-import ch.opentrainingcenter.client.views.databinding.StringToIntegerConverter;
 import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.core.cache.HealthCache;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
-import ch.opentrainingcenter.model.sportler.HealthModel;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IHealth;
 import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
-
-import com.ibm.icu.text.NumberFormat;
 
 /**
  * Dialog wo tägliche Daten, wie Gewicht und Ruhepuls erfasst werden können.
@@ -60,11 +47,9 @@ public class HealthDialog extends TitleAreaDialog {
 
     private static final Logger LOG = Logger.getLogger(HealthDialog.class);
 
-    private final HealthModel model;
     private Text pulsText;
     private Text gewichtText;
 
-    private DataBindingContext ctx;
     private Label errorLabel;
 
     private DateTime dateTime;
@@ -74,6 +59,8 @@ public class HealthDialog extends TitleAreaDialog {
     private final IAthlete athlete;
 
     private final Date date;
+
+    private final IHealth healt;
 
     public HealthDialog(final Shell parent) {
         this(parent, null, Activator.getDefault().getPreferenceStore(), new Date());
@@ -95,12 +82,7 @@ public class HealthDialog extends TitleAreaDialog {
         this.date = date;
         final String id = store.getString(PreferenceConstants.ATHLETE_ID);
         athlete = db.getAthlete(Integer.valueOf(id));
-        final IHealth healt = db.getHealth(athlete, date);
-        if (healt != null) {
-            model = new HealthModel(healt.getWeight(), healt.getCardio(), healt.getDateofmeasure());
-        } else {
-            model = new HealthModel(0d, 0, new Date());
-        }
+        healt = db.getHealth(athlete, date);
         Assert.isNotNull(athlete);
     }
 
@@ -124,7 +106,6 @@ public class HealthDialog extends TitleAreaDialog {
 
         dateTime = new DateTime(c, SWT.BORDER | SWT.CALENDAR);
         dateTime.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1));
-
         final Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         dateTime.setDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
@@ -145,6 +126,15 @@ public class HealthDialog extends TitleAreaDialog {
         gdPulsText.widthHint = 80;
         pulsText.setLayoutData(gdPulsText);
 
+        pulsText.addModifyListener(new ModifyListener() {
+
+            @Override
+            public void modifyText(final ModifyEvent e) {
+                validate();
+            }
+
+        });
+
         final Label gewichtLabel = new Label(containerTextFields, SWT.NONE);
         gewichtLabel.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
         gewichtLabel.setText(Messages.HealthDialog3);
@@ -154,15 +144,68 @@ public class HealthDialog extends TitleAreaDialog {
         gdGewichtText.widthHint = 80;
         gewichtText.setLayoutData(gdGewichtText);
 
+        gewichtText.addModifyListener(new ModifyListener() {
+
+            @Override
+            public void modifyText(final ModifyEvent e) {
+                validate();
+            }
+        });
         errorLabel = new Label(c, SWT.NONE);
         errorLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
         errorLabel.setVisible(true);
         new Label(c, SWT.NONE);
         new Label(c, SWT.NONE);
 
-        ctx = new DataBindingContext();
-        initDataBindings();
+        if (healt != null) {
+            gewichtText.setText(healt.getWeight().toString());
+            pulsText.setText(healt.getCardio().toString());
+            cal.setTime(healt.getDateofmeasure());
+            dateTime.setDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
+        }
         return c;
+    }
+
+    private void validate() {
+        LOG.debug("validate"); //$NON-NLS-1$
+        final boolean pulsValid = pulsValid(pulsText.getText());
+        final boolean gewichtValid = gewichtValid(gewichtText.getText());
+
+        LOG.debug("gewichtValid " + gewichtValid); //$NON-NLS-1$
+        final Button okButton = getButton(OK);
+        if (okButton == null || okButton.isDisposed()) {
+            return;
+        }
+        if (pulsValid && gewichtValid) {
+            okButton.setEnabled(true);
+            setErrorMessage(null);
+        } else {
+            okButton.setEnabled(false);
+            setErrorMessage(Messages.HealthDialog_3);
+        }
+    }
+
+    private boolean gewichtValid(final Object gewichtObj) {
+        final boolean gewichtValid;
+        try {
+            final Double gewicht = Double.valueOf(gewichtObj.toString());
+            LOG.debug("gewicht " + gewicht); //$NON-NLS-1$
+            gewichtValid = gewicht != null && gewicht.doubleValue() > 40;
+        } catch (final NumberFormatException nfe) {
+            return false;
+        }
+        return gewichtValid;
+    }
+
+    private boolean pulsValid(final Object pulsObject) {
+        final boolean pulsValid;
+        try {
+            final Integer puls = Integer.valueOf(pulsObject.toString());
+            pulsValid = puls != null && puls > 0;
+        } catch (final NumberFormatException nfe) {
+            return false;
+        }
+        return pulsValid;
     }
 
     @Override
@@ -170,28 +213,30 @@ public class HealthDialog extends TitleAreaDialog {
         if (IDialogConstants.OK_ID == buttonId) {
             final Calendar cal = Calendar.getInstance(Locale.getDefault());
             cal.set(dateTime.getYear(), dateTime.getMonth(), dateTime.getDay());
-            final Date dateOfMeasure = cal.getTime();
-            model.setDateOfMeasure(dateOfMeasure);
+            final String puls = pulsText.getText();
+            final String gewicht = gewichtText.getText();
             Display.getDefault().asyncExec(new Runnable() {
 
                 @Override
                 public void run() {
-                    IHealth health = db.getHealth(athlete, dateOfMeasure);
+
+                    final Date date = cal.getTime();
+                    IHealth health = db.getHealth(athlete, date);
                     boolean confirm = true;
                     if (health != null) {
                         confirm = MessageDialog.openConfirm(parent, Messages.HealthDialog_0, Messages.HealthDialog_1);
                     }
                     if (confirm) {
-                        final Integer ruhePuls = model.getRuhePuls();
-                        final Double weight = model.getWeight();
-                        final Date dateOfMeasure = model.getDateOfMeasure();
+                        final Integer ruhePuls = Integer.valueOf(puls);
+                        final Double weight = Double.valueOf(gewicht);
                         if (health != null) {
                             health.setCardio(ruhePuls);
                             health.setWeight(weight);
-                            health.setDateofmeasure(dateOfMeasure);
+                            health.setDateofmeasure(cal.getTime());
                         } else {
-                            health = CommonTransferFactory.createHealth(athlete, weight, ruhePuls, dateOfMeasure);
+                            health = CommonTransferFactory.createHealth(athlete, weight, ruhePuls, cal.getTime());
                         }
+
                         db.saveOrUpdate(health);
                         HealthCache.getInstance().addAll(Arrays.asList(health));
                     }
@@ -204,86 +249,7 @@ public class HealthDialog extends TitleAreaDialog {
     @Override
     protected Control createButtonBar(final Composite p) {
         final Control c = super.createButtonBar(p);
-        final Button ok = getButton(OK);
-        ok.setEnabled(model.getDateOfMeasure() != null);
+        validate();
         return c;
-    }
-
-    protected void initDataBindings() {
-
-        // -- puls -------------------
-        final IObservableValue textPulsObservable = SWTObservables.observeText(pulsText, SWT.Modify);
-        final IObservableValue modelPulsObservable = BeansObservables.observeValue(model, "ruhePuls"); //$NON-NLS-1$
-        // strategy
-        final UpdateValueStrategy strategyPuls = new UpdateValueStrategy(UpdateValueStrategy.POLICY_CONVERT);
-        strategyPuls.setConverter(new StringToIntegerConverter());
-
-        ctx.bindValue(textPulsObservable, modelPulsObservable, strategyPuls, null);
-
-        //
-        // ----------------------------------------------------
-        // --------------- gewicht ----------------------------
-        // ----------------------------------------------------
-        //
-        final IObservableValue textGewichtObservable = SWTObservables.observeText(gewichtText, SWT.Modify);
-        final IObservableValue modelGewichtObservable = BeansObservables.observeValue(model, "weight"); //$NON-NLS-1$
-        // strategy
-        final UpdateValueStrategy strategyGewicht = new UpdateValueStrategy();
-        strategyGewicht.setAfterGetValidator(new NumberValidator(20.0, Double.MAX_VALUE, "")); //$NON-NLS-1$
-
-        final NumberFormat numberFormat = NumberFormat.getInstance(Locale.getDefault());
-        final IConverter numberToStringConverter = StringToNumberConverter.toDouble(numberFormat, false);
-        strategyGewicht.setConverter(numberToStringConverter);
-
-        ctx.bindValue(textGewichtObservable, modelGewichtObservable, strategyGewicht, null);
-
-        final MultiValidator multi = new MultiValidator() {
-            @Override
-            protected IStatus validate() {
-                LOG.debug("validate"); //$NON-NLS-1$
-                final Object pulsVal = textPulsObservable.getValue();
-                final boolean pulsValid = pulsValid(pulsVal);
-
-                final Object gewichtVal = textGewichtObservable.getValue();
-                final boolean gewichtValid = gewichtValid(gewichtVal);
-
-                if (pulsValid || gewichtValid) {
-                    getButton(OK).setEnabled(true);
-                    setErrorMessage(null);
-                    return ValidationStatus.ok();
-                } else {
-                    getButton(OK).setEnabled(false);
-                    setErrorMessage(Messages.HealthDialog_3);
-                    return ValidationStatus.error("Mist"); //$NON-NLS-1$
-                }
-            }
-
-            private boolean gewichtValid(final Object gewichtObj) {
-                final boolean gewichtValid;
-                try {
-                    final Double gewicht = Double.valueOf(gewichtObj.toString());
-                    gewichtValid = gewicht != null && gewicht.doubleValue() > 0;
-                } catch (final NumberFormatException nfe) {
-                    return false;
-                }
-                return gewichtValid;
-            }
-
-            private boolean pulsValid(final Object pulsObject) {
-                final boolean pulsValid;
-                try {
-                    final Integer puls = Integer.valueOf(pulsObject.toString());
-                    pulsValid = puls != null && puls > 0;
-                } catch (final NumberFormatException nfe) {
-                    return false;
-                }
-                return pulsValid;
-            }
-        };
-
-        ctx.addValidationStatusProvider(multi);
-
-        ctx.bindValue(multi.observeValidatedValue(textPulsObservable), modelPulsObservable);
-        ctx.bindValue(multi.observeValidatedValue(textGewichtObservable), modelGewichtObservable);
     }
 }
