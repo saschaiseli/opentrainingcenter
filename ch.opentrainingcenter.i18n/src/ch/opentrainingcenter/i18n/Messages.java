@@ -610,6 +610,11 @@ public final class Messages extends NLS {
     public static String RunType4;
     public static String RunType5;
     public static String ZEIT;
+
+    public static String DeleteImportedRecord_Error_Message;
+    public static String DeleteImportedRecord_Error_Title;
+    public static String DeleteImportedRecord_prefix;
+
     static {
         // initialize resource bundle
         NLS.initializeMessages(BUNDLENAME, Messages.class);
