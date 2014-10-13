@@ -4,34 +4,28 @@ import ch.opentrainingcenter.core.data.Pair;
 
 public interface IGoldMedalModel {
 
-    Pair<Long, String> getEmpty();
-
-    Pair<Long, String> getSchnellstePace();
-
-    void setSchnellstePace(final Pair<Long, String> schnellstePace);
+    Pair<Long, String> EMPTY_PAIR = new Pair<>(null, "-"); //$NON-NLS-1$
 
     Pair<Long, String> getSchnellstePace(final Intervall intervall);
 
     void setSchnellstePace(final Intervall intervall, final Pair<Long, String> schnellstePace);
 
-    Pair<Long, String> getLongestDistance();
+    /**
+     * Prueft ob das neue Model (newModel) einen Record hat.
+     * 
+     * @param newModel
+     *            das neue Model.
+     * @return true, wenn der newModel Parameter irgendwo eine bessere Zeit hat,
+     *         ansonsten false.
+     */
+    boolean hasNewRecord(IGoldMedalModel newModel);
 
-    void setLongestDistance(final Pair<Long, String> longestDistance);
+    /**
+     * Gibt den Record vom {@link GoldMedalTyp} zurück. Wenn noch keine Bestzeit
+     * erfasst ist, wird ein {@link IGoldMedalModel#EMPTY_PAIR} zurückgegeben.
+     * Es wird nie null zurückgegeben.
+     */
+    Pair<Long, String> getRecord(GoldMedalTyp typ);
 
-    Pair<Long, String> getLongestRun();
-
-    void setLongestRun(final Pair<Long, String> longestRun);
-
-    Pair<Long, String> getHighestPulse();
-
-    void setHighestPulse(final Pair<Long, String> highestPulse);
-
-    Pair<Long, String> getHighestAveragePulse();
-
-    void setHighestAveragePulse(final Pair<Long, String> highestAveragePulse);
-
-    Pair<Long, String> getLowestAveragePulse();
-
-    void setLowestAveragePulse(final Pair<Long, String> lowestAveragePulse);
-
+    void setRecord(GoldMedalTyp typ, Pair<Long, String> record);
 }

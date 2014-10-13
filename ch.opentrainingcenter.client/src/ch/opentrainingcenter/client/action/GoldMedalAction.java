@@ -10,6 +10,7 @@ import ch.opentrainingcenter.core.helper.DistanceHelper;
 import ch.opentrainingcenter.core.helper.SpeedCalculator;
 import ch.opentrainingcenter.core.helper.TimeHelper;
 import ch.opentrainingcenter.model.ModelFactory;
+import ch.opentrainingcenter.model.training.GoldMedalTyp;
 import ch.opentrainingcenter.model.training.IGoldMedalModel;
 import ch.opentrainingcenter.model.training.Intervall;
 import ch.opentrainingcenter.transfer.ITraining;
@@ -62,48 +63,48 @@ public class GoldMedalAction {
                 averageHeart.add(new Pair<Long, Integer>(datum, training.getAverageHeartBeat()));
             }
         }
-        final Pair<Long, String> emptyPair = result.getEmpty();
+        final Pair<Long, String> emptyPair = IGoldMedalModel.EMPTY_PAIR;
 
-        result.setSchnellstePace(calculateBestePace(maxSpeed));
+        result.setRecord(GoldMedalTyp.SCHNELLSTE_PACE, calculateBestePace(maxSpeed));
         // längster lauf
         final Pair<Long, Double> max = Collections.max(laenge, new PairComparator<Double>());
         if (max.getSecond() != null && max.getSecond().doubleValue() > 0) {
-            result.setLongestDistance(new Pair<Long, String>(max.getFirst(), DistanceHelper.roundDistanceFromMeterToKm(max.getSecond())));
+            result.setRecord(GoldMedalTyp.LAENGSTE_DISTANZ, new Pair<Long, String>(max.getFirst(), DistanceHelper.roundDistanceFromMeterToKm(max.getSecond())));
         } else {
-            result.setLongestDistance(emptyPair);
+            result.setRecord(GoldMedalTyp.LAENGSTE_DISTANZ, emptyPair);
         }
         // längster lauf zeit
         final Pair<Long, Double> longRun = Collections.max(dauer, new PairComparator<Double>());
         final String seconds = TimeHelper.convertSecondsToHumanReadableZeit(longRun.getSecond().longValue());
         if (dauer.isEmpty()) {
-            result.setLongestRun(emptyPair);
+            result.setRecord(GoldMedalTyp.LAENGSTER_LAUF, emptyPair);
         } else {
-            result.setLongestRun(new Pair<Long, String>(longRun.getFirst(), seconds));
+            result.setRecord(GoldMedalTyp.LAENGSTER_LAUF, new Pair<Long, String>(longRun.getFirst(), seconds));
         }
 
         // höchster puls
         if (!heart.isEmpty()) {
             final Pair<Long, Integer> highPuls = Collections.max(heart, new PairComparator<Integer>());
             if (highPuls.getSecond() != null && highPuls.getSecond().intValue() > 0) {
-                result.setHighestPulse(new Pair<Long, String>(highPuls.getFirst(), String.valueOf(highPuls.getSecond())));
+                result.setRecord(GoldMedalTyp.HOECHSTER_PULS, new Pair<Long, String>(highPuls.getFirst(), String.valueOf(highPuls.getSecond())));
             }
         } else {
-            result.setHighestPulse(emptyPair);
+            result.setRecord(GoldMedalTyp.HOECHSTER_PULS, emptyPair);
         }
         // durchschnittlicher puls
         if (!averageHeart.isEmpty()) {
             final Pair<Long, Integer> avgHeart = Collections.max(averageHeart, new PairComparator<Integer>());
             if (avgHeart.getSecond() != null && avgHeart.getSecond().intValue() > 0) {
-                result.setHighestAveragePulse(new Pair<Long, String>(avgHeart.getFirst(), avgHeart.getSecond().toString()));
+                result.setRecord(GoldMedalTyp.HOECHSTER_AVERAGE_PULS, new Pair<Long, String>(avgHeart.getFirst(), avgHeart.getSecond().toString()));
             }
 
             final Pair<Long, Integer> lowestPuls = Collections.min(averageHeart, new PairComparator<Integer>());
             if (lowestPuls.getSecond() != null && lowestPuls.getSecond().intValue() > 0) {
-                result.setLowestAveragePulse(new Pair<Long, String>(lowestPuls.getFirst(), lowestPuls.getSecond().toString()));
+                result.setRecord(GoldMedalTyp.TIEFSTER_AVERAGE_PULS, new Pair<Long, String>(lowestPuls.getFirst(), lowestPuls.getSecond().toString()));
             }
         } else {
-            result.setHighestAveragePulse(emptyPair);
-            result.setLowestAveragePulse(emptyPair);
+            result.setRecord(GoldMedalTyp.HOECHSTER_AVERAGE_PULS, emptyPair);
+            result.setRecord(GoldMedalTyp.TIEFSTER_AVERAGE_PULS, emptyPair);
         }
 
         result.setSchnellstePace(Intervall.KLEINER_10, getPace(di, Intervall.KLEINER_10));

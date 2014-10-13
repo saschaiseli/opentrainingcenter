@@ -5,31 +5,27 @@ import java.util.Map;
 
 import ch.opentrainingcenter.core.assertions.Assertions;
 import ch.opentrainingcenter.core.data.Pair;
+import ch.opentrainingcenter.model.training.GoldMedalTyp;
 import ch.opentrainingcenter.model.training.IGoldMedalModel;
 import ch.opentrainingcenter.model.training.Intervall;
 
 public class GoldMedalModel implements IGoldMedalModel {
 
-    private static final Pair<Long, String> EMPTY_PAIR = new Pair<>(null, "-"); //$NON-NLS-1$
-
     private final Map<Intervall, Pair<Long, String>> SCHNELLSTE_PACES = new HashMap<>();
 
-    private Pair<Long, String> schnellstePace = EMPTY_PAIR;
-    private Pair<Long, String> longestDistance = EMPTY_PAIR;
-    private Pair<Long, String> longestRun = EMPTY_PAIR;
-    private Pair<Long, String> highestPulse = EMPTY_PAIR;
-    private Pair<Long, String> highestAveragePulse = EMPTY_PAIR;
-    private Pair<Long, String> lowestAveragePulse = EMPTY_PAIR;
+    private final Map<GoldMedalTyp, Pair<Long, String>> records = new HashMap<>();
 
     @Override
-    public Pair<Long, String> getSchnellstePace() {
-        return schnellstePace;
+    public Pair<Long, String> getRecord(final GoldMedalTyp typ) {
+        Assertions.notNull(typ);
+        final Pair<Long, String> result = records.get(typ);
+        return result != null ? result : EMPTY_PAIR;
     }
 
     @Override
-    public void setSchnellstePace(final Pair<Long, String> schnellstePace) {
-        Assertions.notNull(schnellstePace);
-        this.schnellstePace = getValidatedPair(schnellstePace);
+    public void setRecord(final GoldMedalTyp typ, final Pair<Long, String> record) {
+        Assertions.notNull(typ);
+        records.put(typ, getValidatedPair(record));
     }
 
     @Override
@@ -48,61 +44,6 @@ public class GoldMedalModel implements IGoldMedalModel {
         SCHNELLSTE_PACES.put(intervall, getValidatedPair(schnellstePace));
     }
 
-    @Override
-    public Pair<Long, String> getLongestDistance() {
-        return longestDistance;
-    }
-
-    @Override
-    public void setLongestDistance(final Pair<Long, String> longestDistance) {
-        Assertions.notNull(longestDistance);
-        this.longestDistance = getValidatedPair(longestDistance);
-    }
-
-    @Override
-    public Pair<Long, String> getLongestRun() {
-        return longestRun;
-    }
-
-    @Override
-    public void setLongestRun(final Pair<Long, String> longestRun) {
-        Assertions.notNull(longestRun);
-        this.longestRun = getValidatedPair(longestRun);
-    }
-
-    @Override
-    public Pair<Long, String> getHighestPulse() {
-        return highestPulse;
-    }
-
-    @Override
-    public void setHighestPulse(final Pair<Long, String> highestPulse) {
-        Assertions.notNull(highestPulse);
-        this.highestPulse = getValidatedPair(highestPulse);
-    }
-
-    @Override
-    public Pair<Long, String> getHighestAveragePulse() {
-        return highestAveragePulse;
-    }
-
-    @Override
-    public void setHighestAveragePulse(final Pair<Long, String> highestAveragePulse) {
-        Assertions.notNull(highestAveragePulse);
-        this.highestAveragePulse = getValidatedPair(highestAveragePulse);
-    }
-
-    @Override
-    public Pair<Long, String> getLowestAveragePulse() {
-        return lowestAveragePulse;
-    }
-
-    @Override
-    public void setLowestAveragePulse(final Pair<Long, String> lowestAveragePulse) {
-        Assertions.notNull(lowestAveragePulse);
-        this.lowestAveragePulse = getValidatedPair(lowestAveragePulse);
-    }
-
     private Pair<Long, String> getValidatedPair(final Pair<Long, String> value) {
         if (value.getFirst() == null || value.getSecond() == null) {
             return EMPTY_PAIR;
@@ -112,7 +53,7 @@ public class GoldMedalModel implements IGoldMedalModel {
     }
 
     @Override
-    public Pair<Long, String> getEmpty() {
-        return EMPTY_PAIR;
+    public boolean hasNewRecord(final IGoldMedalModel newModel) {
+        return false;
     }
 }

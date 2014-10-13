@@ -33,6 +33,7 @@ import ch.opentrainingcenter.core.data.Pair;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.model.ModelFactory;
+import ch.opentrainingcenter.model.training.GoldMedalTyp;
 import ch.opentrainingcenter.model.training.IGoldMedalModel;
 import ch.opentrainingcenter.model.training.Intervall;
 import ch.opentrainingcenter.transfer.IAthlete;
@@ -85,12 +86,12 @@ public class BestRunsComposite {
 
             @Override
             public void recordChanged(final Collection<ITraining> entry) {
-                update();
+                update(entry);
             }
 
             @Override
             public void deleteRecord(final Collection<ITraining> entry) {
-                update();
+                update(null);
             }
         });
 
@@ -121,13 +122,9 @@ public class BestRunsComposite {
 
         action = new GoldMedalAction(sport);
         model = ModelFactory.createGoldMedalModel();
-        Display.getDefault().asyncExec(new Runnable() {
 
-            @Override
-            public void run() {
-                update();
-            }
-        });
+        update(null);
+
         addText(body);
         addPace(body);
     }
@@ -149,12 +146,12 @@ public class BestRunsComposite {
         final GridLayout layoutClient = new GridLayout(3, false);
         overViewComposite.setLayout(layoutClient);
 
-        bestPace = createLink(overViewComposite, Messages.BestRunsView3, model.getSchnellstePace(), unit);
-        longestDistance = createLink(overViewComposite, Messages.BestRunsView4, model.getLongestDistance(), Units.KM);
-        longestRun = createLink(overViewComposite, Messages.BestRunsView5, model.getLongestRun(), Units.HOUR_MINUTE_SEC);
-        highestPulse = createLink(overViewComposite, Messages.BestRunsView6, model.getHighestPulse(), Units.BEATS_PER_MINUTE);
-        highAvPulse = createLink(overViewComposite, Messages.BestRunsView7, model.getHighestAveragePulse(), Units.BEATS_PER_MINUTE);
-        lowestAvPulse = createLink(overViewComposite, Messages.BestRunsView20, model.getLowestAveragePulse(), Units.BEATS_PER_MINUTE);
+        bestPace = createLink(overViewComposite, Messages.BestRunsView3, model.getRecord(GoldMedalTyp.SCHNELLSTE_PACE), unit);
+        longestDistance = createLink(overViewComposite, Messages.BestRunsView4, model.getRecord(GoldMedalTyp.LAENGSTE_DISTANZ), Units.KM);
+        longestRun = createLink(overViewComposite, Messages.BestRunsView5, model.getRecord(GoldMedalTyp.LAENGSTER_LAUF), Units.HOUR_MINUTE_SEC);
+        highestPulse = createLink(overViewComposite, Messages.BestRunsView6, model.getRecord(GoldMedalTyp.HOECHSTER_PULS), Units.BEATS_PER_MINUTE);
+        highAvPulse = createLink(overViewComposite, Messages.BestRunsView7, model.getRecord(GoldMedalTyp.HOECHSTER_AVERAGE_PULS), Units.BEATS_PER_MINUTE);
+        lowestAvPulse = createLink(overViewComposite, Messages.BestRunsView20, model.getRecord(GoldMedalTyp.TIEFSTER_AVERAGE_PULS), Units.BEATS_PER_MINUTE);
 
         sectionOverall.setClient(overViewComposite);
     }
@@ -230,7 +227,7 @@ public class BestRunsComposite {
         return link;
     }
 
-    private void update() {
+    private void update(final Collection<ITraining> entry) {
         if (model != null) {
             Display.getDefault().asyncExec(new Runnable() {
 
@@ -238,23 +235,23 @@ public class BestRunsComposite {
                 public void run() {
                     LOGGER.info(String.format("Update BestRun Composite mit Sport %s", sport)); //$NON-NLS-1$
                     model = action.getModel(databaseAccess.getAllTrainings(athlete));
-                    bestPace.setData(model.getSchnellstePace());
-                    bestPace.setText(model.getSchnellstePace().getSecond());
+                    bestPace.setData(model.getRecord(GoldMedalTyp.SCHNELLSTE_PACE));
+                    bestPace.setText(model.getRecord(GoldMedalTyp.SCHNELLSTE_PACE).getSecond());
 
-                    longestDistance.setData(model.getLongestDistance());
-                    longestDistance.setText(model.getLongestDistance().getSecond());
+                    longestDistance.setData(model.getRecord(GoldMedalTyp.LAENGSTE_DISTANZ));
+                    longestDistance.setText(model.getRecord(GoldMedalTyp.LAENGSTE_DISTANZ).getSecond());
 
-                    longestRun.setData(model.getLongestRun());
-                    longestRun.setText(model.getLongestRun().getSecond());
+                    longestRun.setData(model.getRecord(GoldMedalTyp.LAENGSTER_LAUF));
+                    longestRun.setText(model.getRecord(GoldMedalTyp.LAENGSTER_LAUF).getSecond());
 
-                    highestPulse.setData(model.getHighestPulse());
-                    highestPulse.setText(model.getHighestPulse().getSecond());
+                    highestPulse.setData(model.getRecord(GoldMedalTyp.HOECHSTER_PULS));
+                    highestPulse.setText(model.getRecord(GoldMedalTyp.HOECHSTER_PULS).getSecond());
 
-                    highAvPulse.setData(model.getHighestAveragePulse());
-                    highAvPulse.setText(model.getHighestAveragePulse().getSecond());
+                    highAvPulse.setData(model.getRecord(GoldMedalTyp.HOECHSTER_AVERAGE_PULS));
+                    highAvPulse.setText(model.getRecord(GoldMedalTyp.HOECHSTER_AVERAGE_PULS).getSecond());
 
-                    lowestAvPulse.setData(model.getLowestAveragePulse());
-                    lowestAvPulse.setText(model.getLowestAveragePulse().getSecond());
+                    lowestAvPulse.setData(model.getRecord(GoldMedalTyp.TIEFSTER_AVERAGE_PULS));
+                    lowestAvPulse.setText(model.getRecord(GoldMedalTyp.TIEFSTER_AVERAGE_PULS).getSecond());
 
                     bestKl10.setData(model.getSchnellstePace(Intervall.KLEINER_10));
                     bestKl10.setText(model.getSchnellstePace(Intervall.KLEINER_10).getSecond());

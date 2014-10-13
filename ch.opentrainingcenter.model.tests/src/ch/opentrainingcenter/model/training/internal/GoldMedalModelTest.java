@@ -1,5 +1,8 @@
 package ch.opentrainingcenter.model.training.internal;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -10,9 +13,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ch.opentrainingcenter.core.data.Pair;
+import ch.opentrainingcenter.model.training.GoldMedalTyp;
 import ch.opentrainingcenter.model.training.Intervall;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 
 @SuppressWarnings("nls")
 public class GoldMedalModelTest {
@@ -40,16 +42,16 @@ public class GoldMedalModelTest {
     @Test
     public void testSchnellstePaceNullKey() {
         final Pair<Long, String> pace = new Pair<Long, String>(null, null);
-        model.setSchnellstePace(pace);
-        final Pair<Long, String> result = model.getSchnellstePace();
+        model.setRecord(GoldMedalTyp.SCHNELLSTE_PACE, pace);
+        final Pair<Long, String> result = model.getRecord(GoldMedalTyp.SCHNELLSTE_PACE);
         assertEmptyPair(result);
     }
 
     @Test
     public void testSchnellstePaceNullValue() {
         final Pair<Long, String> pace = new Pair<Long, String>(1L, null);
-        model.setSchnellstePace(pace);
-        final Pair<Long, String> result = model.getSchnellstePace();
+        model.setRecord(GoldMedalTyp.SCHNELLSTE_PACE, pace);
+        final Pair<Long, String> result = model.getRecord(GoldMedalTyp.SCHNELLSTE_PACE);
         assertEmptyPair(result);
     }
 
@@ -57,8 +59,8 @@ public class GoldMedalModelTest {
     public void testSchnellstePaceValue() {
         final String value = "123";
         final Pair<Long, String> pace = new Pair<Long, String>(1L, value);
-        model.setSchnellstePace(pace);
-        final String result = model.getSchnellstePace().getSecond();
+        model.setRecord(GoldMedalTyp.SCHNELLSTE_PACE, pace);
+        final String result = model.getRecord(GoldMedalTyp.SCHNELLSTE_PACE).getSecond();
         assertEquals("Wert (second)", value, result);
     }
 
@@ -84,106 +86,170 @@ public class GoldMedalModelTest {
 
     @Test
     public void testLongestDistanceNullKey() {
-        model.setLongestDistance(new Pair<Long, String>(null, null));
-        assertEmptyPair(model.getLongestDistance());
+        model.setRecord(GoldMedalTyp.LAENGSTE_DISTANZ, new Pair<Long, String>(null, null));
+        assertEmptyPair(model.getRecord(GoldMedalTyp.LAENGSTE_DISTANZ));
     }
 
     @Test
     public void testLongestDistanceNullValue() {
-        model.setLongestDistance(new Pair<Long, String>(1L, null));
-        assertEmptyPair(model.getLongestDistance());
+        model.setRecord(GoldMedalTyp.LAENGSTE_DISTANZ, new Pair<Long, String>(1L, null));
+        assertEmptyPair(model.getRecord(GoldMedalTyp.LAENGSTE_DISTANZ));
     }
 
     @Test
     public void testLongestDistanceValue() {
         final String value = "123";
-        model.setLongestDistance(new Pair<Long, String>(1L, value));
-        final String result = model.getLongestDistance().getSecond();
+        model.setRecord(GoldMedalTyp.LAENGSTE_DISTANZ, new Pair<Long, String>(1L, value));
+        final String result = model.getRecord(GoldMedalTyp.LAENGSTE_DISTANZ).getSecond();
         assertEquals("Wert vorhanden", value, result);
     }
 
     @Test
     public void testLongestRunNullKey() {
-        model.setLongestRun(new Pair<Long, String>(null, null));
-        assertEmptyPair(model.getLongestRun());
+        model.setRecord(GoldMedalTyp.LAENGSTER_LAUF, new Pair<Long, String>(null, null));
+        assertEmptyPair(model.getRecord(GoldMedalTyp.LAENGSTER_LAUF));
     }
 
     @Test
     public void testLongestRunNullValue() {
-        model.setLongestRun(new Pair<Long, String>(1L, null));
-        assertEmptyPair(model.getLongestRun());
+        model.setRecord(GoldMedalTyp.LAENGSTER_LAUF, new Pair<Long, String>(1L, null));
+        assertEmptyPair(model.getRecord(GoldMedalTyp.LAENGSTER_LAUF));
     }
 
     @Test
     public void testLongestRunValue() {
         final String value = "123";
-        model.setLongestRun(new Pair<Long, String>(1L, value));
-        final String result = model.getLongestRun().getSecond();
+        model.setRecord(GoldMedalTyp.LAENGSTER_LAUF, new Pair<Long, String>(1L, value));
+        final String result = model.getRecord(GoldMedalTyp.LAENGSTER_LAUF).getSecond();
         assertEquals("Wert vorhanden", value, result);
     }
 
     // Pulse
     @Test
     public void testHighestPulsKeyNull() {
-        model.setHighestPulse(new Pair<Long, String>(null, null));
-        assertEmptyPair(model.getHighestPulse());
+        model.setRecord(GoldMedalTyp.HOECHSTER_PULS, new Pair<Long, String>(null, null));
+        assertEmptyPair(model.getRecord(GoldMedalTyp.HOECHSTER_PULS));
     }
 
     @Test
     public void testHighestPulsNullValue() {
-        model.setHighestPulse(new Pair<Long, String>(1L, null));
-        assertEmptyPair(model.getHighestPulse());
+        model.setRecord(GoldMedalTyp.HOECHSTER_PULS, new Pair<Long, String>(1L, null));
+        assertEmptyPair(model.getRecord(GoldMedalTyp.HOECHSTER_PULS));
     }
 
     @Test
     public void testHighestPulsValue() {
         final String value = "123";
-        model.setHighestPulse(new Pair<Long, String>(1L, value));
-        final String result = model.getHighestPulse().getSecond();
+        model.setRecord(GoldMedalTyp.HOECHSTER_PULS, new Pair<Long, String>(1L, value));
+        final String result = model.getRecord(GoldMedalTyp.HOECHSTER_PULS).getSecond();
         assertEquals("Wert vorhanden", value, result);
     }
 
     // average pulse
     @Test
     public void testHighestAveragePulsKeyNull() {
-        model.setHighestAveragePulse(new Pair<Long, String>(null, null));
-        assertEmptyPair(model.getHighestAveragePulse());
+        model.setRecord(GoldMedalTyp.HOECHSTER_AVERAGE_PULS, new Pair<Long, String>(null, null));
+        assertEmptyPair(model.getRecord(GoldMedalTyp.HOECHSTER_AVERAGE_PULS));
     }
 
     @Test
     public void testHighestAveragePulsNullValue() {
-        model.setHighestAveragePulse(new Pair<Long, String>(1L, null));
-        assertEmptyPair(model.getHighestAveragePulse());
+        model.setRecord(GoldMedalTyp.HOECHSTER_AVERAGE_PULS, new Pair<Long, String>(1L, null));
+        assertEmptyPair(model.getRecord(GoldMedalTyp.HOECHSTER_AVERAGE_PULS));
     }
 
     @Test
     public void testHighestAveragePulsValue() {
         final String value = "123";
-        model.setHighestAveragePulse(new Pair<Long, String>(1L, value));
-        final String result = model.getHighestAveragePulse().getSecond();
+        model.setRecord(GoldMedalTyp.HOECHSTER_AVERAGE_PULS, new Pair<Long, String>(1L, value));
+        final String result = model.getRecord(GoldMedalTyp.HOECHSTER_AVERAGE_PULS).getSecond();
         assertEquals("Wert vorhanden", value, result);
     }
 
     // lowest puls
     @Test
     public void testLowestAveragePulsKeyNull() {
-        model.setLowestAveragePulse(new Pair<Long, String>(null, null));
-        assertEmptyPair(model.getLowestAveragePulse());
+        model.setRecord(GoldMedalTyp.TIEFSTER_AVERAGE_PULS, new Pair<Long, String>(null, null));
+        assertEmptyPair(model.getRecord(GoldMedalTyp.TIEFSTER_AVERAGE_PULS));
     }
 
     @Test
     public void testLowestAveragePulsNullValue() {
-        model.setLowestAveragePulse(new Pair<Long, String>(1L, null));
-        assertEmptyPair(model.getLowestAveragePulse());
+        model.setRecord(GoldMedalTyp.TIEFSTER_AVERAGE_PULS, new Pair<Long, String>(1L, null));
+        assertEmptyPair(model.getRecord(GoldMedalTyp.TIEFSTER_AVERAGE_PULS));
     }
 
     @Test
     public void testLowestAveragePulsValue() {
         final String value = "123";
-        model.setLowestAveragePulse(new Pair<Long, String>(1L, value));
-        final String result = model.getLowestAveragePulse().getSecond();
+        model.setRecord(GoldMedalTyp.TIEFSTER_AVERAGE_PULS, new Pair<Long, String>(1L, value));
+        final String result = model.getRecord(GoldMedalTyp.TIEFSTER_AVERAGE_PULS).getSecond();
         assertEquals("Wert vorhanden", value, result);
     }
+
+    //
+    // @Test
+    // public void testHasNewRecord_newModelEmpty() {
+    // model.setHighestAveragePulse(new Pair<>(100L, "188"));
+    // model.setHighestPulse(new Pair<>(101L, "210"));
+    // model.setLongestDistance(new Pair<>(102L, "1000"));
+    // model.setLongestRun(new Pair<>(103L, "12345"));
+    // model.setLowestAveragePulse(new Pair<>(104L, "60"));
+    // model.setRecord(GoldMedalTyp.SCHNELLSTE_PACE, new Pair<>(105L, "3"));
+    // model.setRecord(GoldMedalTyp.SCHNELLSTE_PACE, Intervall.KLEINER_10, new
+    // Pair<>(106L, "4"));
+    //
+    // final GoldMedalModel newModel = new GoldMedalModel();
+    //
+    // assertFalse("Neues Model hat noch keine Werte",
+    // model.hasNewRecord(newModel));
+    // }
+    //
+    // @Test
+    // public void testHasNewRecord_newModelGleich() {
+    // model.setHighestAveragePulse(new Pair<>(100L, "188"));
+    // model.setHighestPulse(new Pair<>(101L, "210"));
+    // model.setLongestDistance(new Pair<>(102L, "1000"));
+    // model.setLongestRun(new Pair<>(103L, "12345"));
+    // model.setLowestAveragePulse(new Pair<>(104L, "60"));
+    // model.setRecord(GoldMedalTyp.SCHNELLSTE_PACE, new Pair<>(105L, "3"));
+    // model.setSchnellstePace(GoldMedalTyp.SCHNELLSTE_PACE,
+    // Intervall.KLEINER_10, new Pair<>(106L, "4"));
+    //
+    // final GoldMedalModel newModel = new GoldMedalModel();
+    // newModel.setHighestAveragePulse(new Pair<>(100L, "188"));
+    // newModel.setHighestPulse(new Pair<>(101L, "210"));
+    // newModel.setLongestDistance(new Pair<>(102L, "1000"));
+    // newModel.setLongestRun(new Pair<>(103L, "12345"));
+    // newModel.setLowestAveragePulse(new Pair<>(104L, "60"));
+    // newModel.setRecord(GoldMedalTyp.SCHNELLSTE_PACE, new Pair<>(105L, "3"));
+    // newModel.setSchnellstePace(Intervall.KLEINER_10, new Pair<>(106L, "4"));
+    //
+    // assertFalse("Neues Model gleich wie alt", model.hasNewRecord(newModel));
+    // }
+    //
+    // @Test
+    // public void testHasNewRecord_newModelNichtGleich_HighestAveragePuls() {
+    // model.setHighestAveragePulse(new Pair<>(100L, "188"));
+    // model.setHighestPulse(new Pair<>(101L, "210"));
+    // model.setLongestDistance(new Pair<>(102L, "1000"));
+    // model.setLongestRun(new Pair<>(103L, "12345"));
+    // model.setLowestAveragePulse(new Pair<>(104L, "60"));
+    // model.setRecord(GoldMedalTyp.SCHNELLSTE_PACE, new Pair<>(105L, "3"));
+    // model.setSchnellstePace(Intervall.KLEINER_10, new Pair<>(106L, "4"));
+    //
+    // final GoldMedalModel newModel = new GoldMedalModel();
+    // newModel.setHighestAveragePulse(new Pair<>(100L, "189")); //
+    // <------------------
+    // newModel.setHighestPulse(new Pair<>(101L, "210"));
+    // newModel.setLongestDistance(new Pair<>(102L, "1000"));
+    // newModel.setLongestRun(new Pair<>(103L, "12345"));
+    // newModel.setLowestAveragePulse(new Pair<>(104L, "60"));
+    // newModel.setRecord(GoldMedalTyp.SCHNELLSTE_PACE, new Pair<>(105L, "3"));
+    // newModel.setSchnellstePace(Intervall.KLEINER_10, new Pair<>(106L, "4"));
+    //
+    // assertFalse("Neues Model gleich wie alt", model.hasNewRecord(newModel));
+    // }
 
     private void assertEmptyPair(final Pair<Long, String> result) {
         assertNull("Key vom EmptyPair", result.getFirst());
