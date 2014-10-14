@@ -20,16 +20,16 @@
 package ch.opentrainingcenter.client.ui.tableviewer.labelprovider;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.when;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import ch.opentrainingcenter.client.ui.tableviewer.RoutenTableModel;
 import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
-
-import static org.mockito.Mockito.when;
 
 @SuppressWarnings("nls")
 public class RouteColumnLabelProviderLaengeTest {
@@ -49,7 +49,7 @@ public class RouteColumnLabelProviderLaengeTest {
         when(route.getReferenzTrack()).thenReturn(training);
         when(training.getLaengeInMeter()).thenReturn(1234.123);
 
-        final String result = provider.getText(route);
+        final String result = provider.getText(new RoutenTableModel(route, 0));
 
         assertEquals("1.234", result);
     }
@@ -59,7 +59,7 @@ public class RouteColumnLabelProviderLaengeTest {
         final RouteColumnLabelProviderLaenge provider = new RouteColumnLabelProviderLaenge();
         when(route.getReferenzTrack()).thenReturn(null);
 
-        final String result = provider.getText(route);
+        final String result = provider.getText(new RoutenTableModel(route, 0));
 
         assertEquals("", result);
     }

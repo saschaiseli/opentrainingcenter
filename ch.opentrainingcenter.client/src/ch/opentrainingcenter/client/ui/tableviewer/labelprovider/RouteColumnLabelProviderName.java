@@ -21,13 +21,13 @@ package ch.opentrainingcenter.client.ui.tableviewer.labelprovider;
 
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 
-import ch.opentrainingcenter.transfer.IRoute;
+import ch.opentrainingcenter.client.ui.tableviewer.RoutenTableModel;
 
 public final class RouteColumnLabelProviderName extends ColumnLabelProvider {
 
     @Override
     public String getText(final Object element) {
-        final IRoute route = (IRoute) element;
-        return route.getName();
+        final RoutenTableModel model = (RoutenTableModel) element;
+        return model.getRoute().getName();
     }
 }

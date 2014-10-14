@@ -21,6 +21,7 @@ package ch.opentrainingcenter.client.ui.tableviewer.labelprovider;
 
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 
+import ch.opentrainingcenter.client.ui.tableviewer.RoutenTableModel;
 import ch.opentrainingcenter.core.helper.DistanceHelper;
 import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
@@ -29,7 +30,8 @@ public final class RouteColumnLabelProviderLaenge extends ColumnLabelProvider {
 
     @Override
     public String getText(final Object element) {
-        final IRoute route = (IRoute) element;
+        final RoutenTableModel model = (RoutenTableModel) element;
+        final IRoute route = model.getRoute();
         final ITraining referenzTrack = route.getReferenzTrack();
         if (referenzTrack != null) {
             return DistanceHelper.roundDistanceFromMeterToKm(referenzTrack.getLaengeInMeter());

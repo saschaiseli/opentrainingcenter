@@ -569,6 +569,8 @@ public final class Messages extends NLS {
 
     public static String RoutenView_Name_Marke;
 
+    public static String RoutenView_ReferenzStreckeLoeschen;
+
     public static String RoutenView_Schuhe;
 
     public static String RUNDE;

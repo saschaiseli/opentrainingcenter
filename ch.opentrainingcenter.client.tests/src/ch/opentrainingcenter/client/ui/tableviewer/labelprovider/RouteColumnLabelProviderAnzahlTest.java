@@ -19,21 +19,21 @@
 
 package ch.opentrainingcenter.client.ui.tableviewer.labelprovider;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import ch.opentrainingcenter.client.ui.tableviewer.RoutenTableModel;
 import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 @SuppressWarnings("nls")
 public class RouteColumnLabelProviderAnzahlTest {
@@ -49,9 +49,9 @@ public class RouteColumnLabelProviderAnzahlTest {
     @Test
     public void test_keineTracks() {
         final List<ITraining> tracks = new ArrayList<>();
-        final RouteColumnLabelProviderAnzahl provider = new RouteColumnLabelProviderAnzahl(tracks);
+        final RouteColumnLabelProviderAnzahl provider = new RouteColumnLabelProviderAnzahl();
 
-        final String result = provider.getText(route);
+        final String result = provider.getText(new RoutenTableModel(route, 0));
 
         assertEquals("0", result);
     }
@@ -61,13 +61,11 @@ public class RouteColumnLabelProviderAnzahlTest {
         final List<ITraining> tracks = new ArrayList<>();
         final ITraining training = mock(ITraining.class);
         when(training.getRoute()).thenReturn(route);
-
         when(route.getName()).thenReturn("junit");
-
         tracks.add(training);
-        final RouteColumnLabelProviderAnzahl provider = new RouteColumnLabelProviderAnzahl(tracks);
+        final RouteColumnLabelProviderAnzahl provider = new RouteColumnLabelProviderAnzahl();
 
-        final String result = provider.getText(route);
+        final String result = provider.getText(new RoutenTableModel(route, 1));
 
         assertEquals("1", result);
     }
@@ -81,9 +79,9 @@ public class RouteColumnLabelProviderAnzahlTest {
         when(route.getName()).thenReturn("junit");
 
         tracks.add(training);
-        final RouteColumnLabelProviderAnzahl provider = new RouteColumnLabelProviderAnzahl(tracks);
+        final RouteColumnLabelProviderAnzahl provider = new RouteColumnLabelProviderAnzahl();
 
-        final String result = provider.getText(route);
+        final String result = provider.getText(new RoutenTableModel(route, 0));
 
         assertEquals("0", result);
     }
@@ -101,9 +99,9 @@ public class RouteColumnLabelProviderAnzahlTest {
 
         when(route.getName()).thenReturn("junit");
 
-        final RouteColumnLabelProviderAnzahl provider = new RouteColumnLabelProviderAnzahl(tracks);
+        final RouteColumnLabelProviderAnzahl provider = new RouteColumnLabelProviderAnzahl();
 
-        final String result = provider.getText(route);
+        final String result = provider.getText(new RoutenTableModel(route, 2));
 
         assertEquals("2", result);
     }
@@ -128,9 +126,9 @@ public class RouteColumnLabelProviderAnzahlTest {
 
         when(route.getName()).thenReturn("junit");
 
-        final RouteColumnLabelProviderAnzahl provider = new RouteColumnLabelProviderAnzahl(tracks);
+        final RouteColumnLabelProviderAnzahl provider = new RouteColumnLabelProviderAnzahl();
 
-        final String result = provider.getText(route);
+        final String result = provider.getText(new RoutenTableModel(route, 2));
 
         assertEquals("2", result);
     }

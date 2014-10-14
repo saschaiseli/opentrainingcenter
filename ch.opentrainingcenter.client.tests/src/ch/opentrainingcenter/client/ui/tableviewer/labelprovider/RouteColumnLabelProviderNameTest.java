@@ -20,15 +20,15 @@
 package ch.opentrainingcenter.client.ui.tableviewer.labelprovider;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.when;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import ch.opentrainingcenter.client.ui.tableviewer.RoutenTableModel;
 import ch.opentrainingcenter.transfer.IRoute;
-
-import static org.mockito.Mockito.when;
 
 @SuppressWarnings("nls")
 public class RouteColumnLabelProviderNameTest {
@@ -46,7 +46,7 @@ public class RouteColumnLabelProviderNameTest {
         final RouteColumnLabelProviderName provider = new RouteColumnLabelProviderName();
         when(route.getName()).thenReturn("junit");
 
-        final String result = provider.getText(route);
+        final String result = provider.getText(new RoutenTableModel(route, 0));
 
         assertEquals("junit", result);
     }

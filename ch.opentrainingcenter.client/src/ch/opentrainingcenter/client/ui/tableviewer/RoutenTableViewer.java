@@ -35,8 +35,6 @@ import ch.opentrainingcenter.client.ui.tableviewer.labelprovider.RouteColumnLabe
 import ch.opentrainingcenter.client.ui.tableviewer.labelprovider.RouteColumnLabelProviderLaenge;
 import ch.opentrainingcenter.client.ui.tableviewer.labelprovider.RouteColumnLabelProviderName;
 import ch.opentrainingcenter.i18n.Messages;
-import ch.opentrainingcenter.transfer.IRoute;
-import ch.opentrainingcenter.transfer.ITraining;
 
 public class RoutenTableViewer extends TableViewer {
 
@@ -44,15 +42,15 @@ public class RoutenTableViewer extends TableViewer {
         super(parent, style);
     }
 
-    public void createTableViewer(final List<IRoute> routen, final List<ITraining> tracks) {
+    public void createTableViewer(final List<RoutenTableModel> models) {
         final Table table = getTable();
         table.setHeaderVisible(true);
         table.setLinesVisible(true);
 
-        createRouteColumns(tracks);
+        createRouteColumns();
 
         setContentProvider(new ArrayContentProvider());
-        setInput(routen);
+        setInput(models);
 
         // Layout the viewer
         final GridData gridData = new GridData();
@@ -65,7 +63,7 @@ public class RoutenTableViewer extends TableViewer {
         getControl().setLayoutData(gridData);
     }
 
-    private void createRouteColumns(final List<ITraining> tracks) {
+    private void createRouteColumns() {
         final String[] titles = { Messages.RoutenView_10, Messages.RoutenView_11, Messages.RoutenView_6, Messages.RoutenView_13 };
         final int[] bounds = { 80, 200, 100, 40 };
 
@@ -79,7 +77,7 @@ public class RoutenTableViewer extends TableViewer {
         col.setLabelProvider(new RouteColumnLabelProviderLaenge());
 
         col = createRouteColumn(titles[3], bounds[3]);
-        col.setLabelProvider(new RouteColumnLabelProviderAnzahl(tracks));
+        col.setLabelProvider(new RouteColumnLabelProviderAnzahl());
     }
 
     private TableViewerColumn createRouteColumn(final String title, final int bound) {

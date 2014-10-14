@@ -19,30 +19,15 @@
 
 package ch.opentrainingcenter.client.ui.tableviewer.labelprovider;
 
-import java.util.List;
-
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 
-import ch.opentrainingcenter.transfer.IRoute;
-import ch.opentrainingcenter.transfer.ITraining;
+import ch.opentrainingcenter.client.ui.tableviewer.RoutenTableModel;
 
 public final class RouteColumnLabelProviderAnzahl extends ColumnLabelProvider {
 
-    private final List<ITraining> tracks;
-
-    public RouteColumnLabelProviderAnzahl(final List<ITraining> tracks) {
-        this.tracks = tracks;
-    }
-
     @Override
     public String getText(final Object element) {
-        final IRoute route = (IRoute) element;
-        int i = 0;
-        for (final ITraining training : tracks) {
-            if (training.getRoute() != null && training.getRoute().getName().equals(route.getName())) {
-                i++;
-            }
-        }
-        return String.valueOf(i);
+        final RoutenTableModel route = (RoutenTableModel) element;
+        return String.valueOf(route.getAnzahl());
     }
 }
