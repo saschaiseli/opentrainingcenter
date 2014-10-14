@@ -48,7 +48,6 @@ public class RouteColumnLabelProviderAnzahlTest {
 
     @Test
     public void test_keineTracks() {
-        final List<ITraining> tracks = new ArrayList<>();
         final RouteColumnLabelProviderAnzahl provider = new RouteColumnLabelProviderAnzahl();
 
         final String result = provider.getText(new RoutenTableModel(route, 0));
