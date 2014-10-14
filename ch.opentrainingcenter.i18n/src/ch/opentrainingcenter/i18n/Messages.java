@@ -395,6 +395,8 @@ public final class Messages extends NLS {
     public static String SingleActivityViewPart7;
     public static String SingleActivityViewPart8;
     public static String SingleActivityViewPart9;
+    public static String SingleActivityViewPart19;
+    public static String SingleActivityViewPart20;
     public static String Sport_BIKE;
     public static String Sport_JOGGEN;
     public static String Sport_UNBEKANNT;

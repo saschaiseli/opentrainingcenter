@@ -270,11 +270,22 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         }
         support.addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart6, String.valueOf(training.getMaxHeartBeat()), Units.BEATS_PER_MINUTE);
 
+        final String labelAverage;
+        final String labelMax;
+        if (Sport.RUNNING.equals(training.getSport())) {
+            // running
+            labelAverage = Messages.SingleActivityViewPart7;
+            labelMax = Messages.SingleActivityViewPart8;
+        } else {
+            labelAverage = Messages.SingleActivityViewPart19;
+            labelMax = Messages.SingleActivityViewPart20;
+        }
         final Units unit = getUnitFuerGeschwindigkeit();
-        final String pace = DistanceHelper.calculatePace(training.getLaengeInMeter(), training.getDauer(), Sport.RUNNING);
-        final String speed = DistanceHelper.calculatePace(training.getLaengeInMeter(), training.getDauer(), Sport.BIKING);
-        support.addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart7, pace, unit);
-        support.addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart8, speed, unit);
+        final String average = DistanceHelper.calculatePace(training.getLaengeInMeter(), training.getDauer(), training.getSport());
+        final String max = DistanceHelper.calculatePace(training.getMaxSpeed(), training.getSport());
+
+        support.addLabelAndValue(overViewComposite, labelAverage, average, unit);
+        support.addLabelAndValue(overViewComposite, labelMax, max, unit);
         support.addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_4, training.getUpMeter().toString(), Units.METER);
         support.addLabelAndValue(overViewComposite, Messages.SingleActivityViewPart_8, training.getDownMeter().toString(), Units.METER);
         overviewSection.setClient(overViewComposite);
