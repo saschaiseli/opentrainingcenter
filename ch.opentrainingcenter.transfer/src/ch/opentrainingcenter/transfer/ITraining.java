@@ -51,8 +51,15 @@ public interface ITraining {
 
     void setMaxHeartBeat(int maxHeartBeat);
 
+    /**
+     * @return maximale geschwindigkeit in m/s
+     */
     double getMaxSpeed();
 
+    /**
+     * @param maxSpeed
+     *            maximale geschwindigkeit in m/s
+     */
     void setMaxSpeed(double maxSpeed);
 
     /**
