@@ -31,6 +31,7 @@ import ch.opentrainingcenter.client.ui.tableviewer.RoutenTableModel;
 import ch.opentrainingcenter.client.ui.tableviewer.RoutenTableViewer;
 import ch.opentrainingcenter.client.ui.tableviewer.TrackTableViewer;
 import ch.opentrainingcenter.client.views.ApplicationContext;
+import ch.opentrainingcenter.client.views.OpenTrainingRunnable;
 import ch.opentrainingcenter.core.cache.IRecordListener;
 import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
@@ -196,6 +197,27 @@ public class RoutenView extends ViewPart implements IRecordListener {
 
         viewerTracks = new TrackTableViewer(compositeRight, SWT_TABLE_PATTERN);
         viewerTracks.createTableViewer(tracks);
+
+        final MenuManager menuManager = new MenuManager();
+        final Table table = viewerTracks.getTable();
+        final Menu contextMenu = menuManager.createContextMenu(table);
+        table.setMenu(contextMenu);
+        getSite().registerContextMenu(menuManager, viewerTracks);
+
+        menuManager.add(new Action(Messages.Common_Open, null) {
+            @Override
+            public void run() {
+                final StructuredSelection ss = (StructuredSelection) viewerTracks.getSelection();
+                final ITraining record = (ITraining) ss.getFirstElement();
+                LOGGER.info("ITraining aus RoutenView öffnen"); //$NON-NLS-1$
+                openSingleRunView(record);
+            }
+
+        });
+    }
+
+    private void openSingleRunView(final ITraining record) {
+        Display.getDefault().asyncExec(new OpenTrainingRunnable(record));
     }
 
     @Override

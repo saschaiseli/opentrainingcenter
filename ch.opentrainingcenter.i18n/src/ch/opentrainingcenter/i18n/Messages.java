@@ -6,29 +6,24 @@ public final class Messages extends NLS {
 
     private static final String BUNDLENAME = "ch.opentrainingcenter.i18n.messages"; //$NON-NLS-1$
 
+    public static String Common_NO;
+    public static String Common_Open;
+    public static String Common_YES;
+
     public static String AddEditHandler_0;
     public static String AddEditHandler_1;
     public static String AddRoute_0;
     public static String AddRoute_1;
     public static String AddRoute_ERROR_TEXT;
-
     public static String AddRoute_ERROR_TITLE;
-
     public static String AddTrainingPlan_0;
     public static String AllgemeineFarbenPreferencePage_AllgemeineFarben;
-
     public static String AllgemeinePreferencePage_1_Wahl;
-
     public static String AllgemeinePreferencePage_2_Wahl;
-
     public static String AllgemeinePreferencePage_DefaultSchuh;
-
     public static String AllgemeinePreferencePage_ErrorMessage_EineSportartwaehlen;
-
     public static String AllgemeinePreferencePage_Sportarten;
-
     public static String AllgemeinePreferencePage_SYNTH_RUNDEN_ANZEIGEN;
-
     public static String AnnotationHelper_0;
     public static String AnnotationHelper_1;
     public static String Application_0;
@@ -122,9 +117,7 @@ public final class Messages extends NLS {
     public static String ChartType8;
     public static String ChartType9;
     public static String ChartViewer_BPM;
-
     public static String ChartViewer_ANZAHL;
-
     public static String ChartViewPart_0;
     public static String CreateAthleteView0;
     public static String CreateAthleteView1;
@@ -237,12 +230,10 @@ public final class Messages extends NLS {
     public static String MapConverter0;
     public static String MapConverter1;
     public static String MonthlyOverview_0;
-
     public static String NAVIGATION_TOOLTIP_KW;
     public static String NAVIGATION_TOOLTIP_OTHER;
     public static String NAVIGATION_TOOLTIP_RUNNING;
     public static String NAVIGATION_TOOLTIP_RUNNING_RUNDEN;
-
     public static String NavigationParent_0;
     public static String NavigationParent_1;
     public static String NavigationView0;
@@ -318,36 +309,21 @@ public final class Messages extends NLS {
     public static String SamplePreferencePage7;
     public static String SamplePreferencePage8;
     public static String SamplePreferencePage9;
-
     public static String SchuhDialog_add;
-
     public static String SchuhDialog_Add_Schuh;
-
     public static String SchuhDialog_Beschreibung;
-
     public static String SchuhDialog_BildLabel;
-
     public static String SchuhDialog_Error_Preis;
-
     public static String SchuhDialog_Error_Schuhname;
-
     public static String SchuhDialog_Fehlermeldung;
-
     public static String SchuhDialog_KaufdatumLabel;
-
     public static String SchuhDialog_Label_Name_Marke;
-
     public static String SchuhDialog_ModelLabel;
-
     public static String SchuhDialog_PreisLabel;
     public static String SchuhTableViewer_AnzahlLaeufe;
-
     public static String SchuhTableViewer_KaufDatumTableHeader;
-
     public static String SchuhTableViewer_PreisTableHeader;
-
     public static String SchuhTableViewer_TotalDistanz;
-
     public static String SearchDialog_COMMON_KM;
     public static String SearchDialog_SEARCH;
     public static String SearchDialog_SEARCH_DESC_LABEL;
@@ -373,7 +349,6 @@ public final class Messages extends NLS {
     public static String SingleActivityViewPart_7;
     public static String SingleActivityViewPart_8;
     public static String SingleActivityViewPart_Schuhe;
-
     public static String SingleActivityViewPart_SYNTH_RUNDEN;
     public static String SingleActivityViewPart_SYNTH_RUNDEN_DESC;
     public static String SingleActivityViewPart0;
@@ -448,7 +423,6 @@ public final class Messages extends NLS {
     public static String RuhePulsChart_1;
     public static String RuhePulsChart_2;
     public static String RunTypeDialog_0;
-
     public static String RunTypeDialog_Schuhe;
     public static String RunTypeDialog0;
     public static String RunTypeDialog1;
@@ -501,14 +475,11 @@ public final class Messages extends NLS {
     public static String StatusLineWriter_7;
     public static String StatusLineWriter_8;
     public static String StatusLineWriter_9;
-
     public static String StatusLineWriter_LetzteVitaldaten;
     public static String ViewLabelProvider_0;
     public static String SUN;
     public static String LIGHTCLOUDY;
     public static String CLOUDY;
-    public static String Common_NO;
-    public static String Common_YES;
     public static String Einheit_Herzfrequenz;
     public static String Einheit_Kilometer;
     public static String FileImport_0;
@@ -517,14 +488,10 @@ public final class Messages extends NLS {
     public static String FileImport_3;
     public static String FileImport_4;
     public static String FileImport_5;
-
     public static String FileImport_KonvertGpsFile;
-
     public static String FileImport_KonvertiereGpsFile;
     public static String FileImport_SaveGpsFile;
-
     public static String FileImport_SaveGpsFiles;
-
     public static String HEAVYCLOUDY;
     public static String LIGHTRAIN;
     public static String RAIN;
@@ -534,26 +501,18 @@ public final class Messages extends NLS {
     public static String RouteDialog_3;
     public static String RouteDialog_4;
     public static String RouteDialog_5;
-
     public static String RouteDialog_Route_existiert_bereits;
     public static String RoutenView_0;
     public static String RoutenView_1;
     public static String RoutenView_10;
     public static String RoutenView_11;
-
     public static String RoutenView_12;
     public static String RoutenView_13;
-
     public static String RoutenView_14;
-
     public static String RoutenView_15;
-
     public static String RoutenView_16;
-
     public static String RoutenView_17;
-
     public static String RoutenView_18;
-
     public static String RoutenView_19;
     public static String RoutenView_2;
     public static String RoutenView_3;
@@ -564,15 +523,10 @@ public final class Messages extends NLS {
     public static String RoutenView_8;
     public static String RoutenView_9;
     public static String RoutenView_Icon;
-
     public static String RoutenView_ID;
-
     public static String RoutenView_Name_Marke;
-
     public static String RoutenView_ReferenzStreckeLoeschen;
-
     public static String RoutenView_Schuhe;
-
     public static String RUNDE;
     public static String RUNDEN;
     public static String HEAVYRAIN;
@@ -605,7 +559,6 @@ public final class Messages extends NLS {
     public static String UserView_7;
     public static String UserView_8;
     public static String UserView_9;
-
     public static String UserView_Unbekannt;
     public static String RunType0;
     public static String RunType1;
@@ -614,7 +567,6 @@ public final class Messages extends NLS {
     public static String RunType4;
     public static String RunType5;
     public static String ZEIT;
-
     public static String DeleteImportedRecord_Error_Message;
     public static String DeleteImportedRecord_Error_Title;
     public static String DeleteImportedRecord_prefix;

@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
@@ -27,13 +26,13 @@ import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchPartSite;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.action.job.LoadJahresplanung;
 import ch.opentrainingcenter.client.views.ApplicationContext;
+import ch.opentrainingcenter.client.views.OpenTrainingRunnable;
 import ch.opentrainingcenter.client.views.dialoge.HealthDialog;
 import ch.opentrainingcenter.client.views.navigation.tree.KalenderWocheTreeContentProvider;
 import ch.opentrainingcenter.client.views.navigation.tree.KalenderWocheTreeLabelProvider;
@@ -58,7 +57,6 @@ import ch.opentrainingcenter.transfer.ITraining;
 
 public class KalenderWocheNavigationView extends ViewPart {
 
-    private static final Logger LOG = Logger.getLogger(KalenderWocheNavigationView.class);
     public static final String ID = "ch.opentrainingcenter.client.kalenderNavigationView"; //$NON-NLS-1$
 
     private final IPreferenceStore store = Activator.getDefault().getPreferenceStore();
@@ -232,24 +230,12 @@ public class KalenderWocheNavigationView extends ViewPart {
     /**
      * Öffnet einen Record asynchron
      * 
-     * @param record
+     * @param training
      */
-    private void openSingleRunView(final ITraining record) {
-        Display.getDefault().asyncExec(new Runnable() {
-
-            @Override
-            public void run() {
-
-                final String hash = String.valueOf(record.getDatum());
-                try {
-                    PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(SingleActivityViewPart.ID, hash, 1);
-                } catch (final PartInitException e) {
-                    LOG.error(e);
-                }
-            }
-        });
-        context.setSelectedId(record.getDatum());
-        viewer.setSelection(new StructuredSelection(new ConcreteImported(record)), true);
+    private void openSingleRunView(final ITraining training) {
+        Display.getDefault().asyncExec(new OpenTrainingRunnable(training));
+        context.setSelectedId(training.getDatum());
+        viewer.setSelection(new StructuredSelection(new ConcreteImported(training)), true);
     }
 
     /**
