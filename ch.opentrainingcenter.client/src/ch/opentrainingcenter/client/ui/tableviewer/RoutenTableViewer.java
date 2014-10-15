@@ -65,7 +65,7 @@ public class RoutenTableViewer extends TableViewer {
 
     private void createRouteColumns() {
         final String[] titles = { Messages.RoutenView_10, Messages.RoutenView_11, Messages.RoutenView_6, Messages.RoutenView_13 };
-        final int[] bounds = { 80, 200, 100, 40 };
+        final int[] bounds = { 100, 180, 100, 40 };
 
         TableViewerColumn col = createRouteColumn(titles[0], bounds[0]);
         col.setLabelProvider(new RouteColumnLabelProviderName());

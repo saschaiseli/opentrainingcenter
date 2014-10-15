@@ -31,7 +31,6 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
 import ch.opentrainingcenter.client.ui.tableviewer.labelprovider.TrackColumnLabelProviderDistanz;
-import ch.opentrainingcenter.client.ui.tableviewer.labelprovider.TrackColumnLabelProviderNote;
 import ch.opentrainingcenter.client.ui.tableviewer.labelprovider.TrackColumnLabelProviderRouten;
 import ch.opentrainingcenter.client.ui.tableviewer.labelprovider.TrackColumnLabelProviderZeit;
 import ch.opentrainingcenter.i18n.Messages;
@@ -66,7 +65,7 @@ public class TrackTableViewer extends TableViewer {
 
     private void createTrackColumns() {
         final String[] titles = { Messages.RoutenView_5, Messages.RoutenView_6, Messages.RoutenView_7, Messages.RoutenView_8 };
-        final int[] bounds = { 100, 80, 200, 100 };
+        final int[] bounds = { 100, 120, 100 };
 
         TableViewerColumn col = createTrackColumn(titles[0], bounds[0]);
         col.setLabelProvider(new TrackColumnLabelProviderZeit());
@@ -75,9 +74,6 @@ public class TrackTableViewer extends TableViewer {
         col.setLabelProvider(new TrackColumnLabelProviderDistanz());
 
         col = createTrackColumn(titles[2], bounds[2]);
-        col.setLabelProvider(new TrackColumnLabelProviderNote());
-
-        col = createTrackColumn(titles[3], bounds[3]);
         col.setLabelProvider(new TrackColumnLabelProviderRouten());
     }
 

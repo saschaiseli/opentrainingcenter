@@ -77,6 +77,7 @@ public class ConnectionConfig implements IConnectionConfig {
     public Session getSession() {
         if (session == null || !session.isOpen()) {
             session = sessionFactory.openSession();
+            LOG.info("Session geöffnet: " + session);
         }
         return session;
     }

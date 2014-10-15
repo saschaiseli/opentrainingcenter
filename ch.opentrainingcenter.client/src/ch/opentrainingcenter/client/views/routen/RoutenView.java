@@ -151,7 +151,9 @@ public class RoutenView extends ViewPart implements IRecordListener {
                 final RoutenTableModel model = (RoutenTableModel) ss.getFirstElement();
                 final IRoute route = model.getRoute();
                 LOGGER.info(String.format("Die Route '%s' wird gelöscht. Das Referenztraining wird zurück auf Unbekannt gesetzt", route)); //$NON-NLS-1$
+                deleteRoute(route);
             }
+
         };
         menuManager.add(deleteAction);
 
@@ -161,9 +163,11 @@ public class RoutenView extends ViewPart implements IRecordListener {
             public void selectionChanged(final SelectionChangedEvent event) {
                 final StructuredSelection ss = (StructuredSelection) event.getSelection();
                 final RoutenTableModel model = (RoutenTableModel) ss.getFirstElement();
-                final IRoute route = model.getRoute();
-                final boolean isDeleteable = route != null && getAnzahlTracks(route, tracks) <= 1;
-                deleteAction.setEnabled(isDeleteable);
+                if (model != null) {
+                    final IRoute route = model.getRoute();
+                    final boolean isDeleteable = route != null && getAnzahlTracks(route, tracks) <= 1 && !Messages.OTCKonstanten_0.equals(route.getName());
+                    deleteAction.setEnabled(isDeleteable);
+                }
             }
         });
     }
@@ -209,23 +213,53 @@ public class RoutenView extends ViewPart implements IRecordListener {
         update();
     }
 
-    private void update() {
-        models.clear();
-        tracks.clear();
+    private void deleteRoute(final IRoute route) {
         Display.getDefault().asyncExec(new Runnable() {
 
             @Override
             public void run() {
-                final List<IRoute> routen = databaseAccess.getRoute(athlete);
-                tracks.addAll(databaseAccess.getAllTrainings(athlete));
-                models.addAll(getModels(routen, tracks));
-                if (!viewerRouten.getTable().isDisposed()) {
-                    viewerRouten.refresh();
-                }
-                if (!viewerTracks.getTable().isDisposed()) {
-                    viewerTracks.refresh();
-                }
+                final IRoute unbekannt = databaseAccess.getRoute("Unbekannt", athlete); //$NON-NLS-1$
+                final ITraining referenzTrack = route.getReferenzTrack();
+                referenzTrack.setRoute(unbekannt);
+                databaseAccess.saveOrUpdate(referenzTrack);
+                databaseAccess.deleteRoute(route.getId());
+                LOGGER.info("Route gelöscht und beim Record die Route auf unbekannt gesetzt"); //$NON-NLS-1$
             }
         });
+    }
+
+    private void update() {
+        Display.getDefault().asyncExec(new TrackUpdater());
+        Display.getDefault().asyncExec(new ModelUpdater());
+    }
+
+    class TrackUpdater implements Runnable {
+
+        @Override
+        public void run() {
+            LOGGER.info("TrackUpdater"); //$NON-NLS-1$
+            tracks.clear();
+            tracks.addAll(databaseAccess.getAllTrainings(athlete));
+            if (!viewerTracks.getTable().isDisposed()) {
+                viewerTracks.refresh();
+            }
+        }
+
+    }
+
+    class ModelUpdater implements Runnable {
+
+        @Override
+        public void run() {
+            LOGGER.info("ModelUpdater"); //$NON-NLS-1$
+            models.clear();
+            final List<IRoute> routen = databaseAccess.getRoute(athlete);
+            models.addAll(getModels(routen, tracks));
+            if (!viewerRouten.getTable().isDisposed()) {
+                viewerRouten.refresh();
+            }
+
+        }
+
     }
 }
