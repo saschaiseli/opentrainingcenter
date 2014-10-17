@@ -8,8 +8,8 @@ import java.util.List;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import ch.opentrainingcenter.model.geo.Track;
-import ch.opentrainingcenter.model.geo.TrackPoint;
+import ch.opentrainingcenter.transfer.Track;
+import ch.opentrainingcenter.transfer.TrackPoint;
 
 import com.grum.geocalc.Coordinate;
 import com.grum.geocalc.DegreeCoordinate;
@@ -26,7 +26,7 @@ public class TrackPointSupportTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testExceptionOhnePunkte() {
-        TrackPointSupport.getClosestPoint(0.5, new Track(new ArrayList<TrackPoint>()));
+        TrackPointSupport.getClosestPoint(0.5, new Track(1, new ArrayList<TrackPoint>()));
     }
 
     @Test
@@ -35,7 +35,7 @@ public class TrackPointSupportTest {
         points.add(new TrackPoint(1.1, 1, 1));
         points.add(new TrackPoint(2.0, 2, 2));
         points.add(new TrackPoint(2.5, 3, 3));
-        final Track track = new Track(points);
+        final Track track = new Track(1, points);
 
         final TrackPoint closestPoint = TrackPointSupport.getClosestPoint(-0.5, track);
 
@@ -48,7 +48,7 @@ public class TrackPointSupportTest {
         points.add(new TrackPoint(1.1, 1, 1));
         points.add(new TrackPoint(2.0, 2, 2));
         points.add(new TrackPoint(2.5, 3, 3));
-        final Track track = new Track(points);
+        final Track track = new Track(1, points);
         final TrackPoint closestPoint = TrackPointSupport.getClosestPoint(0.5, track);
 
         assertEquals("erster punkt passt", 1, closestPoint.getxCoordinates(), 0.00001);
@@ -60,7 +60,7 @@ public class TrackPointSupportTest {
         points.add(new TrackPoint(1.1, 1, 1));
         points.add(new TrackPoint(2.0, 2, 2));
         points.add(new TrackPoint(2.5, 3, 3));
-        final Track track = new Track(points);
+        final Track track = new Track(1, points);
         final TrackPoint closestPoint = TrackPointSupport.getClosestPoint(1.5, track);
 
         assertEquals("erster punkt passt", 1, closestPoint.getxCoordinates(), 0.00001);
@@ -72,7 +72,7 @@ public class TrackPointSupportTest {
         points.add(new TrackPoint(1.1, 1, 1));
         points.add(new TrackPoint(1.6, 2, 2));
         points.add(new TrackPoint(1.9, 3, 3));
-        final Track track = new Track(points);
+        final Track track = new Track(1, points);
         final TrackPoint closestPoint = TrackPointSupport.getClosestPoint(1.5, track);
 
         assertEquals("zweiter punkt passt", 2, closestPoint.getxCoordinates(), 0.00001);
@@ -84,7 +84,7 @@ public class TrackPointSupportTest {
         points.add(new TrackPoint(1.1, 1, 1));
         points.add(new TrackPoint(1.6, 2, 2));
         points.add(new TrackPoint(1.9, 3, 3));
-        final Track track = new Track(points);
+        final Track track = new Track(1, points);
         final TrackPoint closestPoint = TrackPointSupport.getClosestPoint(2.5, track);
 
         assertEquals("letzter punkt passt", 3, closestPoint.getxCoordinates(), 0.00001);
@@ -94,7 +94,7 @@ public class TrackPointSupportTest {
     public void testNurEinPunkt() {
         final List<TrackPoint> points = new ArrayList<TrackPoint>();
         points.add(new TrackPoint(1.1, 1, 1));
-        final Track track = new Track(points);
+        final Track track = new Track(1, points);
         final TrackPoint closestPoint = TrackPointSupport.getClosestPoint(42.5, track);
         assertEquals("erster punkt passt", 1, closestPoint.getxCoordinates(), 0.00001);
     }

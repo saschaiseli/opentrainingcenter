@@ -43,7 +43,7 @@ public abstract class ChangeRunType extends AbstractHandler {
             return null;
         }
         for (final Object obj : selection) {
-            final ITraining record = ((ConcreteImported) obj).getImported();
+            final ITraining record = ((ConcreteImported) obj).getTraining();
             service.getDatabaseAccess().updateTrainingType(record, getType().getIndex());
         }
         cache.notifyListeners();

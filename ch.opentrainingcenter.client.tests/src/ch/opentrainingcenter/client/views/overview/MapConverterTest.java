@@ -6,11 +6,12 @@ import java.util.List;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import ch.opentrainingcenter.model.geo.Track;
-import ch.opentrainingcenter.model.geo.TrackPoint;
+import ch.opentrainingcenter.core.geo.MapConverter;
 import ch.opentrainingcenter.transfer.IStreckenPunkt;
 import ch.opentrainingcenter.transfer.ITrackPointProperty;
 import ch.opentrainingcenter.transfer.ITraining;
+import ch.opentrainingcenter.transfer.Track;
+import ch.opentrainingcenter.transfer.TrackPoint;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 

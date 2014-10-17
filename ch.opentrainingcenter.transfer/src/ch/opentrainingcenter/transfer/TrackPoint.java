@@ -1,4 +1,4 @@
-package ch.opentrainingcenter.model.geo;
+package ch.opentrainingcenter.transfer;
 
 public class TrackPoint {
     private final double distance;

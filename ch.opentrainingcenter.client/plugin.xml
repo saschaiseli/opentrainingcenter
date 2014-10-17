@@ -299,6 +299,11 @@
             name="%vergleicht2laeufe">
       </command>
       <command
+            description="%gleicheStreckeSuchen_desc"
+            id="ch.opentrainingcenter.client.commands.SearchRecordsWithSameRoute"
+            name="%gleicheStreckeSuchen">
+      </command>
+      <command
             description="%herz_scatter_desc"
             id="ch.opentrainingcenter.client.commands.HeartScatter"
             name="%herz_scatter">
@@ -503,6 +508,22 @@
          <command
                commandId="ch.opentrainingcenter.client.commands.CompareRecords"
                label="%vergleicht2laeufe"
+               style="push">
+            <visibleWhen
+                  checkEnabled="true">
+               <iterate
+                     operator="and">
+                  <or>
+                     <instanceof
+                           value="ch.opentrainingcenter.model.navigation.ConcreteImported">
+                     </instanceof>
+                  </or>
+               </iterate>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="ch.opentrainingcenter.client.commands.SearchRecordsWithSameRoute"
+               label="%gleicheStreckeSuchen"
                style="push">
             <visibleWhen
                   checkEnabled="true">
@@ -784,6 +805,15 @@
          <enabledWhen>
             <count
                   value="2">
+            </count>
+         </enabledWhen>
+      </handler>
+      <handler
+            class="ch.opentrainingcenter.client.commands.SearchRecordsWithSameRoute"
+            commandId="ch.opentrainingcenter.client.commands.SearchRecordsWithSameRoute">
+         <enabledWhen>
+            <count
+                  value="1">
             </count>
          </enabledWhen>
       </handler>

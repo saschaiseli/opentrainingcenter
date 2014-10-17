@@ -5,10 +5,10 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import ch.opentrainingcenter.core.assertions.Assertions;
-import ch.opentrainingcenter.model.geo.Track;
-import ch.opentrainingcenter.model.geo.TrackPoint;
 import ch.opentrainingcenter.route.ICompareRoute;
 import ch.opentrainingcenter.route.kml.KmlDumper;
+import ch.opentrainingcenter.transfer.Track;
+import ch.opentrainingcenter.transfer.TrackPoint;
 
 import com.grum.geocalc.EarthCalc;
 import com.grum.geocalc.Point;
@@ -47,32 +47,48 @@ public class CompareRoute implements ICompareRoute {
 
     private final boolean debug;
 
-    private final KmlDumper kmlDumper;
+    private final String kmlDumpPath;
 
     public CompareRoute(final boolean debug, final String kmlDumpPath) {
         this.debug = debug;
-        kmlDumper = new KmlDumper(kmlDumpPath);
+        this.kmlDumpPath = kmlDumpPath;
+
     }
 
     @Override
     public boolean compareRoute(final Track reference, final Track track) {
+        final KmlDumper kmlDumper = new KmlDumper(kmlDumpPath);
         if (debug) {
-            dump(reference, "Referenz", "ff0000ff"); //$NON-NLS-1$ //$NON-NLS-2$
-            dump(track, "Other", "ff0cc0ff"); //$NON-NLS-1$ //$NON-NLS-2$
-            kmlDumper.dump();
+            //            dump(reference, "Referenz", "ff0000ff", kmlDumper); //$NON-NLS-1$ //$NON-NLS-2$
+            //            dump(track, "Other", "ff0cc0ff", kmlDumper); //$NON-NLS-1$ //$NON-NLS-2$
+            // kmlDumper.dump();
         }
-        checkParameters(reference, track);
-        if (isDistanceDifferenceTooBig(reference, track)) {
+        // checkParameters(reference, track);
+        if (reference == null || reference.getPoints().isEmpty()) {
             return false;
         }
+        if (track == null || track.getPoints().isEmpty()) {
+            return false;
+        }
+        // if (isDistanceDifferenceTooBig(reference, track)) {
+        // return false;
+        // }
         final boolean resultA = compareTrackPoints(reference, track);
         final boolean resultB = compareTrackPoints(track, reference);
         LOGGER.info("Erster Vergleich: " + resultA); //$NON-NLS-1$
         LOGGER.info("Umgekehrter Vergleich: " + resultB); //$NON-NLS-1$
-        return resultA && resultB;
+        final boolean result = resultA && resultB;
+        if (result) {
+            dump(track, "Other", "ff0000ff", kmlDumper); //$NON-NLS-1$ //$NON-NLS-2$
+            kmlDumper.dump();
+        } else {
+            dump(track, "Other", "ff0cc0ff", kmlDumper); //$NON-NLS-1$ //$NON-NLS-2$
+            kmlDumper.dump();
+        }
+        return result;
     }
 
-    private void dump(final Track track, final String title, final String lineColor) {
+    private void dump(final Track track, final String title, final String lineColor, final KmlDumper kmlDumper) {
         LOGGER.info("-----------------GPS DATEN " + title + "-------------------------"); //$NON-NLS-1$ //$NON-NLS-2$
         LOGGER.info(track.toKml());
         LOGGER.info("##################################################################"); //$NON-NLS-1$

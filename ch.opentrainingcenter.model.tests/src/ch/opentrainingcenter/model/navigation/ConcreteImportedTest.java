@@ -149,7 +149,7 @@ public class ConcreteImportedTest {
 
         final ConcreteImported imp = new ConcreteImported(training);
 
-        assertEquals(training, imp.getImported());
+        assertEquals(training, imp.getTraining());
     }
 
     @Test

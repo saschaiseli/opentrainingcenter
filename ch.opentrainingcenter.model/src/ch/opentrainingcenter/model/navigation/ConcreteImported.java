@@ -21,7 +21,7 @@ public class ConcreteImported extends ImportedDecorator implements INavigationIt
         super(training);
     }
 
-    public ITraining getImported() {
+    public ITraining getTraining() {
         return training;
     }
 

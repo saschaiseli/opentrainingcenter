@@ -152,7 +152,7 @@ public class KalenderWocheNavigationView extends ViewPart {
                 final Object item = selection.getFirstElement();
 
                 if (item instanceof ConcreteImported) {
-                    final ITraining selectedTraining = ((ConcreteImported) item).getImported();
+                    final ITraining selectedTraining = ((ConcreteImported) item).getTraining();
                     openSingleRunView(selectedTraining);
                 }
 

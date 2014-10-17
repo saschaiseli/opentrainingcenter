@@ -1,4 +1,4 @@
-package ch.opentrainingcenter.client.views.overview;
+package ch.opentrainingcenter.core.geo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,11 +7,11 @@ import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 
 import ch.opentrainingcenter.i18n.Messages;
-import ch.opentrainingcenter.model.geo.Track;
-import ch.opentrainingcenter.model.geo.TrackPoint;
 import ch.opentrainingcenter.transfer.IStreckenPunkt;
 import ch.opentrainingcenter.transfer.ITrackPointProperty;
 import ch.opentrainingcenter.transfer.ITraining;
+import ch.opentrainingcenter.transfer.Track;
+import ch.opentrainingcenter.transfer.TrackPoint;
 
 /**
  * Konvertiert die Trainingsdaten in ein Format, dass der MapViewer anzeigen
@@ -28,9 +28,23 @@ public final class MapConverter {
         final List<TrackPoint> trackPoints = new ArrayList<TrackPoint>();
         final List<ITrackPointProperty> points = training.getTrackPoints();
         for (final ITrackPointProperty point : points) {
-            trackPoints.add(new TrackPoint(point.getDistance(), point.getStreckenPunkt().getLatitude(), point.getStreckenPunkt().getLongitude()));
+            final TrackPoint trackPoint = createTrackPoint(point);
+            if (trackPoint != null) {
+                trackPoints.add(trackPoint);
+            }
         }
-        return new Track(trackPoints);
+        return new Track(training.getId(), trackPoints);
+    }
+
+    private static TrackPoint createTrackPoint(final ITrackPointProperty point) {
+        final double distance = point.getDistance();
+        final IStreckenPunkt streckenPunkt = point.getStreckenPunkt();
+        if (streckenPunkt != null) {
+            return new TrackPoint(distance, streckenPunkt.getLatitude(), streckenPunkt.getLongitude());
+        } else {
+            LOGGER.warn("Trackpoint ohne Streckenpunkt"); //$NON-NLS-1$
+            return null;
+        }
     }
 
     /**

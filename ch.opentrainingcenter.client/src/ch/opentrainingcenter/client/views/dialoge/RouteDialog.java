@@ -106,7 +106,7 @@ public class RouteDialog extends TitleAreaDialog {
 
                 @Override
                 public void run() {
-                    final ITraining tr = ((ConcreteImported) training).getImported();
+                    final ITraining tr = ((ConcreteImported) training).getTraining();
                     final IRoute newRoute = CommonTransferFactory.createRoute(model.getName(), model.getBeschreibung(), tr);
                     databaseAccess.saveOrUpdate(newRoute);
 

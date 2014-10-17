@@ -58,6 +58,7 @@ import ch.opentrainingcenter.core.cache.RouteCache;
 import ch.opentrainingcenter.core.cache.SchuhCache;
 import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
+import ch.opentrainingcenter.core.geo.MapConverter;
 import ch.opentrainingcenter.core.helper.DistanceHelper;
 import ch.opentrainingcenter.core.helper.TimeHelper;
 import ch.opentrainingcenter.core.lapinfo.LapInfoCreator;

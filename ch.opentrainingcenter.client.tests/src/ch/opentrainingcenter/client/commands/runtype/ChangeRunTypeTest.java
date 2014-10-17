@@ -66,7 +66,7 @@ public class ChangeRunTypeTest {
     public void testExecuteOneElement() throws ExecutionException {
         final ConcreteImported concreteImported = mock(ConcreteImported.class);
         final ITraining training = mock(ITraining.class);
-        when(concreteImported.getImported()).thenReturn(training);
+        when(concreteImported.getTraining()).thenReturn(training);
 
         final IDatabaseAccess access = mock(IDatabaseAccess.class);
         when(service.getDatabaseAccess()).thenReturn(access);
@@ -83,11 +83,11 @@ public class ChangeRunTypeTest {
     public void testExecuteTwoElements() throws ExecutionException {
         final ConcreteImported concreteImportedA = mock(ConcreteImported.class);
         final ITraining trainingA = mock(ITraining.class);
-        when(concreteImportedA.getImported()).thenReturn(trainingA);
+        when(concreteImportedA.getTraining()).thenReturn(trainingA);
 
         final ConcreteImported concreteImportedB = mock(ConcreteImported.class);
         final ITraining trainingB = mock(ITraining.class);
-        when(concreteImportedB.getImported()).thenReturn(trainingB);
+        when(concreteImportedB.getTraining()).thenReturn(trainingB);
 
         final IDatabaseAccess access = mock(IDatabaseAccess.class);
         when(service.getDatabaseAccess()).thenReturn(access);

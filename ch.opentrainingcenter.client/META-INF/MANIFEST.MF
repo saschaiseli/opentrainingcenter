@@ -31,8 +31,7 @@ Require-Bundle: ch.opentrainingcenter.core,
  org.eclipse.core.expressions
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-Localization: plugin
-Export-Package: ch.opentrainingcenter.client,
- ch.opentrainingcenter.importer
+Export-Package: ch.opentrainingcenter.importer
 Bundle-ActivationPolicy: lazy
 Eclipse-RegisterBuddy: logging, jfreechart, com.richclientgui.rcptoolbox
 

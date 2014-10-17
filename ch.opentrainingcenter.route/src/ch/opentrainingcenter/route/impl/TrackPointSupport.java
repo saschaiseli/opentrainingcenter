@@ -3,8 +3,8 @@ package ch.opentrainingcenter.route.impl;
 import java.util.List;
 
 import ch.opentrainingcenter.core.assertions.Assertions;
-import ch.opentrainingcenter.model.geo.Track;
-import ch.opentrainingcenter.model.geo.TrackPoint;
+import ch.opentrainingcenter.transfer.Track;
+import ch.opentrainingcenter.transfer.TrackPoint;
 
 import com.grum.geocalc.DegreeCoordinate;
 import com.grum.geocalc.EarthCalc;

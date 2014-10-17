@@ -1,4 +1,4 @@
-package ch.opentrainingcenter.model.geo;
+package ch.opentrainingcenter.transfer;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -13,9 +13,15 @@ import java.util.List;
 public class Track {
 
     private final List<TrackPoint> points;
+    private final int idTrainging;
 
-    public Track(final List<TrackPoint> points) {
+    public Track(final int idTrainging, final List<TrackPoint> points) {
+        this.idTrainging = idTrainging;
         this.points = points;
+    }
+
+    public int getIdTrainging() {
+        return idTrainging;
     }
 
     /**
@@ -40,4 +46,5 @@ public class Track {
         kml.append("\n"); //$NON-NLS-1$
         return kml.toString();
     }
+
 }

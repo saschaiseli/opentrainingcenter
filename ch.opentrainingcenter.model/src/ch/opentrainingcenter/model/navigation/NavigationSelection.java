@@ -22,12 +22,12 @@ public class NavigationSelection {
             for (final INavigationParent parent : (List<INavigationParent>) selection) {
                 final List<INavigationItem> childs = parent.getChilds();
                 for (final INavigationItem child : childs) {
-                    result.add(((ConcreteImported) child).getImported());
+                    result.add(((ConcreteImported) child).getTraining());
                 }
             }
         } else if (isEachElementSameInstance(selection, ConcreteImported.class)) {
             for (final ConcreteImported item : (List<ConcreteImported>) selection) {
-                result.add(item.getImported());
+                result.add(item.getTraining());
             }
         } else {
             throw new IllegalArgumentException("Selection ist weder vom Typ ConcreteImported noch vom INavigationParent"); //$NON-NLS-1$

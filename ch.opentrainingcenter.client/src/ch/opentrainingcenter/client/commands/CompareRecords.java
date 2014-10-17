@@ -12,14 +12,14 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import ch.opentrainingcenter.client.Activator;
-import ch.opentrainingcenter.client.views.overview.MapConverter;
 import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.core.cache.Cache;
 import ch.opentrainingcenter.core.cache.TrainingCache;
-import ch.opentrainingcenter.model.geo.Track;
+import ch.opentrainingcenter.core.geo.MapConverter;
 import ch.opentrainingcenter.route.CompareRouteFactory;
 import ch.opentrainingcenter.route.ICompareRoute;
 import ch.opentrainingcenter.transfer.ITraining;
+import ch.opentrainingcenter.transfer.Track;
 
 /**
  * Vergleicht selektierte Läufe auf ihre geografische Ähnlichkeit.
