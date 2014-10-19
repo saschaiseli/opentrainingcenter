@@ -222,13 +222,23 @@ public class ConcreteImported extends ImportedDecorator implements INavigationIt
     }
 
     @Override
-    public float getGeoQuality() {
+    public Integer getGeoQuality() {
         return training.getGeoQuality();
     }
 
     @Override
-    public void setGeoQuality(final float fehlerInProzent) {
+    public void setGeoQuality(final Integer fehlerInProzent) {
         training.setGeoQuality(fehlerInProzent);
 
+    }
+
+    @Override
+    public Integer getTrainingEffect() {
+        return training.getTrainingEffect();
+    }
+
+    @Override
+    public void setTrainingEffect(final Integer trainingEffect) {
+        training.setTrainingEffect(trainingEffect);
     }
 }

@@ -125,9 +125,10 @@ public class TrainingListener implements MesgListener {
         } else {
             training.setSport(Sport.OTHER);
         }
+        session.getTotalTrainingEffect();
         training.setLapInfos(lapInfos);
         final int total = error + valid;
-        final float fehlerInProzent = 100 * (error / (float) total);
+        final int fehlerInProzent = (int) (10000 * (error / (float) total));
         training.setGeoQuality(fehlerInProzent);
         LOGGER.info(String.format("Qualität der Geodaten: '%s' [prozent] fehlerhafte Geodaten", fehlerInProzent)); //$NON-NLS-1$
         return training;

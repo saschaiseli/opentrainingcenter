@@ -13,6 +13,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.joda.time.DateTime;
 
 import ch.opentrainingcenter.core.geo.MapConverter;
@@ -27,84 +28,80 @@ public class SearchRecordJob extends Job {
     private final ITraining referenzTraining;
     private final List<ITraining> all;
     private final ICompareRoute comp;
+    private final ExecutorService service;
+    private final List<ITraining> selbeRoute = new ArrayList<>();
 
     public SearchRecordJob(final String name, final ITraining referenzTraining, final List<ITraining> all, final ICompareRoute comp) {
         super(name);
         this.referenzTraining = referenzTraining;
         this.all = all;
         this.comp = comp;
+        service = Executors.newScheduledThreadPool(4);
     }
 
     @Override
     protected IStatus run(final IProgressMonitor monitor) {
         LOGGER.info(String.format("Es werde nun %s Trainings mit der Referenz verglichen", all.size())); //$NON-NLS-1$
         final long start = DateTime.now().getMillis();
-        final List<ITraining> selbeRoute = new ArrayList<>();
+        selbeRoute.clear();
         final Track referenzTrack = MapConverter.convert(referenzTraining);
-        // final int i = 0;
         monitor.beginTask("Vergleiche die Routen", all.size()); //$NON-NLS-1$
 
         final List<FutureTask<ITraining>> taskList = new ArrayList<FutureTask<ITraining>>();
-        final ExecutorService service = Executors.newSingleThreadExecutor();// newFixedThreadPool(1000);
         for (final ITraining item : all) {
             if (item.getId() != referenzTraining.getId()) {
-                final FutureTask<ITraining> task = createCallable(referenzTrack, item);
+                final FutureTask<ITraining> task = createCallable(referenzTrack, item, monitor);
                 taskList.add(task);
                 service.execute(task);
             }
         }
 
         for (final FutureTask<ITraining> tsk : taskList) {
+            if (service.isShutdown()) {
+                LOGGER.info("Vergleiche abgebrochen"); //$NON-NLS-1$
+                return Status.CANCEL_STATUS;
+            }
             try {
                 final ITraining same = tsk.get();
                 if (same != null) {
                     selbeRoute.add(same);
                 }
             } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
+                return Status.CANCEL_STATUS;
             }
+        }
+        this.addJobChangeListener(new JobChangeAdapter() {
+
+        });
+        while (!service.isTerminated()) {
+            LOGGER.info("not terminated"); //$NON-NLS-1$
         }
         service.shutdown();
         final long end = DateTime.now().getMillis();
-        // final long start2 = DateTime.now().getMillis();
-        // int i = 0;
-        // for (final ITraining item : all) {
-        //            LOGGER.info("Vergleich: " + i++); //$NON-NLS-1$
-        //            monitor.subTask(String.format("Vergleich von Referenztraining vom %s mit Training vom %s", TimeHelper.convertDateToString(referenzTraining //$NON-NLS-1$
-        // .getDatum()), TimeHelper.convertDateToString(item.getDatum())));
-        // if (item.getId() != referenzTraining.getId() &&
-        // comp.compareRoute(referenzTrack, MapConverter.convert(item))) {
-        // selbeRoute.add(item);
-        // }
-        // monitor.worked(1);
-        // }
-        LOGGER.info("######################## Routensouche ##################################################");
-        LOGGER.info(String.format("Die Suche bei %s Trainings dauerte %s ms", all.size(), (end - start))); //$NON-NLS-1$
-        LOGGER.info(String.format("Anzahl gleiche Routen: %s", selbeRoute.size()));
-        LOGGER.info("########################################################################################");
 
-        // final long end2 = DateTime.now().getMillis();
-        // LOGGER.info("######################## Routensouche ##################################################");
-        //        LOGGER.info(String.format("Die Suche bei %s Trainings dauerte %s ms", all.size(), (end2 - start2))); //$NON-NLS-1$
-        // LOGGER.info(String.format("Anzahl gleiche Routen: %s",
-        // selbeRoute.size()));
-        // LOGGER.info("########################################################################################");
+        LOGGER.info("######################## Routensouche ##################################################"); //$NON-NLS-1$
+        LOGGER.info(String.format("Die Suche bei %s Trainings dauerte %s ms", all.size(), (end - start))); //$NON-NLS-1$
+        LOGGER.info(String.format("Anzahl gleiche Routen: %s", selbeRoute.size())); //$NON-NLS-1$
+        LOGGER.info("########################################################################################"); //$NON-NLS-1$
+
         return Status.OK_STATUS;
     }
 
-    private FutureTask<ITraining> createCallable(final Track referenzTrack, final ITraining item) {
-        return new FutureTask<ITraining>(create(referenzTrack, item));
+    private FutureTask<ITraining> createCallable(final Track referenzTrack, final ITraining item, final IProgressMonitor monitor) {
+        return new FutureTask<ITraining>(create(referenzTrack, item, monitor));
     }
 
-    private Callable<ITraining> create(final Track referenzTrack, final ITraining item) {
+    private Callable<ITraining> create(final Track referenzTrack, final ITraining item, final IProgressMonitor monitor) {
         return new Callable<ITraining>() {
 
             @Override
             public ITraining call() throws Exception {
                 final String date = TimeHelper.convertDateToString(item.getDatum());
-                LOGGER.info("Start " + date);
+                LOGGER.info("Start " + date); //$NON-NLS-1$
+                monitor.subTask("Training vom " + date);
                 final boolean same = comp.compareRoute(referenzTrack, MapConverter.convert(item));
-                LOGGER.info("End " + date + " Training is same? " + same);
+                LOGGER.info("End " + date + " Training is same? " + same); //$NON-NLS-1$ //$NON-NLS-2$
+                monitor.worked(1);
                 return same ? item : null;
             }
         };
@@ -112,7 +109,10 @@ public class SearchRecordJob extends Job {
 
     @Override
     protected void canceling() {
-        super.getThread().interrupt();
+        service.shutdownNow();
     }
 
+    public List<ITraining> getSameRoute() {
+        return selbeRoute;
+    }
 }

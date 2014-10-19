@@ -126,9 +126,21 @@ public interface ITraining {
     void setTrainingType(TrainingType trainingType);
 
     /**
+     * Anzahl Fehler in Prozent 0...100
+     * 
      * @return Prozentwert von fehlenden Koordinaten.
      */
-    float getGeoQuality();
+    Integer getGeoQuality();
 
-    void setGeoQuality(float fehlerInProzent);
+    /**
+     * Anzahl Fehler in Prozent 0...100
+     * 
+     * @param fehlerInProzent
+     *            0-100
+     */
+    void setGeoQuality(Integer fehlerInProzent);
+
+    Integer getTrainingEffect();
+
+    void setTrainingEffect(Integer trainingEffect);
 }

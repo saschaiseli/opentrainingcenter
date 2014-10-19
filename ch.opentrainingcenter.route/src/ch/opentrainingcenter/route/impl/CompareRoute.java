@@ -70,20 +70,20 @@ public class CompareRoute implements ICompareRoute {
         if (track == null || track.getPoints().isEmpty()) {
             return false;
         }
-        // if (isDistanceDifferenceTooBig(reference, track)) {
-        // return false;
-        // }
+        if (isDistanceDifferenceTooBig(reference, track)) {
+            return false;
+        }
         final boolean resultA = compareTrackPoints(reference, track);
         final boolean resultB = compareTrackPoints(track, reference);
         LOGGER.info("Erster Vergleich: " + resultA); //$NON-NLS-1$
         LOGGER.info("Umgekehrter Vergleich: " + resultB); //$NON-NLS-1$
         final boolean result = resultA && resultB;
         if (result) {
-            dump(track, "Other", "ff0000ff", kmlDumper); //$NON-NLS-1$ //$NON-NLS-2$
-            kmlDumper.dump();
+            //            dump(track, "Other", "ff0000ff", kmlDumper); //$NON-NLS-1$ //$NON-NLS-2$
+            // kmlDumper.dump();
         } else {
-            dump(track, "Other", "ff0cc0ff", kmlDumper); //$NON-NLS-1$ //$NON-NLS-2$
-            kmlDumper.dump();
+            //            dump(track, "Other", "ff0cc0ff", kmlDumper); //$NON-NLS-1$ //$NON-NLS-2$
+            // kmlDumper.dump();
         }
         return result;
     }

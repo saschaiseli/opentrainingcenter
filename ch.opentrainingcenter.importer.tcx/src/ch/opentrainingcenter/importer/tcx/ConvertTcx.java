@@ -176,7 +176,7 @@ public class ConvertTcx implements IConvert2Tcx {
             training.setNote(NO_DATA);
         }
         final int total = error + valid;
-        final float fehlerInProzent = 100 * (error / (float) total);
+        final int fehlerInProzent = (int) (10000 * (error / (float) total));
         training.setGeoQuality(fehlerInProzent);
         LOGGER.info(String.format("Qualität der Geodaten: '%s' [prozent] fehlerhafte Geodaten (%s von %s sind fehlerhaft)", fehlerInProzent, error, total)); //$NON-NLS-1$
         return training;

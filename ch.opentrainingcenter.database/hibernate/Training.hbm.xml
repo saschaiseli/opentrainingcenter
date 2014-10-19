@@ -67,6 +67,12 @@
 		<property name="downMeter" type="java.lang.Integer">
 			<column name="DOWNMETER" />
 		</property>
+		<property name="geoQuality" type="java.lang.Integer">
+			<column name="GEO_QUALITY" />
+		</property>
+		<property name="trainingEffect" type="java.lang.Integer">
+			<column name="TRAINING_EFFECT" />
+		</property>
 		<list name="trackPoints" table="TRACKTRAININGPROPERTY"  cascade="all" lazy="true" fetch="select">
 			<key column="ID_TRAINING" />
 			<list-index column="idx"/>
