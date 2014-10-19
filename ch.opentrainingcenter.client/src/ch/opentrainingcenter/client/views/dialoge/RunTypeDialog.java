@@ -15,7 +15,6 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -64,11 +63,6 @@ public class RunTypeDialog extends TitleAreaDialog {
             model.setSchuh(defShoe);
             models.add(model);
         }
-    }
-
-    @Override
-    protected Point getInitialSize() {
-        return super.getInitialSize();
     }
 
     @Override
