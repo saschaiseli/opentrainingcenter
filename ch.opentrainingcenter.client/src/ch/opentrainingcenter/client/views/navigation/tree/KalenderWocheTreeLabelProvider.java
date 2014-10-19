@@ -6,10 +6,8 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 
 import ch.opentrainingcenter.client.Activator;
-import ch.opentrainingcenter.model.navigation.ConcreteImported;
 import ch.opentrainingcenter.model.navigation.INavigationItem;
 import ch.opentrainingcenter.model.navigation.INavigationParent;
-import ch.opentrainingcenter.transfer.ITraining;
 
 public class KalenderWocheTreeLabelProvider extends ColumnLabelProvider {
 
@@ -51,9 +49,6 @@ public class KalenderWocheTreeLabelProvider extends ColumnLabelProvider {
             return PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_FOLDER);
         }
         if (element instanceof INavigationItem) {
-            if (element instanceof ConcreteImported) {
-                final ITraining training = ((ConcreteImported) element).getTraining();
-            }
             return Activator.getImageDescriptor(((INavigationItem) element).getImage()).createImage();
         }
         return PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_FILE);
