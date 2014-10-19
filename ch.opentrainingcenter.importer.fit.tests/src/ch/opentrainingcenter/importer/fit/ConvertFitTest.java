@@ -88,6 +88,13 @@ public class ConvertFitTest {
     }
 
     @Test
+    public void testRealActivityConvertBike() throws ConvertException, ParseException {
+        final ITraining training = converter.convert(new File("resources/bike.fit"));
+
+        assertEquals(Sport.BIKING, training.getSport());
+    }
+
+    @Test
     public void testActivityConvertMit2Runden() throws ConvertException, ParseException {
         final ITraining training = converter.convert(new File("resources/2_runden.fit"));
 

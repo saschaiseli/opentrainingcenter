@@ -117,7 +117,14 @@ public class TrainingListener implements MesgListener {
         training.setTrackPoints(trackpoints);
         training.setDownMeter(session.getTotalDescent());
         training.setUpMeter(session.getTotalAscent());
-        training.setSport(Sport.RUNNING);
+        final com.garmin.fit.Sport sport = session.getSport();
+        if (com.garmin.fit.Sport.RUNNING.equals(sport)) {
+            training.setSport(Sport.RUNNING);
+        } else if (com.garmin.fit.Sport.CYCLING.equals(sport)) {
+            training.setSport(Sport.BIKING);
+        } else {
+            training.setSport(Sport.OTHER);
+        }
         training.setLapInfos(lapInfos);
         final int total = error + valid;
         final float fehlerInProzent = 100 * (error / (float) total);
