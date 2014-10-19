@@ -93,26 +93,29 @@ public class SchuhDialog extends TitleAreaDialog {
     protected Control createDialogArea(final Composite parent) {
         setTitle(title);
         setMessage(Messages.SchuhDialog_Beschreibung);
-        setTitleImage(Activator.getImageDescriptor(IImageKeys.SHOE_64).createImage());
+        setTitleImage(Activator.getImageDescriptor(IImageKeys.SHOE_WIZ).createImage());
 
-        final Composite container = new Composite(parent, SWT.NONE);
+        final Label separator = new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL);
+        GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).grab(true, false).applyTo(separator);
 
-        GridLayoutFactory.fillDefaults().numColumns(3).margins(20, 0).applyTo(container);
-        GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL).grab(true, true).applyTo(container);
+        final Composite mainComposite = new Composite(parent, SWT.NONE);
+
+        GridLayoutFactory.swtDefaults().numColumns(3).applyTo(mainComposite);
+        GridDataFactory.swtDefaults().align(SWT.FILL, SWT.FILL).grab(true, true).applyTo(mainComposite);
 
         // --- Name -------------------------------------------------------
-        final Label labelName = new Label(container, SWT.NONE);
-        GridDataFactory.fillDefaults().align(SWT.LEFT, SWT.CENTER).grab(false, true).applyTo(labelName);
+        final Label labelName = new Label(mainComposite, SWT.NONE);
+        GridDataFactory.swtDefaults().align(SWT.LEFT, SWT.CENTER).grab(false, true).applyTo(labelName);
         labelName.setText(Messages.SchuhDialog_Label_Name_Marke);
 
-        schuhName = new Text(container, SWT.BORDER);
-        GridDataFactory.fillDefaults().span(2, 1).align(SWT.FILL, SWT.CENTER).grab(true, true).applyTo(schuhName);
+        schuhName = new Text(mainComposite, SWT.BORDER);
+        GridDataFactory.swtDefaults().span(2, 1).align(SWT.FILL, SWT.CENTER).grab(true, true).applyTo(schuhName);
         // --- Datum -------------------------------------------------------
-        final Label labelDatum = new Label(container, SWT.NONE);
-        GridDataFactory.fillDefaults().align(SWT.LEFT, SWT.CENTER).grab(false, true).applyTo(labelDatum);
+        final Label labelDatum = new Label(mainComposite, SWT.NONE);
+        GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.CENTER).grab(false, true).applyTo(labelDatum);
         labelDatum.setText(Messages.SchuhDialog_KaufdatumLabel);
 
-        kaufDatum = new DateTime(container, SWT.CALENDAR | SWT.BORDER);
+        kaufDatum = new DateTime(mainComposite, SWT.CALENDAR | SWT.BORDER);
         kaufDatum.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(final SelectionEvent e) {
@@ -130,25 +133,25 @@ public class SchuhDialog extends TitleAreaDialog {
             kaufDatum.setDate(dt.getYear(), dt.getMonthOfYear(), dt.getDayOfMonth());
         }
 
-        GridDataFactory.fillDefaults().span(2, 1).align(SWT.FILL, SWT.CENTER).grab(true, true).applyTo(kaufDatum);
+        GridDataFactory.swtDefaults().span(2, 1).align(SWT.BEGINNING, SWT.CENTER).grab(true, true).applyTo(kaufDatum);
         // --- Preis -------------------------------------------------------
-        final Label labelPreis = new Label(container, SWT.NONE);
-        GridDataFactory.fillDefaults().align(SWT.LEFT, SWT.CENTER).grab(false, true).applyTo(labelPreis);
+        final Label labelPreis = new Label(mainComposite, SWT.NONE);
+        GridDataFactory.swtDefaults().align(SWT.LEFT, SWT.CENTER).grab(false, true).applyTo(labelPreis);
         labelPreis.setText(Messages.SchuhDialog_PreisLabel);
 
-        preis = new Text(container, SWT.BORDER);
-        GridDataFactory.fillDefaults().span(2, 1).align(SWT.FILL, SWT.CENTER).grab(true, true).applyTo(preis);
+        preis = new Text(mainComposite, SWT.BORDER);
+        GridDataFactory.swtDefaults().span(2, 1).align(SWT.FILL, SWT.CENTER).grab(true, true).applyTo(preis);
         // --- Image -------------------------------------------------------
-        final Label labelImage = new Label(container, SWT.NONE);
-        GridDataFactory.fillDefaults().align(SWT.LEFT, SWT.CENTER).grab(false, true).applyTo(labelImage);
+        final Label labelImage = new Label(mainComposite, SWT.NONE);
+        GridDataFactory.swtDefaults().align(SWT.LEFT, SWT.CENTER).grab(false, true).applyTo(labelImage);
         labelImage.setText(Messages.SchuhDialog_BildLabel);
 
-        bild = new Text(container, SWT.BORDER);
-        GridDataFactory.fillDefaults().span(1, 1).align(SWT.FILL, SWT.CENTER).grab(true, true).applyTo(bild);
+        bild = new Text(mainComposite, SWT.BORDER);
+        GridDataFactory.swtDefaults().span(1, 1).align(SWT.FILL, SWT.CENTER).grab(true, true).applyTo(bild);
 
-        final Button add = new Button(container, SWT.PUSH);
+        final Button add = new Button(mainComposite, SWT.PUSH);
         add.setText(Messages.SchuhDialog_add);
-        GridDataFactory.fillDefaults().span(1, 1).align(SWT.RIGHT, SWT.CENTER).grab(false, true).applyTo(add);
+        GridDataFactory.swtDefaults().span(1, 1).align(SWT.RIGHT, SWT.CENTER).grab(false, true).applyTo(add);
 
         add.addSelectionListener(new SelectionAdapter() {
             @Override
@@ -163,7 +166,7 @@ public class SchuhDialog extends TitleAreaDialog {
         ctx = new DataBindingContext();
         initDataBindings();
 
-        return container;
+        return mainComposite;
     }
 
     private void initDataBindings() {

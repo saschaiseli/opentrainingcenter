@@ -59,15 +59,18 @@ public class RouteDialog extends TitleAreaDialog {
     }
 
     @Override
-    protected Control createDialogArea(final Composite composite) {
+    protected Control createDialogArea(final Composite parent) {
         setTitle(Messages.RouteDialog_0);
         setMessage(NLS.bind(Messages.RouteDialog_1, TimeHelper.convertDateToString(training.getDatum())));
         setTitleImage(Activator.getImageDescriptor(IImageKeys.ROUTE6464).createImage());
 
-        final Composite container = new Composite(composite, SWT.NONE);
+        final Label separator = new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL);
+        GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).grab(true, false).applyTo(separator);
 
-        GridLayoutFactory.fillDefaults().numColumns(2).margins(20, 0).applyTo(container);
-        GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL).grab(true, true).applyTo(container);
+        final Composite container = new Composite(parent, SWT.NONE);
+
+        GridLayoutFactory.swtDefaults().numColumns(2).applyTo(container);
+        GridDataFactory.swtDefaults().align(SWT.FILL, SWT.FILL).grab(true, true).applyTo(container);
 
         // ---
         final Label labelName = new Label(container, SWT.NONE);

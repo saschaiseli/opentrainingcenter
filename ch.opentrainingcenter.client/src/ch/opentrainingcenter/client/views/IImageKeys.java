@@ -39,4 +39,6 @@ public final class IImageKeys {
     public static final String SHOE = "icons/32_32/shoe_32_32.png";
 
     public static final String SHOE_64 = "icons/64_64/shoe_64_64.png";
+
+    public static final String SHOE_WIZ = "icons/wizban/shoe_wiz.png";
 }

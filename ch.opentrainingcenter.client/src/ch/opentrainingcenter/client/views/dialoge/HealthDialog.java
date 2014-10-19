@@ -10,6 +10,7 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
+import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -87,12 +88,15 @@ public class HealthDialog extends TitleAreaDialog {
     }
 
     @Override
-    protected Control createDialogArea(final Composite composite) {
+    protected Control createDialogArea(final Composite parent) {
         setMessage(Messages.HealthDialog0);
         setTitle(Messages.HealthDialog1);
         setTitleImage(Activator.getImageDescriptor(IImageKeys.CARDIO3232).createImage());
 
-        final Composite c = new Composite(composite, SWT.NONE);
+        final Label separator = new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL);
+        GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).grab(true, false).applyTo(separator);
+
+        final Composite mainComposite = new Composite(parent, SWT.NONE);
 
         final GridLayout layout = new GridLayout(2, true);
         layout.marginHeight = 10;
@@ -101,15 +105,15 @@ public class HealthDialog extends TitleAreaDialog {
         layout.marginTop = 10;
         layout.horizontalSpacing = 10;
         final GridData gd = new GridData(5, 5, true, true, 1, 1);
-        c.setLayout(layout);
-        c.setLayoutData(gd);
+        mainComposite.setLayout(layout);
+        mainComposite.setLayoutData(gd);
 
-        dateTime = new DateTime(c, SWT.BORDER | SWT.CALENDAR);
+        dateTime = new DateTime(mainComposite, SWT.BORDER | SWT.CALENDAR);
         dateTime.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 1));
         final Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         dateTime.setDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
-        final Composite containerTextFields = new Composite(c, SWT.NONE);
+        final Composite containerTextFields = new Composite(mainComposite, SWT.NONE);
         final GridLayout layoutContainer = new GridLayout(2, true);
         layoutContainer.marginLeft = 10;
         layoutContainer.marginTop = 10;
@@ -151,11 +155,11 @@ public class HealthDialog extends TitleAreaDialog {
                 validate();
             }
         });
-        errorLabel = new Label(c, SWT.NONE);
+        errorLabel = new Label(mainComposite, SWT.NONE);
         errorLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
         errorLabel.setVisible(true);
-        new Label(c, SWT.NONE);
-        new Label(c, SWT.NONE);
+        new Label(mainComposite, SWT.NONE);
+        new Label(mainComposite, SWT.NONE);
 
         if (healt != null) {
             gewichtText.setText(healt.getWeight().toString());
@@ -163,7 +167,7 @@ public class HealthDialog extends TitleAreaDialog {
             cal.setTime(healt.getDateofmeasure());
             dateTime.setDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
         }
-        return c;
+        return mainComposite;
     }
 
     private void validate() {
