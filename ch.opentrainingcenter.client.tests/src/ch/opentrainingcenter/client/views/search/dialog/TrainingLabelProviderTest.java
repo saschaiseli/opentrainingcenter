@@ -25,6 +25,7 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.Test;
 
+import ch.opentrainingcenter.client.views.dialoge.TrainingLabelProvider;
 import ch.opentrainingcenter.core.helper.TimeHelper;
 import ch.opentrainingcenter.transfer.HeartRate;
 import ch.opentrainingcenter.transfer.ITraining;

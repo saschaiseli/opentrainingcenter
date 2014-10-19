@@ -25,7 +25,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.PlatformUI;
 
 import ch.opentrainingcenter.client.Activator;
-import ch.opentrainingcenter.client.views.search.dialog.SearchDialog;
+import ch.opentrainingcenter.client.views.dialoge.SearchDialog;
 
 public class SearchCommand extends OtcAbstractHandler {
 

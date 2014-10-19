@@ -878,4 +878,12 @@
             type="java.lang.Object">
       </propertyTester>
    </extension>
+   <extension
+         point="org.eclipse.ui.decorators">
+      <decorator
+            class="ch.opentrainingcenter.client.views.navigation.LabelDecorator"
+            id="ch.opentrainingcenter.client.icondecorator"
+            label="decorator">
+      </decorator>
+   </extension>
 </plugin>

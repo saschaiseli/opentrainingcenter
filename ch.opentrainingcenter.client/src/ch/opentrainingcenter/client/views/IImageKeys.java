@@ -6,17 +6,11 @@ public final class IImageKeys {
     private IImageKeys() {
     }
 
-    public static final String IMPORT_GPS_KLEIN = "icons/16_16/import_wiz.gif";
-
-    public static final String IMPORT_GPS_GROSS = "icons/64_64/import.png";
-
     public static final String CARDIO = "icons/cardiology.png";
 
     public static final String CARDIO3232 = "icons/cardiology_32_32.png";
 
     public static final String SEARCH_16 = "icons/16_16/search_16_16.png";
-
-    public static final String SEARCH_72 = "icons/64_64/search_72_72.png";
 
     public static final String RUNNING_MAN = "icons/package_games_sports_24_24.png";
 
@@ -30,7 +24,7 @@ public final class IImageKeys {
 
     public static final String ROUTE3232 = "icons/32_32/route_32_32.png";
 
-    public static final String ROUTE6464 = "icons/64_64/route_64_64.png";
+    public static final String ROUTE6464 = "icons/wizban/route_wiz.png";
 
     public static final String DATABASE = "icons/16_16/repository_rep.png";
 
@@ -40,5 +34,7 @@ public final class IImageKeys {
 
     public static final String SHOE_64 = "icons/64_64/shoe_64_64.png";
 
+    public static final String IMPORT_WIZ = "icons/wizban/import_wiz.png";
     public static final String SHOE_WIZ = "icons/wizban/shoe_wiz.png";
+    public static final String SEARCH_WIZ = "icons/wizban/search_wiz.png";
 }

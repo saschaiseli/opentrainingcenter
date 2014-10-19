@@ -17,7 +17,7 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package ch.opentrainingcenter.client.views.search.dialog;
+package ch.opentrainingcenter.client.views.dialoge;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -119,9 +119,12 @@ public class SearchDialog extends TitleAreaDialog {
         setTitle(Messages.SearchDialog_SEARCH);
 
         setMessage(Messages.SearchDialog_SEARCH_DESCRIPTION);
-        setTitleImage(Activator.getImageDescriptor(IImageKeys.SEARCH_72).createImage());
+        setTitleImage(Activator.getImageDescriptor(IImageKeys.SEARCH_WIZ).createImage());
+        final Label separator = new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL);
+        GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).grab(true, false).applyTo(separator);
 
         final Composite search = new Composite(parent, SWT.NONE);
+
         GridLayoutFactory.swtDefaults().numColumns(3).applyTo(search);
         GridDataFactory.swtDefaults().align(SWT.FILL, SWT.FILL).grab(true, false).applyTo(search);
 

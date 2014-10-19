@@ -55,7 +55,7 @@ public class SearchRecordsWithSameRoute extends OtcAbstractHandler {
 
         final IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
         final Shell shell = window.getShell();
-        final SearchRecordJob job = new SearchRecordJob("Suche", referenzTraining, all, comp);
+        final SearchRecordJob job = new SearchRecordJob("Suche gleiche Strecken", referenzTraining, all, comp);
         job.schedule();
 
         job.addJobChangeListener(new JobChangeAdapter() {

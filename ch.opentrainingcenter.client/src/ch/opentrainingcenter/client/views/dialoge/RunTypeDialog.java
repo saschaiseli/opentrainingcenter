@@ -68,7 +68,7 @@ public class RunTypeDialog extends TitleAreaDialog {
     @Override
     protected Control createDialogArea(final Composite parent) {
         setTitle(Messages.RunTypeDialog0);
-        setTitleImage(Activator.getImageDescriptor(IImageKeys.IMPORT_GPS_GROSS).createImage());
+        setTitleImage(Activator.getImageDescriptor(IImageKeys.IMPORT_WIZ).createImage());
 
         final Label separator = new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL);
         GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).grab(true, false).applyTo(separator);

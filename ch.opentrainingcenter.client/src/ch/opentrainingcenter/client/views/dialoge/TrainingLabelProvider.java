@@ -17,7 +17,7 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package ch.opentrainingcenter.client.views.search.dialog;
+package ch.opentrainingcenter.client.views.dialoge;
 
 import org.eclipse.jface.viewers.LabelProvider;
 
