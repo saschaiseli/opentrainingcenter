@@ -425,8 +425,6 @@ public final class Messages extends NLS {
     public static String RunTypeDialog_0;
     public static String RunTypeDialog_Schuhe;
     public static String RunTypeDialog0;
-    public static String RunTypeDialog1;
-    public static String RunTypeDialog2;
     public static String RunTypeDialog3;
     public static String RunTypeDialog4;
     public static String WeeklyOverview_0;

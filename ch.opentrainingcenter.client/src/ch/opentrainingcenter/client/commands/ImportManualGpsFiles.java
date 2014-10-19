@@ -85,7 +85,7 @@ public class ImportManualGpsFiles extends OtcAbstractHandler {
 
             final RunTypeDialog dialog = new RunTypeDialog(window.getShell(), fileNames, routen, schuhe);
             final int open = dialog.open();
-            if (open >= 0) {
+            if (open == 0) {
                 if (validId(athleteId)) {
                     final IFileImport fileImporter = new FileImport(cc, athlete, databaseAccess, location, ImporterFactory.createFileCopy());
                     final IGpsFileModelWrapper model = dialog.getModelWrapper();

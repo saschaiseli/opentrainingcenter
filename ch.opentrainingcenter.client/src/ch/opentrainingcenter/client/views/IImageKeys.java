@@ -8,7 +8,7 @@ public final class IImageKeys {
 
     public static final String IMPORT_GPS_KLEIN = "icons/16_16/import_wiz.gif";
 
-    public static final String IMPORT_GPS_GROSS = "icons/16_16/import_wiz.gif";
+    public static final String IMPORT_GPS_GROSS = "icons/64_64/import.png";
 
     public static final String CARDIO = "icons/cardiology.png";
 

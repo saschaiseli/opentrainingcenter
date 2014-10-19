@@ -59,6 +59,7 @@ import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.transfer.IAthlete;
+import ch.opentrainingcenter.transfer.IShoe;
 import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
 
 public class UserView extends ViewPart {
@@ -425,7 +426,9 @@ public class UserView extends ViewPart {
             private void save(final IAthlete athlete) {
                 databaseAccess.save(athlete);
                 databaseAccess.saveOrUpdate(CommonTransferFactory.createDefaultRoute(athlete));
-                databaseAccess.saveOrUpdate(CommonTransferFactory.createSchuh(athlete, Messages.UserView_Unbekannt, null, 100, new Date()));
+                final IShoe defaultShoe = CommonTransferFactory.createSchuh(athlete, Messages.UserView_Unbekannt, null, 100, new Date());
+                databaseAccess.saveOrUpdate(defaultShoe);
+                store.setValue(PreferenceConstants.DEFAULT_SCHUH_1, defaultShoe.getId());
                 if (currentAthlete == null) {
                     resetAthleteForm();
                 }

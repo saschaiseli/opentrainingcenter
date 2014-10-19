@@ -4,15 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jface.dialogs.TitleAreaDialog;
+import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
@@ -62,19 +67,22 @@ public class RunTypeDialog extends TitleAreaDialog {
     }
 
     @Override
-    protected Control createDialogArea(final Composite parent) {
+    protected Point getInitialSize() {
+        return super.getInitialSize();
+    }
 
+    @Override
+    protected Control createDialogArea(final Composite parent) {
         setTitle(Messages.RunTypeDialog0);
         setTitleImage(Activator.getImageDescriptor(IImageKeys.IMPORT_GPS_GROSS).createImage());
 
-        final GridLayout layout = new GridLayout(2, false);
-        parent.setLayout(layout);
+        final Label separator = new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL);
+        GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).grab(true, false).applyTo(separator);
 
-        final Label label = new Label(parent, SWT.NONE);
-        label.setText(Messages.RunTypeDialog1);
-        label.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
+        final Composite main = new Composite(parent, SWT.NONE);
+        GridLayoutFactory.swtDefaults().equalWidth(false).applyTo(main);
 
-        viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
+        viewer = new TableViewer(main, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
         createColumns();
 
         final Table table = viewer.getTable();
@@ -82,24 +90,50 @@ public class RunTypeDialog extends TitleAreaDialog {
         table.setLinesVisible(true);
 
         viewer.setContentProvider(new ArrayContentProvider());
-
         viewer.setInput(models);
+        viewer.addSelectionChangedListener(new ISelectionChangedListener() {
+
+            @Override
+            public void selectionChanged(final SelectionChangedEvent event) {
+                verifyModel();
+            }
+
+        });
 
         // Layout the viewer
         final GridData gridData = new GridData();
         gridData.verticalAlignment = GridData.FILL;
-        gridData.horizontalSpan = 5;
         gridData.grabExcessHorizontalSpace = true;
         gridData.grabExcessVerticalSpace = true;
+        gridData.minimumHeight = 140;
         gridData.horizontalAlignment = GridData.FILL;
         viewer.getControl().setLayoutData(gridData);
         return viewer.getControl();
     }
 
+    private void verifyModel() {
+        boolean okEnable = false;
+        for (final IGpsFileModel model : models) {
+            if (model.isImportFile()) {
+                okEnable = true;
+                break;
+            }
+        }
+        final Button button = getButton(OK);
+        if (button != null && !button.isDisposed()) {
+            button.setEnabled(okEnable);
+        }
+    }
+
+    @Override
+    protected Control createButtonBar(final Composite p) {
+        final Control c = super.createButtonBar(p);
+        return c;
+    }
+
     private void createColumns() {
-        final String[] titles = { Messages.RunTypeDialog2, Messages.RunTypeDialog3, Messages.RunTypeDialog4, Messages.RunTypeDialog_0,
-                Messages.RunTypeDialog_Schuhe };
-        final int[] bounds = { 80, 250, 250, 100, 100 };
+        final String[] titles = { "", Messages.RunTypeDialog3, Messages.RunTypeDialog4, Messages.RunTypeDialog_0, Messages.RunTypeDialog_Schuhe }; //$NON-NLS-1$
+        final int[] bounds = { 20, 200, 140, 140, 140 };
 
         // Flag
         TableViewerColumn col = createTableViewerColumn(titles[0], bounds[0]);
