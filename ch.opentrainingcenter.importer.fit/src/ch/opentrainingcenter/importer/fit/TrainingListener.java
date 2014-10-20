@@ -128,7 +128,7 @@ public class TrainingListener implements MesgListener {
         session.getTotalTrainingEffect();
         training.setLapInfos(lapInfos);
         final int total = error + valid;
-        final int fehlerInProzent = (int) (10000 * (error / (float) total));
+        final int fehlerInProzent = (int) (100 * (error / (float) total));
         training.setGeoQuality(fehlerInProzent);
         LOGGER.info(String.format("Qualität der Geodaten: '%s' [prozent] fehlerhafte Geodaten", fehlerInProzent)); //$NON-NLS-1$
         return training;

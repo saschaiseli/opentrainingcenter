@@ -45,7 +45,7 @@ public class ConvertTcxTest {
     public void testActivityFehlerhafteGeoKoordinaten() throws ConvertException, ParseException {
         final ITraining training = converter.convert(fehlerhaft);
 
-        assertEquals("Fehlerhafter Prozentwert", 17.7295913, training.getGeoQuality(), 0.00001);
+        assertEquals("Fehlerhafter Prozentwert", 17, training.getGeoQuality().intValue());
     }
 
     @Test
