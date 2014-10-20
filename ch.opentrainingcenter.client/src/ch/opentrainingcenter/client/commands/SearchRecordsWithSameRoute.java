@@ -7,7 +7,6 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -19,9 +18,11 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.action.job.SearchRecordJob;
+import ch.opentrainingcenter.client.views.dialoge.SameRouteDialog;
 import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.service.IDatabaseService;
+import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.model.navigation.ConcreteImported;
 import ch.opentrainingcenter.route.CompareRouteFactory;
 import ch.opentrainingcenter.route.ICompareRoute;
@@ -55,7 +56,7 @@ public class SearchRecordsWithSameRoute extends OtcAbstractHandler {
 
         final IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
         final Shell shell = window.getShell();
-        final SearchRecordJob job = new SearchRecordJob("Suche gleiche Strecken", referenzTraining, all, comp);
+        final SearchRecordJob job = new SearchRecordJob(Messages.SearchRecordsWithSameRoute_JobTitle, referenzTraining, all, comp);
         job.schedule();
 
         job.addJobChangeListener(new JobChangeAdapter() {
@@ -67,7 +68,9 @@ public class SearchRecordsWithSameRoute extends OtcAbstractHandler {
                     @Override
                     public void run() {
                         final List<ITraining> sameRoute = job.getSameRoute();
-                        MessageDialog.openError(shell, "title", "message: " + sameRoute.size()); //$NON-NLS-1$ //$NON-NLS-2$
+                        LOGGER.info(String.format("Anzahl gleiche Routen: ", sameRoute.size())); //$NON-NLS-1$
+                        final SameRouteDialog dialog = new SameRouteDialog(shell, referenzTraining, sameRoute);
+                        dialog.open();
                     }
                 });
             }

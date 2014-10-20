@@ -62,7 +62,7 @@ public class RouteDialog extends TitleAreaDialog {
     protected Control createDialogArea(final Composite parent) {
         setTitle(Messages.RouteDialog_0);
         setMessage(NLS.bind(Messages.RouteDialog_1, TimeHelper.convertDateToString(training.getDatum())));
-        setTitleImage(Activator.getImageDescriptor(IImageKeys.ROUTE6464).createImage());
+        setTitleImage(Activator.getImageDescriptor(IImageKeys.ROUTE_WIZ).createImage());
 
         final Label separator = new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL);
         GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).grab(true, false).applyTo(separator);

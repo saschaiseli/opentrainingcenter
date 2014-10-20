@@ -8,6 +8,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import ch.opentrainingcenter.route.kml.KmlDumper;
 import ch.opentrainingcenter.transfer.Track;
 import ch.opentrainingcenter.transfer.TrackPoint;
 
@@ -15,7 +16,8 @@ import ch.opentrainingcenter.transfer.TrackPoint;
 public class CompareRouteTest {
     private CompareRoute route;
     private Track reference;
-    private final String kmlDumpPath = null;
+    private KmlDumper kmlDumper;
+    private final String kmlDumpPath = ".";
 
     @Before
     public void setUp() {
@@ -30,6 +32,7 @@ public class CompareRouteTest {
         pointsReference.add(new TrackPoint(42.3400879, 46.94509548, 7.4297209));
         pointsReference.add(new TrackPoint(45.3550568, 46.94507109, 7.42970087));
         reference = new Track(1, pointsReference);
+        kmlDumper = new KmlDumper(kmlDumpPath);
     }
 
     @Test
@@ -93,7 +96,7 @@ public class CompareRouteTest {
         pointsOther.add(new TrackPoint(1.37483346, 46.94525943, 7.43019129));
         pointsOther.add(new TrackPoint(6.40480947, 46.94523915, 7.43013446));
 
-        final boolean result = route.compareTrackPoints(new Track(1, pointsReference), new Track(1, pointsOther));
+        final boolean result = route.compareTrackPoints(new Track(1, pointsReference), new Track(1, pointsOther), kmlDumper);
 
         assertEquals("Es sind exakt dieselben Strecken", true, result);
     }
@@ -120,7 +123,7 @@ public class CompareRouteTest {
         pointsOther.add(p1);
         pointsOther.add(p2);
 
-        final boolean result = route.compareTrackPoints(new Track(1, pointsReference), new Track(1, pointsOther));
+        final boolean result = route.compareTrackPoints(new Track(1, pointsReference), new Track(1, pointsOther), kmlDumper);
 
         assertEquals("Es sind fast dieselben Strecken", true, result);
     }
@@ -152,7 +155,7 @@ public class CompareRouteTest {
         pointsOther.add(p2);
         pointsOther.add(p3);
 
-        final boolean result = route.compareTrackPoints(new Track(1, pointsReference), new Track(1, pointsOther));
+        final boolean result = route.compareTrackPoints(new Track(1, pointsReference), new Track(1, pointsOther), kmlDumper);
 
         assertEquals("Es sind fast dieselben Strecken", true, result);
     }
@@ -179,7 +182,7 @@ public class CompareRouteTest {
         pointsOther.add(p1);
         pointsOther.add(p2);
 
-        final boolean resultA = route.compareTrackPoints(new Track(1, pointsReference), new Track(1, pointsOther));
+        final boolean resultA = route.compareTrackPoints(new Track(1, pointsReference), new Track(1, pointsOther), kmlDumper);
         // final boolean resultB = route.compareTrackPoints(new
         // Track(pointsOther), new Track(pointsReference));
 
@@ -210,7 +213,7 @@ public class CompareRouteTest {
         // points.add(p3);
         points.add(p4);
 
-        final boolean result = route.compareTrackPoints(new Track(1, referencePoints), new Track(1, points));
+        final boolean result = route.compareTrackPoints(new Track(1, referencePoints), new Track(1, points), kmlDumper);
 
         assertEquals("Diesen Weg passt die Strecke", true, result);
     }

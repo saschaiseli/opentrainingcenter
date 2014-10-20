@@ -27,11 +27,11 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.ViewPart;
 
 import ch.opentrainingcenter.client.ui.FormToolkitSupport;
+import ch.opentrainingcenter.client.ui.open.OpenTrainingRunnable;
 import ch.opentrainingcenter.client.ui.tableviewer.RoutenTableModel;
 import ch.opentrainingcenter.client.ui.tableviewer.RoutenTableViewer;
 import ch.opentrainingcenter.client.ui.tableviewer.TrackTableViewer;
 import ch.opentrainingcenter.client.views.ApplicationContext;
-import ch.opentrainingcenter.client.views.OpenTrainingRunnable;
 import ch.opentrainingcenter.core.cache.IRecordListener;
 import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;

@@ -2,6 +2,7 @@ package ch.opentrainingcenter.route.kml;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class KmlFile {
 
@@ -10,21 +11,26 @@ public class KmlFile {
     private static final String END = "</Folder></Document></kml>"; //$NON-NLS-1$
 
     private final StringBuilder content = new StringBuilder(HEAD);
-    private final List<KmlLine> lines = new ArrayList<KmlLine>();
+    private final List<KmlItem> items = new ArrayList<>();
 
     public KmlFile(final String name) {
         content.append(name).append(SCHEMA);
     }
 
     public void addKmlLine(final String lineName, final String color, final String coordinates) {
-        lines.add(new KmlLine(lineName, color, coordinates));
+        items.add(new KmlLine(lineName, color, coordinates));
+    }
+
+    public void addPlacemark(final String name, final Map<String, String> extendedData, final String coordinates) {
+        items.add(new KmlPlacemark(name, extendedData, coordinates));
     }
 
     public String getFile() {
-        for (final KmlLine line : lines) {
+        for (final KmlItem line : items) {
             content.append(line.getKmlLine());
         }
         content.append(END);
         return content.toString();
     }
+
 }

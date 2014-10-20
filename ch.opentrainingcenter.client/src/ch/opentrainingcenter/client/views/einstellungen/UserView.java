@@ -428,6 +428,7 @@ public class UserView extends ViewPart {
                 databaseAccess.saveOrUpdate(CommonTransferFactory.createDefaultRoute(athlete));
                 final IShoe defaultShoe = CommonTransferFactory.createSchuh(athlete, Messages.UserView_Unbekannt, null, 100, new Date());
                 databaseAccess.saveOrUpdate(defaultShoe);
+                store.setValue(PreferenceConstants.ATHLETE_ID, athlete.getId());
                 store.setValue(PreferenceConstants.DEFAULT_SCHUH_1, defaultShoe.getId());
                 if (currentAthlete == null) {
                     resetAthleteForm();

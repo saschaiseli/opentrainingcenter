@@ -1,13 +1,18 @@
-package ch.opentrainingcenter.client.views;
+package ch.opentrainingcenter.client.ui.open;
 
 import org.apache.log4j.Logger;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
+import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.client.views.overview.SingleActivityViewPart;
 import ch.opentrainingcenter.core.assertions.Assertions;
 import ch.opentrainingcenter.transfer.ITraining;
 
+/**
+ * Runnable um ein {@link ITraining} zu öffnen. Kann auch zusammen mit
+ * {@link OpenTrainingAction} verwendet werden.
+ */
 public class OpenTrainingRunnable implements Runnable {
 
     private static final Logger LOGGER = Logger.getLogger(OpenTrainingRunnable.class);

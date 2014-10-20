@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
@@ -50,7 +51,10 @@ public class KmlDumper {
      */
     public void addLine(final String lineName, final String color, final String coordinates) {
         kmlFile.addKmlLine(lineName, color, coordinates);
+    }
 
+    public void addPlacemark(final String name, final Map<String, String> extendedData, final String coordinates) {
+        kmlFile.addPlacemark(name, extendedData, coordinates);
     }
 
     /**

@@ -24,8 +24,6 @@ public final class IImageKeys {
 
     public static final String ROUTE3232 = "icons/32_32/route_32_32.png";
 
-    public static final String ROUTE6464 = "icons/wizban/route_wiz.png";
-
     public static final String DATABASE = "icons/16_16/repository_rep.png";
 
     public static final String VERSION = "icons/16_16/flash-icon_16_16.png";
@@ -33,7 +31,8 @@ public final class IImageKeys {
     public static final String SHOE = "icons/32_32/shoe_32_32.png";
 
     public static final String SHOE_64 = "icons/64_64/shoe_64_64.png";
-
+    // --------------- Wizard Dialog Images
+    public static final String ROUTE_WIZ = "icons/wizban/route_wiz.png";
     public static final String IMPORT_WIZ = "icons/wizban/import_wiz.png";
     public static final String SHOE_WIZ = "icons/wizban/shoe_wiz.png";
     public static final String SEARCH_WIZ = "icons/wizban/search_wiz.png";

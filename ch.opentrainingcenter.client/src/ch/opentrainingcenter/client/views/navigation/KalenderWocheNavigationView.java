@@ -31,8 +31,8 @@ import org.eclipse.ui.part.ViewPart;
 
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.action.job.LoadJahresplanung;
+import ch.opentrainingcenter.client.ui.open.OpenTrainingRunnable;
 import ch.opentrainingcenter.client.views.ApplicationContext;
-import ch.opentrainingcenter.client.views.OpenTrainingRunnable;
 import ch.opentrainingcenter.client.views.dialoge.HealthDialog;
 import ch.opentrainingcenter.client.views.navigation.tree.KalenderWocheTreeContentProvider;
 import ch.opentrainingcenter.client.views.navigation.tree.KalenderWocheTreeLabelProvider;

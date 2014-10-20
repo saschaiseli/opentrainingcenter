@@ -20,7 +20,6 @@
 package ch.opentrainingcenter.client.views.dialoge;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -54,15 +53,13 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.joda.time.DateTime;
 
 import ch.opentrainingcenter.client.Activator;
+import ch.opentrainingcenter.client.ui.open.OpenTrainingAction;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.client.views.IImageKeys;
-import ch.opentrainingcenter.client.views.overview.SingleActivityViewPart;
 import ch.opentrainingcenter.core.cache.RouteCache;
 import ch.opentrainingcenter.core.db.CriteriaContainer;
 import ch.opentrainingcenter.core.db.CriteriaFactory;
@@ -103,6 +100,7 @@ public class SearchDialog extends TitleAreaDialog {
     private ComboViewer comboStrecke;
 
     private int referenzTrainingId;
+    private final OpenTrainingAction action;
 
     public SearchDialog(final Shell parentShell) {
         super(parentShell);
@@ -112,6 +110,7 @@ public class SearchDialog extends TitleAreaDialog {
         running = store.getBoolean(Sport.RUNNING.getMessage());
         biking = store.getBoolean(Sport.BIKING.getMessage());
         other = store.getBoolean(Sport.OTHER.getMessage());
+        action = new OpenTrainingAction();
     }
 
     @Override
@@ -252,12 +251,15 @@ public class SearchDialog extends TitleAreaDialog {
         viewer = new TableViewer(result);
         viewer.setContentProvider(new ArrayContentProvider());
         viewer.setLabelProvider(new TrainingLabelProvider());
+        getButton(Dialog.OK).setEnabled(!viewer.getSelection().isEmpty());
+        updateButton();
         viewer.addSelectionChangedListener(new ISelectionChangedListener() {
 
             @Override
             public void selectionChanged(final SelectionChangedEvent selection) {
-                getButton(Dialog.OK).setEnabled(!selection.getSelection().isEmpty());
+                updateButton();
             }
+
         });
         GridDataFactory.swtDefaults().align(SWT.FILL, SWT.FILL).grab(true, true).applyTo(viewer.getControl());
 
@@ -318,34 +320,14 @@ public class SearchDialog extends TitleAreaDialog {
         scaleLabel.setText(String.format("%s %s", scale.getSelection(), Messages.SearchDialog_COMMON_KM)); //$NON-NLS-1$
     }
 
+    private void updateButton() {
+        final StructuredSelection selection = (StructuredSelection) viewer.getSelection();
+        getButton(Dialog.OK).setEnabled(!selection.isEmpty());
+    }
+
     @Override
     protected void okPressed() {
-        final StructuredSelection selection = (StructuredSelection) viewer.getSelection();
-        final Object[] array = selection.toArray();
-        final List<Object> records = Arrays.asList(array);
-        Display.getDefault().asyncExec(new Runnable() {
-
-            @Override
-            public void run() {
-                Display.getDefault().asyncExec(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        for (final Object record : records) {
-                            final ITraining training = (ITraining) record;
-                            final String hash = String.valueOf(training.getDatum());
-                            try {
-                                final IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-                                ApplicationContext.getApplicationContext().setSelectedId(training.getDatum());
-                                activePage.showView(SingleActivityViewPart.ID, hash, IWorkbenchPage.VIEW_ACTIVATE);
-                            } catch (final PartInitException e) {
-                                LOGGER.error(e);
-                            }
-                        }
-                    }
-                });
-            }
-        });
+        action.open(viewer);
         super.okPressed();
     }
 }

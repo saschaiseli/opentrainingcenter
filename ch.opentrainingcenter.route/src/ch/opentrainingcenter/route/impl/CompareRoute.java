@@ -1,10 +1,11 @@
 package ch.opentrainingcenter.route.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import ch.opentrainingcenter.core.assertions.Assertions;
 import ch.opentrainingcenter.route.ICompareRoute;
 import ch.opentrainingcenter.route.kml.KmlDumper;
 import ch.opentrainingcenter.transfer.Track;
@@ -33,9 +34,8 @@ import com.grum.geocalc.Point;
  * @author sascha
  * 
  */
+@SuppressWarnings("nls")
 public class CompareRoute implements ICompareRoute {
-
-    private static final String TRACK_MIN_EIN_PUNKT = "Jeder Track muss mindestens ein Punkt haben"; //$NON-NLS-1$
 
     private static final String LINE = "------------------------------"; //$NON-NLS-1$
 
@@ -58,12 +58,9 @@ public class CompareRoute implements ICompareRoute {
     @Override
     public boolean compareRoute(final Track reference, final Track track) {
         final KmlDumper kmlDumper = new KmlDumper(kmlDumpPath);
-        if (debug) {
-            //            dump(reference, "Referenz", "ff0000ff", kmlDumper); //$NON-NLS-1$ //$NON-NLS-2$
-            //            dump(track, "Other", "ff0cc0ff", kmlDumper); //$NON-NLS-1$ //$NON-NLS-2$
-            // kmlDumper.dump();
-        }
-        // checkParameters(reference, track);
+        dump(reference, "Referenz", "ff0000ff", kmlDumper);
+        dump(track, "Other", "ff0cc0ff", kmlDumper);
+
         if (reference == null || reference.getPoints().isEmpty()) {
             return false;
         }
@@ -73,32 +70,25 @@ public class CompareRoute implements ICompareRoute {
         if (isDistanceDifferenceTooBig(reference, track)) {
             return false;
         }
-        final boolean resultA = compareTrackPoints(reference, track);
-        final boolean resultB = compareTrackPoints(track, reference);
+        final boolean resultA = compareTrackPoints(reference, track, kmlDumper);
+        final boolean resultB = compareTrackPoints(track, reference, kmlDumper);
         LOGGER.info("Erster Vergleich: " + resultA); //$NON-NLS-1$
         LOGGER.info("Umgekehrter Vergleich: " + resultB); //$NON-NLS-1$
         final boolean result = resultA && resultB;
-        if (result) {
-            //            dump(track, "Other", "ff0000ff", kmlDumper); //$NON-NLS-1$ //$NON-NLS-2$
-            // kmlDumper.dump();
-        } else {
-            //            dump(track, "Other", "ff0cc0ff", kmlDumper); //$NON-NLS-1$ //$NON-NLS-2$
-            // kmlDumper.dump();
+        if (debug && result) {
+            kmlDumper.dump();
         }
         return result;
     }
 
-    private void dump(final Track track, final String title, final String lineColor, final KmlDumper kmlDumper) {
-        LOGGER.info("-----------------GPS DATEN " + title + "-------------------------"); //$NON-NLS-1$ //$NON-NLS-2$
-        LOGGER.info(track.toKml());
-        LOGGER.info("##################################################################"); //$NON-NLS-1$
-        kmlDumper.addLine(title, lineColor, track.toKml());
-    }
-
-    protected boolean compareTrackPoints(final Track reference, final Track track) {
+    /**
+     * visible wegen Tests
+     */
+    boolean compareTrackPoints(final Track reference, final Track track, final KmlDumper kmlDumper) {
         final List<TrackPoint> points = reference.getPoints();
         final List<TrackPoint> trackPoints = track.getPoints();
         TrackPoint previousReference = null;
+        int i = 0;
         for (final TrackPoint referencePoint : points) {
             final TrackPoint firstPoint = TrackPointSupport.getFirstPoint(referencePoint, trackPoints);
             final TrackPoint lastPoint = TrackPointSupport.getLastPoint(referencePoint, trackPoints);
@@ -115,10 +105,35 @@ public class CompareRoute implements ICompareRoute {
             final double delta = EarthCalc.getDistance(TrackPointSupport.createPoint(referencePoint), pointOnLine);
             if (delta > DISTANZ_DELTA_BEI_GLEICHER_DISTANZ) {
                 logReason(referencePoint, firstPoint, lastPoint, pointOnLine, delta);
-                return false;
+                kmlDumper.addPlacemark("Referenzpunkt_" + i, createExtendedData(referencePoint), referencePoint.toKml()); //$NON-NLS-1$
+                kmlDumper.addPlacemark("firstPoint_" + i, createExtendedData(firstPoint), firstPoint.toKml()); //$NON-NLS-1$
+                kmlDumper.addPlacemark("lastPoint_" + i, createExtendedData(lastPoint), lastPoint.toKml()); //$NON-NLS-1$
+                kmlDumper.addPlacemark("pointOnLine_" + i, createExtendedData(distance), pointOnLine.getLongitude() + "," + pointOnLine.getLatitude()); //$NON-NLS-1$ //$NON-NLS-2$
+                i++;
             }
         }
+        if (i > 3) {
+            LOGGER.info("Die Routen sind nicht gleich"); //$NON-NLS-1$
+            return false;
+        }
         return true;
+    }
+
+    private Map<String, String> createExtendedData(final TrackPoint point) {
+        return createExtendedData(point.getDistance());
+    }
+
+    private Map<String, String> createExtendedData(final double distanz) {
+        final Map<String, String> result = new HashMap<>();
+        result.put("Distanz", String.valueOf(distanz)); //$NON-NLS-1$
+        return result;
+    }
+
+    private void dump(final Track track, final String title, final String lineColor, final KmlDumper kmlDumper) {
+        LOGGER.info("-----------------GPS DATEN " + title + "-------------------------"); //$NON-NLS-1$ //$NON-NLS-2$
+        LOGGER.info(track.toKml());
+        LOGGER.info("##################################################################"); //$NON-NLS-1$
+        kmlDumper.addLine(title, lineColor, track.toKml());
     }
 
     private void logReason(final TrackPoint referencePoint, final TrackPoint firstPoint, final TrackPoint lastPoint, final Point pointOnLine, final double delta) {
@@ -137,13 +152,6 @@ public class CompareRoute implements ICompareRoute {
         final double otherDistance = calculateDistanz(track);
         LOGGER.info(String.format("Vergleich distanz: ", otherDistance)); //$NON-NLS-1$
         return Math.abs(referenceDistance - otherDistance) > referenceDistance * ((DISTANZ_TOLERANZ_PROZENT) / 100.0);
-    }
-
-    private void checkParameters(final Track reference, final Track track) {
-        Assertions.notNull(reference, "Referenz Track darf nicht null sein!"); //$NON-NLS-1$
-        Assertions.isValid(reference.getPoints().isEmpty(), TRACK_MIN_EIN_PUNKT);
-        Assertions.notNull(track, "Track zum Vergleichen darf nicht null sein!"); //$NON-NLS-1$
-        Assertions.isValid(track.getPoints().isEmpty(), TRACK_MIN_EIN_PUNKT);
     }
 
     private double calculateDistanz(final Track track) {

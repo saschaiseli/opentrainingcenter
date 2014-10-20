@@ -9,6 +9,10 @@ public final class Messages extends NLS {
     public static String Common_NO;
     public static String Common_Open;
     public static String Common_YES;
+    public static String Common_DATUM;
+    public static String Common_DISTANZ;
+    public static String Common_ZEIT;
+    public static String Common_BESCHREIBUNG;
 
     public static String AddEditHandler_0;
     public static String AddEditHandler_1;
@@ -329,6 +333,10 @@ public final class Messages extends NLS {
     public static String SearchDialog_SEARCH_DESC_LABEL;
     public static String SearchDialog_SEARCH_DESCRIPTION;
     public static String SearchDialog_SEARCH_DIST_LABEL;
+
+    public static String SearchRecordJob_SubTaskName;
+
+    public static String SearchRecordsWithSameRoute_JobTitle;
     public static String ShowJahresplanungViewPart_0;
     public static String ShowJahresplanungViewPart_1;
     public static String ShowTrainingPlan_0;
@@ -568,6 +576,9 @@ public final class Messages extends NLS {
     public static String DeleteImportedRecord_Error_Message;
     public static String DeleteImportedRecord_Error_Title;
     public static String DeleteImportedRecord_prefix;
+
+    public static String SameRouteDialog_Message;
+    public static String SameRouteDialog_Title;
 
     static {
         // initialize resource bundle

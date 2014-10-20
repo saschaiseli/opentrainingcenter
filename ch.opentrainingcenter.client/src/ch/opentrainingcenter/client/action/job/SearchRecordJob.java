@@ -1,6 +1,7 @@
 package ch.opentrainingcenter.client.action.job;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -14,10 +15,12 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
+import org.eclipse.osgi.util.NLS;
 import org.joda.time.DateTime;
 
 import ch.opentrainingcenter.core.geo.MapConverter;
 import ch.opentrainingcenter.core.helper.TimeHelper;
+import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.route.ICompareRoute;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.Track;
@@ -73,9 +76,6 @@ public class SearchRecordJob extends Job {
         this.addJobChangeListener(new JobChangeAdapter() {
 
         });
-        while (!service.isTerminated()) {
-            LOGGER.info("not terminated"); //$NON-NLS-1$
-        }
         service.shutdown();
         final long end = DateTime.now().getMillis();
 
@@ -83,7 +83,7 @@ public class SearchRecordJob extends Job {
         LOGGER.info(String.format("Die Suche bei %s Trainings dauerte %s ms", all.size(), (end - start))); //$NON-NLS-1$
         LOGGER.info(String.format("Anzahl gleiche Routen: %s", selbeRoute.size())); //$NON-NLS-1$
         LOGGER.info("########################################################################################"); //$NON-NLS-1$
-
+        monitor.done();
         return Status.OK_STATUS;
     }
 
@@ -98,7 +98,7 @@ public class SearchRecordJob extends Job {
             public ITraining call() throws Exception {
                 final String date = TimeHelper.convertDateToString(item.getDatum());
                 LOGGER.info("Start " + date); //$NON-NLS-1$
-                monitor.subTask("Training vom " + date);
+                monitor.subTask(NLS.bind(Messages.SearchRecordJob_SubTaskName, date));
                 final boolean same = comp.compareRoute(referenzTrack, MapConverter.convert(item));
                 LOGGER.info("End " + date + " Training is same? " + same); //$NON-NLS-1$ //$NON-NLS-2$
                 monitor.worked(1);
@@ -113,6 +113,6 @@ public class SearchRecordJob extends Job {
     }
 
     public List<ITraining> getSameRoute() {
-        return selbeRoute;
+        return Collections.unmodifiableList(selbeRoute);
     }
 }

@@ -24,7 +24,7 @@ package ch.opentrainingcenter.route.kml;
  * @author sascha
  * 
  */
-public class KmlLine {
+public class KmlLine implements KmlItem {
     private static final String HEAD = "<Placemark><name>"; //$NON-NLS-1$
     private static final String HEAD_END = "</name><description>nix</description><Style><LineStyle><color>"; //$NON-NLS-1$
     private static final String EXTENDED_DATA = "</color></LineStyle><PolyStyle><fill>0</fill></PolyStyle></Style><ExtendedData><SchemaData schemaUrl=\"#Test\"><SimpleData name=\"Name\">TestRoute</SimpleData><SimpleData name=\"Description\">nix</SimpleData><SimpleData name=\"comment\">nix</SimpleData><SimpleData name=\"source\">Digitized in QGIS</SimpleData><SimpleData name=\"url\">nix</SimpleData><SimpleData name=\"url name\">nix</SimpleData></SchemaData></ExtendedData><LineString><coordinates>"; //$NON-NLS-1$
@@ -48,7 +48,8 @@ public class KmlLine {
     /**
      * @return die line.
      */
-    protected String getKmlLine() {
+    @Override
+    public String getKmlLine() {
         return content.toString();
     }
 }
