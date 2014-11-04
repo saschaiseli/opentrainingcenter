@@ -21,7 +21,15 @@ public interface IRoute {
 
     IAthlete getAthlete();
 
+    /**
+     * Nur die initiale Route hat kein Referenztrack. Alle anderen haben IMMER
+     * eine Referenz.
+     */
     ITraining getReferenzTrack();
 
+    /**
+     * Nur die initiale Route hat kein Referenztrack. Alle anderen haben IMMER
+     * eine Referenz.
+     */
     void setReferenzTrack(final ITraining referenzTrack);
 }

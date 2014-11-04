@@ -1,6 +1,6 @@
 package ch.opentrainingcenter.client.commands;
 
-import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -85,7 +85,7 @@ public class DeleteImportedRecordTest {
         handler.removeRecords(list, databaseAccess);
 
         // then
-        verify(databaseAccess, never()).deleteRoute(anyInt());
+        verify(databaseAccess, never()).deleteRoute((IRoute) any());
         verify(databaseAccess, never()).removeTrainingByDate(anyLong());
     }
 
@@ -149,6 +149,6 @@ public class DeleteImportedRecordTest {
         // then
         verify(databaseAccess).removeTrainingByDate(1142L);
         verify(databaseAccess, times(1)).removeTrainingByDate(anyLong());
-        verify(databaseAccess, never()).deleteRoute(anyInt());
+        verify(databaseAccess, never()).deleteRoute((IRoute) any());
     }
 }

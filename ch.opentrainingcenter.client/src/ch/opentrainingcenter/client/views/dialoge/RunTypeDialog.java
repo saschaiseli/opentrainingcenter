@@ -177,7 +177,7 @@ public class RunTypeDialog extends TitleAreaDialog {
                 return routen.get(0).getName();
             }
         });
-        col.setEditingSupport(new StreckeEditingSupport(viewer, routen));
+        // col.setEditingSupport(new StreckeEditingSupport(viewer, routen));
 
         // Schuh
 

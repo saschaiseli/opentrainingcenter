@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.runtime.jobs.IJobChangeEvent;
+import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -45,6 +47,7 @@ import org.joda.time.DateTime;
 import ch.opentrainingcenter.charts.single.ChartFactory;
 import ch.opentrainingcenter.charts.single.ChartType;
 import ch.opentrainingcenter.client.Activator;
+import ch.opentrainingcenter.client.action.job.SearchRecordJob;
 import ch.opentrainingcenter.client.model.Units;
 import ch.opentrainingcenter.client.ui.FormToolkitSupport;
 import ch.opentrainingcenter.client.ui.tableviewer.LapInfoTableViewer;
@@ -65,6 +68,8 @@ import ch.opentrainingcenter.core.lapinfo.LapInfoCreator;
 import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.model.training.Wetter;
+import ch.opentrainingcenter.route.CompareRouteFactory;
+import ch.opentrainingcenter.route.ICompareRoute;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.ILapInfo;
 import ch.opentrainingcenter.transfer.IRoute;
@@ -95,6 +100,8 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
     private final List<ISelectionListener> listeners = new ArrayList<>();
     private final SelectionProviderIntermediate providerSynth, providerLap;
     private final Sport sport;
+    private final IAthlete athlete;
+    private final ICompareRoute comp;
 
     public SingleActivityViewPart() {
         final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
@@ -103,12 +110,14 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         final Long selectedId = context.getSelectedId();
         training = databaseAccess.getTrainingById(selectedId);
         lapInfos = training.getLapInfos();
-        final IAthlete athlete = context.getAthlete();
+        athlete = context.getAthlete();
 
         LOGGER.info(String.format("Training mit %s Trackpoints geladen", training.getTrackPoints().size())); //$NON-NLS-1$
 
         store = Activator.getDefault().getPreferenceStore();
         factory = new ChartFactory(store, training, athlete);
+        comp = CompareRouteFactory.getRouteComparator(true, store.getString(PreferenceConstants.KML_DEBUG_PATH));
+
         sport = training.getSport();
         setTitleImage(Activator.getImageDescriptor(sport.getImageIcon()).createImage());
         setPartName(null);
@@ -145,6 +154,7 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         LOGGER.debug(String.format("Zeit zum Laden von Overview: %s [ms]", time2 - time1)); //$NON-NLS-1$
 
         addNoteSection(body);
+        searchForReferenzRoute();
         time1 = DateTime.now().getMillis();
         LOGGER.debug(String.format("Zeit zum Laden von addNoteSection: %s [ms]", time1 - time2)); //$NON-NLS-1$
 
@@ -182,6 +192,39 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         logDebug(String.format("Zeit zum Laden von addAltitudeSection: %s [ms]", time1 - time2)); //$NON-NLS-1$
 
         getSite().setSelectionProvider(this);
+    }
+
+    private void searchForReferenzRoute() {
+        Display.getDefault().asyncExec(new Runnable() {
+
+            @Override
+            public void run() {
+                final List<IRoute> routen = databaseAccess.getRoute(athlete);
+                final List<ITraining> all = new ArrayList<ITraining>();
+                for (final IRoute route : routen) {
+                    if (route.getReferenzTrack() != null) {
+                        all.add(route.getReferenzTrack());
+                    }
+                }
+                final SearchRecordJob job = new SearchRecordJob(Messages.SingleActivityViewPart_SucheReferenzRoute, training, all, comp);
+                job.schedule();
+
+                job.addJobChangeListener(new JobChangeAdapter() {
+                    @Override
+                    public void done(final IJobChangeEvent event) {
+                        super.done(event);
+                        Display.getDefault().asyncExec(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                final List<ITraining> sameRoute = job.getSameRoute();
+                                LOGGER.info(String.format("Anzahl gleiche Routen: %s", sameRoute.size())); //$NON-NLS-1$
+                            }
+                        });
+                    }
+                });
+            }
+        });
     }
 
     private void logDebug(final String message, final Object... args) {
@@ -365,8 +408,7 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         });
         GridDataFactory.fillDefaults().grab(true, true).align(SWT.FILL, SWT.FILL).applyTo(comboWetter);
 
-        final Label labelStrecke = toolkit.createLabel(container, ""); //$NON-NLS-1$
-        labelStrecke.setText(Messages.STRECKE);
+        toolkit.createLabel(container, Messages.STRECKE);
 
         final ComboViewer comboStrecke = new ComboViewer(container);
         comboStrecke.setContentProvider(ArrayContentProvider.getInstance());
@@ -385,6 +427,12 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
 
         final List<IRoute> all = routeCache.getAll();
         comboStrecke.setInput(all);
+
+        if (training.getRoute() != null) {
+            final StructuredSelection selection = new StructuredSelection(routeCache.getAll().get(0));
+            comboStrecke.setSelection(selection);
+        }
+
         comboStrecke.addSelectionChangedListener(new ISelectionChangedListener() {
 
             @Override
@@ -401,15 +449,6 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
 
             @Override
             public void recordChanged(final Collection<IRoute> entry) {
-                updateCombo(entry);
-            }
-
-            @Override
-            public void deleteRecord(final Collection<IRoute> entry) {
-                updateCombo(entry);
-            }
-
-            private void updateCombo(final Collection<IRoute> entry) {
                 final ISelection sel = comboStrecke.getSelection();
                 if (sel.isEmpty()) {
                     return;
@@ -435,6 +474,25 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
                     // select old selection
                     comboStrecke.setSelection(sel);
                 }
+            }
+
+            @Override
+            public void deleteRecord(final Collection<IRoute> entry) {
+                // updateCombo(entry);
+                final StructuredSelection sel = (StructuredSelection) comboStrecke.getSelection();
+                if (sel.isEmpty()) {
+                    return;
+                }
+                final IRoute selectedRoute = (IRoute) sel.getFirstElement();
+                if (entry.size() == 1 && entry.iterator().next().equals(selectedRoute)) {
+                    // der eigene record wurde gelöscht
+                    comboStrecke.setSelection(new StructuredSelection(training.getRoute()));
+                    comboStrecke.getCombo().setEnabled(true);
+                } else {
+                    comboStrecke.setInput(RouteCache.getInstance().getAll());
+                    comboStrecke.setSelection(sel);
+                }
+                comboStrecke.refresh();
             }
         };
         // ------------------------------- Schuhe
@@ -485,7 +543,7 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
                             final ITraining act = entry.iterator().next();
                             if (act.getDatum() == training.getDatum()) {
                                 // nur wenn es dieser record ist!
-                                if (training.getNote() != null) {
+                                if (training.getNote() != null && !note.isDisposed()) {
                                     note.setText(training.getNote());
                                 }
                             }
@@ -505,15 +563,13 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         } else {
             comboStrecke.setSelection(new StructuredSelection(all.get(0)));
         }
-        comboStrecke.refresh();
         handleStreckenCombo(training.getRoute(), comboStrecke);
+        comboStrecke.refresh();
         section.setClient(container);
     }
 
     private void handleStreckenCombo(final IRoute route, final ComboViewer comboStrecke) {
-        if (isReferenzTrack(training, route)) {
-            comboStrecke.getCombo().setEnabled(false);
-        }
+        comboStrecke.getCombo().setEnabled(!isReferenzTrack(training, route));
     }
 
     private boolean isReferenzTrack(final ITraining training, final IRoute route) {

@@ -8,7 +8,7 @@ public final class CompareRouteFactory {
 
     }
 
-    public static CompareRoute getRouteComparator(final boolean debug, final String kmlDumpPath) {
+    public static ICompareRoute getRouteComparator(final boolean debug, final String kmlDumpPath) {
         return new CompareRoute(debug, kmlDumpPath);
 
     }

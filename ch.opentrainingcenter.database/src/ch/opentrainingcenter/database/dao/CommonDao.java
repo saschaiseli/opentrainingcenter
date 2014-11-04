@@ -1,6 +1,7 @@
 package ch.opentrainingcenter.database.dao;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -8,6 +9,10 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 
+import ch.opentrainingcenter.core.cache.AthleteCache;
+import ch.opentrainingcenter.core.cache.HealthCache;
+import ch.opentrainingcenter.core.cache.RouteCache;
+import ch.opentrainingcenter.core.cache.SchuhCache;
 import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.transfer.IAthlete;
@@ -33,7 +38,6 @@ public class CommonDao implements IDatabaseAccess {
     private final WeatherDao wetterDao;
     private final TrainingDao trainingDao;
     private final TrainingCache cache;
-    private final boolean useCache = true;
 
     /**
      * @param dao
@@ -83,15 +87,11 @@ public class CommonDao implements IDatabaseAccess {
     // -------------------------------TRAINING--------------------------------------------------
     @Override
     public final List<ITraining> getAllTrainings(final IAthlete athlete) {
-        if (useCache) {
-            if (cache.isEmpty()) {
-                cache.addAll(trainingDao.getAllTrainings(athlete));
-                LOGGER.info(String.format("load %s records from database", cache.size())); //$NON-NLS-1$
-            }
-            return cache.getAll(athlete);
-        } else {
-            return trainingDao.getAllTrainings(athlete);
+        if (cache.isEmpty()) {
+            cache.addAll(trainingDao.getAllTrainings(athlete));
+            LOGGER.info(String.format("load %s records from database", cache.size())); //$NON-NLS-1$
         }
+        return cache.getAll(athlete);
     }
 
     @Override
@@ -109,11 +109,7 @@ public class CommonDao implements IDatabaseAccess {
     @Override
     public final int saveOrUpdate(final ITraining training) {
         final int id = trainingDao.saveOrUpdate(training);
-        if (useCache) {
-            final List<ITraining> models = new ArrayList<>();
-            models.add(training);
-            cache.addAll(models);
-        }
+        cache.addAll(Arrays.asList(training));
         return id;
     }
 
@@ -122,9 +118,7 @@ public class CommonDao implements IDatabaseAccess {
         final List<ITraining> cachedTrainings = new ArrayList<>();
         for (final ITraining training : trainings) {
             trainingDao.saveOrUpdate(training);
-            if (useCache) {
-                cachedTrainings.add(training);
-            }
+            cachedTrainings.add(training);
         }
         if (!cachedTrainings.isEmpty()) {
             cache.addAll(cachedTrainings);
@@ -134,29 +128,23 @@ public class CommonDao implements IDatabaseAccess {
     @Override
     public final void updateTrainingType(final ITraining training, final int typeIndex) {
         trainingDao.updateTrainingType(training, typeIndex);
-        if (useCache) {
-            final List<ITraining> models = new ArrayList<>();
-            models.add(trainingDao.getTrainingByDate(training.getDatum()));
-            cache.addAll(models);
-        }
+        final List<ITraining> models = new ArrayList<>();
+        models.add(trainingDao.getTrainingByDate(training.getDatum()));
+        cache.addAll(models);
     }
 
     @Override
     public final ITraining getTrainingById(final long datum) {
-        if (useCache) {
-            ITraining training = cache.get(datum);
-            if (training == null) {
-                training = trainingDao.getTrainingByDate(datum);
-                if (training != null) {
-                    final List<ITraining> models = new ArrayList<>();
-                    models.add(training);
-                    cache.addAll(models);
-                }
+        ITraining training = cache.get(datum);
+        if (training == null) {
+            training = trainingDao.getTrainingByDate(datum);
+            if (training != null) {
+                final List<ITraining> models = new ArrayList<>();
+                models.add(training);
+                cache.addAll(models);
             }
-            return training;
-        } else {
-            return trainingDao.getTrainingByDate(datum);
         }
+        return training;
 
     }
 
@@ -180,9 +168,7 @@ public class CommonDao implements IDatabaseAccess {
     @Override
     public final void removeTrainingByDate(final long datum) {
         trainingDao.removeTrainingByDate(datum);
-        if (useCache) {
-            cache.remove(datum);
-        }
+        cache.remove(datum);
     }
 
     // -------------------------------ATHLETE--------------------------------------------------
@@ -198,7 +184,9 @@ public class CommonDao implements IDatabaseAccess {
 
     @Override
     public final int save(final IAthlete athlete) {
-        return athleteDao.save(athlete);
+        final int id = athleteDao.save(athlete);
+        AthleteCache.getInstance().addAll(Arrays.asList(athlete));
+        return id;
     }
 
     @Override
@@ -220,14 +208,17 @@ public class CommonDao implements IDatabaseAccess {
     @Override
     public final void removeHealth(final int id) {
         healthDao.remove(id);
+        HealthCache.getInstance().remove(id);
     }
 
     @Override
     public final int saveOrUpdate(final IHealth health) {
-        return healthDao.saveOrUpdate(health);
+        final int id = healthDao.saveOrUpdate(health);
+        HealthCache.getInstance().addAll(Arrays.asList(health));
+        return id;
     }
 
-    // -------------------------------healthDao--------------------------------------------------
+    // -------------------------------planungsDao--------------------------------------------------
     @Override
     public final List<IPlanungWoche> getPlanungsWoche(final IAthlete athlete) {
         return planungsDao.getPlanungsWoche(athlete);
@@ -267,11 +258,13 @@ public class CommonDao implements IDatabaseAccess {
     @Override
     public final void saveOrUpdate(final IRoute route) {
         routeDao.saveOrUpdate(route);
+        RouteCache.getInstance().addAll(Arrays.asList(route));
     }
 
     @Override
-    public void deleteRoute(final int id) {
-        routeDao.delete(id);
+    public void deleteRoute(final IRoute route) {
+        routeDao.delete(route.getId());
+        RouteCache.getInstance().remove(route.getName());
     }
 
     // -------------------------------wetterDao--------------------------------------------------
@@ -293,11 +286,13 @@ public class CommonDao implements IDatabaseAccess {
     @Override
     public final void saveOrUpdate(final IShoe route) {
         shoeDao.saveOrUpdate(route);
+        SchuhCache.getInstance().addAll(Arrays.asList(route));
     }
 
     @Override
     public void deleteShoe(final int id) {
         shoeDao.delete(id);
+        SchuhCache.getInstance().remove(String.valueOf(id));
     }
 
 }

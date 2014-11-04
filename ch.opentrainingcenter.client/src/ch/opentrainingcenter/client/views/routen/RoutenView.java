@@ -244,7 +244,7 @@ public class RoutenView extends ViewPart implements IRecordListener {
                 final ITraining referenzTrack = route.getReferenzTrack();
                 referenzTrack.setRoute(unbekannt);
                 databaseAccess.saveOrUpdate(referenzTrack);
-                databaseAccess.deleteRoute(route.getId());
+                databaseAccess.deleteRoute(route);
                 LOGGER.info("Route gelöscht und beim Record die Route auf unbekannt gesetzt"); //$NON-NLS-1$
             }
         });
