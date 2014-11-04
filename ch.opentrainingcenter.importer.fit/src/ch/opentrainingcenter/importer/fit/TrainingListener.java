@@ -125,7 +125,10 @@ public class TrainingListener implements MesgListener {
         } else {
             training.setSport(Sport.OTHER);
         }
-        training.setTrainingEffect((int) (10 * session.getTotalTrainingEffect().floatValue()));
+        final Float totalTrainingEffect = session.getTotalTrainingEffect();
+        if (totalTrainingEffect != null) {
+            training.setTrainingEffect((int) (10 * totalTrainingEffect.floatValue()));
+        }
         training.setLapInfos(lapInfos);
         final int total = error + valid;
         final int fehlerInProzent = (int) (100 * (error / (float) total));

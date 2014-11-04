@@ -85,6 +85,7 @@ public class ConvertFitTest {
         assertEquals(132, lap.getHeartBeat());
         assertEquals(DistanceHelper.calculatePace(training.getLaengeInMeter(), lap.getTime() / 1000, Sport.RUNNING), lap.getPace());
         assertEquals(DistanceHelper.calculatePace(training.getLaengeInMeter(), lap.getTime() / 1000, Sport.BIKING), lap.getGeschwindigkeit());
+        assertEquals(29, training.getTrainingEffect().intValue());
     }
 
     @Test
