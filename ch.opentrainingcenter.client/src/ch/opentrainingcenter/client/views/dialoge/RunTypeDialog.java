@@ -174,10 +174,11 @@ public class RunTypeDialog extends TitleAreaDialog {
         col.setLabelProvider(new ColumnLabelProvider() {
             @Override
             public String getText(final Object element) {
-                return routen.get(0).getName();
+                final IGpsFileModel model = (IGpsFileModel) element;
+                return model.getRoute().getName();
             }
         });
-        // col.setEditingSupport(new StreckeEditingSupport(viewer, routen));
+        col.setEditingSupport(new StreckeEditingSupport(viewer, routen));
 
         // Schuh
 
