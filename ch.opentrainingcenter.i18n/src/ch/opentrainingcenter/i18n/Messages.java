@@ -14,6 +14,8 @@ public final class Messages extends NLS {
     public static String Common_ZEIT;
     public static String Common_BESCHREIBUNG;
 
+    public static String Common_TrainingEffect;
+
     public static String AddEditHandler_0;
     public static String AddEditHandler_1;
     public static String AddRoute_0;
