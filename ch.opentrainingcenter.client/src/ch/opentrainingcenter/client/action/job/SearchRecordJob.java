@@ -100,7 +100,7 @@ public class SearchRecordJob extends Job {
                 LOGGER.info("Start " + date); //$NON-NLS-1$
                 monitor.subTask(NLS.bind(Messages.SearchRecordJob_SubTaskName, date));
                 final boolean same = comp.compareRoute(referenzTrack, MapConverter.convert(item));
-                LOGGER.info("End " + date + " Training is same? " + same); //$NON-NLS-1$ //$NON-NLS-2$
+                LOGGER.info(String.format("Record vom %s ist %s", date, same ? "GLEICH" : "NICHT GLEICH")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                 monitor.worked(1);
                 return same ? item : null;
             }

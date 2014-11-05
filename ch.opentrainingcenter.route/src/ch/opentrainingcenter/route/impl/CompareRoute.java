@@ -150,8 +150,12 @@ public class CompareRoute implements ICompareRoute {
         final double referenceDistance = calculateDistanz(reference);
         LOGGER.info(String.format("Referenzdistanz: %s", referenceDistance)); //$NON-NLS-1$
         final double otherDistance = calculateDistanz(track);
-        LOGGER.info(String.format("Vergleich distanz: ", otherDistance)); //$NON-NLS-1$
-        return Math.abs(referenceDistance - otherDistance) > referenceDistance * ((DISTANZ_TOLERANZ_PROZENT) / 100.0);
+        LOGGER.info(String.format("Vergleich distanz: %s", otherDistance)); //$NON-NLS-1$
+        final double maxDiff = referenceDistance * ((DISTANZ_TOLERANZ_PROZENT) / 100.0);
+        LOGGER.info(String.format("Tolerierbare Differenz: %s", maxDiff));
+        final boolean isTooBig = Math.abs(referenceDistance - otherDistance) > maxDiff;
+        LOGGER.info(String.format("Die Differenz ist %s", isTooBig ? "zu gross" : "OK"));
+        return isTooBig;
     }
 
     private double calculateDistanz(final Track track) {
