@@ -15,10 +15,10 @@
 			<column name="TIME" />
 		</property>
 		<property name="start" type="java.lang.Integer">
-			<column name="START" />
+			<column name="LAP_START" />
 		</property>
 		<property name="end" type="java.lang.Integer">
-			<column name="END" />
+			<column name="LAP_END" />
 		</property>
 		<property name="heartBeat" type="java.lang.Integer">
 			<column name="HEARTBEAT" />
