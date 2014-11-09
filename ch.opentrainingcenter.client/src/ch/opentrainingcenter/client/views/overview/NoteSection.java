@@ -66,7 +66,7 @@ public class NoteSection {
         final Label label = toolkit.createLabel(container, ""); //$NON-NLS-1$
         label.setText(Messages.SingleActivityViewPart_3);
 
-        final Text note = toolkit.createText(container, "", SWT.V_SCROLL | SWT.MULTI | SWT.BORDER); //$NON-NLS-1$
+        final Text note = toolkit.createText(container, "", SWT.V_SCROLL | SWT.MULTI | SWT.WRAP | SWT.BORDER); //$NON-NLS-1$
         GridDataFactory.fillDefaults().grab(true, true).minSize(SWT.DEFAULT, 100).align(SWT.FILL, SWT.FILL).applyTo(note);
 
         final String notiz = training.getNote();
