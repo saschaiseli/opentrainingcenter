@@ -14,8 +14,10 @@
    </configIni>
 
    <launcherArgs>
-      <vmArgs>-Dorg.eclipse.swt.browser.DefaultType=mozilla</vmArgs>
-      <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
+      <vmArgs>-Dorg.eclipse.swt.browser.DefaultType=mozilla
+      </vmArgs>
+      <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts
+      </vmArgsMac>
    </launcherArgs>
 
    <windowImages i16="/ch.opentrainingcenter.client/icons/16_16/icon_16_16.png" i32="/ch.opentrainingcenter.client/icons/32_32/icon_32_32.png" i48="/ch.opentrainingcenter.client/icons/48_48/icon_48_48.png" i64="/ch.opentrainingcenter.client/icons/64_64/icon_64_64.png" i128="/ch.opentrainingcenter.client/icons/128_128/icon_128_128.png"/>
@@ -34,18 +36,19 @@
 
    <vm>
    </vm>
-<plugins>
+
+   <plugins>
       <plugin id="ch.opentrainingcenter.charts"/>
       <plugin id="ch.opentrainingcenter.client"/>
       <plugin id="ch.opentrainingcenter.core"/>
-      <plugin id="ch.opentrainingcenter.db"/>
       <plugin id="ch.opentrainingcenter.database"/>
-      <plugin id="ch.opentrainingcenter.db.postgres"/>
+      <plugin id="ch.opentrainingcenter.db"/>
       <plugin id="ch.opentrainingcenter.db.oracle"/>
+      <plugin id="ch.opentrainingcenter.db.postgres"/>
       <plugin id="ch.opentrainingcenter.i18n"/>
-      <plugin id="ch.opentrainingcenter.importer.tcx"/>
-      <plugin id="ch.opentrainingcenter.importer.gpx"/>
       <plugin id="ch.opentrainingcenter.importer.fit"/>
+      <plugin id="ch.opentrainingcenter.importer.gpx"/>
+      <plugin id="ch.opentrainingcenter.importer.tcx"/>
       <plugin id="ch.opentrainingcenter.model"/>
       <plugin id="ch.opentrainingcenter.route"/>
       <plugin id="ch.opentrainingcenter.tcx"/>
@@ -53,13 +56,13 @@
       <plugin id="com.eclipsesource.widgets.gmaps"/>
       <plugin id="com.ibm.icu"/>
       <plugin id="geocalc"/>
-      <plugin id="oracle14"/>
       <plugin id="h2_lib"/>
       <plugin id="javax.servlet"/>
       <plugin id="jfreechart"/>
       <plugin id="jodatime"/>
       <plugin id="junit"/>
       <plugin id="logging"/>
+      <plugin id="oracle14"/>
       <plugin id="org.eclipse.ant.core"/>
       <plugin id="org.eclipse.core.commands"/>
       <plugin id="org.eclipse.core.contenttype"/>
@@ -85,7 +88,6 @@
       <plugin id="org.eclipse.equinox.preferences"/>
       <plugin id="org.eclipse.equinox.registry"/>
       <plugin id="org.eclipse.equinox.security"/>
-      <plugin id="org.eclipse.equinox.transforms.hook" fragment="true"/>
       <plugin id="org.eclipse.help"/>
       <plugin id="org.eclipse.jface"/>
       <plugin id="org.eclipse.jface.databinding"/>
