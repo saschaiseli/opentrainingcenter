@@ -11,9 +11,9 @@
 
   <groupId>ch.opentrainingcenter</groupId>
   <artifactId>ch.opentrainingcenter.target-platform</artifactId>
-  <version>3.7.0-SNAPSHOT</version>
+  <version>3.8.0-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <name>Indigo RCP Target platform</name>
+  <name>Juno RCP Target platform</name>
 
   <build>
     <plugins>
@@ -33,7 +33,7 @@
                 <artifact>
                   <file>indigo.target</file>
                   <type>target</type>
-                  <classifier>indigo</classifier>
+                  <classifier>juno</classifier>
                 </artifact>
               </artifacts>
             </configuration>
