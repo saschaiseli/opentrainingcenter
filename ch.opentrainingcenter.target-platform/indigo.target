@@ -1,12 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.6"?>
-
-<target name="eclipse38-platform-sdk" sequenceNumber="1">
+<?pde version="3.6"?><target name="indigo" sequenceNumber="22">
 <locations>
 <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.platform.sdk" version="3.8.1.M20120914-1540"/>
-<unit id="org.eclipse.pde.junit.runtime.addon.feature.group" version="1.0.100.v20120528-1716-7C7IEoAkHgAKgMm47GFHJ73701A1"/>
-<repository location="http://download.eclipse.org/eclipse/updates/3.8"/>
+<unit id="org.eclipse.core.runtime.feature.feature.group" version="1.0.1.R37x_v20110907-7H7KFD5BLfQf2FwVLgjRDAoN_A9d"/>
+<repository location="http://download.eclipse.org/releases/indigo/201109230900"/>
+</location>
+<location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.equinox.core.feature.feature.group" version="1.0.1.R37x_v20110907-7K7VFBYDzbeA3ynMZ98cDL15A4A"/>
+<unit id="org.eclipse.equinox.core.sdk.feature.group" version="3.7.1.R37x_v20110907-7uF9LFpFFSuN6-tKJIXPMYaq7NTP"/>
+<repository location="http://download.eclipse.org/releases/indigo/201109230900"/>
+</location>
+<location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.platform.ide" version="3.7.1.M20110909-1335"/>
+<unit id="org.eclipse.rcp.sdk.id" version="3.7.1.M20110909-1335"/>
+<unit id="org.eclipse.sdk.ide" version="3.7.1.M20110909-1335"/>
+<repository location="http://download.eclipse.org/releases/indigo/201109230900"/>
 </location>
 </locations>
+<environment>
+<os>linux</os>
+<ws>gtk</ws>
+<arch>x86_64</arch>
+</environment>
 </target>
