@@ -12,6 +12,10 @@
 		<tycho.version>0.20.0</tycho.version>
 		<jacoco.version>0.7.1.201405082137</jacoco.version>
 		<eclipse-repository-url>http://download.eclipse.org/eclipse/updates/3.8</eclipse-repository-url>
+		<!-- fuer java 8 -->
+		<cbi-jdt-repo.url>https://repo.eclipse.org/content/repositories/eclipse-staging/</cbi-jdt-repo.url>
+		<cbi-jdt-version>3.10.0.v20140408-1345</cbi-jdt-version>
+		<!-- -->
 		<sonar.host.url>http://localhost:9000</sonar.host.url>
 		<sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
 		<sonar.jacoco.reportPath>target/jacoco.exec</sonar.jacoco.reportPath>
@@ -93,8 +97,39 @@
 		</profile>
 	</profiles>
 
+	<!-- fuer java 8 -->
+	<pluginRepositories>
+		<pluginRepository>
+			<id>cbi-jdt</id>
+			<url>${cbi-jdt-repo.url}</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
+	<!-- -->
 	<build>
 		<plugins>
+			<!-- fuer java 8 -->
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-compiler-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<useJDK>BREE</useJDK>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.eclipse.jdt</groupId>
+						<artifactId>org.eclipse.jdt.core</artifactId>
+						<version>${cbi-jdt-version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+			<!-- ---------------- -->
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-maven-plugin</artifactId>
@@ -115,40 +150,40 @@
 				<artifactId>sonar-maven-plugin</artifactId>
 				<version>2.2</version>
 			</plugin>
-    		<plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.16</version>
-                <configuration>
-                    <forkCount>5</forkCount>
-                    <reuseForks>true</reuseForks>
-                    <argLine>-Dnet.sf.ehcache.disabled=true</argLine>
-                </configuration>
-            </plugin>
-		<plugin>
-			<groupId>org.jacoco</groupId>
-			<artifactId>jacoco-maven-plugin</artifactId>
-			<version>${jacoco.version}</version>
-			  <configuration>
-   <destFile>${basedir}/target/coverage-reports/jacoco-unit.exec</destFile>
-   <dataFile>${basedir}/target/coverage-reports/jacoco-unit.exec</dataFile>
-  </configuration>
-  <executions>
-   <execution>
-    <id>jacoco-initialize</id>
-    <goals>
-     <goal>prepare-agent</goal>
-    </goals>
-   </execution>
-   <execution>
-    <id>jacoco-site</id>
-    <phase>package</phase>
-    <goals>
-     <goal>report</goal>
-    </goals>
-   </execution>
-  </executions>
-		</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.16</version>
+				<configuration>
+					<forkCount>5</forkCount>
+					<reuseForks>true</reuseForks>
+					<argLine>-Dnet.sf.ehcache.disabled=true</argLine>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>${jacoco.version}</version>
+				<configuration>
+					<destFile>${basedir}/target/coverage-reports/jacoco-unit.exec</destFile>
+					<dataFile>${basedir}/target/coverage-reports/jacoco-unit.exec</dataFile>
+				</configuration>
+				<executions>
+					<execution>
+						<id>jacoco-initialize</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>jacoco-site</id>
+						<phase>package</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
@@ -167,23 +202,10 @@
 							<ws>gtk</ws>
 							<arch>x86</arch>
 						</environment>
-						<!-- 
-						<environment>
-							<os>macosx</os>
-							<ws>carbon</ws>
-							<arch>x86</arch>
-						</environment>
-						<environment>
-							<os>macosx</os>
-							<ws>cocoa</ws>
-							<arch>x86</arch>
-						</environment>
-						<environment>
-							<os>macosx</os>
-							<ws>cocoa</ws>
-							<arch>x86_64</arch>
-						</environment>
-						 -->
+						<!-- <environment> <os>macosx</os> <ws>carbon</ws> <arch>x86</arch> 
+							</environment> <environment> <os>macosx</os> <ws>cocoa</ws> <arch>x86</arch> 
+							</environment> <environment> <os>macosx</os> <ws>cocoa</ws> <arch>x86_64</arch> 
+							</environment> -->
 						<environment>
 							<os>win32</os>
 							<ws>win32</ws>
