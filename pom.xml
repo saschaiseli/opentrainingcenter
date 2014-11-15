@@ -38,7 +38,7 @@
 		<repository>
 			<id>eclipse38-platform-sdk</id>
 			<layout>p2</layout>
-			<url>http://download.eclipse.org/releases/juno/</url>
+			<url>${eclipse-repository-url}</url><!-- http://download.eclipse.org/releases/juno/</url> -->
 		</repository>
 	</repositories>
 
