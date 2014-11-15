@@ -1,7 +1,6 @@
 package ch.opentrainingcenter.client.views.overview;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -76,7 +75,6 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
 
     // private final ICompareRoute comp;
 
-    @SuppressWarnings("nls")
     public SingleActivityViewPart() {
         final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
         databaseAccess = service.getDatabaseAccess();
@@ -87,9 +85,9 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         athlete = context.getAthlete();
 
         // java 8 Test
-        final List<String> myList = Arrays.asList("a1", "a2", "b1", "c2 jeppa.4... java 8", "c1"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-        myList.stream().filter(s -> s.startsWith("c")).map(String::toUpperCase).sorted().forEach(LOGGER::info); //$NON-NLS-1$
-        myList.stream().filter(s -> s.startsWith("c")).map(String::toUpperCase).sorted().forEach(System.out::println); //$NON-NLS-1$
+        //        final List<String> myList = Arrays.asList("a1", "a2", "b1", "c2 jeppa.4... java 8", "c1"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+        //        myList.stream().filter(s -> s.startsWith("c")).map(String::toUpperCase).sorted().forEach(LOGGER::info); //$NON-NLS-1$
+        //        myList.stream().filter(s -> s.startsWith("c")).map(String::toUpperCase).sorted().forEach(System.out::println); //$NON-NLS-1$
 
         LOGGER.info(String.format("Training mit %s Trackpoints geladen", training.getTrackPoints().size())); //$NON-NLS-1$
 
