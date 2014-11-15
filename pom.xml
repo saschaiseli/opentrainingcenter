@@ -11,7 +11,7 @@
 	<properties>
 		<tycho.version>0.20.0</tycho.version>
 		<jacoco.version>0.7.1.201405082137</jacoco.version>
-		<eclipse-repository-url>http://download.eclipse.org/eclipse/updates/3.7</eclipse-repository-url>
+		<eclipse-repository-url>http://download.eclipse.org/eclipse/updates/3.8</eclipse-repository-url>
 		<sonar.host.url>http://localhost:9000</sonar.host.url>
 		<sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
 		<sonar.jacoco.reportPath>target/jacoco.exec</sonar.jacoco.reportPath>
@@ -36,9 +36,9 @@
 
 	<repositories>
 		<repository>
-			<id>indigo</id>
+			<id>eclipse38-platform-sdk</id>
 			<layout>p2</layout>
-			<url>http://download.eclipse.org/releases/indigo/</url>
+			<url>http://download.eclipse.org/releases/juno/</url>
 		</repository>
 	</repositories>
 
