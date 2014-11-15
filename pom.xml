@@ -12,10 +12,6 @@
 		<tycho.version>0.20.0</tycho.version>
 		<jacoco.version>0.7.1.201405082137</jacoco.version>
 		<eclipse-repository-url>http://download.eclipse.org/eclipse/updates/3.8</eclipse-repository-url>
-		<!-- fuer java 8 -->
-		<cbi-jdt-repo.url>https://repo.eclipse.org/content/repositories/eclipse-staging/</cbi-jdt-repo.url>
-		<cbi-jdt-version>3.10.0.v20140408-1345</cbi-jdt-version>
-		<!-- -->
 		<sonar.host.url>http://localhost:9000</sonar.host.url>
 		<sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
 		<sonar.jacoco.reportPath>target/jacoco.exec</sonar.jacoco.reportPath>
@@ -97,39 +93,9 @@
 		</profile>
 	</profiles>
 
-	<!-- fuer java 8 -->
-	<pluginRepositories>
-		<pluginRepository>
-			<id>cbi-jdt</id>
-			<url>${cbi-jdt-repo.url}</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</pluginRepository>
-	</pluginRepositories>
-	<!-- -->
+
 	<build>
 		<plugins>
-			<!-- fuer java 8 -->
-			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>tycho-compiler-plugin</artifactId>
-				<version>${tycho.version}</version>
-				<configuration>
-					<useJDK>BREE</useJDK>
-				</configuration>
-				<dependencies>
-					<dependency>
-						<groupId>org.eclipse.jdt</groupId>
-						<artifactId>org.eclipse.jdt.core</artifactId>
-						<version>${cbi-jdt-version}</version>
-					</dependency>
-				</dependencies>
-			</plugin>
-			<!--  -->
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-maven-plugin</artifactId>
