@@ -60,6 +60,7 @@
       <plugin id="jodatime"/>
       <plugin id="junit"/>
       <plugin id="logging"/>
+      <plugin id="com.garmin.fit"/>
       <plugin id="org.eclipse.ant.core"/>
       <plugin id="org.eclipse.core.commands"/>
       <plugin id="org.eclipse.core.contenttype"/>

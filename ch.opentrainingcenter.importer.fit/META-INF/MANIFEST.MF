@@ -9,6 +9,7 @@ Require-Bundle: org.eclipse.core.runtime,
  ch.opentrainingcenter.core,
  ch.opentrainingcenter.transfer,
  jodatime,
- logging
+ logging,
+ com.garmin.fit
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
