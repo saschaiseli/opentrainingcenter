@@ -18,13 +18,23 @@ public class KmlTrackDumper implements IKmlDumper {
     public void dumpTrack(final String fileName, final String label, final Track track, final List<SimplePair<String>> extendedData) {
         final KmlDumper kmlDumper = new KmlDumper(fileName, kmlPath);
         kmlDumper.addLine(fileName, "ff0000ff", track.toKml()); //$NON-NLS-1$
-        kmlDumper.addPlacemark(label, extendedData, getRandomTrackPoint(track));
+        if (!track.getPoints().isEmpty()) {
+            kmlDumper.addPlacemark(label, extendedData, getRandomTrackPoint(track));
+        }
         kmlDumper.dump();
     }
 
     private String getRandomTrackPoint(final Track track) {
-        final int size = track.getPoints().size();
+        final int size = track.getPoints().size() - 1;
         final int index = 0 + (int) (Math.random() * size);
+        if (index >= size) {
+            System.err.println("??"); //$NON-NLS-1$
+        }
         return track.getPoints().get(index).toKml();
+    }
+
+    @Override
+    public String getKmlPath() {
+        return kmlPath;
     }
 }
