@@ -29,7 +29,6 @@
 			**/Messages.java,
 			ch/**/Messages.java,
 			com/**/*.java,
-			ch.opentrainingcenter.importer.fit/com/garmin/fit/**/*.java,
 			ch/opentrainingcenter/importer/fitnesslog/model/*.java
 		</sonar.exclusions>
 	</properties>
@@ -67,6 +66,7 @@
 		<module>jfreechart</module>
 		<module>jodatime</module>
 		<module>logging</module>
+		<module>com.garmin.fit</module>
 		<module>org.hibernate</module>
 		<!-- Tests -->
 		<module>junit</module>
