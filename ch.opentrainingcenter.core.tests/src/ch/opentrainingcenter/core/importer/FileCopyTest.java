@@ -6,17 +6,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.FilenameFilter;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.junit.After;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.mockito.Mockito;
-
-import ch.opentrainingcenter.core.helper.GpsFileNameFilter;
 
 @SuppressWarnings("nls")
 public class FileCopyTest {
@@ -59,26 +52,6 @@ public class FileCopyTest {
         // action
         fileCopy.copyFile(source, source);
         assertFileCopy(source);
-    }
-
-    @Test
-    @Ignore
-    public void copyFiles() throws IOException {
-        source = File.createTempFile("testa", "testa.txt");
-        final FileWriter writer = new FileWriter(source);
-        writer.write(HELLO_FROM_JUNIT);
-        writer.close();
-        final String absolutePath = source.getAbsolutePath();
-        final String sourceFolder = absolutePath.substring(0, absolutePath.lastIndexOf(File.separator));
-
-        final Map<String, IConvert2Tcx> converters = new HashMap<String, IConvert2Tcx>();
-        final IConvert2Tcx converter = Mockito.mock(IConvert2Tcx.class);
-        converters.put("txt", converter);
-        final FilenameFilter filter = new GpsFileNameFilter(converters);
-        final String destinationFolder = sourceFolder + File.separator + "junit" + (int) Math.random() * 100;
-        fileCopy.copyFiles(sourceFolder, destinationFolder, filter);
-
-        assertFileCopy(new File(destinationFolder, source.getName()));
     }
 
     private void assertFileCopy(final File file) throws FileNotFoundException, IOException {

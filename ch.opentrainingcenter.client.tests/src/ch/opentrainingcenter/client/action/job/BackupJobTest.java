@@ -1,14 +1,14 @@
 package ch.opentrainingcenter.client.action.job;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Status;
@@ -18,16 +18,12 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import ch.opentrainingcenter.core.db.IDatabaseConnection;
-import ch.opentrainingcenter.core.exceptions.ConvertException;
-import ch.opentrainingcenter.core.importer.IConvert2Tcx;
 import ch.opentrainingcenter.transfer.ITraining;
 
 @SuppressWarnings("nls")
 public class BackupJobTest {
 
     private BackupJob job;
-
-    private final Map<String, IConvert2Tcx> converters = new HashMap<String, IConvert2Tcx>();
 
     private IProgressMonitor monitor;
 
@@ -47,23 +43,7 @@ public class BackupJobTest {
     public void setUp() throws IOException {
         tmp = File.createTempFile("setUp", "");
         destFolder = tmp.getParentFile();
-        converters.put("gmn", new IConvert2Tcx() {
 
-            @Override
-            public String getName() {
-                return null;
-            }
-
-            @Override
-            public String getFilePrefix() {
-                return "gmn";
-            }
-
-            @Override
-            public ITraining convert(final File file) throws ConvertException {
-                return null;
-            }
-        });
         monitor = new IProgressMonitor() {
 
             @Override
@@ -122,24 +102,31 @@ public class BackupJobTest {
     }
 
     @Test
-    public void testConstructor() throws IOException {
-        tmpFile = File.createTempFile("testConstructor", ".gmn");
-        job = new BackupJob("junit", destFolder.getAbsolutePath(), destFolder, converters, db);
-        final String[] fileToCopy = job.getFileToCopy();
-        assertNotNull("array mit den files zum kopieren darf nicht null sein", fileToCopy);
-    }
-
-    @Test
     public void testRun() throws IOException {
         tmpFile = File.createTempFile("testRun", ".gmn");
-        job = new BackupJob("junit", destFolder.getAbsolutePath(), destFolder, converters, db);
+        job = new BackupJob("junit", destFolder.getAbsolutePath(), destFolder, Collections.<ITraining> emptyList(), db);
+        assertEquals(Status.OK_STATUS, job.run(monitor));
+    }
+
+    /**
+     * wenn ein file nicht gefunden wird, wird trotzdem weiterexportiert und ein
+     * OK zurueckgegeben.
+     */
+    @Test
+    public void testRunWithElementFileNichtGefunden() throws IOException {
+        tmpFile = File.createTempFile("testRun", ".gmn");
+        final List<ITraining> trainings = new ArrayList<>();
+        final ITraining training = mock(ITraining.class);
+        when(training.getFileName()).thenReturn("testFile.tcx");
+        trainings.add(training);
+        job = new BackupJob("junit", destFolder.getAbsolutePath(), destFolder, trainings, db);
         assertEquals(Status.OK_STATUS, job.run(monitor));
     }
 
     @Test
     public void testRunZipErstellt() throws IOException {
         tmpFile = File.createTempFile("testRunZipErstellt", ".gmn");
-        job = new BackupJob("junit", destFolder.getAbsolutePath(), destFolder, converters, db);
+        job = new BackupJob("junit", destFolder.getAbsolutePath(), destFolder, Collections.<ITraining> emptyList(), db);
         assertEquals(Status.OK_STATUS, job.run(monitor));
 
         final String zipFile = job.createZipFileName();

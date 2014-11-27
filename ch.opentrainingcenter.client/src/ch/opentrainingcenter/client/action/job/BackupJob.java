@@ -7,7 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Map;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -17,15 +17,13 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
-import ch.opentrainingcenter.core.assertions.Assertions;
 import ch.opentrainingcenter.core.db.IDatabaseConnection;
-import ch.opentrainingcenter.core.helper.GpsFileNameFilter;
-import ch.opentrainingcenter.core.importer.IConvert2Tcx;
 import ch.opentrainingcenter.i18n.Messages;
+import ch.opentrainingcenter.transfer.ITraining;
 
 /**
  * Erstellt ein Backup mit allen importierten Daten.
- * 
+ *
  */
 public class BackupJob extends Job {
 
@@ -33,28 +31,25 @@ public class BackupJob extends Job {
 
     private static final int BYTE = 1024;
 
-    private final String[] fileToCopy;
-
     private final File destFolder;
 
     private final String source;
 
+    private final List<ITraining> trainings;
+
     private final IDatabaseConnection dbConnection;
 
-    public BackupJob(final String name, final String source, final File destFolder, final Map<String, IConvert2Tcx> converters, final IDatabaseConnection conn) {
+    public BackupJob(final String name, final String source, final File destFolder, final List<ITraining> trainings, final IDatabaseConnection dbConnection) {
         super(name);
-        Assertions.notNull(conn, "Datenbankverbindung darf nicht null sein"); //$NON-NLS-1$
         this.source = source;
         this.destFolder = destFolder;
-        this.dbConnection = conn;
-        final File f = new File(this.source);
-        fileToCopy = f.list(new GpsFileNameFilter(converters));
+        this.trainings = trainings;
+        this.dbConnection = dbConnection;
     }
 
     @Override
     protected final IStatus run(final IProgressMonitor monitor) {
-        monitor.beginTask(Messages.BackupGpsFiles1, fileToCopy.length);
-
+        monitor.beginTask(Messages.BackupGpsFiles1, trainings.size());
         final String zipFileName = createZipFileName();
         final File zipFile = new File(destFolder, zipFileName);
 
@@ -65,8 +60,8 @@ public class BackupJob extends Job {
             LOG.error(e.getMessage());
         }
         final byte[] buf = new byte[BYTE];
-        for (final String fileName : fileToCopy) {
-            final File file = new File(source + File.separator + fileName);
+        for (final ITraining training : trainings) {
+            final File file = new File(source + File.separator + training.getFileName());
             try {
                 addToZip(out, buf, file);
             } catch (final IOException e) {
@@ -103,9 +98,5 @@ public class BackupJob extends Job {
         final Date date = new Date();
         final SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd"); //$NON-NLS-1$
         return df.format(date) + ".zip"; //$NON-NLS-1$
-    }
-
-    public String[] getFileToCopy() {
-        return fileToCopy;
     }
 }

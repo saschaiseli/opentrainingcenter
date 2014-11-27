@@ -1,6 +1,7 @@
 package ch.opentrainingcenter.client.commands;
 
 import java.io.File;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -11,10 +12,12 @@ import org.eclipse.ui.PlatformUI;
 
 import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.action.job.BackupJob;
+import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.core.PreferenceConstants;
-import ch.opentrainingcenter.core.importer.ExtensionHelper;
+import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
+import ch.opentrainingcenter.transfer.ITraining;
 
 /**
  * Macht ein Backup aller importierten Daten. Sammelt sie und packt sie in ein
@@ -24,7 +27,8 @@ public class BackupGpsFiles extends OtcAbstractHandler {
 
     public static final String ID = "ch.opentrainingcenter.client.commands.BackupGpsFiles"; //$NON-NLS-1$
     private static final Logger LOG = Logger.getLogger(BackupGpsFiles.class);
-
+    private static final TrainingCache cache = TrainingCache.getInstance();
+    private static final ApplicationContext context = ApplicationContext.getApplicationContext();
     private final IPreferenceStore store;
 
     public BackupGpsFiles() {
@@ -47,7 +51,8 @@ public class BackupGpsFiles extends OtcAbstractHandler {
             destFolder.mkdir();
             LOG.info("Pfad zu Backupfolder erstellt"); //$NON-NLS-1$
         }
-        final Job job = new BackupJob(Messages.BackupGpsFiles0, source, destFolder, ExtensionHelper.getConverters(), service.getDatabaseConnection());
+        final List<ITraining> all = cache.getAll(context.getAthlete());
+        final Job job = new BackupJob(Messages.BackupGpsFiles0, source, destFolder, all, service.getDatabaseConnection());
         job.schedule();
         return null;
     }
