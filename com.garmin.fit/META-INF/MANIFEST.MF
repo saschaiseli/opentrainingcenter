@@ -2,10 +2,8 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Garmin Fit
 Bundle-SymbolicName: com.garmin.fit
-Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: com.garmin.fit.Activator
+Bundle-Version: 1.0.0
 Bundle-Vendor: Garmin
-Require-Bundle: org.eclipse.core.runtime
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: com.garmin.fit
