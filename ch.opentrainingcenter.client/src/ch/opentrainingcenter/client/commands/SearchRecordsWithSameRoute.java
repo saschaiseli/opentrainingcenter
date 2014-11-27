@@ -24,7 +24,7 @@ import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.model.navigation.ConcreteImported;
-import ch.opentrainingcenter.route.CompareRouteFactory;
+import ch.opentrainingcenter.route.RouteFactory;
 import ch.opentrainingcenter.route.ICompareRoute;
 import ch.opentrainingcenter.transfer.ITraining;
 
@@ -42,7 +42,7 @@ public class SearchRecordsWithSameRoute extends OtcAbstractHandler {
     public SearchRecordsWithSameRoute(final IPreferenceStore store, final IDatabaseService service) {
         super(store);
         this.service = service;
-        comp = CompareRouteFactory.getRouteComparator(true, store.getString(PreferenceConstants.KML_DEBUG_PATH));
+        comp = RouteFactory.getRouteComparator(true, store.getString(PreferenceConstants.KML_DEBUG_PATH));
     }
 
     @Override

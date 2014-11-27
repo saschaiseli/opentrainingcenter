@@ -16,7 +16,7 @@ import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.core.cache.Cache;
 import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.core.geo.MapConverter;
-import ch.opentrainingcenter.route.CompareRouteFactory;
+import ch.opentrainingcenter.route.RouteFactory;
 import ch.opentrainingcenter.route.ICompareRoute;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.Track;
@@ -43,7 +43,7 @@ public class CompareRecords extends AbstractHandler {
             final ITraining activity = cache.get(record.getDatum());
             tracks.add(MapConverter.convert(activity));
         }
-        final ICompareRoute comp = CompareRouteFactory.getRouteComparator(true, store.getString(PreferenceConstants.KML_DEBUG_PATH));
+        final ICompareRoute comp = RouteFactory.getRouteComparator(true, store.getString(PreferenceConstants.KML_DEBUG_PATH));
         comp.compareRoute(tracks.get(0), tracks.get(1));
         return null;
     }

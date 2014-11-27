@@ -5,11 +5,12 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import ch.opentrainingcenter.core.data.SimplePair;
 import ch.opentrainingcenter.core.helper.TimeHelper;
 
 /**
@@ -58,7 +59,7 @@ public class KmlDumper {
         kmlFile.addKmlLine(lineName, color, coordinates);
     }
 
-    public void addPlacemark(final String name, final Map<String, String> extendedData, final String coordinates) {
+    public void addPlacemark(final String name, final List<SimplePair<String>> extendedData, final String coordinates) {
         kmlFile.addPlacemark(name, extendedData, coordinates);
     }
 

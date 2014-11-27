@@ -3,9 +3,9 @@ package ch.opentrainingcenter.route;
 import ch.opentrainingcenter.route.impl.CompareRoute;
 import ch.opentrainingcenter.route.kml.KmlTrackDumper;
 
-public final class CompareRouteFactory {
+public final class RouteFactory {
 
-    private CompareRouteFactory() {
+    private RouteFactory() {
 
     }
 

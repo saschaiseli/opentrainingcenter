@@ -573,17 +573,6 @@
                commandId="ch.opentrainingcenter.client.commands.ExportKml"
                label="%exportKmlLabel"
                style="push">
-            <visibleWhen
-                  checkEnabled="true">
-               <iterate
-                     operator="and">
-                  <or>
-                     <instanceof
-                           value="ch.opentrainingcenter.model.navigation.ConcreteImported">
-                     </instanceof>
-                  </or>
-               </iterate>
-            </visibleWhen>
          </command>
       </menuContribution>
       <menuContribution

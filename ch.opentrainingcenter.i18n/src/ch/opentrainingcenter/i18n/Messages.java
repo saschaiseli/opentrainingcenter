@@ -492,6 +492,8 @@ public final class Messages extends NLS {
     public static String CLOUDY;
     public static String Einheit_Herzfrequenz;
     public static String Einheit_Kilometer;
+
+    public static String ExportKml_StreckeVom;
     public static String FileImport_0;
     public static String FileImport_1;
     public static String FileImport_2;

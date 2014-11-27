@@ -2,7 +2,8 @@ package ch.opentrainingcenter.route.kml;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+
+import ch.opentrainingcenter.core.data.SimplePair;
 
 public class KmlFile {
 
@@ -21,7 +22,7 @@ public class KmlFile {
         items.add(new KmlLine(lineName, color, coordinates));
     }
 
-    public void addPlacemark(final String name, final Map<String, String> extendedData, final String coordinates) {
+    public void addPlacemark(final String name, final List<SimplePair<String>> extendedData, final String coordinates) {
         items.add(new KmlPlacemark(name, extendedData, coordinates));
     }
 

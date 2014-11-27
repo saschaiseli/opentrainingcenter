@@ -1,6 +1,8 @@
 package ch.opentrainingcenter.route.kml;
 
-import java.util.Map;
+import java.util.List;
+
+import ch.opentrainingcenter.core.data.SimplePair;
 
 /**
  * <pre>
@@ -32,13 +34,13 @@ public class KmlPlacemark implements KmlItem {
     private static final String END = "</coordinates></Point></Placemark>";
     private final StringBuilder content;
 
-    public KmlPlacemark(final String name, final Map<String, String> extendedData, final String coordinates) {
+    public KmlPlacemark(final String name, final List<SimplePair<String>> placemarks, final String coordinates) {
         content = new StringBuilder(HEAD);
         content.append(name);
         content.append(HEAD_END);
         // extended content
-        for (final Map.Entry<String, String> entry : extendedData.entrySet()) {
-            content.append("<Data name=\"").append(entry.getKey()).append("\"><value>").append(entry.getValue()).append("</value></Data>");
+        for (final SimplePair<String> pair : placemarks) {
+            content.append("<Data name=\"").append(pair.getFirst()).append("\"><value>").append(pair.getSecond()).append("</value></Data>");
         }
         content.append(EXTENDED_DATA_END);
         content.append(coordinates);

@@ -9,7 +9,7 @@ public class CompareRouteFactoryTest {
 
     @Test
     public void test() {
-        assertNotNull(CompareRouteFactory.getRouteComparator(false, "kmlDumpPath"));
+        assertNotNull(RouteFactory.getRouteComparator(false, "kmlDumpPath"));
     }
 
 }

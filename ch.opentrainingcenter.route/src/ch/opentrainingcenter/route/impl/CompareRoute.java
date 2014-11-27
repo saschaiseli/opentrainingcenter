@@ -1,11 +1,11 @@
 package ch.opentrainingcenter.route.impl;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import ch.opentrainingcenter.core.data.SimplePair;
 import ch.opentrainingcenter.route.ICompareRoute;
 import ch.opentrainingcenter.route.kml.KmlDumper;
 import ch.opentrainingcenter.transfer.Track;
@@ -17,22 +17,22 @@ import com.grum.geocalc.Point;
 /**
  * Vergleicht eine Strecke mit einer Referenzstrecke. Der Algorithmus zum
  * vergleich ist wie folgt:
- * 
+ *
  * <pre>
  * 1. Länge der totalen Strecke vergleichen
  * 2. Von jedem element anhand der distanz den korrespondieren punkt auf vergleich suchen.
- * 
+ *
  * ----------X---------------------X-----------------X  Referenz
  * 			 | Aufgrund der Distanz zum Ursprung wird Punkt Y auf der Vergleichsstrecke gesucht
  * -----X----Y----------X----------------------			Vergleich
- * 
+ *
  * --> Abstand der beiden punkte darf nicht zu gross sein.
- * 
+ *
  * 3. Schritt 2 aber umgekehrt, damit auch gesagt werden kann, dass a==b && b==a
  * </pre>
- * 
+ *
  * @author sascha
- * 
+ *
  */
 @SuppressWarnings("nls")
 public class CompareRoute implements ICompareRoute {
@@ -119,13 +119,13 @@ public class CompareRoute implements ICompareRoute {
         return true;
     }
 
-    private Map<String, String> createExtendedData(final TrackPoint point) {
+    private List<SimplePair<String>> createExtendedData(final TrackPoint point) {
         return createExtendedData(point.getDistance());
     }
 
-    private Map<String, String> createExtendedData(final double distanz) {
-        final Map<String, String> result = new HashMap<>();
-        result.put("Distanz", String.valueOf(distanz)); //$NON-NLS-1$
+    private List<SimplePair<String>> createExtendedData(final double distanz) {
+        final List<SimplePair<String>> result = new ArrayList<>();
+        result.add(new SimplePair<String>("Distanz", String.valueOf(distanz))); //$NON-NLS-1$
         return result;
     }
 
@@ -142,7 +142,7 @@ public class CompareRoute implements ICompareRoute {
         LOGGER.info(String.format("Referenzpunkt: %s", referencePoint)); //$NON-NLS-1$
         LOGGER.info(String.format("First: %s", firstPoint)); //$NON-NLS-1$
         LOGGER.info(String.format("Last: %s", lastPoint)); //$NON-NLS-1$
-        LOGGER.info(String.format("Berechneter Punkt %s,%s", pointOnLine.getLongitude(), pointOnLine.getLatitude())); //$NON-NLS-1$ 
+        LOGGER.info(String.format("Berechneter Punkt %s,%s", pointOnLine.getLongitude(), pointOnLine.getLatitude())); //$NON-NLS-1$
         LOGGER.info(LINE);
     }
 
