@@ -2,7 +2,6 @@ package ch.opentrainingcenter.client.commands;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -21,7 +20,6 @@ import ch.opentrainingcenter.route.IKmlDumper;
 import ch.opentrainingcenter.route.RouteFactory;
 
 public class ExportKml extends OtcAbstractHandler {
-    private static final Logger LOGGER = Logger.getLogger(ExportKml.class);
     private final IKmlDumper kmlDumper;
     private final String path;
 
