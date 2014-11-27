@@ -26,7 +26,7 @@ import ch.opentrainingcenter.transfer.IWeather;
 /**
  * Implementation von {@link IDatabaseAccess}. Kapselt alle Datenbankzugriffe.
  * Hier könnte auch ein Cache zwischengeschaltet werden.
- * 
+ *
  */
 public class CommonDao implements IDatabaseAccess {
     private static final Logger LOGGER = Logger.getLogger(CommonDao.class);

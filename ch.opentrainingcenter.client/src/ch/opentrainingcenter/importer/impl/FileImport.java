@@ -67,7 +67,10 @@ public class FileImport implements IFileImport {
         }
         LOGGER.info("------------------------------- END Converting-------------------------------------------"); //$NON-NLS-1$
         final long convertTime = DateTime.now().getMillis() - startConvert;
-        LOGGER.info(String.format("Die konvertierten Trainings (%s Stueck) werden in der DB gespeichert.", trainings.size())); //$NON-NLS-1$
+        final int totalWork = trainings.size();
+        final String dbMessage = String.format(Messages.FileImport_WriteDB, totalWork);
+        LOGGER.info(dbMessage);
+        monitor.setTaskName(dbMessage);
         final long startDb = DateTime.now().getMillis();
         dbAccess.saveOrUpdateAll(trainings);
         final long dbTime = DateTime.now().getMillis() - startDb;

@@ -15,6 +15,7 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -66,6 +67,11 @@ public class RunTypeDialog extends TitleAreaDialog {
     }
 
     @Override
+    protected Point getInitialSize() {
+        return new Point(668, 360);
+    }
+
+    @Override
     protected Control createDialogArea(final Composite parent) {
         setTitle(Messages.RunTypeDialog0);
         setTitleImage(Activator.getImageDescriptor(IImageKeys.IMPORT_WIZ).createImage());
@@ -75,6 +81,7 @@ public class RunTypeDialog extends TitleAreaDialog {
 
         final Composite main = new Composite(parent, SWT.NONE);
         GridLayoutFactory.swtDefaults().equalWidth(false).applyTo(main);
+        GridDataFactory.swtDefaults().hint(SWT.DEFAULT, 200).applyTo(main);
 
         viewer = new TableViewer(main, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
         createColumns();
@@ -99,7 +106,6 @@ public class RunTypeDialog extends TitleAreaDialog {
         gridData.verticalAlignment = GridData.FILL;
         gridData.grabExcessHorizontalSpace = true;
         gridData.grabExcessVerticalSpace = true;
-        gridData.minimumHeight = 140;
         gridData.horizontalAlignment = GridData.FILL;
         viewer.getControl().setLayoutData(gridData);
         return viewer.getControl();

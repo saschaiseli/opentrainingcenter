@@ -172,6 +172,7 @@ public class TrainingDao {
         dao.begin();
         session.saveOrUpdate(training);
         session.flush();
+        LOG.info(String.format("Training mit ID %s in Datenbank geschrieben", training.getId()));
         return training.getId();
     }
 

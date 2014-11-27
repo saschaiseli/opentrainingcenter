@@ -79,7 +79,9 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
         if (DBSTATE.OK.equals(dbState)) {
             if (id != null && id.length() > 0) {
                 final IAthlete athlete = databaseAccess.getAthlete(Integer.parseInt(id));
-                configurer.setTitle(Application.WINDOW_TITLE + " / " + athlete.getName()); //$NON-NLS-1$
+                if (athlete != null) {
+                    configurer.setTitle(Application.WINDOW_TITLE + " / " + athlete.getName()); //$NON-NLS-1$
+                }
                 context.setAthlete(athlete);
             } else {
                 configurer.setTitle(Application.WINDOW_TITLE);

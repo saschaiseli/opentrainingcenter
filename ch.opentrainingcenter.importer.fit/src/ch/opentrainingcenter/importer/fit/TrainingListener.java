@@ -40,6 +40,12 @@ public class TrainingListener implements MesgListener {
     private int error = 0;
     private int valid = 0;
 
+    private final String fileName;
+
+    public TrainingListener(final String fileName) {
+        this.fileName = fileName;
+    }
+
     @Override
     public void onMesg(final Mesg mesg) {
         final String messageName = mesg.getName();
@@ -102,7 +108,7 @@ public class TrainingListener implements MesgListener {
     }
 
     public ITraining getTraining() {
-        Assertions.notNull(session);
+        Assertions.notNull(session, String.format("Das File %s kann nicht importiert werden", fileName)); //$NON-NLS-1$
         final long dateOfStart = session.getStartTime().getDate().getTime();
         final long end = session.getTimestamp().getDate().getTime();
         final double timeInSeconds = (end - dateOfStart) / 1000;

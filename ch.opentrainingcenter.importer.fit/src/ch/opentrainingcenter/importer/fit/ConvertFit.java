@@ -17,7 +17,7 @@ public class ConvertFit implements IConvert2Tcx {
     public ITraining convert(final File file) throws ConvertException {
         try {
             final InputStream is = new FileInputStream(file);
-            final TrainingListener listener = new TrainingListener();
+            final TrainingListener listener = new TrainingListener(file.getAbsolutePath());
             final Decode decode = new Decode();
             decode.read(is, listener);
             return listener.getTraining();
