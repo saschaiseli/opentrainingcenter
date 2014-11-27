@@ -14,30 +14,35 @@ import ch.opentrainingcenter.core.helper.TimeHelper;
 
 /**
  * Schreibt ein KML File oder loggt das KML als INFO.
- * 
+ *
  * @author sascha
- * 
+ *
  */
 public class KmlDumper {
 
     private static final String LINE = "#####################################################################"; //$NON-NLS-1$
     private static final Logger LOGGER = Logger.getLogger(KmlDumper.class);
     private final KmlFile kmlFile;
-    private final String name;
+
     private final String kmlDumpPath;
+    private final String fileName;
 
     /**
      * Dumpt ein KML File.
-     * 
+     *
      * Wenn der kmlDumpPath null ist wird kein File erstellt, sondern nur das
      * file ins logging ausgegeben.
-     * 
+     *
      * @param kmlDumpPath
      */
     public KmlDumper(final String kmlDumpPath) {
+        this(TimeHelper.convertDateToFileName(Calendar.getInstance(Locale.getDefault()).getTime()), kmlDumpPath);
+    }
+
+    public KmlDumper(final String fileName, final String kmlDumpPath) {
+        this.fileName = fileName;
         this.kmlDumpPath = kmlDumpPath;
-        this.name = TimeHelper.convertDateToFileName(Calendar.getInstance(Locale.getDefault()).getTime());
-        kmlFile = new KmlFile(name);
+        kmlFile = new KmlFile(fileName);
     }
 
     /**
@@ -66,13 +71,13 @@ public class KmlDumper {
             FileWriter writer = null;
             BufferedWriter out = null;
             try {
-                final File f = new File(kmlDumpPath, name + ".kml"); //$NON-NLS-1$
+                final File f = new File(kmlDumpPath, fileName + ".kml"); //$NON-NLS-1$
                 writer = new FileWriter(f);
                 LOGGER.info("Dumpe KML File nach: " + f.getAbsolutePath()); //$NON-NLS-1$
                 out = new BufferedWriter(writer);
                 out.write(kmlFile.getFile());
             } catch (final IOException ex) {
-                LOGGER.error("Kann das File '" + name + "' nicht dumpen: " + ex.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
+                LOGGER.error("Kann das File '" + fileName + "' nicht dumpen: " + ex.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
             } finally {
                 if (out != null) {
                     try {

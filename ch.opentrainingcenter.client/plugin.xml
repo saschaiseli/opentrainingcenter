@@ -328,6 +328,11 @@
             id="ch.opentrainingcenter.client.commands.ShowTracks"
             name="%show_tracks_command_name">
       </command>
+      <command
+            description="%exportKml_desc"
+            id="ch.opentrainingcenter.client.commands.ExportKml"
+            name="%exportKml">
+      </command>
    </extension>
    <extension
          id="prefPage"
@@ -564,6 +569,22 @@
                   style="push">
             </command>
          </menu>
+         <command
+               commandId="ch.opentrainingcenter.client.commands.ExportKml"
+               label="%exportKmlLabel"
+               style="push">
+            <visibleWhen
+                  checkEnabled="true">
+               <iterate
+                     operator="and">
+                  <or>
+                     <instanceof
+                           value="ch.opentrainingcenter.model.navigation.ConcreteImported">
+                     </instanceof>
+                  </or>
+               </iterate>
+            </visibleWhen>
+         </command>
       </menuContribution>
       <menuContribution
             allPopups="false"
@@ -837,6 +858,10 @@
       <handler
             class="ch.opentrainingcenter.client.commands.SearchCommand"
             commandId="ch.opentrainingcenter.client.commands.search">
+      </handler>
+      <handler
+            class="ch.opentrainingcenter.client.commands.ExportKml"
+            commandId="ch.opentrainingcenter.client.commands.ExportKml">
       </handler>
    </extension>
    <extension
