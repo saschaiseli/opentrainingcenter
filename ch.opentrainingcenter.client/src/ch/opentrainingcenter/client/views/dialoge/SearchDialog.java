@@ -251,8 +251,6 @@ public class SearchDialog extends TitleAreaDialog {
         viewer = new TableViewer(result);
         viewer.setContentProvider(new ArrayContentProvider());
         viewer.setLabelProvider(new TrainingLabelProvider());
-        getButton(Dialog.OK).setEnabled(!viewer.getSelection().isEmpty());
-        updateButton();
         viewer.addSelectionChangedListener(new ISelectionChangedListener() {
 
             @Override
@@ -314,6 +312,7 @@ public class SearchDialog extends TitleAreaDialog {
                 if (viewer != null) {
                     viewer.setInput(result);
                 }
+                updateButton();
             }
 
         });

@@ -26,7 +26,7 @@
          </property>
          <property
                name="aboutText"
-               value="Ein noch zu definierender Text...............................">
+               value="Ein noch zu definierender Text">
          </property>
          <property
                name="startupForegroundColor"
