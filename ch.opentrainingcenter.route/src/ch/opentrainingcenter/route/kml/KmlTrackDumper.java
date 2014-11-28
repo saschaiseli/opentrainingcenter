@@ -19,7 +19,7 @@ public class KmlTrackDumper implements IKmlDumper {
         final KmlDumper kmlDumper = new KmlDumper(fileName, kmlPath);
         kmlDumper.addLine(fileName, "ff0000ff", track.toKml()); //$NON-NLS-1$
         if (!track.getPoints().isEmpty()) {
-            kmlDumper.addPlacemark(label, extendedData, getRandomTrackPoint(track));
+            kmlDumper.addPlacemark("", extendedData, getRandomTrackPoint(track)); //$NON-NLS-1$
         }
         kmlDumper.dump();
     }

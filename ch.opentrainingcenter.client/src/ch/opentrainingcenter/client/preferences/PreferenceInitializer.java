@@ -77,7 +77,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
         defaults.put(PreferenceConstants.RUHEPULS_COLOR, "255,0,26");
         defaults.put(PreferenceConstants.GEWICHT_COLOR, "240,173,50");
 
-        defaults.put(PreferenceConstants.KML_DEBUG_PATH, userHome + "/Dropbox/Public");
+        defaults.put(PreferenceConstants.KML_DEBUG_PATH, userHome + File.separator + ".otc/kml");
 
         // database default
         defaults.put(PreferenceConstants.DB_USER, "sa");
