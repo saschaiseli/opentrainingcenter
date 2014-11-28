@@ -40,6 +40,7 @@ import ch.opentrainingcenter.client.views.navigation.tree.KalenderWocheTreeLabel
 import ch.opentrainingcenter.client.views.overview.SingleActivityViewPart;
 import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.core.cache.Cache;
+import ch.opentrainingcenter.core.cache.Event;
 import ch.opentrainingcenter.core.cache.HealthCache;
 import ch.opentrainingcenter.core.cache.IRecordListener;
 import ch.opentrainingcenter.core.cache.TrainingCache;
@@ -175,46 +176,48 @@ public class KalenderWocheNavigationView extends ViewPart {
         healthCache.addListener(new IRecordListener<IHealth>() {
 
             @Override
-            public void recordChanged(final Collection<IHealth> entry) {
-                LOGGER.info("Health changed: Do nothing in Tree"); //$NON-NLS-1$
-            }
-
-            @Override
-            public void deleteRecord(final Collection<IHealth> entry) {
-                updateModel();
-            }
-
-            @Override
-            public void recordAdded(final Collection<IHealth> entry) {
-                updateModel();
+            public void onEvent(final Collection<IHealth> entry, final Event event) {
+                if (!Event.CHANGED.equals(event)) {
+                    updateModel();
+                } else {
+                    LOGGER.info("Health changed: Do nothing in Tree"); //$NON-NLS-1$
+                }
             }
         });
 
         cache.addListener(new IRecordListener<ITraining>() {
 
             @Override
-            public void deleteRecord(final Collection<ITraining> entry) {
+            public void onEvent(final Collection<ITraining> entry, final Event event) {
+                switch (event) {
+                case ADDED:
+                    recordAdded(entry);
+                    break;
+                case CHANGED:
+                    updateModel();
+                    break;
+                case DELETED:
+                    deleteRecord(entry);
+                    break;
+                }
+            }
+
+            private void recordAdded(final Collection<ITraining> entry) {
+                updateModel();
+                if (entry.size() < 8) {
+                    for (final ITraining training : entry) {
+                        Display.getDefault().asyncExec(new OpenTrainingRunnable(training));
+                    }
+                }
+            }
+
+            private void deleteRecord(final Collection<ITraining> entry) {
 
                 updateModel();
                 final IWorkbenchPage wbp = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
                 for (final ITraining record : entry) {
                     final String secondaryViewId = getSecondaryId(record);
                     wbp.hideView(wbp.findViewReference(SingleActivityViewPart.ID, secondaryViewId));
-                }
-            }
-
-            @Override
-            public void recordChanged(final Collection<ITraining> entry) {
-                updateModel();
-            }
-
-            @Override
-            public void recordAdded(final Collection<ITraining> entry) {
-                updateModel();
-                if (entry.size() < 8) {
-                    for (final ITraining training : entry) {
-                        Display.getDefault().asyncExec(new OpenTrainingRunnable(training));
-                    }
                 }
             }
         });

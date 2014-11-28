@@ -24,6 +24,7 @@ import ch.opentrainingcenter.client.Activator;
 import ch.opentrainingcenter.client.model.Units;
 import ch.opentrainingcenter.client.ui.FormToolkitSupport;
 import ch.opentrainingcenter.core.cache.Cache;
+import ch.opentrainingcenter.core.cache.Event;
 import ch.opentrainingcenter.core.cache.IRecordListener;
 import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
@@ -140,18 +141,12 @@ public class MonthWeekTabItem {
         cache.addListener(new IRecordListener<ITraining>() {
 
             @Override
-            public void recordAdded(final Collection<ITraining> entry) {
-                update();
-            }
-
-            @Override
-            public void recordChanged(final Collection<ITraining> entry) {
-                LOGGER.info("Training hat sich geaendert, interessiert nicht, da distanz und/oder Zeit nicht geaendert werden kann"); //$NON-NLS-1$
-            }
-
-            @Override
-            public void deleteRecord(final Collection<ITraining> entry) {
-                update();
+            public void onEvent(final Collection<ITraining> entry, final Event event) {
+                if (!Event.CHANGED.equals(event)) {
+                    update();
+                } else {
+                    LOGGER.info("Training hat sich geaendert, interessiert nicht, da distanz und/oder Zeit nicht geaendert werden kann"); //$NON-NLS-1$
+                }
             }
 
         });

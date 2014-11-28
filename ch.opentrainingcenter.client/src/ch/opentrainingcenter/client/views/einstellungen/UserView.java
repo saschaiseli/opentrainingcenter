@@ -188,21 +188,11 @@ public class UserView extends ViewPart {
         athleteCache.addListener(new IRecordListener<IAthlete>() {
 
             @Override
-            public void recordChanged(final Collection<IAthlete> entry) {
-                // do nothing
-                LOGGER.info("Athlete Data changed. Do nothing..."); //$NON-NLS-1$
-            }
-
-            @Override
-            public void deleteRecord(final Collection<IAthlete> entry) {
-                updateComboViewer(viewer);
-                LOGGER.info("Athlete deleted..."); //$NON-NLS-1$
-            }
-
-            @Override
-            public void recordAdded(final Collection<IAthlete> entry) {
-                updateComboViewer(viewer);
-                LOGGER.info("Athlete added..."); //$NON-NLS-1$
+            public void onEvent(final Collection<IAthlete> entry, final ch.opentrainingcenter.core.cache.Event event) {
+                if (!ch.opentrainingcenter.core.cache.Event.CHANGED.equals(event)) {
+                    updateComboViewer(viewer);
+                    LOGGER.info(String.format("Athlete %s...", event)); //$NON-NLS-1$
+                }
             }
 
             private void updateComboViewer(final ComboViewer viewer) {

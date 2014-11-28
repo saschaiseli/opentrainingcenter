@@ -29,8 +29,8 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
 import ch.opentrainingcenter.client.ui.FormToolkitSupport;
+import ch.opentrainingcenter.core.cache.Event;
 import ch.opentrainingcenter.core.cache.IRecordListener;
-import ch.opentrainingcenter.core.cache.RecordAdapter;
 import ch.opentrainingcenter.core.cache.RouteCache;
 import ch.opentrainingcenter.core.cache.SchuhCache;
 import ch.opentrainingcenter.core.cache.TrainingCache;
@@ -159,12 +159,23 @@ public class NoteSection {
         final IRecordListener<IRoute> routeListener = new IRecordListener<IRoute>() {
 
             @Override
-            public void recordAdded(final Collection<IRoute> entry) {
-                LOGGER.info("Neuer Record ist hinzugekommen, das interessiert hier aber nicht"); //$NON-NLS-1$
+            public void onEvent(final Collection<IRoute> entry, final Event event) {
+                switch (event) {
+                case CHANGED:
+                    recordChanged(entry);
+                    break;
+                case DELETED:
+                    deleteRecord(entry);
+                    break;
+                case ADDED:
+                    LOGGER.info("Neuer Record ist hinzugekommen, das interessiert hier aber nicht"); //$NON-NLS-1$
+                    break;
+                default:
+                    LOGGER.error(String.format("Der Event Typ '%s' kann nicht gemappt werden", event)); //$NON-NLS-1$
+                }
             }
 
-            @Override
-            public void recordChanged(final Collection<IRoute> entry) {
+            private void recordChanged(final Collection<IRoute> entry) {
                 final ISelection sel = comboStrecke.getSelection();
                 if (sel.isEmpty()) {
                     return;
@@ -192,8 +203,7 @@ public class NoteSection {
                 }
             }
 
-            @Override
-            public void deleteRecord(final Collection<IRoute> entry) {
+            private void deleteRecord(final Collection<IRoute> entry) {
                 // updateCombo(entry);
                 final StructuredSelection sel = (StructuredSelection) comboStrecke.getSelection();
                 if (sel.isEmpty()) {
@@ -248,34 +258,33 @@ public class NoteSection {
         });
         // -------------------------------
 
-        final RecordAdapter<ITraining> listener = new RecordAdapter<ITraining>() {
+        RouteCache.getInstance().addListener(routeListener);
+        TrainingCache.getInstance().addListener(new IRecordListener<ITraining>() {
 
             @Override
-            public void recordChanged(final Collection<ITraining> entry) {
-                Display.getDefault().asyncExec(new Runnable() {
+            public void onEvent(final Collection<ITraining> entry, final Event event) {
+                if (Event.CHANGED.equals(event)) {
+                    Display.getDefault().asyncExec(new Runnable() {
 
-                    @Override
-                    public void run() {
-                        if (entry != null) {
-                            final ITraining act = entry.iterator().next();
-                            if (act.getDatum() == training.getDatum()) {
-                                // nur wenn es dieser record ist!
-                                if (training.getNote() != null && !note.isDisposed()) {
-                                    note.setText(training.getNote());
+                        @Override
+                        public void run() {
+                            if (entry != null) {
+                                final ITraining act = entry.iterator().next();
+                                if (act.getDatum() == training.getDatum()) {
+                                    // nur wenn es dieser record ist!
+                                    if (training.getNote() != null && !note.isDisposed()) {
+                                        note.setText(training.getNote());
+                                    }
                                 }
                             }
+                            if (!section.isDisposed()) {
+                                section.update();
+                            }
                         }
-                        if (!section.isDisposed()) {
-                            section.update();
-                        }
-                    }
-                });
-
+                    });
+                }
             }
-        };
-
-        RouteCache.getInstance().addListener(routeListener);
-        TrainingCache.getInstance().addListener(listener);
+        });
 
         if (training.getRoute() != null) {
             comboStrecke.setSelection(new StructuredSelection(training.getRoute()));

@@ -63,6 +63,7 @@ import ch.opentrainingcenter.client.ui.FormToolkitSupport;
 import ch.opentrainingcenter.client.ui.datepicker.DateWidget;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.core.PreferenceConstants;
+import ch.opentrainingcenter.core.cache.Event;
 import ch.opentrainingcenter.core.cache.IRecordListener;
 import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
@@ -86,9 +87,9 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
     private static final DateFormat DATE_FORMAT = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
 
     private static final String[] NEW_SHORT_WEEKDAYS = new String[] { "", Messages.DynamicChartViewPart_Montag, // //$NON-NLS-1$
-            Messages.DynamicChartViewPart_Dienstag, Messages.DynamicChartViewPart_Mittwoch, //
-            Messages.DynamicChartViewPart_Donnerstag, Messages.DynamicChartViewPart_Freitag, //
-            Messages.DynamicChartViewPart_Samstag, Messages.DynamicChartViewPart_Sonntag };
+        Messages.DynamicChartViewPart_Dienstag, Messages.DynamicChartViewPart_Mittwoch, //
+        Messages.DynamicChartViewPart_Donnerstag, Messages.DynamicChartViewPart_Freitag, //
+        Messages.DynamicChartViewPart_Samstag, Messages.DynamicChartViewPart_Sonntag };
 
     private static final Logger LOGGER = Logger.getLogger(DynamicChartViewPart.class);
 
@@ -412,17 +413,7 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
     }
 
     @Override
-    public void recordChanged(final Collection<ITraining> entry) {
-        update();
-    }
-
-    @Override
-    public void deleteRecord(final Collection<ITraining> entry) {
-        update();
-    }
-
-    @Override
-    public void recordAdded(final Collection<ITraining> entry) {
+    public void onEvent(final Collection<ITraining> entry, final Event event) {
         update();
     }
 

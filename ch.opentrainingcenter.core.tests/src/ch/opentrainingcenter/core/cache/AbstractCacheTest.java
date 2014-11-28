@@ -31,21 +31,33 @@ public class AbstractCacheTest {
         private int deleteCallCounter = 0;
 
         @Override
-        public void recordChanged(final Collection<ITraining> entry) {
+        public void onEvent(final Collection<ITraining> entry, final Event event) {
+            switch (event) {
+            case ADDED:
+                recordAdded(entry);
+                break;
+            case CHANGED:
+                recordChanged(entry);
+                break;
+            case DELETED:
+                deleteRecord(entry);
+                break;
+            }
+        }
+
+        private void recordChanged(final Collection<ITraining> entry) {
             if (entry != null) {
                 changed.addAll(entry);
             }
             recordChangeCallCounter++;
         }
 
-        @Override
-        public void deleteRecord(final Collection<ITraining> entry) {
+        private void deleteRecord(final Collection<ITraining> entry) {
             deleted.addAll(entry);
             deleteCallCounter++;
         }
 
-        @Override
-        public void recordAdded(final Collection<ITraining> entry) {
+        private void recordAdded(final Collection<ITraining> entry) {
             added.addAll(entry);
             recordAddedCallCounter++;
         }
@@ -82,6 +94,7 @@ public class AbstractCacheTest {
         public int getAddCallCounter() {
             return recordAddedCallCounter;
         }
+
     }
 
     private TestCache testCache;
@@ -422,19 +435,20 @@ public class AbstractCacheTest {
         testCache.addListener(new IRecordListener<AbstractCacheTest.CacheElement>() {
 
             @Override
-            public void recordChanged(final Collection<CacheElement> entry) {
-                changed.addAll(entry);
+            public void onEvent(final Collection<CacheElement> entry, final Event event) {
+                switch (event) {
+                case ADDED:
+                    added.addAll(entry);
+                    break;
+                case CHANGED:
+                    changed.addAll(entry);
+                    break;
+                case DELETED:
+                    deleted.addAll(entry);
+                    break;
+                }
             }
 
-            @Override
-            public void deleteRecord(final Collection<CacheElement> entry) {
-                deleted.addAll(entry);
-            }
-
-            @Override
-            public void recordAdded(final Collection<CacheElement> entry) {
-                added.addAll(entry);
-            }
         });
         final CacheElement value1 = new CacheElement(42, "ValueA");
         final CacheElement value2 = new CacheElement(42, "ValueB");
@@ -463,36 +477,36 @@ public class AbstractCacheTest {
         testCache.addListener(new IRecordListener<AbstractCacheTest.CacheElement>() {
 
             @Override
-            public void recordChanged(final Collection<CacheElement> entry) {
-                changed.addAll(entry);
-            }
-
-            @Override
-            public void deleteRecord(final Collection<CacheElement> entry) {
-                deleted.addAll(entry);
-            }
-
-            @Override
-            public void recordAdded(final Collection<CacheElement> entry) {
-                added.addAll(entry);
+            public void onEvent(final Collection<CacheElement> entry, final Event event) {
+                switch (event) {
+                case ADDED:
+                    added.addAll(entry);
+                    break;
+                case CHANGED:
+                    changed.addAll(entry);
+                    break;
+                case DELETED:
+                    deleted.addAll(entry);
+                    break;
+                }
             }
         });
 
         testCache.addListener(new IRecordListener<AbstractCacheTest.CacheElement>() {
 
             @Override
-            public void recordChanged(final Collection<CacheElement> entry) {
-                changed.addAll(entry);
-            }
-
-            @Override
-            public void deleteRecord(final Collection<CacheElement> entry) {
-                deleted.addAll(entry);
-            }
-
-            @Override
-            public void recordAdded(final Collection<CacheElement> entry) {
-                added.addAll(entry);
+            public void onEvent(final Collection<CacheElement> entry, final Event event) {
+                switch (event) {
+                case ADDED:
+                    added.addAll(entry);
+                    break;
+                case CHANGED:
+                    changed.addAll(entry);
+                    break;
+                case DELETED:
+                    deleted.addAll(entry);
+                    break;
+                }
             }
         });
         final CacheElement value1 = new CacheElement(42, "1Element");

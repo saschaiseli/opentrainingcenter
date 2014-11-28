@@ -32,6 +32,7 @@ import ch.opentrainingcenter.client.ui.tableviewer.RoutenTableModel;
 import ch.opentrainingcenter.client.ui.tableviewer.RoutenTableViewer;
 import ch.opentrainingcenter.client.ui.tableviewer.TrackTableViewer;
 import ch.opentrainingcenter.client.views.ApplicationContext;
+import ch.opentrainingcenter.core.cache.Event;
 import ch.opentrainingcenter.core.cache.IRecordListener;
 import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
@@ -226,18 +227,10 @@ public class RoutenView extends ViewPart implements IRecordListener {
     }
 
     @Override
-    public void recordAdded(final Collection entry) {
-        update();
-    }
-
-    @Override
-    public void recordChanged(final Collection entry) {
-
-    }
-
-    @Override
-    public void deleteRecord(final Collection entry) {
-        update();
+    public void onEvent(final Collection entry, final Event event) {
+        if (!Event.CHANGED.equals(event)) {
+            update();
+        }
     }
 
     private void deleteRoute(final IRoute route) {

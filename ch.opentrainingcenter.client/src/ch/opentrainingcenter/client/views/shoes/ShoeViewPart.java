@@ -36,6 +36,7 @@ import ch.opentrainingcenter.client.ui.tableviewer.SchuhTableViewer;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.client.views.dialoge.SchuhDialog;
 import ch.opentrainingcenter.client.views.routen.RoutenView;
+import ch.opentrainingcenter.core.cache.Event;
 import ch.opentrainingcenter.core.cache.IRecordListener;
 import ch.opentrainingcenter.core.cache.SchuhCache;
 import ch.opentrainingcenter.core.cache.TrainingCache;
@@ -186,17 +187,7 @@ public class ShoeViewPart extends ViewPart {
         TrainingCache.getInstance().addListener(new IRecordListener<ITraining>() {
 
             @Override
-            public void recordChanged(final Collection<ITraining> entry) {
-                update();
-            }
-
-            @Override
-            public void deleteRecord(final Collection<ITraining> entry) {
-                update();
-            }
-
-            @Override
-            public void recordAdded(final Collection<ITraining> entry) {
+            public void onEvent(final Collection<ITraining> entry, final Event event) {
                 update();
             }
         });
@@ -204,17 +195,7 @@ public class ShoeViewPart extends ViewPart {
         shoeCache.addListener(new IRecordListener<IShoe>() {
 
             @Override
-            public void recordChanged(final Collection<IShoe> entry) {
-                update();
-            }
-
-            @Override
-            public void deleteRecord(final Collection<IShoe> entry) {
-                update();
-            }
-
-            @Override
-            public void recordAdded(final Collection<IShoe> entry) {
+            public void onEvent(final Collection<IShoe> entry, final Event event) {
                 update();
             }
 

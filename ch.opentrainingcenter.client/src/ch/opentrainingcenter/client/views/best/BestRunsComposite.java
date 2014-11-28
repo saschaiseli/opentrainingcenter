@@ -27,6 +27,7 @@ import ch.opentrainingcenter.client.ui.FormToolkitSupport;
 import ch.opentrainingcenter.client.views.ApplicationContext;
 import ch.opentrainingcenter.client.views.overview.SingleActivityViewPart;
 import ch.opentrainingcenter.core.assertions.Assertions;
+import ch.opentrainingcenter.core.cache.Event;
 import ch.opentrainingcenter.core.cache.IRecordListener;
 import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.core.data.Pair;
@@ -85,18 +86,12 @@ public class BestRunsComposite {
         TrainingCache.getInstance().addListener(new IRecordListener<ITraining>() {
 
             @Override
-            public void recordChanged(final Collection<ITraining> entry) {
-                LOGGER.info("Training hat sich geaendert, interessiert nicht, da distanz und/oder Zeit nicht geaendert werden kann"); //$NON-NLS-1$
-            }
-
-            @Override
-            public void deleteRecord(final Collection<ITraining> entry) {
-                update(null);
-            }
-
-            @Override
-            public void recordAdded(final Collection<ITraining> entry) {
-                update(entry);
+            public void onEvent(final Collection<ITraining> entry, final Event event) {
+                if (!Event.CHANGED.equals(event)) {
+                    update(entry);
+                } else {
+                    LOGGER.info("Training hat sich geaendert, interessiert nicht, da distanz und/oder Zeit nicht geaendert werden kann"); //$NON-NLS-1$
+                }
             }
         });
 

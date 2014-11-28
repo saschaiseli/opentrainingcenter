@@ -12,7 +12,7 @@ public enum Event {
     /**
      * Aktualisiert
      */
-    UPDATED,
+    CHANGED,
     /**
      * Geloescht
      */

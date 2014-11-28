@@ -20,6 +20,7 @@ import org.eclipse.ui.PlatformUI;
 import org.joda.time.DateTime;
 
 import ch.opentrainingcenter.client.views.ApplicationContext;
+import ch.opentrainingcenter.core.cache.Event;
 import ch.opentrainingcenter.core.cache.IRecordListener;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.service.IDatabaseService;
@@ -42,21 +43,7 @@ public class PlanungFutureViewer {
         cache.addListener(new IRecordListener<IPlanungModel>() {
 
             @Override
-            public void recordAdded(final Collection<IPlanungModel> entry) {
-                refresh();
-            }
-
-            @Override
-            public void recordChanged(final Collection<IPlanungModel> entry) {
-                refresh();
-            }
-
-            @Override
-            public void deleteRecord(final Collection<IPlanungModel> entry) {
-                refresh();
-            }
-
-            private void refresh() {
+            public void onEvent(final Collection<IPlanungModel> entry, final Event event) {
                 if (viewer != null) {
                     all = databaseAccess.getPlanungsWoche(ApplicationContext.getApplicationContext().getAthlete());
                     viewer.refresh();

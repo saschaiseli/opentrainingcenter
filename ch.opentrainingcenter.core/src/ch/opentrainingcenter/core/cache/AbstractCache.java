@@ -14,10 +14,6 @@ import ch.opentrainingcenter.core.assertions.Assertions;
 
 public abstract class AbstractCache<K, V> implements ICache<K, V> {
 
-    enum Event {
-        CHANGED, ADDED, DELETED;
-    }
-
     private static final Logger LOG = Logger.getLogger(AbstractCache.class);
     private final Map<K, V> cache = new ConcurrentHashMap<K, V>();
     private ListenerList listeners;
@@ -122,19 +118,7 @@ public abstract class AbstractCache<K, V> implements ICache<K, V> {
         for (int i = 0; i < rls.length; i++) {
             @SuppressWarnings("unchecked")
             final IRecordListener<V> listener = (IRecordListener<V>) rls[i];
-            switch (event) {
-            case ADDED:
-                listener.recordAdded(records);
-                break;
-            case CHANGED:
-                listener.recordChanged(records);
-                break;
-            case DELETED:
-                listener.deleteRecord(records);
-                break;
-            default:
-                throw new IllegalArgumentException(String.format("Der Eventtyp '%s' kann nicht konvertiert werden", event)); //$NON-NLS-1$
-            }
+            listener.onEvent(records, event);
         }
     }
 

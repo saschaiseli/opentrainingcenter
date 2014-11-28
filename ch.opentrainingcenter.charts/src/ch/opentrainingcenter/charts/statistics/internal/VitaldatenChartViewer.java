@@ -36,6 +36,7 @@ import org.jfree.experimental.chart.swt.ChartComposite;
 
 import ch.opentrainingcenter.charts.bar.internal.OTCXYBarPainter;
 import ch.opentrainingcenter.core.cache.AbstractCache;
+import ch.opentrainingcenter.core.cache.Event;
 import ch.opentrainingcenter.core.cache.IRecordListener;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.transfer.IHealth;
@@ -177,17 +178,8 @@ public abstract class VitaldatenChartViewer extends ViewPart implements ISelecti
     }
 
     @Override
-    public void recordChanged(final Collection<IHealth> entry) {
+    public void onEvent(final Collection<IHealth> entry, final Event event) {
         updateChart();
     }
 
-    @Override
-    public void deleteRecord(final Collection<IHealth> entry) {
-        updateChart();
-    }
-
-    @Override
-    public void recordAdded(final Collection<IHealth> entry) {
-        updateChart();
-    }
 }
