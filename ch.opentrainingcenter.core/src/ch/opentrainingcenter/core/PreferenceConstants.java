@@ -21,9 +21,7 @@ public final class PreferenceConstants {
     public static final String WEEK_FOR_PLAN = "WEEK_FOR_PLAN";
 
     public static final String CHART_DISTANCE_COLOR = "DISTANCE_CHART_COLOR";
-    public static final String CHART_DISTANCE_COLOR_PAST = "DISTANCE_CHART_COLOR_PAST";
     public static final String CHART_HEART_COLOR = "DISTANCE_HEART_COLOR";
-    public static final String CHART_HEART_COLOR_PAST = "DISTANCE_HEART_COLOR_PAST";
     public static final String CHART_COLOR_RANGE = "CHART_COLOR_RANGE";
 
     public static final String RECOM = "RECOM";

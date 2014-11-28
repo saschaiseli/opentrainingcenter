@@ -109,6 +109,8 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
     private Combo comboFilter;
     private Combo comboChartType;
     private Button compareWithLastYear;
+    private Label labelIconPastPast;
+    private Label labelTextPastPast;
     private Label labelIconPast;
     private Label labelTextPast;
     private Label labelIconNow;
@@ -294,6 +296,12 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
         labelTextPast = new Label(container, SWT.NONE);
         labelTextPast.setVisible(false);
 
+        labelIconPastPast = new Label(container, SWT.NONE);
+        labelIconPastPast.setVisible(false);
+
+        labelTextPastPast = new Label(container, SWT.NONE);
+        labelTextPastPast.setVisible(false);
+
         sectionLegende.setClient(container);
     }
 
@@ -332,33 +340,49 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
                 final int sportIndex = comboSport.getSelectionIndex();
                 final Sport sport = Sport.getByIndex(sportIndex);
 
-                final DateTime dtStart = new DateTime(start.getTime());
-                final DateTime dtEnd = new DateTime(end.getTime());
-                final Date startPast = dtStart.minusYears(1).toDate();
-                final Date endPast = dtEnd.minusYears(1).toDate();
-                final List<ITraining> dataPast = getFilteredData(xAxis, startPast, endPast, sport);
                 final List<ITraining> dataNow = getFilteredData(xAxis, start, end, sport);
+
+                final DateTime dtStartCurrent = new DateTime(start.getTime());
+                final DateTime dtEndCurrent = new DateTime(end.getTime());
+
+                final Date startPastOne = dtStartCurrent.minusYears(1).toDate();
+                final Date endPastOne = dtEndCurrent.minusYears(1).toDate();
+                final List<ITraining> dataPastOne = getFilteredData(xAxis, startPastOne, endPastOne, sport);
+
+                final Date startPastTwo = dtStartCurrent.minusYears(2).toDate();
+                final Date endPastTwo = dtEndCurrent.minusYears(2).toDate();
+                final List<ITraining> dataPastTwo = getFilteredData(xAxis, startPastTwo, endPastTwo, sport);
+
+                final List<List<ITraining>> past = new ArrayList<>();
+                past.add(dataPastTwo);
+                past.add(dataPastOne);
+
                 final TrainingChart chartType = TrainingChart.getByIndex(comboChartType.getSelectionIndex());
                 final boolean compareLast = compareWithLastYear.getSelection();
 
-                chartViewer.updateData(dataPast, dataNow, xAxis, chartType, compareLast);
+                chartViewer.updateData(dataNow, past, xAxis, chartType, compareLast);
                 chartViewer.updateRenderer(xAxis, chartType, compareLast);
                 chartViewer.forceRedraw();
                 sectionChart.setExpanded(true);
-
+                final java.awt.Color color;
                 if (TrainingChart.DISTANZ.equals(chartType)) {
-                    labelIconPast.setImage(createImage(ColorFromPreferenceHelper.getSwtColor(store, PreferenceConstants.CHART_DISTANCE_COLOR_PAST)));
-                    labelIconNow.setImage(createImage(ColorFromPreferenceHelper.getSwtColor(store, PreferenceConstants.CHART_DISTANCE_COLOR)));
+                    color = ColorFromPreferenceHelper.getColor(store, PreferenceConstants.CHART_DISTANCE_COLOR, 255);
                 } else {
-                    labelIconPast.setImage(createImage(ColorFromPreferenceHelper.getSwtColor(store, PreferenceConstants.CHART_HEART_COLOR_PAST)));
-                    labelIconNow.setImage(createImage(ColorFromPreferenceHelper.getSwtColor(store, PreferenceConstants.CHART_HEART_COLOR)));
+                    color = ColorFromPreferenceHelper.getColor(store, PreferenceConstants.CHART_HEART_COLOR, 255);
                 }
 
-                labelTextPast.setText(DATE_FORMAT.format(startPast) + PFEIL + DATE_FORMAT.format(endPast));
-                labelTextNow.setText(DATE_FORMAT.format(dtStart.toDate()) + PFEIL + DATE_FORMAT.format(dtEnd.toDate()));
+                labelIconNow.setImage(createImage(ColorFromPreferenceHelper.awtColor2swtColot(color)));
+                labelIconPast.setImage(createImage(ColorFromPreferenceHelper.awtColor2swtColot(color.brighter())));
+                labelIconPastPast.setImage(createImage(ColorFromPreferenceHelper.awtColor2swtColot(color.brighter().brighter())));
+
+                labelTextNow.setText(DATE_FORMAT.format(dtStartCurrent.toDate()) + PFEIL + DATE_FORMAT.format(dtEndCurrent.toDate()));
+                labelTextPast.setText(DATE_FORMAT.format(startPastOne) + PFEIL + DATE_FORMAT.format(endPastOne));
+                labelTextPastPast.setText(DATE_FORMAT.format(startPastTwo) + PFEIL + DATE_FORMAT.format(endPastTwo));
 
                 labelIconPast.setVisible(compareLast);
                 labelTextPast.setVisible(compareLast);
+                labelIconPastPast.setVisible(compareLast);
+                labelTextPastPast.setVisible(compareLast);
 
                 sectionLegende.setExpanded(true);
             }

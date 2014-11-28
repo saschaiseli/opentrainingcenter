@@ -63,9 +63,6 @@ public class ChartColorPreferencePage extends FieldEditorPreferencePage implemen
         addField(new ColorFieldEditor(PreferenceConstants.CHART_DISTANCE_COLOR, Messages.TrainingTargetPreferencePage8, chart));
         addField(new ColorFieldEditor(PreferenceConstants.CHART_HEART_COLOR, Messages.TrainingTargetPreferencePage9, chart));
 
-        addField(new ColorFieldEditor(PreferenceConstants.CHART_DISTANCE_COLOR_PAST, Messages.TrainingTargetPreferencePage10, chart));
-        addField(new ColorFieldEditor(PreferenceConstants.CHART_HEART_COLOR_PAST, Messages.TrainingTargetPreferencePage11, chart));
-
         addField(new ColorFieldEditor(PreferenceConstants.CHART_COLOR_RANGE, Messages.TrainingTargetPreferencePage12, chart));
 
         // ----------- Vital

@@ -70,8 +70,6 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
         defaults.put(PreferenceConstants.CHART_DISTANCE_COLOR, "30,144,255");
         defaults.put(PreferenceConstants.CHART_HEART_COLOR, "255,17,14");
 
-        defaults.put(PreferenceConstants.CHART_DISTANCE_COLOR_PAST, "135,192,248");
-        defaults.put(PreferenceConstants.CHART_HEART_COLOR_PAST, "238,141,140");
         defaults.put(PreferenceConstants.CHART_COLOR_RANGE, "217,197,17");
 
         defaults.put(PreferenceConstants.RUHEPULS_COLOR, "255,0,26");

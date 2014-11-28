@@ -63,8 +63,6 @@ public class OTCCategoryChartViewer {
 
     static final String DIESES_JAHR = "DiesesJahr"; //$NON-NLS-1$
 
-    static final String LETZTES_JAHR = "letztesJahr"; //$NON-NLS-1$
-
     private static final String DECIMAL = "0.000"; //$NON-NLS-1$
 
     private static final Logger LOGGER = Logger.getLogger(OTCCategoryChartViewer.class);
@@ -127,10 +125,16 @@ public class OTCCategoryChartViewer {
     /**
      * Aktualisiert die Daten
      * 
+     * @param dataNow
+     *            Daten von diesem jahr
+     * @param dataPast
+     *            Vergangene Daten
+     * @param chartSerieType
+     * @param chartType
      * @param compareLast
      *            mit letztem Jahr vergleichen
      */
-    public void updateData(final List<ITraining> dataPast, final List<ITraining> dataNow, final XAxisChart chartSerieType, final TrainingChart chartType,
+    public void updateData(final List<ITraining> dataNow, final List<List<ITraining>> dataPast, final XAxisChart chartSerieType, final TrainingChart chartType,
             final boolean compareLast) {
 
         updateAxis(chartType, chartSerieType);
@@ -139,10 +143,13 @@ public class OTCCategoryChartViewer {
 
         final ChartDataSupport support = new ChartDataSupport(chartSerieType);
         final List<ChartDataWrapper> now = support.convertAndSort(dataNow);
-        final List<ChartDataWrapper> past = support.createPastData(dataPast, now);
 
         if (isComparable(chartSerieType, compareLast)) {
-            addValues(past, LETZTES_JAHR, chartType);
+            int i = 0;
+            for (final List<ITraining> entry : dataPast) {
+                addValues(support.createPastData(entry, now), String.valueOf(i), chartType);
+                i++;
+            }
         }
         addValues(now, DIESES_JAHR, chartType);
     }
@@ -190,27 +197,16 @@ public class OTCCategoryChartViewer {
     }
 
     private void setSeriesPaint(final AbstractRenderer renderer, final TrainingChart chartType, final XAxisChart type, final boolean compareLast) {
-        final String firstColor;
-        final String secondColor;
+        final String color;
         if (TrainingChart.DISTANZ.equals(chartType)) {
-            if (isComparable(type, compareLast)) {
-                firstColor = PreferenceConstants.CHART_DISTANCE_COLOR_PAST;
-                secondColor = PreferenceConstants.CHART_DISTANCE_COLOR;
-            } else {
-                firstColor = PreferenceConstants.CHART_DISTANCE_COLOR;
-                secondColor = PreferenceConstants.CHART_DISTANCE_COLOR;
-            }
+            color = PreferenceConstants.CHART_DISTANCE_COLOR;
         } else {
-            if (isComparable(type, compareLast)) {
-                firstColor = PreferenceConstants.CHART_HEART_COLOR_PAST;
-                secondColor = PreferenceConstants.CHART_HEART_COLOR;
-            } else {
-                firstColor = PreferenceConstants.CHART_HEART_COLOR;
-                secondColor = PreferenceConstants.CHART_HEART_COLOR;
-            }
+            color = PreferenceConstants.CHART_HEART_COLOR;
         }
-        renderer.setSeriesPaint(0, ColorFromPreferenceHelper.getColor(store, firstColor, ALPHA));
-        renderer.setSeriesPaint(1, ColorFromPreferenceHelper.getColor(store, secondColor, ALPHA));
+        final Color barColor = ColorFromPreferenceHelper.getColor(store, color, ALPHA);
+        renderer.setSeriesPaint(2, barColor);
+        renderer.setSeriesPaint(1, barColor.brighter());
+        renderer.setSeriesPaint(0, barColor.brighter().brighter());
     }
 
     private boolean isComparable(final XAxisChart type, final boolean compareLast) {

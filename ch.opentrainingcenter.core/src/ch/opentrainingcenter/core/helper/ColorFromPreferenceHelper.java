@@ -58,4 +58,12 @@ public final class ColorFromPreferenceHelper {
             return new org.eclipse.swt.graphics.Color(device, 255, 255, 255);
         }
     }
+
+    public static org.eclipse.swt.graphics.Color awtColor2swtColot(final Color awtColor) {
+        final int red = awtColor.getRed();
+        final int green = awtColor.getGreen();
+        final int blue = awtColor.getBlue();
+        final Device device = Display.getCurrent();
+        return new org.eclipse.swt.graphics.Color(device, red, green, blue);
+    }
 }
