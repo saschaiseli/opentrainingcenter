@@ -103,14 +103,13 @@ public class MonthWeekTabItem {
         week = createSection(body, NLS.bind(Messages.WeeklyOverview_3, DateTime.now().getWeekOfWeekyear()), true);
         month = createSection(body, TimeHelper.getTranslatedMonat(DateTime.now()), false);
 
-        final DateTime now = DateTime.now();
-        update(now);
-        addListener(now);
+        update();
+        addListener();
 
         Activator.getDefault().getPreferenceStore().addPropertyChangeListener(new IPropertyChangeListener() {
             @Override
             public void propertyChange(final PropertyChangeEvent event) {
-                update(now);
+                update();
             }
         });
     }
@@ -134,22 +133,23 @@ public class MonthWeekTabItem {
         return new OverviewWidgets(km, zeit, anzahl, section);
     }
 
-    private void addListener(final DateTime now) {
+    private void addListener() {
         cache.addListener(new IRecordListener<ITraining>() {
 
             @Override
             public void recordChanged(final Collection<ITraining> entry) {
-                update(now);
+                update();
             }
 
             @Override
             public void deleteRecord(final Collection<ITraining> entry) {
-                update(now);
+                update();
             }
         });
     }
 
-    public void update(final DateTime end) {
+    public void update() {
+        final DateTime end = DateTime.now();
         final DateTime firstDayOfWeek = TimeHelper.getFirstDayOfWeek(end);
         final DateTime firstDayOfMonth = TimeHelper.getFirstDayOfMonth(end);
 
