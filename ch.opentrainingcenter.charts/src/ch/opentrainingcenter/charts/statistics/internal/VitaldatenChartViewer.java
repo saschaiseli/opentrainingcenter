@@ -185,4 +185,9 @@ public abstract class VitaldatenChartViewer extends ViewPart implements ISelecti
     public void deleteRecord(final Collection<IHealth> entry) {
         updateChart();
     }
+
+    @Override
+    public void recordAdded(final Collection<IHealth> entry) {
+        updateChart();
+    }
 }

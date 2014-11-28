@@ -1,7 +1,6 @@
 package ch.opentrainingcenter.core.cache;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -14,6 +13,10 @@ import org.eclipse.core.runtime.ListenerList;
 import ch.opentrainingcenter.core.assertions.Assertions;
 
 public abstract class AbstractCache<K, V> implements ICache<K, V> {
+
+    enum Event {
+        CHANGED, ADDED, DELETED;
+    }
 
     private static final Logger LOG = Logger.getLogger(AbstractCache.class);
     private final Map<K, V> cache = new ConcurrentHashMap<K, V>();
@@ -31,12 +34,23 @@ public abstract class AbstractCache<K, V> implements ICache<K, V> {
     @Override
     public void addAll(final List<V> values) {
         Assertions.notNull(values);
+        final List<V> added = new ArrayList<>();
+        final List<V> changed = new ArrayList<>();
         for (final V value : values) {
-            LOG.info(String.format("Element added in Cache '%s' Size: %s", getName(), cache.size())); //$NON-NLS-1$
-            cache.put(getKey(value), value);
+            final V previous = cache.put(getKey(value), value);
+            if (previous == null) {
+                added.add(value);
+            } else {
+                changed.add(value);
+            }
         }
-        if (!values.isEmpty()) {
-            fireRecordAdded(values);
+        if (!added.isEmpty()) {
+            LOG.info(String.format("Element added in Cache '%s' Size: %s", getName(), cache.size())); //$NON-NLS-1$
+            fireEvent(added, Event.ADDED);
+        }
+        if (!changed.isEmpty()) {
+            LOG.info(String.format("Element updated in Cache '%s' Size: %s", getName(), cache.size())); //$NON-NLS-1$
+            fireEvent(changed, Event.CHANGED);
         }
     }
 
@@ -53,7 +67,7 @@ public abstract class AbstractCache<K, V> implements ICache<K, V> {
             LOG.info(String.format("Element removed --> Cache (%s) Size: %s", value.getClass().getName(), cache.size())); //$NON-NLS-1$
             values.add(value);
         }
-        fireRecordDeleted(values);
+        fireEvent(values, Event.DELETED);
     }
 
     @Override
@@ -83,19 +97,6 @@ public abstract class AbstractCache<K, V> implements ICache<K, V> {
     }
 
     @Override
-    public void notifyListeners() {
-        if (listeners == null) {
-            return;
-        }
-        final Object[] rls = listeners.getListeners();
-        for (int i = 0; i < rls.length; i++) {
-            @SuppressWarnings("unchecked")
-            final IRecordListener<V> listener = (IRecordListener<V>) rls[i];
-            listener.recordChanged(null);
-        }
-    }
-
-    @Override
     public void addListener(final IRecordListener<V> listener) {
         if (listeners == null) {
             listeners = new ListenerList();
@@ -113,7 +114,7 @@ public abstract class AbstractCache<K, V> implements ICache<K, V> {
         }
     }
 
-    private void fireRecordAdded(final Collection<V> values) {
+    private void fireEvent(final List<V> records, final Event event) {
         if (listeners == null) {
             return;
         }
@@ -121,20 +122,19 @@ public abstract class AbstractCache<K, V> implements ICache<K, V> {
         for (int i = 0; i < rls.length; i++) {
             @SuppressWarnings("unchecked")
             final IRecordListener<V> listener = (IRecordListener<V>) rls[i];
-            listener.recordChanged(values);
-        }
-
-    }
-
-    private void fireRecordDeleted(final List<V> values) {
-        if (listeners == null) {
-            return;
-        }
-        final Object[] rls = listeners.getListeners();
-        for (int i = 0; i < rls.length; i++) {
-            @SuppressWarnings("unchecked")
-            final IRecordListener<V> listener = (IRecordListener<V>) rls[i];
-            listener.deleteRecord(values);
+            switch (event) {
+            case ADDED:
+                listener.recordAdded(records);
+                break;
+            case CHANGED:
+                listener.recordChanged(records);
+                break;
+            case DELETED:
+                listener.deleteRecord(records);
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Der Eventtyp '%s' kann nicht konvertiert werden", event)); //$NON-NLS-1$
+            }
         }
     }
 

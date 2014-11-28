@@ -76,7 +76,6 @@ public class ChangeRunTypeTest {
         change.execute(null);
 
         verify(access).updateTrainingType(training, TrainingType.EXT_INTERVALL.getIndex());
-        verify(cache).notifyListeners();
     }
 
     @Test
@@ -98,6 +97,5 @@ public class ChangeRunTypeTest {
 
         verify(access).updateTrainingType(trainingA, TrainingType.EXT_INTERVALL.getIndex());
         verify(access).updateTrainingType(trainingB, TrainingType.EXT_INTERVALL.getIndex());
-        verify(cache).notifyListeners();
     }
 }

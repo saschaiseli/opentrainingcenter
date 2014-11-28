@@ -194,6 +194,11 @@ public class ShoeViewPart extends ViewPart {
             public void deleteRecord(final Collection<ITraining> entry) {
                 update();
             }
+
+            @Override
+            public void recordAdded(final Collection<ITraining> entry) {
+                update();
+            }
         });
 
         shoeCache.addListener(new IRecordListener<IShoe>() {
@@ -205,6 +210,11 @@ public class ShoeViewPart extends ViewPart {
 
             @Override
             public void deleteRecord(final Collection<IShoe> entry) {
+                update();
+            }
+
+            @Override
+            public void recordAdded(final Collection<IShoe> entry) {
                 update();
             }
 

@@ -3,6 +3,7 @@ package ch.opentrainingcenter.client.views.weeks;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.util.IPropertyChangeListener;
@@ -36,6 +37,8 @@ import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.Sport;
 
 public class MonthWeekTabItem {
+
+    private final static Logger LOGGER = Logger.getLogger(MonthWeekTabItem.class);
 
     private static class OverviewWidgets {
         private final Label km;
@@ -137,14 +140,20 @@ public class MonthWeekTabItem {
         cache.addListener(new IRecordListener<ITraining>() {
 
             @Override
-            public void recordChanged(final Collection<ITraining> entry) {
+            public void recordAdded(final Collection<ITraining> entry) {
                 update();
+            }
+
+            @Override
+            public void recordChanged(final Collection<ITraining> entry) {
+                LOGGER.info("Training hat sich geaendert, interessiert nicht, da distanz und/oder Zeit nicht geaendert werden kann"); //$NON-NLS-1$
             }
 
             @Override
             public void deleteRecord(final Collection<ITraining> entry) {
                 update();
             }
+
         });
     }
 

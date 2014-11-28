@@ -42,6 +42,11 @@ public class PlanungFutureViewer {
         cache.addListener(new IRecordListener<IPlanungModel>() {
 
             @Override
+            public void recordAdded(final Collection<IPlanungModel> entry) {
+                refresh();
+            }
+
+            @Override
             public void recordChanged(final Collection<IPlanungModel> entry) {
                 refresh();
             }
@@ -57,6 +62,7 @@ public class PlanungFutureViewer {
                     viewer.refresh();
                 }
             }
+
         });
     }
 

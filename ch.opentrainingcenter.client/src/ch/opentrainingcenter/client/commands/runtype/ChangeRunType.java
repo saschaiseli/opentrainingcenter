@@ -8,8 +8,6 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.ui.PlatformUI;
 
 import ch.opentrainingcenter.client.views.ApplicationContext;
-import ch.opentrainingcenter.core.cache.Cache;
-import ch.opentrainingcenter.core.cache.TrainingCache;
 import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.model.navigation.ConcreteImported;
 import ch.opentrainingcenter.transfer.ITraining;
@@ -20,19 +18,17 @@ import ch.opentrainingcenter.transfer.TrainingType;
  */
 public abstract class ChangeRunType extends AbstractHandler {
 
-    private final Cache cache;
     private final IDatabaseService service;
 
     public ChangeRunType() {
-        this((IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class), TrainingCache.getInstance());
+        this((IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class));
     }
 
     /**
      * Konstruktor fuer Tests
      */
-    public ChangeRunType(final IDatabaseService service, final Cache cache) {
+    public ChangeRunType(final IDatabaseService service) {
         this.service = service;
-        this.cache = cache;
     }
 
     @Override
@@ -46,7 +42,6 @@ public abstract class ChangeRunType extends AbstractHandler {
             final ITraining record = ((ConcreteImported) obj).getTraining();
             service.getDatabaseAccess().updateTrainingType(record, getType().getIndex());
         }
-        cache.notifyListeners();
         return null;
     }
 

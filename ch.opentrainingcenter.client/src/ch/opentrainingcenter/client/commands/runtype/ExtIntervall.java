@@ -19,7 +19,7 @@ public class ExtIntervall extends ChangeRunType {
      * Konstruktor fuer Tests.
      */
     public ExtIntervall(final IDatabaseService service, final Cache cache) {
-        super(service, cache);
+        super(service);
     }
 
     @Override

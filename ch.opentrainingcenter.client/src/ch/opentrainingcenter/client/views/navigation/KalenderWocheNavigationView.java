@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
@@ -56,6 +57,8 @@ import ch.opentrainingcenter.transfer.IHealth;
 import ch.opentrainingcenter.transfer.ITraining;
 
 public class KalenderWocheNavigationView extends ViewPart {
+
+    private static final Logger LOGGER = Logger.getLogger(KalenderWocheNavigationView.class);
 
     public static final String ID = "ch.opentrainingcenter.client.kalenderNavigationView"; //$NON-NLS-1$
 
@@ -173,11 +176,16 @@ public class KalenderWocheNavigationView extends ViewPart {
 
             @Override
             public void recordChanged(final Collection<IHealth> entry) {
-                updateModel();
+                LOGGER.info("Health changed: Do nothing in Tree"); //$NON-NLS-1$
             }
 
             @Override
             public void deleteRecord(final Collection<IHealth> entry) {
+                updateModel();
+            }
+
+            @Override
+            public void recordAdded(final Collection<IHealth> entry) {
                 updateModel();
             }
         });
@@ -198,6 +206,16 @@ public class KalenderWocheNavigationView extends ViewPart {
             @Override
             public void recordChanged(final Collection<ITraining> entry) {
                 updateModel();
+            }
+
+            @Override
+            public void recordAdded(final Collection<ITraining> entry) {
+                updateModel();
+                if (entry.size() < 8) {
+                    for (final ITraining training : entry) {
+                        Display.getDefault().asyncExec(new OpenTrainingRunnable(training));
+                    }
+                }
             }
         });
         final ITraining newestRun = databaseAccess.getNewestTraining(athlete);

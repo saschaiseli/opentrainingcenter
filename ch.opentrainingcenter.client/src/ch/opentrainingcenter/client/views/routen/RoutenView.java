@@ -226,8 +226,13 @@ public class RoutenView extends ViewPart implements IRecordListener {
     }
 
     @Override
-    public void recordChanged(final Collection entry) {
+    public void recordAdded(final Collection entry) {
         update();
+    }
+
+    @Override
+    public void recordChanged(final Collection entry) {
+
     }
 
     @Override

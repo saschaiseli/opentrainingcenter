@@ -20,17 +20,22 @@ public interface ICache<K, V> {
     V get(final K key);
 
     /**
-     * Fügt dem Cache eine Liste von neuen Elementen hinzu.
+     * Fügt dem Cache eine Liste von Elementen hinzu. Wenn neue Records
+     * hinzukommen, werden die Listener mit einem AddRecord ansonsten mit einem
+     * Change notifiziert.
      */
     void addAll(final List<V> values);
 
     /**
-     * Informiert alle registrierten Listeners
+     * Entfernt den Record, falls dieser vorhanden ist und notifiziert alle
+     * Listener
      */
-    void notifyListeners();
-
     void remove(final K key);
 
+    /**
+     * Entfernt die Records, falls diese vorhanden sind und notifiziert alle
+     * Listener
+     */
     void remove(final List<K> keys);
 
     boolean contains(final K key);

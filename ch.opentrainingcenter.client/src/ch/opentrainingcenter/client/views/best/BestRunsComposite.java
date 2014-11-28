@@ -86,12 +86,17 @@ public class BestRunsComposite {
 
             @Override
             public void recordChanged(final Collection<ITraining> entry) {
-                update(entry);
+                LOGGER.info("Training hat sich geaendert, interessiert nicht, da distanz und/oder Zeit nicht geaendert werden kann"); //$NON-NLS-1$
             }
 
             @Override
             public void deleteRecord(final Collection<ITraining> entry) {
                 update(null);
+            }
+
+            @Override
+            public void recordAdded(final Collection<ITraining> entry) {
+                update(entry);
             }
         });
 

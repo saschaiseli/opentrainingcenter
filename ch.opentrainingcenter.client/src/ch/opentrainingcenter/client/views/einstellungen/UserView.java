@@ -189,12 +189,20 @@ public class UserView extends ViewPart {
 
             @Override
             public void recordChanged(final Collection<IAthlete> entry) {
-                updateComboViewer(viewer);
+                // do nothing
+                LOGGER.info("Athlete Data changed. Do nothing..."); //$NON-NLS-1$
             }
 
             @Override
             public void deleteRecord(final Collection<IAthlete> entry) {
                 updateComboViewer(viewer);
+                LOGGER.info("Athlete deleted..."); //$NON-NLS-1$
+            }
+
+            @Override
+            public void recordAdded(final Collection<IAthlete> entry) {
+                updateComboViewer(viewer);
+                LOGGER.info("Athlete added..."); //$NON-NLS-1$
             }
 
             private void updateComboViewer(final ComboViewer viewer) {
@@ -205,6 +213,7 @@ public class UserView extends ViewPart {
                 viewer.refresh();
                 viewer.setSelection(new StructuredSelection(allAthletes.get(allAthletes.size() - 1)));
             }
+
         });
 
         // Buttons

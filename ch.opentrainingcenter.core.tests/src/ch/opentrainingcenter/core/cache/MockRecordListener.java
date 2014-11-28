@@ -3,10 +3,9 @@ package ch.opentrainingcenter.core.cache;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import ch.opentrainingcenter.core.cache.IRecordListener;
-
 public class MockRecordListener<ITraining> implements IRecordListener<ITraining> {
 
+    private final Collection<ITraining> addedEntry = new ArrayList<ITraining>();
     private final Collection<ITraining> changedEntry = new ArrayList<ITraining>();
     private final Collection<ITraining> deletedEntry = new ArrayList<ITraining>();
 
@@ -15,6 +14,14 @@ public class MockRecordListener<ITraining> implements IRecordListener<ITraining>
         this.changedEntry.clear();
         if (entry != null) {
             this.changedEntry.addAll(entry);
+        }
+    }
+
+    @Override
+    public void recordAdded(final Collection<ITraining> entry) {
+        this.addedEntry.clear();
+        if (entry != null) {
+            this.addedEntry.addAll(entry);
         }
     }
 
@@ -33,4 +40,7 @@ public class MockRecordListener<ITraining> implements IRecordListener<ITraining>
         return deletedEntry;
     }
 
+    public Collection<ITraining> getAddedEntry() {
+        return addedEntry;
+    }
 }

@@ -26,11 +26,6 @@ public class MockCache implements Cache {
     }
 
     @Override
-    public void notifyListeners() {
-        // do nothing
-    }
-
-    @Override
     public void addListener(final IRecordListener<ITraining> listener) {
         // do nothing
     }

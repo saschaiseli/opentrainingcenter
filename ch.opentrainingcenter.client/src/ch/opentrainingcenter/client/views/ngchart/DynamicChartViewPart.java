@@ -71,8 +71,8 @@ import ch.opentrainingcenter.core.helper.TimeHelper;
 import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.model.chart.IStatistikCreator;
-import ch.opentrainingcenter.model.chart.TrainingCalculator;
 import ch.opentrainingcenter.model.chart.StatistikFactory;
+import ch.opentrainingcenter.model.chart.TrainingCalculator;
 import ch.opentrainingcenter.model.training.filter.Filter;
 import ch.opentrainingcenter.model.training.filter.FilterFactory;
 import ch.opentrainingcenter.model.training.filter.TrainingFilter;
@@ -86,9 +86,9 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
     private static final DateFormat DATE_FORMAT = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
 
     private static final String[] NEW_SHORT_WEEKDAYS = new String[] { "", Messages.DynamicChartViewPart_Montag, // //$NON-NLS-1$
-        Messages.DynamicChartViewPart_Dienstag, Messages.DynamicChartViewPart_Mittwoch, //
-        Messages.DynamicChartViewPart_Donnerstag, Messages.DynamicChartViewPart_Freitag, //
-        Messages.DynamicChartViewPart_Samstag, Messages.DynamicChartViewPart_Sonntag };
+            Messages.DynamicChartViewPart_Dienstag, Messages.DynamicChartViewPart_Mittwoch, //
+            Messages.DynamicChartViewPart_Donnerstag, Messages.DynamicChartViewPart_Freitag, //
+            Messages.DynamicChartViewPart_Samstag, Messages.DynamicChartViewPart_Sonntag };
 
     private static final Logger LOGGER = Logger.getLogger(DynamicChartViewPart.class);
 
@@ -418,6 +418,11 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
 
     @Override
     public void deleteRecord(final Collection<ITraining> entry) {
+        update();
+    }
+
+    @Override
+    public void recordAdded(final Collection<ITraining> entry) {
         update();
     }
 

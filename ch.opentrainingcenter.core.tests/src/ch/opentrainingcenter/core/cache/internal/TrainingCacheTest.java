@@ -137,7 +137,7 @@ public class TrainingCacheTest {
         // prepare
         cache.addListener(listener);
         // execute
-        cache.notifyListeners();
+        cache.addAll(new ArrayList<ITraining>());
         // assert
         assertEquals("Nichts wurde upgedated", 0, listener.getChangedEntry().size());
         assertEquals("Nichts wurde upgedated", 0, listener.getDeletedEntry().size());
@@ -246,7 +246,7 @@ public class TrainingCacheTest {
 
     @Test
     public void testUpdateOhneListener() {
-        cache.notifyListeners();
+        cache.addAll(new ArrayList<ITraining>());
 
         assertEquals("Eh kein listener angehängt", 0, listener.getChangedEntry().size());
         assertEquals("Eh kein listener angehängt", 0, listener.getDeletedEntry().size());

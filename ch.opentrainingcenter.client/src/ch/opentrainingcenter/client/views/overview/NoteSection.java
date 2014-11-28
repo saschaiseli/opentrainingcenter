@@ -3,6 +3,7 @@ package ch.opentrainingcenter.client.views.overview;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -42,6 +43,8 @@ import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
 
 public class NoteSection {
+
+    private static final Logger LOGGER = Logger.getLogger(NoteSection.class);
 
     private final ITraining training;
     private final FormToolkit toolkit;
@@ -156,6 +159,11 @@ public class NoteSection {
         final IRecordListener<IRoute> routeListener = new IRecordListener<IRoute>() {
 
             @Override
+            public void recordAdded(final Collection<IRoute> entry) {
+                LOGGER.info("Neuer Record ist hinzugekommen, das interessiert hier aber nicht"); //$NON-NLS-1$
+            }
+
+            @Override
             public void recordChanged(final Collection<IRoute> entry) {
                 final ISelection sel = comboStrecke.getSelection();
                 if (sel.isEmpty()) {
@@ -202,6 +210,7 @@ public class NoteSection {
                 }
                 comboStrecke.refresh();
             }
+
         };
         // ------------------------------- Schuhe
         final Label labelSchuhe = toolkit.createLabel(container, ""); //$NON-NLS-1$

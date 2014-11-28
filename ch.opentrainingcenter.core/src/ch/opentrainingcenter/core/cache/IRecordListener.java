@@ -5,14 +5,20 @@ import java.util.Collection;
 public interface IRecordListener<V> {
 
     /**
-     * Neuer record zum cache oder weg vom cache gekommen
+     * Neuer Records hinzugefuegt
+     */
+    void recordAdded(Collection<V> entry);
+
+    /**
+     * Records aktualisiert.
      */
     void recordChanged(Collection<V> entry);
 
     /**
-     * Ein record wird aus dem Cache gelöscht. Wird verwendet um die
-     * entsprechenden Views zu schliessen.
+     * Records gelöscht.
      */
     void deleteRecord(Collection<V> entry);
+
+    // void onEvent(Collection<V> entry, Event event);
 
 }
