@@ -28,7 +28,7 @@ public final class AnnotationHelper {
         final double upperBound = range.getUpperBound();
         final double diff = upperBound - lowerBound;
 
-        final XYTextAnnotation xValue = new XYTextAnnotation(Messages.AnnotationHelper_0 + xy.getFirst(), x * 1.01, lowerBound + (diff * 0.05));
+        final XYTextAnnotation xValue = new XYTextAnnotation(Messages.AnnotationHelper_0 + xy.getFirst().intValue(), x * 1.01, lowerBound + (diff * 0.05));
         xValue.setTextAnchor(TextAnchor.CENTER_LEFT);
         plot.addAnnotation(xValue);
         if (zeit != null) {
