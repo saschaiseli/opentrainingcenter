@@ -18,9 +18,6 @@ import ch.opentrainingcenter.core.geo.MapConverter;
 import ch.opentrainingcenter.core.helper.DistanceHelper;
 import ch.opentrainingcenter.core.helper.TimeHelper;
 import ch.opentrainingcenter.i18n.Messages;
-import ch.opentrainingcenter.model.navigation.ConcreteImported;
-import ch.opentrainingcenter.model.navigation.INavigationItem;
-import ch.opentrainingcenter.model.navigation.INavigationParent;
 import ch.opentrainingcenter.route.IKmlDumper;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.ITraining;
@@ -31,20 +28,18 @@ public class ExportKmlJob extends Job {
     private final static Logger LOGGER = Logger.getLogger(ExportKmlJob.class);
     private final IKmlDumper kmlDumper;
     private final List<?> records;
-    private final IDatabaseAccess databaseAccess;
-    private final IAthlete athlete;
+    private final NavigationSelectionSupport<ITraining> selectionSupport;
 
     public ExportKmlJob(final String name, final IKmlDumper kmlDumper, final List<?> records, final IDatabaseAccess databaseAccess, final IAthlete athlete) {
         super(name);
         this.kmlDumper = kmlDumper;
         this.records = records;
-        this.databaseAccess = databaseAccess;
-        this.athlete = athlete;
+        selectionSupport = new NavigationSelectionSupport<>(databaseAccess, athlete, ITraining.class);
     }
 
     @Override
     protected IStatus run(final IProgressMonitor monitor) {
-        final List<ITraining> trainings = getSelectedTrainings();
+        final List<ITraining> trainings = selectionSupport.getSelectedTrainings(records);
         monitor.beginTask(Messages.ExportKmlJob_BeginTask, trainings.size());
         final long start = DateTime.now().getMillis();
         for (final ITraining training : trainings) {
@@ -63,29 +58,4 @@ public class ExportKmlJob extends Job {
         LOGGER.info(String.format("Das Generieren der %s KML Files dauerte %s [ms]", trainings.size(), DateTime.now().getMillis() - start)); //$NON-NLS-1$
         return Status.OK_STATUS;
     }
-
-    private List<ITraining> getSelectedTrainings() {
-        final List<ITraining> trainings = new ArrayList<>();
-        for (final Object obj : records) {
-            if (obj instanceof Integer) {
-                final DateTime von = new DateTime((int) obj, 1, 1, 0, 0);
-                final DateTime bis = new DateTime((int) obj, 12, 31, 23, 59);
-                trainings.addAll(databaseAccess.getTrainingsByAthleteAndDate(athlete, von, bis));
-            }
-            if (obj instanceof INavigationParent) {
-                final INavigationParent parent = (INavigationParent) obj;
-                final List<INavigationItem> childs = parent.getChilds();
-                for (final INavigationItem child : childs) {
-                    if (child instanceof ConcreteImported) {
-                        trainings.add(((ConcreteImported) child).getTraining());
-                    }
-                }
-            }
-            if (obj instanceof ITraining) {
-                trainings.add((ITraining) obj);
-            }
-        }
-        return trainings;
-    }
-
 }

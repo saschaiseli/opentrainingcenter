@@ -590,6 +590,34 @@ public final class Messages extends NLS {
     public static String SameRouteDialog_Message;
     public static String SameRouteDialog_Title;
 
+    public static String Summary_0;
+
+    public static String SummaryJob_Summary;
+
+    public static String SummaryView_0;
+
+    public static String SummaryView_1;
+
+    public static String SummaryView_10;
+
+    public static String SummaryView_11;
+
+    public static String SummaryView_2;
+
+    public static String SummaryView_3;
+
+    public static String SummaryView_4;
+
+    public static String SummaryView_5;
+
+    public static String SummaryView_6;
+
+    public static String SummaryView_7;
+
+    public static String SummaryView_8;
+
+    public static String SummaryView_9;
+
     static {
         // initialize resource bundle
         NLS.initializeMessages(BUNDLENAME, Messages.class);

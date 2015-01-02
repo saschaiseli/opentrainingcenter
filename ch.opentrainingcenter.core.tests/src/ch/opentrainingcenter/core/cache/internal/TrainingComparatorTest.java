@@ -2,9 +2,9 @@ package ch.opentrainingcenter.core.cache.internal;
 
 import org.junit.Test;
 
+import ch.opentrainingcenter.core.sort.TrainingComparator;
 import ch.opentrainingcenter.transfer.ITraining;
 import static org.junit.Assert.assertEquals;
-
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 

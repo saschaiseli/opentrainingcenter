@@ -22,5 +22,6 @@ Export-Package: ch.opentrainingcenter.model,
  ch.opentrainingcenter.model.planing,
  ch.opentrainingcenter.model.schuh,
  ch.opentrainingcenter.model.strecke,
+ ch.opentrainingcenter.model.summary,
  ch.opentrainingcenter.model.training,
  ch.opentrainingcenter.model.training.filter

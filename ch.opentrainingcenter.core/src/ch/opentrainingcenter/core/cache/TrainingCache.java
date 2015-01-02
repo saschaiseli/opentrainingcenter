@@ -3,7 +3,7 @@ package ch.opentrainingcenter.core.cache;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.opentrainingcenter.core.cache.internal.TrainingComparator;
+import ch.opentrainingcenter.core.sort.TrainingComparator;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;

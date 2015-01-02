@@ -14,6 +14,7 @@ import ch.opentrainingcenter.client.views.planung.JahresplanungViewPart;
 import ch.opentrainingcenter.client.views.planung.ShowJahresplanungViewPart;
 import ch.opentrainingcenter.client.views.routen.RoutenView;
 import ch.opentrainingcenter.client.views.shoes.ShoeViewPart;
+import ch.opentrainingcenter.client.views.summary.SummaryView;
 import ch.opentrainingcenter.client.views.weeks.MonthlyWeekOverview;
 
 public class MainPerspective implements IPerspectiveFactory {
@@ -50,6 +51,7 @@ public class MainPerspective implements IPerspectiveFactory {
         folderMiddle.addPlaceholder(ShowJahresplanungViewPart.ID);
         folderMiddle.addPlaceholder(ChartViewPart.ID + MULTI_VIEW);
         folderMiddle.addPlaceholder(DynamicChartViewPart.ID);
+        folderMiddle.addPlaceholder(SummaryView.ID + MULTI_VIEW);
         folderMiddle.addView(BestRunsView.ID);
         layout.getViewLayout(BestRunsView.ID).setCloseable(false);
         layout.getViewLayout(MonthlyWeekOverview.ID).setCloseable(false);

@@ -1,4 +1,4 @@
-package ch.opentrainingcenter.core.cache.internal;
+package ch.opentrainingcenter.core.sort;
 
 import java.util.Comparator;
 

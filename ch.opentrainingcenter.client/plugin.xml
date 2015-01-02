@@ -185,6 +185,15 @@
             name="%shoes_view"
             restorable="true">
       </view>
+      <view
+            allowMultiple="true"
+            category="ch.opentrainingcenter.client.otccategory"
+            class="ch.opentrainingcenter.client.views.summary.SummaryView"
+            icon="icons/16_16/charts.png"
+            id="ch.opentrainingcenter.client.views.summary.SummaryView"
+            name="%summaryView"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -332,6 +341,11 @@
             description="%exportKml_desc"
             id="ch.opentrainingcenter.client.commands.ExportKml"
             name="%exportKml">
+      </command>
+      <command
+            description="%summary_desc"
+            id="ch.opentrainingcenter.client.commands.Summary"
+            name="%summary">
       </command>
    </extension>
    <extension
@@ -572,6 +586,11 @@
          <command
                commandId="ch.opentrainingcenter.client.commands.ExportKml"
                label="%exportKmlLabel"
+               style="push">
+         </command>
+         <command
+               commandId="ch.opentrainingcenter.client.commands.Summary"
+               label="%summaryLabel"
                style="push">
          </command>
       </menuContribution>
@@ -851,6 +870,10 @@
       <handler
             class="ch.opentrainingcenter.client.commands.ExportKml"
             commandId="ch.opentrainingcenter.client.commands.ExportKml">
+      </handler>
+      <handler
+            class="ch.opentrainingcenter.client.commands.Summary"
+            commandId="ch.opentrainingcenter.client.commands.Summary">
       </handler>
    </extension>
    <extension
