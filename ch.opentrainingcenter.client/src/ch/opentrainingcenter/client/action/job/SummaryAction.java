@@ -11,34 +11,45 @@ import ch.opentrainingcenter.core.sort.TrainingComparator;
 import ch.opentrainingcenter.model.summary.SummaryModel;
 import ch.opentrainingcenter.model.summary.SummaryModel.SummaryBuilder;
 import ch.opentrainingcenter.transfer.ITraining;
+import ch.opentrainingcenter.transfer.Sport;
 
 /**
  * Berechnet die Zusammenfassung von n Trainings
  */
 public class SummaryAction {
 
-    private final List<ITraining> trainings;
-    private final int anzahl;
+    private final List<ITraining> allTrainings;
 
-    public SummaryAction(final List<ITraining> trainings) {
-        this.trainings = trainings;
-        Collections.sort(this.trainings, new TrainingComparator());
-        anzahl = trainings.size();
+    public SummaryAction(final List<ITraining> allTrainings) {
+        this.allTrainings = allTrainings;// filter(allTrainings, sport);
+        Collections.sort(this.allTrainings, new TrainingComparator());
+    }
+
+    private List<ITraining> filter(final List<ITraining> trainings, final Sport sport) {
+        final List<ITraining> result = new ArrayList<>();
+        for (final ITraining training : trainings) {
+            if (sport.equals(training.getSport())) {
+                result.add(training);
+            }
+        }
+        return result;
     }
 
     /**
      * @return die Zusammenfassung der Trainings
      */
-    SummaryModel calculateSummary() {
+    SummaryModel calculateSummary(final Sport sport) {
+        final List<ITraining> trainings = filter(allTrainings, sport);
+        final int anzahl = trainings.size();
         final SummaryBuilder builder = new SummaryBuilder();
         if (anzahl > 0) {
-            final float distanzInMeter = calculateMinMax(builder, anzahl);
-            calculateProInterval(builder, anzahl, distanzInMeter);
+            final float distanzInMeter = calculateMinMax(builder, anzahl, trainings);
+            calculateProInterval(builder, anzahl, distanzInMeter, trainings);
         }
         return builder.build();
     }
 
-    private float calculateMinMax(final SummaryBuilder builder, final int anzahl) {
+    private float calculateMinMax(final SummaryBuilder builder, final int anzahl, final List<ITraining> trainings) {
         final Collection<Integer> heartsMax = new ArrayList<>();
         int heartAvg = 0;
         long dauer = 0;
@@ -55,7 +66,7 @@ public class SummaryAction {
         return distanzInMeter;
     }
 
-    private void calculateProInterval(final SummaryBuilder builder, final int anzahl, final float distanzInMeter) {
+    private void calculateProInterval(final SummaryBuilder builder, final int anzahl, final float distanzInMeter, final List<ITraining> trainings) {
         final Interval startEnd = new Interval(trainings.get(anzahl - 1).getDatum(), trainings.get(0).getDatum());
         builder.interval(startEnd);
         final int days = (int) startEnd.toDuration().getStandardDays();
@@ -70,9 +81,5 @@ public class SummaryAction {
         final int distanzInKm = (int) distanzInMeter / 1000;
         builder.kmPerWeek((float) distanzInKm / wochen).kmPerMonth((float) distanzInKm / monate);
         builder.trainingPerWeek((float) anzahl / wochen).trainingPerMonth((float) anzahl / monate);
-    }
-
-    public int size() {
-        return trainings.size();
     }
 }

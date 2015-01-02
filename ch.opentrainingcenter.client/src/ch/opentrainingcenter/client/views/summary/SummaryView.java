@@ -112,7 +112,7 @@ public class SummaryView extends ViewPart {
 
     }
 
-    public void setData(final SummaryModel model) {
+    public void setRunData(final SummaryModel model) {
         this.model = model;
         update();
     }

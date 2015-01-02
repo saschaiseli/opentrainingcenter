@@ -15,6 +15,7 @@ import org.junit.Test;
 
 import ch.opentrainingcenter.model.summary.SummaryModel;
 import ch.opentrainingcenter.transfer.ITraining;
+import ch.opentrainingcenter.transfer.Sport;
 
 @SuppressWarnings("nls")
 public class SummaryActionTest {
@@ -30,7 +31,7 @@ public class SummaryActionTest {
     public void testCreateModel_EmptyTraining() {
         final SummaryAction action = new SummaryAction(Collections.<ITraining> emptyList());
 
-        assertNotNull(action.calculateSummary());
+        assertNotNull(action.calculateSummary(Sport.RUNNING));
     }
 
     @Test
@@ -40,10 +41,10 @@ public class SummaryActionTest {
         final double dauerInSekunden = 100d;
         final int avgHeart = 100;
         final int maxHeart = 150;
-        trainings.add(createTraining(datum, laengeInMeter, dauerInSekunden, avgHeart, maxHeart));
+        trainings.add(createTraining(datum, laengeInMeter, dauerInSekunden, avgHeart, maxHeart, Sport.RUNNING));
         final SummaryAction action = new SummaryAction(trainings);
 
-        final SummaryModel model = action.calculateSummary();
+        final SummaryModel model = action.calculateSummary(Sport.RUNNING);
 
         final int kmTotal = (int) laengeInMeter / 1000;
         assertModel(laengeInMeter, dauerInSekunden, avgHeart, maxHeart, kmTotal, kmTotal, 1f, 1f, model);
@@ -56,10 +57,10 @@ public class SummaryActionTest {
         final double dauerInSekunden = 86401d;
         final int avgHeart = 100;
         final int maxHeart = 150;
-        trainings.add(createTraining(datum, laengeInMeter, dauerInSekunden, avgHeart, maxHeart));
+        trainings.add(createTraining(datum, laengeInMeter, dauerInSekunden, avgHeart, maxHeart, Sport.RUNNING));
         final SummaryAction action = new SummaryAction(trainings);
 
-        final SummaryModel model = action.calculateSummary();
+        final SummaryModel model = action.calculateSummary(Sport.RUNNING);
 
         final int kmTotal = (int) laengeInMeter / 1000;
         assertModel(laengeInMeter, dauerInSekunden, avgHeart, maxHeart, kmTotal, kmTotal, 1f, 1f, model);
@@ -72,17 +73,15 @@ public class SummaryActionTest {
         final double dauerInSekunden = 100d;
         final int avgHeart = 100;
         final int maxHeart = 150;
-        trainings.add(createTraining(start.getMillis(), laengeInMeter, dauerInSekunden, avgHeart, maxHeart));
-        trainings.add(createTraining(start.getMillis(), laengeInMeter, dauerInSekunden, avgHeart, maxHeart));
+        trainings.add(createTraining(start.getMillis(), laengeInMeter, dauerInSekunden, avgHeart, maxHeart, Sport.RUNNING));
+        trainings.add(createTraining(start.getMillis(), laengeInMeter, dauerInSekunden, avgHeart, maxHeart, Sport.RUNNING));
 
         final SummaryAction action = new SummaryAction(trainings);
 
-        final SummaryModel model = action.calculateSummary();
+        final SummaryModel model = action.calculateSummary(Sport.RUNNING);
 
         final int kmTotal = 2 * (int) (laengeInMeter / 1000);
         assertModel(2 * laengeInMeter, 2 * dauerInSekunden, avgHeart, maxHeart, kmTotal, kmTotal, 2f, 2f, model);
-
-        assertEquals(2, action.size());
     }
 
     @Test
@@ -92,17 +91,15 @@ public class SummaryActionTest {
         final double dauerInSekunden = 100d;
         final int avgHeart = 100;
         final int maxHeart = 150;
-        trainings.add(createTraining(start.getMillis(), laengeInMeter, dauerInSekunden, avgHeart, maxHeart));
-        trainings.add(createTraining(start.plusDays(7).getMillis(), laengeInMeter, dauerInSekunden, avgHeart, maxHeart));
+        trainings.add(createTraining(start.getMillis(), laengeInMeter, dauerInSekunden, avgHeart, maxHeart, Sport.RUNNING));
+        trainings.add(createTraining(start.plusDays(7).getMillis(), laengeInMeter, dauerInSekunden, avgHeart, maxHeart, Sport.RUNNING));
 
         final SummaryAction action = new SummaryAction(trainings);
 
-        final SummaryModel model = action.calculateSummary();
+        final SummaryModel model = action.calculateSummary(Sport.RUNNING);
 
         final int kmTotal = (int) (laengeInMeter / 1000);
         assertModel(2 * laengeInMeter, 2 * dauerInSekunden, avgHeart, maxHeart, 2 * kmTotal, 2 * kmTotal, 2f, 2f, model);
-
-        assertEquals(2, action.size());
     }
 
     @Test
@@ -112,17 +109,36 @@ public class SummaryActionTest {
         final double dauerInSekunden = 100d;
         final int avgHeart = 100;
         final int maxHeart = 150;
-        trainings.add(createTraining(start.getMillis(), laengeInMeter, dauerInSekunden, avgHeart, maxHeart));
-        trainings.add(createTraining(start.plusDays(8).getMillis(), laengeInMeter, dauerInSekunden, avgHeart, maxHeart));
+        trainings.add(createTraining(start.getMillis(), laengeInMeter, dauerInSekunden, avgHeart, maxHeart, Sport.RUNNING));
+        trainings.add(createTraining(start.plusDays(8).getMillis(), laengeInMeter, dauerInSekunden, avgHeart, maxHeart, Sport.RUNNING));
 
         final SummaryAction action = new SummaryAction(trainings);
 
-        final SummaryModel model = action.calculateSummary();
+        final SummaryModel model = action.calculateSummary(Sport.RUNNING);
 
         final int kmTotal = (int) (laengeInMeter / 1000);
         assertModel(2 * laengeInMeter, 2 * dauerInSekunden, avgHeart, maxHeart, kmTotal, 2 * kmTotal, 1f, 2f, model);
+    }
 
-        assertEquals(2, action.size());
+    @Test
+    public void testMit_2_Training_Running_and_Biking() {
+        final DateTime start = new DateTime(2015, 1, 1, 12, 0);
+        final double laengeInMeter = 12345d;
+        final double dauerInSekunden = 100d;
+        final int avgHeart = 100;
+        final int maxHeart = 150;
+        trainings.add(createTraining(start.getMillis(), laengeInMeter, dauerInSekunden, avgHeart, maxHeart, Sport.RUNNING));
+        trainings.add(createTraining(start.plusDays(8).getMillis(), laengeInMeter, dauerInSekunden, avgHeart, maxHeart, Sport.BIKING));
+
+        final SummaryAction actionRunning = new SummaryAction(trainings);
+        final SummaryAction actionBiking = new SummaryAction(trainings);
+
+        final SummaryModel modelRun = actionRunning.calculateSummary(Sport.RUNNING);
+        final SummaryModel modelBike = actionBiking.calculateSummary(Sport.BIKING);
+
+        final int kmTotal = (int) (laengeInMeter / 1000);
+        assertModel(laengeInMeter, dauerInSekunden, avgHeart, maxHeart, kmTotal, kmTotal, 1f, 1f, modelRun);
+        assertModel(laengeInMeter, dauerInSekunden, avgHeart, maxHeart, kmTotal, kmTotal, 1f, 1f, modelBike);
     }
 
     @Test
@@ -132,17 +148,15 @@ public class SummaryActionTest {
         final double dauerInSekunden = 100d;
         final int avgHeart = 100;
         final int maxHeart = 150;
-        trainings.add(createTraining(start.getMillis(), laengeInMeter, dauerInSekunden, avgHeart, maxHeart));
-        trainings.add(createTraining(start.plusDays(31).getMillis(), laengeInMeter, dauerInSekunden + 1000, avgHeart, maxHeart));
+        trainings.add(createTraining(start.getMillis(), laengeInMeter, dauerInSekunden, avgHeart, maxHeart, Sport.RUNNING));
+        trainings.add(createTraining(start.plusDays(31).getMillis(), laengeInMeter, dauerInSekunden + 1000, avgHeart, maxHeart, Sport.RUNNING));
 
         final SummaryAction action = new SummaryAction(trainings);
 
-        final SummaryModel model = action.calculateSummary();
+        final SummaryModel model = action.calculateSummary(Sport.RUNNING);
 
         final int kmTotal = 2 * (int) (laengeInMeter / 1000);
         assertModel(2 * laengeInMeter, 2 * dauerInSekunden + 1000, avgHeart, maxHeart, (float) kmTotal / 5, kmTotal, 0.4f, 2f, model);
-
-        assertEquals(2, action.size());
     }
 
     @Test
@@ -152,26 +166,26 @@ public class SummaryActionTest {
         final double dauerInSekunden = 100d;
         final int avgHeart = 100;
         final int maxHeart = 150;
-        trainings.add(createTraining(start.getMillis(), laengeInMeter, dauerInSekunden, avgHeart, maxHeart));
-        trainings.add(createTraining(start.plusDays(32).getMillis(), laengeInMeter, dauerInSekunden, avgHeart, maxHeart));
+        trainings.add(createTraining(start.getMillis(), laengeInMeter, dauerInSekunden, avgHeart, maxHeart, Sport.RUNNING));
+        trainings.add(createTraining(start.plusDays(32).getMillis(), laengeInMeter, dauerInSekunden, avgHeart, maxHeart, Sport.RUNNING));
 
         final SummaryAction action = new SummaryAction(trainings);
 
-        final SummaryModel model = action.calculateSummary();
+        final SummaryModel model = action.calculateSummary(Sport.RUNNING);
 
         final int kmTotal = 2 * (int) (laengeInMeter / 1000);
         assertModel(2 * laengeInMeter, 2 * dauerInSekunden, avgHeart, maxHeart, (float) kmTotal / 5, (float) kmTotal / 2, 0.4f, 1f, model);
-
-        assertEquals(2, action.size());
     }
 
-    private ITraining createTraining(final long datum, final double laengeInMeter, final double dauerInSekunden, final int avgHeart, final int maxHeart) {
+    private ITraining createTraining(final long datum, final double laengeInMeter, final double dauerInSekunden, final int avgHeart, final int maxHeart,
+            final Sport sport) {
         final ITraining training = mock(ITraining.class);
         when(training.getDatum()).thenReturn(datum);
         when(training.getLaengeInMeter()).thenReturn(laengeInMeter);
         when(training.getDauer()).thenReturn(dauerInSekunden);
         when(training.getAverageHeartBeat()).thenReturn(avgHeart);
         when(training.getMaxHeartBeat()).thenReturn(maxHeart);
+        when(training.getSport()).thenReturn(sport);
         return training;
     }
 

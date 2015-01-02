@@ -10,6 +10,7 @@ import org.eclipse.core.runtime.jobs.Job;
 import ch.opentrainingcenter.client.views.summary.SummaryView;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.transfer.ITraining;
+import ch.opentrainingcenter.transfer.Sport;
 
 public class SummaryJob extends Job {
 
@@ -24,8 +25,8 @@ public class SummaryJob extends Job {
 
     @Override
     protected IStatus run(final IProgressMonitor monitor) {
-        monitor.beginTask(Messages.SummaryJob_Summary, action.size());
-        view.setData(action.calculateSummary());
+        monitor.beginTask(Messages.SummaryJob_Summary, 1);
+        view.setRunData(action.calculateSummary(Sport.RUNNING));
         return Status.OK_STATUS;
     }
 
