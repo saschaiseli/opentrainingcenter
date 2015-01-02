@@ -7,6 +7,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 
 import ch.opentrainingcenter.i18n.Messages;
@@ -122,6 +123,32 @@ public final class TimeHelper {
         final SimpleDateFormat format = new SimpleDateFormat(TIME_FORMAT_PATTERN);
         format.setTimeZone(TimeZone.getTimeZone("GMT+0")); //$NON-NLS-1$
         return format.format(calendar.getTime());
+    }
+
+    /**
+     * @return zeit als String in der Form HH:mm:ss bei 23:59:59 wird aber
+     *         weitergezaehlt > 28:22:11,...
+     */
+    public static String convertTimeToStringHourUnlimited(final long timeInMillis) {
+        if (timeInMillis >= 86400000) {
+            final int days = (int) timeInMillis / 86400000;
+            final long rest = timeInMillis % 86400000L;
+            final DateTimeZone dtz = DateTimeZone.UTC;
+            final DateTime dt = new DateTime(rest, dtz);
+
+            final int hourOfDay = dt.getHourOfDay() + days * 24;
+            return String.format("%s:%s:%s", hourOfDay, addLeadingZero(dt.getMinuteOfHour()), addLeadingZero(dt.getSecondOfMinute())); //$NON-NLS-1$
+        } else {
+            return convertTimeToString(timeInMillis);
+        }
+    }
+
+    private static String addLeadingZero(final int value) {
+        if (value < 10) {
+            return "0" + value; //$NON-NLS-1$
+        } else {
+            return String.valueOf(value);
+        }
     }
 
     public static int getKalenderWoche(final Date date, final Locale locale) {
@@ -274,4 +301,5 @@ public final class TimeHelper {
         cal.set(year, month, day, 0, 0, 0);
         return cal.getTime();
     }
+
 }

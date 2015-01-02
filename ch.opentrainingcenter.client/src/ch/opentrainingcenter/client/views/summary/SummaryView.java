@@ -130,7 +130,7 @@ public class SummaryView extends ViewPart {
                         section.setDescription(NLS.bind(Messages.SummaryView_0, start, end));
                     }
                     distanz.setText(DistanceHelper.roundDistanceFromMeterToKm(model.getDistanz()));
-                    dauer.setText(TimeHelper.convertTimeToString(1000 * model.getDauerInSeconds()));
+                    dauer.setText(TimeHelper.convertTimeToStringHourUnlimited(1000 * model.getDauerInSeconds()));
                     maxHeart.setText(String.valueOf(model.getMaxHeart()));
                     avgHeart.setText(String.valueOf(model.getAvgHeart()));
                     pace.setText(DistanceHelper.calculatePace(model.getDistanz(), model.getDauerInSeconds(), Sport.RUNNING));

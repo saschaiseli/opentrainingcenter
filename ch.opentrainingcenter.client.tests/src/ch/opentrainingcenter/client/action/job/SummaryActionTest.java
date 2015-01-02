@@ -50,6 +50,22 @@ public class SummaryActionTest {
     }
 
     @Test
+    public void testMit_1_Training_mehr_sekunden_als_tag() {
+        final long datum = 7_000_000L;
+        final double laengeInMeter = 12345d;
+        final double dauerInSekunden = 86401d;
+        final int avgHeart = 100;
+        final int maxHeart = 150;
+        trainings.add(createTraining(datum, laengeInMeter, dauerInSekunden, avgHeart, maxHeart));
+        final SummaryAction action = new SummaryAction(trainings);
+
+        final SummaryModel model = action.calculateSummary();
+
+        final int kmTotal = (int) laengeInMeter / 1000;
+        assertModel(laengeInMeter, dauerInSekunden, avgHeart, maxHeart, kmTotal, kmTotal, 1f, 1f, model);
+    }
+
+    @Test
     public void testMit_2_Training_in_selber_Woche() {
         final DateTime start = new DateTime(2015, 1, 1, 12, 0);
         final double laengeInMeter = 12345d;

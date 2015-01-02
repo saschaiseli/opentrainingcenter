@@ -272,6 +272,34 @@ public class TimeHelperTest {
     }
 
     @Test
+    public void testConvertMillisToTime_sekunden_als_tag() {
+        Locale.setDefault(Locale.GERMAN);
+        final String time = TimeHelper.convertTimeToStringHourUnlimited(86399000);
+        assertEquals("23:59:59", time);
+    }
+
+    @Test
+    public void testConvertMillisToTime_Mehr_sekunden_als_tag() {
+        Locale.setDefault(Locale.GERMAN);
+        final String time = TimeHelper.convertTimeToStringHourUnlimited(86400000);
+        assertEquals("24:00:00", time);
+    }
+
+    @Test
+    public void testConvertMillisToTime_Mehr_sekunden_als_tag_2() {
+        Locale.setDefault(Locale.GERMAN);
+        final String time = TimeHelper.convertTimeToStringHourUnlimited(86461000);
+        assertEquals("24:01:01", time);
+    }
+
+    @Test
+    public void testConvertMillisToTime_Mehr_sekunden_als_tag_3() {
+        Locale.setDefault(Locale.GERMAN);
+        final String time = TimeHelper.convertTimeToStringHourUnlimited(86518000);
+        assertEquals("24:01:58", time);
+    }
+
+    @Test
     public void testFirstDayOfWeek() {
         final DateTime dateTime = new DateTime(2013, 12, 15, 9, 11, 12, 42);
         final DateTime expected = new DateTime(2013, 12, 9, 0, 0, 0, 0);
