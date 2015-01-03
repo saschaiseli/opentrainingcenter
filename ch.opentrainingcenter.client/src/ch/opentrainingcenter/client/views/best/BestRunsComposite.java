@@ -98,6 +98,7 @@ public class BestRunsComposite {
     }
 
     public void createPartControl(final Composite parent) {
+        LOGGER.info("BestRunsComposite createPartControl"); //$NON-NLS-1$
         final ScrolledForm form = toolkit.createScrolledForm(parent);
 
         toolkit.decorateFormHeading(form.getForm());
@@ -127,9 +128,11 @@ public class BestRunsComposite {
 
         addText(body);
         addPace(body);
+        LOGGER.info("BestRunsComposite createPartControl finished"); //$NON-NLS-1$
     }
 
     private void addText(final Composite body) {
+        LOGGER.info("addText Rekorde"); //$NON-NLS-1$
         sectionOverall = toolkit.createSection(body, FormToolkitSupport.SECTION_STYLE);
         sectionOverall.setExpanded(false);
 
@@ -154,9 +157,11 @@ public class BestRunsComposite {
         lowestAvPulse = createLink(overViewComposite, Messages.BestRunsView20, model.getRecord(GoldMedalTyp.TIEFSTER_AVERAGE_PULS), Units.BEATS_PER_MINUTE);
 
         sectionOverall.setClient(overViewComposite);
+        LOGGER.info("addText Rekorde finished"); //$NON-NLS-1$
     }
 
     private void addPace(final Composite body) {
+        LOGGER.info("addText Beste Paces"); //$NON-NLS-1$
         sectionPace = toolkit.createSection(body, FormToolkitSupport.SECTION_STYLE);
         sectionPace.setExpanded(false);
 
@@ -179,6 +184,7 @@ public class BestRunsComposite {
         best20 = createLink(overViewComposite, Messages.BestRunsView16 + Messages.BestRunsView17, model.getSchnellstePace(Intervall.VON20_BIS_25), unit);
         best25 = createLink(overViewComposite, Messages.BestRunsView18 + Messages.BestRunsView19, model.getSchnellstePace(Intervall.PLUS25), unit);
         sectionPace.setClient(overViewComposite);
+        LOGGER.info("addText Beste Paces finished"); //$NON-NLS-1$
     }
 
     private Hyperlink createLink(final Composite parent, final String label, final Pair<Long, String> pair, final Units unit) {
@@ -273,7 +279,7 @@ public class BestRunsComposite {
 
                     sectionOverall.redraw();
                     sectionPace.redraw();
-                    LOGGER.info(String.format("Update BestRun DONE...")); //$NON-NLS-1$
+                    LOGGER.info(String.format("Update BestRun finished...")); //$NON-NLS-1$
                 }
             });
         }

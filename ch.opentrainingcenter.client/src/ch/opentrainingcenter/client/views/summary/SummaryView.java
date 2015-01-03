@@ -8,7 +8,6 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.ViewPart;
@@ -41,7 +40,6 @@ public class SummaryView extends ViewPart {
         toolkit.decorateFormHeading(form.getForm());
 
         body = form.getBody();
-        body.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_CYAN));
         GridLayoutFactory.swtDefaults().numColumns(1).applyTo(body);
         GridDataFactory.swtDefaults().align(SWT.FILL, SWT.FILL).applyTo(body);
     }

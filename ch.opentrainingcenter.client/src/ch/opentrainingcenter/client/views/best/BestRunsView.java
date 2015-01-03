@@ -51,6 +51,7 @@ public class BestRunsView extends ViewPart {
             final BestRunsComposite runningComposite = new BestRunsComposite(toolkit, Sport.BIKING, databaseAccess, athlete);
             runningComposite.createPartControl(parent);
         }
+        LOGGER.debug("create BestRunsView view finished"); //$NON-NLS-1$
     }
 
     private boolean hasRunData(final Sport running) {
