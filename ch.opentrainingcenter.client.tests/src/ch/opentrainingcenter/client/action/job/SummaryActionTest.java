@@ -31,7 +31,7 @@ public class SummaryActionTest {
     public void testCreateModel_EmptyTraining() {
         final SummaryAction action = new SummaryAction(Collections.<ITraining> emptyList());
 
-        assertNotNull(action.calculateSummary(Sport.RUNNING));
+        assertNotNull(action.calculateSummary());
     }
 
     @Test
@@ -44,7 +44,7 @@ public class SummaryActionTest {
         trainings.add(createTraining(datum, laengeInMeter, dauerInSekunden, avgHeart, maxHeart, Sport.RUNNING));
         final SummaryAction action = new SummaryAction(trainings);
 
-        final SummaryModel model = action.calculateSummary(Sport.RUNNING);
+        final SummaryModel model = action.calculateSummary().get(Sport.RUNNING);
 
         final int kmTotal = (int) laengeInMeter / 1000;
         assertModel(laengeInMeter, dauerInSekunden, avgHeart, maxHeart, kmTotal, kmTotal, 1f, 1f, model);
@@ -60,7 +60,7 @@ public class SummaryActionTest {
         trainings.add(createTraining(datum, laengeInMeter, dauerInSekunden, avgHeart, maxHeart, Sport.RUNNING));
         final SummaryAction action = new SummaryAction(trainings);
 
-        final SummaryModel model = action.calculateSummary(Sport.RUNNING);
+        final SummaryModel model = action.calculateSummary().get(Sport.RUNNING);
 
         final int kmTotal = (int) laengeInMeter / 1000;
         assertModel(laengeInMeter, dauerInSekunden, avgHeart, maxHeart, kmTotal, kmTotal, 1f, 1f, model);
@@ -78,7 +78,7 @@ public class SummaryActionTest {
 
         final SummaryAction action = new SummaryAction(trainings);
 
-        final SummaryModel model = action.calculateSummary(Sport.RUNNING);
+        final SummaryModel model = action.calculateSummary().get(Sport.RUNNING);
 
         final int kmTotal = 2 * (int) (laengeInMeter / 1000);
         assertModel(2 * laengeInMeter, 2 * dauerInSekunden, avgHeart, maxHeart, kmTotal, kmTotal, 2f, 2f, model);
@@ -96,7 +96,7 @@ public class SummaryActionTest {
 
         final SummaryAction action = new SummaryAction(trainings);
 
-        final SummaryModel model = action.calculateSummary(Sport.RUNNING);
+        final SummaryModel model = action.calculateSummary().get(Sport.RUNNING);
 
         final int kmTotal = (int) (laengeInMeter / 1000);
         assertModel(2 * laengeInMeter, 2 * dauerInSekunden, avgHeart, maxHeart, 2 * kmTotal, 2 * kmTotal, 2f, 2f, model);
@@ -114,7 +114,7 @@ public class SummaryActionTest {
 
         final SummaryAction action = new SummaryAction(trainings);
 
-        final SummaryModel model = action.calculateSummary(Sport.RUNNING);
+        final SummaryModel model = action.calculateSummary().get(Sport.RUNNING);
 
         final int kmTotal = (int) (laengeInMeter / 1000);
         assertModel(2 * laengeInMeter, 2 * dauerInSekunden, avgHeart, maxHeart, kmTotal, 2 * kmTotal, 1f, 2f, model);
@@ -133,8 +133,8 @@ public class SummaryActionTest {
         final SummaryAction actionRunning = new SummaryAction(trainings);
         final SummaryAction actionBiking = new SummaryAction(trainings);
 
-        final SummaryModel modelRun = actionRunning.calculateSummary(Sport.RUNNING);
-        final SummaryModel modelBike = actionBiking.calculateSummary(Sport.BIKING);
+        final SummaryModel modelRun = actionRunning.calculateSummary().get(Sport.RUNNING);
+        final SummaryModel modelBike = actionBiking.calculateSummary().get(Sport.BIKING);
 
         final int kmTotal = (int) (laengeInMeter / 1000);
         assertModel(laengeInMeter, dauerInSekunden, avgHeart, maxHeart, kmTotal, kmTotal, 1f, 1f, modelRun);
@@ -153,7 +153,7 @@ public class SummaryActionTest {
 
         final SummaryAction action = new SummaryAction(trainings);
 
-        final SummaryModel model = action.calculateSummary(Sport.RUNNING);
+        final SummaryModel model = action.calculateSummary().get(Sport.RUNNING);
 
         final int kmTotal = 2 * (int) (laengeInMeter / 1000);
         assertModel(2 * laengeInMeter, 2 * dauerInSekunden + 1000, avgHeart, maxHeart, (float) kmTotal / 5, kmTotal, 0.4f, 2f, model);
@@ -171,7 +171,7 @@ public class SummaryActionTest {
 
         final SummaryAction action = new SummaryAction(trainings);
 
-        final SummaryModel model = action.calculateSummary(Sport.RUNNING);
+        final SummaryModel model = action.calculateSummary().get(Sport.RUNNING);
 
         final int kmTotal = 2 * (int) (laengeInMeter / 1000);
         assertModel(2 * laengeInMeter, 2 * dauerInSekunden, avgHeart, maxHeart, (float) kmTotal / 5, (float) kmTotal / 2, 0.4f, 1f, model);

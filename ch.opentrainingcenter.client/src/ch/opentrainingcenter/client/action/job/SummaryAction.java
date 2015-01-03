@@ -3,7 +3,9 @@ package ch.opentrainingcenter.client.action.job;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.joda.time.Interval;
 
@@ -18,11 +20,14 @@ import ch.opentrainingcenter.transfer.Sport;
  */
 public class SummaryAction {
 
-    private final List<ITraining> allTrainings;
+    private final Map<Sport, List<ITraining>> filtered;
 
     public SummaryAction(final List<ITraining> allTrainings) {
-        this.allTrainings = allTrainings;// filter(allTrainings, sport);
-        Collections.sort(this.allTrainings, new TrainingComparator());
+        Collections.sort(allTrainings, new TrainingComparator());
+        filtered = new HashMap<>();
+        for (final Sport sport : Sport.values()) {
+            filtered.put(sport, filter(allTrainings, sport));
+        }
     }
 
     private List<ITraining> filter(final List<ITraining> trainings, final Sport sport) {
@@ -38,15 +43,27 @@ public class SummaryAction {
     /**
      * @return die Zusammenfassung der Trainings
      */
-    SummaryModel calculateSummary(final Sport sport) {
-        final List<ITraining> trainings = filter(allTrainings, sport);
-        final int anzahl = trainings.size();
+    Map<Sport, SummaryModel> calculateSummary() {
+        final Map<Sport, SummaryModel> result = new HashMap<>();
+        for (final Map.Entry<Sport, List<ITraining>> entry : filtered.entrySet()) {
+            final SummaryModel model = calculateSingleModel(entry);
+            if (model.getDauerInSeconds() > 0) {
+                result.put(entry.getKey(), model);
+            }
+        }
+        return result;
+    }
+
+    private SummaryModel calculateSingleModel(final Map.Entry<Sport, List<ITraining>> entry) {
         final SummaryBuilder builder = new SummaryBuilder();
+        final List<ITraining> trainings = entry.getValue();
+        final int anzahl = trainings.size();
         if (anzahl > 0) {
             final float distanzInMeter = calculateMinMax(builder, anzahl, trainings);
             calculateProInterval(builder, anzahl, distanzInMeter, trainings);
         }
-        return builder.build();
+        final SummaryModel model = builder.build();
+        return model;
     }
 
     private float calculateMinMax(final SummaryBuilder builder, final int anzahl, final List<ITraining> trainings) {
