@@ -26,7 +26,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ch.opentrainingcenter.client.views.dialoge.TrainingLabelProvider;
-import ch.opentrainingcenter.core.helper.TimeHelper;
 import ch.opentrainingcenter.transfer.HeartRate;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.RunData;
@@ -56,7 +55,7 @@ public class TrainingLabelProviderTest {
         final String result = provider.getText(training);
 
         assertNotNull(result);
-        assertEquals(TimeHelper.convertDateToString(2_000_000_000L) + " 10.123km", result);
+        assertEquals("24.01.1970    10.123 km    00:00:42", result);
     }
 
     @Test
@@ -67,7 +66,7 @@ public class TrainingLabelProviderTest {
         final String result = provider.getText(training);
 
         assertNotNull(result);
-        assertEquals(TimeHelper.convertDateToString(2_000_000_000L) + " 10.123km " + note, result);
+        assertEquals("24.01.1970    10.123 km    00:00:42", result);
     }
 
     private ITraining createTraining(final long dateOfStart, final double distance, final String note) {

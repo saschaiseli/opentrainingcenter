@@ -36,7 +36,7 @@ public final class DistanceHelper {
      * @return distanz in kilometer, gerundet auf einen meter und mit einheit
      */
     public static String roundDistanceFromMeterToKmMitEinheit(final double distanceInMeter) {
-        return roundDistanceFromMeterToKm(distanceInMeter) + "km"; //$NON-NLS-1$
+        return roundDistanceFromMeterToKm(distanceInMeter) + " km"; //$NON-NLS-1$
     }
 
     /**

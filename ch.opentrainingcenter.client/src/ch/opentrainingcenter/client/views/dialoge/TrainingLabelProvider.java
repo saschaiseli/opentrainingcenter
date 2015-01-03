@@ -30,16 +30,16 @@ public class TrainingLabelProvider extends LabelProvider {
     public String getText(final Object element) {
         if (element instanceof ITraining) {
             final ITraining training = (ITraining) element;
-            final StringBuilder str = new StringBuilder();
-            str.append(TimeHelper.convertDateToString(training.getDatum()));
-            str.append(' ');
-            str.append(DistanceHelper.roundDistanceFromMeterToKmMitEinheit(training.getLaengeInMeter()));
-            final String note = training.getNote();
-            if (note != null && note.length() > 0) {
-                str.append(' ');
-                str.append(note);
+            final String datum = TimeHelper.convertDateToString(training.getDatum());
+            final String distanz = DistanceHelper.roundDistanceFromMeterToKmMitEinheit(training.getLaengeInMeter());
+            final String dauer = TimeHelper.convertTimeToString(1000L * (long) training.getDauer());
+            String format;
+            if (distanz.length() < 9) {
+                format = "%s     %2$9s    %3$-5s"; //$NON-NLS-1$
+            } else {
+                format = "%s    %2$9s    %3$-5s"; //$NON-NLS-1$
             }
-            return str.toString();
+            return String.format(format, datum, distanz, dauer);
         } else {
             throw new IllegalArgumentException(String.format("Der Typ %s wird in diesem LabelProvider nicht unterstützt", element)); //$NON-NLS-1$
         }
