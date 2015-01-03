@@ -55,7 +55,7 @@ public class TrainingLabelProviderTest {
         final String result = provider.getText(training);
 
         assertNotNull(result);
-        assertEquals("24.01.1970    10.123 km    00:00:42", result);
+        assertEquals("24.01.1970      10.123km    00:00:42", result);
     }
 
     @Test
@@ -66,7 +66,7 @@ public class TrainingLabelProviderTest {
         final String result = provider.getText(training);
 
         assertNotNull(result);
-        assertEquals("24.01.1970    10.123 km    00:00:42", result);
+        assertEquals("24.01.1970      10.123km    00:00:42", result);
     }
 
     private ITraining createTraining(final long dateOfStart, final double distance, final String note) {
