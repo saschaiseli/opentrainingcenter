@@ -165,10 +165,10 @@ public class OTCCategoryChartViewerTest {
 
         assertNotNull(renderer);
 
-        final Color past = (Color) renderer.getSeriesPaint(2);
+        final Color past = (Color) renderer.getSeriesPaint(0);
         assertEquals(colorNow, past);
 
-        final Color now = (Color) renderer.getSeriesPaint(2);
+        final Color now = (Color) renderer.getSeriesPaint(0);
         assertEquals(colorNow, now);
 
         final BarPainter barPainter = renderer.getBarPainter();
@@ -197,7 +197,7 @@ public class OTCCategoryChartViewerTest {
         final Color past = (Color) renderer.getSeriesPaint(1);
         assertEquals(colorNow.brighter(), past);
 
-        final Color now = (Color) renderer.getSeriesPaint(2);
+        final Color now = (Color) renderer.getSeriesPaint(0);
         assertEquals(colorNow, now);
 
         final BarPainter barPainter = renderer.getBarPainter();

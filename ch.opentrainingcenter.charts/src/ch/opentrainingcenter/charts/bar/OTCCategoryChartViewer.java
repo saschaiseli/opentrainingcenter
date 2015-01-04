@@ -144,6 +144,8 @@ public class OTCCategoryChartViewer {
         final ChartDataSupport support = new ChartDataSupport(chartSerieType);
         final List<ChartDataWrapper> now = support.convertAndSort(dataNow);
 
+        addValues(now, DIESES_JAHR, chartType);
+
         if (isComparable(chartSerieType, compareLast)) {
             int i = 0;
             for (final List<ITraining> entry : dataPast) {
@@ -151,7 +153,6 @@ public class OTCCategoryChartViewer {
                 i++;
             }
         }
-        addValues(now, DIESES_JAHR, chartType);
     }
 
     private void addValues(final List<ChartDataWrapper> now, final String rowName, final TrainingChart stc) {
@@ -204,9 +205,9 @@ public class OTCCategoryChartViewer {
             color = PreferenceConstants.CHART_HEART_COLOR;
         }
         final Color barColor = ColorFromPreferenceHelper.getColor(store, color, ALPHA);
-        renderer.setSeriesPaint(2, barColor);
+        renderer.setSeriesPaint(0, barColor);
         renderer.setSeriesPaint(1, barColor.brighter());
-        renderer.setSeriesPaint(0, barColor.brighter().brighter());
+        renderer.setSeriesPaint(2, barColor.brighter().brighter());
     }
 
     private boolean isComparable(final XAxisChart type, final boolean compareLast) {
