@@ -17,6 +17,7 @@ import org.junit.Test;
 import ch.opentrainingcenter.core.exceptions.ConvertException;
 import ch.opentrainingcenter.transfer.ITrackPointProperty;
 import ch.opentrainingcenter.transfer.ITraining;
+import ch.opentrainingcenter.transfer.Sport;
 
 public class ConvertGpxTest {
 
@@ -40,6 +41,7 @@ public class ConvertGpxTest {
     @Test
     public void testConvert() throws ConvertException {
         final ITraining result = converter.convert(new File("resources", "twoTrackPoints.gpx")); //$NON-NLS-1$//$NON-NLS-2$
+        assertEquals(Sport.RUNNING, result.getSport());
         assertNotNull(result);
     }
 
@@ -55,6 +57,7 @@ public class ConvertGpxTest {
         cal.setTimeZone(TimeZone.getDefault());
 
         final ITraining result = converter.convert(new File("resources", "twoTrackPoints.gpx")); //$NON-NLS-1$//$NON-NLS-2$
+        assertEquals(Sport.RUNNING, result.getSport());
         assertEquals(80, result.getMaxHeartBeat());
         assertEquals(70, result.getAverageHeartBeat());
         assertEquals(cal.getTime().getTime() / 1000, result.getDatum() / 1000);
@@ -65,6 +68,7 @@ public class ConvertGpxTest {
     @Test
     public void testMitEinemTrackPoint() throws ConvertException {
         final ITraining result = converter.convert(new File("resources", "oneTrackPoints.gpx")); //$NON-NLS-1$//$NON-NLS-2$
+        assertEquals(Sport.RUNNING, result.getSport());
         assertEquals(0, result.getDauer(), 0.001);
         assertEquals(0, result.getLaengeInMeter(), 0.001);
 
@@ -85,6 +89,7 @@ public class ConvertGpxTest {
     @Test
     public void testZeit() throws ConvertException {
         final ITraining result = converter.convert(new File("resources", "twoTrackPoints.gpx")); //$NON-NLS-1$//$NON-NLS-2$
+        assertEquals(Sport.RUNNING, result.getSport());
         assertEquals(60, result.getDauer(), 0.001);
         assertEquals(10, result.getUpMeter().intValue());
         assertEquals(0, result.getDownMeter().intValue());
@@ -93,12 +98,14 @@ public class ConvertGpxTest {
     @Test
     public void testRealTrackOhneHerz() throws ConvertException {
         final ITraining result = converter.convert(new File("resources", "20131120.gpx")); //$NON-NLS-1$//$NON-NLS-2$
+        assertEquals(Sport.RUNNING, result.getSport());
         assertNotNull(result);
     }
 
     @Test
     public void test2Laps() throws ConvertException {
         final ITraining result = converter.convert(new File("resources", "twoLapsTrackPoints.gpx")); //$NON-NLS-1$//$NON-NLS-2$
+        assertEquals(Sport.RUNNING, result.getSport());
         final List<ITrackPointProperty> trackPoints = result.getTrackPoints();
         final Set<Integer> laps = new HashSet<>();
         for (final ITrackPointProperty point : trackPoints) {

@@ -12,6 +12,7 @@ import ch.opentrainingcenter.transfer.IStreckenPunkt;
 import ch.opentrainingcenter.transfer.ITrackPointProperty;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.RunData;
+import ch.opentrainingcenter.transfer.Sport;
 import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
 
 import com.grum.geocalc.DegreeCoordinate;
@@ -57,6 +58,7 @@ public class GpxConverter {
         final int max = heartRateHandler.getMax();
         final ITraining training = CommonTransferFactory.createTraining(new RunData(start, timeInSeconds, distance, 0d), new HeartRate(avg, max));
         training.setTrackPoints(trackPoints);
+        training.setSport(Sport.RUNNING);
         return training;
     }
 
