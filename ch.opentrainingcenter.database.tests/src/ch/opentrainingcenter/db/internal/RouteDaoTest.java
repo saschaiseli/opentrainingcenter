@@ -24,6 +24,7 @@ import ch.opentrainingcenter.transfer.IShoe;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.IWeather;
 import ch.opentrainingcenter.transfer.RunData;
+import ch.opentrainingcenter.transfer.Sport;
 import ch.opentrainingcenter.transfer.TrainingType;
 import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
 
@@ -66,6 +67,7 @@ public class RouteDaoTest extends DatabaseTestBase {
         training = CommonTransferFactory.createTraining(runData, heart, 5, "note", weatherA, null);
         training.setAthlete(athlete);
         training.setShoe(shoe);
+        training.setSport(Sport.RUNNING);
         training.setTrainingType(TrainingType.NONE);
         access = new CommonDao(connectionConfig);
 
@@ -99,6 +101,7 @@ public class RouteDaoTest extends DatabaseTestBase {
         final ITraining trainingB = CommonTransferFactory.createTraining(runData, heart, 5, "noteb", weatherA, null);
         trainingB.setAthlete(athlete);
         trainingB.setShoe(shoe);
+        trainingB.setSport(Sport.RUNNING);
 
         access.saveOrUpdate(trainingB);
 

@@ -65,7 +65,7 @@ public class DatabaseAccessTest extends DatabaseTestBase {
 
         final IShoe shoe = CommonTransferFactory.createSchuh(athlete, "schuhName", "image", 100, new Date());
         shoeDao.saveOrUpdate(shoe);
-
+        training.setSport(Sport.RUNNING);
         training.setAthlete(athlete);
         training.setShoe(shoe);
 
@@ -87,6 +87,7 @@ public class DatabaseAccessTest extends DatabaseTestBase {
         shoeDao.saveOrUpdate(shoe);
 
         training.setShoe(shoe);
+        training.setSport(Sport.RUNNING);
         dataAccess.saveOrUpdate(training);
 
         final IRoute route = CommonTransferFactory.createRoute("name", "beschreibung", training);
@@ -124,6 +125,7 @@ public class DatabaseAccessTest extends DatabaseTestBase {
         trackPoints.add(property);
         training.setTrackPoints(trackPoints);
         training.setShoe(CommonTransferFactory.createSchuh(athlete, "schuhName", "image", 100, new Date()));
+        training.setSport(Sport.RUNNING);
 
         dataAccess.saveOrUpdate(training.getShoe());
         dataAccess.saveOrUpdate(training);
@@ -168,6 +170,8 @@ public class DatabaseAccessTest extends DatabaseTestBase {
 
         training.setShoe(shoe);
         training.setAthlete(athlete);
+        training.setSport(Sport.RUNNING);
+
         dataAccess.saveOrUpdate(training);
 
         final IRoute routeA = CommonTransferFactory.createRoute("testTraining_4_route", "beschreibungA", training);
@@ -179,6 +183,7 @@ public class DatabaseAccessTest extends DatabaseTestBase {
         training.setNote("note2");
         training.setWeather(weatherB);
         training.setRoute(routeB);
+        training.setSport(Sport.RUNNING);
 
         dataAccess.saveOrUpdate(training);
 
@@ -210,12 +215,14 @@ public class DatabaseAccessTest extends DatabaseTestBase {
         shoeDao.saveOrUpdate(shoe);
 
         trainingA.setShoe(shoe);
+        trainingA.setSport(Sport.RUNNING);
         dataAccess.saveOrUpdate(trainingA);
 
         final IShoe shoeB = CommonTransferFactory.createSchuh(athleteB, "schuhName", "image", 100, new Date());
         shoeDao.saveOrUpdate(shoeB);
 
         trainingB.setShoe(shoeB);
+        trainingB.setSport(Sport.RUNNING);
         dataAccess.saveOrUpdate(trainingB);
 
         final List<ITraining> allFromAthleteA = dataAccess.getAllTrainings(athleteA);
@@ -239,10 +246,12 @@ public class DatabaseAccessTest extends DatabaseTestBase {
         shoeDao.saveOrUpdate(shoe);
 
         referenzTraining.setShoe(shoe);
+        referenzTraining.setSport(Sport.RUNNING);
+
         final RunData runDataB = new RunData(now + 1, 1, 2, 5);
         final ITraining training = CommonTransferFactory.createTraining(runDataB, heart, 5, "note1", weatherA, null);
         training.setAthlete(athleteA);
-
+        training.setSport(Sport.RUNNING);
         training.setShoe(shoe);
 
         dataAccess.saveOrUpdate(referenzTraining);
@@ -281,11 +290,12 @@ public class DatabaseAccessTest extends DatabaseTestBase {
         trainingA.setAthlete(athleteA);
         final IShoe shoe = CommonTransferFactory.createSchuh(athleteA, "schuhName", "image", 100, new Date());
         shoeDao.saveOrUpdate(shoe);
-
+        trainingA.setSport(Sport.RUNNING);
         trainingA.setShoe(shoe);
 
         trainingB.setAthlete(athleteA);
         trainingB.setShoe(shoe);
+        trainingB.setSport(Sport.RUNNING);
 
         dataAccess.saveOrUpdate(trainingA);
         dataAccess.saveOrUpdate(trainingB);
@@ -322,18 +332,23 @@ public class DatabaseAccessTest extends DatabaseTestBase {
         shoeDao.saveOrUpdate(shoe);
 
         trainingA.setShoe(shoe);
+        trainingA.setSport(Sport.RUNNING);
 
         trainingB.setAthlete(athleteA);
         trainingB.setShoe(shoe);
+        trainingB.setSport(Sport.RUNNING);
 
         trainingC.setAthlete(athleteA);
         trainingC.setShoe(shoe);
+        trainingC.setSport(Sport.RUNNING);
 
         trainingD.setAthlete(athleteA);
         trainingD.setShoe(shoe);
+        trainingD.setSport(Sport.RUNNING);
 
         trainingE.setAthlete(athleteA);
         trainingE.setShoe(shoe);
+        trainingE.setSport(Sport.RUNNING);
 
         dataAccess.saveOrUpdate(trainingA);
         dataAccess.saveOrUpdate(trainingB);
@@ -372,15 +387,23 @@ public class DatabaseAccessTest extends DatabaseTestBase {
 
         trainingA.setAthlete(athleteA);
         trainingA.setShoe(shoeA);
+        trainingA.setSport(Sport.RUNNING);
+
         trainingB.setAthlete(athleteA);
         trainingB.setShoe(shoeA);
+        trainingB.setSport(Sport.RUNNING);
+
         trainingC.setAthlete(athleteA);
         trainingC.setShoe(shoeA);
+        trainingC.setSport(Sport.RUNNING);
 
         trainingD.setAthlete(athleteA);
         trainingD.setShoe(shoeB);
+        trainingD.setSport(Sport.RUNNING);
+
         trainingE.setAthlete(athleteA);
         trainingE.setShoe(shoeB);
+        trainingE.setSport(Sport.RUNNING);
 
         dataAccess.saveOrUpdate(trainingA);
         dataAccess.saveOrUpdate(trainingB);
@@ -416,6 +439,7 @@ public class DatabaseAccessTest extends DatabaseTestBase {
 
         trainingA.setAthlete(athleteA);
         trainingA.setShoe(shoeB);
+        trainingA.setSport(Sport.RUNNING);
 
         dataAccess.saveOrUpdate(trainingA);
 
@@ -441,6 +465,7 @@ public class DatabaseAccessTest extends DatabaseTestBase {
         trainingA.setAthlete(athleteA);
         trainingA.setTrainingType(TrainingType.NONE);
         trainingA.setShoe(shoe);
+        trainingA.setSport(Sport.RUNNING);
 
         dataAccess.saveOrUpdate(trainingA);
 
@@ -476,6 +501,7 @@ public class DatabaseAccessTest extends DatabaseTestBase {
         final ITraining training = CommonTransferFactory.createTraining(runData, heart, 5, "note", weatherA, null);
         training.setAthlete(athlete);
         training.setShoe(shoe);
+        training.setSport(Sport.RUNNING);
 
         dataAccess.saveOrUpdate(training);
 
@@ -516,6 +542,7 @@ public class DatabaseAccessTest extends DatabaseTestBase {
         training.setDateOfImport(new Date(now));
         training.setFileName("22342342skflsdjfs.gpx");
         training.setShoe(shoe);
+        training.setSport(Sport.RUNNING);
 
         dataAccess.saveOrUpdate(training);
 
