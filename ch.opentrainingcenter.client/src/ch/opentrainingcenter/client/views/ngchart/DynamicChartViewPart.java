@@ -66,6 +66,7 @@ import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.core.cache.Event;
 import ch.opentrainingcenter.core.cache.IRecordListener;
 import ch.opentrainingcenter.core.cache.TrainingCache;
+import ch.opentrainingcenter.core.data.SimplePair;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.helper.ColorFromPreferenceHelper;
 import ch.opentrainingcenter.core.helper.TimeHelper;
@@ -116,6 +117,7 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
     private Label labelIconNow;
     private Label labelTextNow;
     private Combo comboSport;
+    private org.joda.time.DateTime von;
 
     public DynamicChartViewPart() {
         final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
@@ -212,7 +214,7 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
         GridDataFactory.swtDefaults().align(SWT.BEGINNING, SWT.BEGINNING).span(3, 1).applyTo(compareWithLastYear);
         // ------- neue Zeile
         final Label vonLabel = toolkit.createLabel(container, Messages.DynamicChartViewPart_6);
-        final org.joda.time.DateTime von = org.joda.time.DateTime.now().minusWeeks(store.getInt(PreferenceConstants.CHART_WEEKS));
+        von = org.joda.time.DateTime.now().minusWeeks(store.getInt(PreferenceConstants.CHART_WEEKS));
 
         final DateFormatSymbols symbols = DateFormatSymbols.getInstance(Locale.getDefault());
         symbols.setShortWeekdays(NEW_SHORT_WEEKDAYS);
@@ -324,26 +326,16 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
             @Override
             public void run() {
                 final XAxisChart xAxis = XAxisChart.getByIndex(comboFilter.getSelectionIndex());
-                final boolean year = XAxisChart.YEAR.equals(xAxis);
-                dateVon.setEnabled(!year);
-                dateBis.setEnabled(!year);
-                Date start = dateVon.getDate().toDate();
-                Date end = dateBis.getDate().toDate();
-                if (year) {
-                    final int yStart = new DateTime(end.getTime()).get(DateTimeFieldType.year());
-                    start = TimeHelper.getDate(yStart, 0, 1);
 
-                    final int yEnd = new DateTime(end.getTime()).get(DateTimeFieldType.year());
-                    end = TimeHelper.getDate(yEnd, 11, 31);
-                }
+                final SimplePair<Date> startEnd = getStartEnd();
 
                 final int sportIndex = comboSport.getSelectionIndex();
                 final Sport sport = Sport.getByIndex(sportIndex);
 
-                final List<ITraining> dataNow = getFilteredData(xAxis, start, end, sport);
+                final List<ITraining> dataNow = getFilteredData(xAxis, startEnd.getFirst(), startEnd.getSecond(), sport);
 
-                final DateTime dtStartCurrent = new DateTime(start.getTime());
-                final DateTime dtEndCurrent = new DateTime(end.getTime());
+                final DateTime dtStartCurrent = new DateTime(startEnd.getFirst().getTime());
+                final DateTime dtEndCurrent = new DateTime(startEnd.getSecond().getTime());
 
                 final Date startPastOne = dtStartCurrent.minusYears(1).toDate();
                 final Date endPastOne = dtEndCurrent.minusYears(1).toDate();
@@ -388,6 +380,31 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
             }
 
         });
+    }
+
+    private SimplePair<Date> getStartEnd() {
+        final XAxisChart xAxis = XAxisChart.getByIndex(comboFilter.getSelectionIndex());
+        final boolean year = XAxisChart.YEAR.equals(xAxis);
+        final boolean yearTillNow = XAxisChart.YEAR_START_TILL_NOW.equals(xAxis);
+        Date start = dateVon.getDate().toDate();
+        Date end = dateBis.getDate().toDate();
+        dateBis.setDate(DateTime.now());
+        dateVon.setDate(von);
+        dateVon.setEnabled(!(yearTillNow || year));
+        dateBis.setEnabled(!year);
+        if (yearTillNow || year) {
+            final int yStart = new DateTime(end.getTime()).get(DateTimeFieldType.year());
+            start = TimeHelper.getDate(yStart, 0, 1);
+            dateVon.setDate(new DateTime(start.getTime()));
+            dateVon.setEnabled(false);
+        }
+        if (year) {
+            final int yEnd = new DateTime(end.getTime()).get(DateTimeFieldType.year());
+            end = TimeHelper.getDate(yEnd, 11, 31);
+            dateBis.setDate(new DateTime(end.getTime()));
+            dateBis.setEnabled(false);
+        }
+        return new SimplePair<Date>(start, end);
     }
 
     private List<ITraining> getFilteredData(final XAxisChart chartSerieType, final Date start, final Date end, final Sport sport) {

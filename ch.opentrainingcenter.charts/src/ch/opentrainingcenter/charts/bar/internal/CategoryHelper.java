@@ -41,6 +41,8 @@ public final class CategoryHelper {
             return getMonthCategory(date);
         case YEAR:
             return String.valueOf(createDate(date).get(Calendar.YEAR));
+        case YEAR_START_TILL_NOW:
+            return String.valueOf(createDate(date).get(Calendar.YEAR));
         default:
             throw new IllegalArgumentException(String.format("Die Kategorie %s ist nicht abgebildet", type)); //$NON-NLS-1$
         }
@@ -96,6 +98,8 @@ public final class CategoryHelper {
         case WEEK:
             return Messages.CategoryHelper_2;
         case YEAR:
+            return Messages.CategoryHelper_3;
+        case YEAR_START_TILL_NOW:
             return Messages.CategoryHelper_3;
         default:
             throw new IllegalArgumentException(String.format("Der Typ %s konnte nicht zugeordnet werden", type)); //$NON-NLS-1$

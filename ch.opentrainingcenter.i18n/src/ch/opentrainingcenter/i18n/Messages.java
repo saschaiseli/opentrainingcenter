@@ -112,6 +112,7 @@ public final class Messages extends NLS {
     public static String ChartSerieType6;
     public static String ChartSerieType7;
     public static String ChartSerieType8;
+    public static String ChartSerieType9;
     public static String ChartType0;
     public static String ChartType1;
     public static String ChartType2;

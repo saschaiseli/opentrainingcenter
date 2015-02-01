@@ -4,12 +4,13 @@ import ch.opentrainingcenter.i18n.Messages;
 
 /**
  * Enum welche die Granularität (X-Achse) der Charts definiert. Bei
- * {@link XAxisChart#MONTH} werden zum Beispiel alle Trainings innerhalb
- * eines Monates zu einem einzigen Training zusammengefasst.
+ * {@link XAxisChart#MONTH} werden zum Beispiel alle Trainings innerhalb eines
+ * Monates zu einem einzigen Training zusammengefasst.
  * 
  */
 public enum XAxisChart {
-    YEAR(3, Messages.ChartSerieType0, Messages.ChartSerieType8, Messages.ChartSerieType3), //
+    YEAR(4, Messages.ChartSerieType0, Messages.ChartSerieType8, Messages.ChartSerieType3), //
+    YEAR_START_TILL_NOW(3, Messages.ChartSerieType9, Messages.ChartSerieType8, Messages.ChartSerieType3), //
     MONTH(2, Messages.ChartSerieType1, Messages.ChartSerieType2, Messages.ChartSerieType3), //
     WEEK(1, Messages.ChartSerieType4, Messages.ChartSerieType5, Messages.ChartSerieType6), //
     DAY(0, Messages.ChartSerieType7);
@@ -61,6 +62,8 @@ public enum XAxisChart {
         case 2:
             return XAxisChart.MONTH;
         case 3:
+            return XAxisChart.YEAR_START_TILL_NOW;
+        case 4:
             return XAxisChart.YEAR;
         default:
             return XAxisChart.DAY;
