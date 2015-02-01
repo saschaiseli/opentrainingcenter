@@ -181,8 +181,11 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
             @Override
             public void widgetSelected(final SelectionEvent e) {
                 final XAxisChart type = XAxisChart.getByIndex(comboFilter.getSelectionIndex());
-                update();
                 compareWithLastYear.setEnabled(!XAxisChart.DAY.equals(type));
+                // update();
+                final SimplePair<Date> startEnd = getStartEnd();
+                dateVon.setDate(new DateTime(startEnd.getFirst().getTime()));
+                dateBis.setDate(new DateTime(startEnd.getSecond().getTime()));
             }
 
         });
@@ -200,7 +203,6 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
             public void widgetSelected(final SelectionEvent e) {
                 update();
             }
-
         });
         final XAxisChart cst = XAxisChart.getByIndex(comboFilter.getSelectionIndex());
 
@@ -320,14 +322,13 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
     }
 
     private void update() {
-        LOGGER.info("UPDATE CHART"); //$NON-NLS-1$
         Display.getDefault().asyncExec(new Runnable() {
 
             @Override
             public void run() {
                 final XAxisChart xAxis = XAxisChart.getByIndex(comboFilter.getSelectionIndex());
-
                 final SimplePair<Date> startEnd = getStartEnd();
+                LOGGER.info(String.format("Chart %s von %s bis %s", xAxis, startEnd.getFirst(), startEnd.getSecond())); //$NON-NLS-1$
 
                 final int sportIndex = comboSport.getSelectionIndex();
                 final Sport sport = Sport.getByIndex(sportIndex);
@@ -386,22 +387,18 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
         final XAxisChart xAxis = XAxisChart.getByIndex(comboFilter.getSelectionIndex());
         final boolean year = XAxisChart.YEAR.equals(xAxis);
         final boolean yearTillNow = XAxisChart.YEAR_START_TILL_NOW.equals(xAxis);
-        Date start = dateVon.getDate().toDate();
-        Date end = dateBis.getDate().toDate();
-        dateBis.setDate(DateTime.now());
-        dateVon.setDate(von);
+        Date start = von.toDate();
+        Date end = DateTime.now().toDate();
         dateVon.setEnabled(!(yearTillNow || year));
         dateBis.setEnabled(!year);
         if (yearTillNow || year) {
             final int yStart = new DateTime(end.getTime()).get(DateTimeFieldType.year());
             start = TimeHelper.getDate(yStart, 0, 1);
-            dateVon.setDate(new DateTime(start.getTime()));
             dateVon.setEnabled(false);
         }
         if (year) {
             final int yEnd = new DateTime(end.getTime()).get(DateTimeFieldType.year());
             end = TimeHelper.getDate(yEnd, 11, 31);
-            dateBis.setDate(new DateTime(end.getTime()));
             dateBis.setEnabled(false);
         }
         return new SimplePair<Date>(start, end);
