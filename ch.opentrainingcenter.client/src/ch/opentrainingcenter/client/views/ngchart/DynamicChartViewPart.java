@@ -182,10 +182,10 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
             public void widgetSelected(final SelectionEvent e) {
                 final XAxisChart type = XAxisChart.getByIndex(comboFilter.getSelectionIndex());
                 compareWithLastYear.setEnabled(!XAxisChart.DAY.equals(type));
-                // update();
                 final SimplePair<Date> startEnd = getStartEnd();
                 dateVon.setDate(new DateTime(startEnd.getFirst().getTime()));
                 dateBis.setDate(new DateTime(startEnd.getSecond().getTime()));
+                update();
             }
 
         });
@@ -328,7 +328,9 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
             public void run() {
                 final XAxisChart xAxis = XAxisChart.getByIndex(comboFilter.getSelectionIndex());
                 final SimplePair<Date> startEnd = getStartEnd();
-                LOGGER.info(String.format("Chart %s von %s bis %s", xAxis, startEnd.getFirst(), startEnd.getSecond())); //$NON-NLS-1$
+                final String start = TimeHelper.convertDateToString(startEnd.getFirst());
+                final String end = TimeHelper.convertDateToString(startEnd.getSecond());
+                LOGGER.info(String.format("Chart %s von %s bis %s", xAxis, start, end)); //$NON-NLS-1$
 
                 final int sportIndex = comboSport.getSelectionIndex();
                 final Sport sport = Sport.getByIndex(sportIndex);
