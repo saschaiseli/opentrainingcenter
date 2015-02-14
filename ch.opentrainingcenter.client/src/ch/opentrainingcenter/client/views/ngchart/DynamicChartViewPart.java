@@ -78,6 +78,7 @@ import ch.opentrainingcenter.model.chart.TrainingCalculator;
 import ch.opentrainingcenter.model.training.filter.Filter;
 import ch.opentrainingcenter.model.training.filter.FilterFactory;
 import ch.opentrainingcenter.model.training.filter.TrainingFilter;
+import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.Sport;
 
@@ -100,6 +101,7 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
     private final IDatabaseAccess databaseAccess;
     private final IPreferenceStore store;
     private final OTCCategoryChartViewer chartViewer;
+    private final IAthlete athlete;
 
     private Section sectionChart;
     private Section sectionLegende;
@@ -120,11 +122,19 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
     private org.joda.time.DateTime von;
 
     public DynamicChartViewPart() {
-        final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
+        this((IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class), Activator.getDefault().getPreferenceStore(), ApplicationContext
+                .getApplicationContext().getAthlete());
+    }
+
+    /**
+     * Fuer Tests
+     */
+    public DynamicChartViewPart(final IDatabaseService service, final IPreferenceStore store, final IAthlete athlete) {
         databaseAccess = service.getDatabaseAccess();
-        chartViewer = new OTCCategoryChartViewer(Activator.getDefault().getPreferenceStore());
+        this.store = store;
+        this.athlete = athlete;
+        chartViewer = new OTCCategoryChartViewer(store);
         TrainingCache.getInstance().addListener(this);
-        store = Activator.getDefault().getPreferenceStore();
     }
 
     @Override
@@ -182,10 +192,10 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
             public void widgetSelected(final SelectionEvent e) {
                 final XAxisChart type = XAxisChart.getByIndex(comboFilter.getSelectionIndex());
                 compareWithLastYear.setEnabled(!XAxisChart.DAY.equals(type));
-                // update();
                 final SimplePair<Date> startEnd = getStartEnd();
                 dateVon.setDate(new DateTime(startEnd.getFirst().getTime()));
                 dateBis.setDate(new DateTime(startEnd.getSecond().getTime()));
+                update();
             }
 
         });
@@ -328,7 +338,9 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
             public void run() {
                 final XAxisChart xAxis = XAxisChart.getByIndex(comboFilter.getSelectionIndex());
                 final SimplePair<Date> startEnd = getStartEnd();
-                LOGGER.info(String.format("Chart %s von %s bis %s", xAxis, startEnd.getFirst(), startEnd.getSecond())); //$NON-NLS-1$
+                final String start = TimeHelper.convertDateToString(startEnd.getFirst());
+                final String end = TimeHelper.convertDateToString(startEnd.getSecond());
+                LOGGER.info(String.format("Chart %s von %s bis %s", xAxis, start, end)); //$NON-NLS-1$
 
                 final int sportIndex = comboSport.getSelectionIndex();
                 final Sport sport = Sport.getByIndex(sportIndex);
@@ -404,34 +416,43 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
         return new SimplePair<Date>(start, end);
     }
 
-    private List<ITraining> getFilteredData(final XAxisChart chartSerieType, final Date start, final Date end, final Sport sport) {
-        final IStatistikCreator sc = StatistikFactory.createStatistik();
-        final List<ITraining> allTrainings = databaseAccess.getAllTrainings(ApplicationContext.getApplicationContext().getAthlete());
+    private List<ITraining> getFilteredData(final XAxisChart xAxisChart, final Date start, final Date end, final Sport sport) {
+        final List<ITraining> allTrainings = databaseAccess.getAllTrainings(athlete);
+        final List<ITraining> filtered = filter(allTrainings, start, end, sport);
+        return createSum(filtered, xAxisChart, StatistikFactory.createStatistik());
+    }
+
+    List<ITraining> filter(final List<ITraining> allTrainings, final Date start, final Date end, final Sport sport) {
         final List<ITraining> filteredData = new ArrayList<>();
         final List<Filter<ITraining>> filters = new ArrayList<>();
         filters.add(FilterFactory.createFilterByDate(start, end));
         filters.add(FilterFactory.createFilterBySport(sport));
         final TrainingFilter filter = new TrainingFilter(filters);
         for (final ITraining training : allTrainings) {
-            final boolean st = filter.select(training);
-            if (st) {
+            if (filter.matches(training)) {
                 filteredData.add(training);
             }
         }
-        switch (chartSerieType) {
+        return filteredData;
+    }
+
+    List<ITraining> createSum(final List<ITraining> filteredData, final XAxisChart xAxisChart, final IStatistikCreator statistik) {
+        switch (xAxisChart) {
         case DAY:
-            return sc.getTrainingsProTag(filteredData);
+            return statistik.getTrainingsProTag(filteredData);
         case WEEK:
-            return TrainingCalculator.createSum(sc.getTrainingsProWoche(filteredData), null);
+            return TrainingCalculator.createSum(statistik.getTrainingsProWoche(filteredData));
         case MONTH:
-            return TrainingCalculator.createSum(sc.getTrainingsProMonat(filteredData), null);
+            return TrainingCalculator.createSum(statistik.getTrainingsProMonat(filteredData));
         case YEAR:
-            final Map<Integer, List<ITraining>> trainingsProJahr = sc.getTrainingsProJahr(filteredData);
+            // fall through
+        case YEAR_START_TILL_NOW:
+            final Map<Integer, List<ITraining>> trainingsProJahr = statistik.getTrainingsProJahr(filteredData);
             final Map<Integer, Map<Integer, List<ITraining>>> tmp = new HashMap<Integer, Map<Integer, List<ITraining>>>();
             tmp.put(1, trainingsProJahr);
-            return TrainingCalculator.createSum(tmp, null);
+            return TrainingCalculator.createSum(tmp);
         default:
-            return sc.getTrainingsProTag(filteredData);
+            throw new IllegalArgumentException("Es sind nicht alle Enum Werte abgebildet!!!!"); //$NON-NLS-1$
         }
     }
 
