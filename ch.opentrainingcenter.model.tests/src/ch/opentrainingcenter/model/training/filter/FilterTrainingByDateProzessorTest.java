@@ -49,7 +49,7 @@ public class FilterTrainingByDateProzessorTest {
 
         when(item.getDatum()).thenReturn(1000L);
 
-        final boolean result = prozessor.select(item);
+        final boolean result = prozessor.matches(item);
 
         assertTrue(result);
     }
@@ -60,7 +60,7 @@ public class FilterTrainingByDateProzessorTest {
 
         when(item.getDatum()).thenReturn(1L);
 
-        final boolean result = prozessor.select(item);
+        final boolean result = prozessor.matches(item);
 
         assertTrue(result);
     }
@@ -73,7 +73,7 @@ public class FilterTrainingByDateProzessorTest {
         final DateTime training = new DateTime(2012, 1, 21, 23, 59);
         when(item.getDatum()).thenReturn(training.getMillis());
 
-        final boolean result = prozessor.select(item);
+        final boolean result = prozessor.matches(item);
 
         assertFalse(result);
     }
@@ -86,7 +86,7 @@ public class FilterTrainingByDateProzessorTest {
         final DateTime training = new DateTime(2012, 3, 23, 0, 0);
         when(item.getDatum()).thenReturn(training.getMillis());
 
-        final boolean result = prozessor.select(item);
+        final boolean result = prozessor.matches(item);
 
         assertFalse(result);
     }
@@ -99,7 +99,7 @@ public class FilterTrainingByDateProzessorTest {
         final DateTime training = new DateTime(2012, 3, 22, 16, 22);
         when(item.getDatum()).thenReturn(training.getMillis());
 
-        final boolean result = prozessor.select(item);
+        final boolean result = prozessor.matches(item);
 
         assertTrue(result);
     }

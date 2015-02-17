@@ -50,7 +50,7 @@ public class TrainingFilterTest {
     public void testFilterLeer() {
         filter = new TrainingFilter(filters);
 
-        filter.select(training);
+        filter.matches(training);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -59,7 +59,7 @@ public class TrainingFilterTest {
         filters.add(filterA);
         filter = new TrainingFilter(filters);
 
-        filter.select(null);
+        filter.matches(null);
     }
 
     @Test
@@ -67,7 +67,7 @@ public class TrainingFilterTest {
         filters.add(createFilter(true));
         filter = new TrainingFilter(filters);
 
-        final boolean result = filter.select(training);
+        final boolean result = filter.matches(training);
 
         assertTrue(result);
     }
@@ -77,7 +77,7 @@ public class TrainingFilterTest {
         filters.add(createFilter(false));
         filter = new TrainingFilter(filters);
 
-        final boolean result = filter.select(training);
+        final boolean result = filter.matches(training);
 
         assertFalse(result);
     }
@@ -88,7 +88,7 @@ public class TrainingFilterTest {
         filters.add(createFilter(true));
         filter = new TrainingFilter(filters);
 
-        final boolean result = filter.select(training);
+        final boolean result = filter.matches(training);
 
         assertTrue(result);
     }
@@ -99,14 +99,14 @@ public class TrainingFilterTest {
         filters.add(createFilter(true));
         filter = new TrainingFilter(filters);
 
-        final boolean result = filter.select(training);
+        final boolean result = filter.matches(training);
 
         assertFalse(result);
     }
 
     private Filter<ITraining> createFilter(final boolean value) {
         final Filter<ITraining> mock = mock(Filter.class);
-        when(mock.select((ITraining) any())).thenReturn(value);
+        when(mock.matches((ITraining) any())).thenReturn(value);
         return mock;
     }
 
@@ -116,7 +116,7 @@ public class TrainingFilterTest {
         filters.add(createFilter(false));
         filter = new TrainingFilter(filters);
 
-        final boolean result = filter.select(training);
+        final boolean result = filter.matches(training);
 
         assertFalse(result);
     }

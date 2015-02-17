@@ -45,7 +45,7 @@ public class FilterTrainingByDate implements Filter<ITraining> {
     }
 
     @Override
-    public boolean select(final ITraining item) {
+    public boolean matches(final ITraining item) {
         final long time = item.getDatum();
         if (time < startMillis || time > endMillis) {
             return false;

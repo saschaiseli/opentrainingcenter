@@ -46,7 +46,7 @@ public class FilterTrainingBySportTest {
         filter = new FilterTrainingBySport(Sport.RUNNING);
         when(training.getSport()).thenReturn(Sport.RUNNING);
 
-        final boolean result = filter.select(training);
+        final boolean result = filter.matches(training);
 
         assertTrue(result);
     }
@@ -56,7 +56,7 @@ public class FilterTrainingBySportTest {
         filter = new FilterTrainingBySport(Sport.BIKING);
         when(training.getSport()).thenReturn(Sport.RUNNING);
 
-        final boolean result = filter.select(training);
+        final boolean result = filter.matches(training);
 
         assertFalse(result);
     }
@@ -66,7 +66,7 @@ public class FilterTrainingBySportTest {
         filter = new FilterTrainingBySport(Sport.OTHER);
         when(training.getSport()).thenReturn(Sport.RUNNING);
 
-        final boolean result = filter.select(training);
+        final boolean result = filter.matches(training);
 
         assertTrue(result);
     }
@@ -76,7 +76,7 @@ public class FilterTrainingBySportTest {
         filter = new FilterTrainingBySport(Sport.OTHER);
         when(training.getSport()).thenReturn(Sport.BIKING);
 
-        final boolean result = filter.select(training);
+        final boolean result = filter.matches(training);
 
         assertTrue(result);
     }
@@ -86,13 +86,13 @@ public class FilterTrainingBySportTest {
         filter = new FilterTrainingBySport(null);
         when(training.getSport()).thenReturn(Sport.RUNNING);
 
-        filter.select(training);
+        filter.matches(training);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testOnNextDoFilterWithNullSport() {
         filter = new FilterTrainingBySport(Sport.RUNNING);
 
-        filter.select(null);
+        filter.matches(null);
     }
 }

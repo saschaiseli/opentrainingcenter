@@ -34,7 +34,7 @@ public class FilterTrainingBySport implements Filter<ITraining> {
     }
 
     @Override
-    public boolean select(final ITraining item) {
+    public boolean matches(final ITraining item) {
         Assertions.notNull(item);
         if (Sport.OTHER.equals(sport)) {
             return true;

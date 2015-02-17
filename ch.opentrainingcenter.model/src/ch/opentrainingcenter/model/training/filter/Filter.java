@@ -4,5 +4,5 @@ public interface Filter<T> {
     /**
      * @return true wenn das Element dem Filter entspricht.
      */
-    boolean select(T t);
+    boolean matches(T t);
 }

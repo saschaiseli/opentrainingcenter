@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-
 import ch.opentrainingcenter.transfer.HeartRate;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.RunData;
@@ -14,10 +12,23 @@ import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
 
 public final class TrainingCalculator {
 
-    private static final Logger LOGGER = Logger.getLogger(TrainingCalculator.class);
-
     private TrainingCalculator() {
 
+    }
+
+    /**
+     * Erstellt eine neue Liste von Trainings. Der Input ist entweder nach dem
+     * 
+     * <pre>
+     *  Input:   <JAHR,<KalenderWoche,List<ISimpleTraining>>>
+     *  Output:  Jedes ISimpleTraining der Liste ist die Summe der Trainings pro KW mit dem Datum des letzten Laufes
+     *  
+     *  Input:   <JAHR,<Monat,List<ISimpleTraining>>>
+     *  Output:  Jedes ISimpleTraining der Liste ist die Summe der Trainings pro Monat mit dem Datum des letzten Laufes
+     * </pre>
+     */
+    public static List<ITraining> createSum(final Map<Integer, Map<Integer, List<ITraining>>> trainings) {
+        return createSum(trainings, null);
     }
 
     /**
@@ -48,17 +59,11 @@ public final class TrainingCalculator {
         int heartRate = 0;
         int maxHeart = 0;
         double maxSpeed = 0;
-        boolean filterResults = true;
-        if (filter == null) {
-            // do not filter
-            filterResults = false;
-        }
         int countHeartIsZero = 0;
         long date = 0;
         int count = 0;
         for (final ITraining training : trainingsProWocheOderMonat.getValue()) {
-            LOGGER.debug("compress Trainings --> Filter nach " + filter + " matches? " + matchFilter(filter, filterResults, training)); //$NON-NLS-1$ //$NON-NLS-2$
-            if (matchFilter(filter, filterResults, training)) {
+            if (matchFilter(filter, training)) {
                 distance += training.getLaengeInMeter();
                 seconds += training.getDauer();
                 maxHeart = getMax(maxHeart, training.getMaxHeartBeat());
@@ -93,8 +98,8 @@ public final class TrainingCalculator {
      * @return true wenn filter passt oder nicht gefiltert werden soll,
      *         andernfalls false.
      */
-    private static boolean matchFilter(final TrainingType filter, final boolean filterResults, final ITraining training) {
-        if (filterResults) {
+    private static boolean matchFilter(final TrainingType filter, final ITraining training) {
+        if (filter != null) {
             return training.getTrainingType().equals(filter);
         } else {
             // alle daten zusammenzaehlen

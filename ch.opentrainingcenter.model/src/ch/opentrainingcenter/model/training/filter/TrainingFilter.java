@@ -34,10 +34,10 @@ public class TrainingFilter implements Filter<ITraining> {
     }
 
     @Override
-    public boolean select(final ITraining training) {
+    public boolean matches(final ITraining training) {
         Assertions.notNull(training);
         for (final Filter<ITraining> filter : filters) {
-            if (!filter.select(training)) {
+            if (!filter.matches(training)) {
                 return false;
             }
         }
