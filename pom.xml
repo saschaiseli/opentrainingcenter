@@ -24,6 +24,7 @@
 			junit,
 			h2_lib,
 			ch.opentrainingcenter.tcx/**/*.java,
+			com.garmin.fit,
 			ch.opentrainingcenter.tcx.ObjectFactory.java,
 			**/*Test.java,
 			**/Messages.java,
