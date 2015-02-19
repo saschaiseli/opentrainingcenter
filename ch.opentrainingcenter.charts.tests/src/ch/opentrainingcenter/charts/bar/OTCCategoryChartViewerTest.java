@@ -50,6 +50,7 @@ import ch.opentrainingcenter.charts.bar.internal.OTCBarPainter;
 import ch.opentrainingcenter.charts.ng.TrainingChart;
 import ch.opentrainingcenter.charts.single.XAxisChart;
 import ch.opentrainingcenter.core.PreferenceConstants;
+import ch.opentrainingcenter.core.charts.PastTraining;
 import ch.opentrainingcenter.transfer.ITraining;
 
 @SuppressWarnings("nls")
@@ -79,14 +80,14 @@ public class OTCCategoryChartViewerTest {
         final Integer heart = Integer.valueOf(170);
         when(simpleTraining.getAverageHeartBeat()).thenReturn(heart);
         when(simpleTraining.getDatum()).thenReturn(1000L);
-        final List<List<ITraining>> arrayList = new ArrayList<>();
-        arrayList.add(data);
+        final List<PastTraining> arrayList = new ArrayList<>();
+        arrayList.add(new PastTraining(1, data));
         data.add(simpleTraining);
 
         viewer.updateData(data, arrayList, XAxisChart.DAY, TrainingChart.HERZ, false);
 
         final DefaultCategoryDataset dataset = viewer.getDataset();
-        final Number value = dataset.getValue(OTCCategoryChartViewer.DIESES_JAHR, "1");
+        final Number value = dataset.getValue("0", "1");
 
         assertEquals(170, value.intValue());
     }
@@ -98,15 +99,15 @@ public class OTCCategoryChartViewerTest {
         final Double distanz = Double.valueOf(42000);
         when(simpleTraining.getLaengeInMeter()).thenReturn(distanz);
         when(simpleTraining.getDatum()).thenReturn(1000L);
-        final List<List<ITraining>> arrayList = new ArrayList<>();
-        arrayList.add(data);
+        final List<PastTraining> arrayList = new ArrayList<>();
+        arrayList.add(new PastTraining(1, data));
         data.add(simpleTraining);
 
         viewer.createChart();
         viewer.updateData(data, arrayList, XAxisChart.DAY, TrainingChart.DISTANZ, false);
 
         final DefaultCategoryDataset dataset = viewer.getDataset();
-        final Number value = dataset.getValue(OTCCategoryChartViewer.DIESES_JAHR, "1");
+        final Number value = dataset.getValue("0", "1");
 
         assertEquals((int) (distanz / 1000), value.intValue());
     }
@@ -118,14 +119,14 @@ public class OTCCategoryChartViewerTest {
         final Double distanz = Double.valueOf(42000);
         when(simpleTraining.getLaengeInMeter()).thenReturn(distanz);
         when(simpleTraining.getDatum()).thenReturn(1000L);
-        final List<List<ITraining>> arrayList = new ArrayList<>();
-        arrayList.add(data);
+        final List<PastTraining> arrayList = new ArrayList<>();
+        arrayList.add(new PastTraining(1, data));
         data.add(simpleTraining);
 
         viewer.updateData(data, arrayList, XAxisChart.DAY, TrainingChart.DISTANZ, false);
 
         final DefaultCategoryDataset dataset = viewer.getDataset();
-        final Number value = dataset.getValue(OTCCategoryChartViewer.DIESES_JAHR, "1");
+        final Number value = dataset.getValue("0", "1");
 
         assertEquals((int) (distanz / 1000), value.intValue());
     }
@@ -165,10 +166,10 @@ public class OTCCategoryChartViewerTest {
 
         assertNotNull(renderer);
 
-        final Color past = (Color) renderer.getSeriesPaint(0);
+        final Color past = (Color) renderer.getSeriesPaint(2);
         assertEquals(colorNow, past);
 
-        final Color now = (Color) renderer.getSeriesPaint(0);
+        final Color now = (Color) renderer.getSeriesPaint(2);
         assertEquals(colorNow, now);
 
         final BarPainter barPainter = renderer.getBarPainter();
@@ -197,7 +198,7 @@ public class OTCCategoryChartViewerTest {
         final Color past = (Color) renderer.getSeriesPaint(1);
         assertEquals(colorNow.brighter(), past);
 
-        final Color now = (Color) renderer.getSeriesPaint(0);
+        final Color now = (Color) renderer.getSeriesPaint(2);
         assertEquals(colorNow, now);
 
         final BarPainter barPainter = renderer.getBarPainter();
@@ -214,7 +215,7 @@ public class OTCCategoryChartViewerTest {
 
         final JFreeChart chart = viewer.createChart();
 
-        viewer.updateData(new ArrayList<ITraining>(), new ArrayList<List<ITraining>>(), XAxisChart.MONTH, TrainingChart.DISTANZ, false);
+        viewer.updateData(new ArrayList<ITraining>(), new ArrayList<PastTraining>(), XAxisChart.MONTH, TrainingChart.DISTANZ, false);
 
         assertNotNull(chart);
 

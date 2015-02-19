@@ -17,16 +17,18 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package ch.opentrainingcenter.model.chart;
+package ch.opentrainingcenter.core.charts;
 
-import ch.opentrainingcenter.model.chart.internal.StatistikCreator;
+import org.junit.Test;
 
-public final class StatistikFactory {
-    private StatistikFactory() {
+import ch.opentrainingcenter.core.charts.StatistikFactory;
+import ch.opentrainingcenter.core.charts.internal.StatistikCreator;
+import static org.junit.Assert.assertTrue;
 
-    }
+public class StatistikFactoryTest {
 
-    public static IStatistikCreator createStatistik() {
-        return new StatistikCreator();
+    @Test
+    public void testCreateStatistik() {
+        assertTrue(StatistikFactory.createStatistik() instanceof StatistikCreator);
     }
 }

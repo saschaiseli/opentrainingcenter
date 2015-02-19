@@ -32,6 +32,7 @@ import org.junit.Test;
 
 import ch.opentrainingcenter.charts.ng.TrainingChart;
 import ch.opentrainingcenter.charts.single.XAxisChart;
+import ch.opentrainingcenter.core.charts.PastTraining;
 import ch.opentrainingcenter.transfer.HeartRate;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.RunData;
@@ -86,14 +87,14 @@ public class ChartDataSupportTest {
     public void testCreatePastData_empty_null() {
         final ChartDataSupport support = new ChartDataSupport(XAxisChart.MONTH);
 
-        support.createPastData(new ArrayList<ITraining>(), null);
+        support.createPastData(new PastTraining(0, new ArrayList<ITraining>()), null);
     }
 
     @Test
     public void testCreatePastData_empty_empty() {
         final ChartDataSupport support = new ChartDataSupport(XAxisChart.MONTH);
 
-        final List<ChartDataWrapper> result = support.createPastData(new ArrayList<ITraining>(), new ArrayList<ChartDataWrapper>());
+        final List<ChartDataWrapper> result = support.createPastData(new PastTraining(0, new ArrayList<ITraining>()), new ArrayList<ChartDataWrapper>());
 
         assertNotNull(result);
         assertTrue(result.isEmpty());
@@ -109,7 +110,7 @@ public class ChartDataSupportTest {
         now.add(new ChartDataWrapper(1000, 142, category, datum.toDate()));
 
         // execute
-        final List<ChartDataWrapper> result = support.createPastData(new ArrayList<ITraining>(), now);
+        final List<ChartDataWrapper> result = support.createPastData(new PastTraining(1, new ArrayList<ITraining>()), now);
 
         final ChartDataWrapper cdw = result.get(0);
         assertEquals(category, cdw.getCategory());
@@ -137,7 +138,7 @@ public class ChartDataSupportTest {
         final HeartRate heartRate = new HeartRate(132, 155);
         dataPast.add(CommonTransferFactory.createTraining(runData, heartRate));
         // execute
-        final List<ChartDataWrapper> result = support.createPastData(dataPast, now);
+        final List<ChartDataWrapper> result = support.createPastData(new PastTraining(1, dataPast), now);
 
         assertEquals("Gibt nur eine Kategorie", 1, result.size());
         final ChartDataWrapper cdw = result.get(0);
@@ -166,7 +167,7 @@ public class ChartDataSupportTest {
         final HeartRate heartRate = new HeartRate(132, 155);
         dataPast.add(CommonTransferFactory.createTraining(runData, heartRate));
         // execute
-        final List<ChartDataWrapper> result = support.createPastData(dataPast, now);
+        final List<ChartDataWrapper> result = support.createPastData(new PastTraining(1, dataPast), now);
 
         assertEquals("Gibt zwei Kategorien", 2, result.size());
         final ChartDataWrapper cdw1 = result.get(0);
@@ -202,7 +203,7 @@ public class ChartDataSupportTest {
         final HeartRate heartRate = new HeartRate(132, 155);
         dataPast.add(CommonTransferFactory.createTraining(runData, heartRate));
         // execute
-        final List<ChartDataWrapper> result = support.createPastData(dataPast, now);
+        final List<ChartDataWrapper> result = support.createPastData(new PastTraining(1, dataPast), now);
 
         // spezialfall bei jahres kategorie
         assertEquals("Es gibt nur eine Past Kategorie", 1, result.size());
@@ -232,7 +233,7 @@ public class ChartDataSupportTest {
         final HeartRate heartRate = new HeartRate(132, 155);
         dataPast.add(CommonTransferFactory.createTraining(runData, heartRate));
         // execute
-        final List<ChartDataWrapper> result = support.createPastData(dataPast, now);
+        final List<ChartDataWrapper> result = support.createPastData(new PastTraining(1, dataPast), now);
 
         assertEquals("Day wird nicht supported", 0, result.size());
     }

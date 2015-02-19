@@ -23,6 +23,11 @@ import ch.opentrainingcenter.i18n.Messages;
 
 /**
  * Herz oder Distanz Chart. Definiert X- und Y-Achsen sowie Titel vom Chart
+ * 
+ * <pre>
+ * DISTANZ
+ * HERZ
+ * </pre>
  */
 public enum TrainingChart {
 

@@ -1,4 +1,4 @@
-package ch.opentrainingcenter.model.chart;
+package ch.opentrainingcenter.core.charts;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -16,7 +16,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import ch.opentrainingcenter.model.chart.internal.StatistikCreator;
+import ch.opentrainingcenter.core.charts.IStatistikCreator;
+import ch.opentrainingcenter.core.charts.internal.StatistikCreator;
 import ch.opentrainingcenter.transfer.HeartRate;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.RunData;

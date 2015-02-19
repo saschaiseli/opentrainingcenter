@@ -66,15 +66,16 @@ import ch.opentrainingcenter.core.PreferenceConstants;
 import ch.opentrainingcenter.core.cache.Event;
 import ch.opentrainingcenter.core.cache.IRecordListener;
 import ch.opentrainingcenter.core.cache.TrainingCache;
+import ch.opentrainingcenter.core.charts.IStatistikCreator;
+import ch.opentrainingcenter.core.charts.PastTraining;
+import ch.opentrainingcenter.core.charts.StatistikFactory;
+import ch.opentrainingcenter.core.charts.TrainingCalculator;
 import ch.opentrainingcenter.core.data.SimplePair;
 import ch.opentrainingcenter.core.db.IDatabaseAccess;
 import ch.opentrainingcenter.core.helper.ColorFromPreferenceHelper;
 import ch.opentrainingcenter.core.helper.TimeHelper;
 import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
-import ch.opentrainingcenter.model.chart.IStatistikCreator;
-import ch.opentrainingcenter.model.chart.StatistikFactory;
-import ch.opentrainingcenter.model.chart.TrainingCalculator;
 import ch.opentrainingcenter.model.training.filter.Filter;
 import ch.opentrainingcenter.model.training.filter.FilterFactory;
 import ch.opentrainingcenter.model.training.filter.TrainingFilter;
@@ -109,8 +110,8 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
     private DateWidget dateVon;
     private DateWidget dateBis;
 
-    private Combo comboFilter;
-    private Combo comboChartType;
+    private Combo tagMonatJahrCombo;
+    private Combo yAchseCombo;
     private Button compareWithLastYear;
     private Label labelIconPastPast;
     private Label labelTextPastPast;
@@ -181,40 +182,22 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
         lDay.setText(Messages.DynamicChartViewPart_3);
         GridDataFactory.swtDefaults().align(SWT.RIGHT, SWT.CENTER).applyTo(lDay);
 
-        comboFilter = new Combo(container, SWT.READ_ONLY);
-        comboFilter.setBounds(50, 50, 150, 65);
+        tagMonatJahrCombo = new Combo(container, SWT.READ_ONLY);
+        tagMonatJahrCombo.setBounds(50, 50, 150, 65);
 
-        comboFilter.setItems(XAxisChart.items());
-        comboFilter.select(store.getInt(PreferenceConstants.CHART_XAXIS_CHART));
-        comboFilter.addSelectionListener(new SelectionAdapter() {
-
-            @Override
-            public void widgetSelected(final SelectionEvent e) {
-                final XAxisChart type = XAxisChart.getByIndex(comboFilter.getSelectionIndex());
-                compareWithLastYear.setEnabled(!XAxisChart.DAY.equals(type));
-                final SimplePair<Date> startEnd = getStartEnd();
-                dateVon.setDate(new DateTime(startEnd.getFirst().getTime()));
-                dateBis.setDate(new DateTime(startEnd.getSecond().getTime()));
-                update();
-            }
-
-        });
+        tagMonatJahrCombo.setItems(XAxisChart.items());
+        tagMonatJahrCombo.select(store.getInt(PreferenceConstants.CHART_XAXIS_CHART));
+        tagMonatJahrCombo.addSelectionListener(new UpdateSelectionAdapter());
 
         final Label y = new Label(container, SWT.NONE);
         y.setText(Messages.DynamicChartViewPart_4);
         GridDataFactory.swtDefaults().align(SWT.RIGHT, SWT.CENTER).applyTo(y);
 
-        comboChartType = new Combo(container, SWT.READ_ONLY);
-        comboChartType.setItems(TrainingChart.items());
-        comboChartType.select(store.getInt(PreferenceConstants.CHART_YAXIS_CHART));
-        comboChartType.addSelectionListener(new SelectionAdapter() {
-
-            @Override
-            public void widgetSelected(final SelectionEvent e) {
-                update();
-            }
-        });
-        final XAxisChart cst = XAxisChart.getByIndex(comboFilter.getSelectionIndex());
+        yAchseCombo = new Combo(container, SWT.READ_ONLY);
+        yAchseCombo.setItems(TrainingChart.items());
+        yAchseCombo.select(store.getInt(PreferenceConstants.CHART_YAXIS_CHART));
+        yAchseCombo.addSelectionListener(new UpdateSelectionAdapter());
+        final XAxisChart cst = XAxisChart.getByIndex(tagMonatJahrCombo.getSelectionIndex());
 
         compareWithLastYear = new Button(container, SWT.CHECK);
         compareWithLastYear.setText(Messages.DynamicChartViewPart_9);
@@ -336,11 +319,12 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
 
             @Override
             public void run() {
-                final XAxisChart xAxis = XAxisChart.getByIndex(comboFilter.getSelectionIndex());
+                final XAxisChart xAxis = XAxisChart.getByIndex(tagMonatJahrCombo.getSelectionIndex());
+                compareWithLastYear.setEnabled(!XAxisChart.DAY.equals(xAxis));
                 final SimplePair<Date> startEnd = getStartEnd();
                 final String start = TimeHelper.convertDateToString(startEnd.getFirst());
                 final String end = TimeHelper.convertDateToString(startEnd.getSecond());
-                LOGGER.info(String.format("Chart %s von %s bis %s", xAxis, start, end)); //$NON-NLS-1$
+                LOGGER.info(String.format("Chart now      %s von %s bis %s", xAxis, start, end)); //$NON-NLS-1$
 
                 final int sportIndex = comboSport.getSelectionIndex();
                 final Sport sport = Sport.getByIndex(sportIndex);
@@ -352,17 +336,23 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
 
                 final Date startPastOne = dtStartCurrent.minusYears(1).toDate();
                 final Date endPastOne = dtEndCurrent.minusYears(1).toDate();
+                final String readablePastStartOne = TimeHelper.convertDateToString(startPastOne);
+                final String readablePastEndOne = TimeHelper.convertDateToString(endPastOne);
+                LOGGER.info(String.format("Chart past One %s von %s bis %s", xAxis, readablePastStartOne, readablePastEndOne)); //$NON-NLS-1$
                 final List<ITraining> dataPastOne = getFilteredData(xAxis, startPastOne, endPastOne, sport);
 
                 final Date startPastTwo = dtStartCurrent.minusYears(2).toDate();
                 final Date endPastTwo = dtEndCurrent.minusYears(2).toDate();
+                final String readablePastStart2 = TimeHelper.convertDateToString(startPastTwo);
+                final String readablePastEnd2 = TimeHelper.convertDateToString(endPastTwo);
+                LOGGER.info(String.format("Chart past Two %s von %s bis %s", xAxis, readablePastStart2, readablePastEnd2)); //$NON-NLS-1$
                 final List<ITraining> dataPastTwo = getFilteredData(xAxis, startPastTwo, endPastTwo, sport);
 
-                final List<List<ITraining>> past = new ArrayList<>();
-                past.add(dataPastTwo);
-                past.add(dataPastOne);
+                final List<PastTraining> past = new ArrayList<>();
+                past.add(new PastTraining(2, dataPastTwo));
+                past.add(new PastTraining(1, dataPastOne));
 
-                final TrainingChart chartType = TrainingChart.getByIndex(comboChartType.getSelectionIndex());
+                final TrainingChart chartType = TrainingChart.getByIndex(yAchseCombo.getSelectionIndex());
                 final boolean compareLast = compareWithLastYear.getSelection();
 
                 chartViewer.updateData(dataNow, past, xAxis, chartType, compareLast);
@@ -396,11 +386,11 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
     }
 
     private SimplePair<Date> getStartEnd() {
-        final XAxisChart xAxis = XAxisChart.getByIndex(comboFilter.getSelectionIndex());
+        final XAxisChart xAxis = XAxisChart.getByIndex(tagMonatJahrCombo.getSelectionIndex());
         final boolean year = XAxisChart.YEAR.equals(xAxis);
         final boolean yearTillNow = XAxisChart.YEAR_START_TILL_NOW.equals(xAxis);
-        Date start = von.toDate();
-        Date end = DateTime.now().toDate();
+        Date start = dateVon.getDate().toDate();// von.toDate();
+        Date end = dateBis.getDate().toDate();// DateTime.now().toDate();
         dateVon.setEnabled(!(yearTillNow || year));
         dateBis.setEnabled(!year);
         if (yearTillNow || year) {

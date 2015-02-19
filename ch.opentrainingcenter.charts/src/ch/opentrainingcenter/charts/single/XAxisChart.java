@@ -7,6 +7,14 @@ import ch.opentrainingcenter.i18n.Messages;
  * {@link XAxisChart#MONTH} werden zum Beispiel alle Trainings innerhalb eines
  * Monates zu einem einzigen Training zusammengefasst.
  * 
+ * <pre>
+ * YEAR
+ * YEAR_START_TILL_NOW
+ * MONTH
+ * WEEK
+ * DAY
+ * </pre>
+ * 
  */
 public enum XAxisChart {
     YEAR(4, Messages.ChartSerieType0, Messages.ChartSerieType8, Messages.ChartSerieType3), //

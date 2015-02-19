@@ -1,4 +1,4 @@
-package ch.opentrainingcenter.model.chart.internal;
+package ch.opentrainingcenter.core.charts.internal;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -9,15 +9,12 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.apache.log4j.Logger;
-
-import ch.opentrainingcenter.model.chart.IStatistikCreator;
+import ch.opentrainingcenter.core.charts.IStatistikCreator;
 import ch.opentrainingcenter.transfer.ITraining;
 
 public class StatistikCreator implements IStatistikCreator {
 
     private static final int LAST_KW_IN_YEAR = 52;
-    private static final Logger LOGGER = Logger.getLogger(StatistikCreator.class);
 
     @Override
     public Map<Integer, List<ITraining>> getTrainingsProJahr(final List<ITraining> allTrainings) {
@@ -26,7 +23,6 @@ public class StatistikCreator implements IStatistikCreator {
             final Calendar cal = Calendar.getInstance(Locale.GERMAN);
             cal.setTimeInMillis(training.getDatum());
             final int year = cal.get(Calendar.YEAR);
-            LOGGER.debug("Lauf aus dem Jahr " + year); //$NON-NLS-1$
             List<ITraining> perYear = trainingsPer.get(year);
             if (perYear == null) {
                 perYear = new ArrayList<ITraining>();
@@ -74,7 +70,6 @@ public class StatistikCreator implements IStatistikCreator {
             } else {
                 year = cal.get(outer);
             }
-            LOGGER.debug("Lauf aus der inner " + week + " vom Jahr: " + year); //$NON-NLS-1$//$NON-NLS-2$
             Map<Integer, List<ITraining>> yearMap = trainingsPer.get(year);
             if (yearMap == null) {
                 yearMap = new TreeMap<Integer, List<ITraining>>();

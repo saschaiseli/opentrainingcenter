@@ -29,6 +29,7 @@ import org.joda.time.DateTime;
 
 import ch.opentrainingcenter.charts.single.XAxisChart;
 import ch.opentrainingcenter.core.assertions.Assertions;
+import ch.opentrainingcenter.core.charts.PastTraining;
 import ch.opentrainingcenter.transfer.ITraining;
 
 public class ChartDataSupport {
@@ -58,21 +59,21 @@ public class ChartDataSupport {
      * Kreiert aus den NOW Daten die PAST Daten. Basierend auf den NOW Daten
      * werden nichtexistente PAST Daten mit null Werten erzeugt.
      */
-    public List<ChartDataWrapper> createPastData(final List<ITraining> dataPast, final List<ChartDataWrapper> now) {
+    public List<ChartDataWrapper> createPastData(final PastTraining dataPast, final List<ChartDataWrapper> now) {
         Assertions.notNull(dataPast);
         Assertions.notNull(now);
         final List<ChartDataWrapper> past = new ArrayList<>();
         if (!XAxisChart.DAY.equals(type)) {
-            past.addAll(convertAndSort(dataPast));
+            past.addAll(convertAndSort(dataPast.getTrainings()));
             if (!XAxisChart.YEAR.equals(type)) {
-                adjust(past, now);
+                adjust(past, now, dataPast.getYearOffset());
             }
             Collections.sort(past);
         }
         return past;
     }
 
-    private void adjust(final List<ChartDataWrapper> past, final List<ChartDataWrapper> now) {
+    private void adjust(final List<ChartDataWrapper> past, final List<ChartDataWrapper> now, final int yearOffset) {
         final Set<String> allCategories = new HashSet<>();
         for (final ChartDataWrapper vm : past) {
             allCategories.add(vm.getCategory());
@@ -83,7 +84,7 @@ public class ChartDataSupport {
             if (added) {
                 // existierte noch nicht
                 DateTime dt = new DateTime(vm.getDate().getTime());
-                dt = dt.minusYears(1);
+                dt = dt.minusYears(yearOffset);
                 list.add(new ChartDataWrapper(0d, 0, vm.getCategory(), dt.toDate()));
             }
         }

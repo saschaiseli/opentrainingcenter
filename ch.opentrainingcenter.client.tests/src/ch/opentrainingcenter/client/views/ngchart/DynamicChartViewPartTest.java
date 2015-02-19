@@ -16,8 +16,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ch.opentrainingcenter.charts.single.XAxisChart;
+import ch.opentrainingcenter.core.charts.IStatistikCreator;
 import ch.opentrainingcenter.core.service.IDatabaseService;
-import ch.opentrainingcenter.model.chart.IStatistikCreator;
 import ch.opentrainingcenter.transfer.HeartRate;
 import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.ITraining;

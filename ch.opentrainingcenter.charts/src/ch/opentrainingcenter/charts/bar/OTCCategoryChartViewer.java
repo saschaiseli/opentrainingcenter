@@ -21,6 +21,7 @@ package ch.opentrainingcenter.charts.bar;
 
 import java.awt.Color;
 import java.text.DecimalFormat;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -52,16 +53,16 @@ import org.jfree.ui.TextAnchor;
 import ch.opentrainingcenter.charts.bar.internal.CategoryHelper;
 import ch.opentrainingcenter.charts.bar.internal.ChartDataSupport;
 import ch.opentrainingcenter.charts.bar.internal.ChartDataWrapper;
+import ch.opentrainingcenter.charts.bar.internal.ChartDataWrapperComparator;
 import ch.opentrainingcenter.charts.bar.internal.OTCBarPainter;
 import ch.opentrainingcenter.charts.ng.TrainingChart;
 import ch.opentrainingcenter.charts.single.XAxisChart;
 import ch.opentrainingcenter.core.PreferenceConstants;
+import ch.opentrainingcenter.core.charts.PastTraining;
 import ch.opentrainingcenter.core.helper.ColorFromPreferenceHelper;
 import ch.opentrainingcenter.transfer.ITraining;
 
 public class OTCCategoryChartViewer {
-
-    static final String DIESES_JAHR = "DiesesJahr"; //$NON-NLS-1$
 
     private static final String DECIMAL = "0.000"; //$NON-NLS-1$
 
@@ -134,30 +135,32 @@ public class OTCCategoryChartViewer {
      * @param compareLast
      *            mit letztem Jahr vergleichen
      */
-    public void updateData(final List<ITraining> dataNow, final List<List<ITraining>> dataPast, final XAxisChart chartSerieType, final TrainingChart chartType,
+    public void updateData(final List<ITraining> dataNow, final List<PastTraining> dataPast, final XAxisChart xAxis, final TrainingChart chartType,
             final boolean compareLast) {
 
-        updateAxis(chartType, chartSerieType);
+        updateAxis(chartType, xAxis);
 
         dataset.clear();
 
-        final ChartDataSupport support = new ChartDataSupport(chartSerieType);
+        final ChartDataSupport support = new ChartDataSupport(xAxis);
         final List<ChartDataWrapper> now = support.convertAndSort(dataNow);
 
-        addValues(now, DIESES_JAHR, chartType);
-
-        if (isComparable(chartSerieType, compareLast)) {
-            int i = 0;
-            for (final List<ITraining> entry : dataPast) {
-                addValues(support.createPastData(entry, now), String.valueOf(i), chartType);
+        int i = 0;
+        if (isComparable(xAxis, compareLast)) {
+            for (final PastTraining training : dataPast) {
+                final List<ChartDataWrapper> past = support.createPastData(training, now);
+                addValues(past, String.valueOf(i), chartType, xAxis);
                 i++;
             }
         }
+        addValues(now, String.valueOf(i), chartType, xAxis);
     }
 
-    private void addValues(final List<ChartDataWrapper> now, final String rowName, final TrainingChart stc) {
-        for (final ChartDataWrapper t : now) {
-            dataset.addValue(t.getValue(stc), rowName, t.getCategory());
+    private void addValues(final List<ChartDataWrapper> chartDatas, final String rowName, final TrainingChart stc, final XAxisChart xAxis) {
+        Collections.sort(chartDatas, new ChartDataWrapperComparator(xAxis));
+
+        for (final ChartDataWrapper chartData : chartDatas) {
+            dataset.addValue(chartData.getValue(stc), rowName, chartData.getCategory());
         }
     }
 
@@ -183,7 +186,7 @@ public class OTCCategoryChartViewer {
         renderer.setBarPainter(painter);
         renderer.setItemMargin(0.0);
 
-        final String labelPattern = String.format("{2} ", TrainingChart.getEinheit(chartType)); //$NON-NLS-1$
+        final String labelPattern = "{2} "; //$NON-NLS-1$
         renderer.setBaseToolTipGenerator(new StandardCategoryToolTipGenerator(labelPattern, new DecimalFormat(DECIMAL)));
 
         final ItemLabelPosition position = new ItemLabelPosition(ItemLabelAnchor.CENTER, TextAnchor.CENTER, TextAnchor.CENTER, -Math.PI / 2.0);
@@ -205,9 +208,9 @@ public class OTCCategoryChartViewer {
             color = PreferenceConstants.CHART_HEART_COLOR;
         }
         final Color barColor = ColorFromPreferenceHelper.getColor(store, color, ALPHA);
-        renderer.setSeriesPaint(0, barColor);
+        renderer.setSeriesPaint(0, barColor.brighter().brighter());
         renderer.setSeriesPaint(1, barColor.brighter());
-        renderer.setSeriesPaint(2, barColor.brighter().brighter());
+        renderer.setSeriesPaint(2, barColor);
     }
 
     private boolean isComparable(final XAxisChart type, final boolean compareLast) {

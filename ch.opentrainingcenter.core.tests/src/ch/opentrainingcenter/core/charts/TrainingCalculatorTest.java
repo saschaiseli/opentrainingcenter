@@ -1,4 +1,4 @@
-package ch.opentrainingcenter.model.chart;
+package ch.opentrainingcenter.core.charts;
 
 import static ch.opentrainingcenter.transfer.TrainingType.EXT_INTERVALL;
 import static ch.opentrainingcenter.transfer.TrainingType.INT_INTERVALL;
@@ -13,6 +13,7 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
+import ch.opentrainingcenter.core.charts.TrainingCalculator;
 import ch.opentrainingcenter.transfer.ITraining;
 
 public class TrainingCalculatorTest {

@@ -1,4 +1,4 @@
-package ch.opentrainingcenter.model.chart;
+package ch.opentrainingcenter.core.charts;
 
 import java.util.List;
 import java.util.Map;
