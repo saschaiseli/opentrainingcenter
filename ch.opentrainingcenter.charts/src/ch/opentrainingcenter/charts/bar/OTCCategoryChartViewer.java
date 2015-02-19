@@ -166,7 +166,7 @@ public class OTCCategoryChartViewer {
             ((CategoryPlot) chart.getPlot()).getRangeAxis().setLabel(chartType.getyAchse());
             final CategoryAxis domainAxis = ((CategoryPlot) chart.getPlot()).getDomainAxis();
             domainAxis.setLabel(CategoryHelper.getDomainAxis(chartSerieType));
-            if (XAxisChart.YEAR.equals(chartSerieType)) {
+            if (XAxisChart.YEAR.equals(chartSerieType) || XAxisChart.YEAR_START_TILL_NOW.equals(chartSerieType)) {
                 domainAxis.setCategoryMargin(-0.75d);
             } else {
                 domainAxis.setCategoryMargin(0.2d);
