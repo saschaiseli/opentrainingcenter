@@ -21,7 +21,6 @@ package ch.opentrainingcenter.charts.bar;
 
 import java.awt.Color;
 import java.text.DecimalFormat;
-import java.util.Collections;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -53,7 +52,6 @@ import org.jfree.ui.TextAnchor;
 import ch.opentrainingcenter.charts.bar.internal.CategoryHelper;
 import ch.opentrainingcenter.charts.bar.internal.ChartDataSupport;
 import ch.opentrainingcenter.charts.bar.internal.ChartDataWrapper;
-import ch.opentrainingcenter.charts.bar.internal.ChartDataWrapperComparator;
 import ch.opentrainingcenter.charts.bar.internal.OTCBarPainter;
 import ch.opentrainingcenter.charts.ng.TrainingChart;
 import ch.opentrainingcenter.charts.single.XAxisChart;
@@ -157,8 +155,6 @@ public class OTCCategoryChartViewer {
     }
 
     private void addValues(final List<ChartDataWrapper> chartDatas, final String rowName, final TrainingChart stc, final XAxisChart xAxis) {
-        Collections.sort(chartDatas, new ChartDataWrapperComparator(xAxis));
-
         for (final ChartDataWrapper chartData : chartDatas) {
             dataset.addValue(chartData.getValue(stc), rowName, chartData.getCategory());
         }
