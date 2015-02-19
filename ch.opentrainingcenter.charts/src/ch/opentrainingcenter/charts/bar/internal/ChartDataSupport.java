@@ -65,7 +65,7 @@ public class ChartDataSupport {
         final List<ChartDataWrapper> past = new ArrayList<>();
         if (!XAxisChart.DAY.equals(type)) {
             past.addAll(convertAndSort(dataPast.getTrainings()));
-            if (!XAxisChart.YEAR.equals(type)) {
+            if (!XAxisChart.YEAR.equals(type) && !XAxisChart.YEAR_START_TILL_NOW.equals(type)) {
                 adjust(past, now, dataPast.getYearOffset());
             }
             Collections.sort(past);

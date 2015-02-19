@@ -216,6 +216,36 @@ public class ChartDataSupportTest {
     }
 
     @Test
+    public void testCreatePastData_1_categories_for_2_YEAR_TILL_NOW() {
+        final ChartDataSupport support = new ChartDataSupport(XAxisChart.YEAR_START_TILL_NOW);
+
+        // NOW
+        final ArrayList<ChartDataWrapper> now = new ArrayList<ChartDataWrapper>();
+        final DateTime datum = new DateTime(2013, 8, 29, 12, 00);
+        final String category = "2013";
+        now.add(new ChartDataWrapper(1000, 142, category, datum.toDate()));
+
+        // PAST
+        final ArrayList<ITraining> dataPast = new ArrayList<ITraining>();
+        final DateTime datePast = new DateTime(2012, 8, 29, 12, 00);
+
+        final RunData runData = new RunData(datePast.getMillis(), 2, 2000, 4);
+        final HeartRate heartRate = new HeartRate(132, 155);
+        dataPast.add(CommonTransferFactory.createTraining(runData, heartRate));
+        // execute
+        final List<ChartDataWrapper> result = support.createPastData(new PastTraining(1, dataPast), now);
+
+        // spezialfall bei jahres kategorie
+        assertEquals("Es gibt nur eine Past Kategorie", 1, result.size());
+        final ChartDataWrapper cdw1 = result.get(0);
+        assertEquals("2012", cdw1.getCategory());
+        assertEquals(2, cdw1.getValue(TrainingChart.DISTANZ), 0.001);
+        assertEquals(132, cdw1.getValue(TrainingChart.HERZ), 0.001);
+        final DateTime date1 = new DateTime(cdw1.getDate().getTime());
+        assertEquals("Wird mit der Vorjahresperiode verglichen", 2012, date1.getYear());
+    }
+
+    @Test
     public void testCreatePast_day_not_supported() {
         final ChartDataSupport support = new ChartDataSupport(XAxisChart.DAY);
 
