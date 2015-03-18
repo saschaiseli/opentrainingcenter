@@ -43,7 +43,7 @@ import ch.opentrainingcenter.transfer.IPlanungWoche;
 import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
 
 public class JahresplanungViewPart extends ViewPart {
-    private static final Logger LOG = Logger.getLogger(JahresplanungViewPart.class);
+    private static final Logger LOGGER = Logger.getLogger(JahresplanungViewPart.class);
     public static final String ID = "ch.opentrainingcenter.client.views.planung.JahresplanungViewPart"; //$NON-NLS-1$
 
     private final IPreferenceStore store = Activator.getDefault().getPreferenceStore();
@@ -57,9 +57,10 @@ public class JahresplanungViewPart extends ViewPart {
 
     @Override
     public void createPartControl(final Composite parent) {
+        LOGGER.debug("<< --- createPartControl JahresplanungViewPart"); //$NON-NLS-1$
         final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
         databaseAccess = service.getDatabaseAccess();
-        LOG.debug("create JahresplanungViewPart"); //$NON-NLS-1$
+        LOGGER.debug("create JahresplanungViewPart"); //$NON-NLS-1$
         toolkit = new FormToolkit(parent.getDisplay());
         form = toolkit.createScrolledForm(parent);
         form.setText(Messages.JahresplanungViewPart_0);
@@ -70,7 +71,7 @@ public class JahresplanungViewPart extends ViewPart {
         body.setLayout(layout);
 
         addWeekSection(body);
-
+        LOGGER.debug("createPartControl JahresplanungViewPart --- >>"); //$NON-NLS-1$
     }
 
     private void addWeekSection(final Composite body) {

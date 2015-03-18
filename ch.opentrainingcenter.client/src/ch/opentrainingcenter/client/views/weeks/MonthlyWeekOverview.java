@@ -3,6 +3,7 @@ package ch.opentrainingcenter.client.views.weeks;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -22,6 +23,8 @@ import ch.opentrainingcenter.transfer.Sport;
 
 public class MonthlyWeekOverview extends ViewPart {
 
+    private static final Logger LOGGER = Logger.getLogger(MonthlyWeekOverview.class);
+
     public static final String ID = "ch.opentrainingcenter.client.weeks.monthlyOverview"; //$NON-NLS-1$
 
     List<MonthWeekTabItem> overviews = new ArrayList<>();
@@ -29,6 +32,7 @@ public class MonthlyWeekOverview extends ViewPart {
     private final Sport prefferedSport;
 
     public MonthlyWeekOverview() {
+        LOGGER.debug("<< --- MonthlyWeekOverview"); //$NON-NLS-1$
         final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
         final IDatabaseAccess databaseAccess = service.getDatabaseAccess();
         final IAthlete athlete = ApplicationContext.getApplicationContext().getAthlete();
@@ -44,6 +48,7 @@ public class MonthlyWeekOverview extends ViewPart {
         if (store.getBoolean(Sport.OTHER.getMessage())) {
             overviews.add(new MonthWeekTabItem(Sport.OTHER, athlete, databaseAccess));
         }
+        LOGGER.debug("MonthlyWeekOverview --- >>"); //$NON-NLS-1$
     }
 
     @Override

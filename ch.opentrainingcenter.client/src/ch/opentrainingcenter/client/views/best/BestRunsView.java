@@ -26,8 +26,10 @@ public class BestRunsView extends ViewPart {
     private final IDatabaseAccess databaseAccess;
 
     public BestRunsView() {
+        LOGGER.debug("<< --- DynamicChartViewPart"); //$NON-NLS-1$
         final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
         databaseAccess = service.getDatabaseAccess();
+        LOGGER.debug("DynamicChartViewPart --- >>"); //$NON-NLS-1$
     }
 
     @Override

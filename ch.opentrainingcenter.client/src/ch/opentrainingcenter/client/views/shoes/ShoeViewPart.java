@@ -68,9 +68,11 @@ public class ShoeViewPart extends ViewPart {
     private Action deleteAction;
 
     public ShoeViewPart() {
+        LOGGER.debug("<< --- ShoeViewPart"); //$NON-NLS-1$
         athlete = ApplicationContext.getApplicationContext().getAthlete();
         final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
         databaseAccess = service.getDatabaseAccess();
+        LOGGER.debug("ShoeViewPart --- >>"); //$NON-NLS-1$
     }
 
     @Override

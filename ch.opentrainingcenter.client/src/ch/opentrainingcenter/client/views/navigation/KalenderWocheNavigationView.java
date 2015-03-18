@@ -77,6 +77,7 @@ public class KalenderWocheNavigationView extends ViewPart {
     private final IDatabaseAccess databaseAccess;
 
     public KalenderWocheNavigationView() {
+        LOGGER.debug("<< --- KalenderWocheNavigationView"); //$NON-NLS-1$
         final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
         databaseAccess = service.getDatabaseAccess();
         final String athleteId = store.getString(PreferenceConstants.ATHLETE_ID);
@@ -87,6 +88,7 @@ public class KalenderWocheNavigationView extends ViewPart {
             athlete = null;
         }
         updateModel();
+        LOGGER.debug("KalenderWocheNavigationView -->>"); //$NON-NLS-1$
     }
 
     private void updateModel() {

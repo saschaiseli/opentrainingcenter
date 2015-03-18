@@ -131,11 +131,13 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
      * Fuer Tests
      */
     public DynamicChartViewPart(final IDatabaseService service, final IPreferenceStore store, final IAthlete athlete) {
+        LOGGER.debug("<< --- DynamicChartViewPart"); //$NON-NLS-1$
         databaseAccess = service.getDatabaseAccess();
         this.store = store;
         this.athlete = athlete;
         chartViewer = new OTCCategoryChartViewer(store);
         TrainingCache.getInstance().addListener(this);
+        LOGGER.debug("DynamicChartViewPart --- >>"); //$NON-NLS-1$
     }
 
     @Override

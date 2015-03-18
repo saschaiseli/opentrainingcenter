@@ -70,9 +70,11 @@ public class RoutenView extends ViewPart implements IRecordListener {
     private final List<ITraining> tracks = new ArrayList<>();
 
     public RoutenView() {
+        LOGGER.debug("<< --- RoutenView"); //$NON-NLS-1$
         athlete = ApplicationContext.getApplicationContext().getAthlete();
         final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
         databaseAccess = service.getDatabaseAccess();
+        LOGGER.debug("RoutenView --->>"); //$NON-NLS-1$
     }
 
     @SuppressWarnings("unchecked")
