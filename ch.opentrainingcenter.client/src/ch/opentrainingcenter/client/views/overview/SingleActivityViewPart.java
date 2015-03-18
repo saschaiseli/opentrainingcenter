@@ -76,12 +76,17 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
     // private final ICompareRoute comp;
 
     public SingleActivityViewPart() {
+        LOGGER.info("SingleActivityViewPart wird instanziert"); //$NON-NLS-1$
         final IDatabaseService service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
+        LOGGER.info("Database Service geladen"); //$NON-NLS-1$
         databaseAccess = service.getDatabaseAccess();
         final ApplicationContext context = ApplicationContext.getApplicationContext();
         final Long selectedId = context.getSelectedId();
+        LOGGER.info(String.format("Lade selektiertes Training mit ID %s", selectedId)); //$NON-NLS-1$
         training = databaseAccess.getTrainingById(selectedId);
+        LOGGER.info(String.format("Selektiertes Training mit ID %s geladen", selectedId)); //$NON-NLS-1$
         lapInfos = training.getLapInfos();
+        LOGGER.info("LapInfos geladen"); //$NON-NLS-1$
         athlete = context.getAthlete();
 
         LOGGER.info(String.format("Training mit %s Trackpoints geladen", training.getTrackPoints().size())); //$NON-NLS-1$
