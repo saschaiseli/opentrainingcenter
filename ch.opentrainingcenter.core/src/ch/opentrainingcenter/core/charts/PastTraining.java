@@ -28,4 +28,10 @@ public class PastTraining {
         return Collections.unmodifiableList(trainings);
     }
 
+    @SuppressWarnings("nls")
+    @Override
+    public String toString() {
+        return "PastTraining [yearOffset=" + yearOffset + ", trainings=" + trainings + "]";
+    }
+
 }

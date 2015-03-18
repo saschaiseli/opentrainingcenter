@@ -20,8 +20,6 @@
 package ch.opentrainingcenter.client.views.dialoge;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -33,12 +31,14 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
@@ -52,6 +52,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 import org.joda.time.DateTime;
@@ -63,6 +65,8 @@ import ch.opentrainingcenter.client.views.IImageKeys;
 import ch.opentrainingcenter.core.cache.RouteCache;
 import ch.opentrainingcenter.core.db.CriteriaContainer;
 import ch.opentrainingcenter.core.db.CriteriaFactory;
+import ch.opentrainingcenter.core.helper.DistanceHelper;
+import ch.opentrainingcenter.core.helper.TimeHelper;
 import ch.opentrainingcenter.core.service.IDatabaseService;
 import ch.opentrainingcenter.i18n.Messages;
 import ch.opentrainingcenter.transfer.IRoute;
@@ -101,6 +105,7 @@ public class SearchDialog extends TitleAreaDialog {
 
     private int referenzTrainingId;
     private final OpenTrainingAction action;
+    private SearchDialogComparator comparator;
 
     public SearchDialog(final Shell parentShell) {
         super(parentShell);
@@ -247,10 +252,18 @@ public class SearchDialog extends TitleAreaDialog {
         final Composite result = new Composite(parent, SWT.NONE);
         GridLayoutFactory.swtDefaults().applyTo(result);
         GridDataFactory.swtDefaults().align(SWT.FILL, SWT.FILL).grab(true, true).applyTo(result);
-
         viewer = new TableViewer(result);
+        comparator = new SearchDialogComparator();
+        viewer.setComparator(comparator);
+
+        final Table table = viewer.getTable();
+        table.setHeaderVisible(true);
+        table.setLinesVisible(true);
+
         viewer.setContentProvider(new ArrayContentProvider());
-        viewer.setLabelProvider(new TrainingLabelProvider());
+        // viewer.setLabelProvider(new TrainingLabelProvider());
+        createColumns(result, viewer);
+
         viewer.addSelectionChangedListener(new ISelectionChangedListener() {
 
             @Override
@@ -259,10 +272,77 @@ public class SearchDialog extends TitleAreaDialog {
             }
 
         });
+
         GridDataFactory.swtDefaults().align(SWT.FILL, SWT.FILL).grab(true, true).applyTo(viewer.getControl());
 
         update();
         return search;
+    }
+
+    private void createColumns(final Composite parent, final TableViewer viewer) {
+        final String[] titles = { Messages.Common_DATUM, Messages.Common_DISTANZ, Messages.Common_DAUER, Messages.PACE };
+        final int[] bounds = { 100, 100, 100, 100 };
+
+        TableViewerColumn col = createTableViewerColumn(titles[0], bounds[0], 0);
+        col.setLabelProvider(new ColumnLabelProvider() {
+            @Override
+            public String getText(final Object element) {
+                final ITraining training = (ITraining) element;
+                return TimeHelper.convertDateToString(training.getDatum());
+            }
+        });
+
+        col = createTableViewerColumn(titles[1], bounds[1], 1);
+        col.setLabelProvider(new ColumnLabelProvider() {
+            @Override
+            public String getText(final Object element) {
+                final ITraining training = (ITraining) element;
+                return DistanceHelper.roundDistanceFromMeterToKmMitEinheit(training.getLaengeInMeter());
+            }
+        });
+
+        col = createTableViewerColumn(titles[2], bounds[2], 2);
+        col.setLabelProvider(new ColumnLabelProvider() {
+            @Override
+            public String getText(final Object element) {
+                final ITraining training = (ITraining) element;
+                return TimeHelper.convertTimeToString(1000L * (long) training.getDauer());
+            }
+        });
+
+        col = createTableViewerColumn(titles[3], bounds[3], 3);
+        col.setLabelProvider(new ColumnLabelProvider() {
+            @Override
+            public String getText(final Object element) {
+                final ITraining training = (ITraining) element;
+                return DistanceHelper.calculatePace(training.getLaengeInMeter(), training.getDauer(), training.getSport());
+            }
+        });
+    }
+
+    private TableViewerColumn createTableViewerColumn(final String title, final int bound, final int colNumber) {
+        final TableViewerColumn viewerColumn = new TableViewerColumn(viewer, SWT.NONE);
+        final TableColumn column = viewerColumn.getColumn();
+        column.setText(title);
+        column.setWidth(bound);
+        column.setResizable(true);
+        column.setMoveable(true);
+        column.addSelectionListener(getSelectionAdapter(column, colNumber));
+        return viewerColumn;
+    }
+
+    private SelectionAdapter getSelectionAdapter(final TableColumn column, final int index) {
+        final SelectionAdapter selectionAdapter = new SelectionAdapter() {
+            @Override
+            public void widgetSelected(final SelectionEvent e) {
+                comparator.setColumn(index);
+                final int dir = comparator.getDirection();
+                viewer.getTable().setSortDirection(dir);
+                viewer.getTable().setSortColumn(column);
+                viewer.refresh();
+            }
+        };
+        return selectionAdapter;
     }
 
     @Override
@@ -300,14 +380,6 @@ public class SearchDialog extends TitleAreaDialog {
                         result.add(training);
                     }
                 }
-                Collections.sort(result, new Comparator<ITraining>() {
-
-                    @Override
-                    public int compare(final ITraining o1, final ITraining o2) {
-                        return Double.compare(o2.getLaengeInMeter(), o1.getLaengeInMeter());
-                    }
-
-                });
                 LOGGER.info(String.format("Filter trainings dauerte %s [ms]", DateTime.now().getMillis() - start)); //$NON-NLS-1$
                 if (viewer != null) {
                     viewer.setInput(result);

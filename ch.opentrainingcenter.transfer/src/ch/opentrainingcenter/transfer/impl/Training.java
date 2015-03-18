@@ -230,8 +230,8 @@ public class Training implements java.io.Serializable, ITraining {
     @SuppressWarnings("nls")
     @Override
     public String toString() {
-        return "Training [datum=" + datum + ", dauer=" + dauer + ", laengeInMeter=" + laengeInMeter + ", athlete=" + athlete + ", trainingType=" + trainingType
-                + ", route=" + route + ", fileName=" + fileName + "]";
+        return "Training [datum=" + new Date(datum) + ", dauer=" + dauer + ", laengeInMeter=" + laengeInMeter + ", athlete=" + athlete + ", trainingType="
+                + trainingType + ", route=" + route + ", fileName=" + fileName + "]";
     }
 
     @Override
@@ -293,4 +293,5 @@ public class Training implements java.io.Serializable, ITraining {
     public void setTrainingEffect(final Integer trainingEffect) {
         this.trainingEffect = trainingEffect;
     }
+
 }

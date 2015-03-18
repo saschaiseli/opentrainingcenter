@@ -10,6 +10,7 @@ public final class Messages extends NLS {
     public static String Common_Open;
     public static String Common_YES;
     public static String Common_DATUM;
+    public static String Common_DAUER;
     public static String Common_DISTANZ;
     public static String Common_ZEIT;
     public static String Common_BESCHREIBUNG;
@@ -280,7 +281,6 @@ public final class Messages extends NLS {
     public static String OtcSplashHandler1;
     public static String OverviewViewer0;
     public static String OverviewViewer1;
-    public static String OverviewViewer2;
     public static String OverviewViewer3;
     public static String OverviewViewer4;
     public static String OverviewViewer5;
