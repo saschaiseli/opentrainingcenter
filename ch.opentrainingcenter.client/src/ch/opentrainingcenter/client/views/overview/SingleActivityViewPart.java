@@ -138,7 +138,7 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         time1 = DateTime.now().getMillis();
         LOGGER.debug(String.format("Zeit zum Laden von addNoteSection: %s [ms]", time1 - time2)); //$NON-NLS-1$
 
-        final ISelectionChangedListener heartListener = chartSectionSupport.createChartOnSection(body, ChartType.HEART_DISTANCE);
+        final ISelectionChangedListener heartListener = chartSectionSupport.createChartOnSection(body, ChartType.HEART_DISTANCE, true);
         providerLap.addSelectionChangedListener(heartListener);
         providerSynth.addSelectionChangedListener(heartListener);
 
@@ -158,14 +158,14 @@ public class SingleActivityViewPart extends ViewPart implements ISelectionProvid
         time2 = DateTime.now().getMillis();
         LOGGER.debug(String.format("Zeit zum Laden von addMapSection: %s [ms]", time2 - time1)); //$NON-NLS-1$
 
-        final ISelectionChangedListener speedListener = chartSectionSupport.createChartOnSection(body, ChartType.SPEED_DISTANCE);
+        final ISelectionChangedListener speedListener = chartSectionSupport.createChartOnSection(body, ChartType.SPEED_DISTANCE, false);
         providerLap.addSelectionChangedListener(speedListener);
         providerSynth.addSelectionChangedListener(speedListener);
 
         time2 = DateTime.now().getMillis();
         LOGGER.debug(String.format("Zeit zum Laden von addSpeedSection: %s [ms]", time2 - time1)); //$NON-NLS-1$
 
-        final ISelectionChangedListener distanceListener = chartSectionSupport.createChartOnSection(body, ChartType.ALTITUDE_DISTANCE);
+        final ISelectionChangedListener distanceListener = chartSectionSupport.createChartOnSection(body, ChartType.ALTITUDE_DISTANCE, false);
         providerLap.addSelectionChangedListener(distanceListener);
         providerSynth.addSelectionChangedListener(distanceListener);
         time1 = DateTime.now().getMillis();

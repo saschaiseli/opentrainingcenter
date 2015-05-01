@@ -43,10 +43,12 @@ public class ChartSectionSupport {
     /**
      * Fuegt auf dem {@link Composite} ein Chart vom Typ {@link ChartType}
      * hinzu.
+     * 
      */
-    public ISelectionChangedListener createChartOnSection(final Composite body, final ChartType chartType) {
+    public ISelectionChangedListener createChartOnSection(final Composite body, final ChartType chartType, final boolean expanded) {
         final Section altitude = toolkit.createSection(body, FormToolkitSupport.SECTION_STYLE);
-        altitude.setExpanded(true);
+        altitude.setExpanded(expanded);
+
         final TableWrapData td = new TableWrapData(TableWrapData.FILL_GRAB);
         td.colspan = 2;
         td.grabHorizontal = true;
