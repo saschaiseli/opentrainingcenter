@@ -26,7 +26,7 @@ public class KmlFile {
         items.add(new KmlPlacemark(name, extendedData, coordinates));
     }
 
-    public String getFile() {
+    public String toKmlString() {
         for (final KmlItem line : items) {
             content.append(line.getKmlLine());
         }

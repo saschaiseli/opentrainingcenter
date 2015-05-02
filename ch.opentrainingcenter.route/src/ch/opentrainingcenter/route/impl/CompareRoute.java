@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import ch.opentrainingcenter.core.data.SimplePair;
 import ch.opentrainingcenter.route.ICompareRoute;
 import ch.opentrainingcenter.route.kml.KmlDumper;
+import ch.opentrainingcenter.route.kml.KmlFile;
 import ch.opentrainingcenter.transfer.Track;
 import ch.opentrainingcenter.transfer.TrackPoint;
 
@@ -21,13 +22,13 @@ import com.grum.geocalc.Point;
  * <pre>
  * 1. Länge der totalen Strecke vergleichen
  * 2. Von jedem element anhand der distanz den korrespondieren punkt auf vergleich suchen.
- *
+ * 
  * ----------X---------------------X-----------------X  Referenz
  * 			 | Aufgrund der Distanz zum Ursprung wird Punkt Y auf der Vergleichsstrecke gesucht
  * -----X----Y----------X----------------------			Vergleich
- *
+ * 
  * --> Abstand der beiden punkte darf nicht zu gross sein.
- *
+ * 
  * 3. Schritt 2 aber umgekehrt, damit auch gesagt werden kann, dass a==b && b==a
  * </pre>
  *
@@ -58,8 +59,9 @@ public class CompareRoute implements ICompareRoute {
     @Override
     public boolean compareRoute(final Track reference, final Track track) {
         final KmlDumper kmlDumper = new KmlDumper(kmlDumpPath);
-        dump(reference, "Referenz", "ff0000ff", kmlDumper);
-        dump(track, "Other", "ff0cc0ff", kmlDumper);
+        final KmlFile kmlFile = new KmlFile("Vergleich");
+        dump(reference, "Referenz", "ff0000ff", kmlFile);
+        dump(track, "Other", "ff0cc0ff", kmlFile);
 
         if (reference == null || reference.getPoints().isEmpty()) {
             return false;
@@ -70,13 +72,13 @@ public class CompareRoute implements ICompareRoute {
         if (isDistanceDifferenceTooBig(reference, track)) {
             return false;
         }
-        final boolean resultA = compareTrackPoints(reference, track, kmlDumper);
-        final boolean resultB = compareTrackPoints(track, reference, kmlDumper);
+        final boolean resultA = compareTrackPoints(reference, track, kmlFile);
+        final boolean resultB = compareTrackPoints(track, reference, kmlFile);
         LOGGER.info("Erster Vergleich: " + resultA); //$NON-NLS-1$
         LOGGER.info("Umgekehrter Vergleich: " + resultB); //$NON-NLS-1$
         final boolean result = resultA && resultB;
         if (debug && result) {
-            kmlDumper.dump();
+            kmlDumper.dump(kmlFile.toKmlString());
         }
         return result;
     }
@@ -84,7 +86,7 @@ public class CompareRoute implements ICompareRoute {
     /**
      * visible wegen Tests
      */
-    boolean compareTrackPoints(final Track reference, final Track track, final KmlDumper kmlDumper) {
+    boolean compareTrackPoints(final Track reference, final Track track, final KmlFile kmlFile) {
         final List<TrackPoint> points = reference.getPoints();
         final List<TrackPoint> trackPoints = track.getPoints();
         TrackPoint previousReference = null;
@@ -105,10 +107,10 @@ public class CompareRoute implements ICompareRoute {
             final double delta = EarthCalc.getDistance(TrackPointSupport.createPoint(referencePoint), pointOnLine);
             if (delta > DISTANZ_DELTA_BEI_GLEICHER_DISTANZ) {
                 logReason(referencePoint, firstPoint, lastPoint, pointOnLine, delta);
-                kmlDumper.addPlacemark("Referenzpunkt_" + i, createExtendedData(referencePoint), referencePoint.toKml()); //$NON-NLS-1$
-                kmlDumper.addPlacemark("firstPoint_" + i, createExtendedData(firstPoint), firstPoint.toKml()); //$NON-NLS-1$
-                kmlDumper.addPlacemark("lastPoint_" + i, createExtendedData(lastPoint), lastPoint.toKml()); //$NON-NLS-1$
-                kmlDumper.addPlacemark("pointOnLine_" + i, createExtendedData(distance), pointOnLine.getLongitude() + "," + pointOnLine.getLatitude()); //$NON-NLS-1$ //$NON-NLS-2$
+                kmlFile.addPlacemark("Referenzpunkt_" + i, createExtendedData(referencePoint), referencePoint.toKml()); //$NON-NLS-1$
+                kmlFile.addPlacemark("firstPoint_" + i, createExtendedData(firstPoint), firstPoint.toKml()); //$NON-NLS-1$
+                kmlFile.addPlacemark("lastPoint_" + i, createExtendedData(lastPoint), lastPoint.toKml()); //$NON-NLS-1$
+                kmlFile.addPlacemark("pointOnLine_" + i, createExtendedData(distance), pointOnLine.getLongitude() + "," + pointOnLine.getLatitude()); //$NON-NLS-1$ //$NON-NLS-2$
                 i++;
             }
         }
@@ -129,11 +131,11 @@ public class CompareRoute implements ICompareRoute {
         return result;
     }
 
-    private void dump(final Track track, final String title, final String lineColor, final KmlDumper kmlDumper) {
+    private void dump(final Track track, final String title, final String lineColor, final KmlFile kmlFile) {
         LOGGER.info("-----------------GPS DATEN " + title + "-------------------------"); //$NON-NLS-1$ //$NON-NLS-2$
         LOGGER.info(track.toKml());
         LOGGER.info("##################################################################"); //$NON-NLS-1$
-        kmlDumper.addLine(title, lineColor, track.toKml());
+        kmlFile.addKmlLine(title, lineColor, track.toKml());
     }
 
     private void logReason(final TrackPoint referencePoint, final TrackPoint firstPoint, final TrackPoint lastPoint, final Point pointOnLine, final double delta) {
