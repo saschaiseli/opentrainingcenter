@@ -211,7 +211,7 @@ public class DynamicChartViewPart extends ViewPart implements IRecordListener<IT
         GridDataFactory.swtDefaults().align(SWT.BEGINNING, SWT.BEGINNING).span(3, 1).applyTo(compareWithLastYear);
         // ------- neue Zeile
         final Label vonLabel = toolkit.createLabel(container, Messages.DynamicChartViewPart_6);
-        von = org.joda.time.DateTime.now().minusWeeks(store.getInt(PreferenceConstants.CHART_WEEKS));
+        von = org.joda.time.DateTime.now().minusWeeks(store.getInt(PreferenceConstants.CHART_WEEKS)).withDayOfMonth(1);
 
         final DateFormatSymbols symbols = DateFormatSymbols.getInstance(Locale.getDefault());
         symbols.setShortWeekdays(NEW_SHORT_WEEKDAYS);
