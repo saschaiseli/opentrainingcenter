@@ -121,8 +121,8 @@ public class TrainingListener implements MesgListener {
         final ITraining training = CommonTransferFactory.createTraining(runData, heart);
         training.setDatum(dateOfStart);
         training.setTrackPoints(trackpoints);
-        training.setDownMeter(session.getTotalDescent());
-        training.setUpMeter(session.getTotalAscent());
+        training.setDownMeter(session.getTotalDescent() != null ? session.getTotalDescent() : 0);
+        training.setUpMeter(session.getTotalAscent() != null ? session.getTotalAscent() : 0);
         final com.garmin.fit.Sport sport = session.getSport();
         if (com.garmin.fit.Sport.RUNNING.equals(sport)) {
             training.setSport(Sport.RUNNING);

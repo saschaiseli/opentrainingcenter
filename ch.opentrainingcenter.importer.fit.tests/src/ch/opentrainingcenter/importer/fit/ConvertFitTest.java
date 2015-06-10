@@ -43,6 +43,16 @@ public class ConvertFitTest {
     }
 
     @Test
+    public void testActivityKeineGeoKoordinaten() throws ConvertException, ParseException {
+        final ITraining training = converter.convert(new File("resources/KeineGpsDaten.fit"));
+
+        assertEquals("Fehlerhafter Prozentwert", 100, training.getGeoQuality().intValue());
+
+        assertEquals("Keine Hoehenmeter", 0, training.getUpMeter().intValue());
+        assertEquals("Keine Hoehenmeter", 0, training.getDownMeter().intValue());
+    }
+
+    @Test
     public void testActivityConvertStartDatum() throws ConvertException, ParseException {
         final ITraining training = converter.convert(new File("resources/2014_09_09.fit"));
         assertEquals(new Date(convertToDate("2014-09-09 19:28:50")), new Date(training.getDatum()));
