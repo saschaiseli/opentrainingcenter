@@ -49,9 +49,21 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
         this.store = store;
         IDatabaseService service = dbservice;
         if (service == null) {
-            service = (IDatabaseService) PlatformUI.getWorkbench().getService(IDatabaseService.class);
+            service = PlatformUI.getWorkbench().getService(IDatabaseService.class);
         }
+        final String dbName = store.getString(PreferenceConstants.DB);
+        final String url = store.getString(PreferenceConstants.DB_URL);
+        final String user = store.getString(PreferenceConstants.DB_USER);
+        final String pw = store.getString(PreferenceConstants.DB_PASS);
+
+        final String urlAdmin = store.getString(PreferenceConstants.DB_ADMIN_URL);
+        final String userAdmin = store.getString(PreferenceConstants.DB_ADMIN_USER);
+        final String pwAdmin = store.getString(PreferenceConstants.DB_ADMIN_PASS);
+
+        service.init(dbName, url, user, pw, urlAdmin, userAdmin, pwAdmin);
+
         databaseAccess = service.getDatabaseAccess();
+
         databaseConnection = service.getDatabaseConnection();
     }
 
