@@ -3,7 +3,8 @@ package ch.opentrainingcenter.importer.gpx;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
@@ -22,14 +23,14 @@ import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
 import org.xml.sax.SAXException;
 
+import com.garmin.xmlschemas.gpxextensions.v3.TrackPointExtensionT;
+import com.topografix.gpx.GpxType;
+
 import ch.opentrainingcenter.core.exceptions.ConvertException;
 import ch.opentrainingcenter.core.helper.AltitudeCalculator;
 import ch.opentrainingcenter.core.helper.AltitudeCalculator.Ascending;
 import ch.opentrainingcenter.core.importer.IConvert2Tcx;
 import ch.opentrainingcenter.transfer.ITraining;
-
-import com.garmin.xmlschemas.gpxextensions.v3.TrackPointExtensionT;
-import com.topografix.gpx.GpxType;
 
 public class ConvertGpx implements IConvert2Tcx {
 
@@ -54,7 +55,8 @@ public class ConvertGpx implements IConvert2Tcx {
     private URL getURL(final String schema) {
         final Bundle bundle = Platform.getBundle(Activator.BUNDLE_ID);
         final Path path = new Path(schema);
-        final URL url = FileLocator.find(bundle, path, Collections.emptyMap());
+        final Map<String, String> map = new HashMap<>();
+        final URL url = FileLocator.find(bundle, path, map);
         URL fileUrl = null;
         try {
             fileUrl = FileLocator.toFileURL(url);
