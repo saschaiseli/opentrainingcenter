@@ -1,0 +1,18 @@
+-------------------------------------------------------------------------------
+Test set: ch.opentrainingcenter.db.internal.DatabaseAccessTest
+-------------------------------------------------------------------------------
+Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.579 sec - in ch.opentrainingcenter.db.internal.DatabaseAccessTest
+testTraining_1(ch.opentrainingcenter.db.internal.DatabaseAccessTest)  Time elapsed: 0.009 sec
+testTraining_2(ch.opentrainingcenter.db.internal.DatabaseAccessTest)  Time elapsed: 0.01 sec
+testTraining_3(ch.opentrainingcenter.db.internal.DatabaseAccessTest)  Time elapsed: 0.013 sec
+testTraining_4_update_note_weather_route(ch.opentrainingcenter.db.internal.DatabaseAccessTest)  Time elapsed: 0.016 sec
+testTraining_5_getAllImported(ch.opentrainingcenter.db.internal.DatabaseAccessTest)  Time elapsed: 0.021 sec
+testTraining_5_getAllMitRoute(ch.opentrainingcenter.db.internal.DatabaseAccessTest)  Time elapsed: 0.034 sec
+testTraining_6_getAllImported_Sort(ch.opentrainingcenter.db.internal.DatabaseAccessTest)  Time elapsed: 0.023 sec
+testTraining_8_getNewest(ch.opentrainingcenter.db.internal.DatabaseAccessTest)  Time elapsed: 0.036 sec
+testTraining_getTotalLaengeInMeter(ch.opentrainingcenter.db.internal.DatabaseAccessTest)  Time elapsed: 0.03 sec
+testTraining_9_getNewestEmpty(ch.opentrainingcenter.db.internal.DatabaseAccessTest)  Time elapsed: 0.026 sec
+testTraining_10_remove(ch.opentrainingcenter.db.internal.DatabaseAccessTest)  Time elapsed: 0.041 sec
+testTraining_11_updateRecord(ch.opentrainingcenter.db.internal.DatabaseAccessTest)  Time elapsed: 0.043 sec
+testTraining_12_updateRoute(ch.opentrainingcenter.db.internal.DatabaseAccessTest)  Time elapsed: 0.051 sec
+testTraining_13(ch.opentrainingcenter.db.internal.DatabaseAccessTest)  Time elapsed: 0.113 sec

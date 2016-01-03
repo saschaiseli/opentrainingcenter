@@ -1,0 +1,6 @@
+-------------------------------------------------------------------------------
+Test set: ch.opentrainingcenter.database.dao.DatabaseCreatorTest
+-------------------------------------------------------------------------------
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.041 sec - in ch.opentrainingcenter.database.dao.DatabaseCreatorTest
+testCreateDatabase(ch.opentrainingcenter.database.dao.DatabaseCreatorTest)  Time elapsed: 0.028 sec
+testBackUpDatabase(ch.opentrainingcenter.database.dao.DatabaseCreatorTest)  Time elapsed: 0.011 sec

@@ -1,0 +1,11 @@
+-------------------------------------------------------------------------------
+Test set: ch.opentrainingcenter.db.internal.RouteDaoTest
+-------------------------------------------------------------------------------
+Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.238 sec - in ch.opentrainingcenter.db.internal.RouteDaoTest
+testSaveRouteMitReferenzStrecke(ch.opentrainingcenter.db.internal.RouteDaoTest)  Time elapsed: 0.037 sec
+testGetRouteById(ch.opentrainingcenter.db.internal.RouteDaoTest)  Time elapsed: 0.014 sec
+testUpdateRoute(ch.opentrainingcenter.db.internal.RouteDaoTest)  Time elapsed: 0.013 sec
+testGetRoutePositiv(ch.opentrainingcenter.db.internal.RouteDaoTest)  Time elapsed: 0.012 sec
+testDeleteRoute(ch.opentrainingcenter.db.internal.RouteDaoTest)  Time elapsed: 0.017 sec
+testGetRouteNegativ(ch.opentrainingcenter.db.internal.RouteDaoTest)  Time elapsed: 0.011 sec
+testSaveRoute(ch.opentrainingcenter.db.internal.RouteDaoTest)  Time elapsed: 0.01 sec

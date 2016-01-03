@@ -21,7 +21,6 @@ import ch.opentrainingcenter.database.dao.ConnectionConfig;
 @SuppressWarnings("nls")
 public class PostgresDatabaseTestBase {
     private static final Logger LOGGER = Logger.getLogger(PostgresDatabaseTestBase.class);
-
     private static final String USER = "otc_user";
     private static final String USER_ADMIN = "postgres";
     private static final String PASS = "otc_user";
@@ -41,7 +40,7 @@ public class PostgresDatabaseTestBase {
         final DbConnection appConnection = new DbConnection(DRIVER, DIALECT, URL, USER, PASS);
         final DbConnection adminConnection = new DbConnection(DRIVER, DIALECT, URL_ADMIN, USER_ADMIN, PASS_ADMIN);
         final DatabaseConnectionConfiguration config = new DatabaseConnectionConfiguration(appConnection, adminConnection);
-        connectionConfig = new ConnectionConfig(USAGE.TEST, config);
+        connectionConfig = ConnectionConfig.getInstance(USAGE.TEST, config);
         dataConnection = new DatabaseAccessPostgres(connectionConfig);
         dataConnection.setConfig(config);
         dataConnection.createDatabase();

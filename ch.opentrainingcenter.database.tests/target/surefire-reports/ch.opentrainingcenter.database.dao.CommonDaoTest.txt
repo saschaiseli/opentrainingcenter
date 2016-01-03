@@ -1,0 +1,14 @@
+-------------------------------------------------------------------------------
+Test set: ch.opentrainingcenter.database.dao.CommonDaoTest
+-------------------------------------------------------------------------------
+Tests run: 10, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 0.176 sec - in ch.opentrainingcenter.database.dao.CommonDaoTest
+testRemove(ch.opentrainingcenter.database.dao.CommonDaoTest)  Time elapsed: 0.09 sec
+testSave(ch.opentrainingcenter.database.dao.CommonDaoTest)  Time elapsed: 0.019 sec
+testGetAllTrainingsIAthlete_Cache_Empty(ch.opentrainingcenter.database.dao.CommonDaoTest)  Time elapsed: 0.011 sec
+testGetAllTrainingsIAthlete_Cache_Not_Empty(ch.opentrainingcenter.database.dao.CommonDaoTest)  Time elapsed: 0.008 sec
+testGetAllTrainingsIAthlete_Limited_Cache_Empty(ch.opentrainingcenter.database.dao.CommonDaoTest)  Time elapsed: 0.008 sec
+testUpdateTraining(ch.opentrainingcenter.database.dao.CommonDaoTest)  Time elapsed: 0.013 sec
+testUpdateTrainingRoute(ch.opentrainingcenter.database.dao.CommonDaoTest) skipped
+testGetTrainingById_vom_cache(ch.opentrainingcenter.database.dao.CommonDaoTest)  Time elapsed: 0.008 sec
+testGetTrainingById_von_db(ch.opentrainingcenter.database.dao.CommonDaoTest)  Time elapsed: 0.007 sec
+testGetTrainingById_von_db_aber_nicht_gefunden(ch.opentrainingcenter.database.dao.CommonDaoTest)  Time elapsed: 0.006 sec

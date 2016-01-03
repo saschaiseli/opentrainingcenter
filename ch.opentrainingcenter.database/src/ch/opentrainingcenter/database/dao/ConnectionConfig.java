@@ -14,6 +14,7 @@ import ch.opentrainingcenter.database.USAGE;
 @SuppressWarnings("nls")
 public class ConnectionConfig implements IConnectionConfig {
 
+    private static ConnectionConfig INSTANCE;
     private static final String HIBERNATE_POOL_SIZE = "hibernate.pool_size";
     private static final String HIBERNATE_FORMAT_SQL = "hibernate.format_sql";
     private static final String HIBERNATE_SHOW_SQL = "hibernate.show_sql";
@@ -23,11 +24,21 @@ public class ConnectionConfig implements IConnectionConfig {
     private final USAGE usage;
     private final DatabaseConnectionConfiguration config;
 
-    public ConnectionConfig(final USAGE usage, final DatabaseConnectionConfiguration config) {
+    public static ConnectionConfig getInstance(final USAGE usage, final DatabaseConnectionConfiguration config) {
+        if (INSTANCE == null) {
+            INSTANCE = new ConnectionConfig(usage, config);
+        }
+        return INSTANCE;
+    }
+
+    private ConnectionConfig(final USAGE usage, final DatabaseConnectionConfiguration config) {
         this(usage, config, new org.hibernate.cfg.Configuration());
     }
 
-    public ConnectionConfig(final USAGE usage, final DatabaseConnectionConfiguration config, final org.hibernate.cfg.Configuration configuration) {
+    /**
+     * nur fuer tests
+     */
+    ConnectionConfig(final USAGE usage, final DatabaseConnectionConfiguration config, final org.hibernate.cfg.Configuration configuration) {
         Assertions.notNull(config, "Datenbankkonfiguration darf nicht null sein");
         this.usage = usage;
         this.config = config;
@@ -74,10 +85,9 @@ public class ConnectionConfig implements IConnectionConfig {
     }
 
     @Override
-    public Session getSession() {
+    public synchronized Session getSession() {
         if (session == null || !session.isOpen()) {
             session = sessionFactory.openSession();
-            LOG.info("Session geöffnet: " + session);
         }
         return session;
     }

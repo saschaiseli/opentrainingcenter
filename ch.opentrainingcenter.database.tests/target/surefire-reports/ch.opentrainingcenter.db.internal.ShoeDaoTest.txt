@@ -1,0 +1,10 @@
+-------------------------------------------------------------------------------
+Test set: ch.opentrainingcenter.db.internal.ShoeDaoTest
+-------------------------------------------------------------------------------
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.346 sec - in ch.opentrainingcenter.db.internal.ShoeDaoTest
+testSaveSchuh(ch.opentrainingcenter.db.internal.ShoeDaoTest)  Time elapsed: 0.02 sec
+testDeleteSchuh(ch.opentrainingcenter.db.internal.ShoeDaoTest)  Time elapsed: 0.018 sec
+testExistiertSchuh(ch.opentrainingcenter.db.internal.ShoeDaoTest)  Time elapsed: 0.009 sec
+testShoeNotFound(ch.opentrainingcenter.db.internal.ShoeDaoTest)  Time elapsed: 0.006 sec
+testGetSchuh(ch.opentrainingcenter.db.internal.ShoeDaoTest)  Time elapsed: 0.009 sec
+testUpdateSchuh(ch.opentrainingcenter.db.internal.ShoeDaoTest)  Time elapsed: 0.01 sec

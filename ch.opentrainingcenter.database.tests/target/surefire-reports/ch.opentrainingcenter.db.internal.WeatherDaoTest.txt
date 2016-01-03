@@ -1,0 +1,5 @@
+-------------------------------------------------------------------------------
+Test set: ch.opentrainingcenter.db.internal.WeatherDaoTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.2 sec - in ch.opentrainingcenter.db.internal.WeatherDaoTest
+testGetWeather(ch.opentrainingcenter.db.internal.WeatherDaoTest)  Time elapsed: 0.006 sec

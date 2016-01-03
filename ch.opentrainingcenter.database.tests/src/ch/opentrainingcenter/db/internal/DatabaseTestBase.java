@@ -35,8 +35,8 @@ public class DatabaseTestBase {
 
     @BeforeClass
     public static void createDb() throws SqlException {
-        connectionConfig = new ConnectionConfig(USAGE.TEST, new DatabaseConnectionConfiguration(new DbConnection(DRIVER, DIALECT, URL + USAGE.TEST.getDbName(),
-                USER, "")));
+        connectionConfig = ConnectionConfig.getInstance(USAGE.TEST, new DatabaseConnectionConfiguration(new DbConnection(DRIVER, DIALECT, URL + USAGE.TEST
+                .getDbName(), USER, "")));
         dataConnection = new DatabaseAccess(connectionConfig);
         dataConnection.createDatabase();
 

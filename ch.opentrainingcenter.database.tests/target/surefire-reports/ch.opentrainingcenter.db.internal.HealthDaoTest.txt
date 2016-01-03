@@ -1,0 +1,7 @@
+-------------------------------------------------------------------------------
+Test set: ch.opentrainingcenter.db.internal.HealthDaoTest
+-------------------------------------------------------------------------------
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.162 sec - in ch.opentrainingcenter.db.internal.HealthDaoTest
+testGetHealth(ch.opentrainingcenter.db.internal.HealthDaoTest)  Time elapsed: 0.012 sec
+testRemove(ch.opentrainingcenter.db.internal.HealthDaoTest)  Time elapsed: 0.009 sec
+testSave(ch.opentrainingcenter.db.internal.HealthDaoTest)  Time elapsed: 0.006 sec

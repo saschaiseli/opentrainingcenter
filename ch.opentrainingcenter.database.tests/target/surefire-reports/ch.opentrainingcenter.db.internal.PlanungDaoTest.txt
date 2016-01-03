@@ -1,0 +1,8 @@
+-------------------------------------------------------------------------------
+Test set: ch.opentrainingcenter.db.internal.PlanungDaoTest
+-------------------------------------------------------------------------------
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.791 sec - in ch.opentrainingcenter.db.internal.PlanungDaoTest
+testGetByAthletePositiv(ch.opentrainingcenter.db.internal.PlanungDaoTest)  Time elapsed: 0.247 sec
+testUpdate(ch.opentrainingcenter.db.internal.PlanungDaoTest)  Time elapsed: 0.075 sec
+testGetByAthleteNegativ(ch.opentrainingcenter.db.internal.PlanungDaoTest)  Time elapsed: 0.04 sec
+testGetByAthleteAndKw(ch.opentrainingcenter.db.internal.PlanungDaoTest)  Time elapsed: 0.039 sec

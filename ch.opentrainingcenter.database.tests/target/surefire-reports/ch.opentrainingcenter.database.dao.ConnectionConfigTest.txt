@@ -1,0 +1,13 @@
+-------------------------------------------------------------------------------
+Test set: ch.opentrainingcenter.database.dao.ConnectionConfigTest
+-------------------------------------------------------------------------------
+Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.171 sec - in ch.opentrainingcenter.database.dao.ConnectionConfigTest
+testConnectionConfig(ch.opentrainingcenter.database.dao.ConnectionConfigTest)  Time elapsed: 0.033 sec
+testGetUsage(ch.opentrainingcenter.database.dao.ConnectionConfigTest)  Time elapsed: 0.01 sec
+testGetConfig(ch.opentrainingcenter.database.dao.ConnectionConfigTest)  Time elapsed: 0.01 sec
+testGetSessionOpen(ch.opentrainingcenter.database.dao.ConnectionConfigTest)  Time elapsed: 0.018 sec
+testGetSessionClosed(ch.opentrainingcenter.database.dao.ConnectionConfigTest)  Time elapsed: 0.017 sec
+testBegin(ch.opentrainingcenter.database.dao.ConnectionConfigTest)  Time elapsed: 0.019 sec
+testClose(ch.opentrainingcenter.database.dao.ConnectionConfigTest)  Time elapsed: 0.018 sec
+testCommit(ch.opentrainingcenter.database.dao.ConnectionConfigTest)  Time elapsed: 0.023 sec
+testRollback(ch.opentrainingcenter.database.dao.ConnectionConfigTest)  Time elapsed: 0.02 sec

@@ -28,9 +28,9 @@ public abstract class AbstractDatabaseAccess implements IDatabaseConnection {
     @Override
     public void init() {
         if (isDeveloping()) {
-            this.connectionConfig = new ConnectionConfig(USAGE.DEVELOPING, getConfig());
+            this.connectionConfig = ConnectionConfig.getInstance(USAGE.DEVELOPING, getConfig());
         } else {
-            this.connectionConfig = new ConnectionConfig(USAGE.PRODUCTION, getConfig());
+            this.connectionConfig = ConnectionConfig.getInstance(USAGE.PRODUCTION, getConfig());
         }
         createDaos(connectionConfig);
     }

@@ -1,0 +1,8 @@
+-------------------------------------------------------------------------------
+Test set: ch.opentrainingcenter.db.internal.AthleteDaoTest
+-------------------------------------------------------------------------------
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.156 sec - in ch.opentrainingcenter.db.internal.AthleteDaoTest
+testUpdatePuls(ch.opentrainingcenter.db.internal.AthleteDaoTest)  Time elapsed: 0.008 sec
+testGetMitHealth(ch.opentrainingcenter.db.internal.AthleteDaoTest)  Time elapsed: 0.006 sec
+testGetByNameNotFound(ch.opentrainingcenter.db.internal.AthleteDaoTest)  Time elapsed: 0.004 sec
+testSave(ch.opentrainingcenter.db.internal.AthleteDaoTest)  Time elapsed: 0.006 sec
