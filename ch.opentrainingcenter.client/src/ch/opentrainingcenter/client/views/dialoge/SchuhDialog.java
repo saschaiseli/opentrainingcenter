@@ -45,6 +45,7 @@ import ch.opentrainingcenter.transfer.IAthlete;
 import ch.opentrainingcenter.transfer.IShoe;
 import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
 
+@SuppressWarnings("deprecation")
 public class SchuhDialog extends TitleAreaDialog {
 
     private static final Logger LOG = Logger.getLogger(SchuhDialog.class);
