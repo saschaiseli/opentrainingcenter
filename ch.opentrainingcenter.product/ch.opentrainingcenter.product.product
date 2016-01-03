@@ -39,29 +39,18 @@
 
    <plugins>
       <plugin id="ch.opentrainingcenter.charts"/>
-      <plugin id="ch.opentrainingcenter.charts.tests" fragment="true"/>
       <plugin id="ch.opentrainingcenter.client"/>
-      <plugin id="ch.opentrainingcenter.client.tests" fragment="true"/>
       <plugin id="ch.opentrainingcenter.core"/>
-      <plugin id="ch.opentrainingcenter.core.tests" fragment="true"/>
       <plugin id="ch.opentrainingcenter.database"/>
-      <plugin id="ch.opentrainingcenter.database.tests" fragment="true"/>
       <plugin id="ch.opentrainingcenter.db"/>
       <plugin id="ch.opentrainingcenter.db.oracle"/>
       <plugin id="ch.opentrainingcenter.db.postgres"/>
-      <plugin id="ch.opentrainingcenter.db.postgres.tests" fragment="true"/>
-      <plugin id="ch.opentrainingcenter.db.tests" fragment="true"/>
       <plugin id="ch.opentrainingcenter.i18n"/>
       <plugin id="ch.opentrainingcenter.importer.fit"/>
-      <plugin id="ch.opentrainingcenter.importer.fit.tests" fragment="true"/>
       <plugin id="ch.opentrainingcenter.importer.gpx"/>
-      <plugin id="ch.opentrainingcenter.importer.gpx.tests" fragment="true"/>
       <plugin id="ch.opentrainingcenter.importer.tcx"/>
-      <plugin id="ch.opentrainingcenter.importer.tcx.tests" fragment="true"/>
       <plugin id="ch.opentrainingcenter.model"/>
-      <plugin id="ch.opentrainingcenter.model.tests" fragment="true"/>
       <plugin id="ch.opentrainingcenter.route"/>
-      <plugin id="ch.opentrainingcenter.route.tests" fragment="true"/>
       <plugin id="ch.opentrainingcenter.tcx"/>
       <plugin id="ch.opentrainingcenter.transfer"/>
       <plugin id="com.eclipsesource.widgets.gmaps"/>
@@ -136,7 +125,6 @@
       <plugin id="org.eclipse.equinox.preferences"/>
       <plugin id="org.eclipse.equinox.registry"/>
       <plugin id="org.eclipse.equinox.security"/>
-      <plugin id="org.eclipse.equinox.transforms.hook" fragment="true"/>
       <plugin id="org.eclipse.equinox.util"/>
       <plugin id="org.eclipse.help"/>
       <plugin id="org.eclipse.jface"/>
@@ -146,7 +134,6 @@
       <plugin id="org.eclipse.osgi.compatibility.state" fragment="true"/>
       <plugin id="org.eclipse.osgi.services"/>
       <plugin id="org.eclipse.swt"/>
-      <plugin id="org.eclipse.swt.gtk.linux.x86" fragment="true"/>
       <plugin id="org.eclipse.swt.gtk.linux.x86_64" fragment="true"/>
       <plugin id="org.eclipse.text"/>
       <plugin id="org.eclipse.ui"/>
