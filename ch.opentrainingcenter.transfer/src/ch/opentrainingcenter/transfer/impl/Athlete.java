@@ -30,10 +30,10 @@ public class Athlete implements java.io.Serializable, IAthlete {
     public Athlete() {
     }
 
-    public Athlete(final String name, final Date birthday, final Integer maxHeartBeat) {
+    public Athlete(final String name, final Date birthday, final Integer maxheartrate) {
         this.name = name;
         this.birthday = birthday;
-        maxheartrate = maxHeartBeat;
+        this.maxheartrate = maxheartrate;
     }
 
     @Override
