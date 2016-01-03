@@ -13,7 +13,7 @@
   <artifactId>ch.opentrainingcenter.target-platform</artifactId>
   <version>3.8.0-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <name>eclipse38-platform-sdk</name>
+  <name>eclipse-mars-platform-sdk</name>
 
   <build>
     <plugins>
@@ -31,9 +31,9 @@
             <configuration>
               <artifacts>
                 <artifact>
-                  <file>indigo.target</file>
+                  <file>mars.target</file>
                   <type>target</type>
-                  <classifier>eclipse38-platform-sdk</classifier>
+                  <classifier>eclipse-mars-platform-sdk</classifier>
                 </artifact>
               </artifacts>
             </configuration>
