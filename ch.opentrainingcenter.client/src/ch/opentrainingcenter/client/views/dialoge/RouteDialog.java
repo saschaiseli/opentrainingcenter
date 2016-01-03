@@ -37,6 +37,7 @@ import ch.opentrainingcenter.transfer.IRoute;
 import ch.opentrainingcenter.transfer.ITraining;
 import ch.opentrainingcenter.transfer.factory.CommonTransferFactory;
 
+@SuppressWarnings("deprecation")
 public class RouteDialog extends TitleAreaDialog {
 
     private static final Logger LOG = Logger.getLogger(RouteDialog.class);
