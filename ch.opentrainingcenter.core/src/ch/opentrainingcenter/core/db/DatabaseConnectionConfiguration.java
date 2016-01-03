@@ -134,4 +134,11 @@ public class DatabaseConnectionConfiguration {
     public DbConnection getDbConnection() {
         return dbConnection;
     }
+
+    @SuppressWarnings("nls")
+    @Override
+    public String toString() {
+        return "DatabaseConnectionConfiguration:\n [adminConnection=" + adminConnection + "\ndbConnection=" + dbConnection + "]";
+    }
+
 }
