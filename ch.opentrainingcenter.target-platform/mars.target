@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="ch.opentrainingcenter.target-platform-mars" sequenceNumber="3">
-<environment>
-<os>linux</os>
-<ws>gtk</ws>
-<arch>x86_64</arch>
-<nl>de_CH</nl>
-</environment>
-</target>

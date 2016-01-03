@@ -31,7 +31,7 @@
             <configuration>
               <artifacts>
                 <artifact>
-                  <file>mars.target</file>
+                  <file>mars.running.target</file>
                   <type>target</type>
                   <classifier>eclipse-mars-platform-sdk</classifier>
                 </artifact>
