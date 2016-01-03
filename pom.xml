@@ -51,7 +51,6 @@
 		<module>ch.opentrainingcenter.importer.tcx</module>
 		<module>ch.opentrainingcenter.importer.gpx</module>
 		<module>ch.opentrainingcenter.importer.fit</module>
-		<module>ch.opentrainingcenter.target-platform</module>
 		<module>ch.opentrainingcenter.tcx</module>
 		<module>ch.opentrainingcenter.transfer</module>
 		<module>ch.opentrainingcenter.route</module>
