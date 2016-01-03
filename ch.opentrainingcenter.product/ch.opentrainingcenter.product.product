@@ -37,6 +37,7 @@
    <vm>
    </vm>
 
+
    <plugins>
       <plugin id="ch.opentrainingcenter.charts"/>
       <plugin id="ch.opentrainingcenter.client"/>
@@ -158,5 +159,12 @@
       <plugin id="org.eclipse.equinox.common" autoStart="true" startLevel="2" />
       <plugin id="org.eclipse.osgi" autoStart="true" startLevel="-1" />
    </configurations>
+
+   <preferencesInfo>
+      <targetfile overwrite="false"/>
+   </preferencesInfo>
+
+   <cssInfo>
+   </cssInfo>
 
 </product>
