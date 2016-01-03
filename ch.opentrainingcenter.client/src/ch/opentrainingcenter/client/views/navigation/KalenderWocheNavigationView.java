@@ -1,6 +1,8 @@
 package ch.opentrainingcenter.client.views.navigation;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -92,6 +94,16 @@ public class KalenderWocheNavigationView extends ViewPart {
     }
 
     private void updateModel() {
+
+        final List<String> list = new ArrayList<>();
+        list.add("a");
+        list.add("b");
+        list.add("c");
+        list.add("d");
+        Collections.sort(list, (final String a, final String b) -> b.compareTo(a));
+        for (final String string : list) {
+            System.out.println(string);
+        }
         Display.getDefault().asyncExec(new Runnable() {
 
             @Override
