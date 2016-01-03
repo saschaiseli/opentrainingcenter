@@ -11,7 +11,7 @@
 	<properties>
 		<tycho.version>0.22.0</tycho.version>
 		<jacoco.version>0.7.1.201405082137</jacoco.version>
-		<eclipse-repository-url>http://download.eclipse.org/releases/mars/</eclipse-repository-url>
+		<!-- <eclipse-repository-url>http://download.eclipse.org/releases/mars/</eclipse-repository-url> -->
 		<sonar.host.url>http://localhost:9000</sonar.host.url>
 		<sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
 		<sonar.jacoco.reportPath>target/jacoco.exec</sonar.jacoco.reportPath>
@@ -34,13 +34,8 @@
 		</sonar.exclusions>
 	</properties>
 
-	<repositories>
-		<repository>
-			<id>eclipse-mars-platform-sdk</id>
-			<layout>p2</layout>
-			<url>${eclipse-repository-url}</url><!-- http://download.eclipse.org/releases/juno/</url> -->
-		</repository>
-	</repositories>
+	<!-- <repositories> <repository> <id>eclipse-mars-platform-sdk</id> <layout>p2</layout> 
+		<url>${eclipse-repository-url}</url> </repository> </repositories> -->
 
 	<modules>
 		<module>ch.opentrainingcenter.product</module>
@@ -56,6 +51,7 @@
 		<module>ch.opentrainingcenter.importer.tcx</module>
 		<module>ch.opentrainingcenter.importer.gpx</module>
 		<module>ch.opentrainingcenter.importer.fit</module>
+		<module>ch.opentrainingcenter.target-platform</module>
 		<module>ch.opentrainingcenter.tcx</module>
 		<module>ch.opentrainingcenter.transfer</module>
 		<module>ch.opentrainingcenter.route</module>
@@ -157,6 +153,16 @@
 				<artifactId>target-platform-configuration</artifactId>
 				<version>${tycho.version}</version>
 				<configuration>
+					<target>
+						<artifact>
+							<groupId>ch.opentrainingcenter</groupId>
+							<artifactId>ch.opentrainingcenter.target-platform</artifactId>
+							<version>1.0.0-SNAPSHOT</version>
+						</artifact>
+					</target>
+				</configuration>
+				<!-- 
+				<configuration>
 					<resolver>p2</resolver>
 					<environments>
 						<environment>
@@ -169,10 +175,6 @@
 							<ws>gtk</ws>
 							<arch>x86</arch>
 						</environment>
-						<!-- <environment> <os>macosx</os> <ws>carbon</ws> <arch>x86</arch> 
-							</environment> <environment> <os>macosx</os> <ws>cocoa</ws> <arch>x86</arch> 
-							</environment> <environment> <os>macosx</os> <ws>cocoa</ws> <arch>x86_64</arch> 
-							</environment> -->
 						<environment>
 							<os>win32</os>
 							<ws>win32</ws>
@@ -185,6 +187,7 @@
 						</environment>
 					</environments>
 				</configuration>
+				 -->
 			</plugin>
 		</plugins>
 	</build>
