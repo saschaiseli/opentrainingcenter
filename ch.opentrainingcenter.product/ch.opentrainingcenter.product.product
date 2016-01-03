@@ -150,14 +150,19 @@
       <plugin id="org.w3c.dom.svg"/>
       <plugin id="postgres"/>
    </plugins>
-
+<!--
    <configurations>
       <plugin id="ch.opentrainingcenter.i18n" autoStart="true" startLevel="2" />
       <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="0" />
       <plugin id="org.eclipse.equinox.common" autoStart="true" startLevel="2" />
       <plugin id="org.eclipse.osgi" autoStart="true" startLevel="-1" />
    </configurations>
-
+-->
+<configurations>
+   <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="2" />
+   <plugin id="org.eclipse.equinox.ds" autoStart="true" startLevel="3" />
+   <plugin id="org.eclipse.equinox.event" autoStart="true" startLevel="3" />
+</configurations>
    <preferencesInfo>
       <targetfile overwrite="false"/>
    </preferencesInfo>
