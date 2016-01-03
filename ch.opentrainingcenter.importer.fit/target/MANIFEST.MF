@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-SymbolicName: ch.opentrainingcenter.importer.fit;singleton:=tru
+ e
+Bundle-Name: Garmin Fit Importer
+Bundle-Version: 1.0.0.201506191940
+Require-Bundle: org.eclipse.core.runtime,ch.opentrainingcenter.core,ch
+ .opentrainingcenter.transfer,jodatime,logging,com.garmin.fit
+Bundle-ManifestVersion: 2
+Bundle-Activator: ch.opentrainingcenter.importer.fit.Activator
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Bundle-Vendor: Sascha Iseli
+

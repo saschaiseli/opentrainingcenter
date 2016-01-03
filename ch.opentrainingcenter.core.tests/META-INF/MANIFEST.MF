@@ -4,7 +4,7 @@ Bundle-Name: Tests
 Bundle-SymbolicName: ch.opentrainingcenter.core.tests
 Bundle-Version: 1.0.0.qualifier
 Fragment-Host: ch.opentrainingcenter.core
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.junit,
  jodatime,
  mockito

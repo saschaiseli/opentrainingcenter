@@ -30,6 +30,6 @@ Export-Package: org.postgresql,
  org.postgresql.xa,
  org.postgresql.xa.jdbc3,
  org.postgresql.xa.jdbc4
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Eclipse-BuddyPolicy: registered
 

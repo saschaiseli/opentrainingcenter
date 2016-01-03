@@ -10,5 +10,5 @@ Require-Bundle: org.eclipse.core.runtime,
  ch.opentrainingcenter.core,
  ch.opentrainingcenter.transfer
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Eclipse-RegisterBuddy: logging

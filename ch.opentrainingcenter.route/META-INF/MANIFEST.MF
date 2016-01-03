@@ -12,5 +12,5 @@ Require-Bundle: org.eclipse.core.runtime,
  geocalc,
  ch.opentrainingcenter.transfer
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: ch.opentrainingcenter.route

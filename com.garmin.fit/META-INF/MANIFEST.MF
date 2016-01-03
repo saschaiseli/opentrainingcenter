@@ -4,6 +4,6 @@ Bundle-Name: Garmin Fit
 Bundle-SymbolicName: com.garmin.fit
 Bundle-Version: 1.0.0
 Bundle-Vendor: Garmin
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: com.garmin.fit

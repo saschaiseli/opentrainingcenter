@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-SymbolicName: com.garmin.fit
+Export-Package: com.garmin.fit
+Bundle-Name: Garmin Fit
+Bundle-Version: 1.0.0
+Bundle-ManifestVersion: 2
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Bundle-Vendor: Garmin
+

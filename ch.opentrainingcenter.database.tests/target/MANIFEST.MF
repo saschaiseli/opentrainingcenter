@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-SymbolicName: ch.opentrainingcenter.database.tests
+Bundle-Name: Tests
+Bundle-Version: 1.0.0.201506191940
+Require-Bundle: org.junit,mockito,ch.opentrainingcenter.db,org.eclipse
+ .ui
+Bundle-ManifestVersion: 2
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Fragment-Host: ch.opentrainingcenter.database
+
