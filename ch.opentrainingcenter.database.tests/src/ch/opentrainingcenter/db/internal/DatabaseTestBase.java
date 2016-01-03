@@ -58,6 +58,8 @@ public class DatabaseTestBase {
         session.createSQLQuery("delete from ATHLETE WHERE id>0").executeUpdate();
         connectionConfig.commit();
         session.flush();
+        session.clear();
+        session.close();
     }
 
     @AfterClass
