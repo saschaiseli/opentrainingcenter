@@ -26,11 +26,15 @@
 		<property name="lap" type="java.lang.Integer">
 			<column name="LAP" />
 		</property>
+		<one-to-one name="streckenPunkt" class="ch.opentrainingcenter.transfer.impl.Streckenpunkte"
+			cascade="save-update"></one-to-one>
+		<!-- 
 		<many-to-one name="streckenPunkt"
 			class="ch.opentrainingcenter.transfer.impl.Streckenpunkte" fetch="join"
 			update="true" insert="true" cascade="all">
 			<column name="ID_FK_STRECKENPUNKT" />
 		</many-to-one>
+		 -->
 		<many-to-one name="training"
 			class="ch.opentrainingcenter.transfer.impl.Training" fetch="join"
 			insert="true" not-null="true">

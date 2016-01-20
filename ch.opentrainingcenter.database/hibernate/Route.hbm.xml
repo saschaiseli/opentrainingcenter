@@ -19,9 +19,13 @@
 		<property name="beschreibung" type="string">
 			<column name="BESCHREIBUNG" />
 		</property>
+		<one-to-one name="referenzTrack" class="ch.opentrainingcenter.transfer.impl.Training"
+			cascade="all"></one-to-one>
+			<!-- 
 		<many-to-one name="referenzTrack"
 			class="ch.opentrainingcenter.transfer.impl.Training" fetch="select"  cascade="all" not-null="true" >
 			<column name="ID_FK_TRAINING" />
 		</many-to-one>
+		 -->
 	</class>
 </hibernate-mapping>
